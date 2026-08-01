@@ -23,10 +23,10 @@ test('PJL-003: linux home is abbreviated too', () => {
 });
 
 test('PJL-004: long path gets middle ellipsis keeping head and last segment', () => {
-    const label = formatProjectLabel(['/Users/example/src/weasley-podex']);
+    const label = formatProjectLabel(['/Users/example/Developer/open-source/weasley-podex']);
     assert.ok(label);
-    assert.equal(label.text, '~/Developer/…/podex');
-    assert.equal(label.title, '/Users/example/src/weasley-podex');
+    assert.equal(label.text, '~/Developer/…/weasley-podex');
+    assert.equal(label.title, '/Users/example/Developer/open-source/weasley-podex');
 });
 
 test('PJL-005: multiple dirs add a +N badge and full title list', () => {

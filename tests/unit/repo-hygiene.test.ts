@@ -8,19 +8,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const root = join(__dirname, '..', '..');
 
-// ── RH-001: package.json files에 skills_ref/ 미포함 ──
+// ── RH-001: runtime reference assets ship with the CLI ──
 
-test('RH-001: package.json files array does not include skills_ref', () => {
+test('RH-001: package.json files array includes bundled runtime references', () => {
     const pkg = JSON.parse(fs.readFileSync(join(root, 'package.json'), 'utf8'));
-    const hasSkillsRef = (pkg.files || []).some((f: string) => f.includes('skills_ref'));
-    assert.ok(!hasSkillsRef, 'skills_ref should not be in package.json files');
+    const files = pkg.files || [];
+    assert.ok(files.includes('skills_ref/'), 'skills_ref should ship with the CLI');
+    assert.ok(files.includes('mcp-ref/'), 'mcp-ref should ship with the CLI');
 });
 
-// ── RH-002: .npmignore에 skills_ref/ 포함 ──
+// ── RH-002: bundled runtime references remain publishable ──
 
-test('RH-002: .npmignore excludes skills_ref', () => {
+test('RH-002: .npmignore does not exclude bundled runtime references', () => {
     const npmignore = fs.readFileSync(join(root, '.npmignore'), 'utf8');
-    assert.ok(npmignore.includes('skills_ref'), '.npmignore should exclude skills_ref');
+    const ignored = npmignore.split(/\r?\n/).map(line => line.trim());
+    assert.ok(!ignored.includes('skills_ref/'), '.npmignore should keep skills_ref publishable');
+    assert.ok(!ignored.includes('mcp-ref/'), '.npmignore should keep mcp-ref publishable');
 });
 
 // ── RH-003: .npmignore에 devlog/ 포함 ──
@@ -120,6 +123,8 @@ test('RH-008: root npm package stays lean and excludes Electron app/deps', () =>
         'dist/',
         '!dist/src/lib/native/*.node',
         'public/',
+        'skills_ref/',
+        'mcp-ref/',
         'scripts/',
         'LICENSE',
         'NOTICE',

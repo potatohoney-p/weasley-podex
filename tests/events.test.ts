@@ -1370,7 +1370,7 @@ test('grok trace backfill recovers omitted headless tool calls from chat history
     assert.equal(entries[0].label, 'run_terminal_command');
     assert.equal(entries[0].status, 'done');
     assert.match(entries[0].detail || '', /"command":"pwd"/);
-    assert.match(entries[0].detail || '', /\/Users\/jun/);
+    assert.match(entries[0].detail || '', /\/Users\/example/);
 });
 
 test('grok trace backfill marks non-zero terminal result as error', () => {
