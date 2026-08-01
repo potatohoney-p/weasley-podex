@@ -141,7 +141,7 @@ async function main(): Promise<void> {
         };
 
         const version = run(primaryCmd, ['--version'], { env: appEnv }).trim();
-        if (!version.toLowerCase().includes('weasley podex')) throw new Error(`unexpected version output: ${version}`);
+        if (!version.toLowerCase().startsWith('weasley-podex v')) throw new Error(`unexpected version output: ${version}`);
 
         if (args.mode === 'postinstall') {
             const verifier = path.join(pkgDir, 'scripts', 'verify-fresh-install.sh');
