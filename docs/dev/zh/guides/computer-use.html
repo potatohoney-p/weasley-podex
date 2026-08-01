@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>计算机控制 — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link active" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="../">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>计算机控制</h1>
+<p class="lead">podex 通过浏览器 CDP 集成和基于 Codex 的视觉点击管线支持桌面自动化。代理可以截取屏幕截图、点击元素、输入文本和导航——既支持浏览器，也支持桌面。</p>
+
+<h2>两种方式</h2>
+<table>
+<tr><th>方式</th><th>方法</th><th>最适用于</th></tr>
+<tr><td><strong>CDP (Chrome DevTools Protocol)</strong></td><td>通过 <code>src/browser/</code> 进行浏览器自动化</td><td>网页、精确的 DOM 交互</td></tr>
+<tr><td><strong>Computer Use (CU)</strong></td><td>通过 Codex employee 进行桌面自动化</td><td>原生应用、桌面 UI 交互</td></tr>
+</table>
+
+<h2>CDP 浏览器自动化</h2>
+<p>podex 通过 CDP 启动并控制 Chrome：</p>
+<pre><code># Start browser
+jaw browser start
+
+# Take a screenshot
+jaw browser screenshot
+
+# Take a DOM snapshot with ref attributes
+jaw browser snapshot
+
+# Click an element by ref
+jaw browser click ref123
+
+# Type text into an element
+jaw browser type ref456 "Hello World" --submit
+
+# Navigate to a URL
+jaw browser navigate https://example.com
+
+# Get page text
+jaw browser text</code></pre>
+
+<h2>视觉点击管线</h2>
+<p>当 DOM ref 属性和直接坐标都不适用时，视觉点击管线使用 AI 视觉来定位并点击 UI 元素：</p>
+<pre><code>jaw browser vision-click "Submit button" --provider codex</code></pre>
+<p>管线流程：截图 → AI 视觉提取坐标 → DPR 校正 → 点击 → 验证。</p>
+<div class="callout callout-info">提示中的 <code>$computer-use</code> 令牌会触发 Codex employee 执行桌面级自动化任务。</div>
+
+<h2>macOS TCC 权限</h2>
+<p>在 macOS 上，桌面自动化需要屏幕录制和辅助功能权限。podex 内置了 TCC 权限检查器：</p>
+<pre><code># Check TCC permissions
+jaw doctor --tcc</code></pre>
+<p>您可能需要在"系统偏好设置" > "隐私与安全性" > "屏幕录制"和"辅助功能"中授予权限。</p>
+
+<h2>Safari 提示</h2>
+<p>要进行 Safari 自动化，请在 Safari 的"开发"菜单中启用"允许远程自动化"。不过，通过 CDP 使用 Chrome 是推荐的最佳支持路径。</p>
+
+<h2>浏览器 API 端点</h2>
+<table>
+<tr><th>方法</th><th>路径</th><th>描述</th></tr>
+<tr><td>POST</td><td><code>/api/browser/start</code></td><td>启动浏览器</td></tr>
+<tr><td>POST</td><td><code>/api/browser/stop</code></td><td>停止浏览器</td></tr>
+<tr><td>GET</td><td><code>/api/browser/status</code></td><td>浏览器状态</td></tr>
+<tr><td>GET</td><td><code>/api/browser/snapshot</code></td><td>带 ref 的 DOM 快照</td></tr>
+<tr><td>POST</td><td><code>/api/browser/screenshot</code></td><td>截取屏幕截图</td></tr>
+<tr><td>POST</td><td><code>/api/browser/act</code></td><td>点击、输入、按键、悬停</td></tr>
+<tr><td>POST</td><td><code>/api/browser/vision-click</code></td><td>基于视觉的点击</td></tr>
+<tr><td>POST</td><td><code>/api/browser/navigate</code></td><td>导航到 URL</td></tr>
+</table>
+
+<h2>运行时诊断</h2>
+<pre><code># Check browser runtime health
+jaw browser status
+
+# Doctor check for orphan processes
+GET /api/browser/doctor
+
+# Cleanup orphan runtimes
+POST /api/browser/cleanup-runtimes</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="discord.html">Discord</a>
+<a class="next" href="electron.html">Electron Desktop</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

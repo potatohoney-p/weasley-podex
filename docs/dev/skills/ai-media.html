@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Media Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link active" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>AI Media Skills</h1>
+<p class="lead">podex bundles 13 skills for generating, editing, and processing images, video, audio, and design assets. These skills wrap external AI services -- DALL-E, Sora, fal.ai, Hugging Face, and more -- behind natural-language commands so you can produce media without leaving the terminal.</p>
+
+<h2>Skill Catalog</h2>
+<table>
+<tr><th>Skill</th><th>Category</th><th>Description</th></tr>
+<tr><td><code>imagegen</code></td><td>Image Generation</td><td>Generate images via DALL-E 3 / gpt-image-1. Supports prompt, size, quality, and style parameters.</td></tr>
+<tr><td><code>nano-banana-pro</code></td><td>Image Generation</td><td>Fast image generation through the Nano Banana Pro pipeline on fal.ai. Optimized for speed over quality.</td></tr>
+<tr><td><code>fal-image-edit</code></td><td>Image Editing</td><td>Edit existing images using fal.ai models -- inpainting, outpainting, style transfer, and background removal.</td></tr>
+<tr><td><code>sora</code></td><td>Video Generation</td><td>Generate and edit video clips using OpenAI Sora. Supports text-to-video and image-to-video workflows.</td></tr>
+<tr><td><code>speech</code></td><td>Audio Generation</td><td>Text-to-speech synthesis via OpenAI TTS. Supports multiple voices, speeds, and output formats.</td></tr>
+<tr><td><code>transcribe</code></td><td>Audio Processing</td><td>Audio and video transcription via Whisper. Produces timestamped subtitles in SRT/VTT/JSON formats.</td></tr>
+<tr><td><code>hugging-face-cli</code></td><td>ML Pipeline</td><td>Run Hugging Face model inference from the CLI. Supports text, image, and audio tasks.</td></tr>
+<tr><td><code>hugging-face-evaluation</code></td><td>ML Pipeline</td><td>Evaluate Hugging Face models with standard benchmarks and metrics.</td></tr>
+<tr><td><code>hugging-face-model-trainer</code></td><td>ML Pipeline</td><td>Fine-tune Hugging Face models on custom datasets with LoRA/QLoRA support.</td></tr>
+<tr><td><code>algorithmic-art</code></td><td>Generative Art</td><td>Create algorithmic and generative art using code-driven patterns, fractals, and mathematical visualizations.</td></tr>
+<tr><td><code>canvas-design</code></td><td>Design</td><td>Design canvas-based graphics -- layouts, banners, social media posts, and composited visuals.</td></tr>
+<tr><td><code>atlas</code></td><td>Design</td><td>Generate and manipulate texture atlases and sprite sheets for game and UI assets.</td></tr>
+<tr><td><code>theme-factory</code></td><td>Design</td><td>Generate color themes, palettes, and design tokens for apps and websites from a seed color or image.</td></tr>
+</table>
+
+<h2>Image Generation</h2>
+<p>The <code>imagegen</code> skill is the primary entry point for creating images. It delegates to DALL-E 3 or gpt-image-1 depending on the model configuration.</p>
+
+<div class="callout-info">
+<strong>Natural language examples</strong><br>
+<code>"이미지 생성해줘 -- 석양이 지는 서울 남산타워"</code><br>
+<code>"Generate a watercolor painting of a mountain lake at dawn"</code><br>
+<code>"로고 만들어줘 -- 미니멀한 고양이 실루엣, 파란색 배경"</code>
+</div>
+
+<pre><code># Basic generation
+/imagegen a cyberpunk cityscape at night, neon lights reflecting on wet streets
+
+# With parameters
+/imagegen --size 1792x1024 --quality hd a photo-realistic coral reef
+
+# Using nano-banana-pro for fast drafts
+/nano-banana-pro quick sketch of a robot barista</code></pre>
+
+<h3>imagegen Parameters</h3>
+<table>
+<tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--size</code></td><td>1024x1024</td><td>Output size: <code>1024x1024</code>, <code>1792x1024</code>, <code>1024x1792</code></td></tr>
+<tr><td><code>--quality</code></td><td>standard</td><td><code>standard</code> or <code>hd</code></td></tr>
+<tr><td><code>--style</code></td><td>vivid</td><td><code>vivid</code> or <code>natural</code></td></tr>
+<tr><td><code>--model</code></td><td>dall-e-3</td><td><code>dall-e-3</code> or <code>gpt-image-1</code></td></tr>
+<tr><td><code>--output</code></td><td>./output</td><td>Output directory for the generated file</td></tr>
+</table>
+
+<h2>Image Editing</h2>
+<p>The <code>fal-image-edit</code> skill handles post-generation edits: inpainting regions, extending canvases, transferring styles, and removing backgrounds.</p>
+
+<div class="callout-info">
+<strong>Natural language examples</strong><br>
+<code>"이 이미지에서 배경 지워줘"</code><br>
+<code>"사진의 하늘을 노을로 바꿔줘"</code><br>
+<code>"Extend this image to the right with more forest"</code>
+</div>
+
+<pre><code># Remove background
+/fal-image-edit --task remove-bg input.png
+
+# Inpaint a region (mask auto-detected from prompt)
+/fal-image-edit --task inpaint --prompt "replace the car with a bicycle" photo.jpg
+
+# Style transfer
+/fal-image-edit --task style-transfer --style "oil painting" photo.jpg</code></pre>
+
+<h2>Video Generation</h2>
+<p>The <code>sora</code> skill generates short video clips from text or image prompts using OpenAI Sora.</p>
+
+<div class="callout-info">
+<strong>Natural language examples</strong><br>
+<code>"영상 만들어줘 -- 바닷가에서 뛰어노는 강아지"</code><br>
+<code>"Create a 5-second video of clouds forming over a mountain"</code><br>
+<code>"이 사진을 영상으로 변환해줘"</code>
+</div>
+
+<pre><code># Text-to-video
+/sora a timelapse of flowers blooming in a meadow --duration 5s
+
+# Image-to-video (animate a still image)
+/sora --input cover.png --prompt "gentle camera zoom out" --duration 3s</code></pre>
+
+<h3>sora Parameters</h3>
+<table>
+<tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--duration</code></td><td>5s</td><td>Clip duration: <code>3s</code>, <code>5s</code>, <code>10s</code></td></tr>
+<tr><td><code>--resolution</code></td><td>720p</td><td><code>480p</code>, <code>720p</code>, <code>1080p</code></td></tr>
+<tr><td><code>--input</code></td><td>-</td><td>Source image for image-to-video</td></tr>
+<tr><td><code>--output</code></td><td>./output</td><td>Output directory</td></tr>
+</table>
+
+<h2>Audio: Speech and Transcription</h2>
+<p>Two complementary skills handle the audio pipeline: <code>speech</code> converts text to spoken audio, and <code>transcribe</code> converts audio/video to text with timestamps.</p>
+
+<div class="callout-info">
+<strong>Natural language examples</strong><br>
+<code>"이 텍스트 읽어줘 -- 오늘의 뉴스 요약입니다"</code><br>
+<code>"이 영상 자막 만들어줘"</code><br>
+<code>"Convert this meeting recording to subtitles"</code><br>
+<code>"음성 파일로 변환해줘 -- alloy 목소리로"</code>
+</div>
+
+<pre><code># Text-to-speech
+/speech "Welcome to podex. Your daily briefing is ready." --voice alloy
+
+# Speech with custom speed and format
+/speech --voice nova --speed 1.2 --format mp3 "오늘의 할 일을 알려드리겠습니다."
+
+# Transcribe audio
+/transcribe meeting-recording.m4a --format srt
+
+# Transcribe video with language hint
+/transcribe presentation.mp4 --language ko --format vtt</code></pre>
+
+<h3>speech Parameters</h3>
+<table>
+<tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--voice</code></td><td>alloy</td><td><code>alloy</code>, <code>echo</code>, <code>fable</code>, <code>onyx</code>, <code>nova</code>, <code>shimmer</code></td></tr>
+<tr><td><code>--speed</code></td><td>1.0</td><td>Playback speed: 0.25 to 4.0</td></tr>
+<tr><td><code>--format</code></td><td>mp3</td><td><code>mp3</code>, <code>opus</code>, <code>aac</code>, <code>flac</code>, <code>wav</code></td></tr>
+</table>
+
+<h3>transcribe Parameters</h3>
+<table>
+<tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--format</code></td><td>srt</td><td><code>srt</code>, <code>vtt</code>, <code>json</code>, <code>text</code></td></tr>
+<tr><td><code>--language</code></td><td>auto</td><td>ISO 639-1 language hint (e.g. <code>ko</code>, <code>en</code>, <code>ja</code>)</td></tr>
+<tr><td><code>--model</code></td><td>whisper-1</td><td>Whisper model variant</td></tr>
+</table>
+
+<h2>Hugging Face Pipeline</h2>
+<p>Three skills wrap the Hugging Face ecosystem for inference, evaluation, and training directly from the CLI.</p>
+
+<div class="callout-info">
+<strong>Natural language examples</strong><br>
+<code>"이 이미지 분류해줘 -- Hugging Face 모델로"</code><br>
+<code>"모델 파인튜닝 해줘 -- LoRA로 학습"</code><br>
+<code>"Evaluate this model on the GLUE benchmark"</code>
+</div>
+
+<pre><code># Run inference with a specific model
+/hugging-face-cli --model stabilityai/stable-diffusion-xl-base-1.0 \
+  --task text-to-image "a serene japanese garden"
+
+# Evaluate a model
+/hugging-face-evaluation --model bert-base-uncased \
+  --benchmark glue --split validation
+
+# Fine-tune with LoRA
+/hugging-face-model-trainer --base meta-llama/Llama-3-8B \
+  --dataset ./training-data.jsonl \
+  --method lora --epochs 3 --lr 2e-4</code></pre>
+
+<h3>Supported Task Types</h3>
+<table>
+<tr><th>Skill</th><th>Tasks</th></tr>
+<tr><td><code>hugging-face-cli</code></td><td>text-generation, text-to-image, image-classification, summarization, translation, fill-mask, question-answering</td></tr>
+<tr><td><code>hugging-face-evaluation</code></td><td>GLUE, SuperGLUE, SQuAD, custom metric evaluation</td></tr>
+<tr><td><code>hugging-face-model-trainer</code></td><td>LoRA, QLoRA, full fine-tuning, DPO, RLHF</td></tr>
+</table>
+
+<h2>Generative Art and Design</h2>
+<p>Four skills cover design workflows -- from algorithmic patterns to full design-token systems.</p>
+
+<h3>algorithmic-art</h3>
+<p>Generates code-driven visual art: fractals, Voronoi diagrams, L-systems, flow fields, and mathematical surfaces.</p>
+<pre><code># Generate a fractal
+/algorithmic-art --type mandelbrot --palette ocean --size 2048x2048
+
+# Flow field visualization
+/algorithmic-art --type flowfield --seed 42 --particles 5000</code></pre>
+
+<h3>canvas-design</h3>
+<p>Composites text, shapes, and images onto a canvas. Useful for social media graphics, banners, and thumbnails.</p>
+
+<div class="callout-info">
+<strong>Natural language examples</strong><br>
+<code>"배너 만들어줘 -- 1200x630, 제목은 '신제품 출시'"</code><br>
+<code>"Create an Instagram story template with gradient background"</code>
+</div>
+
+<pre><code># Create a social media banner
+/canvas-design --size 1200x630 \
+  --background "linear-gradient(135deg, #667eea, #764ba2)" \
+  --text "Product Launch" --font-size 64</code></pre>
+
+<h3>atlas</h3>
+<p>Packs multiple images into optimized sprite sheets and texture atlases with accompanying JSON metadata.</p>
+<pre><code># Pack icons into a sprite sheet
+/atlas --input ./icons/ --output spritesheet.png --padding 2
+
+# Generate with metadata
+/atlas --input ./frames/ --output atlas.png --meta atlas.json</code></pre>
+
+<h3>theme-factory</h3>
+<p>Generates complete color systems from a seed color, image, or concept. Outputs CSS custom properties, Tailwind configs, and design tokens.</p>
+
+<div class="callout-info">
+<strong>Natural language examples</strong><br>
+<code>"테마 만들어줘 -- 따뜻한 가을 느낌, 다크모드 포함"</code><br>
+<code>"Generate a color palette from this brand logo"</code>
+</div>
+
+<pre><code># From a seed color
+/theme-factory --seed "#4F46E5" --mode both --format css
+
+# From an image
+/theme-factory --from-image hero.jpg --format tailwind
+
+# From a concept
+/theme-factory --concept "warm autumn forest" --format tokens</code></pre>
+
+<h2>Output Handling</h2>
+<p>All media skills follow a consistent output pattern:</p>
+<ul>
+<li><strong>File output</strong> -- Generated files are saved to the <code>--output</code> directory (default: <code>./output</code>)</li>
+<li><strong>Inline preview</strong> -- When running in the Electron desktop app or Web UI, images are displayed inline</li>
+<li><strong>Clipboard</strong> -- Pass <code>--copy</code> to copy the output file path to the system clipboard</li>
+<li><strong>Pipe-friendly</strong> -- All skills print the output file path to stdout for chaining</li>
+</ul>
+<pre><code># Chain generation into editing
+/imagegen "a forest cabin" | xargs -I {} /fal-image-edit --task style-transfer --style "watercolor" {}
+
+# Generate and open immediately
+/imagegen "sunset over the ocean" && open ./output/latest.png</code></pre>
+
+<h2>Configuration</h2>
+<p>API keys and defaults are configured in <code>~/.podex/config.yaml</code> or via environment variables:</p>
+<pre><code># config.yaml
+skills:
+  imagegen:
+    default_model: gpt-image-1
+    default_quality: hd
+    output_dir: ~/Pictures/podex
+  sora:
+    default_duration: 5s
+    default_resolution: 1080p
+  speech:
+    default_voice: nova
+  transcribe:
+    default_format: srt
+    default_language: ko</code></pre>
+
+<pre><code># Environment variables
+export OPENAI_API_KEY="sk-..."       # imagegen, sora, speech, transcribe
+export FAL_KEY="fal-..."             # nano-banana-pro, fal-image-edit
+export HF_TOKEN="hf_..."            # hugging-face-* skills</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="automation.html">Automation</a>
+<a class="next" href="communication.html">Communication</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Use — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link active" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Skills Overview</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI &amp; Media</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">DevTools — Cloud</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">DevTools — Security</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">DevTools — Workflow</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Orchestration</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utility</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Computer Use</h1>
+<p class="lead">podex supports desktop automation through its browser CDP integration and the Codex-based vision click pipeline. The agent can take screenshots, click elements, type text, and navigate -- both in browsers and on the desktop.</p>
+
+<h2>Two Approaches</h2>
+<table>
+<tr><th>Approach</th><th>Method</th><th>Best For</th></tr>
+<tr><td><strong>CDP (Chrome DevTools Protocol)</strong></td><td>Browser automation via <code>src/browser/</code></td><td>Web pages, precise DOM interaction</td></tr>
+<tr><td><strong>Computer Use (CU)</strong></td><td>Desktop automation via Codex employee</td><td>Native apps, desktop UI interaction</td></tr>
+</table>
+
+<h2>CDP Browser Automation</h2>
+<p>podex launches and controls Chrome through CDP:</p>
+<pre><code># Start browser
+jaw browser start
+
+# Take a screenshot
+jaw browser screenshot
+
+# Take a DOM snapshot with ref attributes
+jaw browser snapshot
+
+# Click an element by ref
+jaw browser click ref123
+
+# Type text into an element
+jaw browser type ref456 "Hello World" --submit
+
+# Navigate to a URL
+jaw browser navigate https://example.com
+
+# Get page text
+jaw browser text</code></pre>
+
+<h2>Vision Click Pipeline</h2>
+<p>When neither DOM ref attributes nor direct coordinates are suitable, the vision click pipeline uses AI vision to locate and click UI elements:</p>
+<pre><code>jaw browser vision-click "Submit button" --provider codex</code></pre>
+<p>The pipeline: screenshot → AI vision extracts coordinates → DPR correction → click → verify.</p>
+<div class="callout callout-info">The <code>$computer-use</code> token in prompts triggers the Codex employee for desktop-level automation tasks.</div>
+
+<h2>macOS TCC Permissions</h2>
+<p>On macOS, screen recording and accessibility permissions are required for desktop automation. podex includes a TCC permission checker:</p>
+<pre><code># Check TCC permissions
+jaw doctor --tcc</code></pre>
+<p>You may need to grant permissions in System Preferences > Privacy & Security > Screen Recording and Accessibility.</p>
+
+<h2>Safari Tip</h2>
+<p>For Safari automation, enable "Allow Remote Automation" in Safari's Develop menu. However, Chrome via CDP is the recommended and best-supported path.</p>
+
+<h2>Browser API Endpoints</h2>
+<table>
+<tr><th>Method</th><th>Path</th><th>Description</th></tr>
+<tr><td>POST</td><td><code>/api/browser/start</code></td><td>Start browser</td></tr>
+<tr><td>POST</td><td><code>/api/browser/stop</code></td><td>Stop browser</td></tr>
+<tr><td>GET</td><td><code>/api/browser/status</code></td><td>Browser status</td></tr>
+<tr><td>GET</td><td><code>/api/browser/snapshot</code></td><td>DOM snapshot with refs</td></tr>
+<tr><td>POST</td><td><code>/api/browser/screenshot</code></td><td>Take screenshot</td></tr>
+<tr><td>POST</td><td><code>/api/browser/act</code></td><td>Click, type, press, hover</td></tr>
+<tr><td>POST</td><td><code>/api/browser/vision-click</code></td><td>Vision-based click</td></tr>
+<tr><td>POST</td><td><code>/api/browser/navigate</code></td><td>Navigate to URL</td></tr>
+</table>
+
+<h2>Runtime Diagnostics</h2>
+<pre><code># Check browser runtime health
+jaw browser status
+
+# Doctor check for orphan processes
+GET /api/browser/doctor
+
+# Cleanup orphan runtimes
+POST /api/browser/cleanup-runtimes</code></pre>
+
+<div class="callout callout-info">
+<strong>Try it:</strong>
+<ul>
+<li>설정 앱 열어줘</li>
+<li>이 버튼 클릭해줘</li>
+<li>$computer-use 사파리 열어줘</li>
+</ul>
+</div>
+
+<div class="page-nav">
+<a class="prev" href="discord.html">Discord</a>
+<a class="next" href="electron.html">Electron Desktop</a>
+</div>
+</main>
+</div>
+<script src="../_search.js"></script>
+</body>
+</html>
+

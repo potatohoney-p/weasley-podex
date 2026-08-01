@@ -1,0 +1,301 @@
+.tray-reminders-app {
+    width: 100%;
+    height: 100dvh;
+    min-width: 0;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+    overflow: hidden;
+    background: var(--surface-base);
+    color: var(--ink-primary);
+}
+
+.tray-reminders-header {
+    grid-row: 1;
+}
+
+.tray-reminders-header,
+.tray-reminders-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--surface-panel);
+}
+
+.tray-reminders-footer {
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 0;
+    color: var(--ink-muted);
+    font-size: 12px;
+}
+
+.tray-reminders-header span {
+    min-width: 0;
+    display: grid;
+    gap: 2px;
+}
+
+.tray-reminders-header b {
+    font-size: 15px;
+    line-height: 1.2;
+}
+
+.tray-reminders-header small {
+    color: var(--ink-muted);
+    font-size: 11px;
+}
+
+.tray-reminders-menu-button {
+    width: 30px;
+    min-width: 30px;
+    padding: 0;
+    font-weight: 800;
+}
+
+.tray-reminders-status,
+.tray-reminders-empty {
+    grid-row: 2;
+    margin: 0;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--ink-muted);
+    font-size: 12px;
+}
+
+.tray-reminders-status[data-state="error"] {
+    color: var(--status-error);
+}
+
+.tray-reminders-sections {
+    grid-row: 3;
+    min-height: 0;
+    overflow: auto;
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: 10px;
+}
+
+.tray-reminders-section {
+    min-width: 0;
+    display: grid;
+    gap: 6px;
+}
+
+.tray-reminders-section > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: var(--ink-muted);
+}
+
+.tray-reminders-section h2 {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.tray-reminders-section header span {
+    min-width: 22px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    padding: 1px 6px;
+    text-align: center;
+    font-size: 11px;
+}
+
+.tray-reminders-section ol {
+    display: grid;
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tray-reminders-row,
+.tray-reminders-empty-row {
+    min-width: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: 7px;
+    background: var(--surface-panel);
+}
+
+.tray-reminders-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+    padding: 8px;
+}
+
+.tray-reminders-row[data-section="overdue"] {
+    border-color: color-mix(in srgb, var(--status-error) 36%, var(--border-subtle));
+}
+
+.tray-reminders-row-main {
+    min-width: 0;
+    display: grid;
+    gap: 2px;
+}
+
+.tray-reminders-row-main b,
+.tray-reminders-row-main small {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tray-reminders-row-main b {
+    font-size: 12px;
+    line-height: 1.25;
+}
+
+.tray-reminders-row-main small,
+.tray-reminders-empty-row {
+    color: var(--ink-muted);
+    font-size: 11px;
+}
+
+.tray-reminders-priority-pill {
+    border-radius: 999px;
+    padding: 2px 6px;
+    background: color-mix(in srgb, var(--status-error) 13%, transparent);
+    color: var(--status-error);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.tray-reminders-row-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+}
+
+.tray-reminders-row-actions button,
+.tray-reminders-row-actions select {
+    min-height: 26px;
+    padding: 3px 6px;
+    font-size: 11px;
+}
+
+.tray-reminders-row-actions select {
+    max-width: 82px;
+}
+
+.tray-reminders-empty-row {
+    padding: 8px;
+    background: color-mix(in srgb, var(--surface-panel) 72%, transparent);
+}
+
+.tray-reminders-composer {
+    grid-row: 4;
+    min-width: 0;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 5px;
+    padding: 7px 10px;
+    border-top: 1px solid var(--border-subtle);
+    background: color-mix(in srgb, var(--surface-panel) 88%, var(--surface-base));
+}
+
+.tray-reminders-composer-modes {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3px;
+}
+
+.tray-reminders-composer-modes button {
+    min-width: 0;
+    height: 30px;
+    min-height: 0;
+    padding: 0 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-color: var(--border-subtle);
+    color: var(--ink-muted);
+    font-size: 11px;
+    line-height: 1;
+}
+
+.tray-reminders-composer-modes button[aria-pressed="true"] {
+    border-color: color-mix(in srgb, var(--accent-primary) 58%, var(--border-subtle));
+    background: color-mix(in srgb, var(--accent-primary) 14%, transparent);
+    color: var(--ink-primary);
+}
+
+.tray-reminders-composer-form {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px;
+}
+
+.tray-reminders-composer-form input,
+.tray-reminders-composer-date-row input {
+    min-width: 0;
+    height: 34px;
+    min-height: 0;
+    box-sizing: border-box;
+    border: 1px solid var(--border-subtle);
+    border-radius: 7px;
+    padding: 0 8px;
+    background: var(--surface-base);
+    color: var(--ink-primary);
+    font: inherit;
+    font-size: 12px;
+}
+
+.tray-reminders-composer-form button {
+    height: 34px;
+    min-height: 0;
+    padding: 0 10px;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.tray-reminders-composer-date-row {
+    min-height: 0;
+    display: grid;
+    align-items: center;
+}
+
+.tray-reminders-composer-date-row[data-mode="important"],
+.tray-reminders-composer-date-row[data-mode="later"] {
+    display: none;
+}
+
+.tray-reminders-composer-date-row label {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 7px;
+}
+
+.tray-reminders-composer-date-row label span {
+    color: var(--ink-muted);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.tray-reminders-composer-error {
+    margin: 0;
+    color: var(--status-error);
+    font-size: 11px;
+}
+
+.tray-reminders-footer button {
+    flex: 0 0 auto;
+}
+
+.tray-reminders-footer {
+    grid-row: 5;
+}

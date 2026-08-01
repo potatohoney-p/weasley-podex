@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud & Deploy Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link active" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="./">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Cloud & Deploy Skills</h1>
+<p class="lead">云基础设施配置、无服务器部署、边缘计算以及平台即服务集成。通过一条自然语言命令，即可从 podex 直接部署到任何主流云服务商。</p>
+
+<h2>概述</h2>
+<p>Cloud & Deploy 技能将 podex 转变为统一的部署控制平面。无需记忆各平台的 CLI 参数，只需用自然语言描述你的需求，相应的技能就会处理特定于服务商的配置、构建步骤和部署编排。</p>
+
+<div class="callout callout-info">
+  <strong>自然语言部署</strong> &mdash; 只需说 <code>"Vercel에 배포해줘"</code> 或 <code>"Deploy this to Cloudflare Workers"</code>，podex 就会选择正确的技能、检测你的框架并运行完整的部署流程。
+</div>
+
+<h2>技能目录</h2>
+<table>
+<tr><th>技能</th><th>服务商</th><th>描述</th></tr>
+<tr><td><code>cloudflare-deploy</code></td><td>Cloudflare</td><td>Workers、Pages、KV、R2、D1、AI、WAF、Tunnel、Spectrum。完整的 Wrangler 集成。</td></tr>
+<tr><td><code>agents-sdk</code></td><td>Cloudflare</td><td>在 Workers 上构建有状态的 AI 代理：Durable Objects 状态管理、WebSocket 实时通信、定时任务、MCP 服务器。</td></tr>
+<tr><td><code>durable-objects</code></td><td>Cloudflare</td><td>有状态协调原语：聊天室、多人游戏、预订系统、SQLite 存储、定时器。</td></tr>
+<tr><td><code>aws-skills</code></td><td>AWS</td><td>Lambda、S3、EC2、ECS、CloudFront、API Gateway、DynamoDB、SQS、SNS、IAM 策略生成。</td></tr>
+<tr><td><code>terraform</code></td><td>多云</td><td>基础设施即代码：plan、apply、状态管理、模块编写、漂移检测。</td></tr>
+<tr><td><code>vercel-deploy</code></td><td>Vercel</td><td>零配置部署 Next.js、SvelteKit、Nuxt、Remix。预览 URL、边缘函数、环境变量。</td></tr>
+<tr><td><code>netlify-deploy</code></td><td>Netlify</td><td>Jamstack 部署、无服务器函数、表单处理、身份认证、边缘处理器。</td></tr>
+<tr><td><code>render-deploy</code></td><td>Render</td><td>Web 服务、静态站点、定时任务、数据库、私有服务、蓝图。</td></tr>
+<tr><td><code>mcp-builder</code></td><td>任意</td><td>构建和部署 Model Context Protocol 服务器，用于工具集成。</td></tr>
+<tr><td><code>jupyter-notebook</code></td><td>本地 / 远程</td><td>Notebook 执行、内核管理、单元格操作、输出捕获。</td></tr>
+</table>
+
+<h2>框架检测</h2>
+<p>Cloud 技能会自动检测你的项目框架并应用最优的构建配置。支持的框架如下：</p>
+<table>
+<tr><th>框架</th><th>检测信号</th><th>默认目标</th></tr>
+<tr><td>Next.js</td><td><code>next.config.*</code></td><td>Vercel / Cloudflare Pages</td></tr>
+<tr><td>Nuxt</td><td><code>nuxt.config.*</code></td><td>Vercel / Netlify</td></tr>
+<tr><td>SvelteKit</td><td><code>svelte.config.js</code></td><td>Vercel / Cloudflare Pages</td></tr>
+<tr><td>Remix</td><td><code>remix.config.*</code></td><td>Vercel / Cloudflare Workers</td></tr>
+<tr><td>Astro</td><td><code>astro.config.*</code></td><td>Netlify / Cloudflare Pages</td></tr>
+<tr><td>Hono</td><td>依赖中包含 <code>hono</code></td><td>Cloudflare Workers</td></tr>
+<tr><td>Express / Fastify</td><td>依赖中包含 <code>express</code> / <code>fastify</code></td><td>Render / AWS Lambda</td></tr>
+<tr><td>静态 HTML</td><td>根目录下的 <code>index.html</code></td><td>Cloudflare Pages / Netlify</td></tr>
+</table>
+
+<h2>Cloudflare 生态系统</h2>
+<p>三个专用技能深入覆盖 Cloudflare 平台。它们优先从 Cloudflare 官方文档检索信息，而非依赖预训练知识。</p>
+
+<h3>cloudflare-deploy</h3>
+<p>涵盖所有 Cloudflare 产品的综合技能。处理 Workers、Pages、存储（KV、D1、R2）、AI（Workers AI、Vectorize）、网络（Tunnel、Spectrum）、安全（WAF、DDoS）以及通过 Terraform 或 Pulumi 实现的基础设施即代码。</p>
+<pre><code># Deploy a Worker
+"이 코드를 Cloudflare Worker로 배포해줘"
+
+# Create a KV namespace and bind it
+"KV 네임스페이스 만들고 Worker에 바인딩해줘"
+
+# Set up R2 bucket with custom domain
+"R2 버킷 생성하고 커스텀 도메인 연결해줘"</code></pre>
+
+<h3>agents-sdk</h3>
+<p>在 Cloudflare Workers 上构建具有持久状态、实时 WebSocket 通信和定时任务执行能力的 AI 代理。</p>
+<pre><code># Create a stateful chat agent
+"Cloudflare Agents SDK로 채팅 에이전트 만들어줘"
+
+# Add WebSocket real-time support
+"실시간 WebSocket 통신 추가해줘"
+
+# Build an MCP server on Workers
+"MCP 서버를 Workers에 만들어줘"</code></pre>
+
+<h3>durable-objects</h3>
+<p>用于多人游戏、预订系统、速率限制等场景的有状态协调。涵盖 RPC 方法、SQLite 存储、定时器、WebSockets 和 Vitest 测试。</p>
+<pre><code># Create a multiplayer game room
+"Durable Objects로 멀티플레이어 게임룸 만들어줘"
+
+# Add SQLite storage to a DO
+"DO에 SQLite 스토리지 추가해줘"</code></pre>
+
+<h2>AWS Skills</h2>
+<p><code>aws-skills</code> 模块通过自然语言命令覆盖最常用的 AWS 服务。</p>
+
+<div class="callout callout-info">
+  <strong>IAM 策略生成</strong> &mdash; 只需说 <code>"Lambda에 S3 읽기 권한 추가해줘"</code>，podex 就会生成最小权限的 IAM 策略文档、将其附加到执行角色并验证变更。
+</div>
+
+<pre><code># Create a Lambda function
+"AWS Lambda 만들어줘, Node.js 20 런타임으로"
+
+# Set up API Gateway + Lambda
+"API Gateway로 REST API 만들고 Lambda에 연결해줘"
+
+# Deploy to ECS with Fargate
+"Docker 이미지 빌드해서 ECS Fargate에 배포해줘"
+
+# Create S3 bucket with CloudFront CDN
+"S3 정적 호스팅이랑 CloudFront 설정해줘"</code></pre>
+
+<table>
+<tr><th>服务</th><th>支持的操作</th></tr>
+<tr><td>Lambda</td><td>创建、部署、更新、添加触发器、设置环境变量、配置层</td></tr>
+<tr><td>S3</td><td>创建存储桶、设置 CORS、启用静态托管、生命周期规则</td></tr>
+<tr><td>EC2</td><td>启动实例、安全组、密钥对、AMI 管理</td></tr>
+<tr><td>ECS</td><td>任务定义、服务、Fargate、ECR 镜像推送</td></tr>
+<tr><td>CloudFront</td><td>分发、源站、缓存策略、失效操作</td></tr>
+<tr><td>API Gateway</td><td>REST 和 HTTP API、路由、集成、授权器</td></tr>
+<tr><td>DynamoDB</td><td>创建表、全局二级索引、查询/扫描、TTL 配置</td></tr>
+<tr><td>SQS / SNS</td><td>创建队列/主题、订阅、死信队列</td></tr>
+</table>
+
+<h2>Terraform</h2>
+<p><code>terraform</code> 技能提供跨云服务商的基础设施即代码能力。它生成 HCL 代码、管理状态并处理 plan/apply 生命周期。</p>
+<pre><code># Generate Terraform for a full-stack app
+"Next.js 앱을 위한 Terraform 설정 만들어줘 — Vercel + PlanetScale"
+
+# Plan and apply changes
+"Terraform plan 돌려줘"
+"변경사항 확인했으니 apply 해줘"
+
+# Import existing resources
+"기존 AWS 리소스 Terraform state로 import 해줘"</code></pre>
+
+<div class="callout callout-warn">
+  <strong>状态安全</strong> &mdash; terraform 技能始终会先运行 <code>terraform plan</code>，并在执行 <code>apply</code> 前要求明确确认。破坏性变更（资源删除）会触发额外警告并显示差异摘要。
+</div>
+
+<h2>平台即服务</h2>
+<p>Vercel、Netlify 和 Render 技能为 Web 应用提供简化的部署流程，所需配置极少。</p>
+
+<h3>vercel-deploy</h3>
+<pre><code># Deploy with preview URL
+"Vercel에 배포해줘"
+
+# Set environment variables
+"Vercel에 DATABASE_URL 환경변수 설정해줘"
+
+# Promote preview to production
+"프리뷰 배포를 프로덕션으로 올려줘"</code></pre>
+
+<h3>netlify-deploy</h3>
+<pre><code># Deploy a static site
+"Netlify에 빌드하고 배포해줘"
+
+# Configure serverless functions
+"Netlify Functions 추가해줘"
+
+# Set up form handling
+"Netlify Forms로 문의 폼 연결해줘"</code></pre>
+
+<h3>render-deploy</h3>
+<pre><code># Deploy a web service
+"Render에 Express 서버 배포해줘"
+
+# Create a cron job
+"Render에 매일 자정에 실행되는 크론잡 만들어줘"
+
+# Create a managed database
+"Render PostgreSQL 데이터베이스 만들어줘"</code></pre>
+
+<h2>MCP Builder</h2>
+<p><code>mcp-builder</code> 技能用于创建 Model Context Protocol 服务器，向任何兼容 MCP 的客户端公开工具、资源和提示词。</p>
+<pre><code># Create an MCP server
+"Notion API를 MCP 서버로 감싸줘"
+
+# Add tools to an existing server
+"MCP 서버에 검색 도구 추가해줘"
+
+# Deploy MCP server to Workers
+"MCP 서버를 Cloudflare Workers에 배포해줘"</code></pre>
+
+<h2>Jupyter Notebook</h2>
+<p><code>jupyter-notebook</code> 技能管理 notebook 的执行、内核生命周期和单元格级编辑，适用于数据科学和实验性工作流。</p>
+<pre><code># Execute a notebook
+"이 노트북 전체 실행해줘"
+
+# Add a cell and run it
+"pandas로 CSV 로딩하는 셀 추가해줘"
+
+# Convert notebook to HTML report
+"노트북을 HTML 보고서로 변환해줘"</code></pre>
+
+<h2>配置</h2>
+<p>Cloud 技能使用各服务商标准配置中的凭据。如果你已经设置好了服务商的 CLI 工具，则无需额外的 podex 配置。</p>
+
+<table>
+<tr><th>服务商</th><th>凭据来源</th><th>所需设置</th></tr>
+<tr><td>Cloudflare</td><td><code>~/.wrangler/</code> 或 <code>CLOUDFLARE_API_TOKEN</code></td><td><code>wrangler login</code></td></tr>
+<tr><td>AWS</td><td><code>~/.aws/credentials</code> 或环境变量</td><td><code>aws configure</code></td></tr>
+<tr><td>Vercel</td><td><code>~/.vercel/</code></td><td><code>vercel login</code></td></tr>
+<tr><td>Netlify</td><td><code>~/.netlify/</code></td><td><code>netlify login</code></td></tr>
+<tr><td>Render</td><td><code>RENDER_API_KEY</code></td><td>从控制台获取 API 密钥</td></tr>
+<tr><td>Terraform</td><td>取决于具体服务商</td><td>按服务商配置认证</td></tr>
+</table>
+
+<div class="callout callout-info">
+  <strong>凭据安全</strong> &mdash; podex 自身不存储任何凭据。它委托给各服务商的标准凭据链。密钥永远不会被写入记忆、日志或对话历史中。
+</div>
+
+<h2>常见模式</h2>
+
+<h3>多阶段部署</h3>
+<p>组合多个技能实现复杂工作流。podex 会自动串联各个步骤：</p>
+<pre><code># Build, test, and deploy
+"테스트 돌리고 통과하면 Vercel에 배포해줘"
+
+# Multi-provider setup
+"프론트엔드는 Cloudflare Pages, 백엔드는 AWS Lambda로 배포해줘"</code></pre>
+
+<h3>环境晋升</h3>
+<pre><code># Promote staging to production
+"스테이징 확인했으니 프로덕션으로 승격해줘"
+
+# Rollback
+"이전 버전으로 롤백해줘"</code></pre>
+
+<h3>基础设施 + 部署一体化流程</h3>
+<pre><code># Full-stack provisioning
+"Terraform으로 인프라 구성하고 앱도 배포해줘"</code></pre>
+
+<h2>错误处理</h2>
+<p>Cloud 技能提供结构化的错误恢复机制：</p>
+<ul>
+<li><strong>认证失败</strong> &mdash; 检测到过期令牌后，会提示使用正确的服务商 CLI 命令重新认证。</li>
+<li><strong>构建失败</strong> &mdash; 解析构建日志、识别根本原因，并在重试前提供修复建议。</li>
+<li><strong>配额限制</strong> &mdash; 报告触及了哪项资源限制，并建议清理资源或升级套餐。</li>
+<li><strong>网络超时</strong> &mdash; 对临时性故障自动使用指数退避策略进行重试。</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="communication.html">Communication</a>
+<a class="next" href="devtools-security.html">Security & Review</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

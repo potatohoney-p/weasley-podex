@@ -1,0 +1,232 @@
+// #230 — preview code-file links → manager DocPanel.
+// Source-string contract tests (same style as file-links-vault-routing.test.ts):
+// chat UI (public/js) and manager (public/manager) are separate bundles with no
+// shared import, so the extension allowlist is drift-guarded here instead.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+
+function read(relPath: string): string {
+    return readFileSync(join(root, relPath), 'utf8');
+}
+
+function extractCodeReExtensions(fileLinksSrc: string): string[] {
+    const match = fileLinksSrc.match(/DOC_PANEL_CODE_RE = \/\\\.\(([^)]+)\)\$\/i/);
+    assert.ok(match?.[1], 'DOC_PANEL_CODE_RE must exist in file-links.ts');
+    return match[1].split('|').sort();
+}
+
+function extractExtLangKeys(docPanelSrc: string): string[] {
+    const match = docPanelSrc.match(/const EXT_LANG: Record<string, string> = \{([\s\S]*?)\};/);
+    assert.ok(match?.[1], 'EXT_LANG must exist in DocPanel.tsx');
+    return [...match[1].matchAll(/(?:^|[\s{,])([a-z]+):\s*'/g)].map((m) => m[1] as string).sort();
+}
+
+test('DOC_PANEL_CODE_RE extensions exactly mirror DocPanel EXT_LANG keys', () => {
+    const fileLinks = read('public/js/render/file-links.ts');
+    const docPanel = read('public/manager/src/doc-panel/DocPanel.tsx');
+    assert.deepEqual(
+        extractCodeReExtensions(fileLinks),
+        extractExtLangKeys(docPanel),
+        'allowlist drift: update DOC_PANEL_CODE_RE and EXT_LANG together',
+    );
+});
+
+test('DocPanel routing is capability-gated for markdown and code files; fallback remains', () => {
+    const fileLinks = read('public/js/render/file-links.ts');
+    const previewOrigin = read('public/js/preview-parent-origin.ts');
+    assert.ok(
+        fileLinks.includes('DOC_PANEL_MARKDOWN_RE.test(path) || DOC_PANEL_CODE_RE.test(path)'),
+        'markdown and code files must be the only DocPanel routing candidates',
+    );
+    assert.ok(
+        fileLinks.includes('parentSupportsDocPanel() || await waitForDocPanelCapability()'),
+        'DocPanel branch must allow a short late capability settle before fallback',
+    );
+    assert.ok(fileLinks.includes('openLocalPath(path, link)'), 'openLocalPath fallback must remain');
+    assert.ok(fileLinks.includes('ensurePreviewCapabilityListener()'), 'capability listener must be installed with delegation');
+    assert.ok(previewOrigin.includes('export function waitForDocPanelCapability'), 'capability wait helper must be exported');
+    assert.ok(previewOrigin.includes('parentDocPanelCapabilityKnown'), 'known false capability must skip repeated fallback delays');
+});
+
+test('file path activation is captured before nested message selection handlers', () => {
+    const fileLinks = read('public/js/render/file-links.ts');
+    assert.match(
+        fileLinks,
+        /document\.addEventListener\('click', \(e: MouseEvent\) => \{[\s\S]*?\n    \}, true\);/,
+        'pointer activation must reach file-path delegation before bubbling handlers can consume it',
+    );
+    assert.match(
+        fileLinks,
+        /document\.addEventListener\('keydown', \(e: KeyboardEvent\) => \{[\s\S]*?\n    \}, true\);/,
+        'Enter/Space activation must reach file-path delegation before bubbling handlers can consume it',
+    );
+    assert.ok(fileLinks.includes('target.click()'), 'keyboard activation must reuse the click routing path');
+});
+
+test('capability message type literal matches between sender and receiver', () => {
+    const previewOrigin = read('public/js/preview-parent-origin.ts');
+    const instancePreview = read('public/manager/src/InstancePreview.tsx');
+    const sidebarRouter = read('public/manager/src/SidebarRailRouter.tsx');
+    assert.ok(previewOrigin.includes("data.type !== 'jaw-preview-capabilities'"), 'receiver must check the capability message type');
+    assert.ok(instancePreview.includes("{ type: 'jaw-preview-capabilities', docPanel }"), 'manager must send the capability message');
+    assert.ok(sidebarRouter.includes('docPanelCapable={desktopPanelsAvailable}'), 'capability must follow desktopPanelsAvailable (Electron-only)');
+});
+
+test('preview child can request capabilities after a missed onLoad announcement', () => {
+    const main = read('public/js/main.ts');
+    const previewOrigin = read('public/js/preview-parent-origin.ts');
+    const instancePreview = read('public/manager/src/InstancePreview.tsx');
+    assert.ok(
+        main.includes("import { ensurePreviewCapabilityListener, ensurePreviewInsertTextListener } from './preview-parent-origin.js';"),
+        'main bootstrap must import the capability listener independently from insert-text',
+    );
+    assert.ok(
+        main.indexOf('ensurePreviewCapabilityListener();') < main.indexOf('ensurePreviewInsertTextListener();'),
+        'capability listener must be installed before insert-text listener during startup',
+    );
+    assert.ok(
+        main.indexOf('ensurePreviewCapabilityListener();') < main.indexOf('await initI18n();'),
+        'capability listener must be installed before async startup can miss the parent onLoad announcement',
+    );
+    assert.ok(
+        previewOrigin.includes("window.parent.postMessage({ type: 'jaw-preview-capabilities-request' }"),
+        'child preview must request capabilities when the delegation listener starts late',
+    );
+    assert.ok(
+        previewOrigin.includes("const targetOrigin = previewParentOrigin() || '*'"),
+        'capability requests must still be sent when the parent origin is not bootstrapped yet',
+    );
+    assert.ok(
+        !previewOrigin.includes('if (!previewParentOrigin()) return Promise.resolve(false);'),
+        'capability wait must not short-circuit before sending the bootstrap request',
+    );
+    assert.ok(
+        previewOrigin.includes('requestPreviewCapabilities();'),
+        'capability wait path must trigger a fresh request before falling back',
+    );
+    assert.ok(
+        instancePreview.includes("data.type !== 'jaw-preview-capabilities-request'"),
+        'manager preview must recognize child capability requests',
+    );
+    assert.ok(
+        instancePreview.includes('postPreviewCapabilities(iframeRef.current, state.src, props.docPanelCapable === true)'),
+        'manager preview must reply with the current DocPanel capability',
+    );
+});
+
+test('preview child only accepts capability messages from the parent window', () => {
+    const previewOrigin = read('public/js/preview-parent-origin.ts');
+    assert.ok(
+        previewOrigin.includes('if (event.source !== window.parent) return;'),
+        'capability listener must reject same-origin local messages that do not come from the iframe parent',
+    );
+    assert.ok(
+        previewOrigin.indexOf('if (event.source !== window.parent) return;') < previewOrigin.indexOf("if (!isLocalPreviewRelayOrigin(event.origin)) return;"),
+        'source validation should run before local-origin capability acceptance',
+    );
+});
+
+test('manager replies to preview capability requests through the exact validated sender origin', () => {
+    const instancePreview = read('public/manager/src/InstancePreview.tsx');
+    assert.ok(
+        instancePreview.includes('function replyPreviewCapabilities(source: MessageEventSource | null, origin: string, docPanel: boolean): void'),
+        'capability request replies must use a dedicated source/origin helper',
+    );
+    assert.ok(
+        instancePreview.includes("(source as Window).postMessage(\n            { type: 'jaw-preview-capabilities', docPanel },\n            origin,"),
+        'capability replies must target event.origin exactly after validation',
+    );
+    assert.ok(
+        instancePreview.includes('replyPreviewCapabilities(event.source, event.origin, props.docPanelCapable === true)'),
+        'late capability request handling must reply through event.source/event.origin',
+    );
+    assert.ok(
+        instancePreview.includes('postPreviewCapabilities(iframeRef.current, state.src, props.docPanelCapable === true)'),
+        'proactive onLoad/activation capability announcements must remain for same-origin preview loads',
+    );
+});
+
+test('manager republishes DocPanel capability when desktop panel availability changes', () => {
+    const instancePreview = read('public/manager/src/InstancePreview.tsx');
+    assert.ok(
+        instancePreview.includes('if (loadedSrcRef.current !== state.src) return;'),
+        'capability republish must wait until the iframe document has loaded',
+    );
+    assert.ok(
+        instancePreview.includes('}, [props.enabled, props.docPanelCapable, state.canPreview, state.src]);'),
+        'capability republish effect must rerun when docPanelCapable changes',
+    );
+});
+
+test('preview child reuses trusted parent capability origin for later doc opens', () => {
+    const previewOrigin = read('public/js/preview-parent-origin.ts');
+    assert.ok(
+        previewOrigin.includes('let parentRelayOriginCache: string | null = null'),
+        'child preview must cache the parent relay origin when referrer is unavailable',
+    );
+    assert.ok(
+        previewOrigin.includes('function rememberParentRelayOrigin(origin: string): void'),
+        'trusted parent origin caching must be centralized',
+    );
+    assert.ok(
+        previewOrigin.includes("if (parentRelayOriginCache) return parentRelayOriginCache"),
+        'previewParentOrigin must reuse the cached relay origin after cross-origin capability messages',
+    );
+    assert.ok(
+        previewOrigin.indexOf('if (parentRelayOriginCache) return parentRelayOriginCache') < previewOrigin.indexOf('if (document.referrer)'),
+        'cached capability origin must outrank referrer so later doc-open postMessage uses the exact parent origin',
+    );
+    assert.ok(
+        previewOrigin.includes("if (!data || data.type !== 'jaw-preview-capabilities') return;\n        rememberParentRelayOrigin(event.origin);"),
+        'capability announcements must seed the cached parent origin before DocPanel clicks',
+    );
+});
+
+test('manager accepts preview doc routing by expected origin, not fragile source identity', () => {
+    const instancePreview = read('public/manager/src/InstancePreview.tsx');
+    assert.ok(
+        instancePreview.includes('function isExpectedPreviewMessage(event: MessageEvent, src: string, frame: HTMLIFrameElement | null): boolean'),
+        'manager must centralize preview message acceptance',
+    );
+    assert.ok(
+        instancePreview.includes('return previewFrameOriginMatches(event.origin, src, frame);'),
+        'preview file routing must be guarded by the expected preview origin',
+    );
+    assert.ok(
+        instancePreview.includes('function onPreviewOpenDoc(event: MessageEvent): void {\n            if (!state.src || !isExpectedPreviewMessage(event, state.src, iframeRef.current)) return;'),
+        'open-doc messages must not be rejected by strict event.source identity',
+    );
+    assert.ok(
+        instancePreview.includes('function onPreviewCapabilitiesRequest(event: MessageEvent): void {\n            if (!state.src || !isExpectedPreviewMessage(event, state.src, iframeRef.current)) return;'),
+        'late capability requests must not be rejected by strict event.source identity',
+    );
+});
+
+test('DocPanel surfaces truncated reads instead of silent empty', () => {
+    const docPanel = read('public/manager/src/doc-panel/DocPanel.tsx');
+    assert.ok(docPanel.includes('result.truncated === true'), 'truncated flag must be tracked');
+    assert.ok(docPanel.includes('File too large to preview'), 'truncated state must render a message');
+    assert.ok(docPanel.includes("'readFile' | 'getDefaultRoot'"), 'bridge type must include getDefaultRoot for cold-start retry');
+});
+
+test('DocPanel preserves same-file scroll across async Markdown layout changes', () => {
+    const docPanel = read('public/manager/src/doc-panel/DocPanel.tsx');
+    const css = read('public/manager/src/doc-panel/doc-panel.css');
+
+    assert.ok(docPanel.includes('useLayoutEffect'), 'DocPanel must restore scroll before paint after same-file content updates');
+    assert.ok(docPanel.includes('scrollRef = useRef<HTMLDivElement | null>(null)'), 'DocPanel must own the scroll container ref');
+    assert.ok(docPanel.includes('contentBodyRef = useRef<HTMLDivElement | null>(null)'), 'DocPanel must own an inner content body ref');
+    assert.ok(docPanel.includes('className="doc-content-body"'), 'DocPanel must render an observable inner content body');
+    assert.ok(docPanel.includes('new ResizeObserver'), 'DocPanel must observe async child layout changes');
+    assert.ok(docPanel.includes('observer.observe(body)'), 'ResizeObserver must watch the content body, not only the fixed scroll container');
+    assert.ok(docPanel.includes('activeFilePathRef.current !== filePath'), 'file changes must intentionally reset scroll');
+    assert.ok(docPanel.includes('scrollSnapshotRef.current = {'), 'scroll events must keep a same-file scroll snapshot');
+    assert.ok(css.includes('.doc-content-body'), 'DocPanel CSS must acknowledge the inner content body');
+    assert.ok(css.includes('.doc-content .notes-mermaid-block.is-loading'), 'DocPanel CSS must scope stable Mermaid loading layout to file preview');
+    assert.ok(css.includes('min-height: 96px'), 'Mermaid loading blocks must reserve stable height in DocPanel preview');
+});

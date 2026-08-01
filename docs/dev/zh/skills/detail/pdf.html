@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF &mdash; podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+.badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.badge-category { background: rgba(99, 102, 241, 0.15); color: var(--accent); }
+.quick-ref { margin: 24px 0; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 160px; }
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-ko { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+.dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.dep-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.dep-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.dep-card code { font-size: 13px; }
+.dep-card .dep-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+@media (max-width: 768px) {
+  .dep-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">快速入门</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+      <a class="docs-nav-link" href="../../">概述</a>
+      <a class="docs-nav-link" href="../../quickstart.html">快速开始</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">首次运行</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">核心概念</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">架构</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">员工</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">目标</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">技能</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">记忆</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">提示词</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">使用指南</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">计算机控制</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 桌面端</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">参考文档</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 命令</a>
+      <a class="docs-nav-link" href="../../reference/api.html">服务器 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">配置</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">键盘快捷键</a>
+      <a class="docs-nav-link" href="../../reference/events.html">事件</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">技能</div>
+      <a class="docs-nav-link" href="../index.html">目录</a>
+      <a class="docs-nav-link" href="../orchestration.html">开发</a>
+      <a class="docs-nav-link" href="../automation.html">自动化</a>
+      <a class="docs-nav-link active" href="../ai-media.html">AI 与媒体</a>
+      <a class="docs-nav-link" href="../communication.html">通讯</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">云与部署</a>
+      <a class="docs-nav-link" href="../devtools-security.html">安全与审查</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">开发工作流</a>
+      <a class="docs-nav-link" href="../productivity.html">生产力</a>
+      <a class="docs-nav-link" href="../smarthome.html">智能家居</a>
+      <a class="docs-nav-link" href="../utility.html">实用工具</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">命令</div>
+      <a class="docs-nav-link" href="../../commands/session.html">会话</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">工作流</a>
+      <a class="docs-nav-link" href="../../commands/model.html">模型与 CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">工具</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">仅 CLI</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">根 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">更新日志</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">落地页</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>PDF</h1>
+<p class="lead">PDF 读取、创建、编辑、审查以及基于视觉的内容提取。该技能涵盖 PDF 文档的完整生命周期 &mdash; 从使用 <code>reportlab</code> 生成新文件，到使用 <code>pdfplumber</code> 提取文本，使用 Poppler 将页面渲染为图片，以及在每次编辑后执行视觉质量验证。</p>
+
+<p>
+  <span class="badge badge-ref">Reference</span>
+  <span class="badge badge-category">AI &amp; Media</span>
+</p>
+
+<div class="callout callout-info">
+  <strong>参考技能：</strong> <code>pdf</code> 默认未启用。使用 <code>jaw skill install pdf</code> 安装，或在聊天中输入"PDF 스킬 설치해줘"。启用后，该技能会注入系统提示词，当检测到 PDF 相关任务时，智能体会自动遵循其工作流程。
+</div>
+
+<h2>快速参考</h2>
+<table class="quick-ref">
+<tr><td>技能名称</td><td><code>pdf</code></td></tr>
+<tr><td>分类</td><td>AI 与媒体</td></tr>
+<tr><td>默认启用</td><td>否 &mdash; 需要执行 <code>jaw skill install pdf</code></td></tr>
+<tr><td>SKILL.md 路径</td><td><code>~/.podex/skills/pdf/SKILL.md</code>（已激活）或 <code>~/.podex/skills_ref/pdf/SKILL.md</code>（参考）</td></tr>
+<tr><td>Python 包</td><td><code>reportlab</code>、<code>pdfplumber</code>、<code>pypdf</code></td></tr>
+<tr><td>系统工具</td><td><code>pdftoppm</code>（来自 Poppler）</td></tr>
+<tr><td>临时目录</td><td><code>tmp/pdfs/</code></td></tr>
+<tr><td>输出目录</td><td><code>output/pdf/</code></td></tr>
+<tr><td>相关技能</td><td><code>pdf-vision</code>、<code>docx</code>、<code>pptx</code>、<code>xlsx</code></td></tr>
+</table>
+
+<h2>工作流程</h2>
+<p>当 <code>pdf</code> 技能处于激活状态时，智能体会对每个 PDF 任务严格遵循四步工作流程：</p>
+
+<table>
+<thead>
+<tr><th>步骤</th><th>操作</th><th>使用的工具</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>1. 渲染</strong></td><td>将 PDF 页面渲染为 PNG 图片以供视觉审查</td><td><code>pdftoppm</code>（Poppler）。如果 Poppler 不可用，则回退为提示用户安装。</td></tr>
+<tr><td><strong>2. 生成</strong></td><td>创建新的 PDF 或编辑现有 PDF</td><td><code>reportlab</code> 用于创建；<code>pypdf</code> 用于合并/拆分；<code>nano-pdf</code> 用于自然语言页面编辑</td></tr>
+<tr><td><strong>3. 提取</strong></td><td>从 PDF 文件中提取文本和数据</td><td><code>pdfplumber</code> 或 <code>pypdf</code> 用于文本提取（注意：布局保真度可能不可靠）</td></tr>
+<tr><td><strong>4. 验证</strong></td><td>在每次有意义的更新后重新渲染并进行视觉确认</td><td><code>pdftoppm</code> + 对齐、间距和可读性的视觉检查</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>编辑后验证循环：</strong> 该技能要求在每次有意义的更改后重新渲染。智能体在确认最新 PNG 渲染无视觉缺陷之前，不会交付 PDF。这是该技能中最重要的规则。
+</div>
+
+<h2>依赖项</h2>
+<p>该技能会自动检测缺失的依赖项并尝试安装。如果安装被阻止（权限问题、网络问题），智能体会准确告知您缺少哪些依赖项以及如何手动安装。</p>
+
+<div class="dep-grid">
+  <div class="dep-card">
+    <strong>reportlab</strong>
+    <code>uv pip install reportlab</code>
+    <div class="dep-desc">PDF 生成：布局、文本、表格、图片和矢量图形</div>
+  </div>
+  <div class="dep-card">
+    <strong>pdfplumber</strong>
+    <code>uv pip install pdfplumber</code>
+    <div class="dep-desc">带位置数据的文本提取、表格检测和页面几何信息</div>
+  </div>
+  <div class="dep-card">
+    <strong>pypdf</strong>
+    <code>uv pip install pypdf</code>
+    <div class="dep-desc">PDF 操作：合并、拆分、旋转、加密和元数据编辑</div>
+  </div>
+  <div class="dep-card">
+    <strong>Poppler (pdftoppm)</strong>
+    <code>brew install poppler</code>
+    <div class="dep-desc">将 PDF 页面渲染为高质量 PNG 图片，用于视觉验证</div>
+  </div>
+</div>
+
+<p>该技能优先使用 <code>uv</code> 管理 Python 依赖。如果 <code>uv</code> 不可用，则回退到 <code>python3 -m pip install</code>。</p>
+
+<h3>完整安装命令</h3>
+<pre><code># Python 包（推荐：uv）
+uv pip install reportlab pdfplumber pypdf
+
+# Python 包（备选：pip）
+python3 -m pip install reportlab pdfplumber pypdf
+
+# 系统工具：macOS (Homebrew)
+brew install poppler
+
+# 系统工具：Ubuntu/Debian
+sudo apt-get install -y poppler-utils</code></pre>
+
+<h2>渲染命令</h2>
+<p>核心渲染命令将 PDF 页面转换为 PNG 图片：</p>
+<pre><code>pdftoppm -png $INPUT_PDF $OUTPUT_PREFIX</code></pre>
+<p>该命令会生成类似 <code>$OUTPUT_PREFIX-1.png</code>、<code>$OUTPUT_PREFIX-2.png</code> 等文件 &mdash; 每页一个 PNG。智能体通过读取这些图片来验证布局质量，然后再交付最终 PDF。</p>
+
+<h2>文件约定</h2>
+
+<table>
+<thead>
+<tr><th>目录</th><th>用途</th><th>生命周期</th></tr>
+</thead>
+<tbody>
+<tr><td><code>tmp/pdfs/</code></td><td>中间渲染文件、草稿 PDF、PNG 预览</td><td>任务完成后删除</td></tr>
+<tr><td><code>output/pdf/</code></td><td>最终交付的 PDF 文件</td><td>持久保存；使用稳定的描述性文件名</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>文件名稳定性：</strong> 该技能在多次编辑中保持文件名稳定且具有描述性。最终输出名称中应避免使用随机后缀或时间戳。请使用清晰的名称，例如 <code>quarterly-report-2026-Q1.pdf</code> 或 <code>invoice-0042.pdf</code>。
+</div>
+
+<h2>质量规则</h2>
+<p>该技能强制执行严格的视觉和排版标准。每个生成的 PDF 必须通过以下检查：</p>
+
+<table>
+<thead>
+<tr><th>规则</th><th>详情</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>排版</strong></td><td>整个文档中字体、字号和字重保持一致。除非有意为之，否则不混用字体。</td></tr>
+<tr><td><strong>间距与边距</strong></td><td>统一的边距、行间距和段落间距。内容不得过于拥挤或溢出。</td></tr>
+<tr><td><strong>章节层级</strong></td><td>标题、子标题和正文之间应有清晰的视觉区分。</td></tr>
+<tr><td><strong>无渲染缺陷</strong></td><td>不得出现文本裁剪、元素重叠、表格损坏、黑色方块或不可读字符。</td></tr>
+<tr><td><strong>图表与表格</strong></td><td>渲染清晰，对齐正确，坐标轴和表头标注明确。</td></tr>
+<tr><td><strong>图片</strong></td><td>不得模糊，保持正确的宽高比，在布局中正确定位。</td></tr>
+<tr><td><strong>仅使用 ASCII 连字符</strong></td><td>使用标准 ASCII 连字符（<code>-</code>）。Unicode 短划线（如 U+2011 不间断连字符）在某些 PDF 阅读器中会导致渲染问题。</td></tr>
+<tr><td><strong>引用与参考</strong></td><td>仅使用人类可读的文本。不得包含工具令牌、占位符标记或原始 ID。</td></tr>
+</tbody>
+</table>
+
+<h2>最终交付检查清单</h2>
+<p>在将 PDF 任务标记为完成之前，智能体会逐项完成以下检查清单：</p>
+<ol>
+<li>验证<strong>最新 PNG 渲染</strong>无视觉缺陷。</li>
+<li>确认<strong>页眉和页脚</strong>在每一页上正确显示。</li>
+<li>验证<strong>页码</strong>连续且位置正确。</li>
+<li>检查<strong>章节过渡</strong> &mdash; 无孤立标题或孤行段落。</li>
+<li>在用户确认后<strong>清理</strong> <code>tmp/pdfs/</code> 中的中间文件。</li>
+</ol>
+
+<h2>DOCX 转 PDF</h2>
+<p>该技能还支持使用 LibreOffice 将 Word 文档转换为 PDF：</p>
+<pre><code># 通过 soffice（LibreOffice 无头模式）将 DOCX 转换为 PDF
+soffice --headless --convert-to pdf input.docx --outdir output/pdf/</code></pre>
+<p>当源材料是 Word 文档而最终交付物必须是 PDF 时，此功能非常有用。智能体仍会对转换后的输出执行完整的渲染后验证循环。</p>
+
+<h2>功能概览</h2>
+<table>
+<thead>
+<tr><th>功能</th><th>工具</th><th>备注</th></tr>
+</thead>
+<tbody>
+<tr><td>创建新 PDF</td><td><code>reportlab</code></td><td>完全控制布局、字体、表格、图片和矢量图形</td></tr>
+<tr><td>读取/提取文本</td><td><code>pdfplumber</code>、<code>pypdf</code></td><td>文本提取；布局保真度是近似的，非像素级精确</td></tr>
+<tr><td>编辑现有 PDF</td><td><code>nano-pdf</code></td><td>对现有 PDF 内容进行自然语言页面编辑</td></tr>
+<tr><td>合并/拆分</td><td><code>pypdf</code></td><td>合并多个 PDF 或提取页面范围</td></tr>
+<tr><td>渲染为图片</td><td><code>pdftoppm</code></td><td>高质量 PNG 渲染，用于视觉质量检查</td></tr>
+<tr><td>DOCX 转换</td><td><code>soffice</code></td><td>LibreOffice 无头模式 Word 转 PDF</td></tr>
+<tr><td>视觉质量检查</td><td>智能体视觉</td><td>智能体读取渲染的 PNG 以验证质量</td></tr>
+</tbody>
+</table>
+
+<h2>"~해줘" 使用示例</h2>
+<p>以下是用自然语言调用 PDF 任务的实际示例。韩语和英语均可使用。</p>
+
+<div class="example-card">
+  <div class="example-ko">"이 보고서 PDF로 만들어줘 &mdash; 표지, 목차, 본문 3장"</div>
+  <div class="example-desc">使用 reportlab 创建包含封面、目录和 3 页正文内容的新 PDF 文档。智能体会将每页渲染为 PNG 并在交付前验证布局。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"이 PDF에서 텍스트 추출해줘 &mdash; 표 데이터도 포함해서"</div>
+  <div class="example-desc">使用 pdfplumber 从给定 PDF 中提取所有文本和表格数据。返回保留表格行的结构化文本。如果特定文档的布局保真度不可靠，会发出警告。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"이 두 PDF 합쳐줘 &mdash; report-part1.pdf랑 report-part2.pdf"</div>
+  <div class="example-desc">使用 pypdf 将两个 PDF 文件合并为一个文档。保留页码和书签。输出保存到 <code>output/pdf/</code>。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"이 계약서 PDF 2페이지 날짜 수정해줘"</div>
+  <div class="example-desc">使用 nano-pdf（自然语言编辑）编辑现有合同 PDF 的第 2 页。编辑完成后，智能体会重新渲染该页面，视觉验证日期修改是否正确且其他内容未发生偏移。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"Word 파일 PDF로 변환해줘 &mdash; proposal.docx"</div>
+  <div class="example-desc">使用 LibreOffice 无头模式（<code>soffice --headless --convert-to pdf</code>）将 DOCX 文件转换为 PDF。随后智能体会将输出渲染为 PNG，检查转换过程中是否引入了格式问题。</div>
+</div>
+
+<h2>与 pdf-vision 的对比</h2>
+<p>podex 提供两个 PDF 相关技能。它们是互补的，而非冗余的：</p>
+
+<table>
+<thead>
+<tr><th></th><th><code>pdf</code></th><th><code>pdf-vision</code></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>侧重点</strong></td><td>创建、编辑、提取和合并 PDF</td><td>基于视觉分析现有 PDF</td></tr>
+<tr><td><strong>最适用于</strong></td><td>生成报告、编辑文档、提取文本</td><td>扫描文档 OCR、布局理解、从图片提取表格</td></tr>
+<tr><td><strong>工具</strong></td><td>reportlab、pdfplumber、pypdf、pdftoppm</td><td>视觉模型、OCR 流水线</td></tr>
+<tr><td><strong>何时同时使用</strong></td><td colspan="2">当您需要从扫描 PDF 中提取数据（<code>pdf-vision</code>），然后根据这些数据生成新的整洁 PDF（<code>pdf</code>）时。</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>提示：</strong> 使用 <code>jaw skill install pdf pdf-vision</code> 同时安装两者，或输入"PDF 스킬이랑 pdf-vision 둘 다 설치해줘"。当两者都处于激活状态时，它们可以无缝协作。
+</div>
+
+<h2>故障排除</h2>
+
+<h3>找不到 Poppler</h3>
+<p>如果智能体报告 <code>pdftoppm</code> 不可用，请安装 Poppler：</p>
+<pre><code># macOS
+brew install poppler
+
+# Ubuntu/Debian
+sudo apt-get install -y poppler-utils
+
+# 验证
+pdftoppm -v</code></pre>
+
+<h3>Unicode 短划线渲染问题</h3>
+<p>如果在连字符和短划线处看到乱码或缺失字符，源数据可能包含 Unicode 短划线（U+2011、U+2013、U+2014）。该技能强制使用 ASCII 连字符（<code>-</code>）以避免阅读器兼容性问题。智能体在生成过程中会自动替换这些字符。</p>
+
+<h3>布局保真度警告</h3>
+<p><code>pdfplumber</code> 和 <code>pypdf</code> 基于字符位置而非视觉布局提取文本。复杂的多栏布局、重叠的文本框和旋转文本可能无法正确提取。对于这些情况，建议使用 <code>pdf-vision</code>，它采用视觉分析而非文本流解析。</p>
+
+<h3>未安装 LibreOffice</h3>
+<p>DOCX 转 PDF 需要 LibreOffice。如果找不到 <code>soffice</code>：</p>
+<pre><code># macOS
+brew install --cask libreoffice
+
+# Ubuntu/Debian
+sudo apt-get install -y libreoffice</code></pre>
+
+<h2>安装</h2>
+<pre><code># CLI
+jaw skill install pdf
+
+# 聊天中（韩语）
+"PDF 스킬 설치해줘"
+
+# 聊天中（英语）
+"Install the PDF skill"
+
+# 验证安装
+jaw skill info pdf</code></pre>
+
+<pre><code># jaw skill info pdf 的预期输出：
+#   Name:     pdf
+#   Status:   active
+#   Category: AI &amp; Media
+#   Path:     ~/.podex/skills/pdf/SKILL.md
+#   Description: PDF creation, reading, editing, merging, and text extraction</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="../ai-media.html">AI 与媒体技能</a>
+<a class="next" href="pdf-vision.html">PDF Vision</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

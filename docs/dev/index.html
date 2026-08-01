@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>podex Docs</title>
+<meta name="description" content="podex developer documentation — multi-agent orchestration platform">
+<link rel="stylesheet" href="_shell.css">
+<link rel="icon" type="image/png" href="../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link active" href="./">Overview</a>
+      <a class="docs-nav-link" href="quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="skills/">Skills Overview</a>
+      <a class="docs-nav-link" href="skills/ai-media.html">AI &amp; Media</a>
+      <a class="docs-nav-link" href="skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="skills/devtools-cloud.html">DevTools: Cloud</a>
+      <a class="docs-nav-link" href="skills/devtools-security.html">DevTools: Security</a>
+      <a class="docs-nav-link" href="skills/devtools-workflow.html">DevTools: Workflow</a>
+      <a class="docs-nav-link" href="skills/orchestration.html">Orchestration</a>
+      <a class="docs-nav-link" href="skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="skills/utility.html">Utility</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="commands/root-cli.html">Root CLI</a>
+      <a class="docs-nav-link" href="commands/session.html">Session</a>
+      <a class="docs-nav-link" href="commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="commands/model.html">Model</a>
+      <a class="docs-nav-link" href="commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="commands/cli-only.html">CLI-Only</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="./">EN</a>
+    <a href="ko/">한국어</a>
+    <a href="zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>podex Documentation</h1>
+<p class="lead">All your AI subscriptions. One assistant. podex routes Claude, ChatGPT, Codex, Gemini, Grok, and Kiro through a unified multi-agent orchestration platform.</p>
+
+<div class="install-box">
+<code>npm install -g podex</code>
+<code>jaw dashboard</code>
+</div>
+
+<h2>What is podex?</h2>
+<p>podex is an open-source platform that lets you run multiple AI coding agents (Claude Code, Codex, Gemini CLI, Kiro, OpenCode, Copilot CLI) from a single dashboard. It adds an <strong>employee system</strong> where your main agent can dispatch tasks to other CLI agents, a <strong>PABCD orchestration</strong> workflow for structured development, persistent <strong>memory and goals</strong>, a built-in <strong>notes workspace</strong>, <strong>Kanban board</strong>, and integration with <strong>Telegram and Discord</strong>.</p>
+
+<h2>Key Features</h2>
+<table>
+<tr><th>Feature</th><th>Description</th></tr>
+<tr><td><strong>Multi-Instance Dashboard</strong></td><td>Run 7+ agent instances simultaneously. Start, stop, and manage from one UI.</td></tr>
+<tr><td><strong>Employee System</strong></td><td>Your main agent dispatches tasks to other CLI tools as "employees."</td></tr>
+<tr><td><strong>PABCD Orchestration</strong></td><td>Plan → Audit → Build → Check → Done. Structured development workflow.</td></tr>
+<tr><td><strong>Jawsidian Notes</strong></td><td>Built-in markdown editor with graph view, wikilinks, and image paste.</td></tr>
+<tr><td><strong>Kanban Board</strong></td><td>Task management with Backlog → Active → Review → Done lanes.</td></tr>
+<tr><td><strong>200+ Reference Skills</strong></td><td>Domain knowledge, automation, Office, browser, media, and deployment skills. AI activates the relevant runtime skills as needed.</td></tr>
+<tr><td><strong>Goal System</strong></td><td>Persistent objectives that survive across sessions.</td></tr>
+<tr><td><strong>Computer Use</strong></td><td>Desktop automation via Codex employee integration.</td></tr>
+<tr><td><strong>Telegram / Discord</strong></td><td>Control your agents remotely from messaging apps.</td></tr>
+<tr><td><strong>Electron Desktop</strong></td><td>Native app with terminal, diff viewer, folder panel, browser tabs.</td></tr>
+</table>
+
+<h2>Architecture Overview</h2>
+<p>podex consists of a Node.js 22 server with 201 handlers, including <code>/</code> plus 200 API and media endpoints. CLI, terminal TUI, Web PWA, Electron desktop, Telegram, Discord, and the Manager dashboard connect through the server and shared SQLite-backed state. The <a href="concepts/architecture.html">Architecture</a> page covers the full system design.</p>
+
+<pre><code>CLI/TUI/Electron/Web/Telegram/Discord ──→ server.ts ──→ src/routes/*
+Web events                              ──→ GET /api/events (SSE) ──→ event-bus
+Dashboard (port 24576)                  ──→ src/manager/ + public/manager/
+Agent streams                           ──→ NDJSON provider events + trace files</code></pre>
+
+<h2>Getting Started</h2>
+<p>Head to the <a href="quickstart.html">Quickstart</a> guide to install podex and run your first agent session in under 5 minutes.</p>
+
+<div class="callout callout-info">
+<strong>Try it:</strong>
+<ul>
+<li>직원한테 코드 리뷰 시켜줘</li>
+<li>이 기능 PABCD로 개발해줘</li>
+</ul>
+</div>
+
+<div class="page-nav">
+  <span></span>
+  <a class="next" href="quickstart.html">Quickstart</a>
+</div>
+
+</main>
+</div>
+<script src="_search.js"></script>
+</body>
+</html>
+

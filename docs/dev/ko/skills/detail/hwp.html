@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HWP (한글) — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-experimental { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.badge-fallback { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.badge-blocked { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+
+.trigger-list { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 16px; }
+.trigger-tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; background: var(--surface2); border: 1px solid var(--border); color: var(--text-dim); font-family: var(--mono); }
+
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-label { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.example-card .example-prompt { font-size: 15px; color: var(--text); margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+
+.level-indicator { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; font-family: var(--mono); margin-left: 4px; }
+.level-l1 { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.level-l2 { background: rgba(34, 211, 238, 0.15); color: var(--accent); }
+.level-l3 { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.level-l4 { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+
+.checklist { list-style: none; padding-left: 0; }
+.checklist li { padding: 4px 0 4px 24px; position: relative; }
+.checklist li::before { content: "\2610"; position: absolute; left: 0; color: var(--text-dim); }
+
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 24px; }
+.meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.meta-card .meta-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px; }
+.meta-card .meta-value { font-size: 14px; color: var(--text); }
+
+@media (max-width: 768px) {
+  .meta-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link active" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>HWP (&#54620;&#44544;)</h1>
+<p class="lead">OfficeCLI를 통한 HWP/HWPX 한국어 문서 생성, 읽기, 편집</p>
+
+<p>
+  <span class="badge badge-active">기본 활성화: 예</span>
+  <span class="badge badge-experimental" style="margin-left: 4px;">바이너리 HWP: 실험적</span>
+</p>
+
+<div class="trigger-list">
+  <span class="trigger-tag">&#54620;&#44544;</span>
+  <span class="trigger-tag">.hwp</span>
+  <span class="trigger-tag">.hwpx</span>
+  <span class="trigger-tag">HWP</span>
+  <span class="trigger-tag">HWPX</span>
+  <span class="trigger-tag">Korean documents</span>
+  <span class="trigger-tag">&#54620;&#52980;&#50724;&#54588;&#49828;</span>
+  <span class="trigger-tag">OWPML</span>
+</div>
+
+<div class="meta-grid">
+  <div class="meta-card">
+    <div class="meta-label">주요 도구</div>
+    <div class="meta-value"><code>officecli</code> (전역 설치, PATH에 등록)</div>
+  </div>
+  <div class="meta-card">
+    <div class="meta-label">대체 수단</div>
+    <div class="meta-value">Python OOXML/OWPML 스크립트 (<code>scripts/*.py</code>)</div>
+  </div>
+  <div class="meta-card">
+    <div class="meta-label">범위</div>
+    <div class="meta-value">HWP/HWPX 전용 &mdash; DOCX, PPTX, XLSX, PDF 미지원</div>
+  </div>
+  <div class="meta-card">
+    <div class="meta-label">바이너리 HWP</div>
+    <div class="meta-value"><code>rhwp</code> 브릿지를 통한 실험적 지원 (기능 게이트 적용)</div>
+  </div>
+</div>
+
+<div class="callout callout-info"><strong>범위 규칙:</strong> 이 스킬은 <code>.hwp</code> 및 <code>.hwpx</code> 파일만 처리합니다. 작업에 DOCX, PPTX, XLSX 또는 PDF가 관련된 경우 활성화되지 않습니다 &mdash; 대신 해당 포맷 전용 스킬을 사용하세요.</div>
+
+<!-- ─── Quick Reference ─── -->
+<h2>빠른 참조</h2>
+<p>작업별 명령어 조회 표입니다. 각 행은 해당 작업의 지원 여부와 사용할 명령어를 보여줍니다.</p>
+
+<table>
+<tr><th>작업</th><th>상태</th><th>명령어</th></tr>
+<tr><td>기존 .hwpx와 동일한 서식</td><td><span class="badge badge-active">Yes</span></td><td><code>cp source.hwpx target.hwpx &amp;&amp; officecli open target.hwpx</code></td></tr>
+<tr><td>템플릿 기반 생성</td><td><span class="badge badge-active">Yes</span></td><td><code>python3 scripts/build_hwpx.py --template {base|gonmun|minutes|proposal|report}</code></td></tr>
+<tr><td>새 .hwpx 생성</td><td><span class="badge badge-active">Yes</span></td><td><code>officecli create file.hwpx</code></td></tr>
+<tr><td>마크다운에서 생성</td><td><span class="badge badge-active">Yes</span></td><td><code>officecli create file.hwpx --from-markdown input.md</code></td></tr>
+<tr><td>.hwpx 읽기 / 분석</td><td><span class="badge badge-active">Yes</span></td><td><code>view text|annotated|outline|stats|html|markdown|tables|forms|objects</code></td></tr>
+<tr><td>기존 .hwpx 편집</td><td><span class="badge badge-active">Yes</span></td><td><code>set</code>, <code>add</code>, <code>remove</code>, <code>move</code>, <code>swap</code></td></tr>
+<tr><td>레이블 기반 채우기</td><td><span class="badge badge-active">Yes</span></td><td><code>set /table/fill --prop 'fill:label=val'</code></td></tr>
+<tr><td>양식 인식</td><td><span class="badge badge-active">Yes</span></td><td><code>view forms --auto</code></td></tr>
+<tr><td>표 맵</td><td><span class="badge badge-active">Yes</span></td><td><code>view tables</code></td></tr>
+<tr><td>마크다운 내보내기</td><td><span class="badge badge-active">Yes</span></td><td><code>view markdown</code></td></tr>
+<tr><td>수식 (&#49688;&#49885;)</td><td><span class="badge badge-active">Yes</span></td><td><code>add --type equation --prop 'script={1 over 2}'</code></td></tr>
+<tr><td>오브젝트 찾기</td><td><span class="badge badge-active">Yes</span></td><td><code>view objects</code></td></tr>
+<tr><td>쿼리 (확장)</td><td><span class="badge badge-active">Yes</span></td><td><code>query 'tc[text~=&#54861;&#44600;&#46041;]'</code>, <code>:has()</code>, <code>&gt;</code> 결합자</td></tr>
+<tr><td>템플릿 병합</td><td><span class="badge badge-active">Yes</span></td><td><code>merge template.hwpx out.hwpx --data '{"key":"val"}'</code></td></tr>
+<tr><td>요소 교환</td><td><span class="badge badge-active">Yes</span></td><td><code>swap file.hwpx '/p[1]' '/p[2]'</code></td></tr>
+<tr><td>단 나누기</td><td><span class="badge badge-active">Yes</span></td><td><code>add --type columnbreak --prop cols=2</code></td></tr>
+<tr><td>이미지 / 떠다니는 개체</td><td><span class="badge badge-active">Yes</span></td><td><code>add --type picture --prop anchor=page --prop halign=center</code></td></tr>
+<tr><td>문서 비교</td><td><span class="badge badge-active">Yes</span></td><td><code>compare a.hwpx b.hwpx</code> (LCS 차이점 비교 + 표 비교)</td></tr>
+<tr><td>보안 검증</td><td><span class="badge badge-active">Yes</span></td><td>ZIP 폭탄, 경로 탐색, 심링크, XXE 방어</td></tr>
+<tr><td>손상된 ZIP 복구</td><td><span class="badge badge-active">Yes</span></td><td>Local File Header 스캔을 통한 손상된 HWPX 자동 복구</td></tr>
+<tr><td>HTML 미리보기</td><td><span class="badge badge-active">Yes</span></td><td><code>view html --browser</code></td></tr>
+<tr><td>실시간 미리보기 감시</td><td><span class="badge badge-active">Yes</span></td><td><code>watch file.hwpx</code></td></tr>
+<tr><td>.hwpx 검증</td><td><span class="badge badge-active">Yes</span></td><td><code>validate</code> (9단계 검사)</td></tr>
+<tr><td>원본 XML</td><td><span class="badge badge-active">Yes</span></td><td><code>raw</code>, <code>raw-set</code></td></tr>
+<tr><td>워터마크 (이미지)</td><td><span class="badge badge-active">Yes</span></td><td><code>add --type watermark --prop src=img.png</code></td></tr>
+<tr><td>패턴 매칭 편집</td><td><span class="badge badge-fallback">Python L4</span></td><td><code>scripts/hwpx_cli.py open</code> &rarr; 패턴으로 XML 편집 &rarr; <code>save</code></td></tr>
+<tr><td>시각적 QA</td><td><span class="badge badge-fallback">Python L3</span></td><td><code>scripts/contact_sheet.py</code> + 서브에이전트 검토</td></tr>
+<tr><td>새 양식 필드 생성</td><td><span class="badge badge-blocked">Blocked</span></td><td>소스 프로토타입 존재; 한컴 검증 미완료</td></tr>
+<tr><td>새 .hwp (바이너리) 생성</td><td><span class="badge badge-experimental">Experimental</span></td><td><code>officecli create file.hwp --json</code></td></tr>
+<tr><td>.hwp (바이너리) 읽기/내보내기</td><td><span class="badge badge-experimental">Experimental</span></td><td><code>officecli view file.hwp text --json</code> + svg/png/pdf/markdown</td></tr>
+<tr><td>.hwp 텍스트/필드 편집</td><td><span class="badge badge-experimental">Experimental</span></td><td><code>officecli hwp --json</code> 레시피</td></tr>
+<tr><td>HWPX를 .hwp로 내보내기</td><td><span class="badge badge-experimental">Experimental</span></td><td><code>officecli set input.hwpx /save-as-hwp --prop output=out.hwp --json</code></td></tr>
+<tr><td>.hwp를 .hwpx로 변환</td><td><span class="badge badge-fallback">Fallback</span></td><td><code>scripts/hwp_convert.py IN.hwp OUT.hwpx</code></td></tr>
+</table>
+
+<!-- ─── Usage Examples ─── -->
+<h2>"~해줘" 사용 예시</h2>
+<p>이 스킬을 트리거하는 자연스러운 한국어 프롬프트입니다. 필요한 것을 설명하기만 하면 됩니다.</p>
+
+<div class="example-card">
+  <div class="example-label">&#44277;&#47928; &#51089;&#49457;</div>
+  <div class="example-prompt">"&#44277;&#47928; &#50577;&#49885;&#51004;&#47196; &#47928;&#49436; &#47564;&#46308;&#50612;&#51468; &mdash; &#47928;&#49436;&#48264;&#54840;, &#49688;&#49888;, &#51228;&#47785; &#52292;&#50892;&#49436;"</div>
+  <div class="example-desc"><code>--template gonmun</code>으로 템플릿 조합을 트리거한 뒤, <code>/table/fill</code>을 사용하여 &#47928;&#49436;&#48264;&#54840;, &#49688;&#49888;, &#52280;&#51312;, &#51228;&#47785; 등의 레이블-값 필드를 채웁니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">&#47928;&#49436; &#48516;&#49437;</div>
+  <div class="example-prompt">"&#51060; HWPX &#54028;&#51068; &#48516;&#49437;&#54644;&#51468; &mdash; &#54364; &#44396;&#51312;&#46993; &#50577;&#49885; &#50508;&#47140;&#51468;"</div>
+  <div class="example-desc"><code>view tables</code>, <code>view forms --auto</code>, <code>view stats</code>를 실행하여 문서의 구조적 분석 결과를 제공합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">&#54364; &#52292;&#50864;&#44592;</div>
+  <div class="example-prompt">"&#51060; &#49888;&#52397;&#49436;&#50640;&#49436; &#49457;&#47749;=&#54861;&#44600;&#46041;, &#50672;&#46973;&#52376;=010-1234-5678 &#52292;&#50892;&#51468;"</div>
+  <div class="example-desc">레이블 기반 채우기 사용: <code>officecli set form.hwpx / --prop 'fill:&#49457;&#47749;=&#54861;&#44600;&#46041;' --prop 'fill:&#50672;&#46973;&#52376;=010-1234-5678'</code></div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">&#54924;&#51032;&#47197; &#51089;&#49457;</div>
+  <div class="example-prompt">"&#54924;&#51032;&#47197; &#47564;&#46308;&#50612;&#51468; &mdash; &#51068;&#49884;, &#51109;&#49548;, &#52280;&#49437;&#51088;, &#50504;&#44148; &#54252;&#54632;&#54644;&#49436;"</div>
+  <div class="example-desc"><code>--template minutes</code>로 생성한 뒤, 날짜, 장소, 참석자, 안건 항목에 대한 구조화된 필드를 채웁니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">HWP &#48320;&#54872;</div>
+  <div class="example-prompt">"&#51060; .hwp &#54028;&#51068; &#51069;&#50612;&#49436; &#45236;&#50857; &#48372;&#50668;&#51468;"</div>
+  <div class="example-desc"><code>officecli hwp doctor --json</code>으로 네이티브 rhwp 지원 여부를 확인합니다. 준비되면 <code>officecli view file.hwp text --json</code>을 사용합니다. 그렇지 않으면 <code>scripts/hwp_reader.py</code>로 대체합니다.</div>
+</div>
+
+<!-- ─── Editing Escalation Ladder ─── -->
+<h2>편집 에스컬레이션 단계</h2>
+<p>주요 도구가 작업을 처리할 수 없을 때, 스킬은 4단계를 거쳐 에스컬레이션합니다. 낮은 단계가 우선이며, 높은 단계는 필요한 경우에만 사용됩니다.</p>
+
+<table>
+<tr><th>단계</th><th>조건</th><th>도구</th></tr>
+<tr><td><span class="level-indicator level-l1">L1</span> OfficeCLI 고수준</td><td>일반적인 add/set/remove, 레이블 채우기, 보기 모드</td><td><code>officecli add/set/remove/query/view/merge</code></td></tr>
+<tr><td><span class="level-indicator level-l2">L2</span> OfficeCLI raw/raw-set</td><td>section0.xml / header.xml 직접 수정</td><td><code>officecli raw FILE /Contents/section0.xml</code></td></tr>
+<tr><td><span class="level-indicator level-l3">L3</span> Python 스크립트</td><td>대량 찾기/바꾸기, 템플릿 조합, 패턴 매칭</td><td><code>python3 scripts/hwpx_cli.py ...</code> 또는 <code>scripts/build_hwpx.py</code></td></tr>
+<tr><td><span class="level-indicator level-l4">L4</span> 압축 해제 &rarr; XML 편집 &rarr; 재압축</td><td>수능 시험지, 규정, 다중 파일 XML 편집</td><td><code>hwpx_cli.py open</code> &rarr; <code>work/Contents/*.xml</code> 편집 &rarr; lineseg 제거 &rarr; <code>save</code></td></tr>
+</table>
+
+<h3>에스컬레이션 시그널</h3>
+<ul>
+<li>OfficeCLI가 사용자 정의 스타일을 추가할 수 없는 경우 &rarr; <strong>L2</strong> (raw-set header.xml) + <code>reference/header-xml-guide.md</code> 참조</li>
+<li>사용자 정의 템플릿 오버레이 &rarr; <strong>L3</strong> (<code>scripts/build_hwpx.py</code>) + <code>reference/style_id_maps.md</code> 참조</li>
+<li>HWP 바이너리 입력 &rarr; 먼저 <code>officecli hwp doctor --json</code> 확인; rhwp 네이티브 준비 시 사용, 아니면 <strong>L3</strong></li>
+<li>다중 파일 패턴 매칭 (시험지, 규정) &rarr; <strong>L4</strong></li>
+<li>스타일 ID 조회 &rarr; 먼저 <code>reference/style_id_maps.md</code> 참조</li>
+</ul>
+
+<!-- ─── Core Workflows ─── -->
+<h2>핵심 워크플로우</h2>
+
+<h3>생성 및 가져오기</h3>
+<pre><code># 빈 문서
+officecli create doc.hwpx
+
+# 마크다운에서 생성 (기본 JUSTIFY 정렬)
+officecli create doc.hwpx --from-markdown input.md
+
+# 왼쪽 정렬 마크다운 가져오기
+officecli create doc.hwpx --from-markdown input.md --align left
+
+# rhwp 브릿지를 통한 바이너리 HWP
+officecli create file.hwp --json
+
+# 데이터로 템플릿 병합
+officecli merge template.hwpx out.hwpx --data '{"&#51060;&#47492;":"&#54861;&#44600;&#46041;"}'
+officecli merge template.hwpx out.hwpx --data data.json
+
+# 템플릿 조합 (구조화된 문서에 권장)
+python3 scripts/build_hwpx.py --template gonmun --output gonmun.hwpx</code></pre>
+
+<h3>보기 모드</h3>
+<pre><code>officecli view doc.hwpx text                    # 줄 번호가 있는 텍스트
+officecli view doc.hwpx annotated               # 경로 + 스타일 상세
+officecli view doc.hwpx outline                 # 제목만
+officecli view doc.hwpx stats                   # 문서 통계
+officecli view doc.hwpx html --browser          # A4 HTML 미리보기
+officecli view doc.hwpx markdown                # GFM 마크다운 내보내기
+officecli view doc.hwpx tables                  # 표 2D 그리드 + 레이블 맵
+officecli view doc.hwpx forms --auto            # CLICK_HERE + 레이블-값 자동 감지
+officecli view doc.hwpx forms --auto --json     # AI 파이프라인용 JSON
+officecli view doc.hwpx objects                 # 그림/필드/책갈피/수식 목록
+officecli view doc.hwpx objects --object-type field  # 유형별 필터
+officecli view doc.hwpx styles                  # charPr/paraPr 스타일
+officecli view doc.hwpx issues                  # 9단계 검증 문제</code></pre>
+
+<div class="callout callout-warn"><strong>흔한 실수:</strong> 모드 인수 없이 <code>officecli view file.hwpx</code>를 실행하면 오류가 발생합니다. 반드시 모드를 지정해야 합니다: <code>text</code>, <code>tables</code>, <code>markdown</code> 등.</div>
+
+<h3>편집 작업</h3>
+<pre><code># 텍스트와 글꼴 크기로 문단 추가
+officecli add doc.hwpx /section[1] --type paragraph --prop text="content" --prop fontsize=11
+
+# 표 추가
+officecli add doc.hwpx /section[1] --type table --prop rows=3 --prop cols=4
+
+# 속성 설정 (굵게, 정렬)
+officecli set doc.hwpx '/section[1]/p[1]' --prop bold=true --prop align=CENTER
+
+# 텍스트 찾기 및 바꾸기
+officecli set doc.hwpx / --prop find="old" --prop replace="new"
+
+# 요소 제거
+officecli remove doc.hwpx /section[1]/p[3]
+
+# 두 요소 교환
+officecli swap doc.hwpx '/p[1]' '/p[2]'</code></pre>
+
+<h3>레이블 채우기 (표 자동 채우기)</h3>
+<pre><code># 레이블로 채우기 (fill: 접두사)
+officecli set doc.hwpx / --prop 'fill:&#45824;&#54364;&#51088;=&#54861;&#44600;&#46041;' --prop 'fill:&#50672;&#46973;&#52376;=010-1234'
+
+# 방향 채우기: right (기본), down, left, up
+officecli set doc.hwpx / --prop 'fill:&#51452;&#49548;&gt;down=&#49436;&#50872;&#49884;'
+
+# 약식 (fill: 접두사 생략 가능, /table/fill 경로 사용 시)
+officecli set doc.hwpx /table/fill --prop '&#51060;&#47492;=&#44608;&#49436;&#51456;'</code></pre>
+
+<h3>쿼리 (확장 구문)</h3>
+<pre><code>officecli query doc.hwpx 'p'                          # 모든 문단
+officecli query doc.hwpx 'tc[text~=&#54861;&#44600;&#46041;]'           # 셀 텍스트 검색
+officecli query doc.hwpx 'run[bold=true]'              # 굵은 텍스트 런
+officecli query doc.hwpx 'p:has(tbl)'                  # 표를 포함하는 문단
+officecli query doc.hwpx 'tbl &gt; tr &gt; tc[colSpan!=1]'   # 병합된 셀
+officecli query doc.hwpx 'run[fontsize&gt;=20]'           # 20pt 이상 글꼴
+officecli query doc.hwpx 'p[heading=1]'                # 제목 1</code></pre>
+<p><strong>연산자:</strong> <code>=</code>, <code>!=</code>, <code>~=</code> (포함), <code>&gt;=</code>, <code>&lt;=</code><br>
+<strong>의사 선택자:</strong> <code>:empty</code>, <code>:contains(text)</code>, <code>:has(child)</code>, <code>:first</code>, <code>:last</code><br>
+<strong>가상 속성:</strong> <code>text</code>, <code>bold</code>, <code>italic</code>, <code>fontsize</code>, <code>colSpan</code>, <code>rowSpan</code>, <code>heading</code></p>
+
+<h3>상주 모드 (실시간 연결)</h3>
+<pre><code>officecli open doc.hwpx          # 즉시 반환; 데몬이 백그라운드에서 실행
+officecli view text               # 다시 열지 않고 보기
+officecli set '/p[1]' --prop bold=true
+officecli close                   # 세션 닫기</code></pre>
+<div class="callout callout-danger"><strong>금지 사항:</strong> <code>officecli open</code>을 백그라운드 셸 작업으로 실행하지 마세요. 즉시 반환되며 데몬이 자동으로 백그라운드에서 실행됩니다. 모니터링되는 백그라운드 셸로 실행하면 좀비 프로세스와 파일 잠금이 발생합니다.</div>
+
+<h3>배치 모드</h3>
+<pre><code>officecli batch doc.hwpx &lt;&lt;'EOF'
+view text
+view stats
+view forms --auto
+EOF</code></pre>
+
+<h3>비교</h3>
+<pre><code>officecli compare a.hwpx b.hwpx                    # 텍스트 차이점 (기본)
+officecli compare a.hwpx b.hwpx --mode outline      # 제목 차이점
+officecli compare a.hwpx b.hwpx --mode table --json  # 표 차이점 JSON</code></pre>
+<p>LCS DP 정렬을 사용합니다 (1000만 셀 초과 시 탐욕 알고리즘으로 대체). 표 유사도: 차원 가중치 0.3 + 내용 가중치 0.7. 페이지 범위 필터링: <code>--pages "1-3,5"</code>.</p>
+
+<h3>이미지 및 워터마크</h3>
+<pre><code># 인라인 이미지
+officecli add doc.hwpx /section[1] --type picture --prop path=/path/to/image.png
+
+# 페이지 중앙 떠다니는 이미지
+officecli add doc.hwpx /section[1] --type picture \
+  --prop path=/path/to/image.png \
+  --prop anchor=page --prop halign=center --prop valign=middle
+
+# 워터마크 (불투명 RGB PNG 권장)
+officecli add doc.hwpx /section[1] --type watermark \
+  --prop src=/path/to/watermark.png --prop bright=0 --prop contrast=0</code></pre>
+
+<h3>감시 및 HTML 미리보기</h3>
+<pre><code>officecli watch doc.hwpx           # 파일 변경 시 HTML 자동 새로고침
+officecli unwatch doc.hwpx         # 중지
+officecli view doc.hwpx html --browser  # 단발성 A4 미리보기</code></pre>
+
+<!-- ─── Template Assembly ─── -->
+<h2>템플릿 조합 시스템</h2>
+<p>HWP는 고유한 <strong>기본 + 오버레이 템플릿 시스템</strong>을 사용합니다. &#44277;&#47928;/&#48372;&#44256;&#49436;/&#54924;&#51032;&#47197;/&#51228;&#50504;&#49436;의 대부분의 HWPX 생성은 <code>officecli create</code> 빈 문서 대신 이 시스템을 사용해야 합니다.</p>
+
+<h3>사용 가능한 템플릿</h3>
+<table>
+<tr><th>템플릿</th><th>용도</th><th>주요 필드</th></tr>
+<tr><td><code>base</code></td><td>빈 HWPX 골격</td><td>mimetype, META-INF, 빈 header/section</td></tr>
+<tr><td><code>gonmun</code></td><td>공문서 (&#44277;&#47928;)</td><td>&#47928;&#49436;&#48264;&#54840;, &#49688;&#49888;, &#52280;&#51312;, &#51228;&#47785;, &#48376;&#47928;</td></tr>
+<tr><td><code>minutes</code></td><td>회의록 (&#54924;&#51032;&#47197;)</td><td>&#51068;&#49884;, &#51109;&#49548;, &#52280;&#49437;&#51088;, &#50504;&#44148;, &#44208;&#51221;&#49324;&#54637;</td></tr>
+<tr><td><code>proposal</code></td><td>제안서 (&#51228;&#50504;&#49436;)</td><td>&#51228;&#50504;&#44060;&#50836;, &#48176;&#44221;, &#45236;&#50857;, &#44592;&#45824;&#54952;&#44284;</td></tr>
+<tr><td><code>report</code></td><td>보고서 (&#48372;&#44256;&#49436;)</td><td>&#50836;&#50557;, &#54788;&#54889;, &#48516;&#49437;, &#51228;&#50616;</td></tr>
+</table>
+
+<h3>방법 1: build_hwpx.py (권장)</h3>
+<pre><code>python3 scripts/build_hwpx.py --template report --output Q4Report.hwpx
+
+# 그런 다음 officecli로 내용 편집
+officecli open Q4Report.hwpx
+officecli set Q4Report.hwpx /table/fill --prop '&#51228;&#47785;=2026 Q4 &#48372;&#44256;'
+# ... 계속 편집 ...
+officecli close Q4Report.hwpx</code></pre>
+
+<h3>방법 2: 수동 오버레이 (커스터마이징용)</h3>
+<pre><code># 1. 기본 골격 복사
+cp -r templates/base/ work/
+
+# 2. 도메인별 스타일 오버레이
+cp -r templates/gonmun/* work/Contents/
+
+# 3. 필요에 따라 header.xml과 section0.xml 편집
+#    참조: reference/header-xml-guide.md, reference/section0-xml-guide.md
+#    스타일 ID: reference/style_id_maps.md
+
+# 4. HWPX로 재압축 (ZIP + 정리 + 최소화)
+python3 scripts/ooxml/pack.py work/ out.hwpx
+
+# 5. 검증
+officecli validate out.hwpx</code></pre>
+
+<!-- ─── Reference-Based Editing ─── -->
+<h2>참조 기반 편집</h2>
+<p>사용자가 "X.hwpx처럼 서식 맞춰줘", "&#44277;&#47928; &#50577;&#49885;&#52376;&#47100;", "&#44592;&#51316; &#48372;&#44256;&#49436; &#49828;&#53440;&#51068;", 또는 소스 파일을 제공하는 경우 &mdash; <strong>소스에서 시작하되 처음부터 다시 만들지 마세요</strong>.</p>
+
+<h3>워크플로우</h3>
+<ol>
+<li><strong>소스 복사:</strong> <code>cp source.hwpx target.hwpx</code> &mdash; header.xml (스타일), section0.xml (구조), META-INF를 상속합니다</li>
+<li><strong>열기:</strong> <code>officecli open target.hwpx</code> &mdash; 데몬이 즉시 반환합니다 (백그라운드로 실행하지 마세요)</li>
+<li><strong>본문 문단만 제거</strong> &mdash; <code>header.xml</code> (charPr/paraPr/borderFill), META-INF, settings를 유지합니다</li>
+<li><strong>새 내용 추가</strong> &mdash; 기존 <code>styleidref</code> 값을 사용하면 자동으로 적용됩니다</li>
+</ol>
+
+<div class="callout callout-warn"><strong>왜 먼저 복사해야 하나요?</strong> HWPX <code>header.xml</code>은 모든 스타일 정의 (charPr, paraPr, borderFill, listItems)를 보유합니다. 처음부터 다시 만들면 styleidref 교차 참조가 깨지고, 일관된 시각적 관례가 유실되며, 검증에 실패하고, 10배 더 오래 걸립니다.</div>
+
+<h3>템플릿 우선순위</h3>
+<ol>
+<li><strong>사용자 제공 소스 파일</strong> &mdash; 최우선 템플릿</li>
+<li><strong><code>tests/fixtures/agentic/*.hwpx</code></strong> &mdash; 실제와 유사한 샘플 (공문, 보고서, 표가 있는 회의록)</li>
+<li><strong><code>templates/{base,gonmun,minutes,proposal,report}/</code></strong> &mdash; 템플릿 조합 시스템</li>
+<li><strong><code>officecli create</code> 빈 문서</strong> &mdash; 다른 것이 해당되지 않을 때만 사용</li>
+</ol>
+
+<!-- ─── Form Recognition & Fill ─── -->
+<h2>양식 인식 및 채우기</h2>
+
+<h3>4단계 인식 전략</h3>
+<table>
+<tr><th>#</th><th>전략</th><th>설명</th></tr>
+<tr><td>1</td><td>인접 셀 레이블-값</td><td>표 레이블 &rarr; 값 감지 (기본)</td></tr>
+<tr><td>2</td><td>헤더 + 데이터 행</td><td>열 헤더 인식</td></tr>
+<tr><td>3</td><td>셀 내 패턴</td><td><code>&#9744;</code> 체크박스, <code>keyword(  )</code> 괄호 빈칸, <code>(label:  )</code> 주석</td></tr>
+<tr><td>4</td><td>KV 표 감지</td><td>16개 한국어 키워드로 자동 감지 트리거</td></tr>
+</table>
+
+<h3>3단계 채우기 파이프라인</h3>
+<ol>
+<li><strong>셀 내 패턴:</strong> 체크박스 <code>&#9744;</code> &rarr; <code>&#9745;</code>, 괄호 빈칸 채우기, 주석 채우기</li>
+<li><strong>표 레이블-값:</strong> 정확 일치 + 접두사 60% 매칭, 4방향 (<code>right</code>/<code>down</code>/<code>left</code>/<code>up</code>)</li>
+<li><strong>인라인 문단:</strong> 표 외부의 <code>"label: value"</code>에 대한 정규식 후방 탐색</li>
+</ol>
+
+<h3>AI 양식 채우기 워크플로우</h3>
+<pre><code># 1단계: 모든 필드 인식
+officecli view form.hwpx forms --auto --json &gt; fields.json
+
+# 2단계: AI가 레이블 -&gt; 값 매핑 (사용자 로직)
+
+# 3단계: 매칭된 필드 채우기
+officecli set form.hwpx /table/fill --prop '&#49457; &#47749;=&#54861;&#44600;&#46041;'</code></pre>
+
+<!-- ─── Binary HWP ─── -->
+<h2>바이너리 HWP 지원 (실험적)</h2>
+<p>네이티브 바이너리 <code>.hwp</code> 작업은 <code>rhwp</code> 브릿지로 구동됩니다. 모든 작업은 <strong>기능 게이트가 적용</strong>되어 있으므로 &mdash; 지원을 가정하기 전에 항상 준비 상태를 확인하세요.</p>
+
+<h3>검색 명령어</h3>
+<pre><code># 항상 먼저 실행
+officecli hwp doctor --json       # 런타임 준비 상태 확인
+officecli capabilities --json     # 전체 기능 매트릭스
+officecli hwp --json              # 현재 레시피 및 정책</code></pre>
+
+<h3>지원되는 작업 (준비 시)</h3>
+<pre><code># 생성
+officecli create file.hwp --json
+
+# 보기 / 내보내기
+officecli view file.hwp text --json
+officecli view file.hwp svg --page 1 --json
+officecli view file.hwp png --page 1 --out /tmp/hwp-png --json
+officecli view file.hwp pdf --page 1 --out out.pdf --json
+officecli view file.hwp markdown --json
+officecli view file.hwp thumbnail --out thumb.png --json
+officecli view file.hwp info --json
+officecli view file.hwp tables --section 0 --json
+
+# 필드 편집
+officecli set file.hwp /field --prop name=&#54924;&#49324;&#47749; --prop value=&#47532;&#51648; --prop output=out.hwp --json
+
+# 텍스트 편집
+officecli set file.hwp /text --prop find=&#47560;&#52992;&#54021; --prop value=&#48652;&#47551;&#51648; --prop output=out.hwp --json
+
+# 텍스트 삽입
+officecli add file.hwp /text --type paragraph --prop value=&#49352;&#48376;&#47928; --prop output=out.hwp --json
+
+# 표 셀 편집
+officecli set file.hwp /table/cell --prop section=0 --prop parent-para=3 \
+  --prop control=0 --prop cell=0 --prop value=&#50724;&#54588;&#49828;&#49472; --prop output=out.hwp --json
+
+# 네이티브 작업 (이스케이프 해치)
+officecli view file.hwp native --op get-style-list --json
+officecli set file.hwp /native-op --prop op=split-paragraph --prop output=out.hwp --json
+
+# HWPX에서 HWP로 내보내기
+officecli set input.hwpx /save-as-hwp --prop output=out.hwp --json</code></pre>
+
+<div class="callout callout-warn"><strong>정책:</strong> 바이너리 <code>.hwp</code> 수정 시 출력 모드를 우선 사용하세요: <code>--prop output=out.hwp</code>. 제자리 수정 모드는 <code>/text</code> 교체에만, 명시적 요청이 있을 때만, <code>safeInPlace.ready=true</code> 확인 후에만 사용하세요. 제자리 수정 모드에는 반드시 <code>--in-place --backup --verify</code>를 포함해야 합니다.</div>
+
+<!-- ─── Equation Handling ─── -->
+<h2>수식 처리 (&#49688;&#49885;)</h2>
+<p>HWPX 수식은 한컴의 <strong>독자적 스크립트 언어</strong>를 사용합니다. MathML도, LaTeX도, OMML도 아닙니다.</p>
+
+<table>
+<tr><th>스크립트</th><th>결과</th></tr>
+<tr><td><code>{1 over 2}</code></td><td>1/2 (분수)</td></tr>
+<tr><td><code>sqrt{x}</code></td><td>x의 제곱근</td></tr>
+<tr><td><code>x^2</code>, <code>x_i</code></td><td>위 첨자, 아래 첨자</td></tr>
+<tr><td><code>int _0 ^1 f(x)dx</code></td><td>정적분</td></tr>
+<tr><td><code>sum _{i=1} ^n</code></td><td>시그마 합</td></tr>
+<tr><td><code>lim _{x-&gt;0}</code></td><td>극한</td></tr>
+<tr><td><code>matrix{a&amp;b # c&amp;d}</code></td><td>2x2 행렬</td></tr>
+</table>
+
+<pre><code># 수식 생성
+officecli add doc.hwpx /section --type equation --prop 'script=x^2 + y^2 = r^2'
+
+# 모든 수식 보기
+officecli view doc.hwpx objects --object-type equation</code></pre>
+
+<div class="callout callout-info">수식 스크립트는 불투명합니다 &mdash; 바이너리 페이로드가 아닌 <code>&lt;hp:script&gt;</code> 텍스트만 편집하세요. 수학 시험 문서 (수능)는 모든 수식에 <code>&lt;hp:equation&gt;</code>이 필요합니다. 수학 표현에 일반 텍스트를 사용하지 마세요.</div>
+
+<!-- ─── Korean Document Design ─── -->
+<h2>한국어 문서 디자인 원칙</h2>
+
+<h3>정부 양식 미감 (&#54620;&#44397; &#44277;&#44277;&#50577;&#49885; &#48120;&#44048;)</h3>
+<ul>
+<li><strong>표가 뼈대입니다:</strong> 한국 양식은 표 중심입니다. 모든 레이블-값 쌍이 정밀하게 병합된 셀 그리드에 위치합니다. 그리드 구조를 정확히 유지하세요.</li>
+<li><strong>제목 계층:</strong> &#51228;1&#51312; (조) &gt; &#51228;1&#54637; (항) &gt; &#51228;1&#54840; (호). 개요 수준에는 <code>styleidref</code>를 사용하세요.</li>
+<li><strong>고정 여백:</strong> 정부 양식은 표준 A4 여백을 사용합니다 (상/하 ~15mm, 좌/우 ~20mm). 기존 문서의 여백을 변경하지 마세요.</li>
+<li><strong>정렬:</strong> 본문 텍스트는 기본적으로 JUSTIFY (&#50577;&#51901; &#51221;&#47148;)입니다. 제목은 CENTER일 수 있습니다. 공식 문서에서 본문 텍스트에 LEFT를 사용하지 마세요.</li>
+</ul>
+
+<h3>균등분할 감지 (&#44512;&#46321;&#48516;&#54624;)</h3>
+<p>한국 양식에서는 셀 내 이름에 균등 문자 간격을 자주 사용합니다: <code>"&#54861; &#44600; &#46041;"</code> (각 글자 사이에 공백). 이것은 표시 관례이지 데이터가 아닙니다.</p>
+<ul>
+<li><strong>읽기:</strong> 균등 공백을 제거하여 실제 값을 얻습니다 (<code>"&#54861;&#44600;&#46041;"</code>)</li>
+<li><strong>쓰기:</strong> 템플릿 셀이 균등 간격을 사용하는 경우, 이에 맞게 공백을 삽입합니다 (2자: <code>"&#51060; &#51456;"</code>, 3자: <code>"&#54861; &#44600; &#46041;"</code>, 4자: <code>"&#45224;&#44417;&#48124;&#49688;"</code>)</li>
+<li><strong>감지 정규식:</strong> <code>^(\S)\s(\S)\s(\S)$</code> 등 (1개 공백으로 구분된 단일 문자 그룹)</li>
+</ul>
+
+<h3>문서 유형 분류</h3>
+<table>
+<tr><th>유형</th><th>주요 신호</th><th>예시</th></tr>
+<tr><td><code>exam</code></td><td>수식 10개 이상, rect 객체</td><td>수능/&#47784;&#51032;&#44256;&#49324; 시험지</td></tr>
+<tr><td><code>form</code></td><td>표 3개 이상, 체크박스 (&#9744;/&#9632;)</td><td>&#45824;&#54617; &#49888;&#52397;&#49436;, &#51221;&#48512; &#50577;&#49885;</td></tr>
+<tr><td><code>regulation</code></td><td>&#9675; 글머리 10개 이상, &#48324;&#52392;/&#51312;&#54637; 참조, 표 10개 이상</td><td>&#50868;&#50689;&#51648;&#52840;, &#45236;&#44508;, &#49884;&#54665;&#49464;&#52825;</td></tr>
+<tr><td><code>report</code></td><td>긴 텍스트, 표 적음</td><td>&#48372;&#44256;&#49436;, &#45436;&#47928;</td></tr>
+<tr><td><code>mixed</code></td><td>위의 어느 것도 해당 없음</td><td>&#49324;&#50629;&#44228;&#54925;&#49436;</td></tr>
+</table>
+
+<!-- ─── Validation & QA ─── -->
+<h2>필수 검증</h2>
+<div class="callout callout-danger"><strong>검증을 절대 건너뛰지 마세요.</strong> 모든 HWPX 편집 작업 후, 반드시 검증과 시각적 확인을 순서대로 실행하세요.</div>
+
+<pre><code># 1. 구조 검증 (반드시 통과해야 함)
+officecli validate output.hwpx
+
+# 2. PDF 시각 검증 (반드시 확인해야 함)
+soffice --headless --convert-to pdf --outdir /tmp output.hwpx
+# 확인: 표 위치, 안내 텍스트 제거 여부, 체크박스 정확성,
+#         병합 셀 텍스트가 올바른 행에 있는지, 숫자 손상 여부
+
+# 3. 서브에이전트를 통한 시각적 QA (reference/visual_qa_prompt.md 사용)
+python3 scripts/contact_sheet.py /tmp/output.pdf sheet.png
+
+# 4. 한컴오피스가 있으면, .hwpx를 직접 열어서도 확인</code></pre>
+
+<h3>납품 전 체크리스트</h3>
+<ul class="checklist">
+<li><code>officecli validate</code> 통과 (오류 0개)</li>
+<li><code>soffice --headless --convert-to pdf</code> &rarr; 시각 확인</li>
+<li>표 셀이 올바른 위치에 있는지 (cellAddr 매핑)</li>
+<li>안내 텍스트 (&#8251;, &#50696;&#49884;) 완전 제거</li>
+<li>체크박스 &#9744;/&#9632;가 의도된 셀에만 있는지</li>
+<li>병합 셀 텍스트가 올바른 행에 있는지</li>
+<li>한컴오피스가 있으면 .hwpx를 직접 열어서 확인</li>
+</ul>
+
+<!-- ─── Security ─── -->
+<h2>보안</h2>
+<table>
+<tr><th>검사</th><th>제한</th></tr>
+<tr><td>ZIP 폭탄</td><td>1000개 항목, 200 MB, 100:1 비율</td></tr>
+<tr><td>경로 탐색</td><td>null 바이트, <code>..</code>, 절대 경로, 드라이브 문자, 심링크</td></tr>
+<tr><td>XXE</td><td><code>DtdProcessing.Prohibit</code></td></tr>
+<tr><td>표 크기</td><td>200열 x 10,000행</td></tr>
+</table>
+
+<!-- ─── Reference Materials ─── -->
+<h2>참조 자료 및 스크립트</h2>
+
+<h3>참조 문서 (<code>reference/</code>)</h3>
+<table>
+<tr><th>파일</th><th>참조 시점</th><th>내용</th></tr>
+<tr><td><code>reference/hwpx-format.md</code></td><td>직접 XML 편집 전</td><td>OWPML ZIP 구조, 네임스페이스, 파일 레이아웃, mimetype</td></tr>
+<tr><td><code>reference/header-xml-guide.md</code></td><td>charPr/paraPr/borderFill 스타일 추가/수정 시</td><td>header.xml에 새 스타일을 추가하는 방법</td></tr>
+<tr><td><code>reference/section0-xml-guide.md</code></td><td>문단/표/혼합 서식 XML 작업 시</td><td>section0.xml 본문용 XML 템플릿</td></tr>
+<tr><td><code>reference/style_id_maps.md</code></td><td>템플릿 오버레이를 위한 스타일 ID 조회 시</td><td>모든 템플릿의 전체 스타일 ID 인덱스</td></tr>
+<tr><td><code>reference/dependencies.md</code></td><td>최초 설정 / 환경 확인 시</td><td>필요한 Python/시스템 패키지</td></tr>
+<tr><td><code>reference/visual_qa_prompt.md</code></td><td>서브에이전트를 통한 시각적 QA 시</td><td>PDF 이미지 검사용 즉시 사용 가능한 프롬프트</td></tr>
+<tr><td><code>reference/table_templates/*.xml</code></td><td>미리 만들어진 표 삽입 시</td><td>2x6, 3x3, 4x4, 5x4 그리드 XML 조각</td></tr>
+</table>
+
+<h3>Python 스크립트 (<code>scripts/</code>)</h3>
+<table>
+<tr><th>스크립트</th><th>용도</th><th>명령어</th></tr>
+<tr><td><code>hwpx_cli.py</code></td><td>통합 Python CLI (14개 이상 명령)</td><td><code>python3 scripts/hwpx_cli.py {command} ...</code></td></tr>
+<tr><td><code>build_hwpx.py</code></td><td>템플릿 기반 생성</td><td><code>python3 scripts/build_hwpx.py --template {type}</code></td></tr>
+<tr><td><code>analyze_template.py</code></td><td>템플릿 구조 검사</td><td><code>python3 scripts/analyze_template.py work/</code></td></tr>
+<tr><td><code>create_document.py</code></td><td>빈 또는 사용자 정의 HWPX 생성</td><td><code>python3 scripts/create_document.py OUT.hwpx</code></td></tr>
+<tr><td><code>table_builder.py</code></td><td>Python 객체에서 표 XML 생성</td><td>내부적으로 사용</td></tr>
+<tr><td><code>page_guard.py</code></td><td>문단/표/텍스트 드리프트 감지</td><td><code>python3 scripts/page_guard.py -r ref.hwpx -o out.hwpx</code></td></tr>
+<tr><td><code>contact_sheet.py</code></td><td>QA 컨택트 시트 (페이지 그리드 이미지)</td><td><code>python3 scripts/contact_sheet.py INPUT.pdf sheet.png</code></td></tr>
+<tr><td><code>validate.py</code></td><td>9단계 구조 검증</td><td><code>python3 scripts/validate.py INPUT.hwpx</code></td></tr>
+<tr><td><code>hwp_reader.py</code></td><td>HWP 5.0 바이너리 읽기 (읽기 전용)</td><td><code>python3 scripts/hwp_reader.py INPUT.hwp</code></td></tr>
+<tr><td><code>hwp_convert.py</code></td><td>HWP &rarr; HWPX 변환</td><td><code>python3 scripts/hwp_convert.py IN.hwp OUT.hwpx</code></td></tr>
+<tr><td><code>text_extract.py</code></td><td>HWPX에서 일반 텍스트 추출</td><td><code>python3 scripts/text_extract.py INPUT.hwpx</code></td></tr>
+</table>
+
+<!-- ─── Pattern-Match Editing ─── -->
+<h2>패턴 매칭 편집 (L4 대체)</h2>
+<p>officecli <code>set</code>/<code>find-replace</code>로 처리할 수 없는 복잡한 양식 편집 &mdash; 수능 시험지, 다중 섹션 규정, 단편화된 텍스트 노드 등에 사용합니다.</p>
+
+<h3>핵심 흐름</h3>
+<pre><code># HWPX 압축 해제
+python3 scripts/hwpx_cli.py open input.hwpx
+
+# work/Contents/의 XML 파일 편집
+# (lineseg는 hwpx_cli.py에 의해 자동 제거됨)
+
+# 재압축
+python3 scripts/hwpx_cli.py save output.hwpx</code></pre>
+
+<h3>주요 패턴</h3>
+<table>
+<tr><th>패턴</th><th>설명</th></tr>
+<tr><td>Lineseg 제거</td><td>직접 XML 쓰기 시마다 오래된 <code>&lt;hp:linesegarray&gt;</code> 캐시 제거</td></tr>
+<tr><td>체크박스 치환</td><td><code>&#9744;</code> &rarr; <code>&#9745;</code>, 다중 <code>&lt;t&gt;</code> 노드 처리 포함</td></tr>
+<tr><td>균등분할 정규화</td><td><code>"&#54861; &#44600; &#46041;"</code> &#8596; <code>"&#54861;&#44600;&#46041;"</code> 변환</td></tr>
+<tr><td>p[0] 몬스터</td><td>secPr + tbl + 문제 1 텍스트가 첫 번째 문단에 병합</td></tr>
+<tr><td>수식 인터리빙</td><td><code>&lt;t&gt;</code> &#8596; <code>&lt;equation&gt;</code> 교대 &mdash; 텍스트 추출 시 수식 건너뛰기</td></tr>
+</table>
+
+<h3>Lineseg 제거 (중요)</h3>
+<p>HWPX XML을 직접 편집할 때 (officecli나 <code>scripts/hwpx_cli.py</code>를 통하지 않고), 반드시 모든 <code>&lt;hp:linesegarray&gt;</code> 요소를 제거해야 합니다. 오래된 레이아웃 캐시로 인해 문자가 한 줄에 겹쳐 표시됩니다.</p>
+<pre><code>import re
+xml = re.sub(r'&lt;(?:hp:)?linesegarray[^&gt;]*&gt;.*?&lt;/(?:hp:)?linesegarray&gt;', '', xml, flags=re.DOTALL)
+xml = re.sub(r'&lt;(?:hp:)?linesegarray[^/]*/&gt;', '', xml)  # self-closing</code></pre>
+<div class="callout callout-info"><code>officecli</code>와 <code>scripts/hwpx_cli.py</code>는 lineseg 제거를 자동으로 처리합니다. 이 규칙은 Python으로 직접 XML을 편집하는 경우에만 적용됩니다.</div>
+
+<!-- ─── Common Pitfalls ─── -->
+<h2>흔한 실수</h2>
+<table>
+<tr><th>실수</th><th>올바른 방법</th></tr>
+<tr><td><code>--props text=Hello</code></td><td><code>--prop text=Hello</code> &mdash; 항상 단수형 <code>--prop</code></td></tr>
+<tr><td><code>/body/p[1]</code> 경로</td><td>HWPX는 <code>/section[1]/p[1]</code>을 사용합니다 &mdash; body가 아닌 section 기반</td></tr>
+<tr><td>셸에서 <code>[N]</code>을 따옴표 없이 사용</td><td><code>"/section[1]/p[1]"</code> &mdash; 경로는 항상 따옴표로 감싸세요</td></tr>
+<tr><td><code>fontsize</code> 누락</td><td><code>--prop fontsize=11</code> 항상 지정 &mdash; charPr 0 오염 방지</td></tr>
+<tr><td><code>officecli view file.hwpx</code> (모드 없음)</td><td>오류 발생. 반드시 지정: <code>text</code>, <code>markdown</code>, <code>tables</code> 등</td></tr>
+<tr><td>수동 표 매핑</td><td><code>view tables</code>가 수동 검사를 대체합니다</td></tr>
+<tr><td>템플릿에서 header.xml 스타일 재생성</td><td>먼저 <code>cp source.hwpx target.hwpx</code>. <code>reference/style_id_maps.md</code> 참조</td></tr>
+<tr><td><code>officecli open</code>을 백그라운드 셸로 실행</td><td>포그라운드에서 실행 &mdash; 즉시 반환되며 데몬이 자동으로 백그라운드에서 실행</td></tr>
+<tr><td>lineseg 제거 없이 XML 직접 편집</td><td>오래된 캐시로 텍스트가 겹칩니다. <code>hwpx_cli.py</code>를 사용하거나 수동으로 제거하세요</td></tr>
+<tr><td>reference/ 참조 없이 사용자 정의 스타일 작업</td><td><code>reference/header-xml-guide.md</code> + <code>reference/style_id_maps.md</code>는 필수입니다</td></tr>
+</table>
+
+<!-- ─── Anti-Patterns ─── -->
+<h2>안티패턴 (반드시 피해야 함)</h2>
+<ol>
+<li><strong>수학 시험에 수식이 없으면 출력이 깨집니다</strong> &mdash; 수능 문서에는 <code>&lt;hp:equation&gt;</code> 요소가 필요합니다</li>
+<li><strong>보호 장치 없는 HWP 바이너리 덮어쓰기 금지</strong> &mdash; <code>--prop output=...</code>을 우선 사용; <code>safeInPlace.ready=true</code>일 때만 안전한 제자리 수정 사용</li>
+<li><strong>rhwp에 네이티브 프리미티브가 있을 때 가짜 HWPX 대체 금지</strong> &mdash; OfficeCLI에 해당 경로가 없으면 격차를 보고하고 승인을 위해 중단</li>
+<li><strong>lineseg 제거 없이 XML 편집 금지</strong> &mdash; 오래된 캐시로 텍스트가 겹칩니다</li>
+<li><strong>고정 레이아웃 시험에 보이는 QA 마커 금지</strong> &mdash; 대신 스크린샷이나 부속 증거를 사용하세요</li>
+<li><strong>교차 포맷 스킬 로딩 금지</strong> &mdash; 이 스킬은 <code>.hwp</code>/<code>.hwpx</code> 전용입니다</li>
+<li><strong>템플릿에 존재하는 스타일 재생성 금지</strong> &mdash; 먼저 <code>cp</code>하고 <code>reference/style_id_maps.md</code>를 참조하세요</li>
+<li><strong>참조 자료 무시 금지</strong> &mdash; <code>header-xml-guide.md</code>, <code>section0-xml-guide.md</code>, <code>style_id_maps.md</code>는 사용자 정의 XML 작업에 필수입니다</li>
+</ol>
+
+<!-- ─── Dependencies ─── -->
+<h2>의존성</h2>
+<table>
+<tr><th>도구</th><th>용도</th><th>필수 여부</th></tr>
+<tr><td><code>officecli</code> (전역)</td><td>주요 HWPX CLI + 실험적 rhwp 기반 HWP 브릿지</td><td><strong>필수</strong></td></tr>
+<tr><td><code>python3</code></td><td>대체 스크립트 (<code>scripts/*.py</code>)</td><td><strong>L3/L4에 필수</strong></td></tr>
+<tr><td><code>lxml</code></td><td>scripts/*용 XML 처리</td><td>L3/L4에 필수</td></tr>
+<tr><td><code>pyhwp</code></td><td>레거시 HWP 5.0 바이너리 읽기/변환 대체 수단</td><td>HWP&rarr;HWPX 대체에 필수</td></tr>
+<tr><td><code>soffice</code> (LibreOffice)</td><td>PDF 변환 + 시각 검증</td><td>권장</td></tr>
+<tr><td>Java (<code>JAVA_HOME</code>)</td><td>H2Orestart HWP 변환 엔진</td><td>HWP&rarr;HWPX 전용</td></tr>
+<tr><td><code>dotnet</code></td><td>officecli 소스 빌드</td><td>빌드 전용</td></tr>
+</table>
+
+<h3>사전 요구 사항 확인</h3>
+<pre><code># OfficeCLI (필수)
+which officecli &gt;/dev/null 2&gt;&amp;1 || echo "WARN: OfficeCLI not installed"
+
+# LibreOffice (권장, 필요 시 자동 설치)
+which soffice &gt;/dev/null 2&gt;&amp;1 || echo "INFO: LibreOffice not installed"
+
+# Python 패키지 (L3/L4에 선택 사항)
+python3 -c "import lxml; import pyhwp" 2&gt;/dev/null || echo "OPTIONAL: pip install lxml pyhwp"
+
+# Java (HWP 변환 전용)
+echo "JAVA_HOME=$JAVA_HOME"</code></pre>
+
+<!-- ─── Tool Discovery ─── -->
+<h2>도구 검색</h2>
+<p>추측하기 전에 항상 도움말에서 구문을 확인하세요.</p>
+<pre><code>officecli --help
+officecli hwp --json
+officecli hwp doctor --json
+officecli capabilities --json
+officecli view --help
+officecli set --help
+python3 scripts/hwpx_cli.py --help
+python3 scripts/build_hwpx.py --help</code></pre>
+
+<!-- ─── Exam Structure ─── -->
+<h2>시험 XML 구조 패턴</h2>
+<p>수능 스타일의 시험지는 고정 레이아웃 제약으로 인해 특별한 처리가 필요합니다.</p>
+
+<table>
+<tr><th>패턴</th><th>설명</th><th>감지</th></tr>
+<tr><td>페이지/단 나누기</td><td><code>pageBreak="1"</code> / <code>columnBreak="1"</code></td><td>페이지 경계 = 문제 그룹 경계</td></tr>
+<tr><td>p[0] 몬스터</td><td>secPr + colPr + 제목 tbl + 문제 1 텍스트가 병합</td><td>첫 번째 문단에 모두 포함</td></tr>
+<tr><td>수식 인터리빙</td><td><code>&lt;t&gt;</code> &#8596; <code>&lt;equation&gt;</code> 교대</td><td>텍스트 추출 시 수식 건너뛰기</td></tr>
+<tr><td>답안 선택지</td><td><code>&#9312;</code> + 5개 <code>&lt;equation&gt;</code> (5지선다)</td><td>답안 문단 자동 감지</td></tr>
+<tr><td>텍스트 단편화</td><td>1-2자 <code>&lt;t&gt;</code> 분리 (HWP 변환)</td><td>모든 텍스트를 연결한 뒤 매칭</td></tr>
+<tr><td>2단 레이아웃</td><td><code>&lt;hp:colPr type="NEWSPAPER" colCount="2"&gt;</code></td><td>시험 전용 레이아웃</td></tr>
+</table>
+
+<div class="callout callout-danger"><strong>고정 레이아웃 규칙:</strong> 시험 문서의 본문에 QA/증명 마커를 삽입하지 마세요. 문제 본문 안의 <code>[CU TEMPLATE EDIT ...]</code>이나 <code>VISUAL QA</code> 같은 문자열은 시각적으로 치명적인 실패입니다. 대신 전후 스크린샷을 캡처하세요.</div>
+
+<!-- ─── HWP to HWPX Conversion ─── -->
+<h2>HWP &rarr; HWPX 변환</h2>
+
+<h3>포맷 감지</h3>
+<pre><code>file doc.hwpx   # "Zip archive" -&gt; HWPX (ZIP + OWPML XML)
+file doc.hwp    # "HWP Document" -&gt; HWP 5.0 바이너리</code></pre>
+
+<h3>구조적 차이</h3>
+<table>
+<tr><th>항목</th><th>네이티브 HWPX</th><th>HWP &rarr; HWPX 변환본</th></tr>
+<tr><td>텍스트 단위</td><td>런당 짧은 <code>&lt;t&gt;</code></td><td>전체 문단이 하나의 <code>&lt;t&gt;</code>에</td></tr>
+<tr><td>제목 p[0]</td><td>secPr + tbl + 내용</td><td>페이지 번호 조각 <code>&lt;t&gt;20&lt;/t&gt;</code> + <code>&lt;t&gt;1&lt;/t&gt;</code>이 혼재</td></tr>
+<tr><td>편집</td><td>런 수준의 정밀한 교체</td><td>원시 문자열 교체 또는 전체 문단 교환 필요</td></tr>
+</table>
+
+<h3>변환 파일 편집 전략</h3>
+<ol>
+<li><strong>제목:</strong> 런 인식 교체 &mdash; <code>set_run_text(p0, 'old', 'new')</code> (페이지 번호 런 건너뛰기)</li>
+<li><strong>본문:</strong> 직렬화된 XML에 대한 원시 문자열 교체 &mdash; <code>sec0.replace(old, new)</code></li>
+<li><strong>다중 <code>&lt;t&gt;</code> 셀:</strong> <code>ReplaceTextInCell()</code> 사용 &mdash; 모든 <code>&lt;t&gt;</code>를 연결 &rarr; 매칭 &rarr; 재분배</li>
+</ol>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">생산성 스킬</a>
+<a class="next" href="docx.html">DOCX 스킬</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

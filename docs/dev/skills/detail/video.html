@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Generation &mdash; podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+.badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+.badge-category { background: rgba(99, 102, 241, 0.15); color: var(--accent); }
+.quick-ref { margin: 24px 0; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 160px; }
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-ko { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+.dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.dep-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.dep-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.dep-card code { font-size: 13px; }
+.dep-card .dep-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+.preset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 12px 0 20px; }
+.preset-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; text-align: center; }
+.preset-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.preset-card .preset-dims { font-size: 22px; font-weight: 700; color: var(--accent); margin: 6px 0; }
+.preset-card .preset-ratio { font-size: 12px; color: var(--text-dim); }
+.preset-card .preset-use { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+.gate-table td:first-child { font-weight: 700; text-align: center; width: 40px; }
+.provider-row td:first-child { font-weight: 600; }
+@media (max-width: 768px) {
+  .dep-grid, .preset-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link active" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Video Generation</h1>
+<p class="lead">JSON-driven video generation pipeline using Remotion. Author timelines as structured JSON, render to MP4 with theme support, TTS narration, transitions, and a full component library &mdash; all from the command line.</p>
+
+<p>
+  <span class="badge badge-active">Default Active: Yes</span>
+  <span class="badge badge-category">AI &amp; Media</span>
+</p>
+
+<div class="callout callout-info">
+  <strong>Active by default:</strong> The <code>video</code> skill is injected into the system prompt automatically. It activates whenever the agent detects keywords like "video", "Remotion", "animation", "mp4", "render video", or "slides to video". No manual loading required.
+</div>
+
+<!-- ============================================================ -->
+<h2>Quick Reference</h2>
+<table class="quick-ref">
+<tr><td>Skill name</td><td><code>video</code></td></tr>
+<tr><td>Category</td><td>AI &amp; Media</td></tr>
+<tr><td>Default active</td><td>Yes &mdash; auto-injected on trigger keywords</td></tr>
+<tr><td>Triggers</td><td><code>video</code>, <code>Remotion</code>, <code>animation</code>, <code>mp4</code>, <code>render video</code>, <code>slides to video</code></td></tr>
+<tr><td>SKILL.md path</td><td><code>skills_ref/video/SKILL.md</code></td></tr>
+<tr><td>Output directory</td><td><code>/tmp/remotion-render/</code></td></tr>
+<tr><td>Runtime</td><td>Node.js 22.4+, pnpm, ffmpeg, ffprobe</td></tr>
+<tr><td>Bootstrap</td><td><code>node scripts/ensure-remotion.mjs</code></td></tr>
+<tr><td>TTS providers</td><td>Gemini (default), Supertone, Supertonic</td></tr>
+<tr><td>Related skills</td><td><code>pptx</code>, <code>diagram</code></td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2>CLI Commands</h2>
+<p>All commands are run from the <code>skills_ref/video/</code> directory. Output goes to <code>/tmp/remotion-render/</code> by default &mdash; keep render output outside the source tree.</p>
+
+<table>
+<thead>
+<tr><th>Task</th><th>Command</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Render (sync)</strong></td><td><code>node scripts/pipeline.mjs --timeline &lt;path&gt; [--preset Landscape-1080p]</code></td></tr>
+<tr><td><strong>Render + TTS</strong></td><td><code>node scripts/pipeline.mjs --timeline timeline.draft.json</code></td></tr>
+<tr><td><strong>Skip TTS</strong></td><td><code>node scripts/pipeline.mjs --timeline timeline.draft.json --skip-tts</code></td></tr>
+<tr><td><strong>TTS batch</strong></td><td><code>node scripts/tts.mjs --batch timeline.draft.json [--provider supertone]</code></td></tr>
+<tr><td><strong>TTS single</strong></td><td><code>node scripts/tts.mjs --text "Hello" --output /tmp/tts-out.m4a [--provider gemini]</code></td></tr>
+<tr><td><strong>List voices</strong></td><td><code>node scripts/tts.mjs --list-voices [--provider supertone]</code></td></tr>
+<tr><td><strong>Render (async)</strong></td><td><code>node scripts/pipeline.mjs --timeline &lt;path&gt; --async</code></td></tr>
+<tr><td><strong>Check status</strong></td><td><code>node scripts/pipeline.mjs --status /tmp/remotion-render/render-result.json</code></td></tr>
+<tr><td><strong>Preview</strong></td><td><code>cd remotion-project &amp;&amp; pnpm exec remotion studio</code></td></tr>
+<tr><td><strong>Validate</strong></td><td><code>node scripts/validate-artifact.mjs /tmp/remotion-render/TimelineVideo.mp4 --preset Landscape-1080p</code></td></tr>
+</tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2>Pipeline Usage</h2>
+
+<pre><code># Sync (default) &mdash; blocks until render complete
+node skills_ref/video/scripts/pipeline.mjs \
+  --timeline timeline.json \
+  --output /tmp/remotion-render
+
+# With preset override (timeline.meta.preset is the source of truth)
+node skills_ref/video/scripts/pipeline.mjs \
+  --timeline timeline.json \
+  --preset Portrait-1080p
+
+# Async &mdash; returns immediately, renders in background
+node skills_ref/video/scripts/pipeline.mjs \
+  --timeline timeline.json \
+  --async
+
+# Check async status
+node skills_ref/video/scripts/pipeline.mjs \
+  --status /tmp/remotion-render/render-result.json</code></pre>
+
+<div class="callout callout-info">
+  <strong>Preset source of truth:</strong> <code>timeline.meta.preset</code> is the canonical resolution setting. The CLI <code>--preset</code> flag overrides it but emits a warning. Always prefer setting the preset in the timeline JSON.
+</div>
+
+<!-- ============================================================ -->
+<h2>Timeline Authoring</h2>
+<p>Videos are defined as JSON timelines with a <code>meta</code> block (title, preset, fps, duration) and an <code>elements</code> array of typed slides. Each element specifies its type, timing, props, and optional transition.</p>
+
+<h3>Minimal Example</h3>
+<pre><code>{
+  "meta": {
+    "title": "My Video",
+    "preset": "Landscape-1080p",
+    "fps": 30,
+    "totalDurationSec": 15
+  },
+  "elements": [
+    {
+      "type": "title",
+      "startSec": 0,
+      "durationSec": 5,
+      "props": { "title": "Hello World", "subtitle": "A demo" },
+      "transition": { "type": "fade" }
+    },
+    {
+      "type": "content",
+      "startSec": 5,
+      "durationSec": 5,
+      "props": {
+        "header": "Key Points",
+        "bulletPoints": ["Fast", "Safe", "Beautiful"]
+      },
+      "transition": { "type": "slide", "direction": "from-right" }
+    },
+    {
+      "type": "code",
+      "startSec": 10,
+      "durationSec": 5,
+      "props": {
+        "code": "const x = 42;",
+        "language": "typescript",
+        "title": "Example"
+      },
+      "transition": { "type": "fade" }
+    }
+  ],
+  "audio": []
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2>Theme System</h2>
+<p>Each video should define a unique aesthetic via <code>meta.theme</code>. Fonts are loaded through <code>@remotion/google-fonts</code> for cross-platform rendering. The default theme uses Chakra Petch (display), Outfit (body), and JetBrains Mono (code) with a dark blue background and cyan accent.</p>
+
+<pre><code>{
+  "meta": {
+    "theme": {
+      "aesthetic": "brutalist tech",
+      "font": { "display": "Chakra Petch", "body": "Outfit" },
+      "color": { "accent": "#FF6B35", "bg": "#0A0A0A" },
+      "gradient": {
+        "hero": "radial-gradient(circle at 20% 30%, rgba(255,107,53,0.2) 0%, transparent 60%)"
+      }
+    }
+  }
+}</code></pre>
+
+<div class="callout callout-info">
+  <strong>Font ban:</strong> Do not use Inter, Roboto, or Arial in <code>meta.theme</code>. These signal generic/AI-generated content and break the distinctive aesthetic requirement.
+</div>
+
+<!-- ============================================================ -->
+<h2>Content Design Rules</h2>
+
+<h3>Do</h3>
+<ul>
+<li>Use concise headers without emoji</li>
+<li>Write bullet points as short phrases (max 8 words), 3&ndash;4 per slide</li>
+<li>Vary slide types: title, content, code, content &mdash; avoid monotony</li>
+<li>Mix transitions: fade, slide, wipe (avoid repeating the same type 3+ times)</li>
+<li>Show real code on code slides, not pseudocode</li>
+<li>Pick a theme aesthetic and commit to it throughout</li>
+</ul>
+
+<h3>Avoid</h3>
+<ul>
+<li>Emoji in slide titles or headers</li>
+<li>More than 5 bullets on a single slide</li>
+<li>Generic headers like "Key Features", "Getting Started", or "Summary"</li>
+<li>Inter, Roboto, or Arial as fonts in <code>meta.theme</code></li>
+</ul>
+
+<h3>Content Density</h3>
+<p>The canvas is large (1920x1080 or 1080x1920). Sparse content creates dead space. Add more content blocks &mdash; not bigger fonts or more padding. Each slide should use at least 70% of the canvas area.</p>
+
+<table>
+<thead>
+<tr><th>Slide Type</th><th>Landscape</th><th>Portrait</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Content</strong></td><td>3&ndash;4 bullet points</td><td>4&ndash;5 bullet points</td></tr>
+<tr><td><strong>Code</strong></td><td>Minimum 4 lines + comments</td><td>Minimum 6 lines + comments</td></tr>
+<tr><td><strong>Title</strong></td><td colspan="2">Always include a subtitle</td></tr>
+</tbody>
+</table>
+
+<h3>Shorts (Portrait-1080p)</h3>
+<ul>
+<li>Max 8&ndash;10 elements for 60 seconds</li>
+<li>First slide = hook (max 5 words) + descriptive subtitle</li>
+<li>Last slide = CTA or memorable closing + tagline</li>
+<li>5&ndash;6 bullets per content slide, 6&ndash;10 lines on code slides</li>
+<li>Use <code>content</code> + <code>bulletPoints</code> together on every content slide</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2>Resolution Presets</h2>
+
+<div class="preset-grid">
+  <div class="preset-card">
+    <strong>Landscape-720p</strong>
+    <div class="preset-dims">1280 x 720</div>
+    <div class="preset-ratio">16:9</div>
+    <div class="preset-use">Draft / preview</div>
+  </div>
+  <div class="preset-card">
+    <strong>Landscape-1080p</strong>
+    <div class="preset-dims">1920 x 1080</div>
+    <div class="preset-ratio">16:9</div>
+    <div class="preset-use">Standard delivery (default)</div>
+  </div>
+  <div class="preset-card">
+    <strong>Portrait-1080p</strong>
+    <div class="preset-dims">1080 x 1920</div>
+    <div class="preset-ratio">9:16</div>
+    <div class="preset-use">TikTok / Reels / Shorts</div>
+  </div>
+  <div class="preset-card">
+    <strong>Square-1080p</strong>
+    <div class="preset-dims">1080 x 1080</div>
+    <div class="preset-ratio">1:1</div>
+    <div class="preset-use">Instagram / LinkedIn</div>
+  </div>
+</div>
+
+<p>Default: <code>Landscape-1080p</code>. The agent auto-selects based on keywords &mdash; "reels", "shorts", or "TikTok" triggers <code>Portrait-1080p</code>; "Instagram" triggers <code>Square-1080p</code>.</p>
+
+<!-- ============================================================ -->
+<h2>Component Library</h2>
+<p>The Remotion project ships 11 slide components plus supporting features. Each maps to a <code>type</code> value in the timeline JSON.</p>
+
+<h3>Slide Components</h3>
+<table>
+<thead>
+<tr><th>Component</th><th>Props</th><th>Use For</th></tr>
+</thead>
+<tbody>
+<tr><td><code>TitleSlide</code></td><td><code>title</code>, <code>subtitle</code>, <code>animation?</code></td><td>Opening / closing slides</td></tr>
+<tr><td><code>ContentSlide</code></td><td><code>header</code>, <code>content</code>, <code>bulletPoints</code>, <code>animation?</code></td><td>Body content</td></tr>
+<tr><td><code>CodeSlide</code></td><td><code>code</code>, <code>language</code>, <code>title</code>, <code>animation?</code></td><td>Code demos</td></tr>
+<tr><td><code>DiagramSlide</code></td><td><code>src</code>, <code>title</code>, <code>caption</code>, <code>fit</code>, <code>animation?</code></td><td>Images / diagrams</td></tr>
+<tr><td><code>StatSlide</code></td><td><code>title</code>, <code>stats[]</code> (value/suffix/label/trend/decimals)</td><td>KPI / count-up</td></tr>
+<tr><td><code>QuoteSlide</code></td><td><code>quote</code>, <code>author?</code>, <code>source?</code></td><td>Quotes</td></tr>
+<tr><td><code>ComparisonSlide</code></td><td><code>title</code>, <code>left{label,items,accent}</code>, <code>right{...}</code></td><td>Side-by-side compare</td></tr>
+<tr><td><code>VideoSlide</code></td><td><code>src</code>, <code>title?</code>, <code>startFrom?</code>, <code>playbackRate?</code>, <code>loop?</code></td><td>Inline video</td></tr>
+<tr><td><code>GifSlide</code></td><td><code>src</code>, <code>title?</code>, <code>fit?</code></td><td>Animated GIF</td></tr>
+<tr><td><code>LottieSlide</code></td><td><code>src</code>, <code>title?</code></td><td>Lottie animation</td></tr>
+<tr><td><code>ChartSlide</code></td><td><code>chartType</code>, <code>title</code>, <code>data{labels,datasets}</code></td><td>Bar / pie / line chart</td></tr>
+<tr><td><code>Caption</code></td><td><code>text</code>, <code>position</code>, <code>designTheme?</code></td><td>Timed subtitles</td></tr>
+</tbody>
+</table>
+
+<h3>Features</h3>
+<table>
+<thead>
+<tr><th>Feature</th><th>Details</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Surface Card</strong></td><td>Glassmorphism wrapper on content slides. Customize via <code>meta.theme.card</code>.</td></tr>
+<tr><td><strong>Animation</strong></td><td>Optional per element: <code>{ enter: "scale-in", exit: "fade-out" }</code>. Enter: scale-in, fade-in, slide-up, none. Exit: scale-out, slide-down, fade-out, none.</td></tr>
+<tr><td><strong>Transitions</strong></td><td>fade, slide, wipe, flip, clock-wipe. Optional <code>timing: "spring"</code>. Slide/wipe accept <code>direction</code>.</td></tr>
+<tr><td><strong>Korean fonts</strong></td><td>NotoSansKR loaded as body primary. Stack: <code>NotoSansKR, Outfit, sans-serif</code>.</td></tr>
+<tr><td><strong>Charts</strong></td><td>bar (staggered grow), pie (sweep), line (draw-on). Pure SVG, no external library.</td></tr>
+<tr><td><strong>Audio</strong></td><td><code>fadeInSec</code> / <code>fadeOutSec</code>, <code>loop</code>, <code>trimStartSec</code>.</td></tr>
+</tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2>TTS Integration</h2>
+<p>Three TTS providers are available. The default is Gemini. The pipeline auto-detects <code>narration</code> fields in timeline elements and generates per-cut audio files.</p>
+
+<table>
+<thead>
+<tr><th>Provider</th><th>ID</th><th>Default Voice</th><th>Strengths</th><th>Env Key</th></tr>
+</thead>
+<tbody class="provider-row">
+<tr><td><strong>Gemini</strong></td><td><code>gemini</code></td><td>Kore</td><td>30 voices, tone via prompt</td><td><code>GEMINI_API_KEY</code></td></tr>
+<tr><td><strong>Supertone</strong></td><td><code>supertone</code></td><td>Andrew</td><td>6 emotion styles, best Korean quality</td><td><code>SUPERTONE_API_KEY</code></td></tr>
+<tr><td><strong>Supertonic</strong></td><td><code>supertonic</code></td><td>M1</td><td>0.22s generation, free, offline</td><td>none</td></tr>
+</tbody>
+</table>
+
+<h3>Draft-to-Final Workflow</h3>
+<ol>
+<li>Write <code>timeline.draft.json</code> with <code>narration</code> and optional <code>voiceControl</code> per element.</li>
+<li>Pipeline auto-detects narration fields and generates per-cut audio.</li>
+<li>Produces <code>timeline.final.json</code> with <code>audio[]</code> entries and corrected <code>durationSec</code>.</li>
+<li>Final timeline is rendered with synchronized audio.</li>
+</ol>
+
+<h3>Draft Timeline with Narration</h3>
+<pre><code>{
+  "elements": [
+    {
+      "id": "intro",
+      "type": "title",
+      "durationSec": 11,
+      "narration": "Welcome to the analysis report.",
+      "voiceControl": {
+        "tonePrompt": "Calm, professional news anchor tone"
+      },
+      "props": {
+        "title": "Tech Trends",
+        "subtitle": "2026 Edition"
+      }
+    }
+  ]
+}</code></pre>
+
+<h3>Duration Estimation</h3>
+<ul>
+<li><strong>Korean:</strong> ~6.5 chars/sec &mdash; <code>Math.ceil(narration.length / 6.5) + 0.5</code></li>
+<li>Final <code>durationSec</code> is auto-corrected by ffprobe measurement after TTS generation</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2>Render Validation &mdash; 3-Tier Gate</h2>
+<p>All three gates must pass for a render to be considered successful.</p>
+
+<table class="gate-table">
+<thead>
+<tr><th>Gate</th><th>Checks</th><th>Role</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><strong>Policy</strong> &mdash; No forbidden engine in logs</td><td>Supplementary</td></tr>
+<tr><td>2</td><td><strong>Execution</strong> &mdash; <code>remotion render</code> exit code 0</td><td>Primary</td></tr>
+<tr><td>3</td><td><strong>Artifact</strong> &mdash; ffprobe validates duration, codec, and resolution</td><td>Final truth</td></tr>
+</tbody>
+</table>
+
+<pre><code>node scripts/validate-artifact.mjs /tmp/remotion-render/TimelineVideo.mp4 --preset Landscape-1080p</code></pre>
+
+<div class="callout callout-info">
+  <strong>Gate 3 is the final truth:</strong> Even if <code>remotion render</code> exits 0, the artifact must pass ffprobe validation (correct resolution, codec, and duration) before the render is accepted.
+</div>
+
+<!-- ============================================================ -->
+<h2>FFmpeg Patterns</h2>
+<p>FFmpeg handles deterministic cuts, batch processing, and preprocessing outside of Remotion. These patterns are available for use within the video pipeline.</p>
+
+<h3>Extract segment by timestamp</h3>
+<pre><code>ffmpeg -i raw.mp4 -ss 00:12:30 -to 00:15:45 -c copy segment_01.mp4</code></pre>
+
+<h3>Batch cut from edit decision list</h3>
+<pre><code>#!/bin/bash
+# cuts.txt format: start,end,label
+while IFS=, read -r start end label; do
+  ffmpeg -i raw.mp4 -ss "$start" -to "$end" -c copy "segments/${label}.mp4"
+done &lt; cuts.txt</code></pre>
+
+<h3>Concatenate segments</h3>
+<pre><code>for f in segments/*.mp4; do echo "file '$f'"; done &gt; concat.txt
+ffmpeg -f concat -safe 0 -i concat.txt -c copy assembled.mp4</code></pre>
+
+<h3>Create proxy for faster editing</h3>
+<pre><code>ffmpeg -i raw.mp4 -vf "scale=960:-2" -c:v libx264 -preset ultrafast -crf 28 proxy.mp4</code></pre>
+
+<h3>Extract audio for transcription</h3>
+<pre><code>ffmpeg -i raw.mp4 -vn -acodec pcm_s16le -ar 16000 audio.wav</code></pre>
+
+<h3>Normalize audio levels</h3>
+<pre><code>ffmpeg -i segment.mp4 -af loudnorm=I=-16:TP=-1.5:LRA=11 -c:v copy normalized.mp4</code></pre>
+
+<h3>Scene detection</h3>
+<pre><code># Detect scene changes (threshold 0.3 = moderate sensitivity)
+ffmpeg -i input.mp4 -vf "select='gt(scene,0.3)',showinfo" -vsync vfr -f null - 2&gt;&amp;1 | grep showinfo</code></pre>
+
+<h3>Social media reframing</h3>
+<pre><code># 16:9 to 9:16 (center crop for TikTok/Reels)
+ffmpeg -i input.mp4 -vf "crop=ih*9/16:ih,scale=1080:1920" vertical.mp4
+
+# 16:9 to 1:1 (center crop for Instagram)
+ffmpeg -i input.mp4 -vf "crop=ih:ih,scale=1080:1080" square.mp4</code></pre>
+
+<!-- ============================================================ -->
+<h2>ElevenLabs Voice (Supplementary)</h2>
+<p>For professional voiceover outside the Remotion TTS pipeline, ElevenLabs is available via direct API. Use when you need high-fidelity English narration, voice cloning, or emotion control beyond what Gemini/Supertone provide. Requires <code>ELEVENLABS_API_KEY</code>.</p>
+
+<pre><code>import os, requests
+
+resp = requests.post(
+    f"https://api.elevenlabs.io/v1/text-to-speech/&lt;voice_id&gt;",
+    headers={
+        "xi-api-key": os.environ["ELEVENLABS_API_KEY"],
+        "Content-Type": "application/json"
+    },
+    json={
+        "text": "Your narration text here",
+        "model_id": "eleven_turbo_v2_5",
+        "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}
+    }
+)
+with open("voiceover.mp3", "wb") as f:
+    f.write(resp.content)</code></pre>
+
+<!-- ============================================================ -->
+<h2>Final Polish (Descript / CapCut)</h2>
+<p>For tasks that code-driven rendering handles poorly, use a traditional editor as the last mile:</p>
+<ul>
+<li><strong>Pacing</strong> &mdash; adjust cuts that feel too fast or slow</li>
+<li><strong>Captions</strong> &mdash; auto-generated, then manually cleaned</li>
+<li><strong>Color grading</strong> &mdash; basic correction and mood</li>
+<li><strong>Final audio mix</strong> &mdash; balance voice, music, and SFX levels</li>
+<li><strong>Export</strong> &mdash; platform-specific formats and quality settings</li>
+</ul>
+<div class="callout callout-info">
+  <strong>Division of labor:</strong> AI clears the repetitive work &mdash; timeline authoring, rendering, TTS. Final creative taste lives in the manual polish layer.
+</div>
+
+<!-- ============================================================ -->
+<h2>Dependencies</h2>
+<p>The video pipeline requires Node.js, pnpm, FFmpeg, and a Chromium binary (auto-installed by Remotion).</p>
+
+<div class="dep-grid">
+  <div class="dep-card">
+    <strong>Node.js 22.4+</strong>
+    <code>node --version</code>
+    <div class="dep-desc">Runtime for pipeline scripts and Remotion</div>
+  </div>
+  <div class="dep-card">
+    <strong>pnpm</strong>
+    <code>npm install -g pnpm</code>
+    <div class="dep-desc">Package manager for the Remotion project</div>
+  </div>
+  <div class="dep-card">
+    <strong>FFmpeg + ffprobe</strong>
+    <code>brew install ffmpeg</code>
+    <div class="dep-desc">Video/audio processing, artifact validation, segment extraction</div>
+  </div>
+  <div class="dep-card">
+    <strong>Chromium (auto)</strong>
+    <code>remotion browser ensure</code>
+    <div class="dep-desc">Auto-installed by <code>ensure-remotion.mjs</code> bootstrap script</div>
+  </div>
+</div>
+
+<h3>Environment Variables</h3>
+<table>
+<thead>
+<tr><th>Variable</th><th>Purpose</th><th>Required</th></tr>
+</thead>
+<tbody>
+<tr><td><code>GEMINI_API_KEY</code></td><td>Gemini TTS provider</td><td>Yes (if using Gemini TTS, which is default)</td></tr>
+<tr><td><code>SUPERTONE_API_KEY</code></td><td>Supertone TTS provider</td><td>Only if using Supertone</td></tr>
+<tr><td><code>ELEVENLABS_API_KEY</code></td><td>ElevenLabs supplementary TTS</td><td>Only if using ElevenLabs</td></tr>
+<tr><td><code>GOOGLE_APPLICATION_CREDENTIALS</code></td><td>Vertex AI authentication</td><td>Alternative to <code>gcloud auth</code></td></tr>
+</tbody>
+</table>
+
+<h3>Bootstrap</h3>
+<pre><code># First-time setup: installs packages and ensures Chromium is available
+node scripts/ensure-remotion.mjs
+
+# Verify setup
+cd remotion-project &amp;&amp; pnpm exec remotion studio</code></pre>
+
+<!-- ============================================================ -->
+<h2>Project Structure</h2>
+<pre><code>skills_ref/video/
++-- SKILL.md
++-- reference/                     # visual-quality.md, tts-integration.md, components.md
++-- scripts/
+|   +-- pipeline.mjs               # CLI entrypoint (sync/async/TTS)
+|   +-- tts.mjs                    # TTS orchestrator (multi-provider)
+|   +-- tts-providers/             # gemini.mjs, supertone.mjs, supertonic.mjs
+|   +-- ensure-remotion.mjs        # Runtime bootstrap
+|   +-- validate-artifact.mjs      # Gate 3: ffprobe validation
+|   +-- presets.mjs                # Resolution presets (ESM)
++-- remotion-project/
+    +-- public/example-timeline.json
+    +-- src/
+        +-- components/            # 11 slide components + barrel
+        +-- timeline/              # JSON-to-React engine</code></pre>
+
+<!-- ============================================================ -->
+<h2>"~&#54644;&#51468;" Usage Examples</h2>
+<p>Real-world examples of how to invoke video tasks in natural language. Korean and English both work.</p>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; &#48156;&#54364; &#51088;&#47308; &#50689;&#49345;&#51004;&#47196; &#47564;&#46308;&#50612;&#51468; &mdash; 1080p &#44032;&#47196; &#47784;&#46300;, 30&#52488;"</div>
+  <div class="example-desc">Creates a Landscape-1080p timeline from your presentation content. The agent authors a JSON timeline with title, content, and code slides, selects an appropriate theme, and renders via the sync pipeline. Output at <code>/tmp/remotion-render/TimelineVideo.mp4</code>.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"TikTok &#49660;&#52768; &#50689;&#49345; &#47564;&#46308;&#50612;&#51468; &mdash; AI &#53944;&#47116;&#46300; &#51452;&#51228;&#47196; 60&#52488;"</div>
+  <div class="example-desc">Auto-selects Portrait-1080p (9:16) preset. Generates 8&ndash;10 elements with a hook-first opening and CTA closing. Applies the Shorts content rules: dense bullets, 6+ line code slides, and varied transitions.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; &#53440;&#51076;&#46972;&#51064;&#50640; &#45208;&#47112;&#51060;&#49496; &#52628;&#44032;&#54644;&#51468; &mdash; &#52264;&#48516;&#54620; &#53668;&#51004;&#47196;"</div>
+  <div class="example-desc">Adds <code>narration</code> and <code>voiceControl</code> fields to each element in the draft timeline. Runs the TTS pipeline with the default Gemini provider (voice: Kore), generates per-cut audio, and produces <code>timeline.final.json</code> with synced durations.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; &#50689;&#49345; 16:9&#50640;&#49436; 9:16&#51004;&#47196; &#48148;&#44984;&#51468; &mdash; &#53581;&#53665; &#51473;&#50521; &#53356;&#47213;"</div>
+  <div class="example-desc">Uses the FFmpeg social media reframing pattern to center-crop a landscape video to portrait. Runs: <code>ffmpeg -i input.mp4 -vf "crop=ih*9/16:ih,scale=1080:1920" vertical.mp4</code>.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#47116;&#45908;&#47553; &#44208;&#44284; &#44160;&#51613;&#54644;&#51468; &mdash; &#54644;&#49345;&#46020;&#47049; &#53076;&#45937; &#47582;&#45716;&#51648; &#54869;&#51064;"</div>
+  <div class="example-desc">Runs the 3-tier validation gate on the rendered artifact. Executes <code>validate-artifact.mjs</code> to verify duration, codec, and resolution via ffprobe against the expected preset.</div>
+</div>
+
+<!-- ============================================================ -->
+<h2>Troubleshooting</h2>
+
+<h3>Remotion Chromium not found</h3>
+<p>If <code>remotion render</code> fails with a browser error, ensure Chromium is installed:</p>
+<pre><code>node scripts/ensure-remotion.mjs
+# Or manually:
+cd remotion-project &amp;&amp; pnpm exec remotion browser ensure</code></pre>
+
+<h3>FFmpeg not found</h3>
+<p>Install FFmpeg and ffprobe:</p>
+<pre><code># macOS
+brew install ffmpeg
+
+# Ubuntu/Debian
+sudo apt-get install -y ffmpeg
+
+# Verify
+ffmpeg -version &amp;&amp; ffprobe -version</code></pre>
+
+<h3>TTS fails with auth error</h3>
+<p>Check that the appropriate environment variable is set for your chosen provider:</p>
+<pre><code># Gemini (default)
+echo $GEMINI_API_KEY
+
+# Supertone
+echo $SUPERTONE_API_KEY
+
+# Supertonic requires no key (runs offline)</code></pre>
+
+<h3>Render output is empty or corrupt</h3>
+<p>Run the artifact validator to diagnose:</p>
+<pre><code>node scripts/validate-artifact.mjs /tmp/remotion-render/TimelineVideo.mp4 --preset Landscape-1080p</code></pre>
+<p>If Gate 3 fails, check the Remotion logs for rendering errors. Common causes: missing fonts, invalid timeline JSON, or out-of-memory on large compositions.</p>
+
+<h3>Duration mismatch after TTS</h3>
+<p>The pipeline auto-corrects <code>durationSec</code> via ffprobe measurement after TTS generation. If durations still seem off, verify the narration text length matches the estimation formula: <code>Math.ceil(text.length / 6.5) + 0.5</code> for Korean text.</p>
+
+<div class="page-nav">
+<a class="prev" href="pdf.html">PDF</a>
+<a class="next" href="../ai-media.html">AI Media Skills</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

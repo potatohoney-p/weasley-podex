@@ -1,0 +1,405 @@
+import test from 'node:test';
+import type { TestContext } from 'node:test';
+import assert from 'node:assert/strict';
+import express from 'express';
+import http from 'node:http';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { spawnSync } from 'node:child_process';
+import {
+    createDashboardNotesRouter,
+} from '../../src/manager/notes/routes.js';
+import { NotesStore } from '../../src/manager/notes/store.js';
+import { NotesTrash } from '../../src/manager/notes/trash.js';
+
+function tmpRoot(): string {
+    return mkdtempSync(join(tmpdir(), 'jaw-notes-routes-test-'));
+}
+
+async function withNotesServer(
+    t: TestContext,
+    fn: (baseUrl: string, root: string) => Promise<void>,
+): Promise<void> {
+    const root = tmpRoot();
+    const dashboardHome = tmpRoot();
+    const app = express();
+    const server = http.createServer(app);
+    t.after(async () => {
+        await new Promise<void>(resolve => {
+            server.close(() => resolve());
+            server.closeIdleConnections();
+            server.closeAllConnections();
+        });
+        rmSync(root, { recursive: true, force: true });
+        rmSync(dashboardHome, { recursive: true, force: true });
+    });
+    await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+    server.unref();
+    const address = server.address();
+    assert.equal(typeof address, 'object');
+    assert.ok(address);
+    const port = address.port;
+    app.use(
+        '/api/dashboard/notes',
+        createDashboardNotesRouter({
+            managerPort: port,
+            store: new NotesStore({ root }),
+            watcher: { version: () => 0, close: () => {} },
+            trash: new NotesTrash({
+                dashboardHome,
+                adapter: { moveToOsTrash: async () => { throw new Error('no system trash'); } },
+            }),
+        }),
+    );
+    app.use(express.json({ limit: '64kb' }));
+    await fn(`http://127.0.0.1:${port}`, root);
+}
+
+async function readJson(response: Response): Promise<Record<string, unknown>> {
+    return await response.json() as Record<string, unknown>;
+}
+
+const PNG_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=';
+const LARGE_PNG_BASE64 = Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    Buffer.alloc(1_200_000),
+]).toString('base64');
+
+test('notes routes create, read, update, tree, rename, and trash markdown files', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const folder = await fetch(`${baseUrl}/api/dashboard/notes/folder`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'daily' }),
+        });
+        assert.equal(folder.status, 201);
+
+        const created = await fetch(`${baseUrl}/api/dashboard/notes/file`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'daily/today.md', content: '# Today' }),
+        });
+        assert.equal(created.status, 201);
+        const createdBody = await readJson(created);
+        assert.equal(createdBody.path, 'daily/today.md');
+
+        const renamedFolder = await fetch(`${baseUrl}/api/dashboard/notes/rename`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ from: 'daily', to: 'archive' }),
+        });
+        assert.equal(renamedFolder.status, 200);
+        const renamedFolderBody = await readJson(renamedFolder);
+        assert.equal(renamedFolderBody.to, 'archive');
+
+        const file = await fetch(`${baseUrl}/api/dashboard/notes/file?path=archive%2Ftoday.md`);
+        assert.equal(file.status, 200);
+        const fileBody = await readJson(file);
+        assert.equal(fileBody.content, '# Today');
+
+        const updated = await fetch(`${baseUrl}/api/dashboard/notes/file`, {
+            method: 'PUT',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'archive/today.md', content: '# Updated', baseRevision: fileBody.revision }),
+        });
+        assert.equal(updated.status, 200);
+
+        const tree = await fetch(`${baseUrl}/api/dashboard/notes/tree`);
+        assert.equal(tree.status, 200);
+        const treeBody = await tree.json() as Array<{ path: string }>;
+        assert.equal(treeBody[0]?.path, 'archive');
+
+        const renamed = await fetch(`${baseUrl}/api/dashboard/notes/rename`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ from: 'archive/today.md', to: 'archive/done.md' }),
+        });
+        assert.equal(renamed.status, 200);
+
+        const trashed = await fetch(`${baseUrl}/api/dashboard/notes/trash`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'archive/done.md' }),
+        });
+        assert.equal(trashed.status, 200);
+        const trashBody = await readJson(trashed);
+        assert.equal(trashBody.kind, 'file');
+        assert.equal(trashBody.deletedTo, 'dashboard-trash');
+    });
+});
+
+test('notes routes expose vault index and capabilities contracts', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        await fetch(`${baseUrl}/api/dashboard/notes/file`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'alpha.md', content: 'See [[beta]].' }),
+        });
+        await fetch(`${baseUrl}/api/dashboard/notes/file`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'beta.md', content: '# Beta' }),
+        });
+
+        const index = await fetch(`${baseUrl}/api/dashboard/notes/index`);
+        assert.equal(index.status, 200);
+        const indexBody = await readJson(index);
+        assert.equal(typeof indexBody.version, 'number');
+        assert.deepEqual((indexBody.notes as Array<{ path: string }>).map(note => note.path), ['alpha.md', 'beta.md']);
+        const links = (indexBody.outgoingLinks as Record<string, Array<{ status: string; resolvedPath?: string }>>)['alpha.md'];
+        assert.equal(links?.[0]?.status, 'resolved');
+        assert.equal(links?.[0]?.resolvedPath, 'beta.md');
+
+        const capabilities = await fetch(`${baseUrl}/api/dashboard/notes/capabilities`);
+        assert.equal(capabilities.status, 200);
+        const capabilitiesBody = await readJson(capabilities);
+        assert.equal(typeof (capabilitiesBody.git as { available: boolean }).available, 'boolean');
+        assert.equal((capabilitiesBody.fileWatching as { provider: string }).provider, 'fs.watch');
+    });
+});
+
+test('notes search route returns markdown hits when ripgrep is available', async (t) => {
+    if (spawnSync('rg', ['--version']).status !== 0) {
+        t.skip('ripgrep is not available in this environment');
+        return;
+    }
+    await withNotesServer(t, async (baseUrl, root) => {
+        mkdirSync(join(root, 'daily'), { recursive: true });
+        writeFileSync(join(root, 'daily', 'today.md'), 'hello jawsidian\n');
+        writeFileSync(join(root, 'daily', 'hello-name.md'), 'body only\n');
+        writeFileSync(join(root, 'daily', 'other.txt'), 'hello hidden\n');
+        mkdirSync(join(root, 'daily', '.assets'), { recursive: true });
+        writeFileSync(join(root, 'daily', '.assets', 'ignored.md'), 'hello ignored\n');
+
+        const response = await fetch(`${baseUrl}/api/dashboard/notes/search?q=hello`);
+        assert.equal(response.status, 200);
+        const body = await response.json() as Array<{ path: string; line: number; context: string; kind: string }>;
+
+        assert.deepEqual(body.map(hit => [hit.kind, hit.path]), [
+            ['path', 'daily/hello-name.md'],
+            ['content', 'daily/today.md'],
+        ]);
+        assert.equal(body[1]?.line, 1);
+        assert.equal(body[1]?.context, 'hello jawsidian');
+    });
+});
+
+test('notes asset routes upload JSON images and serve them with nosniff headers', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const uploaded = await fetch(`${baseUrl}/api/dashboard/notes/asset`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ notePath: 'daily/today.md', mime: 'image/png', dataBase64: PNG_BASE64 }),
+        });
+        assert.equal(uploaded.status, 201);
+        const uploadBody = await readJson(uploaded);
+        assert.equal(uploadBody.ok, true);
+        assert.match(String(uploadBody.path), /^\.assets\/daily__today\/.+\.png$/);
+        assert.equal(uploadBody.markdown, `![pasted image](./${uploadBody.path})`);
+
+        const asset = await fetch(`${baseUrl}/api/dashboard/notes/asset?path=${encodeURIComponent(String(uploadBody.path))}`);
+        assert.equal(asset.status, 200);
+        assert.equal(asset.headers.get('content-type'), 'image/png');
+        assert.equal(asset.headers.get('x-content-type-options'), 'nosniff');
+        assert.ok((await asset.arrayBuffer()).byteLength > 0);
+    });
+});
+
+test('notes asset route keeps its larger JSON parser isolated and origin protected', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const foreignOrigin = await fetch(`${baseUrl}/api/dashboard/notes/asset`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json', origin: 'http://evil.com' },
+            body: JSON.stringify({ notePath: 'note.md', mime: 'image/png', dataBase64: PNG_BASE64 }),
+        });
+        assert.equal(foreignOrigin.status, 403);
+        assert.equal((await readJson(foreignOrigin)).code, 'notes_origin_forbidden');
+
+        const largerThanGenericNotesLimit = await fetch(`${baseUrl}/api/dashboard/notes/asset`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ notePath: 'large.md', mime: 'image/png', dataBase64: LARGE_PNG_BASE64 }),
+        });
+        assert.equal(largerThanGenericNotesLimit.status, 201);
+        const body = await readJson(largerThanGenericNotesLimit);
+        assert.equal(body.ok, true);
+        assert.equal(body.mime, 'image/png');
+    });
+});
+
+test('notes remote asset route imports public images and blocks localhost URLs', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const originalFetch = globalThis.fetch;
+        t.after(() => {
+            globalThis.fetch = originalFetch;
+        });
+        globalThis.fetch = async () => new Response(Buffer.from(PNG_BASE64, 'base64'), {
+            status: 200,
+            headers: { 'content-type': 'image/png' },
+        });
+
+        const imported = await originalFetch(`${baseUrl}/api/dashboard/notes/asset/remote`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ notePath: 'daily/today.md', url: 'https://93.184.216.34/copied.png' }),
+        });
+        assert.equal(imported.status, 201);
+        const importBody = await readJson(imported);
+        assert.equal(importBody.ok, true);
+        assert.match(String(importBody.path), /^\.assets\/daily__today\/.+\.png$/);
+
+        const blocked = await originalFetch(`${baseUrl}/api/dashboard/notes/asset/remote`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ notePath: 'daily/today.md', url: `${baseUrl}/private.png` }),
+        });
+        assert.equal(blocked.status, 400);
+        assert.equal((await readJson(blocked)).code, 'note_asset_remote_host_blocked');
+    });
+});
+
+test('notes routes trash folders with explicit kind', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const folder = await fetch(`${baseUrl}/api/dashboard/notes/folder`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'daily' }),
+        });
+        assert.equal(folder.status, 201);
+
+        const created = await fetch(`${baseUrl}/api/dashboard/notes/file`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'daily/today.md', content: '# Today' }),
+        });
+        assert.equal(created.status, 201);
+
+        const trashed = await fetch(`${baseUrl}/api/dashboard/notes/trash`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'daily', kind: 'folder' }),
+        });
+
+        assert.equal(trashed.status, 200);
+        const body = await readJson(trashed);
+        assert.equal(body.kind, 'folder');
+        assert.equal(body.deletedTo, 'dashboard-trash');
+        assert.equal(typeof body.restoreHint, 'string');
+    });
+});
+
+test('notes trash route rejects invalid trash kind', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const response = await fetch(`${baseUrl}/api/dashboard/notes/trash`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'note.md', kind: 'directory' }),
+        });
+        assert.equal(response.status, 400);
+        const body = await readJson(response);
+        assert.equal(body.code, 'invalid_note_trash_kind');
+    });
+});
+
+test('notes trash route rejects invalid folder trash paths', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const traversal = await fetch(`${baseUrl}/api/dashboard/notes/trash`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: '../outside', kind: 'folder' }),
+        });
+        assert.equal(traversal.status, 400);
+        assert.equal((await readJson(traversal)).code, 'invalid_note_path');
+
+        const fileShapedFolder = await fetch(`${baseUrl}/api/dashboard/notes/trash`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'note.md', kind: 'folder' }),
+        });
+        assert.equal(fileShapedFolder.status, 400);
+        assert.equal((await readJson(fileShapedFolder)).code, 'invalid_note_folder_path');
+    });
+});
+
+test('notes mutations reject foreign origin', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const response = await fetch(`${baseUrl}/api/dashboard/notes/file`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json', origin: 'http://evil.com' },
+            body: JSON.stringify({ path: 'note.md', content: 'x' }),
+        });
+        assert.equal(response.status, 403);
+        const body = await readJson(response);
+        assert.equal(body.code, 'notes_origin_forbidden');
+    });
+});
+
+test('notes routes reject traversal outside notes root', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const response = await fetch(`${baseUrl}/api/dashboard/notes/file?path=..%2Fmanager-instances.json`);
+        assert.equal(response.status, 400);
+        const body = await readJson(response);
+        assert.equal(body.code, 'invalid_note_path');
+    });
+});
+
+test('notes routes return a typed 404 for missing markdown files', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const response = await fetch(`${baseUrl}/api/dashboard/notes/file?path=missing.md`);
+        assert.equal(response.status, 404);
+        const body = await readJson(response);
+        assert.equal(body.code, 'note_not_found');
+    });
+});
+
+test('notes folder rename rejects moving a folder into itself', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const folder = await fetch(`${baseUrl}/api/dashboard/notes/folder`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'daily' }),
+        });
+        assert.equal(folder.status, 201);
+
+        const response = await fetch(`${baseUrl}/api/dashboard/notes/rename`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ from: 'daily', to: 'daily/archive' }),
+        });
+        assert.equal(response.status, 400);
+        const body = await readJson(response);
+        assert.equal(body.code, 'invalid_note_path');
+    });
+});
+
+test('notes route parser allows body over global 64kb and below notes limit', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const response = await fetch(`${baseUrl}/api/dashboard/notes/file`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'large.md', content: 'x'.repeat(70 * 1024) }),
+        });
+        assert.equal(response.status, 201);
+    });
+});
+
+test('notes route parser normalizes malformed JSON and oversized payloads', async (t) => {
+    await withNotesServer(t, async (baseUrl) => {
+        const malformed = await fetch(`${baseUrl}/api/dashboard/notes/file`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: '{not json',
+        });
+        assert.equal(malformed.status, 400);
+        assert.equal((await readJson(malformed)).code, 'invalid_json');
+
+        const oversized = await fetch(`${baseUrl}/api/dashboard/notes/file`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ path: 'too-large.md', content: 'x'.repeat(1_150_000) }),
+        });
+        assert.equal(oversized.status, 413);
+        assert.equal((await readJson(oversized)).code, 'note_payload_too_large');
+    });
+});

@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>事件 — podex 文档</title><link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png"></head><body><button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div><div class="docs-layout"><nav class="docs-sidebar"><div class="docs-logo"><a href="../../">podex</a></div><div class="docs-nav"><div class="docs-nav-section"><div class="docs-nav-title">Getting Started</div><a class="docs-nav-link" href="../">Overview</a><a class="docs-nav-link" href="../quickstart.html">Quickstart</a><a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a></div><div class="docs-nav-section"><div class="docs-nav-title">Concepts</div><a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a><a class="docs-nav-link" href="../concepts/employees.html">Employees</a><a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a><a class="docs-nav-link" href="../concepts/goals.html">Goals</a><a class="docs-nav-link" href="../concepts/skills.html">Skills</a><a class="docs-nav-link" href="../concepts/memory.html">Memory</a><a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a></div><div class="docs-nav-section"><div class="docs-nav-title">Guides</div><a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a><a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a><a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a><a class="docs-nav-link" href="../guides/telegram.html">Telegram</a><a class="docs-nav-link" href="../guides/discord.html">Discord</a><a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a><a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a><a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a></div><div class="docs-nav-section"><div class="docs-nav-title">Reference</div><a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a><a class="docs-nav-link" href="../reference/api.html">Server API</a><a class="docs-nav-link" href="../reference/config.html">Configuration</a><a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a><a class="docs-nav-link active" href="../reference/events.html">Events</a></div><div class="docs-nav-section"><a class="docs-nav-link" href="../changelog.html">Changelog</a></div></div><div class="docs-lang"><a href="../../">EN</a><a href="../ko/">한국어</a><a class="active" href="../">中文</a></div><div class="docs-nav-footer"><a href="https://github.com/potatohoney-p/podex">GitHub</a><a href="../../../">Landing Page</a></div></nav><main class="docs-main">
+<h1>事件</h1>
+<p class="lead">podex 的浏览器 UI 使用 SSE-first 事件通道。Provider 输出会先通过内部 NDJSON/stream-json parser 规范化，public Web 事件通过 <code>GET /api/events</code> 传递。</p>
+<h2>SSE 事件通道</h2>
+<pre><code>GET /api/events
+Accept: text/event-stream
+Last-Event-ID: &lt;last-seen-id&gt;</code></pre>
+<p><code>/api/events</code> 是 data-only SSE stream。服务器不设置 SSE <code>event:</code> 字段，而是在 JSON <code>data:</code> payload 中携带 <code>topic</code> 和 <code>event</code>。</p>
+<table><tr><th>行为</th><th>契约</th></tr>
+<tr><td>Replay cursor</td><td><code>Last-Event-ID</code> header 或 <code>?lastEventId=</code> query</td></tr>
+<tr><td>Replay buffer</td><td><code>src/core/event-bus.ts</code> 中最近 1000 个事件</td></tr>
+<tr><td>Listener cap</td><td>最多 256 个活跃 SSE listener；超出返回 <code>503 {"error":"SSE_CAPACITY"}</code></td></tr>
+<tr><td>Heartbeat</td><td>每 15 秒发送 comment ping</td></tr>
+<tr><td>Replay gap</td><td><code>{"topic":"system","event":"replay_gap"}</code></td></tr>
+<tr><td>Fallback</td><td>WebSocket 只在 <code>/api/events</code> 从未打开的 pre-X-01 server 上作为 client/TUI fallback</td></tr>
+<tr><td>Transient drop UX</td><td>快速 SSE 重连会静默恢复；只有持续超过 8 秒的断线才显示 disconnected 消息</td></tr></table>
+<h2>主要事件</h2>
+<table><tr><th>事件</th><th>载荷</th><th>说明</th></tr>
+<tr><td><code>message</code></td><td><code>{id, role, content}</code></td><td>已保存的聊天消息</td></tr>
+<tr><td><code>agent_tool</code></td><td><code>{traceId, name, input}</code></td><td>Agent 工具调用</td></tr>
+<tr><td><code>agent_output</code></td><td><code>{traceId, content}</code></td><td>Agent 文本输出片段</td></tr>
+<tr><td><code>agent_done</code></td><td><code>{traceId, status}</code></td><td>Agent 执行结束</td></tr>
+<tr><td><code>queue_update</code></td><td><code>{pending, active}</code></td><td>消息队列状态</td></tr>
+<tr><td><code>orc_state</code></td><td><code>{phase, status}</code></td><td>PABCD 编排状态</td></tr>
+<tr><td><code>steer_started</code></td><td><code>{prompt}</code></td><td>Steer 提示注入</td></tr>
+<tr><td><code>goal_done</code></td><td><code>{goalId}</code></td><td>目标完成</td></tr>
+<tr><td><code>goal_done_rejected</code></td><td><code>{reason}</code></td><td>目标完成请求被拒绝</td></tr>
+<tr><td><code>goal_pause_detected</code></td><td><code>{reason}</code></td><td>检测到目标暂停</td></tr>
+<tr><td><code>goal_pause_gate_pending</code></td><td><code>{reason}</code></td><td>首次审计 pause armed；抑制自动 goal continuation</td></tr>
+<tr><td><code>session_switched</code></td><td><code>{sessionId}</code></td><td>活动会话切换</td></tr>
+<tr><td><code>agent:claude-e:*</code></td><td><code>{event}</code></td><td>Claude employee 运行时事件命名空间</td></tr></table>
+<h2>Provider NDJSON 流</h2>
+<p>消息发送和命令执行由 REST 请求启动，provider 输出以换行分隔的 JSON 事件流返回。规范化后的事件经过 <code>src/core/bus.ts</code>：public 事件发布到 SSE event bus，同时 fan-out 给 collector/forwarder 使用的 internal listener。</p>
+<pre><code>POST /api/message
+POST /api/command
+
+{"type":"thinking","content":"..."}
+{"type":"text","content":"Hello! "}
+{"type":"tool","name":"Bash","input":{...}}
+{"type":"done","status":"ok"}</code></pre>
+<h2>Manager worker SSE</h2>
+<p><code>jaw dashboard serve</code> 的 React manager app 使用 manager HTTP endpoint polling。Worker instance 的 live progress 由 manager server 通过 <code>src/manager/worker-events.ts</code> 和 <code>src/manager/worker-sse-client.ts</code> 在 server-side 订阅各 worker 的 <code>GET /api/events</code>，并更新 latest-message cache。</p>
+<h2>Trace 文件</h2>
+<p>会话 trace 以 NDJSON 文件格式保存到 <code>~/.podex/traces/</code>。每一行都是带时间戳和 trace ID 的事件。</p>
+<div class="page-nav"><a class="prev" href="keyboard.html">Keyboard Shortcuts</a><a class="next" href="../changelog.html">Changelog</a></div>
+</main></div></body></html>
+

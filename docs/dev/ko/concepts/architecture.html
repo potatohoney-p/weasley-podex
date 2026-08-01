@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>아키텍처 — podex 문서</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link active" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a class="active" href="../">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>아키텍처</h1>
+<p class="lead">podex는 Node.js 22 기반의 다중 AI 런타임 서버입니다. 루트 핸들러와 200개의 API/미디어 엔드포인트가 CLI, TUI, Web PWA, Electron 데스크톱, Telegram, Discord, Manager 대시보드에 동일한 세션, 메모리, 프로젝트 컨텍스트를 제공합니다.</p>
+
+<h2>시스템 개요</h2>
+<p>모든 런타임 표면은 <code>server.ts</code>를 거칩니다. 서버는 인증, 보안, SSE 이벤트, 부트스트랩을 처리한 뒤 <code>src/routes/</code>와 핵심 하위 시스템으로 위임합니다.</p>
+<pre><code>CLI/TUI/Electron/Web/Telegram/Discord ──HTTP──→ server.ts
+Web events                             ──SSE──→ GET /api/events
+Dashboard (port 24576)                 ─proxy→ src/manager/
+Agent streams                          ─NDJSON→ provider runtime + traces
+
+server.ts ──→ src/routes/* ──→ src/core/ | src/agent/ | src/orchestrator/
+                         └──→ src/memory/ | src/messaging/ | src/browser/</code></pre>
+
+<h2>런타임 표면</h2>
+<table>
+<tr><th>표면</th><th>진입점</th><th>전송 방식</th></tr>
+<tr><td><strong>CLI</strong></td><td><code>bin/podex.ts</code> + <code>bin/commands/*.ts</code></td><td>서버로의 HTTP</td></tr>
+<tr><td><strong>Terminal TUI</strong></td><td><code>src/tui/</code></td><td>터미널 렌더링 + 서버 명령</td></tr>
+<tr><td><strong>Web UI</strong></td><td><code>public/index.html</code></td><td>HTTP + SSE</td></tr>
+<tr><td><strong>Electron Desktop</strong></td><td><code>electron/src/</code></td><td>번들 sidecar 서버 + WebView</td></tr>
+<tr><td><strong>Telegram</strong></td><td><code>src/telegram/bot.ts</code></td><td>Grammy 봇 폴링</td></tr>
+<tr><td><strong>Discord</strong></td><td><code>src/discord/bot.ts</code></td><td>discord.js 게이트웨이</td></tr>
+<tr><td><strong>Manager Dashboard</strong></td><td><code>src/manager/</code> + <code>public/manager/</code></td><td>별도 포트 스캔, 프록시, 인스턴스 관리</td></tr>
+</table>
+
+<h2>라우트 모듈</h2>
+<p>서버는 루트 핸들러와 라우트 모듈을 합쳐 201개의 핸들러를 등록합니다. 각 모듈은 Express 앱과 인증 미들웨어를 받는 독립적인 등록 함수입니다.</p>
+<table>
+<tr><th>모듈</th><th>라우트 수</th><th>역할</th></tr>
+<tr><td><code>server.ts</code> (기본)</td><td>14</td><td>헬스체크, 세션, 메시지, 인증, 명령, 중지, 초기화</td></tr>
+<tr><td><code>settings.ts</code></td><td>18</td><td>설정, 프롬프트, heartbeat-md, MCP, CLI 레지스트리, 쿼터</td></tr>
+<tr><td><code>browser.ts</code></td><td>43</td><td>브라우저 기본 동작, 탭 관리, web-ai 자동화 및 code-mode 회수</td></tr>
+<tr><td><code>memory.ts</code></td><td>13</td><td>메모리 런타임, KV 저장소, 메모리 파일</td></tr>
+<tr><td><code>jaw-memory.ts</code></td><td>11</td><td>Jaw 메모리 검색, 읽기, 저장, 소울, 플러시, 리플렉션</td></tr>
+<tr><td><code>orchestrate.ts</code></td><td>11</td><td>PABCD 상태, 워커, 디스패치, 큐 관리</td></tr>
+<tr><td><code>goal.ts</code></td><td>3</td><td>지속적 목표 상태, 이력</td></tr>
+<tr><td><code>goal-run.ts</code></td><td>3</td><td>범위 제한 목표 실행 생명주기</td></tr>
+<tr><td><code>messaging.ts</code></td><td>6</td><td>업로드, 파일 열기, 음성, 채널 전송</td></tr>
+<tr><td><code>employees.ts</code></td><td>5</td><td>직원 CRUD 및 초기화</td></tr>
+<tr><td><code>skills.ts</code></td><td>5</td><td>스킬 목록, 활성화, 비활성화, 초기화</td></tr>
+<tr><td><code>avatar.ts</code></td><td>4</td><td>에이전트/사용자 아바타 이미지 관리</td></tr>
+<tr><td><code>traces.ts</code></td><td>3</td><td>공개 트레이스 요약 및 이벤트 조회</td></tr>
+<tr><td><code>heartbeat.ts</code></td><td>2</td><td>하트비트 GET 및 검증된 PUT</td></tr>
+<tr><td><code>i18n.ts</code></td><td>2</td><td>언어 목록 및 로케일 번들</td></tr>
+</table>
+
+<h2>파일 트리 개요</h2>
+<pre><code>podex/
+├── bin/                    # CLI entry + 30 command files
+│   ├── podex.ts          # Root CLI router
+│   └── commands/           # serve, init, doctor, chat, browser, ...
+├── server.ts               # Express/SSE bootstrap (593L)
+├── src/
+│   ├── core/               # 30 files — config, DB, bus, i18n, employees
+│   ├── agent/              # 37 files — spawn, events, lifecycle, ACP
+│   ├── orchestrator/       # 10 files — PABCD pipeline, state machine
+│   ├── prompt/             # builder + templates
+│   ├── memory/             # 13 files — runtime, indexing, flush, identity
+│   ├── cli/                # registry, commands, handlers, ACP client
+│   ├── messaging/          # shared Telegram/Discord runtime
+│   ├── telegram/           # Telegram bot transport
+│   ├── discord/            # Discord bot transport
+│   ├── browser/            # CDP control + web-ai automation
+│   ├── routes/             # 32 route registrars
+│   ├── manager/            # Dashboard server
+│   ├── security/           # Path guards, input validation
+│   └── shared/             # Tool-log sanitization
+├── public/                 # Web UI (Vanilla TS + Vite 8)
+│   ├── js/                 # 86 TypeScript modules
+│   ├── css/                # 11 CSS files
+│   ├── manager/            # React 19 dashboard app
+│   └── dist/               # Build output
+├── electron/               # Electron desktop shell + packaged sidecar
+├── native/                 # jaw-claude-i Rust helper
+│   └── jaw-claude-i/       # 15 Rust source files
+└── tests/                  # 447 test files</code></pre>
+
+<h2>핵심 하위 시스템</h2>
+<table>
+<tr><th>하위 시스템</th><th>위치</th><th>역할</th></tr>
+<tr><td>에이전트 런타임</td><td><code>src/agent/</code></td><td>CLI 프로세스 생성, NDJSON 이벤트 스트리밍, 세션 관리, 큐, 폴백, 재시도</td></tr>
+<tr><td>오케스트레이터</td><td><code>src/orchestrator/</code></td><td>PABCD 상태 머신, 직원 디스패치, 워커 모니터링</td></tr>
+<tr><td>메모리</td><td><code>src/memory/</code></td><td>3계층 메모리(구조화/에피소드/시맨틱), FTS5 인덱싱, 플러시, 리플렉션</td></tr>
+<tr><td>프롬프트 빌더</td><td><code>src/prompt/</code></td><td>9단계 프롬프트 파이프라인: A1, A2, 메모리, 오케스트레이션, 하트비트, 스킬, 위임</td></tr>
+<tr><td>브라우저</td><td><code>src/browser/</code></td><td>Chrome CDP 제어, 탭 생명주기, Web AI 자동화, provider별 어댑터</td></tr>
+<tr><td>메시징</td><td><code>src/messaging/</code></td><td>공유 Telegram/Discord 채널 라우팅, 대상 추적</td></tr>
+</table>
+
+<h2>보안 모델</h2>
+<ul>
+<li><strong>인증</strong>: 71개의 변경 라우트 모두 <code>requireAuth</code>를 요구합니다. 루프백 요청은 토큰을 우회하며, LAN 우회는 선택적 설정입니다.</li>
+<li><strong>속도 제한</strong>: 인메모리, IP 기반, 분당 120개 요청.</li>
+<li><strong>경로 가드</strong>: <code>assertMemoryRelPath()</code>, <code>assertSkillId()</code>, <code>safeResolveUnder()</code>가 경로 탐색 공격을 방지합니다.</li>
+<li><strong>토큰 부트스트랩</strong>: <code>GET /api/auth/token</code>은 <code>Sec-Fetch-Site</code>를 확인하여 교차 출처 토큰 탈취를 방지합니다.</li>
+</ul>
+
+<h2>데이터 저장소</h2>
+<p>podex는 <code>better-sqlite3</code>를 통해 SQLite를 사용하여 세션, 메시지, 메모리, 직원, 오케스트레이션 상태, 대기 중인 메시지를 저장합니다. 데이터베이스 스키마는 <code>src/core/db.ts</code>에 정의되어 있습니다.</p>
+<pre><code>session           # active CLI, session ID, model, working directory
+messages          # conversation history with trace and tool log
+memory            # key-value memory store
+employees         # registered employee agents
+employee_sessions # per-employee session tracking
+orc_state         # PABCD orchestration state
+queued_messages   # pending message queue</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="../quickstart-first-run.html">First Run</a>
+<a class="next" href="employees.html">Employees</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

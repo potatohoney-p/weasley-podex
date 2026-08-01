@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Workflow Skills — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link active" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Dev Workflow Skills</h1>
+<p class="lead">Skills that accelerate the daily development loop -- from brainstorming and planning through TDD, debugging, code orientation, and maintenance tasks like changelog generation and dependency management.</p>
+
+<h2>Overview</h2>
+<p>Dev Workflow skills are the day-to-day companions that live inside your development cycle. Unlike orchestration skills (which manage multi-step projects) or cloud skills (which handle deployment), these skills operate at the individual task level: understanding an error, choosing a data structure, writing a test plan, or summarizing a log file.</p>
+
+<div class="callout callout-info">All dev workflow skills can be invoked conversationally. Just describe what you need -- <code>"TDD로 개발해줘"</code>, <code>"이 에러 뭔지 설명해줘"</code>, <code>"changelog 만들어줘"</code> -- and the appropriate skill activates automatically.</div>
+
+<h2>Skill Catalog</h2>
+<table>
+<tr><th>Skill</th><th>Category</th><th>Description</th></tr>
+<tr><td><code>brainstorming</code></td><td>Planning</td><td>Structured ideation sessions with diverge/converge phases, mind-mapping, and ranked output</td></tr>
+<tr><td><code>writing-plans</code></td><td>Planning</td><td>Generate implementation plans with milestones, acceptance criteria, and dependency graphs</td></tr>
+<tr><td><code>tdd</code></td><td>Development</td><td>Test-Driven Development loop: write failing test, implement, refactor, repeat</td></tr>
+<tr><td><code>debugging-helpers</code></td><td>Debugging</td><td>Automated hypothesis generation, bisect assistance, and fix suggestions</td></tr>
+<tr><td><code>debugging-checklist</code></td><td>Debugging</td><td>Systematic step-by-step checklist for common bug categories (race conditions, state bugs, off-by-one)</td></tr>
+<tr><td><code>git-worktrees</code></td><td>Version Control</td><td>Manage parallel git worktrees for multi-branch development without stashing</td></tr>
+<tr><td><code>dispatching-parallel-agents</code></td><td>Orchestration</td><td>Fan out sub-tasks to parallel agents and collect results</td></tr>
+<tr><td><code>codebase-orientation</code></td><td>Navigation</td><td>Map unfamiliar codebases: directory structure, entry points, dependency graphs, key abstractions</td></tr>
+<tr><td><code>context-compression</code></td><td>Context</td><td>Compress long conversations and large files into compact context summaries</td></tr>
+<tr><td><code>deep-research</code></td><td>Research</td><td>Multi-source research with adversarial verification and cited reports</td></tr>
+<tr><td><code>skill-creator</code></td><td>Meta</td><td>Create new podex skills from templates with SKILL.md, triggers, and references</td></tr>
+<tr><td><code>error-message-explainer</code></td><td>Diagnostics</td><td>Parse and explain error messages, stack traces, and panic logs in plain language</td></tr>
+<tr><td><code>config-file-explainer</code></td><td>Diagnostics</td><td>Annotate configuration files (YAML, TOML, JSON, INI) with per-field explanations</td></tr>
+<tr><td><code>log-summarizer</code></td><td>Diagnostics</td><td>Condense verbose log output into actionable summaries with timestamps and severity</td></tr>
+<tr><td><code>linter-fix-guide</code></td><td>Maintenance</td><td>Explain linter/formatter warnings and auto-apply fixes across the codebase</td></tr>
+<tr><td><code>data-structure-chooser</code></td><td>Design</td><td>Recommend optimal data structures based on access patterns, constraints, and language</td></tr>
+<tr><td><code>dependency-install-helper</code></td><td>Maintenance</td><td>Resolve install failures, version conflicts, peer dependency issues, and lockfile mismatches</td></tr>
+<tr><td><code>changelog-generator</code></td><td>Maintenance</td><td>Generate changelogs from git history following Keep a Changelog / Conventional Commits</td></tr>
+</table>
+
+<h2>Planning Skills</h2>
+
+<h3>brainstorming</h3>
+<p>Runs a structured ideation session. The skill uses a diverge-then-converge pattern: first generating as many ideas as possible, then filtering and ranking them by feasibility, impact, and effort.</p>
+<pre><code># Start a brainstorming session
+"새로운 알림 시스템을 브레인스토밍해줘"
+
+# With constraints
+"Redis 없이 실시간 알림을 구현할 방법을 브레인스토밍해줘"</code></pre>
+
+<div class="callout callout-info">Brainstorming outputs are saved to notes automatically when Jawsidian is enabled, so you can revisit ideas later from the dashboard.</div>
+
+<h3>writing-plans</h3>
+<p>Generates a structured implementation plan with phases, milestones, file-level tasks, and acceptance criteria. Outputs a markdown plan that can be piped into a goal.</p>
+<pre><code># Generate an implementation plan
+"OAuth2 로그인 기능 구현 계획 세워줘"
+
+# Plan with time estimates
+"이 리팩터링 플랜 만들어줘, 시간 추정도 포함해서"</code></pre>
+<table>
+<tr><th>Output Section</th><th>Contents</th></tr>
+<tr><td>Overview</td><td>Problem statement, scope, and non-goals</td></tr>
+<tr><td>Phases</td><td>Ordered implementation phases with dependencies</td></tr>
+<tr><td>File Plan</td><td>Per-file changes with create/modify/delete annotations</td></tr>
+<tr><td>Acceptance Criteria</td><td>Testable conditions that define "done"</td></tr>
+<tr><td>Risks</td><td>Known risks and mitigation strategies</td></tr>
+</table>
+
+<h2>Development Skills</h2>
+
+<h3>tdd</h3>
+<p>Drives a full Test-Driven Development cycle. The skill follows the Red-Green-Refactor loop: write a failing test first, implement the minimum code to pass, then refactor while keeping tests green.</p>
+<pre><code># Start TDD for a new feature
+"TDD로 사용자 인증 모듈 개발해줘"
+
+# TDD with a specific test framework
+"Jest 기반으로 TDD 해줘, API rate limiter 만들어야 돼"</code></pre>
+
+<p>The TDD skill follows this loop automatically:</p>
+<ol>
+<li><strong>Red</strong> -- Write a failing test that describes the desired behavior</li>
+<li><strong>Green</strong> -- Write the minimum implementation to make the test pass</li>
+<li><strong>Refactor</strong> -- Clean up duplication, improve naming, extract helpers</li>
+<li><strong>Repeat</strong> -- Move to the next behavior until the feature is complete</li>
+</ol>
+
+<div class="callout callout-info">The TDD skill integrates with the project's existing test runner. It auto-detects Jest, Vitest, pytest, Go test, and Cargo test configurations.</div>
+
+<h3>git-worktrees</h3>
+<p>Manages git worktrees for parallel multi-branch development. Instead of stashing or committing WIP changes, create isolated worktrees for each branch.</p>
+<pre><code># Create a worktree for a feature branch
+"feature/notifications 브랜치로 워크트리 만들어줘"
+
+# List active worktrees
+"현재 워크트리 목록 보여줘"
+
+# Clean up merged worktrees
+"머지된 워크트리 정리해줘"</code></pre>
+
+<h3>dispatching-parallel-agents</h3>
+<p>Fans out independent sub-tasks to parallel agents and collects results. Useful for large refactors, multi-file migrations, or running checks across multiple packages.</p>
+<pre><code># Parallel lint + test + type-check
+"lint, test, type-check 병렬로 돌려줘"
+
+# Fan out file migrations
+"이 10개 파일을 병렬로 새 API 형식으로 마이그레이션해줘"</code></pre>
+
+<div class="callout callout-warn">Parallel agents share the filesystem but not conversation context. Each agent receives only its specific sub-task instructions.</div>
+
+<h2>Debugging Skills</h2>
+
+<h3>debugging-helpers</h3>
+<p>Automated debugging assistance that generates hypotheses, suggests diagnostic steps, and proposes fixes based on error context and code structure.</p>
+<pre><code># Debug a runtime error
+"이 TypeError 디버깅 도와줘"
+
+# Debug with stack trace
+"이 스택 트레이스 분석해줘:
+  TypeError: Cannot read properties of undefined (reading 'map')
+    at UserList (UserList.tsx:42)"</code></pre>
+
+<h3>debugging-checklist</h3>
+<p>Provides systematic checklists tailored to specific bug categories. Each checklist walks through verification steps from most likely cause to least likely.</p>
+<table>
+<tr><th>Bug Category</th><th>Checklist Focus</th></tr>
+<tr><td>Race condition</td><td>Shared state access, async ordering, lock contention</td></tr>
+<tr><td>State management</td><td>Stale closures, mutation vs immutability, re-render triggers</td></tr>
+<tr><td>Off-by-one</td><td>Loop bounds, array indexing, fence-post patterns</td></tr>
+<tr><td>Memory leak</td><td>Event listeners, closures, circular references, timers</td></tr>
+<tr><td>Network</td><td>Timeout, CORS, serialization, retry logic</td></tr>
+</table>
+<pre><code># Get a debugging checklist
+"메모리 릭 디버깅 체크리스트 줘"
+"race condition 체크리스트로 점검해줘"</code></pre>
+
+<h2>Navigation &amp; Context Skills</h2>
+
+<h3>codebase-orientation</h3>
+<p>Maps an unfamiliar codebase by analyzing directory structure, entry points, module boundaries, and dependency relationships. Produces a concise orientation document.</p>
+<pre><code># Orient to a new project
+"이 프로젝트 구조 파악해줘"
+
+# Focus on a specific area
+"src/api 디렉터리 구조 설명해줘"</code></pre>
+
+<p>Output includes:</p>
+<ul>
+<li>Directory tree with annotations</li>
+<li>Entry points and build configuration</li>
+<li>Key abstractions and their relationships</li>
+<li>Data flow diagrams (when applicable)</li>
+<li>Recommended reading order for onboarding</li>
+</ul>
+
+<h3>context-compression</h3>
+<p>Compresses long conversation history or large file contents into compact summaries that preserve essential context while reducing token usage.</p>
+<pre><code># Compress current conversation
+"컨텍스트 압축해줘"
+
+# Summarize a large file for context
+"이 파일 요약해서 컨텍스트로 만들어줘"</code></pre>
+
+<div class="callout callout-info">Context compression is automatically triggered when conversation length approaches the model's context window limit. You can also invoke it manually to free up space for new instructions.</div>
+
+<h3>deep-research</h3>
+<p>Performs multi-source research with fan-out web searches, source verification, adversarial claim checking, and a final cited report. Best for complex technical questions that require cross-referencing multiple sources.</p>
+<pre><code># Research a technical topic
+"WebSocket vs SSE 성능 비교 리서치해줘"
+
+# Deep dive with specific focus
+"Bun vs Node.js 번들 사이즈 차이를 deep research 해줘"</code></pre>
+
+<h2>Diagnostics Skills</h2>
+
+<h3>error-message-explainer</h3>
+<p>Parses error messages, stack traces, and panic logs, then explains them in plain language with actionable fix suggestions.</p>
+<pre><code># Explain an error
+"이 에러 뭔지 설명해줘: ENOENT: no such file or directory"
+
+# Explain a complex stack trace
+"이 Rust panic 설명해줘:
+  thread 'main' panicked at 'index out of bounds: the len is 3 but the index is 5'"</code></pre>
+
+<table>
+<tr><th>Supported Formats</th><th>Examples</th></tr>
+<tr><td>JavaScript/TypeScript</td><td>TypeError, ReferenceError, SyntaxError, unhandled rejection</td></tr>
+<tr><td>Python</td><td>Traceback, ImportError, AttributeError, KeyError</td></tr>
+<tr><td>Rust</td><td>panic!, unwrap failures, borrow checker errors</td></tr>
+<tr><td>Go</td><td>runtime panics, goroutine traces, nil pointer dereferences</td></tr>
+<tr><td>System</td><td>POSIX signals, errno codes, segfaults, OOM kills</td></tr>
+</table>
+
+<h3>config-file-explainer</h3>
+<p>Reads a configuration file and annotates each field with its purpose, valid values, and common pitfalls.</p>
+<pre><code># Explain a config file
+"tsconfig.json 설명해줘"
+"이 docker-compose.yml 각 필드 설명해줘"
+"wrangler.toml 설정 분석해줘"</code></pre>
+
+<h3>log-summarizer</h3>
+<p>Condenses verbose log output into structured summaries organized by timestamp, severity, and component. Highlights anomalies and recurring patterns.</p>
+<pre><code># Summarize application logs
+"이 로그 요약해줘"
+
+# Filter and summarize
+"ERROR 레벨 로그만 요약해줘, 최근 1시간"</code></pre>
+
+<h2>Maintenance Skills</h2>
+
+<h3>linter-fix-guide</h3>
+<p>Explains linter and formatter warnings in context, then auto-applies fixes across the codebase. Supports ESLint, Prettier, Ruff, Clippy, golangci-lint, and more.</p>
+<pre><code># Fix all linter warnings
+"린터 경고 전부 고쳐줘"
+
+# Explain a specific rule
+"no-unused-vars 규칙이 왜 중요한지 설명해줘"
+
+# Fix with scope
+"src/components 폴더만 린트 수정해줘"</code></pre>
+
+<h3>data-structure-chooser</h3>
+<p>Recommends the optimal data structure based on your access patterns, size constraints, and language. Provides Big-O comparisons and implementation examples.</p>
+<pre><code># Get a recommendation
+"빈번한 삽입/삭제가 있고 정렬 상태를 유지해야 해. 어떤 자료구조가 좋아?"
+
+# Compare options
+"HashMap vs BTreeMap, 내 유즈케이스에 뭐가 맞아?"</code></pre>
+
+<h3>dependency-install-helper</h3>
+<p>Resolves dependency installation failures including version conflicts, peer dependency issues, lockfile corruption, and platform-specific build errors.</p>
+<pre><code># Fix install failure
+"npm install 실패했어, 도와줘"
+
+# Resolve version conflict
+"peer dependency 충돌 해결해줘"
+
+# Clean reinstall
+"node_modules 완전히 초기화하고 다시 설치해줘"</code></pre>
+
+<h3>changelog-generator</h3>
+<p>Generates changelogs from git history following the <a href="https://keepachangelog.com/">Keep a Changelog</a> format with Conventional Commits parsing.</p>
+<pre><code># Generate changelog for latest release
+"changelog 만들어줘"
+
+# Generate for a specific range
+"v1.2.0부터 v1.3.0까지 changelog 생성해줘"
+
+# With category grouping
+"changelog을 Added/Changed/Fixed/Removed로 분류해서 만들어줘"</code></pre>
+
+<table>
+<tr><th>Commit Prefix</th><th>Changelog Category</th></tr>
+<tr><td><code>feat:</code></td><td>Added</td></tr>
+<tr><td><code>fix:</code></td><td>Fixed</td></tr>
+<tr><td><code>refactor:</code>, <code>perf:</code></td><td>Changed</td></tr>
+<tr><td><code>BREAKING CHANGE:</code></td><td>Breaking Changes</td></tr>
+<tr><td><code>docs:</code></td><td>Documentation</td></tr>
+<tr><td><code>chore:</code>, <code>ci:</code></td><td>Maintenance</td></tr>
+</table>
+
+<h2>Meta Skills</h2>
+
+<h3>skill-creator</h3>
+<p>Bootstraps a new podex skill from a template. Generates the <code>SKILL.md</code> orchestrator file, trigger patterns, and a <code>references/</code> directory for deep guidance docs.</p>
+<pre><code># Create a new skill
+"새 스킬 만들어줘: docker-compose-helper"
+
+# Create with trigger phrases
+"'도커 컴포즈', 'docker compose'를 트리거로 하는 스킬 만들어줘"</code></pre>
+
+<p>Generated structure:</p>
+<pre><code>skills/
+  docker-compose-helper/
+    SKILL.md           # Orchestrator with role, triggers, and workflow
+    references/
+      compose-spec.md  # Deep reference material
+      examples.md      # Example invocations</code></pre>
+
+<h2>Common Patterns</h2>
+
+<div class="callout callout-info"><strong>Natural language invocation:</strong> You do not need to remember skill names. Just describe your intent in natural language and the appropriate skill activates. Mix Korean and English freely -- <code>"이 에러 explain 해줘"</code>, <code>"TDD로 auth module 만들어줘"</code>.</div>
+
+<h3>Chaining skills together</h3>
+<p>Dev workflow skills compose naturally. A typical feature development flow might chain several skills in sequence:</p>
+<pre><code># 1. Brainstorm approaches
+"알림 시스템 설계를 브레인스토밍해줘"
+
+# 2. Create an implementation plan
+"2번 방안으로 구현 계획 세워줘"
+
+# 3. Develop with TDD
+"TDD로 개발 시작해줘"
+
+# 4. Debug any issues
+"이 테스트 실패 디버깅해줘"
+
+# 5. Generate changelog
+"작업 내용으로 changelog 업데이트해줘"</code></pre>
+
+<h3>Combining with goals</h3>
+<p>For larger tasks, wrap workflow skills inside a <a href="../concepts/goals.html">goal</a> for progress tracking and persistence:</p>
+<pre><code>/goal create "Implement notification system"
+# The goal orchestrator will invoke brainstorming, writing-plans,
+# tdd, and changelog-generator as needed throughout the lifecycle.</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="devtools-security.html">Security &amp; Review</a>
+<a class="next" href="productivity.html">Productivity</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

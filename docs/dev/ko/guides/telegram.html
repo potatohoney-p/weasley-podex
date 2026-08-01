@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Telegram — podex 문서</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link active" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a class="active" href="../">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Telegram</h1>
+<p class="lead">Telegram을 통해 podex 에이전트를 원격으로 제어하세요. 메시지 전송, 응답 수신, 에이전트 출력 전달, STT를 활용한 음성 메시지 처리, 슬래시 명령어 사용까지 -- 모두 휴대폰에서 가능합니다.</p>
+
+<h2>설정</h2>
+<h3>1. BotFather로 봇 생성</h3>
+<ol>
+<li>Telegram에서 <a href="https://t.me/BotFather">@BotFather</a>를 엽니다</li>
+<li><code>/newbot</code>을 보내고 안내에 따릅니다</li>
+<li>봇 토큰을 복사합니다 (<code>123456:ABC-DEF...</code> 형태)</li>
+</ol>
+
+<h3>2. settings.json 구성</h3>
+<pre><code>{
+  "telegram": {
+    "token": "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
+    "allowedChatIds": [],
+    "forwardAll": true
+  }
+}</code></pre>
+<div class="callout callout-info">처음에는 <code>allowedChatIds</code>를 비워 두세요. 봇에 <code>/id</code>를 보내 채팅 ID를 확인한 후, 보안을 위해 배열에 추가하세요.</div>
+
+<h3>3. 대안: jaw init 사용</h3>
+<pre><code>jaw init --channel telegram --telegram-token "YOUR_TOKEN"</code></pre>
+
+<h2>메시지 송수신</h2>
+<ul>
+<li><strong>텍스트 메시지</strong> -- 봇에 텍스트를 보내면 에이전트에 프롬프트로 전달됩니다</li>
+<li><strong>슬래시 명령어</strong> -- Telegram에서 직접 <code>/model</code>, <code>/cli</code>, <code>/status</code> 등을 사용할 수 있습니다</li>
+<li><strong>사진 및 문서</strong> -- 첨부 파일은 다운로드되어 저장되고, 에이전트에 설명이 전달됩니다</li>
+<li><strong>음성 메시지</strong> -- Gemini STT(또는 Whisper 폴백)를 통해 텍스트로 변환되어 전송됩니다</li>
+</ul>
+
+<h2>전달</h2>
+<p><code>forwardAll</code>이 <code>true</code>이면 에이전트의 <code>agent_done</code> 결과가 자동으로 Telegram 채팅으로 전달됩니다. Telegram에서 시작된 결과는 에코를 방지하기 위해 제외됩니다.</p>
+<pre><code>/forward on   # Enable forwarding
+/forward off  # Disable forwarding</code></pre>
+
+<h2>파일 전송</h2>
+<p>에이전트는 채널 전송 API를 사용하여 Telegram으로 파일을 보낼 수 있습니다:</p>
+<pre><code>POST /api/telegram/send
+POST /api/channel/send  # Unified endpoint (preferred)</code></pre>
+<p>파일은 20MB 크기 제한에 따라 검증됩니다. Telegram 메시지는 4096자 단위로 분할되며 Telegram HTML 형식으로 변환됩니다.</p>
+
+<h2>그룹 채팅</h2>
+<p>그룹/슈퍼그룹 채팅에서는 <code>@botUsername</code>으로 멘션할 때만 봇이 응답합니다. 멘션은 처리 전에 메시지에서 자동으로 제거됩니다.</p>
+
+<h2>Dashboard Telegram Hub (P0–P4)</h2>
+<p>포럼 토픽을 서로 다른 podex 인스턴스로 라우팅합니다. Manager UI에서 <code>(chatId, threadId) → port</code> 매핑을 설정합니다. Hub 명령어: <code>/setthread</code>, <code>/threads</code>, <code>/hubhelp</code>. <strong>P4:</strong> Manager UI에서 토픽별 <code>model</code>/<code>systemPrompt</code> override. 자세한 hub-member relay 모델은 <code>structure/telegram.md</code>를 참조하세요.</p>
+
+<h2>Watchdog 진단</h2>
+<p>에이전트 턴이 idle/progress watchdog 임계값을 넘어 멈추면, 종료 진단이 원래 Telegram 채팅 또는 포럼 토픽으로 전달되어 운영자가 턴이 끝난 이유를 확인할 수 있습니다.</p>
+
+<h2>사용 가능한 명령어</h2>
+<p>CLI/Web/Telegram/Discord에 51개 슬래시 명령어가 등록되어 있습니다 (Telegram에서 37개 표시). workflow helper: <code>/plan</code>, <code>/interview</code>, <code>/review</code>, <code>/search</code>, <code>/goal</code>, <code>/orchestrate</code>, <code>/task</code>, <code>/fork</code>, <code>/gd</code>. CLI/Web 동적 <code>/skill:&lt;id&gt;</code>. 봇 전용 명령어:</p>
+<table>
+<tr><th>명령어</th><th>설명</th></tr>
+<tr><td><code>/start</code></td><td>환영 메시지</td></tr>
+<tr><td><code>/id</code></td><td>채팅 ID 표시</td></tr>
+<tr><td><code>/settings</code></td><td>봇 설정 (서버가 아닌 봇에서 처리)</td></tr>
+</table>
+
+<h2>환경 변수</h2>
+<p>환경 변수를 통해 설정을 재정의할 수 있습니다:</p>
+<pre><code>TELEGRAM_TOKEN=123456:ABC-DEF...
+TELEGRAM_ALLOWED_CHAT_IDS=12345,67890</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="kanban.html">Kanban Board</a>
+<a class="next" href="discord.html">Discord</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

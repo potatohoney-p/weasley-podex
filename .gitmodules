@@ -1,0 +1,11 @@
+﻿[submodule "skills_ref"]
+	path = skills_ref
+	url = https://github.com/potatohoney-p/podex-skills.git
+[submodule "devlog"]
+	path = devlog
+	url = https://github.com/potatohoney-p/podex-internal.git
+	ignore = dirty
+[submodule "officecli"]
+	path = officecli
+	url = https://github.com/potatohoney-p/OfficeCLI.git
+

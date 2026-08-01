@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PABCD Workflow — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.3); }
+.phase-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px 28px; margin: 16px 0 24px; overflow-x: auto; }
+.phase-diagram pre { background: none; border: none; padding: 0; margin: 0; }
+.phase-diagram code { color: var(--accent); font-size: 14px; }
+.phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 16px 0; }
+.phase-card h3 { margin-top: 0; color: var(--accent); }
+.phase-card .gate { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-left: 8px; }
+.gate-stop { background: rgba(248, 113, 113, 0.15); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.3); }
+.gate-auto { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.3); }
+.example-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 10px 0; }
+.example-block .example-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.example-block code { font-size: 14px; color: var(--green); background: none; padding: 0; }
+.pitfall-item { background: var(--surface); border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 12px 0; }
+.pitfall-item h4 { color: var(--red); margin: 0 0 6px; text-transform: none; letter-spacing: 0; font-size: 15px; }
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link active" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">한국어</a>
+    <a href="../../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>PABCD Workflow <span class="badge badge-active">Default Active</span></h1>
+<p class="lead">Structured Plan &rarr; Audit &rarr; Build &rarr; Check &rarr; Done development workflow with mandatory user checkpoints at each gate.</p>
+
+<div class="callout callout-info"><strong>Auto-active skill.</strong> <code>dev-pabcd</code> is one of the 10 development skills injected into every session automatically. It activates during orchestration mode and provides the structured 5-phase workflow that ensures nothing gets built without a reviewed plan.</div>
+
+<h2>Quick Reference</h2>
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Skill name</td><td><code>dev-pabcd</code></td></tr>
+<tr><td>Category</td><td>Development / Orchestration</td></tr>
+<tr><td>Default active</td><td>Yes &mdash; injected at session start</td></tr>
+<tr><td>Requires <code>/skill load</code></td><td>No</td></tr>
+<tr><td>Phases</td><td>P (Plan) &rarr; A (Audit) &rarr; B (Build) &rarr; C (Check) &rarr; D (Done)</td></tr>
+<tr><td>User gates</td><td>P, A, B require approval &mdash; C, D auto-advance</td></tr>
+<tr><td>Worker role</td><td>Read-only verifiers (never write code)</td></tr>
+<tr><td>Reset command</td><td><code>podex orchestrate reset</code></td></tr>
+</table>
+
+<h2>State Machine</h2>
+<p>PABCD is a <strong>one-way loop</strong> &mdash; forward only, no skipping phases. Each phase must complete before advancing to the next.</p>
+
+<div class="phase-diagram">
+<pre><code>IDLE ──&rarr; P ──&rarr; A ──&rarr; B ──&rarr; C ──&rarr; D ──&rarr; IDLE
+         │      │      │      │      │
+        STOP   STOP   STOP   auto   auto
+        wait   wait   wait</code></pre>
+</div>
+
+<p>Phases <strong>P</strong>, <strong>A</strong>, and <strong>B</strong> halt and wait for user approval before advancing. Phases <strong>C</strong> and <strong>D</strong> proceed automatically once their work is complete.</p>
+
+<h3>Transition Commands</h3>
+<table>
+<tr><th>Command</th><th>Transition</th><th>Prerequisite</th></tr>
+<tr><td><code>podex orchestrate P</code></td><td>Enter Planning</td><td>Must be in IDLE</td></tr>
+<tr><td><code>podex orchestrate A</code></td><td>Enter Plan Audit</td><td>Must be in P (plan approved)</td></tr>
+<tr><td><code>podex orchestrate B</code></td><td>Enter Build</td><td>Must be in A (audit passed)</td></tr>
+<tr><td><code>podex orchestrate C</code></td><td>Enter Check</td><td>Must be in B (build approved)</td></tr>
+<tr><td><code>podex orchestrate D</code></td><td>Enter Done</td><td>Must be in C (check complete)</td></tr>
+<tr><td><code>podex orchestrate reset</code></td><td>Return to IDLE</td><td>Any state</td></tr>
+</table>
+
+<h2>Phase Details</h2>
+
+<div class="phase-card">
+<h3>P &mdash; Plan <span class="gate gate-stop">User Approval Required</span></h3>
+<p>The planning phase reads project docs and dev skills, then produces a plan with two parts:</p>
+<ul>
+<li><strong>Part 1 &mdash; Easy explanation:</strong> What will be built, in non-developer terms. Anyone should understand this.</li>
+<li><strong>Part 2 &mdash; Diff-level precision:</strong> Exact file paths (<code>NEW</code> / <code>MODIFY</code> / <code>DELETE</code>), before/after diffs for <code>MODIFY</code>, complete content for <code>NEW</code>.</li>
+</ul>
+
+<h4>Scope Clarification</h4>
+<p>If the request has unclear scope or unspecified technology, the planner clarifies first:</p>
+<ul>
+<li>Presents 2-3 options as <code>&lt;TechName&gt; -- &lt;plain explanation&gt;</code></li>
+<li>Recommends one with project-specific reasoning</li>
+<li>Confirms once, then proceeds</li>
+</ul>
+
+<h4>Repository Scan (broad changes)</h4>
+<p>For broad changes or unfamiliar repositories, the P phase MUST include:</p>
+<ul>
+<li>Compact tree of the current repository shape</li>
+<li>Detected repo conventions: docs, plans, architecture notes, source-of-truth logs, naming, tests</li>
+<li>Whether existing <code>structure/</code>, <code>devlog/</code>, <code>docs/</code>, <code>plans/</code>, or equivalent logs were read and will be reused</li>
+<li>Whether <code>structure/</code> or <code>devlog/</code> is proposed</li>
+</ul>
+
+<h4>Devlog Naming Convention</h4>
+<p>If PABCD work creates or updates <code>devlog/</code> plan artifacts, the plan MUST list exact numbered Jawdev filenames:</p>
+<pre><code>00_overview.md
+01_phase1_&lt;slug&gt;.md
+02_phase2_&lt;slug&gt;.md</code></pre>
+<p>Bare filenames like <code>PLAN.md</code>, <code>DIFF_PLAN.md</code>, <code>PHASES.md</code>, <code>RCA.md</code>, or <code>plan.md</code> are <strong>not allowed</strong> as new devlog phase files.</p>
+
+<h4>Gate Questions</h4>
+<p>Before presenting the plan, the planner asks:</p>
+<ol>
+<li>"Any business logic I shouldn't decide alone?"</li>
+<li>"Does Part 1 match your intent?"</li>
+</ol>
+<p>The plan is presented and revised on feedback. When the user approves, transition with <code>podex orchestrate A</code>.</p>
+</div>
+
+<div class="phase-card">
+<h3>A &mdash; Plan Audit <span class="gate gate-stop">User Approval Required</span></h3>
+<p>A worker is spawned to <strong>audit the plan</strong> (not the code). The worker verifies:</p>
+<ul>
+<li>All file paths and imports in the plan actually exist</li>
+<li>Function signatures match real code</li>
+<li>No integration risks</li>
+<li>Existing source-of-truth docs/logs were read when present</li>
+<li>No new <code>structure/</code>, <code>devlog/</code>, docs, or AGENTS files are introduced without user approval</li>
+<li>New JS/TS files follow TypeScript preference rules unless the plan states why JS is required</li>
+<li>New TypeScript is strict-compatible or limitations are stated</li>
+<li>New devlog phase documents use the numbered Jawdev filename convention</li>
+</ul>
+<p>Worker outputs JSON for the audit. Results are reviewed:</p>
+<ul>
+<li><strong>FAIL</strong> &rarr; Fix the plan, re-audit</li>
+<li><strong>PASS</strong> &rarr; Report results to the user</li>
+</ul>
+<p>When the user approves, transition with <code>podex orchestrate B</code>.</p>
+</div>
+
+<div class="phase-card">
+<h3>B &mdash; Build <span class="gate gate-stop">User Approval Required</span></h3>
+<p>Implementation phase. The <strong>boss writes all code directly</strong>. Workers are read-only verifiers only.</p>
+<p>After implementing, a worker is dispatched for verification &mdash; checking that code exists and integrates cleanly:</p>
+<ul>
+<li><strong>NEEDS_FIX</strong> &rarr; Boss fixes the issues, re-verifies</li>
+<li><strong>DONE</strong> &rarr; Report results to the user</li>
+</ul>
+<p>Does not create <code>structure/</code> or <code>devlog/</code> unless approved in P or explicitly requested.</p>
+<p>When the user approves, transition with <code>podex orchestrate C</code>.</p>
+</div>
+
+<div class="phase-card">
+<h3>C &mdash; Check <span class="gate gate-auto">Auto-advance</span></h3>
+<p>Final sanity check that runs automatically:</p>
+<ol>
+<li>Verify all files saved and consistent</li>
+<li>Run <code>npx tsc --noEmit</code> (if TypeScript project)</li>
+<li>Update project structure docs if applicable</li>
+<li>Report completion summary</li>
+</ol>
+<p>When done, automatically transitions to D via <code>podex orchestrate D</code>.</p>
+</div>
+
+<div class="phase-card">
+<h3>D &mdash; Done <span class="gate gate-auto">Auto-advance</span></h3>
+<p>Summarizes the entire PABCD flow:</p>
+<ul>
+<li>What was planned (P), audited (A), built (B), checked (C)</li>
+<li>List of files changed</li>
+<li>Any follow-up items</li>
+</ul>
+<p>State returns to <strong>IDLE</strong> automatically.</p>
+</div>
+
+<h2>Rules</h2>
+<table>
+<tr><th>#</th><th>Rule</th><th>Details</th></tr>
+<tr><td>1</td><td>One phase per response</td><td>Present work, then wait for user approval at P, A, B gates. Never skip ahead.</td></tr>
+<tr><td>2</td><td>Strict sequence</td><td>P &rarr; A &rarr; B &rarr; C &rarr; D. Use <code>podex orchestrate reset</code> to restart from IDLE.</td></tr>
+<tr><td>3</td><td>Workers verify, boss writes</td><td>Workers are read-only. All code is written directly by the boss in B phase.</td></tr>
+</table>
+
+<h2>Repository Root Contract</h2>
+<p>Before writing a PABCD plan or dispatching a worker, determine the actual working repository root with <code>pwd -P</code> from the target repo.</p>
+
+<p>Every A/B phase <code>podex dispatch</code> task body <strong>MUST</strong> begin with:</p>
+<pre><code>Project root: /absolute/path/to/current/repo</code></pre>
+
+<table>
+<tr><th>Rule</th><th>Description</th></tr>
+<tr><td><code>Project root</code> = working repo</td><td>Must be the current working repository, not <code>JAW_HOME</code></td></tr>
+<tr><td>No inference</td><td>Never let workers infer the repo root from <code>~/.podex*</code>, <code>process.cwd()</code>, or an employee temp directory</td></tr>
+<tr><td>Absolute paths</td><td>Resolve all relative repo paths (<code>src/</code>, <code>tests/</code>, <code>structure/</code>, <code>skills_ref/</code>) against <code>Project root</code></td></tr>
+<tr><td>Unknown root = STOP</td><td>If <code>Project root</code> is unknown, stop and ask before dispatching</td></tr>
+</table>
+
+<h2>Shared Plan Injection</h2>
+<p>When P completes, the plan is saved to the <strong>worklog <code>## Plan</code> section</strong> (single source of truth) and kept in <code>ctx.plan</code>. No project-root file is created.</p>
+
+<div class="callout callout-info"><strong>Auto-injection:</strong> In A and B phases, the orchestrator automatically injects the full plan body at the top of every <code>podex dispatch</code> task under <code>## Approved Plan</code>. Workers never need to read a plan file &mdash; it is prepended for them.</div>
+
+<p>Your dispatch task body should contain only the actual audit/verify instruction. Example:</p>
+<pre><code>podex dispatch --agent "Backend" --task "Project root: /path/to/repo
+
+Audit: verify the imports in src/routes/auth.ts..."</code></pre>
+<p>No "read the plan" line is needed &mdash; the plan is already injected.</p>
+
+<h2>Pitfalls</h2>
+<p>Critical anti-patterns to avoid during PABCD execution.</p>
+
+<div class="pitfall-item">
+<h4>Delegation Trap</h4>
+<p>In B phase, the <strong>boss writes all code</strong>. Workers are READ-ONLY verifiers.</p>
+<table>
+<tr><th></th><th>Dispatch</th><th>Example</th></tr>
+<tr><td style="color: var(--red); font-weight: 700;">Forbidden</td><td>Writing/implementing</td><td><code>"implement the feature"</code>, <code>"write the code"</code>, <code>"create the file"</code></td></tr>
+<tr><td style="color: var(--green); font-weight: 700;">Allowed</td><td>Verifying/checking</td><td><code>"verify src/x.ts compiles"</code>, <code>"check integration of Y"</code>, <code>"report DONE or NEEDS_FIX"</code></td></tr>
+</table>
+</div>
+
+<div class="pitfall-item">
+<h4>Context Drift</h4>
+<p>If a worker says <em>"I'll proceed based on my assumption of the plan"</em> &mdash; <strong>STOP</strong>. Verify the dispatch went through <code>/api/orchestrate/dispatch</code> (only that path auto-injects the plan). Never let workers reconstruct the plan from a short task description.</p>
+</div>
+
+<div class="pitfall-item">
+<h4>Phase Skip</h4>
+<p>A (audit) is <strong>never "unnecessary"</strong>. Even trivial plans can hit integration issues. Audit first. B verification is <strong>never "skippable"</strong>. Untested code is not "done". The orchestrator does not enforce these gates today &mdash; <strong>YOU</strong> do.</p>
+</div>
+
+<h2>"~해줘" Usage Examples</h2>
+<p>Real-world examples of triggering PABCD workflow in natural language.</p>
+
+<div class="example-block">
+<div class="example-label">Feature development</div>
+<code>"이 프로젝트에 WebSocket 채팅 기능 추가해줘"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">Triggers full PABCD: plans the WebSocket architecture, audits imports and integration points, builds the implementation, checks TypeScript compilation, and summarizes changed files.</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">Refactoring with plan</div>
+<code>"인증 시스템 전체 리팩토링해줘 -- JWT에서 세션 기반으로"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">Scope is broad, so P phase scans the repository tree, identifies all auth-related files, and produces diff-level precision plans. A phase audits that no import paths are broken.</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">Database migration</div>
+<code>"D1 데이터베이스 스키마 마이그레이션 계획 세워줘"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">P phase clarifies migration scope (which tables, backwards compatibility), produces Part 1 easy explanation and Part 2 exact SQL migration files. A phase verifies existing schema references.</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">Multi-file feature</div>
+<code>"API 라우트 5개 새로 만들고 테스트도 다 붙여줘"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">P phase lists all NEW files with complete content. B phase implements each route and test file. C phase runs <code>tsc --noEmit</code> across the project to catch type errors.</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">Bug fix with audit</div>
+<code>"프로덕션 에러 원인 찾아서 고쳐줘 -- PABCD로 진행해"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">Even for bug fixes, PABCD ensures the root cause is documented in P, the fix plan is audited in A, the implementation is verified in B, and nothing else breaks in C.</p>
+</div>
+
+<h2>Relationship to Other Skills</h2>
+<p>PABCD is the <strong>structured workflow layer</strong> that wraps around other development skills. When PABCD is active, specialist skills like <code>dev-backend</code>, <code>dev-frontend</code>, and <code>dev-testing</code> operate within the B (Build) phase under PABCD's supervision.</p>
+
+<table>
+<tr><th>Skill</th><th>Relationship to PABCD</th></tr>
+<tr><td><code>dev</code></td><td>Orchestrator that can activate PABCD for complex tasks</td></tr>
+<tr><td><code>dev-backend</code> / <code>dev-frontend</code></td><td>Specialist context injected during B phase implementation</td></tr>
+<tr><td><code>dev-testing</code></td><td>Test writing happens in B phase; test execution in C phase</td></tr>
+<tr><td><code>dev-code-reviewer</code></td><td>Complements A phase by reviewing code quality post-build</td></tr>
+<tr><td><code>dev-debugging</code></td><td>Can trigger PABCD for structured bug-fix workflows</td></tr>
+<tr><td><code>dev-security</code></td><td>Security checks integrated into A (plan audit) and C (check) phases</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>See also:</strong> <a href="../../concepts/pabcd.html">Concepts &rarr; PABCD</a> for the high-level overview, and <a href="../orchestration.html">Development Skills</a> for the full list of auto-active development skills.</div>
+
+<div class="page-nav">
+<a class="prev" href="../orchestration.html">Development Skills</a>
+<a class="next" href="../index.html">Skill Catalog</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,99 @@
+// ─── Chat Sessions: lightweight conversation threads ──────────
+// Sessions share memory/Boss context but isolate messages.
+// Session 0 = 'default' (existing), 1+ = creation order (permanent numbering).
+
+import { db } from './db.js';
+import { randomUUID } from 'node:crypto';
+import { broadcast } from './bus.js';
+import { removeWidgetDir } from './widget-watcher.js';
+
+export type ChatSessionRow = {
+    id: string;
+    seq: number;
+    label: string | null;
+    created_at: string;
+    updated_at: string;
+};
+
+const listStmt = db.prepare('SELECT * FROM chat_sessions ORDER BY seq ASC');
+const getBySeqStmt = db.prepare('SELECT * FROM chat_sessions WHERE seq = ?');
+const getByIdStmt = db.prepare('SELECT * FROM chat_sessions WHERE id = ?');
+const insertStmt = db.prepare('INSERT INTO chat_sessions (id, seq, label) VALUES (?, ?, ?)');
+const deleteStmt = db.prepare('DELETE FROM chat_sessions WHERE id = ? AND id != \'default\'');
+const maxSeqStmt = db.prepare('SELECT MAX(seq) as max_seq FROM chat_sessions');
+const countMsgsStmt = db.prepare('SELECT COUNT(*) as cnt FROM messages WHERE session_id = ?');
+
+const getActiveStmt = db.prepare("SELECT active_chat_session FROM session WHERE id = 'default'");
+const setActiveStmt = db.prepare("UPDATE session SET active_chat_session = ?, updated_at = CURRENT_TIMESTAMP WHERE id = 'default'");
+
+export function getActiveChatSession(): string {
+    const row = getActiveStmt.get() as { active_chat_session?: string } | undefined;
+    return row?.active_chat_session || 'default';
+}
+
+export function setActiveChatSession(sessionId: string): void {
+    setActiveStmt.run(sessionId);
+    broadcast('session_switched', { sessionId }, 'public');
+}
+
+export function createChatSession(label?: string): { id: string; seq: number } {
+    const id = randomUUID().slice(0, 8);
+    const seq = getNextSeq();
+    insertStmt.run(id, seq, label || null);
+    setActiveChatSession(id);
+    broadcast('session_created', { id, seq, label: label || null }, 'public');
+    return { id, seq };
+}
+
+export function listChatSessions(): (ChatSessionRow & { message_count: number })[] {
+    const rows = listStmt.all() as ChatSessionRow[];
+    return rows.map(r => ({
+        ...r,
+        message_count: (countMsgsStmt.get(r.id) as { cnt: number })?.cnt || 0,
+    }));
+}
+
+export function getChatSessionBySeq(seq: number): ChatSessionRow | null {
+    return (getBySeqStmt.get(seq) as ChatSessionRow) || null;
+}
+
+export function getChatSessionById(id: string): ChatSessionRow | null {
+    return (getByIdStmt.get(id) as ChatSessionRow) || null;
+}
+
+export function deleteChatSession(sessionId: string): boolean {
+    if (sessionId === 'default') return false;
+    const result = deleteStmt.run(sessionId);
+    if (result.changes > 0) {
+        removeWidgetDir(sessionId);
+        // If deleting the active session, switch back to default
+        if (getActiveChatSession() === sessionId) {
+            setActiveChatSession('default');
+        }
+        broadcast('session_list', { sessions: listChatSessions() }, 'public');
+        return true;
+    }
+    return false;
+}
+
+export function getNextSeq(): number {
+    const row = maxSeqStmt.get() as { max_seq: number | null } | undefined;
+    return (row?.max_seq ?? 0) + 1;
+}
+
+export function forkChatSession(sourceSessionId?: string): { id: string; seq: number; copiedCount: number } {
+    const srcId = sourceSessionId || getActiveChatSession();
+    const id = randomUUID().slice(0, 8);
+    const seq = getNextSeq();
+    const srcSession = getByIdStmt.get(srcId) as ChatSessionRow | undefined;
+    const label = srcSession?.label ? `fork of "${srcSession.label}"` : `fork of #${srcSession?.seq ?? 0}`;
+    insertStmt.run(id, seq, label);
+    const copyResult = db.prepare(
+        `INSERT INTO messages (role, content, cli, model, trace, tool_log, cost_usd, duration_ms, created_at, session_id, working_dir, trace_run_id)
+         SELECT role, content, cli, model, trace, tool_log, cost_usd, duration_ms, created_at, ?, working_dir, trace_run_id
+         FROM messages WHERE session_id = ? ORDER BY id ASC`
+    ).run(id, srcId);
+    setActiveChatSession(id);
+    broadcast('session_created', { id, seq, label, forkedFrom: srcId }, 'public');
+    return { id, seq, copiedCount: copyResult.changes };
+}

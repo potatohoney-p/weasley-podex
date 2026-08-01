@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Commands — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.cmd-block { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px 28px; margin: 24px 0; }
+.cmd-block h3 { margin: 0 0 6px; font-size: 18px; }
+.cmd-block h3 code { font-size: 16px; color: var(--accent); background: none; padding: 0; }
+.cmd-block .cmd-sig { font-size: 14px; color: var(--text-dim); margin-bottom: 14px; font-family: var(--mono); }
+.cmd-block .cmd-sig .arg { color: var(--text-muted); font-style: italic; }
+.cmd-block p { margin: 0 0 12px; line-height: 1.7; }
+.cmd-block .cmd-example { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; margin: 10px 0; font-size: 13px; font-family: var(--mono); line-height: 1.6; }
+.cmd-block .cmd-example .comment { color: var(--text-muted); }
+.cmd-block .cmd-tip { font-size: 13px; color: var(--text-dim); margin-top: 12px; padding: 8px 12px; background: rgba(136,136,160,0.06); border-radius: 6px; border-left: 3px solid var(--accent); }
+.cmd-block .cmd-tip strong { color: var(--text); }
+
+.quick-ref { margin: 20px 0 32px; }
+.quick-ref table td:first-child { white-space: nowrap; font-family: var(--mono); font-size: 13px; }
+.quick-ref table td:nth-child(2) { color: var(--text-dim); font-size: 13px; }
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link active" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Session Commands</h1>
+<p class="lead">세션 명령어는 현재 podex 대화를 관리합니다: 도움말 보기, 명령어 탐색, 상태 확인, 히스토리 삭제, 컨텍스트 압축, 상태 초기화, 대화 중 에이전트 방향 전환 등을 수행합니다. 대화형 사용 중에 가장 자주 사용하게 되는 명령어들입니다.</p>
+
+<div class="callout callout-info">모든 세션 명령어는 <code>/</code>로 시작하며 채팅 입력창에서 직접 입력할 수 있습니다. 자연어로도 실행할 수 있습니다 &mdash; podex는 한국어와 영어를 동일하게 이해합니다. 각 명령어 아래의 "~해줘" 팁을 참고하세요.</div>
+
+<h2>빠른 참조</h2>
+<div class="quick-ref">
+<table>
+<tr><th>명령어</th><th>설명</th></tr>
+<tr><td><code>/help [command]</code></td><td>전체 명령어 또는 특정 명령어의 도움말 표시</td></tr>
+<tr><td><code>/commands</code></td><td>퍼지 검색이 가능한 명령어 팔레트 열기</td></tr>
+<tr><td><code>/status</code></td><td>현재 세션 상태 및 진단 정보 표시</td></tr>
+<tr><td><code>/clear [all]</code></td><td>대화 삭제 / <code>all</code>: 스킬+직원+MCP 리셋</td></tr>
+<tr><td><code>/purge</code></td><td>대화 + 메모리 삭제</td></tr>
+<tr><td><code>/compact [instructions]</code></td><td>핵심 정보를 유지하면서 컨텍스트 압축</td></tr>
+<tr><td><code>/reset [confirm]</code></td><td>부트스트랩 초기화 &mdash; 대화, 메모리, 스킬, 직원, MCP 모두 삭제</td></tr>
+<tr><td><code>/steer &lt;prompt&gt;</code></td><td>대화 중 에이전트를 새로운 방향으로 전환</td></tr>
+</table>
+</div>
+
+<h2>명령어 상세 설명</h2>
+
+<!-- /help -->
+<div class="cmd-block" id="help">
+<h3><code>/help</code></h3>
+<div class="cmd-sig">/help <span class="arg">[command]</span></div>
+<p>podex 명령어에 대한 문서를 표시합니다. 인수 없이 호출하면 카테고리별로 그룹화된 모든 사용 가능한 명령어를 나열합니다. 명령어 이름을 제공하면 해당 명령어의 상세 사용법, 인수, 예제를 표시합니다.</p>
+
+<p><strong>인수:</strong></p>
+<table>
+<tr><th>인수</th><th>필수</th><th>설명</th></tr>
+<tr><td><code>command</code></td><td>아니오</td><td>상세 도움말을 볼 특정 명령어 이름 (<code>/</code> 접두사 제외)</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># 모든 명령어 나열</span><br>
+/help<br><br>
+<span class="comment"># 특정 명령어의 상세 도움말 보기</span><br>
+/help compact<br><br>
+<span class="comment"># steer 명령어 도움말</span><br>
+/help steer
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "도움말 보여줘", "명령어 뭐 있어?", "compact 사용법 알려줘" 모두 <code>/help</code>에 매핑됩니다. podex가 의도를 감지하고 관련 문서를 표시합니다.</div>
+</div>
+
+<!-- /commands -->
+<div class="cmd-block" id="commands">
+<h3><code>/commands</code></h3>
+<div class="cmd-sig">/commands</div>
+<p>명령어 팔레트를 엽니다 &mdash; 사용 가능한 모든 슬래시 명령어를 검색할 수 있는 인터랙티브 목록입니다. 팔레트는 퍼지 매칭을 지원하므로 부분적인 이름만 입력해도 원하는 명령어를 빠르게 찾을 수 있습니다. 아직 사용해보지 않은 명령어를 발견하는 가장 빠른 방법입니다.</p>
+
+<p>팔레트는 각 명령어의 카테고리, 간단한 설명, 키보드 단축키(있는 경우)를 표시합니다. 명령어를 선택하면 즉시 실행하거나 추가 편집을 위해 입력창에 삽입할 수 있습니다.</p>
+
+<div class="cmd-example">
+<span class="comment"># 명령어 팔레트 열기</span><br>
+/commands<br><br>
+<span class="comment"># 팔레트에서 입력하여 필터링:</span><br>
+<span class="comment">#   "mod" &rarr; /model, /model-list 표시</span><br>
+<span class="comment">#   "sk"  &rarr; /skill, /skill load, /skill list 표시</span>
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "명령어 팔레트 열어줘", "커맨드 목록 보여줘"로 명령어 팔레트를 실행할 수 있습니다. "뭐 할 수 있어?"라고 말하면 기능에 대한 대화형 개요를 볼 수도 있습니다.</div>
+</div>
+
+<!-- /status -->
+<div class="cmd-block" id="status">
+<h3><code>/status</code></h3>
+<div class="cmd-sig">/status</div>
+<p>현재 세션의 종합적인 스냅샷을 표시합니다. 활성 모델 및 CLI 백엔드, 로드된 스킬, 대화 토큰 수, 메모리 사용량, 활성 목표, 연결된 통합 서비스(Telegram, Discord 등), 서버 상태를 포함합니다. 에이전트가 특정 방식으로 동작하는 이유를 디버깅하거나 파악할 때 유용합니다.</p>
+
+<p><strong>상태 필드:</strong></p>
+<table>
+<tr><th>필드</th><th>설명</th></tr>
+<tr><td>Model</td><td>현재 활성화된 LLM (예: claude-opus-4-8, gpt-5.5)</td></tr>
+<tr><td>CLI</td><td>활성 CLI 백엔드 (Claude Code, Codex 등)</td></tr>
+<tr><td>Skills</td><td>현재 로드된 스킬 목록 및 활성/비활성 상태</td></tr>
+<tr><td>Tokens</td><td>현재 컨텍스트 윈도우 사용량 (사용량 / 최대)</td></tr>
+<tr><td>Goals</td><td>활성 목표 및 완료 상태</td></tr>
+<tr><td>Integrations</td><td>연결된 서비스 (Telegram, Discord, Electron)</td></tr>
+<tr><td>Memory</td><td>메모리 인덱스 크기 및 마지막 동기화 시간</td></tr>
+<tr><td>Uptime</td><td>현재 세션의 실행 시간</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># 현재 세션 상태 확인</span><br>
+/status<br><br>
+<span class="comment"># 출력 예시:</span><br>
+<span class="comment"># Model: claude-opus-4-8 via Claude Code</span><br>
+<span class="comment"># Skills: dev (active), github (active), memory (active) + 7 more</span><br>
+<span class="comment"># Tokens: 42,318 / 200,000 (21%)</span><br>
+<span class="comment"># Goals: 2 active, 1 completed</span><br>
+<span class="comment"># Uptime: 1h 23m</span>
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "지금 상태 보여줘", "현재 세션 정보", "토큰 얼마나 썼어?" 모두 <code>/status</code>로 연결됩니다. 에이전트가 읽기 쉬운 형식으로 상태를 표시합니다.</div>
+</div>
+
+<!-- /clear -->
+<div class="cmd-block" id="clear">
+<h3><code>/clear</code></h3>
+<div class="cmd-sig">/clear <span class="arg">[all]</span></div>
+<p>현재 세션의 대화 히스토리를 삭제합니다. 스킬, 메모리, 세션 설정은 그대로 유지됩니다.</p>
+
+<p><code>all</code> 인자를 추가하면 스킬 초기화, 직원 리셋, MCP 동기화, 세션 상태 초기화까지 수행합니다. 메모리는 보존됩니다.</p>
+
+<p><strong>초기화 단계 (가벼움 → 무거움):</strong></p>
+<table>
+<tr><th>명령어</th><th>대화</th><th>스킬/직원/MCP</th><th>메모리</th></tr>
+<tr><td><code>/clear</code></td><td>✅ 삭제</td><td>보존</td><td>보존</td></tr>
+<tr><td><code>/clear all</code></td><td>✅ 삭제</td><td>✅ 리셋</td><td>보존</td></tr>
+<tr><td><code>/purge</code></td><td>✅ 삭제</td><td>보존</td><td>✅ 삭제</td></tr>
+<tr><td><code>/reset confirm</code></td><td>✅ 삭제</td><td>✅ 하드 리셋</td><td>✅ 삭제</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># 대화만 삭제</span><br>
+/clear<br><br>
+<span class="comment"># 스킬, 직원, MCP, 세션까지 리셋 (메모리는 유지)</span><br>
+/clear all
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "대화 초기화해줘", "히스토리 지워줘" → <code>/clear</code>. "스킬까지 초기화해줘" → <code>/clear all</code>.</div>
+</div>
+
+<!-- /purge -->
+<div class="cmd-block" id="purge">
+<h3><code>/purge</code></h3>
+<div class="cmd-sig">/purge</div>
+<p>대화 히스토리와 구조화된 메모리(<code>memory/structured/</code>)를 모두 삭제합니다. 스킬, 직원, 설정은 보존됩니다. 에이전트가 이 인스턴스에서 학습한 모든 것을 잊게 하되, 도구와 연동은 유지하고 싶을 때 사용합니다.</p>
+
+<div class="cmd-example">
+<span class="comment"># 대화 + 메모리 삭제, 스킬은 유지</span><br>
+/purge
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "메모리까지 지워줘", "기억 다 삭제해줘", "대화랑 메모리 초기화" → <code>/purge</code>.</div>
+</div>
+
+<!-- /compact -->
+<div class="cmd-block" id="compact">
+<h3><code>/compact</code></h3>
+<div class="cmd-sig">/compact <span class="arg">[instructions]</span></div>
+<p>이전 대화를 요약하여 현재 대화 컨텍스트를 압축하면서 핵심 결정 사항, 코드 변경, 중요한 맥락은 보존합니다. 컨텍스트 윈도우 한계에 다가가는 긴 세션에서 대화의 흐름을 완전히 잃지 않으면서 공간을 확보하고 싶을 때 필수적인 명령어입니다.</p>
+
+<p>에이전트가 전체 대화를 읽고 핵심 정보(내린 결정, 수정된 파일, 발생한 오류, 진행 중인 목표)를 식별한 뒤, 전체 히스토리를 대체하는 밀도 높은 요약을 생성합니다. 선택적으로 요약이 어디에 중점을 두어야 하는지 안내하는 지시사항을 전달할 수 있습니다.</p>
+
+<p><strong>인수:</strong></p>
+<table>
+<tr><th>인수</th><th>필수</th><th>설명</th></tr>
+<tr><td><code>instructions</code></td><td>아니오</td><td>요약에서 우선시할 내용에 대한 자연어 안내 (예: "API 결정 사항 유지", "인증 흐름에 집중")</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># 기본 컨텍스트 압축</span><br>
+/compact<br><br>
+<span class="comment"># 특정 내용에 집중하여 압축</span><br>
+/compact keep the database schema decisions and migration plan<br><br>
+<span class="comment"># 오류와 수정 사항에 집중하여 압축</span><br>
+/compact focus on the bugs we found and how we fixed them<br><br>
+<span class="comment"># 한국어 지시사항도 가능</span><br>
+/compact API 설계 결정사항만 유지해줘
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "컨텍스트 줄여줘", "대화 요약해줘", "컨텍스트 압축해줘", "토큰 아껴줘" 모두 <code>/compact</code>에 매핑됩니다. 토큰 사용량이 60-70%를 넘기기 시작하면 가장 유용한 명령어입니다.</div>
+</div>
+
+<!-- /reset -->
+<div class="cmd-block" id="reset">
+<h3><code>/reset</code></h3>
+<div class="cmd-sig">/reset <span class="arg">[confirm]</span></div>
+<p>전체 부트스트랩 초기화를 수행합니다 &mdash; 가장 과격한 초기화 옵션입니다. 대화 히스토리, 구조화된 메모리, 스킬(하드 리셋), 직원, MCP를 모두 삭제합니다. <code>settings.json</code>(서버 설정, 인증 토큰, CLI 구독 정보)만 보존됩니다.</p>
+
+<p>파괴적인 작업이므로 <code>confirm</code> 인자가 필수입니다.</p>
+
+<p><strong>인수:</strong></p>
+<table>
+<tr><th>인수</th><th>필수</th><th>설명</th></tr>
+<tr><td><code>confirm</code></td><td>예</td><td>필수. 없으면 확인 안내를 표시합니다.</td></tr>
+</table>
+
+<p><strong>삭제 vs. 보존:</strong></p>
+<table>
+<tr><th>삭제됨 (부트스트랩 리셋)</th><th>보존됨</th></tr>
+<tr><td>대화 히스토리</td><td>settings.json (포트, 토큰, 구독)</td></tr>
+<tr><td>구조화된 메모리 (memory/structured/)</td><td>&mdash;</td></tr>
+<tr><td>모든 설치된 스킬 (하드 리셋)</td><td>&mdash;</td></tr>
+<tr><td>직원 설정</td><td>&mdash;</td></tr>
+<tr><td>MCP 상태</td><td>&mdash;</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># 확인 안내 표시</span><br>
+/reset<br><br>
+<span class="comment"># 부트스트랩 초기화 즉시 실행</span><br>
+/reset confirm<br><br>
+<span class="comment"># 인스턴스가 심하게 꼬였을 때 처음부터 시작</span><br>
+/reset confirm<br>
+"처음부터 다시 설정하자"
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "완전히 초기화해줘", "공장 초기화해줘", "부트스트랩 리셋해줘" → <code>/reset confirm</code>. 더 가벼운 초기화는 <code>/clear</code>, <code>/clear all</code>, <code>/purge</code>를 사용하세요.</div>
+</div>
+
+<!-- /steer -->
+<div class="cmd-block" id="steer">
+<h3><code>/steer</code></h3>
+<div class="cmd-sig">/steer <span class="arg">&lt;prompt&gt;</span></div>
+<p>히스토리를 삭제하지 않고 대화 중에 에이전트의 방향을 전환합니다. 에이전트가 잘못된 방향으로 가고 있거나 기존 컨텍스트를 유지하면서 다른 접근 방식으로 전환하고 싶을 때 사용합니다. steer 프롬프트는 에이전트의 현재 경로를 재정의하는 높은 우선순위의 시스템 수준 지시사항으로 주입됩니다.</p>
+
+<p><code>/clear</code>보다 정밀한 명령어입니다 &mdash; 전체 대화 히스토리와 컨텍스트를 유지하면서 에이전트가 새로운 방향에 따라 접근 방식을 재평가합니다. 방향 수정에 이상적입니다: "X를 그만하고 대신 Y를 해라."</p>
+
+<p><strong>인수:</strong></p>
+<table>
+<tr><th>인수</th><th>필수</th><th>설명</th></tr>
+<tr><td><code>prompt</code></td><td>예</td><td>새로운 방향, 접근 방식 또는 제약 조건을 설명하는 자연어 지시사항</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># 접근 방식 변경</span><br>
+/steer stop using class components, use hooks instead<br><br>
+<span class="comment"># 언어/프레임워크 변경</span><br>
+/steer switch to TypeScript for all new files<br><br>
+<span class="comment"># 동작 조정</span><br>
+/steer be more concise, skip explanations, just show code<br><br>
+<span class="comment"># 한국어도 자연스럽게 동작</span><br>
+/steer 설명 생략하고 코드만 보여줘<br><br>
+<span class="comment"># 작업 방향 전환</span><br>
+/steer 이 방식 말고 WebSocket으로 구현하자
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "방향 바꿔줘", "다른 방법으로 해줘", "이렇게 말고 저렇게 해", "접근 방식 바꿔" 모두 steering 동작을 호출합니다. 새로운 방향을 자연스럽게 말해도 에이전트가 전환을 감지합니다. <code>/steer</code>는 이를 명시적이고 강력하게 만듭니다.</div>
+</div>
+
+<h2>어떤 명령어를 사용해야 할까</h2>
+<p>적절한 세션 명령어를 선택하는 것은 얼마나 많은 상태를 보존하고 싶은지에 달려 있습니다:</p>
+<table>
+<tr><th>상황</th><th>명령어</th><th>이유</th></tr>
+<tr><td>대화가 너무 길어져 토큰 한계에 다가가는 경우</td><td><code>/compact</code></td><td>토큰을 확보하면서 핵심 결정 사항을 보존</td></tr>
+<tr><td>현재 주제를 마무리하고 새 작업을 시작하는 경우</td><td><code>/clear</code></td><td>같은 작업 공간 상태에서 새로운 대화</td></tr>
+<tr><td>에이전트가 잘못된 방향으로 가고 있는 경우</td><td><code>/steer</code></td><td>컨텍스트를 잃지 않고 방향 수정</td></tr>
+<tr><td>세션이 심하게 혼란스럽거나 손상된 경우</td><td><code>/reset</code></td><td>최후의 수단 &mdash; 전체 재시작</td></tr>
+<tr><td>명령어 이름이 기억나지 않는 경우</td><td><code>/commands</code></td><td>사용 가능한 모든 명령어를 검색할 수 있는 팔레트</td></tr>
+<tr><td>토큰 사용량이나 로드된 스킬을 확인해야 하는 경우</td><td><code>/status</code></td><td>세션 진단 정보를 한눈에 확인</td></tr>
+<tr><td>podex를 처음 사용하며 기능을 탐색하는 경우</td><td><code>/help</code></td><td>채팅에 내장된 문서</td></tr>
+</table>
+
+<h2>명령어 생명주기</h2>
+<p>세션 명령어는 podex 스택의 서로 다른 수준에서 동작합니다:</p>
+<ul>
+<li><strong><code>/help</code></strong>과 <strong><code>/commands</code></strong>는 읽기 전용입니다 &mdash; 상태를 변경하지 않고 정보만 표시합니다.</li>
+<li><strong><code>/status</code></strong>는 여러 서브시스템(모델, 스킬, 메모리, 목표)에서 데이터를 읽어 스냅샷을 집계합니다.</li>
+<li><strong><code>/clear</code></strong>는 메시지 버퍼를 삭제하지만 세션 셸(스킬, 설정, 목표)은 그대로 유지합니다.</li>
+<li><strong><code>/compact</code></strong>는 메시지 버퍼를 재작성합니다 &mdash; 모든 메시지를 읽고, 요약을 생성한 뒤, 히스토리를 압축된 버전으로 교체합니다.</li>
+<li><strong><code>/steer</code></strong>는 메시지 히스토리를 건드리지 않고 시스템 컨텍스트에 우선순위 지시사항을 주입합니다.</li>
+<li><strong><code>/reset</code></strong>은 전체 세션(메시지 + 스킬 + 목표 + 상태)을 해체하고 부팅 기본값에서 다시 초기화합니다.</li>
+</ul>
+
+<div class="callout callout-info"><strong>자연어는 항상 동작합니다.</strong> 슬래시 명령어를 굳이 기억할 필요가 <em>없습니다</em>. "대화 지워줘"라고 말하는 것은 <code>/clear</code>를 입력하는 것과 동일합니다. 슬래시 명령어는 정확성과 속도를 위해 존재하지만, podex의 의도 감지가 나머지를 처리합니다.</div>
+
+<div class="page-nav">
+<a class="prev" href="../skills/utility.html">Utility Skills</a>
+<a class="next" href="workflow.html">Workflow Commands</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

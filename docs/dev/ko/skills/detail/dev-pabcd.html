@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PABCD 워크플로우 — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.3); }
+.phase-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px 28px; margin: 16px 0 24px; overflow-x: auto; }
+.phase-diagram pre { background: none; border: none; padding: 0; margin: 0; }
+.phase-diagram code { color: var(--accent); font-size: 14px; }
+.phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 16px 0; }
+.phase-card h3 { margin-top: 0; color: var(--accent); }
+.phase-card .gate { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-left: 8px; }
+.gate-stop { background: rgba(248, 113, 113, 0.15); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.3); }
+.gate-auto { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.3); }
+.example-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 10px 0; }
+.example-block .example-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.example-block code { font-size: 14px; color: var(--green); background: none; padding: 0; }
+.pitfall-item { background: var(--surface); border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 12px 0; }
+.pitfall-item h4 { color: var(--red); margin: 0 0 6px; text-transform: none; letter-spacing: 0; font-size: 15px; }
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="문서 검색..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">시작하기</div>
+      <a class="docs-nav-link" href="../../">개요</a>
+      <a class="docs-nav-link" href="../../quickstart.html">빠른 시작</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">첫 실행</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">개념</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">아키텍처</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">직원</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">목표</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">스킬</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">메모리</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">프롬프트</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">가이드</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">대시보드</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">노트 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">칸반 보드</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">텔레그램</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">디스코드</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">컴퓨터 사용</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 데스크톱</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">레퍼런스</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 명령어</a>
+      <a class="docs-nav-link" href="../../reference/api.html">서버 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">설정</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">키보드 단축키</a>
+      <a class="docs-nav-link" href="../../reference/events.html">이벤트</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">스킬</div>
+      <a class="docs-nav-link" href="../index.html">카탈로그</a>
+      <a class="docs-nav-link active" href="../orchestration.html">개발</a>
+      <a class="docs-nav-link" href="../automation.html">자동화</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 미디어</a>
+      <a class="docs-nav-link" href="../communication.html">커뮤니케이션</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">클라우드 &amp; 배포</a>
+      <a class="docs-nav-link" href="../devtools-security.html">보안 &amp; 리뷰</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">개발 워크플로우</a>
+      <a class="docs-nav-link" href="../productivity.html">생산성</a>
+      <a class="docs-nav-link" href="../smarthome.html">스마트 홈</a>
+      <a class="docs-nav-link" href="../utility.html">유틸리티</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">명령어</div>
+      <a class="docs-nav-link" href="../../commands/session.html">세션</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">워크플로우</a>
+      <a class="docs-nav-link" href="../../commands/model.html">모델 &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">도구</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI 전용</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">루트 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">변경 이력</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">한국어</a>
+    <a href="../../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">랜딩 페이지</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>PABCD 워크플로우 <span class="badge badge-active">기본 활성</span></h1>
+<p class="lead">Plan(계획) &rarr; Audit(감사) &rarr; Build(구현) &rarr; Check(검증) &rarr; Done(완료) 구조화된 개발 워크플로우로, 각 게이트마다 사용자 체크포인트가 필수입니다.</p>
+
+<div class="callout callout-info"><strong>자동 활성 스킬.</strong> <code>dev-pabcd</code>는 모든 세션에 자동으로 주입되는 10개의 개발 스킬 중 하나입니다. 오케스트레이션 모드에서 활성화되며, 검토된 계획 없이는 아무것도 구현되지 않도록 보장하는 구조화된 5단계 워크플로우를 제공합니다.</div>
+
+<h2>빠른 참조</h2>
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td>스킬 이름</td><td><code>dev-pabcd</code></td></tr>
+<tr><td>카테고리</td><td>개발 / 오케스트레이션</td></tr>
+<tr><td>기본 활성</td><td>예 &mdash; 세션 시작 시 주입</td></tr>
+<tr><td><code>/skill load</code> 필요 여부</td><td>아니오</td></tr>
+<tr><td>단계</td><td>P (Plan) &rarr; A (Audit) &rarr; B (Build) &rarr; C (Check) &rarr; D (Done)</td></tr>
+<tr><td>사용자 게이트</td><td>P, A, B는 승인 필요 &mdash; C, D는 자동 진행</td></tr>
+<tr><td>워커 역할</td><td>읽기 전용 검증자 (코드 작성 불가)</td></tr>
+<tr><td>초기화 명령어</td><td><code>podex orchestrate reset</code></td></tr>
+</table>
+
+<h2>상태 머신</h2>
+<p>PABCD는 <strong>단방향 루프</strong>입니다 &mdash; 앞으로만 진행하며, 단계를 건너뛸 수 없습니다. 각 단계는 다음 단계로 넘어가기 전에 반드시 완료되어야 합니다.</p>
+
+<div class="phase-diagram">
+<pre><code>IDLE ──&rarr; P ──&rarr; A ──&rarr; B ──&rarr; C ──&rarr; D ──&rarr; IDLE
+         │      │      │      │      │
+        STOP   STOP   STOP   auto   auto
+        wait   wait   wait</code></pre>
+</div>
+
+<p><strong>P</strong>, <strong>A</strong>, <strong>B</strong> 단계는 진행 전에 사용자 승인을 대기합니다. <strong>C</strong>와 <strong>D</strong> 단계는 작업이 완료되면 자동으로 진행됩니다.</p>
+
+<h3>전환 명령어</h3>
+<table>
+<tr><th>명령어</th><th>전환</th><th>전제 조건</th></tr>
+<tr><td><code>podex orchestrate P</code></td><td>계획 단계 진입</td><td>IDLE 상태여야 함</td></tr>
+<tr><td><code>podex orchestrate A</code></td><td>계획 감사 단계 진입</td><td>P 상태여야 함 (계획 승인됨)</td></tr>
+<tr><td><code>podex orchestrate B</code></td><td>구현 단계 진입</td><td>A 상태여야 함 (감사 통과됨)</td></tr>
+<tr><td><code>podex orchestrate C</code></td><td>검증 단계 진입</td><td>B 상태여야 함 (구현 승인됨)</td></tr>
+<tr><td><code>podex orchestrate D</code></td><td>완료 단계 진입</td><td>C 상태여야 함 (검증 완료됨)</td></tr>
+<tr><td><code>podex orchestrate reset</code></td><td>IDLE로 복귀</td><td>모든 상태에서 가능</td></tr>
+</table>
+
+<h2>단계 상세</h2>
+
+<div class="phase-card">
+<h3>P &mdash; Plan (계획) <span class="gate gate-stop">사용자 승인 필요</span></h3>
+<p>계획 단계에서는 프로젝트 문서와 개발 스킬을 읽은 후 두 부분으로 구성된 계획을 작성합니다:</p>
+<ul>
+<li><strong>파트 1 &mdash; 쉬운 설명:</strong> 무엇을 만들 것인지 비개발자 용어로 설명합니다. 누구나 이해할 수 있어야 합니다.</li>
+<li><strong>파트 2 &mdash; Diff 수준의 정밀도:</strong> 정확한 파일 경로 (<code>NEW</code> / <code>MODIFY</code> / <code>DELETE</code>), <code>MODIFY</code>의 경우 변경 전/후 diff, <code>NEW</code>의 경우 전체 내용을 포함합니다.</li>
+</ul>
+
+<h4>범위 명확화</h4>
+<p>요청의 범위가 불명확하거나 기술이 지정되지 않은 경우, 계획 수립자가 먼저 명확히 합니다:</p>
+<ul>
+<li><code>&lt;기술명&gt; -- &lt;쉬운 설명&gt;</code> 형태로 2-3개 옵션을 제시합니다</li>
+<li>프로젝트에 맞는 근거와 함께 하나를 추천합니다</li>
+<li>한 번 확인 후 진행합니다</li>
+</ul>
+
+<h4>저장소 스캔 (광범위한 변경)</h4>
+<p>광범위한 변경이나 익숙하지 않은 저장소의 경우, P 단계에서 반드시 다음을 포함해야 합니다:</p>
+<ul>
+<li>현재 저장소 구조의 간결한 트리</li>
+<li>감지된 저장소 규칙: 문서, 계획, 아키텍처 노트, 진실 소스(source-of-truth) 로그, 네이밍, 테스트</li>
+<li>기존 <code>structure/</code>, <code>devlog/</code>, <code>docs/</code>, <code>plans/</code> 또는 동등한 로그를 읽었는지 여부와 재사용 계획</li>
+<li><code>structure/</code> 또는 <code>devlog/</code> 생성 제안 여부</li>
+</ul>
+
+<h4>Devlog 명명 규칙</h4>
+<p>PABCD 작업에서 <code>devlog/</code> 계획 산출물을 생성하거나 업데이트하는 경우, 계획에 정확한 번호가 매겨진 Jawdev 파일명을 나열해야 합니다:</p>
+<pre><code>00_overview.md
+01_phase1_&lt;slug&gt;.md
+02_phase2_&lt;slug&gt;.md</code></pre>
+<p><code>PLAN.md</code>, <code>DIFF_PLAN.md</code>, <code>PHASES.md</code>, <code>RCA.md</code>, <code>plan.md</code> 같은 단순 파일명은 새로운 devlog 단계 파일로 <strong>허용되지 않습니다</strong>.</p>
+
+<h4>게이트 질문</h4>
+<p>계획을 제시하기 전에 계획 수립자가 질문합니다:</p>
+<ol>
+<li>"제가 단독으로 결정하면 안 되는 비즈니스 로직이 있나요?"</li>
+<li>"파트 1이 의도와 일치하나요?"</li>
+</ol>
+<p>계획이 제시되고 피드백에 따라 수정됩니다. 사용자가 승인하면 <code>podex orchestrate A</code>로 전환합니다.</p>
+</div>
+
+<div class="phase-card">
+<h3>A &mdash; Plan Audit (계획 감사) <span class="gate gate-stop">사용자 승인 필요</span></h3>
+<p>워커가 생성되어 <strong>계획을 감사합니다</strong> (코드가 아님). 워커가 검증하는 항목:</p>
+<ul>
+<li>계획에 있는 모든 파일 경로와 import가 실제로 존재하는지</li>
+<li>함수 시그니처가 실제 코드와 일치하는지</li>
+<li>통합 위험이 없는지</li>
+<li>기존 진실 소스(source-of-truth) 문서/로그가 있을 때 읽었는지</li>
+<li>사용자 승인 없이 새로운 <code>structure/</code>, <code>devlog/</code>, 문서, AGENTS 파일이 도입되지 않았는지</li>
+<li>새 JS/TS 파일이 TypeScript 우선 규칙을 따르는지 (계획에서 JS가 필요한 이유를 명시하지 않는 한)</li>
+<li>새 TypeScript가 strict 호환이거나 제한 사항이 명시되었는지</li>
+<li>새 devlog 단계 문서가 번호가 매겨진 Jawdev 파일명 규칙을 따르는지</li>
+</ul>
+<p>워커가 감사 결과를 JSON으로 출력합니다. 결과가 검토됩니다:</p>
+<ul>
+<li><strong>FAIL</strong> &rarr; 계획을 수정하고 재감사</li>
+<li><strong>PASS</strong> &rarr; 결과를 사용자에게 보고</li>
+</ul>
+<p>사용자가 승인하면 <code>podex orchestrate B</code>로 전환합니다.</p>
+</div>
+
+<div class="phase-card">
+<h3>B &mdash; Build (구현) <span class="gate gate-stop">사용자 승인 필요</span></h3>
+<p>구현 단계입니다. <strong>보스가 모든 코드를 직접 작성합니다</strong>. 워커는 읽기 전용 검증자 역할만 합니다.</p>
+<p>구현 후, 코드가 존재하고 깔끔하게 통합되는지 확인하기 위해 워커가 검증에 투입됩니다:</p>
+<ul>
+<li><strong>NEEDS_FIX</strong> &rarr; 보스가 문제를 수정하고 재검증</li>
+<li><strong>DONE</strong> &rarr; 결과를 사용자에게 보고</li>
+</ul>
+<p>P 단계에서 승인되었거나 명시적으로 요청되지 않는 한 <code>structure/</code> 또는 <code>devlog/</code>를 생성하지 않습니다.</p>
+<p>사용자가 승인하면 <code>podex orchestrate C</code>로 전환합니다.</p>
+</div>
+
+<div class="phase-card">
+<h3>C &mdash; Check (검증) <span class="gate gate-auto">자동 진행</span></h3>
+<p>자동으로 실행되는 최종 정합성 검사입니다:</p>
+<ol>
+<li>모든 파일이 저장되고 일관성이 있는지 확인</li>
+<li><code>npx tsc --noEmit</code> 실행 (TypeScript 프로젝트인 경우)</li>
+<li>해당하는 경우 프로젝트 구조 문서 업데이트</li>
+<li>완료 요약 보고</li>
+</ol>
+<p>완료되면 <code>podex orchestrate D</code>를 통해 자동으로 D 단계로 전환됩니다.</p>
+</div>
+
+<div class="phase-card">
+<h3>D &mdash; Done (완료) <span class="gate gate-auto">자동 진행</span></h3>
+<p>전체 PABCD 흐름을 요약합니다:</p>
+<ul>
+<li>계획된 내용(P), 감사된 내용(A), 구현된 내용(B), 검증된 내용(C)</li>
+<li>변경된 파일 목록</li>
+<li>후속 작업 항목</li>
+</ul>
+<p>상태가 자동으로 <strong>IDLE</strong>로 돌아갑니다.</p>
+</div>
+
+<h2>규칙</h2>
+<table>
+<tr><th>#</th><th>규칙</th><th>상세</th></tr>
+<tr><td>1</td><td>응답당 하나의 단계</td><td>작업을 제시한 후, P, A, B 게이트에서 사용자 승인을 대기합니다. 절대 앞서 나가지 않습니다.</td></tr>
+<tr><td>2</td><td>엄격한 순서</td><td>P &rarr; A &rarr; B &rarr; C &rarr; D. IDLE에서 다시 시작하려면 <code>podex orchestrate reset</code>을 사용합니다.</td></tr>
+<tr><td>3</td><td>워커는 검증, 보스가 작성</td><td>워커는 읽기 전용입니다. 모든 코드는 B 단계에서 보스가 직접 작성합니다.</td></tr>
+</table>
+
+<h2>저장소 루트 계약</h2>
+<p>PABCD 계획을 작성하거나 워커를 디스패치하기 전에, 대상 저장소에서 <code>pwd -P</code>로 실제 작업 저장소 루트를 확인합니다.</p>
+
+<p>모든 A/B 단계 <code>podex dispatch</code> 작업 본문은 <strong>반드시</strong> 다음으로 시작해야 합니다:</p>
+<pre><code>Project root: /absolute/path/to/current/repo</code></pre>
+
+<table>
+<tr><th>규칙</th><th>설명</th></tr>
+<tr><td><code>Project root</code> = 작업 저장소</td><td>현재 작업 중인 저장소여야 하며, <code>JAW_HOME</code>이 아닙니다</td></tr>
+<tr><td>추론 금지</td><td>워커가 <code>~/.podex*</code>, <code>process.cwd()</code>, 또는 직원 임시 디렉토리에서 저장소 루트를 추론하도록 두지 않습니다</td></tr>
+<tr><td>절대 경로</td><td>모든 상대 저장소 경로 (<code>src/</code>, <code>tests/</code>, <code>structure/</code>, <code>skills_ref/</code>)를 <code>Project root</code> 기준으로 해석합니다</td></tr>
+<tr><td>루트 미확인 = 중단</td><td><code>Project root</code>를 알 수 없으면, 디스패치 전에 중단하고 확인합니다</td></tr>
+</table>
+
+<h2>공유 계획 주입</h2>
+<p>P가 완료되면, 계획은 <strong>worklog <code>## Plan</code> 섹션</strong> (단일 진실 소스)에 저장되고 <code>ctx.plan</code>에 유지됩니다. 프로젝트 루트에 파일이 생성되지 않습니다.</p>
+
+<div class="callout callout-info"><strong>자동 주입:</strong> A와 B 단계에서 오케스트레이터가 모든 <code>podex dispatch</code> 작업의 상단에 <code>## Approved Plan</code> 아래에 전체 계획 본문을 자동으로 주입합니다. 워커는 계획 파일을 읽을 필요가 없습니다 &mdash; 자동으로 앞에 추가됩니다.</div>
+
+<p>디스패치 작업 본문에는 실제 감사/검증 지시만 포함하면 됩니다. 예시:</p>
+<pre><code>podex dispatch --agent "Backend" --task "Project root: /path/to/repo
+
+Audit: verify the imports in src/routes/auth.ts..."</code></pre>
+<p>"계획을 읽어라"라는 줄은 필요하지 않습니다 &mdash; 계획이 이미 주입되어 있습니다.</p>
+
+<h2>주의사항</h2>
+<p>PABCD 실행 시 반드시 피해야 할 치명적인 안티패턴입니다.</p>
+
+<div class="pitfall-item">
+<h4>위임 함정</h4>
+<p>B 단계에서 <strong>보스가 모든 코드를 작성합니다</strong>. 워커는 읽기 전용 검증자입니다.</p>
+<table>
+<tr><th></th><th>디스패치</th><th>예시</th></tr>
+<tr><td style="color: var(--red); font-weight: 700;">금지</td><td>작성/구현</td><td><code>"implement the feature"</code>, <code>"write the code"</code>, <code>"create the file"</code></td></tr>
+<tr><td style="color: var(--green); font-weight: 700;">허용</td><td>검증/확인</td><td><code>"verify src/x.ts compiles"</code>, <code>"check integration of Y"</code>, <code>"report DONE or NEEDS_FIX"</code></td></tr>
+</table>
+</div>
+
+<div class="pitfall-item">
+<h4>컨텍스트 드리프트</h4>
+<p>워커가 <em>"계획에 대한 추정을 바탕으로 진행하겠습니다"</em>라고 하면 &mdash; <strong>중단하세요</strong>. 디스패치가 <code>/api/orchestrate/dispatch</code>를 통해 전달되었는지 확인하세요 (해당 경로만 계획을 자동 주입합니다). 워커가 짧은 작업 설명에서 계획을 재구성하도록 두지 마세요.</p>
+</div>
+
+<div class="pitfall-item">
+<h4>단계 건너뛰기</h4>
+<p>A (감사)는 <strong>절대 "불필요"하지 않습니다</strong>. 아무리 간단한 계획이라도 통합 문제가 발생할 수 있습니다. 먼저 감사하세요. B 검증은 <strong>절대 "건너뛸 수 없습니다"</strong>. 테스트되지 않은 코드는 "완료"가 아닙니다. 현재 오케스트레이터가 이 게이트를 강제하지 않습니다 &mdash; <strong>당신이</strong> 강제해야 합니다.</p>
+</div>
+
+<h2>"~해줘" 사용 예시</h2>
+<p>자연어로 PABCD 워크플로우를 트리거하는 실제 예시입니다.</p>
+
+<div class="example-block">
+<div class="example-label">기능 개발</div>
+<code>"이 프로젝트에 WebSocket 채팅 기능 추가해줘"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">전체 PABCD가 트리거됩니다: WebSocket 아키텍처를 계획하고, import와 통합 지점을 감사하고, 구현을 빌드하고, TypeScript 컴파일을 검증하고, 변경된 파일을 요약합니다.</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">계획을 포함한 리팩토링</div>
+<code>"인증 시스템 전체 리팩토링해줘 -- JWT에서 세션 기반으로"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">범위가 넓으므로 P 단계에서 저장소 트리를 스캔하고, 인증 관련 파일을 모두 식별하며, diff 수준의 정밀 계획을 작성합니다. A 단계에서 import 경로가 깨지지 않았는지 감사합니다.</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">데이터베이스 마이그레이션</div>
+<code>"D1 데이터베이스 스키마 마이그레이션 계획 세워줘"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">P 단계에서 마이그레이션 범위(어떤 테이블인지, 하위 호환성)를 명확히 하고, 파트 1 쉬운 설명과 파트 2 정확한 SQL 마이그레이션 파일을 작성합니다. A 단계에서 기존 스키마 참조를 검증합니다.</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">다중 파일 기능</div>
+<code>"API 라우트 5개 새로 만들고 테스트도 다 붙여줘"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">P 단계에서 모든 NEW 파일과 전체 내용을 나열합니다. B 단계에서 각 라우트와 테스트 파일을 구현합니다. C 단계에서 프로젝트 전체에 <code>tsc --noEmit</code>을 실행하여 타입 오류를 잡습니다.</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">감사 포함 버그 수정</div>
+<code>"프로덕션 에러 원인 찾아서 고쳐줘 -- PABCD로 진행해"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">버그 수정의 경우에도 PABCD는 근본 원인이 P에 문서화되고, 수정 계획이 A에서 감사되며, 구현이 B에서 검증되고, 다른 부분이 C에서 깨지지 않도록 보장합니다.</p>
+</div>
+
+<h2>다른 스킬과의 관계</h2>
+<p>PABCD는 다른 개발 스킬을 감싸는 <strong>구조화된 워크플로우 레이어</strong>입니다. PABCD가 활성화되면 <code>dev-backend</code>, <code>dev-frontend</code>, <code>dev-testing</code> 같은 전문 스킬이 PABCD의 감독 하에 B (Build) 단계 내에서 동작합니다.</p>
+
+<table>
+<tr><th>스킬</th><th>PABCD와의 관계</th></tr>
+<tr><td><code>dev</code></td><td>복잡한 작업에 대해 PABCD를 활성화할 수 있는 오케스트레이터</td></tr>
+<tr><td><code>dev-backend</code> / <code>dev-frontend</code></td><td>B 단계 구현 시 주입되는 전문 컨텍스트</td></tr>
+<tr><td><code>dev-testing</code></td><td>테스트 작성은 B 단계에서, 테스트 실행은 C 단계에서 수행</td></tr>
+<tr><td><code>dev-code-reviewer</code></td><td>빌드 후 코드 품질을 검토하여 A 단계를 보완</td></tr>
+<tr><td><code>dev-debugging</code></td><td>구조화된 버그 수정 워크플로우를 위해 PABCD를 트리거 가능</td></tr>
+<tr><td><code>dev-security</code></td><td>보안 검사가 A (계획 감사) 및 C (검증) 단계에 통합</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>참고:</strong> 상위 수준 개요는 <a href="../../concepts/pabcd.html">개념 &rarr; PABCD</a>를, 자동 활성 개발 스킬의 전체 목록은 <a href="../orchestration.html">개발 스킬</a>을 참조하세요.</div>
+
+<div class="page-nav">
+<a class="prev" href="../orchestration.html">개발 스킬</a>
+<a class="next" href="../index.html">스킬 카탈로그</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

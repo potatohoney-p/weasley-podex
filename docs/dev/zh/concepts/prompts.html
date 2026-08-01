@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提示词管线 — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link active" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="../">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>提示词管线</h1>
+<p class="lead">podex 通过多层管线组装系统提示词：静态模板（A1/A2）、动态注入（记忆、编排、技能）、磁盘缓存（B.md/AGENTS.md），以及各 CLI 的生成适配器。</p>
+
+<h2>组装顺序</h2>
+<p><code>src/prompt/builder.ts</code> 中的 <code>getSystemPrompt()</code> 函数按以下顺序组装提示词：</p>
+<ol>
+<li><strong>A-1.md</strong> -- 系统规则（浏览器控制、记忆、心跳、委派）</li>
+<li><strong>A-2.md</strong> -- 用户设置（身份、风格、工作目录）</li>
+<li><strong>记忆注入</strong> -- 高级模式（档案 + 灵魂 + 任务快照）或旧版回退</li>
+<li><strong>编排部分</strong> -- 员工调度规则 + PABCD 指南</li>
+<li><strong>心跳任务</strong> -- 来自 <code>heartbeat.json</code> 的计划任务描述</li>
+<li><strong>技能部分</strong> -- 已激活技能内联 + 可用技能列表</li>
+<li><strong>Vision-click 提示</strong> -- 仅限 Codex 的桌面自动化旧版回退</li>
+<li><strong>委派规则</strong> -- CLI 子代理与 jaw 员工的区分</li>
+</ol>
+
+<h2>静态模板</h2>
+<h3>A-1.md（系统规则）</h3>
+<p>路径：<code>~/.podex/prompts/A-1.md</code>。回退至 <code>src/prompt/templates/a1-system.md</code>（305 行）。包含核心系统行为：浏览器控制规则、记忆/心跳指令、jaw 员工与 CLI 子代理的区分，以及频道发送规则。</p>
+<div class="callout callout-info">A-1.md 使用基于哈希的迁移机制。如果您未自定义过该文件，模板更新会自动应用。自定义的 A-1 文件会被保留。</div>
+
+<h3>A-2.md（用户设置）</h3>
+<p>路径：<code>~/.podex/prompts/A-2.md</code>。模板：<code>a2-default.md</code>（25 行）。包含身份、用户偏好、风格和工作目录提示。仅在缺失时创建，不会被覆盖。</p>
+
+<h2>动态注入</h2>
+<h3>记忆注入</h3>
+<p>根据索引就绪状态分为两条路径：</p>
+<ul>
+<li><strong>高级路径</strong>（<code>src/memory/injection.ts</code>）：档案上下文（800 字符）+ 灵魂与身份（1000 字符）+ 任务快照（2800 字符，最多 4 条命中）</li>
+<li><strong>旧版回退</strong>：会话记忆（10000 字符预算）+ 来自 <code>MEMORY.md</code> 的核心记忆（1500 字符）</li>
+</ul>
+<p>注入具有角色感知能力：<code>boss</code> 获取完整快照，<code>employee</code>/<code>subagent</code> 获取精简档案，<code>flush</code> 角色不进行记忆注入。</p>
+
+<h3>编排</h3>
+<p>如果至少注册了一个员工，<code>orchestration.md</code> 模板会被注入，并附带 <code>podex dispatch</code> 使用示例。如果 <code>skills/dev-pabcd/SKILL.md</code> 存在，还会追加 PABCD 编排指南。</p>
+
+<h3>心跳</h3>
+<p>来自 <code>~/.podex/heartbeat.json</code> 的活跃心跳任务会以其启用状态、人类可读的调度计划和提示词预览进行渲染。</p>
+
+<h3>技能</h3>
+<p>已激活的技能（<code>~/.podex/skills/*/SKILL.md</code>）会内联渲染。参考技能（<code>~/.podex/skills_ref/registry.json</code>）作为可发现的列表展示。</p>
+
+<h2>磁盘缓存（B.md）</h2>
+<p><code>regenerateB()</code> 创建系统提示词的磁盘缓存版本：</p>
+<table>
+<tr><th>输出</th><th>用途</th></tr>
+<tr><td><code>~/.podex/prompts/B.md</code></td><td>调试和缓存文件</td></tr>
+<tr><td><code>{workDir}/AGENTS.md</code></td><td>由 Codex、Copilot、OpenCode 自动读取</td></tr>
+</table>
+<p>系统会检查内容哈希值——仅在提示词实际发生变化时才重写文件，以保持恢复连续性。</p>
+
+<h2>各 CLI 的生成输入</h2>
+<p>每个 CLI 运行时接收提示词的方式不同：</p>
+<table>
+<tr><th>CLI</th><th>系统提示词</th><th>用户输入</th></tr>
+<tr><td>Claude</td><td><code>buildArgs(..., sysPrompt)</code></td><td>stdin：<code>withHistoryPrompt(prompt, historyBlock)</code></td></tr>
+<tr><td>Codex</td><td><code>AGENTS.md</code> 自动加载</td><td>stdin：<code>[User Message]</code> 块</td></tr>
+<tr><td>Gemini</td><td><code>GEMINI_SYSTEM_MD</code> 临时文件</td><td>参数级提示词</td></tr>
+<tr><td>AGY</td><td>无系统提示词标志；可选标志（如 <code>--model</code>）在发出前经 capability probe 检测</td><td><code>agy -p &lt;prompt&gt;</code></td></tr>
+<tr><td>Cursor</td><td><code>AGENTS.md</code> / <code>CLAUDE.md</code> 自动加载</td><td>参数级提示词</td></tr>
+<tr><td>Grok</td><td>CWD 指令文件</td><td><code>-p &lt;prompt&gt;</code></td></tr>
+<tr><td>Copilot</td><td>ACP + CWD 指令文件</td><td><code>session/prompt()</code></td></tr>
+</table>
+
+<h2>历史块</h2>
+<p>在新会话（非恢复）时，<code>buildHistoryBlock()</code> 会在前面插入最近的对话上下文：</p>
+<ul>
+<li>来源：<code>messages</code> 数据库，限定为 <code>workingDir</code> 范围</li>
+<li>限制：8000 字符，最多 10 个会话</li>
+<li>压缩标记会停止历史扫描并插入追踪摘要</li>
+</ul>
+<pre><code>[Recent Context]
+assistant: Previous response summary...
+user: Previous question...
+
+---
+[Current Message]
+Your new prompt here</code></pre>
+
+<h2>自定义提示词</h2>
+<p>编辑 <code>~/.podex/prompts/A-2.md</code> 可自定义身份、偏好和工作目录。使用 <code>/prompt</code> 预览当前 A2 内容。Web UI 设置面板也提供了提示词模板编辑器。</p>
+
+<div class="page-nav">
+<a class="prev" href="memory.html">Memory</a>
+<a class="next" href="../guides/dashboard.html">Dashboard</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Commands — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link active" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Tool Commands</h1>
+<p class="lead">Tool commands manage podex's internal subsystems &mdash; skills, employees, MCP servers, memory, browser, orchestration, and project directories. These slash commands are available inside any podex session.</p>
+
+<div class="callout callout-info">All tool commands start with <code>/</code> and can be triggered by natural language too. Korean "~해줘" patterns are mapped automatically &mdash; see the tip boxes below each command.</div>
+
+<h2>Command Overview</h2>
+<table>
+<tr><th>Command</th><th>Purpose</th><th>Korean Shortcut</th></tr>
+<tr><td><code>/skill</code></td><td>Skill management (list, reset)</td><td>"스킬 목록 보여줘"</td></tr>
+<tr><td><code>/employee</code></td><td>Employee reset</td><td>"직원 리셋해줘"</td></tr>
+<tr><td><code>/mcp</code></td><td>MCP server management</td><td>"MCP 서버 동기화해줘"</td></tr>
+<tr><td><code>/memory</code></td><td>Memory search</td><td>"메모리 검색해줘"</td></tr>
+<tr><td><code>/browser</code></td><td>Browser control</td><td>"브라우저 상태 보여줘"</td></tr>
+<tr><td><code>/orchestrate</code></td><td>PABCD orchestration</td><td>"PABCD 시작해줘"</td></tr>
+<tr><td><code>/project</code></td><td>Project directory management</td><td>"프로젝트 설정해줘"</td></tr>
+</table>
+
+<!-- ───────────────────────────── /skill ───────────────────────────── -->
+<h2 id="skill">/skill</h2>
+<p>Manage the skill catalog. List all available skills with their activation status, or reset the skill system to defaults.</p>
+
+<h3>Subcommands</h3>
+<table>
+<tr><th>Subcommand</th><th>Args</th><th>Description</th></tr>
+<tr><td><code>/skill list</code></td><td>&mdash;</td><td>Show all registered skills with their status (active, loaded, available). Auto-active skills are marked with a badge.</td></tr>
+<tr><td><code>/skill reset</code></td><td>&mdash;</td><td>Reset all skills to their default state. Unloads manually loaded skills and restores auto-active ones.</td></tr>
+</table>
+
+<h3>Example Usage</h3>
+<pre><code># List all skills and their activation status
+/skill list
+
+# Reset skills after experimenting with manual loads
+/skill reset</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" tip:</strong> "스킬 목록 보여줘" &rarr; <code>/skill list</code> &nbsp;|&nbsp; "스킬 초기화해줘" &rarr; <code>/skill reset</code></div>
+
+<!-- ───────────────────────────── /employee ───────────────────────────── -->
+<h2 id="employee">/employee</h2>
+<p>Reset the employee system. Employees are specialized sub-agents that handle delegated tasks. When an employee gets stuck or its state becomes stale, reset it.</p>
+
+<h3>Subcommands</h3>
+<table>
+<tr><th>Subcommand</th><th>Args</th><th>Description</th></tr>
+<tr><td><code>/employee reset</code></td><td>&mdash;</td><td>Reset all employees to their initial state. Clears queued tasks, resets internal counters, and re-initializes the employee pool.</td></tr>
+</table>
+
+<h3>Example Usage</h3>
+<pre><code># Reset all employees when tasks are stuck
+/employee reset
+
+# Useful after changing project context
+/employee reset</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" tip:</strong> "직원 리셋해줘" &rarr; <code>/employee reset</code> &nbsp;|&nbsp; "employee 초기화" &rarr; <code>/employee reset</code></div>
+
+<!-- ───────────────────────────── /mcp ───────────────────────────── -->
+<h2 id="mcp">/mcp</h2>
+<p>Manage MCP (Model Context Protocol) servers. MCP servers extend podex's capabilities by providing additional tools, resources, and context. Sync discovers available servers; install adds new ones.</p>
+
+<h3>Subcommands</h3>
+<table>
+<tr><th>Subcommand</th><th>Args</th><th>Description</th></tr>
+<tr><td><code>/mcp sync</code></td><td>&mdash;</td><td>Synchronize with all configured MCP servers. Re-discovers available tools, refreshes server health status, and updates the tool registry.</td></tr>
+<tr><td><code>/mcp install</code></td><td>&mdash;</td><td>Install or register a new MCP server from the configured server list. Fetches the server manifest and registers its tools.</td></tr>
+</table>
+
+<h3>Example Usage</h3>
+<pre><code># Refresh all MCP server connections
+/mcp sync
+
+# Install a new MCP server after adding it to config
+/mcp install
+
+# Typical workflow: add server to config, then install + sync
+/mcp install
+/mcp sync</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" tip:</strong> "MCP 서버 동기화해줘" &rarr; <code>/mcp sync</code> &nbsp;|&nbsp; "MCP 설치해줘" &rarr; <code>/mcp install</code></div>
+
+<!-- ───────────────────────────── /memory ───────────────────────────── -->
+<h2 id="memory">/memory</h2>
+<p>Search podex's persistent memory system. Memory stores decisions, context, and facts across sessions. Use this command to recall previous context or verify what the system remembers.</p>
+
+<h3>Syntax</h3>
+<table>
+<tr><th>Form</th><th>Args</th><th>Description</th></tr>
+<tr><td><code>/memory</code></td><td>&mdash;</td><td>Open memory search with no query (lists recent entries).</td></tr>
+<tr><td><code>/memory [query]</code></td><td><code>query</code> &mdash; free-text search string</td><td>Search memory for entries matching the query. Uses semantic search across all memory layers (L0 session, L1 project, L2 federated).</td></tr>
+</table>
+
+<h3>Example Usage</h3>
+<pre><code># Search for JWT-related decisions
+/memory JWT authentication
+
+# Find previous architecture discussions
+/memory architecture decisions
+
+# Broad search across all memory
+/memory deployment strategy
+
+# No query — see recent memory entries
+/memory</code></pre>
+
+<h3>Memory Layers</h3>
+<table>
+<tr><th>Layer</th><th>Scope</th><th>Description</th></tr>
+<tr><td>L0</td><td>Session</td><td>Current conversation context, ephemeral</td></tr>
+<tr><td>L1</td><td>Project</td><td>Persisted per-project memory in SQLite</td></tr>
+<tr><td>L2</td><td>Federated</td><td>Cross-instance search via dashboard memory federation</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" tip:</strong> "메모리 검색해줘" &rarr; <code>/memory</code> &nbsp;|&nbsp; "JWT 관련 기억 찾아줘" &rarr; <code>/memory JWT</code> &nbsp;|&nbsp; "이전에 뭐라고 했는지 찾아줘" &rarr; <code>/memory [키워드]</code></div>
+
+<!-- ───────────────────────────── /browser ───────────────────────────── -->
+<h2 id="browser">/browser</h2>
+<p>Control the headless Chrome browser instance managed by podex. Check browser health, list open tabs, and manage the browser session used for web automation and screenshots.</p>
+
+<h3>Subcommands</h3>
+<table>
+<tr><th>Subcommand</th><th>Args</th><th>Description</th></tr>
+<tr><td><code>/browser status</code></td><td>&mdash;</td><td>Show the current browser status: whether the podex browser server is running, the Chrome DevTools Protocol (CDP) connection state, viewport size, and active page URL.</td></tr>
+<tr><td><code>/browser tabs</code></td><td>&mdash;</td><td>List all open browser tabs with their titles, URLs, and active/inactive state. Useful for debugging multi-tab automation workflows.</td></tr>
+</table>
+
+<h3>Example Usage</h3>
+<pre><code># Check if the browser is connected and healthy
+/browser status
+
+# See all open tabs in the managed browser
+/browser tabs
+
+# Typical workflow: check status, then use browser skill
+/browser status
+"이 페이지 스크린샷 찍어줘"</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" tip:</strong> "브라우저 상태 보여줘" &rarr; <code>/browser status</code> &nbsp;|&nbsp; "열린 탭 보여줘" &rarr; <code>/browser tabs</code></div>
+
+<!-- ───────────────────────────── /orchestrate ───────────────────────────── -->
+<h2 id="orchestrate">/orchestrate</h2>
+<p>Run the PABCD orchestration framework. PABCD structures complex tasks into five phases: <strong>I</strong>ntake, <strong>P</strong>ersona, <strong>A</strong>udience, <strong>B</strong>ehavior, <strong>C</strong>ontext, <strong>D</strong>eliverable. Use this command to start a structured workflow, advance through phases, or check progress.</p>
+
+<h3>Subcommands</h3>
+<table>
+<tr><th>Subcommand</th><th>Args</th><th>Description</th></tr>
+<tr><td><code>/orchestrate I</code></td><td>&mdash;</td><td><strong>Intake</strong> &mdash; Begin the orchestration process. Collects the raw task description and clarifies requirements before structuring.</td></tr>
+<tr><td><code>/orchestrate P</code></td><td>&mdash;</td><td><strong>Persona</strong> &mdash; Define who performs the task (e.g., "senior backend engineer", "UX researcher"). Sets the voice and expertise level.</td></tr>
+<tr><td><code>/orchestrate A</code></td><td>&mdash;</td><td><strong>Audience</strong> &mdash; Define who consumes the output (e.g., "junior developers", "product manager", "CI pipeline").</td></tr>
+<tr><td><code>/orchestrate B</code></td><td>&mdash;</td><td><strong>Behavior</strong> &mdash; Specify the actions to perform (e.g., "write", "review", "refactor", "analyze", "migrate").</td></tr>
+<tr><td><code>/orchestrate C</code></td><td>&mdash;</td><td><strong>Context</strong> &mdash; Provide background constraints (e.g., "TypeScript monorepo, Node 20, Cloudflare Workers").</td></tr>
+<tr><td><code>/orchestrate D</code></td><td>&mdash;</td><td><strong>Deliverable</strong> &mdash; Define the expected output format (e.g., "PR-ready code with tests", "architecture diagram", "migration plan").</td></tr>
+<tr><td><code>/orchestrate status</code></td><td>&mdash;</td><td>Show current orchestration progress. Displays which PABCD phases are complete, pending, or in progress.</td></tr>
+<tr><td><code>/orchestrate reset</code></td><td>&mdash;</td><td>Reset the orchestration state. Clears all PABCD phases and returns to a clean slate.</td></tr>
+</table>
+
+<h3>Example Usage</h3>
+<pre><code># Start a full PABCD orchestration from intake
+/orchestrate I
+
+# Jump directly to defining the Persona phase
+/orchestrate P
+
+# Run through the full workflow step by step
+/orchestrate I    # Intake: describe the task
+/orchestrate P    # Persona: who does it
+/orchestrate A    # Audience: who reads it
+/orchestrate B    # Behavior: what actions
+/orchestrate C    # Context: constraints
+/orchestrate D    # Deliverable: output format
+
+# Check progress mid-workflow
+/orchestrate status
+
+# Start over if the framing is wrong
+/orchestrate reset</code></pre>
+
+<h3>PABCD Phase Flow</h3>
+<table>
+<tr><th>Phase</th><th>Question Answered</th><th>Example</th></tr>
+<tr><td><strong>I</strong> &mdash; Intake</td><td>What is the raw task?</td><td>"Build a user auth system with JWT"</td></tr>
+<tr><td><strong>P</strong> &mdash; Persona</td><td>Who performs it?</td><td>Senior backend engineer with security expertise</td></tr>
+<tr><td><strong>A</strong> &mdash; Audience</td><td>Who consumes the output?</td><td>Junior developers joining the team</td></tr>
+<tr><td><strong>B</strong> &mdash; Behavior</td><td>What actions to take?</td><td>Design, implement, write tests, document</td></tr>
+<tr><td><strong>C</strong> &mdash; Context</td><td>What are the constraints?</td><td>Express + TypeScript, PostgreSQL, deployed on Cloudflare</td></tr>
+<tr><td><strong>D</strong> &mdash; Deliverable</td><td>What is the output format?</td><td>PR-ready code with unit tests and API docs</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" tip:</strong> "PABCD 시작해줘" &rarr; <code>/orchestrate I</code> &nbsp;|&nbsp; "오케스트레이션 상태 보여줘" &rarr; <code>/orchestrate status</code> &nbsp;|&nbsp; "PABCD 리셋해줘" &rarr; <code>/orchestrate reset</code></div>
+
+<!-- ───────────────────────────── /project ───────────────────────────── -->
+<h2 id="project">/project</h2>
+<p>Manage project directories. podex tracks which directories are registered projects and uses this context for memory scoping, skill selection, and file operations. Switch between projects or register new ones.</p>
+
+<h3>Subcommands</h3>
+<table>
+<tr><th>Subcommand</th><th>Args</th><th>Description</th></tr>
+<tr><td><code>/project set</code></td><td><code>[path]</code> &mdash; optional directory path</td><td>Set the active project directory. If no path is given, uses the current working directory. This updates memory scope, skill context, and file resolution.</td></tr>
+<tr><td><code>/project reset</code></td><td>&mdash;</td><td>Clear the active project. Resets to no project context, which means memory falls back to global scope and skills lose project-specific hints.</td></tr>
+<tr><td><code>/project list</code></td><td>&mdash;</td><td>List all registered project directories with their names, paths, and last-active timestamps.</td></tr>
+</table>
+
+<h3>Example Usage</h3>
+<pre><code># Set the current directory as the active project
+/project set
+
+# Set a specific project path
+/project set ~/Developer/my-app
+
+# List all known projects
+/project list
+
+# Clear the project context
+/project reset
+
+# Typical workflow: switch project before starting work
+/project set ~/Developer/podex
+"이 프로젝트의 TODO 보여줘"</code></pre>
+
+<h3>What Changes When You Set a Project</h3>
+<table>
+<tr><th>System</th><th>Effect</th></tr>
+<tr><td>Memory</td><td>L1 project memory is scoped to the set directory</td></tr>
+<tr><td>Skills</td><td>Stack detection re-runs for the new project (e.g., detects TypeScript, Python)</td></tr>
+<tr><td>Files</td><td>Relative paths resolve against the project root</td></tr>
+<tr><td>Goals</td><td>Goal tracking is scoped to the active project</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" tip:</strong> "프로젝트 설정해줘" &rarr; <code>/project set</code> &nbsp;|&nbsp; "프로젝트 목록 보여줘" &rarr; <code>/project list</code> &nbsp;|&nbsp; "프로젝트 초기화해줘" &rarr; <code>/project reset</code></div>
+
+<!-- ───────────────────────────── Quick Reference ───────────────────────────── -->
+<h2>Quick Reference</h2>
+<p>All tool commands at a glance, grouped by what they manage.</p>
+
+<table>
+<tr><th>Category</th><th>Command</th><th>What It Does</th></tr>
+<tr><td rowspan="2">Skill Management</td><td><code>/skill list</code></td><td>List all skills and their status</td></tr>
+<tr><td><code>/skill reset</code></td><td>Reset skills to defaults</td></tr>
+<tr><td>Employee Management</td><td><code>/employee reset</code></td><td>Reset all employees</td></tr>
+<tr><td rowspan="2">MCP Servers</td><td><code>/mcp sync</code></td><td>Refresh MCP server connections</td></tr>
+<tr><td><code>/mcp install</code></td><td>Install a new MCP server</td></tr>
+<tr><td>Memory</td><td><code>/memory [query]</code></td><td>Search persistent memory</td></tr>
+<tr><td rowspan="2">Browser</td><td><code>/browser status</code></td><td>Check browser health</td></tr>
+<tr><td><code>/browser tabs</code></td><td>List open tabs</td></tr>
+<tr><td rowspan="8">Orchestration</td><td><code>/orchestrate I</code></td><td>Start intake phase</td></tr>
+<tr><td><code>/orchestrate P</code></td><td>Define persona</td></tr>
+<tr><td><code>/orchestrate A</code></td><td>Define audience</td></tr>
+<tr><td><code>/orchestrate B</code></td><td>Specify behavior</td></tr>
+<tr><td><code>/orchestrate C</code></td><td>Provide context</td></tr>
+<tr><td><code>/orchestrate D</code></td><td>Define deliverable</td></tr>
+<tr><td><code>/orchestrate status</code></td><td>Show orchestration progress</td></tr>
+<tr><td><code>/orchestrate reset</code></td><td>Reset orchestration state</td></tr>
+<tr><td rowspan="3">Project</td><td><code>/project set [path]</code></td><td>Set active project directory</td></tr>
+<tr><td><code>/project reset</code></td><td>Clear project context</td></tr>
+<tr><td><code>/project list</code></td><td>List registered projects</td></tr>
+</table>
+
+<h2>Natural Language Mapping</h2>
+<p>You do not need to memorize slash commands. podex maps natural Korean and English phrases to the appropriate tool command.</p>
+
+<table>
+<tr><th>You Say</th><th>podex Runs</th></tr>
+<tr><td>"메모리 검색해줘"</td><td><code>/memory</code></td></tr>
+<tr><td>"JWT 관련 메모리 찾아줘"</td><td><code>/memory JWT</code></td></tr>
+<tr><td>"PABCD 시작해줘"</td><td><code>/orchestrate P</code></td></tr>
+<tr><td>"오케스트레이션 상태 확인해줘"</td><td><code>/orchestrate status</code></td></tr>
+<tr><td>"스킬 목록 보여줘"</td><td><code>/skill list</code></td></tr>
+<tr><td>"스킬 리셋해줘"</td><td><code>/skill reset</code></td></tr>
+<tr><td>"직원 리셋해줘"</td><td><code>/employee reset</code></td></tr>
+<tr><td>"MCP 서버 동기화해줘"</td><td><code>/mcp sync</code></td></tr>
+<tr><td>"MCP 설치해줘"</td><td><code>/mcp install</code></td></tr>
+<tr><td>"브라우저 상태 보여줘"</td><td><code>/browser status</code></td></tr>
+<tr><td>"열린 탭 보여줘"</td><td><code>/browser tabs</code></td></tr>
+<tr><td>"프로젝트 설정해줘"</td><td><code>/project set</code></td></tr>
+<tr><td>"프로젝트 목록 보여줘"</td><td><code>/project list</code></td></tr>
+<tr><td>"프로젝트 초기화해줘"</td><td><code>/project reset</code></td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="model.html">Model &amp; CLI</a>
+<a class="next" href="cli-only.html">CLI-Only</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

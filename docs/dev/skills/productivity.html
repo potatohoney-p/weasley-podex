@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Productivity Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link active" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Productivity Skills</h1>
+<p class="lead">Document creation, knowledge management, task tracking, note-taking, and Korean content-writing skills. These 17 skills connect podex to office suites, project management tools, personal productivity apps, and editorial workflows so you can create, read, edit, and organize documents, tasks, and content entirely from the chat interface.</p>
+
+<h2>Overview</h2>
+<p>Productivity skills fall into five groups: <strong>document formats</strong> (Office and HWP file I/O), <strong>knowledge management</strong> (Notion, Obsidian, Apple Notes), <strong>task management</strong> (Things, Reminders, Trello, Linear), <strong>collaboration utilities</strong> (co-authoring, HTML-to-PPTX conversion), and <strong>content writing</strong> (Korean promotional/editorial output through <code>k-writing</code>).</p>
+
+<table>
+<tr><th>Skill</th><th>Status</th><th>Category</th><th>Description</th></tr>
+<tr><td><code>docx</code></td><td>Active</td><td>Documents</td><td>Create, read, and edit Word (.docx) files</td></tr>
+<tr><td><code>pptx</code></td><td>Active</td><td>Documents</td><td>Create, read, and edit PowerPoint (.pptx) presentations</td></tr>
+<tr><td><code>xlsx</code></td><td>Active</td><td>Documents</td><td>Create, read, and edit Excel (.xlsx) spreadsheets</td></tr>
+<tr><td><code>hwp</code></td><td>Active</td><td>Documents</td><td>Create, read, and edit Korean HWP/HWPX documents</td></tr>
+<tr><td><code>k-writing</code></td><td>Active</td><td>Content</td><td>Korean promotional/content writing with channel routing, mandatory pre-search, 3-candidate hook scoring, and anti-AI/humanness checks</td></tr>
+<tr><td><code>notion</code></td><td>Active</td><td>Knowledge</td><td>Read, create, and update Notion pages and databases</td></tr>
+<tr><td><code>notion-knowledge-capture</code></td><td>Planned</td><td>Knowledge</td><td>Auto-capture conversation insights into Notion</td></tr>
+<tr><td><code>notion-meeting</code></td><td>Planned</td><td>Knowledge</td><td>Meeting notes template with action items to Notion</td></tr>
+<tr><td><code>notion-research</code></td><td>Planned</td><td>Knowledge</td><td>Research findings aggregation into Notion databases</td></tr>
+<tr><td><code>notion-spec</code></td><td>Planned</td><td>Knowledge</td><td>Product spec drafting with Notion integration</td></tr>
+<tr><td><code>apple-notes</code></td><td>Planned</td><td>Knowledge</td><td>Create and search Apple Notes via AppleScript</td></tr>
+<tr><td><code>obsidian</code></td><td>Planned</td><td>Knowledge</td><td>Read and write Obsidian vault markdown files</td></tr>
+<tr><td><code>apple-reminders</code></td><td>Planned</td><td>Tasks</td><td>Create and manage Apple Reminders via AppleScript</td></tr>
+<tr><td><code>things-mac</code></td><td>Planned</td><td>Tasks</td><td>Create and manage tasks in Things 3 for Mac</td></tr>
+<tr><td><code>trello</code></td><td>Planned</td><td>Tasks</td><td>Create cards, move between lists, manage Trello boards</td></tr>
+<tr><td><code>linear</code></td><td>Planned</td><td>Tasks</td><td>Create issues, update status, query Linear projects</td></tr>
+<tr><td><code>doc-coauthoring</code></td><td>Planned</td><td>Collaboration</td><td>Real-time collaborative document editing with AI</td></tr>
+<tr><td><code>html2pptx</code></td><td>Planned</td><td>Collaboration</td><td>Convert HTML content into PowerPoint slides</td></tr>
+</table>
+
+<h2>Document Skills</h2>
+<p>The four document skills (<code>docx</code>, <code>pptx</code>, <code>xlsx</code>, <code>hwp</code>) are all currently active and provide full read/write/edit capabilities for their respective formats.</p>
+
+<h3>docx -- Word Documents</h3>
+<p>Creates and edits <code>.docx</code> files using structured content blocks. Supports headings, paragraphs, tables, bullet lists, images, and custom styles.</p>
+<pre><code># Create a new Word document
+"프로젝트 보고서를 docx로 만들어줘"
+
+# Read and summarize an existing document
+"이 docx 파일 읽어서 요약해줘"
+
+# Edit specific sections
+"3번째 섹션의 표를 업데이트해줘"</code></pre>
+
+<h3>pptx -- PowerPoint Presentations</h3>
+<p>Generates slide decks with layouts, text boxes, images, charts, and speaker notes. Supports master slide templates and custom themes.</p>
+<pre><code># Create a presentation from scratch
+"PPT 만들어줘 -- 10장짜리 프로젝트 발표용"
+
+# Add slides to existing presentation
+"이 PPT에 요약 슬라이드 추가해줘"
+
+# Convert content to slides
+"이 마크다운을 PPT로 변환해줘"</code></pre>
+
+<h3>xlsx -- Excel Spreadsheets</h3>
+<p>Creates and manipulates spreadsheets with formulas, charts, conditional formatting, pivot tables, and multiple sheets.</p>
+<pre><code># Create a budget spreadsheet
+"월별 예산 엑셀 만들어줘"
+
+# Analyze existing data
+"이 엑셀 데이터 분석해서 차트 추가해줘"
+
+# Generate report from data
+"매출 데이터로 분기별 보고서 엑셀 만들어줘"</code></pre>
+
+<h3>hwp -- Korean HWP/HWPX Documents</h3>
+<p>Full support for Hancom Office HWP and HWPX (OWPML) formats. Handles Korean-specific document layouts, tables, and formatting. Triggers on keywords like 한글, .hwp, .hwpx, 한컴오피스, or OWPML.</p>
+<pre><code># Read an HWP file
+"한글 문서 읽어줘"
+
+# Create an official Korean document
+"공문서 양식으로 한글 파일 만들어줘"
+
+# Convert between formats
+"이 hwp 파일을 docx로 변환해줘"</code></pre>
+
+<div class="callout-info">
+<strong>Tip:</strong> All document skills auto-detect the language from your prompt. Korean prompts like "PPT 만들어줘" or "한글 문서 읽어줘" work naturally alongside English commands. The skills handle encoding, fonts, and locale-specific formatting automatically.
+</div>
+
+<h2>Knowledge Management</h2>
+<p>These skills integrate with note-taking and knowledge base platforms to capture, organize, and retrieve information.</p>
+
+<h3>notion</h3>
+<p>The core Notion integration skill. Currently active. Connects to the Notion API to read pages, create new pages, update content, and query databases.</p>
+<pre><code># Create a page in Notion
+"노션에 정리해줘 -- 오늘 회의 내용"
+
+# Query a database
+"노션 프로젝트 DB에서 진행중인 태스크 보여줘"
+
+# Update an existing page
+"노션 위클리 리포트 페이지 업데이트해줘"</code></pre>
+
+<table>
+<tr><th>Sub-skill</th><th>Status</th><th>Purpose</th></tr>
+<tr><td><code>notion-knowledge-capture</code></td><td>Planned</td><td>Automatically capture key insights, decisions, and learnings from conversations into a structured Notion database</td></tr>
+<tr><td><code>notion-meeting</code></td><td>Planned</td><td>Generate meeting note pages with attendees, agenda, discussion points, and action items</td></tr>
+<tr><td><code>notion-research</code></td><td>Planned</td><td>Aggregate research findings from web searches and deep-research into Notion with citations</td></tr>
+<tr><td><code>notion-spec</code></td><td>Planned</td><td>Draft product specifications with requirements, user stories, and acceptance criteria</td></tr>
+</table>
+
+<h3>apple-notes (Planned)</h3>
+<p>Integrates with Apple Notes on macOS via AppleScript. Will support creating, searching, reading, and appending to notes across folders.</p>
+<pre><code># Create a quick note
+"애플 노트에 메모 남겨줘: 내일 미팅 준비사항"
+
+# Search notes
+"애플 노트에서 지난주 메모 검색해줘"</code></pre>
+
+<h3>obsidian (Planned)</h3>
+<p>Direct integration with Obsidian vaults. Will read and write markdown files, manage tags, create wikilinks, and respect vault folder structure.</p>
+<pre><code># Create a note in Obsidian
+"옵시디언에 새 노트 만들어줘: 아키텍처 결정 기록"
+
+# Search vault
+"옵시디언 볼트에서 API 관련 노트 찾아줘"</code></pre>
+
+<h2>Task Management</h2>
+<p>Task management skills connect podex to popular to-do and project tracking tools. All are currently planned.</p>
+
+<h3>apple-reminders (Planned)</h3>
+<p>Creates and manages reminders in Apple Reminders via AppleScript. Supports due dates, priorities, lists, and recurring reminders.</p>
+<pre><code># Add a reminder
+"리마인더에 추가해줘: 금요일까지 보고서 제출"
+
+# List today's reminders
+"오늘 리마인더 보여줘"</code></pre>
+
+<h3>things-mac (Planned)</h3>
+<p>Integration with Things 3 for Mac via URL scheme and AppleScript. Will support creating to-dos, projects, areas, and managing tags.</p>
+<pre><code># Create a to-do
+"Things에 할일 추가해줘: 코드 리뷰"
+
+# Create a project with tasks
+"Things에 새 프로젝트 만들어줘 -- 릴리즈 체크리스트"</code></pre>
+
+<h3>trello (Planned)</h3>
+<p>Manages Trello boards, lists, and cards via the Trello REST API. Will support creating cards, moving between lists, adding labels, checklists, and attachments.</p>
+<pre><code># Create a card
+"트렐로 보드에 카드 추가해줘: 버그 수정 필요"
+
+# Move a card
+"트렐로에서 이 카드를 Done으로 옮겨줘"</code></pre>
+
+<h3>linear (Planned)</h3>
+<p>Integration with Linear project management. Will support creating issues, updating status, querying projects, and managing cycles via the Linear GraphQL API.</p>
+<pre><code># Create an issue
+"리니어에 이슈 만들어줘: 로그인 페이지 리디자인"
+
+# Query project status
+"리니어에서 이번 사이클 진행 상황 보여줘"</code></pre>
+
+<h2>Collaboration Utilities</h2>
+<p>Specialized skills for document collaboration and format conversion workflows.</p>
+
+<h3>doc-coauthoring (Planned)</h3>
+<p>Enables real-time collaborative document editing where the AI assists in drafting, reviewing, and refining documents alongside human input. Will support version tracking, suggestion mode, and comment resolution.</p>
+<pre><code># Start co-authoring session
+"이 보고서 같이 작성하자 -- 내가 개요 쓸 테니 본문 채워줘"
+
+# Review and suggest edits
+"이 문서 리뷰하고 수정 제안해줘"</code></pre>
+
+<h3>html2pptx (Planned)</h3>
+<p>Converts HTML content (web pages, rendered markdown, report output) into formatted PowerPoint slides. Useful for turning research results or dashboard exports into presentation-ready decks.</p>
+<pre><code># Convert HTML report to slides
+"이 HTML 리포트를 PPT로 변환해줘"
+
+# Web page to presentation
+"이 웹페이지 내용을 발표자료로 만들어줘"</code></pre>
+
+<div class="callout-info">
+<strong>Natural language triggers:</strong> You do not need to remember skill names. Just describe what you want in natural language. Examples:
+<ul>
+<li>"PPT 만들어줘" triggers the <code>pptx</code> skill</li>
+<li>"노션에 정리해줘" triggers the <code>notion</code> skill</li>
+<li>"한글 문서 읽어줘" triggers the <code>hwp</code> skill</li>
+<li>"엑셀로 정리해줘" triggers the <code>xlsx</code> skill</li>
+<li>"이거 홍보 쓰레드로 써줘" triggers the active <code>k-writing</code> skill</li>
+<li>"리마인더에 추가해줘" will trigger <code>apple-reminders</code></li>
+<li>"트렐로에 카드 만들어줘" will trigger <code>trello</code></li>
+</ul>
+podex matches your intent to the appropriate skill automatically.
+</div>
+
+<h2>Configuration</h2>
+<p>Some productivity skills require API tokens or app-specific setup. Configure these in your podex settings or environment variables.</p>
+
+<table>
+<tr><th>Skill</th><th>Requirement</th><th>Configuration</th></tr>
+<tr><td><code>notion</code></td><td>Notion API token</td><td><code>NOTION_API_KEY</code> in env or <code>settings.json</code></td></tr>
+<tr><td><code>trello</code></td><td>Trello API key + token</td><td><code>TRELLO_API_KEY</code>, <code>TRELLO_TOKEN</code></td></tr>
+<tr><td><code>linear</code></td><td>Linear API key</td><td><code>LINEAR_API_KEY</code></td></tr>
+<tr><td><code>obsidian</code></td><td>Vault path</td><td><code>OBSIDIAN_VAULT_PATH</code> in settings</td></tr>
+<tr><td><code>docx</code> / <code>pptx</code> / <code>xlsx</code></td><td>None</td><td>Works out of the box</td></tr>
+<tr><td><code>hwp</code></td><td>None</td><td>Works out of the box</td></tr>
+<tr><td><code>apple-notes</code> / <code>apple-reminders</code> / <code>things-mac</code></td><td>macOS</td><td>AppleScript access must be allowed in System Settings</td></tr>
+</table>
+
+<h2>Skill Interactions</h2>
+<p>Productivity skills combine naturally with other podex capabilities:</p>
+<ul>
+<li><strong>deep-research + notion</strong>: Research a topic and save findings to a Notion database</li>
+<li><strong>xlsx + pptx</strong>: Analyze spreadsheet data and generate a presentation with charts</li>
+<li><strong>hwp + docx</strong>: Convert between Korean HWP and Word formats</li>
+<li><strong>k-writing + search</strong>: Produce Korean promo copy with current-source checks, hook scoring, and anti-AI review</li>
+<li><strong>notion-meeting + telegram</strong>: Capture meeting notes and send a summary via Telegram</li>
+<li><strong>html2pptx + web-ai</strong>: Scrape a web page and convert it to a slide deck</li>
+<li><strong>linear + trello</strong>: Sync issue status across project management tools</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="devtools-workflow.html">Dev Workflow</a>
+<a class="next" href="smarthome.html">Smart Home</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

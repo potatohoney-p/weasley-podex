@@ -1,0 +1,86 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync, realpathSync } from 'node:fs';
+import { join } from 'node:path';
+import { settings, replaceSettings } from '../../src/core/config.ts';
+import { addBroadcastListener, removeBroadcastListener } from '../../src/core/bus.ts';
+import { reloadSettingsFromDisk, startSettingsWatch } from '../../src/core/settings-watch.ts';
+
+type Captured = { type: string; data: Record<string, unknown> };
+
+function withCapturedBroadcasts(run: (events: Captured[]) => void | Promise<void>): Promise<void> {
+    const events: Captured[] = [];
+    const listener = (type: string, data: Record<string, unknown>) => { events.push({ type, data }); };
+    addBroadcastListener(listener);
+    const prevSettings = { ...settings };
+    return Promise.resolve(run(events)).finally(() => {
+        removeBroadcastListener(listener);
+        replaceSettings(prevSettings);
+    });
+}
+
+test('SWA-001: external write reloads settings and broadcasts settings_change', () => withCapturedBroadcasts((events) => {
+    // normalizeProjectDirs only keeps real directories — use this repo's root.
+    const realDir = realpathSync(join(import.meta.dirname, '..', '..'));
+    const reloaded = reloadSettingsFromDisk({
+        readImpl: () => JSON.stringify({ cli: 'codex', projectDirs: [realDir] }),
+        lastSavedRaw: null,
+    });
+    assert.equal(reloaded, true);
+    assert.equal(settings["cli"], 'codex');
+    assert.deepEqual(settings["projectDirs"], [realDir]);
+    const change = events.find(e => e.type === 'settings_change');
+    assert.ok(change, 'settings_change must be broadcast');
+    assert.equal(change.data["source"], 'external');
+    assert.deepEqual(change.data["projectDirs"], [realDir]);
+}));
+
+test('SWA-002: self-write echo is skipped (fingerprint match)', () => withCapturedBroadcasts((events) => {
+    const raw = JSON.stringify({ cli: 'claude' });
+    const reloaded = reloadSettingsFromDisk({ readImpl: () => raw, lastSavedRaw: raw });
+    assert.equal(reloaded, false);
+    assert.equal(events.filter(e => e.type === 'settings_change').length, 0);
+}));
+
+test('SWA-003: malformed JSON keeps in-memory settings and stays silent', () => withCapturedBroadcasts((events) => {
+    const prevCli = settings["cli"];
+    const reloaded = reloadSettingsFromDisk({ readImpl: () => '{not json', lastSavedRaw: null });
+    assert.equal(reloaded, false);
+    assert.equal(settings["cli"], prevCli);
+    assert.equal(events.filter(e => e.type === 'settings_change').length, 0);
+}));
+
+test('SWA-004: watcher debounces rapid events into one reload and filters filenames', async () => {
+    let listener: ((event: string, filename: string | Buffer | null) => void) | null = null;
+    let closed = false;
+    let reads = 0;
+    const stop = startSettingsWatch({
+        debounceMs: 10,
+        watchImpl: (_dir, l) => { listener = l; return { close: () => { closed = true; } }; },
+        readImpl: () => { reads += 1; throw new Error('stop here — read counted'); },
+    });
+    assert.ok(listener, 'watch listener must be registered');
+
+    listener('change', 'unrelated.json');
+    await new Promise(r => setTimeout(r, 30));
+    assert.equal(reads, 0, 'other filenames must not trigger a read');
+
+    listener('change', 'settings.json');
+    listener('change', 'settings.json');
+    listener('change', 'settings.json');
+    await new Promise(r => setTimeout(r, 40));
+    assert.equal(reads, 1, 'rapid events must collapse into one reload');
+
+    stop();
+    assert.equal(closed, true, 'stop() must close the watcher');
+});
+
+test('SWA-005: server wires the watcher and producers broadcast settings_change', () => {
+    const root = join(import.meta.dirname, '..', '..');
+    const serverSrc = readFileSync(join(root, 'server.ts'), 'utf8');
+    assert.ok(serverSrc.includes('startSettingsWatch()'), 'server.ts must start the settings watcher');
+    const runtimeSrc = readFileSync(join(root, 'src/core/runtime-settings.ts'), 'utf8');
+    assert.ok(runtimeSrc.includes("broadcast('settings_change'"), 'applyRuntimeSettingsPatch must broadcast settings_change');
+    const projectSrc = readFileSync(join(root, 'src/cli/handlers-project.ts'), 'utf8');
+    assert.ok(projectSrc.includes("broadcast('settings_change'"), 'project handler must broadcast settings_change');
+});

@@ -1,0 +1,67 @@
+﻿appId: com.lidge.podex
+productName: podex
+directories:
+  output: dist
+  buildResources: build
+files:
+  - out/**/*
+  - package.json
+afterSign: build/after-sign.mjs
+asar: true
+asarUnpack:
+  - node_modules/node-pty/**/*
+extraResources:
+  - from: sidecar/server
+    to: server
+    filter:
+      - "**/*"
+      - "!**/*.ts"
+      - "!**/*.map"
+      - "!**/test*"
+      - "!**/.cache"
+  - from: build/icon.png
+    to: icon.png
+  - from: build/trayTemplate.png
+    to: trayTemplate.png
+  - from: build/trayTemplate@2x.png
+    to: trayTemplate@2x.png
+icon: build/icon.png
+mac:
+  icon: build/icon.icns
+  category: public.app-category.developer-tools
+  extendInfo:
+    NSAppleEventsUsageDescription: podex uses Automation only when you ask Computer Use to inspect or operate another desktop app.
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  target:
+    - target: dmg
+      arch:
+        - arm64
+    - target: zip
+      arch:
+        - arm64
+  identity: null
+  gatekeeperAssess: false
+  notarize: false
+  hardenedRuntime: false
+dmg:
+  sign: false
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: zip
+      arch:
+        - x64
+  signAndEditExecutable: false
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  include: build/installer.nsh
+linux:
+  target:
+    - AppImage
+  category: Development
+publish: null
+

@@ -1,0 +1,62 @@
+/* ─── Goal Cockpit ─── */
+.goal-cockpit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: color-mix(in oklch, var(--surface) 92%, var(--orc-glow-I) 8%);
+    border-bottom: 1px solid var(--border);
+    min-height: 0;
+    overflow: hidden;
+}
+.goal-cockpit[hidden] {
+    display: none;
+}
+.goal-objective {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text);
+    font-weight: 600;
+}
+.goal-status {
+    flex-shrink: 0;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.goal-status--active {
+    background: color-mix(in oklch, var(--orc-glow-P) 20%, var(--surface));
+    color: var(--orc-glow-P);
+    border: 1px solid var(--orc-glow-P);
+}
+.goal-status--paused {
+    background: color-mix(in oklch, var(--orc-glow-A) 20%, var(--surface));
+    color: var(--orc-glow-A);
+    border: 1px solid var(--orc-glow-A);
+}
+.goal-status--blocked {
+    background: color-mix(in oklch, oklch(65% 0.2 30) 20%, var(--surface));
+    color: oklch(65% 0.2 30);
+    border: 1px solid oklch(65% 0.2 30);
+}
+.goal-next {
+    flex-shrink: 0;
+    max-width: min(30vw, 280px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-dim);
+    font-size: 10px;
+}
+
+[data-theme="light"] .goal-cockpit {
+    background: color-mix(in oklch, var(--surface) 95%, var(--orc-glow-I) 5%);
+}

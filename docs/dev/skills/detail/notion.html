@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notion — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-scope { background: rgba(34, 211, 238, 0.15); color: var(--accent); }
+.badge-env { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+
+.skill-meta { display: flex; gap: 12px; align-items: center; margin: -4px 0 24px; flex-wrap: wrap; }
+.skill-meta .badge { font-size: 12px; padding: 3px 10px; }
+
+.quick-ref { margin: 20px 0 28px; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 140px; color: var(--text-dim); }
+
+.cmd-block { margin: 16px 0; }
+.cmd-block h4 { margin: 16px 0 4px; }
+
+.prop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+.prop-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px;
+}
+.prop-card h4 { margin: 0 0 8px; font-size: 15px; text-transform: none; letter-spacing: 0; }
+.prop-card code { font-size: 12px; }
+
+.example-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px; margin: 12px 0;
+}
+.example-card .example-prompt {
+  font-size: 15px; font-weight: 500; color: var(--accent); margin-bottom: 6px;
+}
+.example-card .example-desc {
+  font-size: 13px; color: var(--text-dim); line-height: 1.5;
+}
+.example-card code { font-size: 12px; }
+
+.design-rule {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px; margin: 12px 0;
+}
+.design-rule h4 { margin: 0 0 8px; font-size: 15px; text-transform: none; letter-spacing: 0; color: var(--text); }
+.design-rule p { font-size: 13px; color: var(--text-dim); margin: 4px 0; }
+
+.api-change { display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
+.api-change .change-label {
+  flex-shrink: 0; padding: 2px 10px; border-radius: 4px;
+  background: rgba(251, 191, 36, 0.15); color: var(--yellow);
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  margin-top: 2px;
+}
+.api-change .change-text { flex: 1; font-size: 14px; }
+
+.page-structure-block {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 20px 24px; margin: 16px 0; font-family: var(--font-mono); font-size: 13px;
+  line-height: 1.6; color: var(--text-dim);
+}
+
+@media (max-width: 768px) {
+  .prop-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link active" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Notion</h1>
+<p class="lead">Notion page and database CRUD via API &mdash; create, read, update, and query Notion pages, data sources (databases), and blocks directly from podex using the Notion API.</p>
+
+<div class="skill-meta">
+  <span class="badge badge-active">Default Active: Yes</span>
+  <span class="badge badge-scope">Category: Productivity</span>
+  <span class="badge badge-env">Requires: NOTION_API_KEY</span>
+</div>
+
+<h2>Quick Reference</h2>
+<table class="quick-ref">
+<tr><td>Skill name</td><td><code>notion</code></td></tr>
+<tr><td>Status</td><td>Active (auto-injected into every session)</td></tr>
+<tr><td>Category</td><td>Productivity</td></tr>
+<tr><td>SKILL.md path</td><td><code>~/.podex/skills/notion/SKILL.md</code></td></tr>
+<tr><td>Homepage</td><td><a href="https://developers.notion.com">developers.notion.com</a></td></tr>
+<tr><td>API version</td><td><code>2025-09-03</code> (latest)</td></tr>
+<tr><td>Requires</td><td><code>NOTION_API_KEY</code> environment variable (key with <code>ntn_</code> prefix)</td></tr>
+<tr><td>Key location</td><td><code>~/.config/notion/api_key</code></td></tr>
+<tr><td>OAuth config</td><td><code>~/.config/notion/oauth.env</code></td></tr>
+<tr><td>Rate limit</td><td>~3 requests/sec (use <code>time.sleep(0.35)</code> for batch operations)</td></tr>
+<tr><td>Install</td><td>Pre-installed (ships with podex)</td></tr>
+</table>
+
+<h2>Overview</h2>
+<p>The <code>notion</code> skill provides full CRUD access to Notion workspaces through the Notion API. It enables podex to search for pages, create and update content, query databases (data sources), manage blocks, and apply visual design patterns &mdash; all without leaving the terminal.</p>
+
+<p>Key capabilities:</p>
+<ul>
+  <li><strong>Search</strong> &mdash; find pages and data sources by title or content</li>
+  <li><strong>Read</strong> &mdash; retrieve page properties and block-level content</li>
+  <li><strong>Create</strong> &mdash; add new pages to workspaces or data sources, create new data sources</li>
+  <li><strong>Update</strong> &mdash; modify page properties, append blocks, change status fields</li>
+  <li><strong>Query</strong> &mdash; filter and sort data source entries with structured queries</li>
+  <li><strong>Design</strong> &mdash; apply Notion-native visual patterns (mentions, callouts, icons)</li>
+</ul>
+
+<h2>Setup</h2>
+<p>Before using the Notion skill, you need an API integration key and the correct permissions.</p>
+
+<table>
+<thead>
+<tr><th>Step</th><th>Action</th></tr>
+</thead>
+<tbody>
+<tr><td>1. Create integration</td><td>Go to <a href="https://www.notion.so/my-integrations">notion.so/my-integrations</a> and create a new internal integration</td></tr>
+<tr><td>2. Copy the API key</td><td>The key starts with <code>ntn_</code></td></tr>
+<tr><td>3. Store the key</td><td>Save to <code>~/.config/notion/api_key</code></td></tr>
+<tr><td>4. Share pages</td><td>In Notion, share each target page/database with your integration</td></tr>
+</tbody>
+</table>
+
+<pre><code># Store your API key
+mkdir -p ~/.config/notion
+echo "ntn_your_api_key_here" > ~/.config/notion/api_key
+chmod 600 ~/.config/notion/api_key</code></pre>
+
+<div class="callout callout-warn"><strong>Important:</strong> Target pages and databases must be explicitly shared with your integration in Notion. Unshared pages will return 404 errors even if the API key is valid.</div>
+
+<h2>API Helper Function</h2>
+<p>The skill defines a reusable shell helper that all operations are built on. podex uses this internally when executing Notion commands:</p>
+
+<pre><code>NOTION_KEY=$(cat ~/.config/notion/api_key)
+
+# Helper function used by all API calls
+notion_api() {
+  local method=$1 endpoint=$2 data=$3
+  curl -s -X "$method" "https://api.notion.com/v1$endpoint" \
+    -H "Authorization: Bearer $NOTION_KEY" \
+    -H "Notion-Version: 2025-09-03" \
+    -H "Content-Type: application/json" \
+    ${data:+-d "$data"}
+}</code></pre>
+
+<h2>Common Operations</h2>
+
+<h3>Search</h3>
+<p>Find pages and data sources by title. Returns matching objects with their IDs.</p>
+<pre><code># Search for pages by title
+notion_api POST /search '{"query": "page title"}'
+
+# Discover workspace page IDs
+notion_api POST /search '{"query": "Meeting Notes"}'</code></pre>
+
+<h3>Read Pages and Blocks</h3>
+<p>Retrieve page properties and their block-level content.</p>
+<pre><code># Get page properties
+notion_api GET /pages/{page_id}
+
+# Get page content (all child blocks)
+notion_api GET /blocks/{page_id}/children</code></pre>
+
+<h3>Create Pages</h3>
+<p>Create a new page inside a data source (database) with properties, or as a child of an existing page.</p>
+<pre><code># Create a page in a data source
+notion_api POST /pages '{
+  "parent": {"database_id": "xxx"},
+  "properties": {
+    "Name": {"title": [{"text": {"content": "New Item"}}]},
+    "Status": {"select": {"name": "Todo"}}
+  }
+}'</code></pre>
+
+<h3>Update Pages</h3>
+<p>Modify page properties without affecting the page content (blocks).</p>
+<pre><code># Update a status property
+notion_api PATCH /pages/{page_id} \
+  '{"properties": {"Status": {"select": {"name": "Done"}}}}'</code></pre>
+
+<h3>Append Blocks</h3>
+<p>Add new content blocks to an existing page.</p>
+<pre><code># Add a paragraph block
+notion_api PATCH /blocks/{page_id}/children '{
+  "children": [
+    {
+      "object": "block",
+      "type": "paragraph",
+      "paragraph": {
+        "rich_text": [{"text": {"content": "Hello, world!"}}]
+      }
+    }
+  ]
+}'</code></pre>
+
+<h3>Query Data Sources</h3>
+<p>Filter and sort database entries with structured queries.</p>
+<pre><code># Query with filter and sort
+notion_api POST /data_sources/{data_source_id}/query '{
+  "filter": {
+    "property": "Status",
+    "select": {"equals": "Active"}
+  },
+  "sorts": [
+    {"property": "Date", "direction": "descending"}
+  ]
+}'</code></pre>
+
+<h3>Create Data Sources</h3>
+<p>Create a new database (data source) with a defined schema.</p>
+<pre><code># Create a new data source with properties
+notion_api POST /data_sources '{
+  "parent": {"page_id": "xxx"},
+  "title": [{"text": {"content": "My Database"}}],
+  "properties": {
+    "Name": {"title": {}},
+    "Status": {"select": {"options": [{"name": "Todo"}, {"name": "Done"}]}},
+    "Date": {"date": {}}
+  }
+}'</code></pre>
+
+<h2>Property Types Reference</h2>
+<p>Each property type has a specific JSON structure. Use the correct format when creating or updating page properties.</p>
+
+<div class="prop-grid">
+  <div class="prop-card">
+    <h4>Title</h4>
+    <pre><code>{"title": [{"text": {"content": "..."}}]}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Rich Text</h4>
+    <pre><code>{"rich_text": [{"text": {"content": "..."}}]}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Select</h4>
+    <pre><code>{"select": {"name": "Option"}}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Multi-select</h4>
+    <pre><code>{"multi_select": [{"name": "A"}, {"name": "B"}]}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Date</h4>
+    <pre><code>{"date": {"start": "2024-01-15", "end": "2024-01-16"}}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Checkbox</h4>
+    <pre><code>{"checkbox": true}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Number</h4>
+    <pre><code>{"number": 42}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>URL</h4>
+    <pre><code>{"url": "https://..."}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Email</h4>
+    <pre><code>{"email": "user@example.com"}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Relation</h4>
+    <pre><code>{"relation": [{"id": "page_id"}]}</code></pre>
+  </div>
+</div>
+
+<h2>2025-09-03 API Changes</h2>
+<p>The latest Notion API version introduces significant changes to how databases are handled. The skill is built on this version.</p>
+
+<div class="api-change">
+  <span class="change-label">Renamed</span>
+  <span class="change-text"><strong>Databases &rarr; Data Sources:</strong> Use <code>/data_sources/</code> endpoints for queries. The term "database" is replaced by "data source" in the API.</span>
+</div>
+<div class="api-change">
+  <span class="change-label">New</span>
+  <span class="change-text"><strong>Two IDs per database:</strong> <code>database_id</code> is used for creating pages inside a database, while <code>data_source_id</code> is used for querying. Both are present in API responses.</span>
+</div>
+<div class="api-change">
+  <span class="change-label">Changed</span>
+  <span class="change-text"><strong>Search results:</strong> Databases now return as <code>"object": "data_source"</code> instead of <code>"object": "database"</code>.</span>
+</div>
+<div class="api-change">
+  <span class="change-label">Changed</span>
+  <span class="change-text"><strong>Page responses:</strong> Include both <code>parent.data_source_id</code> and <code>parent.database_id</code> when the parent is a database.</span>
+</div>
+
+<div class="callout callout-info"><strong>Dual ID pattern:</strong> When working with databases, use <code>database_id</code> for <code>POST /pages</code> (creating entries) and <code>data_source_id</code> for <code>POST /data_sources/{id}/query</code> (querying entries). Mixing them up will cause 404 errors.</div>
+
+<h2>Visual Design Rules</h2>
+<p>The skill includes a set of visual design rules (referred to as the "aesthetics guide") that ensure Notion pages created by podex look polished and follow Notion-native patterns.</p>
+
+<div class="design-rule">
+  <h4>1. Use mention links for page references</h4>
+  <p>Mention links create automatic backlinks and display the referenced page's icon. Always prefer mentions over plain-text page names.</p>
+  <pre><code>// Correct: mention link (creates backlink, shows icon)
+{"type": "mention", "mention": {"type": "page", "page": {"id": "page-UUID"}}}
+
+// Incorrect: plain text (no backlink, no icon)
+{"type": "text", "text": {"content": "Page Name"}}</code></pre>
+</div>
+
+<div class="design-rule">
+  <h4>2. Skip emoji in text when using mentions</h4>
+  <p>Mentions automatically display the page's icon. Adding emoji text alongside a mention creates visual duplication. Let the mention handle the icon.</p>
+</div>
+
+<div class="design-rule">
+  <h4>3. Use callout + mention for navigation hubs</h4>
+  <p>For pages that serve as hubs or dashboards, use a callout block with mention links separated by a dot separator for clean navigation.</p>
+  <pre><code>{"object": "block", "type": "callout", "callout": {
+    "rich_text": [
+        {"type": "mention", "mention": {"type": "page", "page": {"id": "dashboard-UUID"}}},
+        {"type": "text", "text": {"content": " &middot; "}},
+        {"type": "mention", "mention": {"type": "page", "page": {"id": "operations-UUID"}}}
+    ],
+    "icon": {"type": "emoji", "emoji": "&#127968;"},
+    "color": "gray_background"
+}}</code></pre>
+</div>
+
+<div class="design-rule">
+  <h4>4. Preserve child_page blocks</h4>
+  <p>Deleting a <code>child_page</code> block permanently archives its subpage. When clearing or rebuilding page content, always filter out child_page blocks before deletion.</p>
+  <pre><code># Python: safely clear blocks without archiving subpages
+for block in children:
+    if block["type"] != "child_page":
+        delete_block(block["id"])</code></pre>
+</div>
+
+<div class="design-rule">
+  <h4>5. Standard page structure pattern</h4>
+  <p>Follow this layout for well-structured Notion pages:</p>
+  <div class="page-structure-block">
+callout (intro/slogan) + color_background<br>
+divider<br>
+heading_2 (section title)<br>
+callout (mention links) + gray_background &larr; navigation<br>
+divider<br>
+heading_2 (Quick Links)<br>
+bulleted_list_item (mention &rarr; description)
+  </div>
+</div>
+
+<div class="design-rule">
+  <h4>6. Icons and covers</h4>
+  <p>Set a meaningful emoji icon on every page. For key pages (dashboards, project hubs), add an Unsplash cover image at <code>w=1500</code> resolution for visual polish.</p>
+</div>
+
+<div class="design-rule">
+  <h4>7. Mention caveats</h4>
+  <ul>
+    <li>Archived pages render mentions as plain text (no icon, no link)</li>
+    <li>The integration must have access to the target page for mentions to resolve</li>
+    <li>Rate limit: ~3 requests/sec &mdash; use <code>time.sleep(0.35)</code> in batch operations to avoid throttling</li>
+  </ul>
+</div>
+
+<h2>Environment and Configuration</h2>
+
+<table>
+<thead>
+<tr><th>File</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td><code>~/.config/notion/api_key</code></td><td>Primary API key storage (also checked as <code>access_token</code>)</td></tr>
+<tr><td><code>~/.config/notion/oauth.env</code></td><td>OAuth configuration for public integrations</td></tr>
+<tr><td><code>NOTION_API_KEY</code> env var</td><td>Environment variable override (takes precedence)</td></tr>
+</tbody>
+</table>
+
+<p>To discover workspace page IDs for use in scripts and commands:</p>
+<pre><code># Search by name to find page/database UUIDs
+notion_api POST /search '{"query": "page name"}'</code></pre>
+
+<h2>Usage Examples (~&#54644;&#51468;)</h2>
+<p>Real-world usage patterns in the natural Korean style that podex understands.</p>
+
+<div class="example-card">
+  <div class="example-prompt">"&#45432;&#49496;&#50640; &#49352; &#54168;&#51060;&#51648; &#47564;&#46308;&#50612;&#51468; &mdash; &#51228;&#47785; '&#51452;&#44036; &#54924;&#51032;&#47197;', &#49345;&#53468;&#45716; '&#51652;&#54665; &#51473;'&#51004;&#47196;"</div>
+  <div class="example-desc">Creates a new page in the specified Notion data source with the title set to "weekly meeting notes" and the Status property set to "In Progress". The skill uses <code>POST /pages</code> with the correct property types.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#54532;&#47196;&#51229;&#53944; &#45936;&#51060;&#53552;&#48288;&#51060;&#49828;&#50640;&#49436; &#49345;&#53468;&#44032; 'Todo'&#51064; &#54637;&#47785;&#46308; &#51204;&#48512; &#52286;&#50500;&#51468;"</div>
+  <div class="example-desc">Queries a Notion data source using <code>POST /data_sources/{id}/query</code> with a filter on the Status select property equaling "Todo", sorted by date descending. Returns all matching entries.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#51060; &#45432;&#49496; &#54168;&#51060;&#51648; &#45236;&#50857; &#51069;&#50612;&#50752;&#49436; &#50836;&#50557;&#54644;&#51468;"</div>
+  <div class="example-desc">Fetches the page content using <code>GET /blocks/{page_id}/children</code>, reads all block content recursively, and generates a summary. Handles nested blocks like toggles and callouts.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#45432;&#49496; &#45824;&#49884;&#48372;&#46300; &#54168;&#51060;&#51648; &#50696;&#49240;&#44172; &#44984;&#47680;&#51468; &mdash; &#45348;&#48708;&#44172;&#51060;&#49496; &#54728;&#48652;&#47196;"</div>
+  <div class="example-desc">Applies the visual design rules: creates a callout block with mention links as a navigation hub, adds a divider, sets up heading/section structure, adds an emoji icon, and applies an Unsplash cover image. Follows rule 3 (callout + mention) and rule 5 (page structure pattern).</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#45432;&#49496;&#50640; &#49352; &#45936;&#51060;&#53552;&#48288;&#51060;&#49828; &#47564;&#46308;&#50612;&#51468; &mdash; &#51060;&#47492;, &#49345;&#53468;(Todo/Done), &#45216;&#51676; &#52972;&#47100;&#51004;&#47196;"</div>
+  <div class="example-desc">Creates a new data source using <code>POST /data_sources</code> with three properties: a title property for Name, a select property with "Todo" and "Done" options for Status, and a date property. Sets the parent to the specified page.</div>
+</div>
+
+<h2>Important Notes</h2>
+<ul>
+  <li><strong>Page/database IDs</strong> are UUIDs &mdash; dashes are optional (<code>abc123def456</code> and <code>abc123-def4-56...</code> both work)</li>
+  <li><strong>Database view filters</strong> are UI-only and cannot be set or read via the API</li>
+  <li><strong>Inline data sources:</strong> use <code>is_inline: true</code> when creating a data source to embed it inside a page rather than as a standalone full-page database</li>
+  <li><strong>child_page safety:</strong> never delete <code>child_page</code> blocks when clearing content &mdash; this permanently archives the subpage</li>
+  <li><strong>Dual ID system:</strong> in the 2025-09-03 API, databases have both <code>database_id</code> (for page creation) and <code>data_source_id</code> (for queries) &mdash; use the correct one for each operation</li>
+  <li><strong>Rate limiting:</strong> the Notion API allows ~3 requests/sec; insert <code>time.sleep(0.35)</code> between calls in batch scripts</li>
+  <li><strong>Integration access:</strong> every page and database you want to access must be explicitly shared with the integration in Notion's share dialog</li>
+</ul>
+
+<h2>Related</h2>
+<ul>
+  <li><a href="https://developers.notion.com">Notion API Documentation</a> &mdash; official Notion API reference</li>
+  <li><a href="../productivity.html">Productivity Skills</a> &mdash; category page for Notion and related productivity skills</li>
+  <li><a href="memory.html">Memory</a> &mdash; persistent knowledge storage across sessions</li>
+  <li><a href="../index.html">Skill Catalog</a> &mdash; browse all skills</li>
+  <li><a href="../../reference/cli.html">CLI Commands</a> &mdash; full podex command reference</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="memory.html">Memory</a>
+<a class="next" href="pdf.html">PDF</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

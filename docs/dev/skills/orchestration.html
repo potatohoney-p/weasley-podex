@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Development Skills — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link active" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Development Skills</h1>
+<p class="lead">podex ships 10 development orchestration skills that are <strong>always injected</strong> (auto-active) into every session. They form a layered team of specialized roles — from general coding to security audits — so you never need to load them manually. Just describe what you need and the right skill activates.</p>
+
+<div class="callout callout-info">All 10 development skills listed on this page are <strong>auto-active</strong>. They are injected into the system prompt at session start and do not require <code>/skill load</code>. The orchestrator (<code>dev</code>) coordinates the others automatically.</div>
+
+<h2>Skill Overview</h2>
+<table>
+<tr><th>Skill</th><th>Role</th><th>Trigger</th></tr>
+<tr><td><code>dev</code></td><td>Orchestrator &mdash; routes work to specialist skills</td><td>Any coding request (always active)</td></tr>
+<tr><td><code>dev-backend</code></td><td>Server-side logic, APIs, databases, auth</td><td>Backend code, API routes, DB schemas</td></tr>
+<tr><td><code>dev-frontend</code></td><td>UI components, styling, client-side rendering</td><td>React/Vue/HTML/CSS, component code, <code>role=frontend</code></td></tr>
+<tr><td><code>dev-data</code></td><td>Data pipelines, analysis, transformations</td><td>SQL, data wrangling, ETL, analytics</td></tr>
+<tr><td><code>dev-testing</code></td><td>Test writing, coverage, test strategy</td><td>"Write tests", "Add coverage", test files</td></tr>
+<tr><td><code>dev-debugging</code></td><td>Root-cause analysis, error tracing, fixes</td><td>Error messages, stack traces, "왜 안 돼?"</td></tr>
+<tr><td><code>dev-security</code></td><td>Vulnerability scanning, secure coding</td><td>Auth code, secrets, input validation, CVEs</td></tr>
+<tr><td><code>dev-scaffolding</code></td><td>Project setup, boilerplate, directory structure</td><td>"Create a new project", "Init repo", scaffolding</td></tr>
+<tr><td><code>dev-code-reviewer</code></td><td>Code review, PR feedback, best practices</td><td>"Review this", "PR 봐줘", diff analysis</td></tr>
+<tr><td><code>dev-pabcd</code></td><td>PABCD prompt engineering for dev tasks</td><td>Structured prompts, Persona/Audience/Behavior/Context/Deliverable</td></tr>
+</table>
+
+<h2>dev &mdash; Orchestrator</h2>
+<p>The <code>dev</code> skill is the top-level orchestrator. It detects the stack (language, framework, project type) and routes requests to the appropriate specialist skill. When multiple skills are relevant — say, writing a backend API with tests — it coordinates them in sequence.</p>
+<pre><code># The orchestrator automatically picks dev-backend + dev-testing
+"이 Express API에 JWT 인증 추가하고 테스트도 작성해줘"
+
+# Stack detection triggers dev-frontend rules
+"React 컴포넌트 만들어줘 — 드래그 앤 드롭 칸반 보드"</code></pre>
+<div class="callout callout-info"><strong>Tip:</strong> You never call <code>dev</code> directly. It observes your request and injects the right specialist context. Think of it as the team lead who delegates.</div>
+
+<h2>dev-backend</h2>
+<p>Handles server-side development: API endpoints, database queries, authentication flows, middleware, and server configuration. It understands Node.js, Python, Go, and other backend stacks.</p>
+<pre><code># Triggers dev-backend
+"REST API 만들어줘 — 유저 CRUD, PostgreSQL 연동"
+"GraphQL resolver에 pagination 추가해줘"
+"Redis 캐시 레이어 붙여줘"</code></pre>
+<table>
+<tr><th>Strength</th><th>Examples</th></tr>
+<tr><td>API design</td><td>REST, GraphQL, gRPC endpoint scaffolding</td></tr>
+<tr><td>Database</td><td>Schema design, migrations, query optimization</td></tr>
+<tr><td>Auth</td><td>JWT, OAuth2, session management, RBAC</td></tr>
+<tr><td>Infrastructure</td><td>Docker, env config, server middleware</td></tr>
+</table>
+
+<h2>dev-frontend</h2>
+<p>Production-grade frontend with distinctive aesthetics. Detects the framework (React, Vue, Svelte, vanilla) and applies specialized rules from its modular reference system. Injected automatically when <code>role=frontend</code> is detected.</p>
+<pre><code># Triggers dev-frontend
+"다크 모드 토글 컴포넌트 만들어줘"
+"이 페이지 반응형으로 만들어줘 — 모바일 우선"
+"Tailwind으로 이 디자인 구현해줘"</code></pre>
+<div class="callout callout-info"><strong>Modular architecture:</strong> <code>dev-frontend</code> uses a SKILL.md orchestrator plus <code>references/</code> directory for deep framework-specific guidance. It goes beyond basic components to enforce accessibility, performance, and visual polish.</div>
+
+<h2>dev-data</h2>
+<p>Data pipelines, analysis, and transformations. Handles SQL queries, pandas/polars DataFrames, ETL workflows, and data visualization.</p>
+<pre><code># Triggers dev-data
+"이 CSV 데이터 정리해줘 — 중복 제거, 날짜 포맷 통일"
+"매출 데이터 분석해줘 — 월별 트렌드 차트"
+"D1 데이터베이스에서 집계 쿼리 작성해줘"</code></pre>
+
+<h2>dev-testing</h2>
+<p>Writes tests, improves coverage, and designs test strategies. Supports Jest, Vitest, Pytest, Go testing, and more. Understands unit, integration, and e2e testing patterns.</p>
+<pre><code># Triggers dev-testing
+"이 함수에 단위 테스트 작성해줘"
+"테스트 커버리지 80% 이상으로 올려줘"
+"E2E 테스트 시나리오 만들어줘 — 로그인 플로우"</code></pre>
+<table>
+<tr><th>Test Type</th><th>When Used</th></tr>
+<tr><td>Unit tests</td><td>Individual functions, utilities, pure logic</td></tr>
+<tr><td>Integration tests</td><td>API routes, database interactions, service layers</td></tr>
+<tr><td>E2E tests</td><td>Full user flows, browser automation, critical paths</td></tr>
+<tr><td>Snapshot tests</td><td>UI components, serialized output verification</td></tr>
+</table>
+
+<h2>dev-debugging</h2>
+<p>Root-cause analysis and error tracing. When you paste an error message or stack trace, this skill activates to diagnose the problem, identify the root cause, and propose a fix.</p>
+<pre><code># Triggers dev-debugging
+"이 에러 왜 나와? TypeError: Cannot read properties of undefined"
+"빌드가 깨졌어 — 로그 봐줘"
+"메모리 누수 있는 것 같아 — 프로파일링 도와줘"</code></pre>
+<div class="callout callout-info"><strong>How it works:</strong> <code>dev-debugging</code> reads the error context, examines related source files, traces the call chain, and narrows down the root cause before suggesting a targeted fix — not a shotgun approach.</div>
+
+<h2>dev-security</h2>
+<p>Scans for vulnerabilities, enforces secure coding patterns, and reviews auth/crypto implementations. Activated when code touches authentication, secrets, user input, or known CVE patterns.</p>
+<pre><code># Triggers dev-security
+"이 인증 코드 보안 검토해줘"
+"SQL injection 취약점 없는지 확인해줘"
+"환경변수 관리 best practice 적용해줘"</code></pre>
+<table>
+<tr><th>Check</th><th>What It Catches</th></tr>
+<tr><td>Injection</td><td>SQL injection, XSS, command injection, template injection</td></tr>
+<tr><td>Auth</td><td>Broken auth flows, weak tokens, missing RBAC</td></tr>
+<tr><td>Secrets</td><td>Hardcoded API keys, leaked credentials, insecure storage</td></tr>
+<tr><td>Dependencies</td><td>Known CVEs in packages, outdated libraries</td></tr>
+</table>
+
+<h2>dev-scaffolding</h2>
+<p>Project initialization and boilerplate generation. Sets up directory structures, config files, CI/CD pipelines, and starter templates for common stacks.</p>
+<pre><code># Triggers dev-scaffolding
+"Next.js 프로젝트 새로 만들어줘 — TypeScript, Tailwind, Prisma"
+"모노레포 구조 잡아줘 — apps/, packages/"
+"GitHub Actions CI 파이프라인 설정해줘"</code></pre>
+
+<h2>dev-code-reviewer</h2>
+<p>Code review with structured feedback. Examines diffs for correctness bugs, simplification opportunities, performance issues, and style consistency. Works on staged changes, PRs, or arbitrary code blocks.</p>
+<pre><code># Triggers dev-code-reviewer
+"이 코드 리뷰해줘"
+"PR 봐줘 — 주요 이슈만 알려줘"
+"이 리팩토링 괜찮은지 확인해줘"</code></pre>
+<div class="callout callout-info"><strong>Review levels:</strong> Use <code>/code-review</code> with effort levels — <code>low</code>/<code>medium</code> for high-confidence findings only, <code>high</code> for broader coverage, <code>ultra</code> for deep multi-agent cloud review. Add <code>--comment</code> to post inline PR comments or <code>--fix</code> to auto-apply fixes.</div>
+
+<h2>dev-pabcd</h2>
+<p>Applies the <strong>PABCD framework</strong> (Persona, Audience, Behavior, Context, Deliverable) to development tasks. This skill structures prompts for maximum clarity and ensures outputs match the intended format.</p>
+<pre><code># Triggers dev-pabcd
+"PABCD로 이 태스크 구조화해줘"
+"이 요구사항을 Persona/Audience/Behavior/Context/Deliverable로 분해해줘"</code></pre>
+<table>
+<tr><th>Component</th><th>Purpose</th></tr>
+<tr><td><strong>P</strong>ersona</td><td>Who is performing the task (e.g., senior backend engineer)</td></tr>
+<tr><td><strong>A</strong>udience</td><td>Who will consume the output (e.g., junior devs, CI pipeline)</td></tr>
+<tr><td><strong>B</strong>ehavior</td><td>What actions to take (e.g., write, review, refactor)</td></tr>
+<tr><td><strong>C</strong>ontext</td><td>Background constraints (e.g., TypeScript monorepo, Node 20)</td></tr>
+<tr><td><strong>D</strong>eliverable</td><td>Expected output format (e.g., PR-ready code with tests)</td></tr>
+</table>
+
+<h2>How Orchestration Works</h2>
+<p>When you send a message, the <code>dev</code> orchestrator evaluates it against all 10 skills and injects the appropriate specialist context. Multiple skills can activate simultaneously.</p>
+
+<table>
+<tr><th>Your Request</th><th>Skills Activated</th></tr>
+<tr><td>"API 만들어줘"</td><td><code>dev</code> + <code>dev-backend</code></td></tr>
+<tr><td>"이 코드 리뷰하고 테스트 추가해줘"</td><td><code>dev</code> + <code>dev-code-reviewer</code> + <code>dev-testing</code></td></tr>
+<tr><td>"이 에러 고쳐줘"</td><td><code>dev</code> + <code>dev-debugging</code></td></tr>
+<tr><td>"새 프로젝트 만들어줘 — 보안 best practice 적용"</td><td><code>dev</code> + <code>dev-scaffolding</code> + <code>dev-security</code></td></tr>
+<tr><td>"프론트엔드 컴포넌트 만들고 스냅샷 테스트 추가"</td><td><code>dev</code> + <code>dev-frontend</code> + <code>dev-testing</code></td></tr>
+<tr><td>"PABCD로 데이터 파이프라인 설계해줘"</td><td><code>dev</code> + <code>dev-pabcd</code> + <code>dev-data</code></td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" examples:</strong> You can use natural Korean or English. The orchestrator understands both. Try: "리팩토링해줘", "버그 잡아줘", "성능 최적화해줘", "코드 정리해줘", "타입 추가해줘".</div>
+
+<h2>Relationship to Other Skills</h2>
+<p>Development skills focus on <em>writing and reviewing code</em>. For related but distinct workflows:</p>
+<ul>
+<li><strong>Automation skills</strong> &mdash; CI/CD pipelines, scheduled jobs, and workflow triggers</li>
+<li><strong>Cloud &amp; Deploy skills</strong> &mdash; Cloudflare Workers, deployment, infrastructure</li>
+<li><strong>Security &amp; Review skills</strong> &mdash; Dedicated deep security audits beyond <code>dev-security</code></li>
+<li><strong>Dev Workflow skills</strong> &mdash; Git operations, PR management, branch strategies</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="index.html">Skill Catalog</a>
+<a class="next" href="automation.html">Automation Skills</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

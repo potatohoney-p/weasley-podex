@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Utility Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link active" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="./">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Utility Skills</h1>
+<p class="lead">通用辅助技能，用于日常任务：文档处理（PDF、XLSX）、记忆管理、屏幕截图、密码管理、天气查询、文字转语音、视频下载等。这些技能处理那些不太适合归入其他类别的杂项但必要的操作。</p>
+
+<h2>概览</h2>
+<p>Utility 技能涵盖广泛的日常操作。一些是由 harness 直接加载的内置技能，另一些则以 MCP 服务器或外部工具集成的形式实现。其中五个技能默认激活（开箱即用）；其余七个可用但需要配置或外部依赖。</p>
+
+<table>
+<tr><th>技能</th><th>状态</th><th>类型</th><th>描述</th></tr>
+<tr><td><code>memory</code></td><td><strong>激活</strong></td><td>内置</td><td>支持自动保存和召回的持久化跨会话记忆</td></tr>
+<tr><td><code>pdf</code></td><td><strong>激活</strong></td><td>内置</td><td>读取、解析、提取文本并总结 PDF 文档</td></tr>
+<tr><td><code>pdf-vision</code></td><td><strong>激活</strong></td><td>内置</td><td>基于视觉模型的 PDF 阅读，适用于扫描文档和图片</td></tr>
+<tr><td><code>screen-capture</code></td><td><strong>激活</strong></td><td>内置</td><td>截取当前屏幕或指定区域的截图</td></tr>
+<tr><td><code>xlsx</code></td><td><strong>激活</strong></td><td>内置</td><td>读取、写入和操作 Excel 电子表格</td></tr>
+<tr><td><code>1password</code></td><td>可用</td><td>MCP</td><td>从 1Password 保险库中查找凭证和密钥</td></tr>
+<tr><td><code>goplaces</code></td><td>可用</td><td>MCP</td><td>位置搜索、导航和地点信息</td></tr>
+<tr><td><code>summarize</code></td><td>可用</td><td>内置</td><td>总结长文本、文章或记录</td></tr>
+<tr><td><code>tts</code></td><td>可用</td><td>外部</td><td>文字转语音，生成音频输出</td></tr>
+<tr><td><code>video-downloader</code></td><td>可用</td><td>外部</td><td>从 URL 下载视频（YouTube 等）</td></tr>
+<tr><td><code>video-frames</code></td><td>可用</td><td>外部</td><td>从视频文件中提取帧用于分析</td></tr>
+<tr><td><code>weather</code></td><td>可用</td><td>MCP</td><td>按位置查询当前天气和预报</td></tr>
+</table>
+
+<!-- ================================================================== -->
+<!-- memory -->
+<!-- ================================================================== -->
+
+<h2 id="memory">memory</h2>
+<p>跨会话持久化记忆。memory 技能会自动保存重要上下文——决策、偏好、项目笔记、反馈——并在相关时自动召回。记忆以 Markdown 文件形式存储在 <code>~/.podex/memory/</code> 下，并通过 SQLite 索引实现快速检索。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>memory</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>激活（内置）</td></tr>
+<tr><td><strong>存储</strong></td><td><code>~/.podex/memory/</code>（Markdown + SQLite 索引）</td></tr>
+<tr><td><strong>触发词</strong></td><td>Remember, recall, note, preference, feedback</td></tr>
+</table>
+
+<h3>功能</h3>
+<table>
+<tr><th>操作</th><th>描述</th></tr>
+<tr><td><strong>自动保存</strong></td><td>自动检测并持久化对话中的重要上下文</td></tr>
+<tr><td><strong>召回</strong></td><td>根据与当前对话的语义相似度检索相关记忆</td></tr>
+<tr><td><strong>手动保存</strong></td><td>通过 <code>/memory save</code> 显式保存笔记或决策</td></tr>
+<tr><td><strong>搜索</strong></td><td>在所有已保存的记忆中进行全文和语义搜索</td></tr>
+<tr><td><strong>列表</strong></td><td>按主题浏览所有记忆文件</td></tr>
+<tr><td><strong>删除</strong></td><td>移除特定的记忆条目</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Manually save a note
+/memory save "JWT tokens expire after 24h in this project"
+
+# Search memories
+/memory search "authentication"
+
+# List all memory files
+/memory list
+
+# Delete a specific memory
+/memory delete shared/old-decision.md</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"이거 기억해줘" -- 将当前上下文保存到记忆中<br>
+"지난번에 뭐라고 했었지?" -- 召回相关的过往对话上下文<br>
+"내가 선호하는 설정 뭐였어?" -- 检索已保存的偏好设置<br>
+"피드백 메모해둬" -- 保存反馈以供将来参考
+</div>
+
+<h3>记忆结构</h3>
+<p>记忆被组织为命名空间化的 Markdown 文件。自动记忆系统将 <code>MEMORY.md</code> 作为索引，详细条目存储在特定主题的文件中。</p>
+<pre><code>~/.podex/memory/
+  MEMORY.md                    # Index with links to detailed files
+  feedback_goal_done_method.md # Specific feedback entry
+  feedback_poll_dont_wait.md   # Another feedback entry
+  shared/
+    decisions.md               # Shared project decisions
+    preferences.md             # User preferences</code></pre>
+
+<!-- ================================================================== -->
+<!-- pdf -->
+<!-- ================================================================== -->
+
+<h2 id="pdf">pdf</h2>
+<p>基于文本的 PDF 处理。读取 PDF 文件，提取文本内容，解析结构（标题、表格、列表），并支持摘要。最适合包含可选中文本的数字化 PDF。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>pdf</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>激活（内置）</td></tr>
+<tr><td><strong>输入</strong></td><td>本地文件路径或 URL</td></tr>
+<tr><td><strong>最适用于</strong></td><td>包含可选中文本的数字化 PDF</td></tr>
+</table>
+
+<h3>功能</h3>
+<table>
+<tr><th>操作</th><th>描述</th></tr>
+<tr><td><strong>读取</strong></td><td>从 PDF 文件中提取完整文本内容</td></tr>
+<tr><td><strong>页面范围</strong></td><td>读取指定页面（例如，大文档的第 1-5 页）</td></tr>
+<tr><td><strong>摘要</strong></td><td>生成 PDF 内容的简洁摘要</td></tr>
+<tr><td><strong>搜索</strong></td><td>在文档中查找特定文本或模式</td></tr>
+<tr><td><strong>元数据</strong></td><td>提取标题、作者、页数和其他 PDF 元数据</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Read a PDF file
+/pdf read ~/Documents/report.pdf
+
+# Read specific pages
+/pdf read ~/Documents/report.pdf --pages 1-5
+
+# Summarize a PDF
+/pdf summarize ~/Documents/whitepaper.pdf
+
+# Extract metadata
+/pdf info ~/Documents/contract.pdf</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"이 PDF 요약해줘" -- 总结 PDF 文档<br>
+"이 문서에서 계약 조건 찾아줘" -- 在 PDF 中搜索合同条款<br>
+"PDF 몇 페이지야?" -- 返回页数和元数据<br>
+"3페이지부터 7페이지까지 읽어줘" -- 读取指定的页面范围
+</div>
+
+<!-- ================================================================== -->
+<!-- pdf-vision -->
+<!-- ================================================================== -->
+
+<h2 id="pdf-vision">pdf-vision</h2>
+<p>基于视觉的 PDF 阅读。使用多模态模型来解读扫描文档、图片密集的 PDF 以及文本提取失败的页面。每一页都被渲染为图像并进行视觉分析，因此该技能对于手写笔记、扫描收据和复杂排版至关重要。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>pdf-vision</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>激活（内置）</td></tr>
+<tr><td><strong>模型</strong></td><td>支持视觉的 LLM（Claude、GPT-4V）</td></tr>
+<tr><td><strong>最适用于</strong></td><td>扫描文档、手写文本、图片密集的 PDF</td></tr>
+</table>
+
+<h3>何时使用 pdf-vision 与 pdf</h3>
+<table>
+<tr><th>场景</th><th>推荐</th><th>原因</th></tr>
+<tr><td>包含可选中文本的数字化 PDF</td><td><code>pdf</code></td><td>更快、更准确的文本提取</td></tr>
+<tr><td>扫描文档（仅含图像）</td><td><code>pdf-vision</code></td><td>没有可选中的文本可提取</td></tr>
+<tr><td>包含图表和图解的 PDF</td><td><code>pdf-vision</code></td><td>能够描述视觉元素</td></tr>
+<tr><td>手写笔记</td><td><code>pdf-vision</code></td><td>通过视觉模型进行 OCR</td></tr>
+<tr><td>文本与图片混合</td><td><code>pdf-vision</code></td><td>同时捕获文本和视觉内容</td></tr>
+<tr><td>大文档（超过50页）</td><td><code>pdf</code></td><td>更低的延迟和 token 成本</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Read a scanned PDF with vision
+/pdf-vision read ~/Documents/scanned-receipt.pdf
+
+# Analyze specific pages visually
+/pdf-vision read ~/Documents/diagram-heavy.pdf --pages 3-5
+
+# Extract text from a handwritten note
+/pdf-vision read ~/Documents/handwritten.pdf</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"이 스캔 문서 읽어줘" -- 使用视觉模型读取扫描 PDF<br>
+"이 영수증 내용 정리해줘" -- 提取并整理收据内容<br>
+"이 차트 설명해줘" -- 描述 PDF 中的图表和图解<br>
+"손글씨 읽어줘" -- 对手写内容进行 OCR 识别
+</div>
+
+<!-- ================================================================== -->
+<!-- screen-capture -->
+<!-- ================================================================== -->
+
+<h2 id="screen-capture">screen-capture</h2>
+<p>截取整个屏幕、特定窗口或指定区域的截图。截取的图像可以由视觉模型分析、保存到磁盘，或作为其他技能（如 <code>vision-click</code>）的输入。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>screen-capture</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>激活（内置）</td></tr>
+<tr><td><strong>输出</strong></td><td>PNG 图像（文件或内联）</td></tr>
+<tr><td><strong>平台</strong></td><td>macOS（screencapture）、Linux（scrot/gnome-screenshot）</td></tr>
+</table>
+
+<h3>功能</h3>
+<table>
+<tr><th>操作</th><th>描述</th></tr>
+<tr><td><strong>全屏</strong></td><td>截取整个显示屏</td></tr>
+<tr><td><strong>窗口</strong></td><td>截取特定应用程序窗口</td></tr>
+<tr><td><strong>区域</strong></td><td>按坐标截取矩形区域</td></tr>
+<tr><td><strong>分析</strong></td><td>截取后立即使用视觉模型描述内容</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Capture full screen
+/screen-capture
+
+# Capture and analyze the screen
+/screen-capture --analyze
+
+# Save to a specific path
+/screen-capture --output ~/Desktop/screenshot.png
+
+# Capture a specific region (x, y, width, height)
+/screen-capture --region 0,0,800,600</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"스크린샷 찍어줘" -- 截取当前屏幕<br>
+"지금 화면 보여줘" -- 截取并显示当前屏幕<br>
+"이 화면에 뭐가 보여?" -- 截取并分析屏幕内容<br>
+"화면 캡처해서 저장해줘" -- 截取并保存为文件
+</div>
+
+<!-- ================================================================== -->
+<!-- xlsx -->
+<!-- ================================================================== -->
+
+<h2 id="xlsx">xlsx</h2>
+<p>Excel 电子表格处理。读取、写入和操作 <code>.xlsx</code> 文件——从工作表中提取数据、创建新工作簿、更新单元格，以及在不同格式（CSV、JSON）之间转换。支持公式、多工作表和基本格式化。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>xlsx</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>激活（内置）</td></tr>
+<tr><td><strong>格式</strong></td><td><code>.xlsx</code>、<code>.xls</code>、<code>.csv</code>（读写）</td></tr>
+<tr><td><strong>库</strong></td><td>SheetJS (xlsx)</td></tr>
+</table>
+
+<h3>功能</h3>
+<table>
+<tr><th>操作</th><th>描述</th></tr>
+<tr><td><strong>读取</strong></td><td>从电子表格的单元格、行和工作表中提取数据</td></tr>
+<tr><td><strong>写入</strong></td><td>创建新工作簿或更新现有工作簿</td></tr>
+<tr><td><strong>转换</strong></td><td>在 XLSX、CSV 和 JSON 格式之间转换</td></tr>
+<tr><td><strong>分析</strong></td><td>汇总数据、计算统计信息、描述工作表结构</td></tr>
+<tr><td><strong>筛选</strong></td><td>提取符合特定条件的行</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Read an Excel file
+/xlsx read ~/Documents/sales-data.xlsx
+
+# Read a specific sheet
+/xlsx read ~/Documents/report.xlsx --sheet "Q4 Summary"
+
+# Convert XLSX to CSV
+/xlsx convert ~/Documents/data.xlsx --to csv
+
+# Create a new spreadsheet from data
+/xlsx write ~/Documents/output.xlsx --data '[{"name":"Alice","score":95},{"name":"Bob","score":87}]'</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"이 엑셀 파일 읽어줘" -- 读取并显示电子表格内容<br>
+"이 데이터 엑셀로 만들어줘" -- 从数据创建新的 XLSX 文件<br>
+"CSV로 변환해줘" -- 将电子表格转换为 CSV 格式<br>
+"매출 데이터 요약해줘" -- 分析并汇总电子表格数据
+</div>
+
+<!-- ================================================================== -->
+<!-- 1password -->
+<!-- ================================================================== -->
+
+<h2 id="1password">1password</h2>
+<p>从 1Password 保险库安全查找凭证。<code>1password</code> 技能使用 1Password CLI（<code>op</code>）搜索和检索项目——登录信息、密码、安全笔记、API 密钥——而不会在对话中以明文形式暴露。凭证直接注入到命令或环境变量中。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>1password</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>可用（需要 1Password CLI）</td></tr>
+<tr><td><strong>前置条件</strong></td><td>已安装并登录 <code>op</code> CLI</td></tr>
+<tr><td><strong>认证</strong></td><td>通过 <code>op</code> 进行生物识别或主密码认证</td></tr>
+</table>
+
+<h3>功能</h3>
+<table>
+<tr><th>操作</th><th>描述</th></tr>
+<tr><td><strong>搜索</strong></td><td>按名称、标签或保险库查找项目</td></tr>
+<tr><td><strong>获取</strong></td><td>检索特定字段（密码、用户名、OTP）</td></tr>
+<tr><td><strong>注入</strong></td><td>通过 <code>op run</code> 将密钥注入到命令中</td></tr>
+<tr><td><strong>列出保险库</strong></td><td>显示可用的保险库及其项目数量</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Search for a credential
+/1password search "GitHub token"
+
+# Get a specific password
+/1password get "AWS Production" --field password
+
+# Inject a secret into a command
+op run --env-file=.env -- jaw serve
+
+# List all vaults
+/1password vaults</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"비밀번호 찾아줘" -- 在 1Password 中搜索匹配的凭证<br>
+"GitHub 토큰 가져와줘" -- 从 1Password 检索 GitHub 令牌<br>
+"AWS 키 환경변수에 넣어줘" -- 将 AWS 凭证注入到环境变量中<br>
+"내 비밀번호 뭐였지?" -- 在保险库中搜索匹配的项目
+</div>
+
+<div class="callout callout-warn">
+<strong>安全性：</strong>该技能绝不会在对话中记录或显示密码。凭证通过 <code>op</code> CLI 检索，并通过安全引用（<code>op://vault/item/field</code>）传递。使用前请确保您的 1Password CLI 会话已通过认证。
+</div>
+
+<!-- ================================================================== -->
+<!-- goplaces -->
+<!-- ================================================================== -->
+
+<h2 id="goplaces">goplaces</h2>
+<p>基于位置的搜索和导航。查找地点、提供路线导航，并返回商家、地标和地址的相关信息。通过 MCP 服务器调用地图 API 实现。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>goplaces</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>可用（MCP 服务器）</td></tr>
+<tr><td><strong>API</strong></td><td>Google Maps / Apple Maps</td></tr>
+<tr><td><strong>前置条件</strong></td><td>已配置 Maps API 密钥</td></tr>
+</table>
+
+<h3>功能</h3>
+<table>
+<tr><th>操作</th><th>描述</th></tr>
+<tr><td><strong>搜索地点</strong></td><td>按查询条件查找餐厅、商店、地标</td></tr>
+<tr><td><strong>路线导航</strong></td><td>获取两个位置之间的路线和行程时间</td></tr>
+<tr><td><strong>地点详情</strong></td><td>营业时间、评分、电话号码、地点地址</td></tr>
+<tr><td><strong>附近</strong></td><td>查找给定位置或当前位置附近的地点</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Search for a place
+/goplaces search "coffee shops near Gangnam Station"
+
+# Get directions
+/goplaces directions "Seoul Station" "Gangnam Station"
+
+# Get details about a specific place
+/goplaces details "Starbucks Gangnam"
+
+# Find nearby restaurants
+/goplaces nearby --type restaurant --radius 500m</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"근처 카페 찾아줘" -- 搜索附近的咖啡店<br>
+"강남역에서 서울역까지 어떻게 가?" -- 提供两个位置之间的路线导航<br>
+"이 가게 영업시간 알려줘" -- 检索商家的营业时间<br>
+"주변 맛집 추천해줘" -- 查找附近评分较高的餐厅
+</div>
+
+<!-- ================================================================== -->
+<!-- summarize -->
+<!-- ================================================================== -->
+
+<h2 id="summarize">summarize</h2>
+<p>将长文本浓缩为简洁摘要。适用于文章、录音记录、会议笔记、文档和任何长文本输入。支持多种摘要样式——要点列表、段落、执行摘要和关键要点。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>summarize</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>可用</td></tr>
+<tr><td><strong>输入</strong></td><td>文本、文件路径或 URL</td></tr>
+<tr><td><strong>样式</strong></td><td>要点列表、段落、执行摘要、关键要点</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Summarize a file
+/summarize ~/Documents/meeting-notes.md
+
+# Summarize with a specific style
+/summarize ~/Documents/report.pdf --style bullets
+
+# Summarize clipboard content
+/summarize --clipboard
+
+# Summarize a web article
+/summarize https://example.com/long-article</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"이거 요약해줘" -- 总结提供的内容<br>
+"회의록 정리해줘" -- 将会议记录总结为关键要点<br>
+"이 기사 핵심만 알려줘" -- 从文章中提取关键要点<br>
+"3줄로 요약해줘" -- 生成简洁的三行摘要
+</div>
+
+<!-- ================================================================== -->
+<!-- tts -->
+<!-- ================================================================== -->
+
+<h2 id="tts">tts</h2>
+<p>文字转语音。使用 TTS 引擎（系统语音或云端 API）将文本输入转换为语音音频。适用于朗读文档、从文本生成音频文件以及无障碍访问。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>tts</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>可用（外部）</td></tr>
+<tr><td><strong>引擎</strong></td><td>macOS <code>say</code>、OpenAI TTS、ElevenLabs</td></tr>
+<tr><td><strong>输出</strong></td><td>直接播放或音频文件（MP3、WAV）</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Speak text aloud
+/tts "Hello, this is a test of the text-to-speech system."
+
+# Save to file
+/tts "Meeting summary follows..." --output ~/Desktop/summary.mp3
+
+# Use a specific voice
+/tts "안녕하세요" --voice korean --engine openai
+
+# Read a file aloud
+/tts --file ~/Documents/notes.md</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"이거 읽어줘" -- 使用 TTS 朗读内容<br>
+"소리로 들려줘" -- 将文本转换为语音并播放<br>
+"이 메모 음성 파일로 만들어줘" -- 从文本生成音频文件<br>
+"영어로 발음해줘" -- 用英语发音朗读文本
+</div>
+
+<!-- ================================================================== -->
+<!-- video-downloader -->
+<!-- ================================================================== -->
+
+<h2 id="video-downloader">video-downloader</h2>
+<p>使用 <code>yt-dlp</code> 从 URL 下载视频。支持 YouTube、Vimeo 以及数百个其他视频平台。可以选择画质、仅提取音频、下载字幕，并保存到指定目录。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>video-downloader</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>可用（外部）</td></tr>
+<tr><td><strong>前置条件</strong></td><td>已安装 <code>yt-dlp</code></td></tr>
+<tr><td><strong>平台</strong></td><td>YouTube、Vimeo、Twitter 以及 1000+ 个站点</td></tr>
+</table>
+
+<h3>功能</h3>
+<table>
+<tr><th>操作</th><th>描述</th></tr>
+<tr><td><strong>下载</strong></td><td>以最佳画质或指定分辨率下载视频</td></tr>
+<tr><td><strong>仅音频</strong></td><td>仅提取并保存音频轨道（MP3、M4A）</td></tr>
+<tr><td><strong>字幕</strong></td><td>下载指定语言的字幕</td></tr>
+<tr><td><strong>信息</strong></td><td>不下载视频，仅显示视频元数据</td></tr>
+<tr><td><strong>播放列表</strong></td><td>下载播放列表中的所有视频</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Download a video
+/video-downloader https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+# Download audio only
+/video-downloader https://www.youtube.com/watch?v=dQw4w9WgXcQ --audio
+
+# Download with specific quality
+/video-downloader https://www.youtube.com/watch?v=dQw4w9WgXcQ --quality 720p
+
+# Download subtitles
+/video-downloader https://www.youtube.com/watch?v=dQw4w9WgXcQ --subs ko</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"이 영상 다운받아줘" -- 从给定 URL 下载视频<br>
+"음성만 추출해줘" -- 从视频中提取音频轨道<br>
+"자막 다운받아줘" -- 下载视频的字幕<br>
+"이 유튜브 영상 저장해줘" -- 下载并保存 YouTube 视频
+</div>
+
+<!-- ================================================================== -->
+<!-- video-frames -->
+<!-- ================================================================== -->
+
+<h2 id="video-frames">video-frames</h2>
+<p>从视频文件中提取单帧用于分析。按指定的时间间隔或时间戳截取帧，输出为图像，并可选择将其发送到视觉模型进行描述。适用于视频摘要、内容分析和缩略图生成。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>video-frames</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>可用（外部）</td></tr>
+<tr><td><strong>前置条件</strong></td><td>已安装 <code>ffmpeg</code></td></tr>
+<tr><td><strong>输出</strong></td><td>PNG/JPEG 帧图像</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Extract one frame per second
+/video-frames ~/Videos/demo.mp4 --interval 1s
+
+# Extract frame at a specific timestamp
+/video-frames ~/Videos/demo.mp4 --at 01:23:45
+
+# Extract and analyze frames with vision model
+/video-frames ~/Videos/demo.mp4 --interval 10s --analyze
+
+# Generate thumbnails for a video
+/video-frames ~/Videos/demo.mp4 --count 5 --output ~/Desktop/thumbs/</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"이 영상에서 프레임 추출해줘" -- 从视频中提取帧<br>
+"영상 내용 분석해줘" -- 提取帧并描述视频内容<br>
+"썸네일 만들어줘" -- 生成代表性的缩略图<br>
+"1분 30초 장면 캡처해줘" -- 截取指定时间戳的帧
+</div>
+
+<!-- ================================================================== -->
+<!-- weather -->
+<!-- ================================================================== -->
+
+<h2 id="weather">weather</h2>
+<p>当前天气状况和预报。提供任意位置的温度、湿度、风速、降水和多日预报。以 MCP 服务器的形式实现，查询天气 API。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>weather</code></td></tr>
+<tr><td><strong>分类</strong></td><td>Utility</td></tr>
+<tr><td><strong>状态</strong></td><td>可用（MCP 服务器）</td></tr>
+<tr><td><strong>API</strong></td><td>OpenWeatherMap / WeatherAPI</td></tr>
+<tr><td><strong>数据</strong></td><td>当前状况、逐小时、每日预报</td></tr>
+</table>
+
+<h3>功能</h3>
+<table>
+<tr><th>操作</th><th>描述</th></tr>
+<tr><td><strong>当前</strong></td><td>当前温度、湿度、风速、天气状况</td></tr>
+<tr><td><strong>预报</strong></td><td>多日预报，包含最高温、最低温、降水信息</td></tr>
+<tr><td><strong>逐小时</strong></td><td>未来 24-48 小时的逐小时详细信息</td></tr>
+<tr><td><strong>预警</strong></td><td>该地区的恶劣天气预警和警告</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Get current weather
+/weather Seoul
+
+# Get a 5-day forecast
+/weather forecast "San Francisco" --days 5
+
+# Get hourly forecast
+/weather hourly Tokyo --hours 24
+
+# Check weather alerts
+/weather alerts "New York"</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"날씨 알려줘" -- 显示默认位置的当前天气<br>
+"서울 날씨 어때?" -- 显示首尔的当前天气<br>
+"내일 비 와?" -- 查看明天的降水预报<br>
+"이번 주 날씨 예보 알려줘" -- 提供本周的天气预报<br>
+"우산 가져가야 해?" -- 查看降雨概率并给出相应建议
+</div>
+
+<h3>配置</h3>
+<pre><code>{
+  "mcpServers": {
+    "weather": {
+      "command": "npx",
+      "args": ["-y", "weather-mcp-server"],
+      "env": {
+        "WEATHER_API_KEY": "your-api-key",
+        "WEATHER_DEFAULT_LOCATION": "Seoul"
+      }
+    }
+  }
+}</code></pre>
+
+<!-- ================================================================== -->
+<!-- Skill Comparison -->
+<!-- ================================================================== -->
+
+<h2 id="comparison">技能对比</h2>
+<p>快速参考，帮助您为任务选择合适的 Utility 技能。</p>
+
+<h3>文档处理</h3>
+<table>
+<tr><th>任务</th><th>技能</th><th>备注</th></tr>
+<tr><td>读取数字化 PDF</td><td><code>pdf</code></td><td>快速文本提取，支持页面范围</td></tr>
+<tr><td>读取扫描 PDF</td><td><code>pdf-vision</code></td><td>基于视觉的 OCR，较慢但能处理图像</td></tr>
+<tr><td>读取/写入 Excel</td><td><code>xlsx</code></td><td>完整的 XLSX/CSV/JSON 支持</td></tr>
+<tr><td>总结任意文本</td><td><code>summarize</code></td><td>适用于文件、URL 和剪贴板</td></tr>
+</table>
+
+<h3>媒体与截取</h3>
+<table>
+<tr><th>任务</th><th>技能</th><th>备注</th></tr>
+<tr><td>截图</td><td><code>screen-capture</code></td><td>全屏、窗口或区域</td></tr>
+<tr><td>下载视频</td><td><code>video-downloader</code></td><td>需要 <code>yt-dlp</code></td></tr>
+<tr><td>提取视频帧</td><td><code>video-frames</code></td><td>需要 <code>ffmpeg</code></td></tr>
+<tr><td>文字转语音</td><td><code>tts</code></td><td>系统语音或云端语音</td></tr>
+</table>
+
+<h3>信息与密钥</h3>
+<table>
+<tr><th>任务</th><th>技能</th><th>备注</th></tr>
+<tr><td>查找凭证</td><td><code>1password</code></td><td>需要 <code>op</code> CLI</td></tr>
+<tr><td>查找地点/路线导航</td><td><code>goplaces</code></td><td>需要 Maps API 密钥</td></tr>
+<tr><td>查看天气</td><td><code>weather</code></td><td>需要 Weather API 密钥</td></tr>
+<tr><td>记忆上下文</td><td><code>memory</code></td><td>始终激活，自动保存</td></tr>
+</table>
+
+<!-- ================================================================== -->
+<!-- Common Patterns -->
+<!-- ================================================================== -->
+
+<h2 id="patterns">常见模式</h2>
+
+<h3>文档处理流水线</h3>
+<p>组合 PDF 和摘要技能，实现端到端的文档处理。</p>
+<pre><code># Read a PDF, summarize it, and save the summary
+"이 PDF 읽고 요약해서 엑셀로 정리해줘"
+
+# The agent chains:
+# 1. pdf → read the document
+# 2. summarize → condense key points
+# 3. xlsx → write summary to a spreadsheet</code></pre>
+
+<h3>调研工作流</h3>
+<p>将天气、位置和记忆技能结合使用，完成规划任务。</p>
+<pre><code># Plan a trip
+"이번 주말 부산 날씨 알려주고, 근처 맛집 찾아줘. 결과 기억해둬."
+
+# The agent chains:
+# 1. weather → forecast for Busan this weekend
+# 2. goplaces → search restaurants near Busan
+# 3. memory → save results for later reference</code></pre>
+
+<h3>安全开发</h3>
+<p>从 1Password 获取凭证并注入到您的开发环境中。</p>
+<pre><code># Set up dev environment with secure credentials
+"1Password에서 DB 비밀번호 찾아서 .env에 넣어줘"
+
+# The agent chains:
+# 1. 1password → get "Database Production" password
+# 2. inject into .env file via op:// reference</code></pre>
+
+<div class="callout callout-warn">
+<strong>注意：</strong>在链式调用技能时，代理会自动确定最优的执行顺序。您不需要指定单独的技能调用——只需用自然语言描述您想要的结果即可。
+</div>
+
+<div class="page-nav">
+<a class="prev" href="smarthome.html">Smart Home</a>
+<a class="next" href="../commands/session.html">Session Commands</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

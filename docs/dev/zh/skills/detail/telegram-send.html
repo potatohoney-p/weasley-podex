@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Telegram Send &#8212; podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+.badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+.badge-category { background: rgba(99, 102, 241, 0.15); color: var(--accent); }
+.quick-ref { margin: 24px 0; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 160px; }
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-ko { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+.dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.dep-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.dep-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.dep-card code { font-size: 13px; }
+.dep-card .dep-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+.flow-table td:first-child { font-weight: 600; white-space: nowrap; width: 100px; }
+.api-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 16px 0; }
+.api-box h4 { margin: 0 0 8px; font-size: 14px; }
+.api-box p { margin: 4px 0; font-size: 13px; color: var(--text-dim); }
+@media (max-width: 768px) {
+  .dep-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">快速入门</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+      <a class="docs-nav-link" href="../../">概述</a>
+      <a class="docs-nav-link" href="../../quickstart.html">快速开始</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">首次运行</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">概念</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">架构</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">员工</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">目标</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">技能</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">记忆</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">提示词</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">指南</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">计算机控制</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 桌面端</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">参考</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 命令</a>
+      <a class="docs-nav-link" href="../../reference/api.html">服务端 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">配置</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">键盘快捷键</a>
+      <a class="docs-nav-link" href="../../reference/events.html">事件</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">技能</div>
+      <a class="docs-nav-link" href="../index.html">目录</a>
+      <a class="docs-nav-link" href="../orchestration.html">开发</a>
+      <a class="docs-nav-link" href="../automation.html">自动化</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 媒体</a>
+      <a class="docs-nav-link active" href="../communication.html">通信</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">云端与部署</a>
+      <a class="docs-nav-link" href="../devtools-security.html">安全与审查</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">开发工作流</a>
+      <a class="docs-nav-link" href="../productivity.html">生产力</a>
+      <a class="docs-nav-link" href="../smarthome.html">智能家居</a>
+      <a class="docs-nav-link" href="../utility.html">实用工具</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">命令</div>
+      <a class="docs-nav-link" href="../../commands/session.html">会话</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">工作流</a>
+      <a class="docs-nav-link" href="../../commands/model.html">模型与 CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">工具</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">仅 CLI</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">根 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">更新日志</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">首页</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Telegram Send</h1>
+<p class="lead">通过 Telegram 机器人发送语音、图片和文档文件 &mdash; 采用 Bot API 优先的投递策略，支持自动聊天 ID 解析，并提供本地端点回退机制用于文本通知和重试。</p>
+
+<p>
+  <span class="badge badge-active">默认启用</span>
+  <span class="badge badge-category">通信</span>
+</p>
+
+<div class="callout callout-info">
+  <strong>默认启用：</strong> <code>telegram-send</code> 会自动注入到每个会话中，无需手动加载。当你说 "send via Telegram" 或 "&#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48372;&#45236;&#51468;" 时，技能将激活，代理会按照本页描述的投递策略执行操作。
+</div>
+
+<h2>快速参考</h2>
+<table class="quick-ref">
+<tr><td>技能名称</td><td><code>telegram-send</code></td></tr>
+<tr><td>分类</td><td>通信</td></tr>
+<tr><td>默认启用</td><td>是 &mdash; 会话启动时自动注入</td></tr>
+<tr><td>SKILL.md 路径</td><td><code>~/.podex/skills/telegram-send/SKILL.md</code></td></tr>
+<tr><td>系统工具</td><td><code>curl</code>, <code>jq</code></td></tr>
+<tr><td>配置来源</td><td><code>~/.podex/settings.json</code> (<code>telegram.token</code>, <code>telegram.allowedChatIds</code>)</td></tr>
+<tr><td>主要 API</td><td>Telegram Bot API (<code>https://api.telegram.org/bot&lt;TOKEN&gt;/...</code>)</td></tr>
+<tr><td>回退 API</td><td>本地端点 (<code>http://localhost:3457/api/telegram/send</code>)</td></tr>
+<tr><td>支持的类型</td><td><code>photo</code>, <code>voice</code>, <code>document</code>, <code>text</code></td></tr>
+<tr><td>相关技能</td><td><code>email-draft-polish</code>, <code>whatsapp</code>, <code>xurl</code></td></tr>
+<tr><td>相关指南</td><td><a href="../../guides/telegram.html">Telegram 指南</a></td></tr>
+</table>
+
+<h2>投递策略（Bot 优先）</h2>
+<p>该技能遵循严格的两级投递策略。始终优先尝试 Telegram Bot API。本地 podex 端点作为文本消息的便捷通道，以及 Bot API 失败时的回退方案。</p>
+
+<table>
+<thead>
+<tr><th>消息类型</th><th>主要方式</th><th>回退方式</th></tr>
+</thead>
+<tbody>
+<tr><td><code>photo</code></td><td>Telegram Bot API (<code>sendPhoto</code>)</td><td>本地端点（单次重试）</td></tr>
+<tr><td><code>voice</code></td><td>Telegram Bot API (<code>sendVoice</code>)</td><td>本地端点（单次重试）</td></tr>
+<tr><td><code>document</code></td><td>Telegram Bot API (<code>sendDocument</code>)</td><td>本地端点（单次重试）</td></tr>
+<tr><td><code>text</code></td><td>本地端点（便捷方式）</td><td>Telegram Bot API (<code>sendMessage</code>)</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>关键规则：</strong> 对于 <code>photo</code>、<code>voice</code> 和 <code>document</code> 类型，代理始终优先尝试直接调用 Bot API。仅当 Bot API 调用失败时，才会通过本地端点进行单次重试回退。对于 <code>text</code> 状态通知，优先使用本地端点以方便操作。
+</div>
+
+<h2>必需输入</h2>
+
+<table>
+<thead>
+<tr><th>输入项</th><th>来源</th><th>适用场景</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Bot 令牌</strong></td><td><code>~/.podex/settings.json</code> &rarr; <code>telegram.token</code></td><td>所有 Bot API 调用</td></tr>
+<tr><td><strong>聊天 ID</strong></td><td><code>~/.podex/settings.json</code> &rarr; <code>telegram.allowedChatIds[-1]</code></td><td>所有 Bot API 调用</td></tr>
+<tr><td><strong>文件路径</strong></td><td>由用户提供或由前序任务生成</td><td><code>photo</code>, <code>voice</code>, <code>document</code></td></tr>
+<tr><td><strong>标题/文本</strong></td><td>由用户提供（媒体类型可选）</td><td><code>text</code>；媒体的可选标题</td></tr>
+</tbody>
+</table>
+
+<h2>分步工作流</h2>
+
+<h3>步骤 1：读取令牌和聊天 ID</h3>
+<p>代理从 podex 设置文件中读取凭据。令牌仅保存在 shell 变量中 &mdash; 不会打印到标准输出或日志。</p>
+
+<pre><code>TOKEN=$(jq -r '.telegram.token' ~/.podex/settings.json)
+CHAT_ID=$(jq -r '.telegram.allowedChatIds[-1]' ~/.podex/settings.json)</code></pre>
+
+<p>如果 <code>CHAT_ID</code> 解析为 <code>null</code>（没有之前的 Telegram 消息记录），代理会通过 ping 本地端点来恢复：</p>
+
+<pre><code>CHAT_ID=$(curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"text","text":"chat_id check"}' | jq -r '.chat_id')</code></pre>
+
+<div class="callout callout-info">
+  <strong>安全性：</strong> Bot 令牌绝不会被打印、回显或包含在代理的文本响应中。它仅在命令执行期间以 shell 变量形式存在。这可以防止凭据泄露到日志和聊天记录中。
+</div>
+
+<h3>步骤 2：通过 Bot API 发送（主要方式）</h3>
+<p>代理根据消息类型构造一个 <code>curl</code> multipart 表单 POST 请求，发送到对应的 Telegram Bot API 端点。</p>
+
+<h4>发送图片</h4>
+<pre><code>curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendPhoto" \
+  -F "chat_id=${CHAT_ID}" \
+  -F "photo=@/tmp/chart.png" \
+  -F "caption=Analysis chart"</code></pre>
+
+<h4>发送语音消息</h4>
+<pre><code>curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendVoice" \
+  -F "chat_id=${CHAT_ID}" \
+  -F "voice=@/tmp/reply.ogg" \
+  -F "caption=Voice response"</code></pre>
+
+<h4>发送文档</h4>
+<pre><code>curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendDocument" \
+  -F "chat_id=${CHAT_ID}" \
+  -F "document=@/tmp/report.pdf" \
+  -F "caption=Weekly report"</code></pre>
+
+<h3>步骤 3：本地端点（备用/回退）</h3>
+<p>本地 podex 服务器在以下地址暴露了 Telegram 发送端点：</p>
+
+<div class="api-box">
+  <h4>POST http://localhost:3457/api/telegram/send</h4>
+  <p>Content-Type: <code>application/json</code></p>
+  <p>接受参数：<code>type</code>, <code>text</code>, <code>file_path</code>, <code>caption</code></p>
+</div>
+
+<h4>文本消息（本地端点的主要用途）</h4>
+<pre><code>curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"text","text":"Deployment complete!"}'</code></pre>
+
+<h4>通过本地端点回退发送媒体</h4>
+<pre><code>curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"photo","file_path":"/tmp/chart.png","caption":"Analysis chart"}'</code></pre>
+
+<h3>步骤 4：验证投递</h3>
+<p>发送成功会返回包含 <code>"ok": true</code> 的 JSON 响应：</p>
+<pre><code>{"ok":true,"chat_id":8231528245,"type":"text"}</code></pre>
+<p>代理在向用户报告成功之前会检查此响应。如果响应表示失败，且主要方式为 Bot API，则会通过本地端点进行一次重试。</p>
+
+<h2>支持的消息类型</h2>
+
+<table>
+<thead>
+<tr><th>类型</th><th>Bot API 方法</th><th>必填字段</th><th>可选字段</th></tr>
+</thead>
+<tbody>
+<tr><td><code>photo</code></td><td><code>sendPhoto</code></td><td><code>chat_id</code>, <code>photo</code>（文件）</td><td><code>caption</code>, <code>parse_mode</code></td></tr>
+<tr><td><code>voice</code></td><td><code>sendVoice</code></td><td><code>chat_id</code>, <code>voice</code>（文件，OGG 格式）</td><td><code>caption</code>, <code>duration</code></td></tr>
+<tr><td><code>document</code></td><td><code>sendDocument</code></td><td><code>chat_id</code>, <code>document</code>（文件）</td><td><code>caption</code>, <code>parse_mode</code></td></tr>
+<tr><td><code>text</code></td><td><code>sendMessage</code> / 本地端点</td><td><code>chat_id</code>, <code>text</code></td><td><code>parse_mode</code>, <code>disable_notification</code></td></tr>
+</tbody>
+</table>
+
+<h2>配置</h2>
+<p>该技能从 <code>~/.podex/settings.json</code> 读取所有配置，无需单独的配置文件。</p>
+
+<pre><code>// ~/.podex/settings.json (相关键)
+{
+  "telegram": {
+    "token": "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
+    "allowedChatIds": [8231528245]
+  }
+}</code></pre>
+
+<table>
+<thead>
+<tr><th>键</th><th>类型</th><th>描述</th></tr>
+</thead>
+<tbody>
+<tr><td><code>telegram.token</code></td><td>string</td><td>从 <a href="https://t.me/BotFather">@BotFather</a> 获取的 Telegram Bot API 令牌</td></tr>
+<tr><td><code>telegram.allowedChatIds</code></td><td>number[]</td><td>允许的聊天 ID 数组。该技能默认使用最后一个条目。</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>获取聊天 ID：</strong> 如果你尚未向机器人发送过消息，<code>allowedChatIds</code> 可能为空。该技能将通过向本地端点发送探测消息并从响应中读取 <code>chat_id</code> 字段来自动发现你的聊天 ID。
+</div>
+
+<h2>依赖</h2>
+<p>该技能仅需要标准 Unix 工具，这些工具在 macOS 和大多数 Linux 发行版上已预装。</p>
+
+<div class="dep-grid">
+  <div class="dep-card">
+    <strong>curl</strong>
+    <code>macOS 和 Linux 上已预装</code>
+    <div class="dep-desc">用于所有 Bot API 和本地端点请求的 HTTP 客户端</div>
+  </div>
+  <div class="dep-card">
+    <strong>jq</strong>
+    <code>brew install jq</code>
+    <div class="dep-desc">用于读取设置和解析 API 响应的 JSON 处理器</div>
+  </div>
+</div>
+
+<h3>验证依赖</h3>
+<pre><code># 检查 curl
+curl --version
+
+# 检查 jq
+jq --version
+
+# 如果缺少 jq 则安装（macOS）
+brew install jq
+
+# 如果缺少 jq 则安装（Ubuntu/Debian）
+sudo apt-get install -y jq</code></pre>
+
+<h2>安全规则</h2>
+<p>该技能围绕令牌处理强制执行严格的安全实践：</p>
+
+<table>
+<thead>
+<tr><th>规则</th><th>详情</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>禁止打印令牌</strong></td><td>Bot 令牌绝不会被回显、打印或包含在代理文本输出中。它仅以 shell 变量形式存在。</td></tr>
+<tr><td><strong>仅存于 Shell</strong></td><td>令牌被读入 <code>$TOKEN</code> 并内联使用。不会写入临时文件或导出到环境变量。</td></tr>
+<tr><td><strong>无日志泄露</strong></td><td>命令使用 <code>-sS</code> 标志来抑制进度条同时仍显示错误，避免在详细日志中意外暴露令牌。</td></tr>
+<tr><td><strong>单次重试限制</strong></td><td>如果 Bot API 失败，仅允许通过本地端点进行一次回退尝试。不会无限重试循环。</td></tr>
+<tr><td><strong>允许的聊天 ID</strong></td><td>该技能仅向 <code>telegram.allowedChatIds</code> 中列出的聊天 ID 发送消息，防止意外发送到未授权的聊天。</td></tr>
+</tbody>
+</table>
+
+<h2>快速验证</h2>
+<p>要测试 Telegram 集成是否正常工作，运行以下 ping 命令：</p>
+
+<pre><code>curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"text","text":"ping"}'</code></pre>
+
+<p>预期响应：</p>
+<pre><code>{"ok":true,"chat_id":8231528245,"type":"text"}</code></pre>
+
+<p>如果收到错误，请检查：</p>
+<ol>
+<li>podex 服务器是否正在运行（<code>jaw server status</code>）</li>
+<li>Bot 令牌是否已在 <code>~/.podex/settings.json</code> 中配置</li>
+<li>你是否已在 Telegram 上向机器人发送过至少一条消息（以建立聊天）</li>
+</ol>
+
+<h2>"~해줘" 用法示例</h2>
+<p>展示如何使用自然语言触发 telegram-send 技能的实际示例。韩语和英语均可使用。</p>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; &#52264;&#53944; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48372;&#45236;&#51468;"</div>
+  <div class="example-desc">将最近生成的图表图片（PNG）作为照片通过 Bot API <code>sendPhoto</code> 端点发送。代理会从当前任务上下文中定位图表文件并自动附加。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#48516;&#49437; &#44208;&#44284; &#51020;&#49457; &#47700;&#49884;&#51648;&#47196; &#53588;&#47112;&#44536;&#47016;&#50640; &#48372;&#45236;&#51468;"</div>
+  <div class="example-desc">将分析摘要转换为语音消息（OGG 格式）并通过 <code>sendVoice</code> 发送。如果 TTS 生成可用，代理会先生成音频，然后进行投递。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#51452;&#44036; &#48372;&#44256;&#49436; PDF &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48372;&#45236;&#51468;"</div>
+  <div class="example-desc">将每周报告 PDF 作为文档通过 <code>sendDocument</code> 发送。标题设为文件的简要描述。代理会在 <code>output/pdf/</code> 或用户指定的路径下查找文件。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#48176;&#54252; &#50756;&#47308;&#46104;&#47732; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#50508;&#47140;&#51468;"</div>
+  <div class="example-desc">部署任务完成后，通过本地端点向 Telegram 发送类似 "Deployment complete" 的文本通知。这是状态通知，因此本地端点作为主要方式使用。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#49828;&#53356;&#47536;&#49399; &#52237;&#50612;&#49436; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48148;&#47196; &#48372;&#45236;&#51468;"</div>
+  <div class="example-desc">截取当前屏幕或浏览器的截图，保存为 PNG，然后立即作为照片通过 Bot API 发送。将 <code>screen-capture</code> 技能的输出与 <code>telegram-send</code> 组合使用。</div>
+</div>
+
+<h2>与其他技能的集成</h2>
+<p><code>telegram-send</code> 技能通常是多技能工作流中的最后一步。它可以与任何生成输出文件或状态更新的技能自然配合。</p>
+
+<table>
+<thead>
+<tr><th>工作流</th><th>涉及的技能</th><th>示例</th></tr>
+</thead>
+<tbody>
+<tr><td>报告生成 + 投递</td><td><code>pdf</code> + <code>telegram-send</code></td><td>"&#48372;&#44256;&#49436; PDF &#47564;&#46308;&#50612;&#49436; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48372;&#45236;&#51468;"</td></tr>
+<tr><td>图表 + 通知</td><td><code>dev-data</code> + <code>telegram-send</code></td><td>"&#47588;&#52636; &#52264;&#53944; &#47564;&#46308;&#50612;&#49436; &#53588;&#47112;&#44536;&#47016;&#50640; &#44277;&#50976;&#54644;&#51468;"</td></tr>
+<tr><td>截图捕获 + 发送</td><td><code>screen-capture</code> + <code>telegram-send</code></td><td>"&#54868;&#47732; &#52237;&#50612;&#49436; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48148;&#47196; &#48372;&#45236;&#51468;"</td></tr>
+<tr><td>语音回复</td><td><code>video</code> (TTS) + <code>telegram-send</code></td><td>"&#51060; &#45236;&#50857; &#51020;&#49457;&#51004;&#47196; &#48320;&#54872;&#54644;&#49436; &#53588;&#47112;&#44536;&#47016;&#50640; &#48372;&#45236;&#51468;"</td></tr>
+<tr><td>多渠道广播</td><td><code>telegram-send</code> + <code>whatsapp</code> + <code>xurl</code></td><td>"&#51060; &#44277;&#51648;&#49324;&#54637; &#53588;&#47112;&#44536;&#47016;, &#50772;&#52768;&#50545;, X &#51204;&#48512; &#48372;&#45236;&#51468;"</td></tr>
+<tr><td>部署通知</td><td><code>cloudflare</code> + <code>telegram-send</code></td><td>"Workers &#48176;&#54252;&#54616;&#44256; &#44208;&#44284; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#50508;&#47140;&#51468;"</td></tr>
+</tbody>
+</table>
+
+<h2>API 参考</h2>
+
+<h3>使用的 Bot API 端点</h3>
+<table>
+<thead>
+<tr><th>端点</th><th>方法</th><th>用途</th></tr>
+</thead>
+<tbody>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendPhoto</code></td><td>POST (multipart/form-data)</td><td>发送图片文件</td></tr>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendVoice</code></td><td>POST (multipart/form-data)</td><td>发送 OGG 语音消息</td></tr>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendDocument</code></td><td>POST (multipart/form-data)</td><td>以文档形式发送任意文件</td></tr>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendMessage</code></td><td>POST (application/json)</td><td>发送文本消息（text 类型的回退方式）</td></tr>
+</tbody>
+</table>
+
+<h3>本地端点</h3>
+<table>
+<thead>
+<tr><th>端点</th><th>方法</th><th>请求体</th></tr>
+</thead>
+<tbody>
+<tr><td><code>http://localhost:3457/api/telegram/send</code></td><td>POST</td><td><code>{"type": "photo|voice|document|text", "text": "...", "file_path": "...", "caption": "..."}</code></td></tr>
+</tbody>
+</table>
+
+<h3>响应格式</h3>
+<pre><code>// 成功
+{"ok": true, "chat_id": 8231528245, "type": "text"}
+
+// 失败（示例）
+{"ok": false, "error": "Bot token not configured"}</code></pre>
+
+<h2>故障排除</h2>
+
+<h3>聊天 ID 为 null</h3>
+<p>如果 <code>jq -r '.telegram.allowedChatIds[-1]'</code> 返回 <code>null</code>，说明机器人尚未收到你的任何消息。请先在 Telegram 上向机器人发送任意消息，然后聊天 ID 将被记录到设置中。或者，代理将通过探测本地端点自动恢复。</p>
+
+<h3>Bot API 返回 401 Unauthorized</h3>
+<p>Bot 令牌无效或已过期。请从 <a href="https://t.me/BotFather">@BotFather</a> 生成新令牌并更新 <code>~/.podex/settings.json</code>。</p>
+
+<h3>Bot API 返回 400 Bad Request</h3>
+<p>常见原因：</p>
+<ul>
+<li><strong>无效的 chat_id：</strong> 聊天 ID 不对应与机器人的活跃对话。</li>
+<li><strong>文件过大：</strong> Telegram Bot API 限制上传文件最大为 50 MB。对于更大的文件，请使用可能支持分块上传的本地端点。</li>
+<li><strong>语音文件格式错误：</strong> 语音消息必须为 OGG 格式（OPUS 编码）。其他音频格式应作为 <code>document</code> 发送。</li>
+</ul>
+
+<h3>本地端点连接被拒绝</h3>
+<p>podex 服务器未运行。请使用以下命令启动：</p>
+<pre><code>jaw server start
+
+# 或检查状态
+jaw server status</code></pre>
+
+<h3>找不到 jq</h3>
+<p>安装 jq 以解析设置文件：</p>
+<pre><code># macOS
+brew install jq
+
+# Ubuntu/Debian
+sudo apt-get install -y jq
+
+# 验证
+jq --version</code></pre>
+
+<h2>与 Telegram 指南的对比</h2>
+<p>podex 文档在两个地方涵盖了 Telegram 相关内容。它们用途不同：</p>
+
+<table>
+<thead>
+<tr><th></th><th>本页（技能参考）</th><th><a href="../../guides/telegram.html">Telegram 指南</a></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>侧重点</strong></td><td><code>telegram-send</code> 技能的技术细节 &mdash; API 命令、投递策略、安全规则</td><td>将 Telegram 连接到 podex 的端到端设置指南</td></tr>
+<tr><td><strong>目标读者</strong></td><td>希望了解代理发送 Telegram 消息时具体执行了什么操作的用户</td><td>首次设置 Telegram 集成的新用户</td></tr>
+<tr><td><strong>涵盖内容</strong></td><td>SKILL.md 内部机制、Bot API 调用、回退逻辑、故障排除</td><td>机器人创建、令牌设置、初始消息配对、仪表盘配置</td></tr>
+</tbody>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="../communication.html">通信技能</a>
+<a class="next" href="memory.html">记忆</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,550 @@
+/* ── Tool Use UI ─────────────────────────────────────
+   Collapsible tool call groups within agent messages.
+   Phase 4 of frontend modernization.
+───────────────────────────────────────────────────── */
+
+/* ── Tool Group Container ── */
+.tool-group {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-sm);
+}
+
+/* ── Summary Button ── */
+.tool-group-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: none;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-dim);
+    cursor: pointer;
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    transition: color var(--duration-fast), border-color var(--duration-fast);
+    width: 100%;
+    text-align: left;
+}
+
+.tool-group-summary:hover {
+    color: var(--text);
+    border-color: color-mix(in oklch, var(--accent) 40%, var(--border));
+}
+
+.tool-group-summary-text { flex: 1; }
+
+.tool-group-duration {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-dim);
+}
+
+.tool-group-chevron {
+    font-size: var(--text-xs);
+    transition: transform var(--duration-fast);
+    display: inline-block;
+}
+
+.tool-group.expanded .tool-group-chevron {
+    transform: rotate(180deg);
+}
+
+/* ── Status Dots ── */
+.tool-status-dot,
+.tool-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+.tool-status-dot.running,
+.tool-dot.running {
+    background: var(--warning);
+    animation: toolDotPulse 1.5s ease-in-out infinite;
+}
+
+.tool-status-dot.done,
+.tool-dot.done {
+    background: var(--success);
+}
+
+.tool-dot.pending {
+    background: var(--text-dim);
+    opacity: 0.5;
+}
+
+.tool-status-dot.error,
+.tool-dot.error {
+    background: var(--error);
+}
+
+@keyframes toolDotPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* ── Collapsible Details ── */
+.tool-details {
+    overflow: hidden;
+    max-height: 2000px;
+    transition: max-height var(--duration-slow) ease-out, opacity var(--duration-base);
+    padding-left: var(--space-4);
+    border-left: 1px solid var(--border);
+    margin-left: var(--space-1);
+    margin-top: var(--space-1);
+}
+
+.tool-details.collapsed {
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+    margin-top: 0;
+}
+
+/* ── Individual Tool Items ── */
+.tool-item {
+    padding: var(--space-1) 0;
+}
+
+.tool-item + .tool-item {
+    border-top: 1px solid color-mix(in oklch, var(--border) 50%, transparent);
+}
+
+.tool-item-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+}
+
+.tool-item-icon {
+    flex-shrink: 0;
+}
+
+.tool-item-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── Expandable Tool Items ── */
+.tool-item-toggle {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--space-2);
+    width: 100%;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    font-size: var(--text-xs);
+}
+
+.tool-item-main {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.tool-item-expandable .tool-item-label {
+    white-space: normal;
+    word-break: break-word;
+}
+
+.tool-item-snippet {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-dim);
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.tool-item-chevron {
+    color: var(--text-dim);
+    transition: transform var(--duration-fast);
+    font-size: 10px;
+}
+
+.tool-item.expanded .tool-item-chevron {
+    transform: rotate(90deg);
+}
+
+.tool-item-details {
+    margin-left: 22px;
+    padding: 8px 10px;
+    border-left: 1px solid color-mix(in oklch, var(--border) 70%, transparent);
+    background: color-mix(in oklch, var(--surface) 70%, transparent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.tool-item-details.collapsed {
+    display: none;
+}
+
+.tool-item-full {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-dim);
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: auto;
+    max-height: 260px;
+}
+
+.tool-item-time {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-dim);
+    flex-shrink: 0;
+}
+
+/* ── Live Tool Activity ── */
+.tool-activity-live {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--text-dim);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-2);
+    animation: msgEnterAgent 0.2s ease-out;
+}
+
+.tool-activity-live .tool-status-dot {
+    animation: toolDotPulse 1.5s ease-in-out infinite;
+    background: var(--warning);
+}
+
+/* ── Legacy .tool-summary compat (Phase 2 <details>) ── */
+.tool-summary {
+    font-size: var(--text-xs);
+    color: var(--text-dim);
+    margin-bottom: var(--space-2);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-1) var(--space-3);
+}
+
+.tool-summary summary {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.tool-summary summary::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    flex-shrink: 0;
+}
+
+.tool-summary .tool-log {
+    margin-top: var(--space-1);
+    padding-top: var(--space-1);
+    border-top: 1px dashed var(--border);
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-family: var(--font-mono);
+}
+
+/* ── VS Oscillation Prevention ──
+   Animated height changes across frames cause spacer recalculation loops
+   in virtual scroll. Disable layout-affecting transitions when VS is active. */
+.vs-active .tool-details {
+    transition: none;
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+    .tool-status-dot.running,
+    .tool-dot.running,
+    .tool-activity-live .tool-status-dot {
+        animation: none;
+    }
+}
+
+/* ── Process Block ── */
+.process-block {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-sm);
+    white-space: normal;
+    line-height: 1.3;
+}
+
+/* Hide dispatching placeholder when process block is showing */
+.process-block + .msg-content .orchestrate-placeholder {
+    display: none;
+}
+
+.orchestrate-placeholder {
+    font-size: var(--text-xs);
+    opacity: 0.6;
+}
+
+.process-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    background: color-mix(in oklch, var(--surface) 50%, transparent);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-dim);
+    cursor: pointer;
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    transition: border-color var(--duration-fast);
+}
+
+.process-summary:hover {
+    border-color: color-mix(in oklch, var(--accent) 40%, var(--border));
+}
+
+.process-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.process-dot.running {
+    background: var(--warning);
+    animation: processDotPulse 1.5s ease-in-out infinite;
+    will-change: opacity;
+}
+
+.process-dot.done { background: var(--success); }
+
+@keyframes processDotPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.process-summary-text { flex: 1; text-align: left; }
+.process-duration { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-dim); }
+.process-chevron { font-size: 10px; color: var(--text-dim); transition: transform var(--duration-fast); }
+
+.process-details {
+    display: grid;
+    grid-template-rows: 1fr;
+    padding-left: var(--space-3);
+    border-left: 1px solid var(--border);
+    margin-left: 3px;
+    margin-top: 2px;
+    transition: grid-template-rows var(--duration-slow);
+}
+
+.process-block.collapsed .process-details {
+    grid-template-rows: 0fr;
+}
+
+.process-details > .process-steps-inner {
+    overflow: hidden;
+}
+
+.process-step {
+    display: grid;
+    gap: 4px;
+    padding: 2px 0;
+    font-size: var(--text-xs);
+}
+
+.process-step-toggle {
+    display: grid;
+    grid-template-columns: auto 16px auto minmax(0, 1fr) auto auto;
+    align-items: start;
+    gap: var(--space-2);
+    width: 100%;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.process-step-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.process-step-dot.running {
+    background: var(--warning);
+    animation: processDotPulse 1.5s ease-in-out infinite;
+}
+
+.process-step-dot.done { background: var(--success); }
+.process-step-dot.error { background: var(--error); }
+
+.process-step-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    color: var(--text-dim);
+}
+
+.process-step-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.process-step-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+}
+
+.process-step-badge.thinking {
+    background: color-mix(in oklch, var(--accent) 15%, transparent);
+    color: var(--accent);
+}
+
+.process-step-badge.tool {
+    background: color-mix(in oklch, var(--warning) 15%, transparent);
+    color: var(--warning);
+}
+
+.process-step-badge.search {
+    background: color-mix(in oklch, var(--success) 15%, transparent);
+    color: var(--success);
+}
+
+.process-step-badge.subagent {
+    background: color-mix(in oklch, var(--accent) 12%, transparent);
+    color: var(--accent);
+}
+
+.process-step-main {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.process-step-label {
+    color: var(--text);
+    word-break: break-word;
+}
+
+.process-step-snippet {
+    color: var(--text-dim);
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.process-step-chevron {
+    align-self: start;
+    justify-self: end;
+    color: var(--text-dim);
+    transition: transform var(--duration-fast);
+}
+
+.process-step.expanded .process-step-chevron {
+    transform: rotate(90deg);
+}
+
+.process-step-details {
+    margin-left: 22px;
+    padding: 8px 10px;
+    border-left: 1px solid color-mix(in oklch, var(--border) 70%, transparent);
+    background: color-mix(in oklch, var(--surface) 70%, transparent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.process-step-details.collapsed {
+    display: none;
+}
+
+.process-step-full {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-dim);
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: auto;
+    max-height: 600px;
+}
+
+.process-step-label {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.vs-active .process-details {
+    transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .process-dot.running,
+    .process-step-dot.running {
+        animation: none;
+    }
+}
+
+/* ── Native details/summary for tool blocks (future refactor) ── */
+details.tool-block summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--text-dim);
+    border-radius: var(--radius-sm);
+    transition: background var(--duration-fast);
+}
+details.tool-block summary:hover {
+    background: color-mix(in oklch, var(--accent) 8%, transparent);
+}
+details.tool-block summary::before {
+    content: '';
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform var(--duration-fast);
+    flex-shrink: 0;
+}
+details.tool-block[open] summary::before {
+    transform: rotate(45deg);
+}
+details.tool-block .tool-content {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 200px;
+}

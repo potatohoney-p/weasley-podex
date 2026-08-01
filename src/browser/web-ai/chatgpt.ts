@@ -1,0 +1,1033 @@
+﻿import { getActivePage, getCdpSession, createTab, waitForPageByTargetId, getPageByTargetId, listTabs } from '../connection.js';
+import { getActiveTab, type ActiveTabResult, type BrowserTabInfo } from '../connection.js';
+import { cleanupIdleTabs, isPinned } from '../tab-lifecycle.js';
+import { stripUndefined } from '../../core/strip-undefined.js';
+import { cleanupPoolTabs, getPooledTab } from './tab-pool.js';
+import { finalizeProviderTab } from './tab-finalizer.js';
+import { listLeases, recordActiveLease } from './tab-lease-store.js';
+import { basename } from 'node:path';
+import { statSync } from 'node:fs';
+import { countConversationTurns } from './chatgpt-composer.js';
+import { extractConversationId } from './code-mode.js';
+import {
+    attachLocalFileLive,
+    sendButtonTimeoutMs,
+    verifySentTurnAttachmentLive,
+} from './chatgpt-attachments.js';
+import { createChatGptEditorAdapter } from './vendor-editor-contract.js';
+import { normalizeEnvelope, renderQuestionEnvelope, renderQuestionEnvelopeWithContext } from './question.js';
+import {
+    assertSameTarget,
+    bindSessionToTab,
+    createSession,
+    findSessionByTarget,
+    getBaseline,
+    getSession,
+    discoverConversationUrl,
+    listSessions,
+    pruneSessions,
+    saveBaseline,
+    updateSessionResult,
+    updateSessionStatus,
+} from './session.js';
+import { captureAssistantResponse } from './chatgpt-response.js';
+import { saveAssistantDownloadableFiles } from './chatgpt-files.js';
+import { resolveTimeoutDefaultSec } from './tier-timeout.js';
+import { selectChatGptModel } from './chatgpt-model.js';
+import { withAnswerArtifact } from './answer-artifact.js';
+import { auditSources } from './source-audit.js';
+import { resolveTargetForIntent } from './target-resolver.js';
+import { listActiveWebAiWatchers, resumeStoredWebAiWatchers, startWebAiWatcher } from './watcher.js';
+import {
+    captureWebAiDiagnostics,
+    type WebAiFailureStage,
+} from './diagnostics.js';
+import { geminiSend, geminiPoll, geminiStop, geminiStatus } from './gemini-live.js';
+import { grokSend, grokPoll, grokStop, grokStatus, isGrokUrl } from './grok-live.js';
+import { ProviderRuntimeDisabledError } from './provider-adapter.js';
+import { fromPODEXStructuredError, WebAiError } from './errors.js';
+import { listCapabilitySchemas } from './capability-registry.js';
+import { prepareContextForBrowser, summarizeContextPack } from './context-pack/index.js';
+import { appendTraceToSession, type TracePersistableValue } from './trace-persistence.js';
+import { detectInterstitial, isPageDeathError } from './interstitial.js';
+import { selectChatGptComposerTools } from './chatgpt-tools.js';
+import { sendDeepResearch } from './chatgpt-deep-research.js';
+import { sendMultiTurn } from './chatgpt-multi-turn.js';
+import type {
+    QuestionEnvelopeInput,
+    WebAiOutput,
+    WebAiSessionRecord,
+    WebAiSessionStatus,
+    WebAiVendor,
+} from './types.js';
+import type { Page } from 'playwright-core';
+
+type TextNodeLike = { innerText?: string; textContent?: string | null };
+declare const document: { querySelectorAll(selector: string): Iterable<TextNodeLike> };
+
+type SessionPageContext = {
+    page: Page;
+    targetId: string;
+    session: WebAiSessionRecord;
+};
+const CHATGPT_HOSTS = new Set(['chatgpt.com', 'chat.openai.com']);
+const ASSISTANT_SELECTORS = [
+    '[data-message-author-role="assistant"]',
+    '[data-turn="assistant"]',
+    'article[data-testid^="conversation-turn"]',
+];
+
+export function isChatGptUrl(url: string): boolean {
+    try {
+        const host = new URL(url).hostname.replace(/^www\./, '');
+        return CHATGPT_HOSTS.has(host);
+    } catch {
+        return false;
+    }
+}
+
+export async function render(input: QuestionEnvelopeInput = {}): Promise<WebAiOutput> {
+    const envelope = normalizeEnvelope(input);
+    const contextPack = await prepareContextForBrowser(input);
+    const rendered = contextPack
+        ? contextPack.transport === 'inline'
+            ? renderQuestionEnvelopeWithContext(envelope, contextPack.composerText)
+            : renderQuestionEnvelope(envelope)
+        : renderQuestionEnvelope(envelope);
+    return {
+        ok: true,
+        vendor: envelope.vendor,
+        status: 'rendered',
+        rendered,
+        ...(contextPack ? { contextPack: summarizeContextPack(contextPack) } : {}),
+        warnings: [...rendered.warnings, ...(contextPack?.warnings || [])],
+    };
+}
+
+export async function status(port: number, input: { vendor?: string; probe?: string } = {}): Promise<WebAiOutput> {
+    const vendor = parseVendor(input.vendor);
+    let inner: WebAiOutput;
+    if (vendor === 'gemini') {
+        inner = await geminiStatus(port);
+    } else if (vendor === 'grok') {
+        inner = await grokStatus(port);
+    } else {
+        const active = await requireVerifiedChatGptTab(port, vendor);
+        inner = { ok: true, vendor: 'chatgpt', status: 'ready', url: active.url, warnings: [] };
+    }
+    const allRows = listCapabilitySchemas({ vendor });
+    const rows = input.probe
+        ? allRows.filter((row: { capabilityId: string }) => row.capabilityId === input.probe)
+        : allRows;
+    return {
+        ...inner,
+        capabilities: rows,
+    } as WebAiOutput;
+}
+
+async function ensureProviderTab(port: number, input: QuestionEnvelopeInput): Promise<{ page: Page; targetId: string }> {
+    const reuseTab = input.reuseTab === true || process.env["JAW_REUSE_TAB"] === '1';
+    if (reuseTab) {
+        const active = await requireVerifiedChatGptTab(port, input.vendor);
+        const page = await requireActivePage(port);
+        return { page, targetId: active.targetId };
+    }
+    const vendor = (input.vendor || 'chatgpt') as WebAiVendor;
+    const vendorUrl = input.url || 'https://chatgpt.com';
+    await cleanupPoolTabs(port);
+    await cleanupIdleTabs(port, { maxTabs: Number.POSITIVE_INFINITY });
+    if (input.newTab !== true) {
+        const pooled = await getPooledTab(port, vendor, {
+            owner: 'podex',
+            sessionType: 'jaw',
+            url: vendorUrl,
+        });
+        if (pooled) {
+            const page = await waitForPageByTargetId(port, pooled.targetId);
+            if (page.url?.() !== vendorUrl) {
+                await page.goto(vendorUrl, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+            }
+            return { page, targetId: pooled.targetId };
+        }
+        const reusable = await findReusableChatGptTab(port);
+        if (reusable?.targetId) {
+            const page = await waitForPageByTargetId(port, reusable.targetId);
+            if (page.url?.() !== vendorUrl) {
+                await page.goto(vendorUrl, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+            }
+            return { page, targetId: reusable.targetId };
+        }
+    }
+    const tab = await createTab(port, vendorUrl, { activate: false });
+    const page = await waitForPageByTargetId(port, tab.targetId);
+    return { page, targetId: tab.targetId };
+}
+
+async function findReusableChatGptTab(port: number): Promise<BrowserTabInfo | null> {
+    const activeSessions = new Set<string>();
+    for (const session of [...listSessions({ status: 'sent' }), ...listSessions({ status: 'streaming' })]) {
+        if (session.targetId) activeSessions.add(session.targetId);
+    }
+    const leases = await listLeases();
+    const leaseByTargetId = new Map(leases.map(lease => [lease.targetId, lease]));
+    const tabs = await listTabs(port);
+    return tabs
+        .filter(tab => tab.targetId && tab.type === 'page')
+        .filter(tab => !activeSessions.has(tab.targetId))
+        .filter(tab => !isPinned(tab.targetId))
+        .filter(tab => isReusableByLease(tab.targetId, leaseByTargetId))
+        .filter(tab => isChatGptUrl(tab.url || ''))
+        .sort((a, b) => (Number(b.lastActiveAt) || 0) - (Number(a.lastActiveAt) || 0))[0] || null;
+}
+
+function isReusableByLease(targetId: string, leaseByTargetId: Map<string, Awaited<ReturnType<typeof listLeases>>[number]>): boolean {
+    const lease = leaseByTargetId.get(targetId);
+    if (!lease) return true;
+    return ['podex', 'web-ai'].includes(lease.owner) &&
+        ['pooled', 'completed-session'].includes(lease.state);
+}
+
+async function withSessionPage<T>(port: number, sessionId: string, fn: (ctx: SessionPageContext) => Promise<T>): Promise<T> {
+    const session = getSession(sessionId);
+    if (!session) throw new Error(`Session not found: ${sessionId}`);
+    async function resolvePage(forceRecover = false) {
+        const current = getSession(sessionId);
+        if (!current) throw new Error(`Session not found: ${sessionId}`);
+        const alive = current.targetId ? !!(await getPageByTargetId(port, current.targetId).catch(() => null)) : false;
+        if (!alive || forceRecover) {
+            const tab = await createTab(port, current.conversationUrl || current.url || 'https://chatgpt.com', { activate: false });
+            const page = await waitForPageByTargetId(port, tab.targetId);
+            updateSessionResult({ sessionId, status: current.status, tabState: { createdAt: current.tabState?.createdAt || new Date().toISOString(), lastActiveAt: new Date().toISOString(), recoveryCount: (current.tabState?.recoveryCount || 0) + 1, closeCount: current.tabState?.closeCount || 0 } });
+            const recovered = getSession(sessionId);
+            return { page, targetId: tab.targetId, session: recovered || current };
+        }
+        const page = await getPageByTargetId(port, current.targetId);
+        if (!page) throw new Error(`Session ${sessionId} page not found for targetId ${current.targetId}`);
+        const liveUrl = page.url?.() || '';
+        if (discoverConversationUrl(sessionId, liveUrl)) {
+            const updated = getSession(sessionId);
+            return { page, targetId: current.targetId, session: updated || current };
+        }
+        return { page, targetId: current.targetId, session: current };
+    }
+    const first = await resolvePage();
+    try {
+        return await fn(first);
+    } catch (err: unknown) {
+        if (!isPageDeathError(err)) throw err;
+        const recovered = await resolvePage(true);
+        return fn(recovered);
+    }
+}
+
+export async function send(port: number, input: QuestionEnvelopeInput = {}): Promise<WebAiOutput> {
+    const requestedVendor = parseVendor(input.vendor);
+    if (requestedVendor === 'gemini') {
+        try {
+            return await geminiSend(port, input);
+        } catch (e) {
+            throw stageError(e, 'send-click');
+        }
+    }
+    if (requestedVendor === 'grok') {
+        try {
+            return await grokSend(port, input);
+        } catch (e) {
+            throw stageError(e, 'send-click');
+        }
+    }
+    const envelope = normalizeEnvelope(input);
+    const { page, targetId } = await ensureProviderTab(port, input);
+    const interstitial = await detectInterstitial(page);
+    if (interstitial.kind !== 'none') {
+        throw new WebAiError({
+            errorCode: 'provider.interstitial',
+            stage: 'provider-interstitial',
+            vendor: 'chatgpt',
+            retryHint: interstitial.retryHint,
+            message: `ChatGPT blocked by ${interstitial.kind}: ${interstitial.evidence}`,
+            evidence: interstitial,
+        });
+    }
+    const contextPack = await prepareContextForBrowser(input);
+    const rendered = contextPack
+        ? contextPack.transport === 'inline'
+            ? renderQuestionEnvelopeWithContext(envelope, contextPack.composerText)
+            : renderQuestionEnvelope(envelope)
+        : renderQuestionEnvelope(envelope);
+    const selectedModel = await selectChatGptModel(page, input.model, stripUndefined({ effort: input.reasoningEffort }));
+    const toolSelection = (input.tools?.length || input.autoTools)
+        ? await selectChatGptComposerTools(page, {
+            ...(input.tools ? { tools: input.tools } : {}),
+            ...(input.autoTools ? { autoTools: input.autoTools } : {}),
+            ...(input.prompt ? { prompt: input.prompt } : {}),
+            ...(input.goal ? { goal: input.goal } : {}),
+            ...(input.question ? { question: input.question } : {}),
+            ...(input.context ? { context: input.context } : {}),
+            ...(input.constraints ? { constraints: input.constraints } : {}),
+            ...(input.research ? { research: input.research } : {}),
+        }).catch(() => null)
+        : null;
+    await waitForStableAssistantCount(page);
+    const assistantCount = await countAssistantMessages(page);
+    const baseline = saveBaseline({
+        vendor: envelope.vendor,
+        targetId,
+        url: page.url(),
+        envelope,
+        assistantCount,
+        textHash: String((await page.innerText('body').catch(() => '')).length),
+    });
+    const session = createSession({
+        vendor: envelope.vendor,
+        targetId,
+        url: page.url(),
+        conversationUrl: page.url(),
+        envelope,
+        assistantCount,
+        // 105.4: tier-aware default (pro/deep-research → 1h) instead of a flat 10 min.
+        timeoutMs: resolveTimeoutDefaultSec(input, envelope.vendor) * 1000,
+    });
+    bindSessionToTab(session.sessionId, targetId);
+    // 104.5: persist structured model-selection evidence to the session.
+    if (selectedModel?.modelSelection) {
+        updateSessionResult({ sessionId: session.sessionId, status: session.status, modelSelection: selectedModel.modelSelection });
+    }
+    await recordActiveLease({
+        owner: 'podex',
+        vendor: envelope.vendor,
+        sessionType: 'jaw',
+        port,
+        targetId,
+        sessionId: session.sessionId,
+        url: page.url(),
+    });
+
+    const editorOptions = {
+        insertText: async (text: string): Promise<void> => {
+            const cdp = await getCdpSession(port);
+            if (!cdp) throw new Error('No CDP session available for text insertion');
+            try {
+                await cdp.send('Input.insertText', { text });
+            } finally {
+                await cdp.detach?.().catch(() => undefined);
+            }
+        },
+    };
+    const adapter = createChatGptEditorAdapter(page, editorOptions);
+    const attachmentWarnings: string[] = [];
+    const usedFallbacks: string[] = [];
+    try {
+        const composerTarget = await resolveTargetForIntent(page, {
+            provider: envelope.vendor,
+            intentId: 'composer.fill',
+        });
+        if (!composerTarget.ok && composerTarget.required) {
+            throw new Error(`composer target unresolved: ${composerTarget.errorCode || 'unknown'}`);
+        }
+        // 104.12: route the resolver-verified composer selector into the adapter (readiness + insert use it).
+        const composerSelector = composerTarget.ok ? composerTarget.target?.selector : null;
+        const liveAdapter = composerSelector
+            ? createChatGptEditorAdapter(page, { ...editorOptions, composerTarget: { selector: composerSelector, resolution: composerTarget.resolutionSource } })
+            : adapter;
+        await liveAdapter.waitForReady();
+        const commitBaseline = { turnsCount: await countConversationTurns(page).catch(() => assistantCount) };
+        await liveAdapter.insertPrompt(rendered.composerText);
+        const contextAttachmentPath = contextPack?.attachments?.[0]?.path;
+        const requestedPaths = Array.isArray(input.filePaths) && input.filePaths.length
+            ? input.filePaths
+            : (input.filePath ? [input.filePath] : []);
+        if (contextAttachmentPath && requestedPaths.length) {
+            throw new Error('context package upload and --file upload cannot be combined yet');
+        }
+        const uploadPaths = requestedPaths.length ? requestedPaths : (contextAttachmentPath ? [contextAttachmentPath] : []);
+        if (uploadPaths.length) {
+            await resolveTargetForIntent(page, {
+                provider: envelope.vendor,
+                intentId: 'upload.attach',
+            }).catch(() => null);
+            for (const uploadPath of uploadPaths) {
+                const info = localFileInfo(uploadPath);
+                // eslint-disable-next-line no-await-in-loop -- UI uploads must preserve caller order.
+                const uploaded = await attachLocalFileLive(page, info);
+                if (!uploaded.ok) throw new Error(uploaded.error);
+                usedFallbacks.push(...uploaded.usedFallbacks);
+                attachmentWarnings.push(...uploaded.warnings);
+            }
+        }
+        const sendTarget = await resolveTargetForIntent(page, {
+            provider: envelope.vendor,
+            intentId: 'send.click',
+        });
+        if (!sendTarget.ok && sendTarget.required) {
+            throw new Error(`send target unresolved: ${sendTarget.errorCode || 'unknown'}`);
+        }
+        // 104.12: hand the resolved send target + upload-aware timeout to the submit path.
+        const sendSelector = sendTarget.ok ? sendTarget.target?.selector : null;
+        await liveAdapter.submitPrompt({
+            ...(sendSelector ? { sendTarget: { selector: sendSelector, resolution: sendTarget.resolutionSource } } : {}),
+            sendButtonTimeoutMs: sendButtonTimeoutMs(uploadPaths),
+        });
+        await liveAdapter.verifyPromptCommitted(rendered.composerText, commitBaseline);
+        for (const uploadPath of uploadPaths) {
+            // eslint-disable-next-line no-await-in-loop -- evidence follows upload order.
+            const sentAttachment = await verifySentTurnAttachmentLive(page, localFileInfo(uploadPath));
+            if (!sentAttachment.ok) {
+                usedFallbacks.push('sent-attachment-evidence-unavailable');
+                attachmentWarnings.push(`sent attachment evidence unavailable after submit: ${sentAttachment.error}`);
+            }
+        }
+        updateSessionStatus(session.sessionId, 'streaming');
+        const postSendUrl = page.url?.() || '';
+        if (postSendUrl.includes('/c/') && postSendUrl !== session.url) {
+            updateSessionResult({ sessionId: session.sessionId, status: 'streaming', conversationUrl: postSendUrl });
+        }
+    } catch (e) {
+        updateSessionStatus(session.sessionId, 'error');
+        throw stageError(e, 'send-click');
+    }
+    return stripUndefined({
+        ok: true,
+        vendor: envelope.vendor,
+        status: 'sent',
+        url: page.url(),
+        baseline,
+        sessionId: session.sessionId,
+        ...(contextPack ? { contextPack: summarizeContextPack(contextPack) } : {}),
+        usedFallbacks: [...usedFallbacks, ...(selectedModel?.usedFallbacks || [])],
+        warnings: [
+            ...rendered.warnings,
+            ...(contextPack?.warnings || []),
+            ...(contextPack?.attachments?.[0] ? [`context package attached: ${contextPack.attachments[0].displayPath}`] : []),
+            ...attachmentWarnings,
+            ...(selectedModel?.warnings || []),
+            ...(selectedModel?.selected ? [`model selected: ${selectedModel.selected}${selectedModel.alreadySelected ? ' (already selected)' : ''}`] : []),
+            ...(selectedModel?.effort ? [`reasoning effort selected: ${selectedModel.effort}`] : []),
+            ...(toolSelection?.warnings || []),
+            ...(toolSelection?.selectedTools?.length ? [`tools selected: ${toolSelection.selectedTools.join(', ')}`] : []),
+            ...(toolSelection?.selectedPlugins?.length ? [`plugins selected: ${toolSelection.selectedPlugins.join(', ')}`] : []),
+        ],
+    });
+}
+
+function localFileInfo(filePath: string): { path: string; basename: string; sizeBytes: number } {
+    const stat = statSync(filePath);
+    if (!stat.isFile()) throw new Error(`not a regular file: ${filePath}`);
+    return { path: filePath, basename: basename(filePath), sizeBytes: stat.size };
+}
+
+export async function poll(port: number, input: {
+    vendor?: string;
+    timeout?: number | string;
+    session?: string;
+    allowCopyMarkdownFallback?: boolean;
+    requireSourceAudit?: boolean;
+    sourceAuditRatio?: string | number;
+    sourceAuditScope?: string;
+    sourceAuditDate?: string;
+} = {}): Promise<WebAiOutput> {
+    const vendor = parseVendor(input.vendor);
+    if (vendor === 'gemini') {
+        try {
+            return decorateCompletedOutput(await geminiPoll(port, stripUndefined({
+                timeout: input.timeout,
+                session: input.session,
+                allowCopyMarkdownFallback: input.allowCopyMarkdownFallback === true,
+            })), input, 'poll');
+        } catch (e) {
+            throw stageError(e, 'poll-timeout');
+        }
+    }
+    if (vendor === 'grok') {
+        try {
+            return decorateCompletedOutput(await grokPoll(port, stripUndefined({
+                timeout: input.timeout,
+                session: input.session,
+                allowCopyMarkdownFallback: input.allowCopyMarkdownFallback === true,
+            })), input, 'poll');
+        } catch (e) {
+            throw stageError(e, 'poll-timeout');
+        }
+    }
+
+    let page: Page;
+    let targetId: string;
+    let session = input.session ? getSession(input.session) : null;
+
+    if (session) {
+        const ctx = await withSessionPage(port, session.sessionId, async (c) => c);
+        page = ctx.page;
+        targetId = ctx.targetId;
+    } else {
+        const active = await requireVerifiedChatGptTab(port, vendor);
+        targetId = active.targetId;
+        page = await requireActivePage(port);
+        session = findSessionByTarget(vendor, targetId);
+    }
+
+    const baseline = getBaseline(vendor, targetId);
+    if (!baseline) throw new WebAiError({
+        errorCode: 'provider.poll-timeout',
+        stage: 'poll-timeout',
+        vendor,
+        retryHint: 'poll-or-resume',
+        message: 'baseline required. Run web-ai send or query first.',
+    });
+    if (session) assertSameTarget(session, targetId);
+    const currentUrl = page.url?.() || session?.url || 'https://chatgpt.com';
+    if (session && currentUrl.includes('/c/') && session.conversationUrl !== currentUrl) {
+        updateSessionResult({ sessionId: session.sessionId, status: session.status, conversationUrl: currentUrl });
+    }
+    const pollInterstitial = await detectInterstitial(page);
+    if (pollInterstitial.kind !== 'none') {
+        return {
+            ok: false,
+            vendor,
+            status: 'interstitial',
+            url: currentUrl,
+            ...(session ? { sessionId: session.sessionId } : {}),
+            answerText: '',
+            baseline,
+            usedFallbacks: [],
+            warnings: [`interstitial: ${pollInterstitial.kind}`],
+            error: `page blocked: ${pollInterstitial.kind}`,
+            next: 'poll',
+            interstitial: pollInterstitial,
+        } satisfies WebAiOutput;
+    }
+    const timeoutSec = input.timeout
+        ? Math.max(1, Number(input.timeout))
+        : session?.timeoutMs ? session.timeoutMs / 1000
+        : resolveTimeoutDefaultSec({}, vendor);
+    const timeoutMs = timeoutSec * 1000;
+    // 104.18: per-tick conversation-drift guard. baseline.url is the chat we committed to; if the
+    // held page later sits on a *different* /c/<id>, we're polling the wrong thread. The expected
+    // fresh-chat none→id transition is NOT flagged (it only fires when both ids exist and differ).
+    const baselineConvoId = extractConversationId(baseline.url);
+    const driftCheck = async (): Promise<string | null> => {
+        const currentConvoId = extractConversationId(page.url?.() || '');
+        if (baselineConvoId && currentConvoId && baselineConvoId !== currentConvoId) {
+            return `conversation changed: ${baselineConvoId} → ${currentConvoId}`;
+        }
+        return null;
+    };
+    const result = await captureAssistantResponse(page, {
+        minTurnIndex: baseline.assistantCount,
+        timeoutMs,
+        promptText: '',
+        allowCopyMarkdownFallback: input.allowCopyMarkdownFallback === true,
+        driftCheck,
+    });
+    // 104.18: surface a per-tick drift/crash bail-out as a typed, (for crashes) recoverable outcome.
+    if (result.drift) {
+        if (session) updateSessionStatus(session.sessionId, result.drift.status === 'tab-crashed' ? 'crashed' : session.status);
+        return stripUndefined({
+            ok: false,
+            vendor,
+            status: result.drift.status,
+            url: page.url?.() || currentUrl,
+            ...(session ? { sessionId: session.sessionId } : {}),
+            answerText: '',
+            baseline,
+            usedFallbacks: result.usedFallbacks,
+            warnings: result.warnings,
+            error: result.drift.reason,
+            ...(result.drift.recoverable ? { recoverable: true } : {}),
+            next: 'poll',
+        }) satisfies WebAiOutput;
+    }
+    if (session && result.ok) updateSessionStatus(session.sessionId, 'complete');
+    if (session && !result.ok) updateSessionStatus(session.sessionId, 'timeout');
+    const traceSummary = session
+        ? appendTraceToSession(session.sessionId, (result.resolverTrace || []) as TracePersistableValue[])
+        : null;
+    // 101 #1 (follow-up 2.4): capture generic assistant-turn downloadable files as session
+    // artifacts on successful completion. Covers every complete return below. Never throws
+    // past its boundary; only adds warnings. Skipped when no CDP session is available.
+    if (session && result.ok) {
+        const fileCdp = await getCdpSession(port);
+        if (fileCdp) {
+            try {
+                const fileResult = await saveAssistantDownloadableFiles(
+                    // BrowserCdpSession structurally provides send/detach used here.
+                    fileCdp as unknown as Parameters<typeof saveAssistantDownloadableFiles>[0],
+                    {},
+                    { sessionId: session.sessionId, baselineAssistantCount: baseline.assistantCount },
+                );
+                if (fileResult.warnings.length) result.warnings.push(...fileResult.warnings);
+            } catch (err) {
+                result.warnings.push(`file-artifact-capture-failed:${(err as Error)?.message || 'unknown'}`);
+            } finally {
+                await fileCdp.detach?.().catch(() => undefined);
+            }
+        }
+    }
+    if (result.canvas) {
+        if (session) {
+            await finalizeProviderTab({ vendor, session, port, url: currentUrl, answerText: result.answerText || '' });
+        }
+        const output = decorateCompletedOutput(stripUndefined({
+            ok: true,
+            vendor,
+            status: 'complete',
+            url: currentUrl,
+            answerText: result.answerText,
+            canvas: result.canvas,
+            baseline,
+            ...(session ? { sessionId: session.sessionId } : {}),
+            ...(traceSummary ? { traceSummary } : {}),
+            usedFallbacks: result.usedFallbacks,
+            warnings: result.warnings,
+        }), input, 'poll');
+        if (session) updateSessionResult(stripUndefined({
+            sessionId: session.sessionId,
+            status: 'complete',
+            answerText: output.answerText,
+            answerArtifact: output.answerArtifact,
+            sourceAudit: output.sourceAudit,
+        }));
+        return output;
+    }
+    if (result.ok) {
+        if (session) {
+            await finalizeProviderTab({ vendor, session, port, url: currentUrl, answerText: result.answerText || '' });
+        }
+        const output = decorateCompletedOutput(stripUndefined({
+            ok: true,
+            vendor,
+            status: 'complete',
+            url: currentUrl,
+            answerText: result.answerText,
+            baseline,
+            ...(session ? { sessionId: session.sessionId } : {}),
+            ...(traceSummary ? { traceSummary } : {}),
+            usedFallbacks: result.usedFallbacks,
+            warnings: result.warnings,
+        }), input, 'poll');
+        if (session) updateSessionResult(stripUndefined({
+            sessionId: session.sessionId,
+            status: 'complete',
+            answerText: output.answerText,
+            answerArtifact: output.answerArtifact,
+            sourceAudit: output.sourceAudit,
+        }));
+        return output;
+    }
+    return {
+        ok: false,
+        vendor,
+        status: 'timeout',
+        url: currentUrl,
+        baseline,
+        ...(session ? { sessionId: session.sessionId, next: 'poll' } : {}),
+        ...(traceSummary ? { traceSummary } : {}),
+        usedFallbacks: result.usedFallbacks,
+        warnings: result.warnings,
+        error: 'timed out waiting for answer',
+    };
+}
+
+function decorateCompletedOutput(
+    result: WebAiOutput,
+    input: {
+        vendor?: string;
+        requireSourceAudit?: boolean;
+        sourceAuditRatio?: string | number;
+        sourceAuditScope?: string;
+        sourceAuditDate?: string;
+    },
+    command: 'poll' | 'query' | 'watch',
+): WebAiOutput {
+    const withArtifact = withAnswerArtifact(result, {
+        provider: result.vendor || input.vendor,
+        sessionId: result.sessionId,
+        conversationUrl: result.url,
+    });
+    if (input.requireSourceAudit !== true) return withArtifact;
+    const answerText = withArtifact.answerText || withArtifact.answerArtifact?.text || withArtifact.answerArtifact?.markdown || '';
+    if (!answerText && withArtifact.ok === false) return withArtifact;
+    if (!answerText) {
+        throw new WebAiError({
+            errorCode: 'source-audit.answer-missing',
+            stage: 'source-audit',
+            vendor: result.vendor || parseVendor(input.vendor),
+            retryHint: 'poll-or-disable-audit',
+            message: `source audit requires completed answer text for web-ai ${command}`,
+            mutationAllowed: false,
+            evidence: { status: result.status || null },
+        });
+    }
+    const sourceAudit = auditSources(answerText, {
+        requiredSourceRatio: parseSourceAuditRatio(input.sourceAuditRatio),
+        checkedScope: input.sourceAuditScope || null,
+        checkedDate: input.sourceAuditDate || null,
+    });
+    withArtifact.sourceAudit = sourceAudit;
+    if (!sourceAudit.ok) {
+        throw new WebAiError({
+            errorCode: 'source-audit.failed',
+            stage: 'source-audit',
+            vendor: result.vendor || parseVendor(input.vendor),
+            retryHint: 'add-inline-sources-or-disable-audit',
+            message: `source audit failed: ${sourceAudit.gaps.map(gap => gap.code).join(', ')}`,
+            mutationAllowed: false,
+            evidence: {
+                gaps: sourceAudit.gaps,
+                claimCount: sourceAudit.claims.length,
+                unsourcedClaimCount: sourceAudit.unsourcedClaims.length,
+                checkedScope: sourceAudit.checkedScope,
+                checkedDate: sourceAudit.checkedDate,
+            },
+        });
+    }
+    return withArtifact;
+}
+
+function parseSourceAuditRatio(value: unknown): number {
+    if (value === undefined || value === null || value === '') return 1;
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed) || parsed < 0 || parsed > 1) {
+        throw new WebAiError({
+            errorCode: 'source-audit.invalid-ratio',
+            stage: 'source-audit',
+            retryHint: 'fix-source-audit-ratio',
+            message: '--source-audit-ratio must be a number between 0 and 1',
+            mutationAllowed: false,
+            evidence: { value },
+        });
+    }
+    return parsed;
+}
+
+export async function query(port: number, input: QuestionEnvelopeInput & { timeout?: number | string; allowCopyMarkdownFallback?: boolean } = {}): Promise<WebAiOutput> {
+    if (input.research === 'deep' && parseVendor(input.vendor) === 'chatgpt') {
+        return queryDeepResearch(port, input);
+    }
+    const sent = await send(port, input);
+    const result = await poll(port, stripUndefined({
+        vendor: sent.vendor,
+        timeout: input.timeout,
+        session: sent.sessionId,
+        allowCopyMarkdownFallback: input.allowCopyMarkdownFallback,
+        requireSourceAudit: input.requireSourceAudit,
+        sourceAuditRatio: input.sourceAuditRatio,
+        sourceAuditScope: input.sourceAuditScope,
+        sourceAuditDate: input.sourceAuditDate,
+    }));
+    const merged: WebAiOutput = {
+        ...result,
+        usedFallbacks: [...(sent.usedFallbacks || []), ...(result.usedFallbacks || [])],
+        warnings: [...(sent.warnings || []), ...(result.warnings || [])],
+    };
+    if (input.followUps?.length && parseVendor(input.vendor) === 'chatgpt') {
+        return queryMultiTurn(port, input, merged);
+    }
+    return merged;
+}
+
+async function queryDeepResearch(port: number, input: QuestionEnvelopeInput & { timeout?: number | string }): Promise<WebAiOutput> {
+    const { page, targetId } = await ensureProviderTab(port, input);
+    const session = createSession({
+        vendor: 'chatgpt',
+        targetId,
+        url: page.url(),
+        conversationUrl: page.url(),
+        envelope: normalizeEnvelope(input),
+        assistantCount: await countAssistantMessages(page),
+        // 105.4: deep-research → tier-aware 1h default (was a flat 20 min) unless --timeout.
+        timeoutMs: Number(input.timeout || resolveTimeoutDefaultSec(input, 'chatgpt')) * 1000,
+    });
+    bindSessionToTab(session.sessionId, targetId);
+    const deps = {
+        getCdpSession: () => getCdpSession(port),
+    };
+    const dr = await sendDeepResearch(page, deps, {
+        prompt: input.prompt || '',
+        session,
+        timeoutMs: session.timeoutMs, // reuse the session's tier-aware timeout (105.4)
+    });
+    const drStatusMap: Record<string, WebAiOutput['status']> = {
+        complete: 'complete', timeout: 'timeout', blocked: 'blocked', failed: 'error',
+    };
+    return {
+        ok: dr.ok,
+        vendor: 'chatgpt',
+        status: drStatusMap[dr.status] || 'error',
+        url: dr.conversationUrl,
+        sessionId: dr.sessionId,
+        ...(dr.reportText ? { answerText: dr.reportText } : {}),
+        warnings: dr.warnings,
+    };
+}
+
+async function queryMultiTurn(port: number, input: QuestionEnvelopeInput, baseResult: WebAiOutput): Promise<WebAiOutput> {
+    if (!input.followUps?.length || !baseResult.sessionId) return baseResult;
+    const session = getSession(baseResult.sessionId);
+    if (!session) return baseResult;
+    const page = await getPageByTargetId(port, session.targetId);
+    if (!page) return baseResult;
+    const deps = { getCdpSession: () => getCdpSession(port) };
+    const mt = await sendMultiTurn(page, deps, {
+        followUps: input.followUps,
+        session,
+    });
+    return {
+        ...baseResult,
+        ok: mt.ok,
+        status: mt.finalStatus === 'complete' ? 'complete' : 'error',
+        ...(mt.finalAnswer ? { answerText: mt.finalAnswer } : {}),
+        warnings: [...(baseResult.warnings || []), ...mt.warnings, `multi-turn: ${mt.turns.length} follow-ups`],
+    };
+}
+
+export async function watch(port: number, input: { vendor?: string; timeout?: number | string; session?: string; url?: string; notify?: boolean; pollIntervalSeconds?: number | string; allowCopyMarkdownFallback?: boolean; requireSourceAudit?: boolean; sourceAuditRatio?: string | number; sourceAuditScope?: string; sourceAuditDate?: string } = {}): Promise<WebAiOutput> {
+    if (input.url) await navigateRequestedConversation(port, input.url, parseVendor(input.vendor));
+    if (input.session && input.notify !== false) {
+        const vendor = parseVendor(input.vendor);
+        const existingSession = getSession(input.session);
+        const watchTimeoutSec = input.timeout
+            ? Math.max(1, Number(input.timeout))
+            : existingSession?.timeoutMs ? existingSession.timeoutMs / 1000
+            : resolveTimeoutDefaultSec({}, vendor);
+        const watcher = startWebAiWatcher({
+            port,
+            vendor,
+            sessionId: input.session,
+            timeoutMs: watchTimeoutSec * 1000,
+            pollIntervalSeconds: Number(input.pollIntervalSeconds || 30),
+            ...(input.allowCopyMarkdownFallback !== undefined ? { allowCopyMarkdownFallback: input.allowCopyMarkdownFallback } : {}),
+            pollOnce: (pollInput) => poll(port, pollInput),
+        });
+        return {
+            ok: true,
+            vendor,
+            status: 'streaming',
+            sessionId: input.session,
+            next: 'poll',
+            warnings: [`watcher ${watcher.status}: ${watcher.sessionId}`],
+        };
+    }
+    return poll(port, input);
+}
+
+export function watchers(): WebAiOutput {
+    return {
+        ok: true,
+        vendor: 'chatgpt',
+        status: 'ready',
+        watchers: listActiveWebAiWatchers(),
+        warnings: [],
+    } as WebAiOutput;
+}
+
+export function resumeStoredWatchers(port: number, input: { vendor?: string; pollIntervalSeconds?: number | string } = {}): WebAiOutput {
+    const vendor = input.vendor ? parseVendor(input.vendor) : undefined;
+    const resumed = resumeStoredWebAiWatchers({
+        port,
+        ...(vendor ? { vendor } : {}),
+        pollIntervalSeconds: Number(input.pollIntervalSeconds || 30),
+        pollOnce: (pollInput) => poll(port, pollInput),
+    });
+    return {
+        ok: true,
+        vendor: vendor || 'chatgpt',
+        status: 'ready',
+        watchers: resumed,
+        warnings: resumed.length ? [`resumed ${resumed.length} web-ai watcher(s)`] : [],
+    } as WebAiOutput;
+}
+
+export async function sessions(input: { vendor?: string; status?: string } = {}): Promise<WebAiOutput> {
+    const vendor = input.vendor ? parseVendor(input.vendor) : undefined;
+    const status = parseSessionStatus(input.status);
+    return {
+        ok: true,
+        vendor: vendor || 'chatgpt',
+        status: 'ready',
+        sessions: listSessions(stripUndefined({ vendor, status })),
+        warnings: [],
+    };
+}
+
+export async function sessionsPrune(input: { olderThanMs?: number | string; before?: string; status?: string } = {}): Promise<WebAiOutput> {
+    const ms = typeof input.olderThanMs === 'string' ? Number(input.olderThanMs) : input.olderThanMs;
+    const result = pruneSessions(stripUndefined({
+        ...(typeof ms === 'number' && Number.isFinite(ms) ? { olderThanMs: ms } : {}),
+        ...(input.before ? { before: input.before } : {}),
+        ...(parseSessionStatus(input.status) ? { status: parseSessionStatus(input.status) } : {}),
+    }));
+    return {
+        ok: true,
+        vendor: 'chatgpt',
+        status: 'ready',
+        prune: result,
+        warnings: [],
+    } as WebAiOutput;
+}
+
+export async function stop(port: number, input: { vendor?: string; session?: string } = {}): Promise<WebAiOutput> {
+    const vendor = parseVendor(input.vendor);
+    if (vendor === 'gemini') {
+        try { return await geminiStop(port); } catch (e) { throw stageError(e, 'send-click'); }
+    }
+    if (vendor === 'grok') {
+        try { return await grokStop(port); } catch (e) { throw stageError(e, 'send-click'); }
+    }
+
+    let page: Page;
+    let targetId: string;
+    let session = input.session ? getSession(input.session) : null;
+
+    if (session) {
+        const ctx = await withSessionPage(port, session.sessionId, async (c) => c);
+        page = ctx.page;
+        targetId = ctx.targetId;
+    } else {
+        const active = await requireVerifiedChatGptTab(port, vendor);
+        targetId = active.targetId;
+        page = await requireActivePage(port);
+        session = findSessionByTarget(vendor, targetId);
+    }
+
+    if (session) assertSameTarget(session, targetId);
+    await page.keyboard.press('Escape');
+    if (session) updateSessionStatus(session.sessionId, 'complete');
+    const currentUrl = page.url?.() || session?.url || 'https://chatgpt.com';
+    return { ok: true, vendor: 'chatgpt', status: 'blocked', url: currentUrl, warnings: ['sent Escape to stop generation'] };
+}
+
+export async function diagnose(port: number, input: { vendor?: string; stage?: string } = {}): Promise<{ ok: boolean; diagnostics?: ReturnType<typeof toJsonDiagnostics> }> {
+    const vendor = parseVendor(input.vendor);
+    const stage = (input.stage as WebAiFailureStage) || 'unknown';
+    const page = await requireActivePage(port).catch(() => null);
+    if (!page) return { ok: false };
+    const diagnostics = await captureWebAiDiagnostics({ stage, page });
+    return { ok: true, diagnostics: toJsonDiagnostics({ ...diagnostics, vendor }) };
+}
+
+function toJsonDiagnostics<T>(d: T): T { return d; }
+
+function stageError(error: unknown, stage: WebAiFailureStage): Error {
+    const mapped = fromPODEXStructuredError(error, stage);
+    if (mapped) {
+        if (!mapped.stage || mapped.stage === 'internal') mapped.stage = stage;
+        return mapped;
+    }
+    if (error instanceof WebAiError) {
+        if (!error.stage || error.stage === 'internal') error.stage = stage;
+        return error;
+    }
+    const wrapped = error instanceof Error ? error : new Error(String(error));
+    if (!(wrapped as { stage?: string }).stage) (wrapped as { stage?: string }).stage = stage;
+    return wrapped;
+}
+
+function parseVendor(vendor?: string): WebAiVendor {
+    if (!vendor || vendor === 'chatgpt') return 'chatgpt';
+    if (vendor === 'gemini') return 'gemini';
+    if (vendor === 'grok') return 'grok';
+    throw new WebAiError({
+        errorCode: 'provider.runtime-disabled',
+        stage: 'provider-runtime-gate',
+        retryHint: 'enable-or-skip',
+        message: `unsupported vendor: ${vendor}`,
+        evidence: { vendor },
+    });
+}
+
+function parseSessionStatus(status?: string): WebAiSessionStatus | undefined {
+    if (status === 'sent' || status === 'streaming' || status === 'complete' || status === 'timeout' || status === 'error') {
+        return status;
+    }
+    return undefined;
+}
+
+async function requireVerifiedChatGptTab(port: number, vendor?: string): Promise<BrowserTabInfo> {
+    const parsed = parseVendor(vendor);
+    if (parsed === 'gemini') {
+        throw stageError(new ProviderRuntimeDisabledError('gemini', 'status'), 'status');
+    }
+    const active: ActiveTabResult = await getActiveTab(port);
+    if (!active.ok || !active.tab) {
+        throw stageError(
+            new Error(`active tab is not verified (${active.reason || 'unknown'}). Run tabs --json then tab-switch before web-ai.`),
+            'status',
+        );
+    }
+    if (!isChatGptUrl(active.tab.url)) {
+        throw stageError(
+            new Error(`active tab is not ChatGPT: ${active.tab.url}. Run tabs --json then tab-switch before web-ai.`),
+            'status',
+        );
+    }
+    return active.tab;
+}
+
+async function navigateRequestedConversation(port: number, url: string | undefined, vendor: WebAiVendor): Promise<void> {
+    if (!url) return;
+    const page = await requireActivePage(port);
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    const loadedUrl = page.url();
+    if (vendor === 'chatgpt' && !isChatGptUrl(loadedUrl)) {
+        throw stageError(new Error(`requested URL did not load ChatGPT: ${loadedUrl}`), 'status');
+    }
+    if (vendor === 'grok' && !isGrokUrl(loadedUrl)) {
+        throw stageError(new Error(`requested URL did not load Grok: ${loadedUrl}`), 'status');
+    }
+}
+
+async function requireActivePage(port: number): Promise<Page> {
+    const page = await getActivePage(port);
+    if (!page) throw new Error('No active page');
+    return page;
+}
+
+async function countAssistantMessages(page: Page): Promise<number> {
+    return (await readAssistantMessages(page)).length;
+}
+
+async function waitForStableAssistantCount(page: Page, timeoutMs = 8_000): Promise<void> {
+    const deadline = Date.now() + timeoutMs;
+    let previous = -1;
+    let stableReads = 0;
+    while (Date.now() < deadline) {
+        const count = await countAssistantMessages(page).catch(() => 0);
+        if (count === previous) stableReads++;
+        else stableReads = 0;
+        previous = count;
+        if (stableReads >= 2) return;
+        await page.waitForTimeout(500).catch(() => undefined);
+    }
+}
+
+async function readAssistantMessages(page: Page): Promise<string[]> {
+    const evaluated = await page.evaluate?.((selectors: readonly string[]) => {
+        for (const selector of selectors) {
+            const texts = Array.from(document.querySelectorAll(selector))
+                .map((el: TextNodeLike) => String(el.innerText || el.textContent || '').trim())
+                .filter(Boolean);
+            if (texts.length) return texts;
+        }
+        return [];
+    }, ASSISTANT_SELECTORS).catch(() => []);
+    if (evaluated?.length) return evaluated.map(cleanAssistantText).filter(Boolean);
+
+    const messages: string[] = [];
+    for (const selector of ASSISTANT_SELECTORS) {
+        const locators = await page.locator(selector).all().catch(() => []);
+        for (const locator of locators) {
+            const text = cleanAssistantText(await locator.innerText().catch(() => ''));
+            if (text) messages.push(text);
+        }
+        if (messages.length > 0) break;
+    }
+    return messages;
+}
+
+function cleanAssistantText(text: unknown): string {
+    return String(text || '')
+        .replace(/^Thought for\s+\d+s\s*/i, '')
+        .trim();
+}
+
+

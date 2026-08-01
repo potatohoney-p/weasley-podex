@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notion — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-scope { background: rgba(34, 211, 238, 0.15); color: var(--accent); }
+.badge-env { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+
+.skill-meta { display: flex; gap: 12px; align-items: center; margin: -4px 0 24px; flex-wrap: wrap; }
+.skill-meta .badge { font-size: 12px; padding: 3px 10px; }
+
+.quick-ref { margin: 20px 0 28px; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 140px; color: var(--text-dim); }
+
+.cmd-block { margin: 16px 0; }
+.cmd-block h4 { margin: 16px 0 4px; }
+
+.prop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+.prop-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px;
+}
+.prop-card h4 { margin: 0 0 8px; font-size: 15px; text-transform: none; letter-spacing: 0; }
+.prop-card code { font-size: 12px; }
+
+.example-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px; margin: 12px 0;
+}
+.example-card .example-prompt {
+  font-size: 15px; font-weight: 500; color: var(--accent); margin-bottom: 6px;
+}
+.example-card .example-desc {
+  font-size: 13px; color: var(--text-dim); line-height: 1.5;
+}
+.example-card code { font-size: 12px; }
+
+.design-rule {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px; margin: 12px 0;
+}
+.design-rule h4 { margin: 0 0 8px; font-size: 15px; text-transform: none; letter-spacing: 0; color: var(--text); }
+.design-rule p { font-size: 13px; color: var(--text-dim); margin: 4px 0; }
+
+.api-change { display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
+.api-change .change-label {
+  flex-shrink: 0; padding: 2px 10px; border-radius: 4px;
+  background: rgba(251, 191, 36, 0.15); color: var(--yellow);
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  margin-top: 2px;
+}
+.api-change .change-text { flex: 1; font-size: 14px; }
+
+.page-structure-block {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 20px 24px; margin: 16px 0; font-family: var(--font-mono); font-size: 13px;
+  line-height: 1.6; color: var(--text-dim);
+}
+
+@media (max-width: 768px) {
+  .prop-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">快速入门</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+      <a class="docs-nav-link" href="../../">概述</a>
+      <a class="docs-nav-link" href="../../quickstart.html">快速开始</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">首次运行</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">核心概念</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">架构</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">员工</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">目标</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">技能</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">记忆</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">提示词</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">使用指南</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer.html">计算机操控</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 桌面端</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">参考手册</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 命令</a>
+      <a class="docs-nav-link" href="../../reference/api.html">服务器 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">配置</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">键盘快捷键</a>
+      <a class="docs-nav-link" href="../../reference/events.html">事件</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">技能</div>
+      <a class="docs-nav-link" href="../index.html">技能目录</a>
+      <a class="docs-nav-link" href="../orchestration.html">开发</a>
+      <a class="docs-nav-link" href="../automation.html">自动化</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 媒体</a>
+      <a class="docs-nav-link" href="../communication.html">通讯</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">云服务与部署</a>
+      <a class="docs-nav-link" href="../devtools-security.html">安全与审查</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">开发工作流</a>
+      <a class="docs-nav-link active" href="../productivity.html">生产力</a>
+      <a class="docs-nav-link" href="../smarthome.html">智能家居</a>
+      <a class="docs-nav-link" href="../utility.html">实用工具</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">命令</div>
+      <a class="docs-nav-link" href="../../commands/session.html">会话</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">工作流</a>
+      <a class="docs-nav-link" href="../../commands/model.html">模型与 CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">工具</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">仅限 CLI</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">根 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">更新日志</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">首页</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Notion</h1>
+<p class="lead">通过 API 对 Notion 页面和数据库进行增删改查 &mdash; 使用 Notion API 直接在 podex 中创建、读取、更新和查询 Notion 页面、数据源（数据库）和块。</p>
+
+<div class="skill-meta">
+  <span class="badge badge-active">默认启用：是</span>
+  <span class="badge badge-scope">分类：生产力</span>
+  <span class="badge badge-env">依赖：NOTION_API_KEY</span>
+</div>
+
+<h2>快速参考</h2>
+<table class="quick-ref">
+<tr><td>技能名称</td><td><code>notion</code></td></tr>
+<tr><td>状态</td><td>已激活（自动注入每个会话）</td></tr>
+<tr><td>分类</td><td>生产力</td></tr>
+<tr><td>SKILL.md 路径</td><td><code>~/.podex/skills/notion/SKILL.md</code></td></tr>
+<tr><td>官方网站</td><td><a href="https://developers.notion.com">developers.notion.com</a></td></tr>
+<tr><td>API 版本</td><td><code>2025-09-03</code>（最新）</td></tr>
+<tr><td>依赖</td><td><code>NOTION_API_KEY</code> 环境变量（以 <code>ntn_</code> 为前缀的密钥）</td></tr>
+<tr><td>密钥存储位置</td><td><code>~/.config/notion/api_key</code></td></tr>
+<tr><td>OAuth 配置</td><td><code>~/.config/notion/oauth.env</code></td></tr>
+<tr><td>速率限制</td><td>约 3 次请求/秒（批量操作时使用 <code>time.sleep(0.35)</code>）</td></tr>
+<tr><td>安装</td><td>已预装（随 podex 一起提供）</td></tr>
+</table>
+
+<h2>概述</h2>
+<p><code>notion</code> 技能通过 Notion API 提供对 Notion 工作区的完整增删改查访问。它使 podex 能够搜索页面、创建和更新内容、查询数据库（数据源）、管理块以及应用视觉设计模式 &mdash; 所有操作均无需离开终端。</p>
+
+<p>核心功能：</p>
+<ul>
+  <li><strong>搜索</strong> &mdash; 按标题或内容查找页面和数据源</li>
+  <li><strong>读取</strong> &mdash; 获取页面属性和块级内容</li>
+  <li><strong>创建</strong> &mdash; 向工作区或数据源添加新页面，创建新数据源</li>
+  <li><strong>更新</strong> &mdash; 修改页面属性、追加块、更改状态字段</li>
+  <li><strong>查询</strong> &mdash; 使用结构化查询对数据源条目进行筛选和排序</li>
+  <li><strong>设计</strong> &mdash; 应用 Notion 原生视觉模式（提及链接、标注块、图标）</li>
+</ul>
+
+<h2>设置</h2>
+<p>在使用 Notion 技能之前，您需要一个 API 集成密钥和正确的权限。</p>
+
+<table>
+<thead>
+<tr><th>步骤</th><th>操作</th></tr>
+</thead>
+<tbody>
+<tr><td>1. 创建集成</td><td>前往 <a href="https://www.notion.so/my-integrations">notion.so/my-integrations</a> 并创建一个新的内部集成</td></tr>
+<tr><td>2. 复制 API 密钥</td><td>密钥以 <code>ntn_</code> 开头</td></tr>
+<tr><td>3. 保存密钥</td><td>保存到 <code>~/.config/notion/api_key</code></td></tr>
+<tr><td>4. 共享页面</td><td>在 Notion 中，将每个目标页面/数据库与您的集成共享</td></tr>
+</tbody>
+</table>
+
+<pre><code># Store your API key
+mkdir -p ~/.config/notion
+echo "ntn_your_api_key_here" > ~/.config/notion/api_key
+chmod 600 ~/.config/notion/api_key</code></pre>
+
+<div class="callout callout-warn"><strong>重要：</strong>目标页面和数据库必须在 Notion 中显式与您的集成共享。未共享的页面即使 API 密钥有效也会返回 404 错误。</div>
+
+<h2>API 辅助函数</h2>
+<p>该技能定义了一个可复用的 Shell 辅助函数，所有操作均基于此构建。podex 在执行 Notion 命令时内部使用此函数：</p>
+
+<pre><code>NOTION_KEY=$(cat ~/.config/notion/api_key)
+
+# Helper function used by all API calls
+notion_api() {
+  local method=$1 endpoint=$2 data=$3
+  curl -s -X "$method" "https://api.notion.com/v1$endpoint" \
+    -H "Authorization: Bearer $NOTION_KEY" \
+    -H "Notion-Version: 2025-09-03" \
+    -H "Content-Type: application/json" \
+    ${data:+-d "$data"}
+}</code></pre>
+
+<h2>常用操作</h2>
+
+<h3>搜索</h3>
+<p>按标题查找页面和数据源。返回匹配的对象及其 ID。</p>
+<pre><code># Search for pages by title
+notion_api POST /search '{"query": "page title"}'
+
+# Discover workspace page IDs
+notion_api POST /search '{"query": "Meeting Notes"}'</code></pre>
+
+<h3>读取页面和块</h3>
+<p>获取页面属性及其块级内容。</p>
+<pre><code># Get page properties
+notion_api GET /pages/{page_id}
+
+# Get page content (all child blocks)
+notion_api GET /blocks/{page_id}/children</code></pre>
+
+<h3>创建页面</h3>
+<p>在数据源（数据库）中创建带属性的新页面，或作为现有页面的子页面创建。</p>
+<pre><code># Create a page in a data source
+notion_api POST /pages '{
+  "parent": {"database_id": "xxx"},
+  "properties": {
+    "Name": {"title": [{"text": {"content": "New Item"}}]},
+    "Status": {"select": {"name": "Todo"}}
+  }
+}'</code></pre>
+
+<h3>更新页面</h3>
+<p>修改页面属性，不影响页面内容（块）。</p>
+<pre><code># Update a status property
+notion_api PATCH /pages/{page_id} \
+  '{"properties": {"Status": {"select": {"name": "Done"}}}}'</code></pre>
+
+<h3>追加块</h3>
+<p>向现有页面添加新的内容块。</p>
+<pre><code># Add a paragraph block
+notion_api PATCH /blocks/{page_id}/children '{
+  "children": [
+    {
+      "object": "block",
+      "type": "paragraph",
+      "paragraph": {
+        "rich_text": [{"text": {"content": "Hello, world!"}}]
+      }
+    }
+  ]
+}'</code></pre>
+
+<h3>查询数据源</h3>
+<p>使用结构化查询对数据库条目进行筛选和排序。</p>
+<pre><code># Query with filter and sort
+notion_api POST /data_sources/{data_source_id}/query '{
+  "filter": {
+    "property": "Status",
+    "select": {"equals": "Active"}
+  },
+  "sorts": [
+    {"property": "Date", "direction": "descending"}
+  ]
+}'</code></pre>
+
+<h3>创建数据源</h3>
+<p>创建一个具有定义架构的新数据库（数据源）。</p>
+<pre><code># Create a new data source with properties
+notion_api POST /data_sources '{
+  "parent": {"page_id": "xxx"},
+  "title": [{"text": {"content": "My Database"}}],
+  "properties": {
+    "Name": {"title": {}},
+    "Status": {"select": {"options": [{"name": "Todo"}, {"name": "Done"}]}},
+    "Date": {"date": {}}
+  }
+}'</code></pre>
+
+<h2>属性类型参考</h2>
+<p>每种属性类型都有特定的 JSON 结构。创建或更新页面属性时请使用正确的格式。</p>
+
+<div class="prop-grid">
+  <div class="prop-card">
+    <h4>Title</h4>
+    <pre><code>{"title": [{"text": {"content": "..."}}]}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Rich Text</h4>
+    <pre><code>{"rich_text": [{"text": {"content": "..."}}]}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Select</h4>
+    <pre><code>{"select": {"name": "Option"}}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Multi-select</h4>
+    <pre><code>{"multi_select": [{"name": "A"}, {"name": "B"}]}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Date</h4>
+    <pre><code>{"date": {"start": "2024-01-15", "end": "2024-01-16"}}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Checkbox</h4>
+    <pre><code>{"checkbox": true}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Number</h4>
+    <pre><code>{"number": 42}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>URL</h4>
+    <pre><code>{"url": "https://..."}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Email</h4>
+    <pre><code>{"email": "user@example.com"}</code></pre>
+  </div>
+  <div class="prop-card">
+    <h4>Relation</h4>
+    <pre><code>{"relation": [{"id": "page_id"}]}</code></pre>
+  </div>
+</div>
+
+<h2>2025-09-03 API 变更</h2>
+<p>最新的 Notion API 版本对数据库的处理方式引入了重大变更。该技能基于此版本构建。</p>
+
+<div class="api-change">
+  <span class="change-label">重命名</span>
+  <span class="change-text"><strong>Databases &rarr; Data Sources：</strong>查询时使用 <code>/data_sources/</code> 端点。API 中"database"一词已被"data source"替代。</span>
+</div>
+<div class="api-change">
+  <span class="change-label">新增</span>
+  <span class="change-text"><strong>每个数据库两个 ID：</strong><code>database_id</code> 用于在数据库内创建页面，而 <code>data_source_id</code> 用于查询。两者均存在于 API 响应中。</span>
+</div>
+<div class="api-change">
+  <span class="change-label">变更</span>
+  <span class="change-text"><strong>搜索结果：</strong>数据库现在返回 <code>"object": "data_source"</code> 而非 <code>"object": "database"</code>。</span>
+</div>
+<div class="api-change">
+  <span class="change-label">变更</span>
+  <span class="change-text"><strong>页面响应：</strong>当父级是数据库时，同时包含 <code>parent.data_source_id</code> 和 <code>parent.database_id</code>。</span>
+</div>
+
+<div class="callout callout-info"><strong>双 ID 模式：</strong>操作数据库时，使用 <code>database_id</code> 进行 <code>POST /pages</code>（创建条目），使用 <code>data_source_id</code> 进行 <code>POST /data_sources/{id}/query</code>（查询条目）。混用会导致 404 错误。</div>
+
+<h2>视觉设计规则</h2>
+<p>该技能包含一组视觉设计规则（称为"美学指南"），确保 podex 创建的 Notion 页面外观精美并遵循 Notion 原生模式。</p>
+
+<div class="design-rule">
+  <h4>1. 使用提及链接引用页面</h4>
+  <p>提及链接会自动创建反向链接并显示被引用页面的图标。始终优先使用提及链接而非纯文本页面名称。</p>
+  <pre><code>// Correct: mention link (creates backlink, shows icon)
+{"type": "mention", "mention": {"type": "page", "page": {"id": "page-UUID"}}}
+
+// Incorrect: plain text (no backlink, no icon)
+{"type": "text", "text": {"content": "Page Name"}}</code></pre>
+</div>
+
+<div class="design-rule">
+  <h4>2. 使用提及链接时省略文本中的表情符号</h4>
+  <p>提及链接会自动显示页面的图标。在提及链接旁添加表情符号文本会造成视觉重复。让提及链接自行处理图标即可。</p>
+</div>
+
+<div class="design-rule">
+  <h4>3. 使用标注块 + 提及链接构建导航枢纽</h4>
+  <p>对于用作枢纽或仪表盘的页面，使用带有提及链接的标注块，并用圆点分隔符分隔，以实现简洁的导航效果。</p>
+  <pre><code>{"object": "block", "type": "callout", "callout": {
+    "rich_text": [
+        {"type": "mention", "mention": {"type": "page", "page": {"id": "dashboard-UUID"}}},
+        {"type": "text", "text": {"content": " &middot; "}},
+        {"type": "mention", "mention": {"type": "page", "page": {"id": "operations-UUID"}}}
+    ],
+    "icon": {"type": "emoji", "emoji": "&#127968;"},
+    "color": "gray_background"
+}}</code></pre>
+</div>
+
+<div class="design-rule">
+  <h4>4. 保留 child_page 块</h4>
+  <p>删除 <code>child_page</code> 块会永久归档其子页面。在清除或重建页面内容时，务必在删除前过滤掉 child_page 块。</p>
+  <pre><code># Python: safely clear blocks without archiving subpages
+for block in children:
+    if block["type"] != "child_page":
+        delete_block(block["id"])</code></pre>
+</div>
+
+<div class="design-rule">
+  <h4>5. 标准页面结构模式</h4>
+  <p>遵循以下布局以创建结构良好的 Notion 页面：</p>
+  <div class="page-structure-block">
+callout (介绍/标语) + color_background<br>
+divider<br>
+heading_2 (章节标题)<br>
+callout (提及链接) + gray_background &larr; 导航<br>
+divider<br>
+heading_2 (快速链接)<br>
+bulleted_list_item (提及 &rarr; 描述)
+  </div>
+</div>
+
+<div class="design-rule">
+  <h4>6. 图标和封面</h4>
+  <p>为每个页面设置一个有意义的表情符号图标。对于关键页面（仪表盘、项目枢纽），添加 <code>w=1500</code> 分辨率的 Unsplash 封面图片以提升视觉效果。</p>
+</div>
+
+<div class="design-rule">
+  <h4>7. 提及链接注意事项</h4>
+  <ul>
+    <li>已归档的页面会将提及链接渲染为纯文本（无图标、无链接）</li>
+    <li>集成必须有权访问目标页面，提及链接才能正确解析</li>
+    <li>速率限制：约 3 次请求/秒 &mdash; 在批量操作中使用 <code>time.sleep(0.35)</code> 以避免限流</li>
+  </ul>
+</div>
+
+<h2>环境与配置</h2>
+
+<table>
+<thead>
+<tr><th>文件</th><th>用途</th></tr>
+</thead>
+<tbody>
+<tr><td><code>~/.config/notion/api_key</code></td><td>主要 API 密钥存储（也作为 <code>access_token</code> 检查）</td></tr>
+<tr><td><code>~/.config/notion/oauth.env</code></td><td>公开集成的 OAuth 配置</td></tr>
+<tr><td><code>NOTION_API_KEY</code> 环境变量</td><td>环境变量覆盖（优先级最高）</td></tr>
+</tbody>
+</table>
+
+<p>要发现工作区页面 ID 以用于脚本和命令：</p>
+<pre><code># Search by name to find page/database UUIDs
+notion_api POST /search '{"query": "page name"}'</code></pre>
+
+<h2>使用示例</h2>
+<p>以 podex 能理解的自然韩语风格展示的实际使用模式。</p>
+
+<div class="example-card">
+  <div class="example-prompt">"&#45432;&#49496;&#50640; &#49352; &#54168;&#51060;&#51648; &#47564;&#46308;&#50612;&#51468; &mdash; &#51228;&#47785; '&#51452;&#44036; &#54924;&#51032;&#47197;', &#49345;&#53468;&#45716; '&#51652;&#54665; &#51473;'&#51004;&#47196;"</div>
+  <div class="example-desc">在指定的 Notion 数据源中创建新页面，标题设为"周会记录"，状态属性设为"进行中"。该技能使用 <code>POST /pages</code> 和正确的属性类型。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#54532;&#47196;&#51229;&#53944; &#45936;&#51060;&#53552;&#48288;&#51060;&#49828;&#50640;&#49436; &#49345;&#53468;&#44032; 'Todo'&#51064; &#54637;&#47785;&#46308; &#51204;&#48512; &#52286;&#50500;&#51468;"</div>
+  <div class="example-desc">使用 <code>POST /data_sources/{id}/query</code> 查询 Notion 数据源，按状态选择属性等于"Todo"进行筛选，按日期降序排列。返回所有匹配的条目。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#51060; &#45432;&#49496; &#54168;&#51060;&#51648; &#45236;&#50857; &#51069;&#50612;&#50752;&#49436; &#50836;&#50557;&#54644;&#51468;"</div>
+  <div class="example-desc">使用 <code>GET /blocks/{page_id}/children</code> 获取页面内容，递归读取所有块内容并生成摘要。可处理嵌套块，如折叠块和标注块。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#45432;&#49496; &#45824;&#49884;&#48372;&#46300; &#54168;&#51060;&#51648; &#50696;&#49240;&#44172; &#44984;&#47680;&#51468; &mdash; &#45348;&#48708;&#44172;&#51060;&#49496; &#54728;&#48652;&#47196;"</div>
+  <div class="example-desc">应用视觉设计规则：创建带有提及链接的标注块作为导航枢纽，添加分隔线，设置标题/章节结构，添加表情符号图标，并应用 Unsplash 封面图片。遵循规则 3（标注块 + 提及链接）和规则 5（页面结构模式）。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#45432;&#49496;&#50640; &#49352; &#45936;&#51060;&#53552;&#48288;&#51060;&#49828; &#47564;&#46308;&#50612;&#51468; &mdash; &#51060;&#47492;, &#49345;&#53468;(Todo/Done), &#45216;&#51676; &#52972;&#47100;&#51004;&#47196;"</div>
+  <div class="example-desc">使用 <code>POST /data_sources</code> 创建具有三个属性的新数据源：用于名称的标题属性、带有"Todo"和"Done"选项的选择属性（用于状态），以及日期属性。将父级设为指定页面。</div>
+</div>
+
+<h2>重要注意事项</h2>
+<ul>
+  <li><strong>页面/数据库 ID</strong> 是 UUID &mdash; 破折号可选（<code>abc123def456</code> 和 <code>abc123-def4-56...</code> 均可使用）</li>
+  <li><strong>数据库视图筛选器</strong>仅限 UI 使用，无法通过 API 设置或读取</li>
+  <li><strong>内联数据源：</strong>创建数据源时使用 <code>is_inline: true</code> 可将其嵌入页面内，而非作为独立的全页数据库</li>
+  <li><strong>child_page 安全：</strong>清除内容时切勿删除 <code>child_page</code> 块 &mdash; 这会永久归档子页面</li>
+  <li><strong>双 ID 系统：</strong>在 2025-09-03 API 中，数据库同时具有 <code>database_id</code>（用于创建页面）和 <code>data_source_id</code>（用于查询）&mdash; 请为每个操作使用正确的 ID</li>
+  <li><strong>速率限制：</strong>Notion API 允许约 3 次请求/秒；在批量脚本中请在调用之间插入 <code>time.sleep(0.35)</code></li>
+  <li><strong>集成访问权限：</strong>您要访问的每个页面和数据库都必须在 Notion 的共享对话框中显式与集成共享</li>
+</ul>
+
+<h2>相关内容</h2>
+<ul>
+  <li><a href="https://developers.notion.com">Notion API Documentation</a> &mdash; Notion API 官方参考文档</li>
+  <li><a href="../productivity.html">生产力技能</a> &mdash; Notion 及相关生产力技能的分类页面</li>
+  <li><a href="memory.html">记忆</a> &mdash; 跨会话的持久知识存储</li>
+  <li><a href="../index.html">技能目录</a> &mdash; 浏览所有技能</li>
+  <li><a href="../../reference/cli.html">CLI 命令</a> &mdash; 完整的 podex 命令参考</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="memory.html">记忆</a>
+<a class="next" href="pdf.html">PDF</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

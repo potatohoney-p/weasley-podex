@@ -1,0 +1,477 @@
+/* ── CLI Status Collapsible ── */
+.cli-status-header {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.cli-status-header::after {
+    content: '▸';
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-left: 8px;
+}
+.cli-status-header.expanded::after {
+    content: '▾';
+}
+
+.cli-status-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.cli-status-toolbar .cli-status-header {
+    flex: 1;
+    min-width: 0;
+}
+
+.btn-refresh {
+    transition:
+        color var(--duration-fast),
+        border-color var(--duration-fast),
+        background var(--duration-fast),
+        transform var(--duration-fast);
+}
+
+.btn-refresh:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.btn-refresh:disabled {
+    cursor: wait;
+    opacity: 0.72;
+}
+
+.btn-refresh.is-refreshing {
+    color: var(--accent);
+    border-color: color-mix(in oklch, var(--accent) 38%, var(--border));
+    background: color-mix(in oklch, var(--accent) 10%, transparent);
+}
+
+.btn-refresh.is-refreshing svg {
+    animation: cliRefreshSpin 0.85s linear infinite;
+}
+
+.btn-refresh.is-success {
+    color: var(--success);
+    border-color: color-mix(in oklch, var(--success) 42%, var(--border));
+    background: var(--success-dim);
+}
+
+.btn-refresh.is-error {
+    color: var(--error);
+    border-color: color-mix(in oklch, var(--error) 42%, var(--border));
+    background: var(--error-dim);
+}
+
+.cli-refresh-state {
+    min-height: 13px;
+    max-width: 86px;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.2;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cli-refresh-state[data-state="refreshing"] {
+    color: var(--accent);
+}
+
+.cli-refresh-state[data-state="success"] {
+    color: var(--success);
+}
+
+.cli-refresh-state[data-state="error"] {
+    color: var(--error);
+}
+
+@keyframes cliRefreshSpin {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-refresh.is-refreshing svg {
+        animation: none;
+    }
+}
+
+/* ── Settings Tab ── */
+.cli-status-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 12px;
+}
+
+.cli-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.cli-dot.ok {
+    background: var(--green);
+}
+
+.cli-dot.warn {
+    background: var(--warning);
+    animation: pulse-warn 2s ease-in-out infinite;
+}
+
+@keyframes pulse-warn {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.cli-dot.missing {
+    background: var(--error);
+}
+
+.cli-provider-icon {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+}
+.cli-provider-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.cli-name {
+    flex: 1;
+}
+
+.cli-path {
+    font-size: 10px;
+    color: var(--text-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 120px;
+}
+
+.settings-group {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px;
+    transition: border-color 0.2s;
+}
+
+.settings-group:hover {
+    border-color: color-mix(in oklch, var(--border) 60%, var(--accent));
+}
+
+.settings-group h4 {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    font-family: var(--font-display);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.settings-row {
+    margin-bottom: 6px;
+}
+
+.settings-row:last-child {
+    margin-bottom: 0;
+}
+
+.sub-row {
+    padding-left: 8px;
+    border-left: 2px solid var(--border);
+}
+
+.perm-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.perm-btn {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 11px;
+    font-family: inherit;
+    text-align: center;
+}
+
+.perm-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: color-mix(in oklch, var(--accent) 10%, var(--bg));
+}
+
+.channel-transport-status .transport-status-block + .transport-status-block {
+    margin-top: 10px;
+}
+
+.transport-status-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+}
+
+.transport-status-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.transport-status-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 10px;
+}
+
+.transport-status-hint {
+    margin: 6px 0 0;
+    font-size: 10px;
+    color: var(--text-dim);
+    line-height: 1.4;
+}
+
+textarea.prompt-editor {
+    width: 100%;
+    height: 120px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+/* ── Skills Tab ── */
+.skill-search {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 6px 9px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.skill-search:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px color-mix(in oklch, var(--accent) 14%, transparent);
+}
+
+.skill-search-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+}
+
+.skill-search-input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 11px;
+}
+
+.skill-search-input::placeholder {
+    color: var(--text-dim);
+}
+
+.skill-filter {
+    padding: 4px 10px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-dim);
+    font-size: 10px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.skill-filter.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: color-mix(in oklch, var(--accent) 10%, var(--bg));
+}
+
+.skill-empty {
+    padding: 12px 4px;
+    color: var(--text-dim);
+    font-size: 11px;
+    text-align: center;
+}
+
+.skill-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    transition: border-color 0.2s, transform 0.15s, box-shadow 0.15s;
+}
+
+.skill-card:hover {
+    border-color: var(--accent2);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.skill-card.enabled {
+    border-left: 3px solid var(--green);
+}
+
+.skill-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.skill-emoji {
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.skill-name {
+    flex: 1;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.skill-toggle {
+    width: var(--toggle-w);
+    height: var(--toggle-h);
+    border-radius: calc(var(--toggle-h) / 2);
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: background .2s;
+}
+
+.skill-toggle.on {
+    background: var(--green);
+}
+
+.skill-toggle.off {
+    background: var(--toggle-off);
+}
+
+.skill-toggle::after {
+    content: '';
+    position: absolute;
+    top: calc((var(--toggle-h) - var(--toggle-knob)) / 2);
+    width: var(--toggle-knob);
+    height: var(--toggle-knob);
+    border-radius: 50%;
+    background: var(--toggle-on);
+    transition: left .2s;
+}
+
+.skill-toggle.on::after {
+    left: calc(var(--toggle-w) - var(--toggle-knob) - (var(--toggle-h) - var(--toggle-knob)) / 2);
+}
+
+.skill-toggle.off::after {
+    left: calc((var(--toggle-h) - var(--toggle-knob)) / 2);
+}
+
+.skill-desc {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.skill-req {
+    font-size: 10px;
+    color: var(--accent2);
+}
+
+.custom-model-input {
+    width: 100%;
+    font-size: 11px;
+    padding: 4px 6px;
+    margin-top: 4px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+}
+
+.custom-model-input:focus {
+    outline: none;
+    border-color: var(--accent2);
+}
+
+.cwd-display {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    padding: 6px 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── Settings fieldset grouping ── */
+.settings-fieldset {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+.settings-fieldset legend {
+    font-weight: 600;
+    font-size: var(--text-sm);
+    padding: 0 var(--space-2);
+    color: var(--text);
+}

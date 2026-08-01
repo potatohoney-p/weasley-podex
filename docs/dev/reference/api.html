@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Server API — podex Docs</title>
+  <link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<main class="docs-main">
+  <h1>Server API</h1>
+  <p class="lead">podex exposes 201 route handlers including the root page, with 200 API/media endpoints across extracted route modules and mounted sub-routers.</p>
+
+  <h2>Base URLs</h2>
+  <pre><code>http://localhost:3457    # Core server (jaw serve)
+http://localhost:24576   # Manager dashboard (jaw dashboard serve)</code></pre>
+
+  <h2>Authentication</h2>
+  <p>Loopback requests are accepted without a Bearer token for local use. Remote/private-network requests need a Bearer token unless trusted LAN bypass is explicitly enabled. Bootstrap a token with <code>GET /api/auth/token</code> from same-origin or CLI contexts.</p>
+
+  <h2>Route Groups</h2>
+  <table>
+    <tr><th>Group</th><th>Representative endpoints</th></tr>
+    <tr><td>Core/system</td><td><code>GET /api/health</code>, <code>GET /api/session</code>, <code>GET /api/runtime</code>, <code>GET /api/auth/token</code></td></tr>
+    <tr><td>Messages/sessions</td><td><code>GET /api/messages</code>, <code>GET /api/messages/count</code>, <code>GET /api/messages/search</code>, <code>GET|POST /api/chat-sessions</code>, <code>POST /api/chat-sessions/:id/switch</code></td></tr>
+    <tr><td>Events</td><td><code>GET /api/events</code> SSE channel with replay cursor support</td></tr>
+    <tr><td>Commands</td><td><code>POST /api/command</code>, <code>GET /api/commands</code>, <code>POST /api/message</code></td></tr>
+    <tr><td>Agent control</td><td><code>POST /api/stop</code>, <code>POST /api/clear</code>, <code>POST /api/session/reset</code></td></tr>
+    <tr><td>Orchestration</td><td><code>GET /api/orchestrate/state</code>, <code>PUT /api/orchestrate/state</code>, <code>POST /api/orchestrate/dispatch</code>, <code>POST /api/orchestrate/dispatch/batch</code>, <code>GET /api/orchestrate/worker-progress</code></td></tr>
+    <tr><td>Goals/tasks</td><td><code>GET /api/goal</code>, <code>GET /api/goal/history</code>, <code>POST /api/goal</code>, <code>GET /api/goal-run</code>, <code>GET /api/goal-run/preflight</code>, <code>POST /api/goal-run</code>, <code>GET|POST /api/task</code></td></tr>
+    <tr><td>Settings/runtime</td><td><code>GET|PUT /api/settings</code>, <code>GET /api/cli-registry</code>, <code>GET /api/cli-status</code>, <code>GET /api/quota</code>, <code>POST /api/pi/profiles/register</code></td></tr>
+    <tr><td>MCP/skills</td><td><code>GET|PUT /api/mcp</code>, <code>POST /api/mcp/sync</code>, <code>POST /api/mcp/install</code>, <code>GET /api/skills</code>, <code>POST /api/skills/enable</code></td></tr>
+    <tr><td>Memory</td><td><code>GET /api/jaw-memory/search</code>, <code>GET /api/jaw-memory/context</code>, <code>POST /api/jaw-memory/save</code>, <code>GET /api/memory/status</code>, <code>POST /api/memory/reindex</code></td></tr>
+    <tr><td>Browser/CDP</td><td><code>POST /api/browser/start</code>, <code>GET /api/browser/status</code>, <code>GET /api/browser/snapshot</code>, <code>POST /api/browser/act</code>, <code>POST /api/browser/fetch</code>, tab/debug endpoints, <code>POST /api/browser/web-ai/code</code>, <code>POST /api/browser/web-ai/code-extract</code>, and other <code>/api/browser/web-ai/*</code> routes</td></tr>
+    <tr><td>Messaging/media</td><td><code>POST /api/upload</code>, <code>POST /api/voice</code>, <code>POST /api/channel/send</code>, <code>POST /api/telegram/send</code>, <code>POST /api/discord/send</code>, <code>GET /media/:filename</code></td></tr>
+    <tr><td>Traces/security</td><td><code>GET /api/traces/:runId</code>, <code>GET /api/traces/:runId/events</code>, <code>GET /api/security-audit/entries</code>, <code>GET /api/security-audit/verify</code></td></tr>
+    <tr><td>Jaw CEO</td><td><code>GET /api/jaw-ceo/state</code>, message/query/docs edit, settings, events, pending, watch/audit, voice, confirmations</td></tr>
+    <tr><td>Dashboard sub-routes</td><td><code>/api/dashboard/board/*</code>, <code>/api/dashboard/schedule/*</code>, dashboard memory/chat/git/connector routes on the manager server</td></tr>
+  </table>
+
+  <h2>Canonical Channel Send</h2>
+  <p><code>POST /api/channel/send</code> is the canonical outbound channel send endpoint. <code>/api/telegram/send</code> and <code>/api/discord/send</code> remain direct/compatibility paths.</p>
+
+  <h2>Detailed Reference</h2>
+  <p>For exact route counts, mutation guards, and WebSocket/SSE event names, use <code>structure/server_api.md</code>. The structure gate <code>bash structure/check-doc-drift.sh</code> validates this source-of-truth table against local source.</p>
+</main>
+</body>
+</html>

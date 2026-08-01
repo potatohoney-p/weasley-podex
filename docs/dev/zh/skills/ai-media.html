@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Media Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link active" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="./">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>AI 媒体技能</h1>
+<p class="lead">podex 内置了 13 个技能，用于生成、编辑和处理图像、视频、音频及设计素材。这些技能封装了外部 AI 服务——DALL-E、Sora、fal.ai、Hugging Face 等——通过自然语言命令即可生成媒体内容，无需离开终端。</p>
+
+<h2>技能目录</h2>
+<table>
+<tr><th>技能</th><th>类别</th><th>描述</th></tr>
+<tr><td><code>imagegen</code></td><td>图像生成</td><td>通过 DALL-E 3 / gpt-image-1 生成图像。支持提示词、尺寸、质量和风格参数。</td></tr>
+<tr><td><code>nano-banana-pro</code></td><td>图像生成</td><td>通过 fal.ai 上的 Nano Banana Pro 管线快速生成图像。优先考虑速度而非质量。</td></tr>
+<tr><td><code>fal-image-edit</code></td><td>图像编辑</td><td>使用 fal.ai 模型编辑现有图像——局部重绘、外扩、风格迁移和背景移除。</td></tr>
+<tr><td><code>sora</code></td><td>视频生成</td><td>使用 OpenAI Sora 生成和编辑视频片段。支持文本转视频和图像转视频工作流。</td></tr>
+<tr><td><code>speech</code></td><td>音频生成</td><td>通过 OpenAI TTS 进行文本转语音合成。支持多种声音、语速和输出格式。</td></tr>
+<tr><td><code>transcribe</code></td><td>音频处理</td><td>通过 Whisper 进行音频和视频转录。生成 SRT/VTT/JSON 格式的带时间戳字幕。</td></tr>
+<tr><td><code>hugging-face-cli</code></td><td>机器学习管线</td><td>从命令行运行 Hugging Face 模型推理。支持文本、图像和音频任务。</td></tr>
+<tr><td><code>hugging-face-evaluation</code></td><td>机器学习管线</td><td>使用标准基准测试和指标评估 Hugging Face 模型。</td></tr>
+<tr><td><code>hugging-face-model-trainer</code></td><td>机器学习管线</td><td>在自定义数据集上微调 Hugging Face 模型，支持 LoRA/QLoRA。</td></tr>
+<tr><td><code>algorithmic-art</code></td><td>生成艺术</td><td>使用代码驱动的图案、分形和数学可视化创建算法艺术和生成艺术。</td></tr>
+<tr><td><code>canvas-design</code></td><td>设计</td><td>设计基于画布的图形——布局、横幅、社交媒体帖子和合成视觉效果。</td></tr>
+<tr><td><code>atlas</code></td><td>设计</td><td>生成和操作纹理图集与精灵图，用于游戏和 UI 素材。</td></tr>
+<tr><td><code>theme-factory</code></td><td>设计</td><td>从种子颜色或图像为应用和网站生成配色主题、调色板和设计令牌。</td></tr>
+</table>
+
+<h2>图像生成</h2>
+<p><code>imagegen</code> 技能是创建图像的主要入口。它会根据模型配置将请求委派给 DALL-E 3 或 gpt-image-1。</p>
+
+<div class="callout-info">
+<strong>自然语言示例</strong><br>
+<code>"이미지 생성해줘 -- 석양이 지는 서울 남산타워"</code><br>
+<code>"Generate a watercolor painting of a mountain lake at dawn"</code><br>
+<code>"로고 만들어줘 -- 미니멀한 고양이 실루엣, 파란색 배경"</code>
+</div>
+
+<pre><code># 基本生成
+/imagegen a cyberpunk cityscape at night, neon lights reflecting on wet streets
+
+# 带参数
+/imagegen --size 1792x1024 --quality hd a photo-realistic coral reef
+
+# 使用 nano-banana-pro 进行快速草稿
+/nano-banana-pro quick sketch of a robot barista</code></pre>
+
+<h3>imagegen 参数</h3>
+<table>
+<tr><th>参数</th><th>默认值</th><th>描述</th></tr>
+<tr><td><code>--size</code></td><td>1024x1024</td><td>输出尺寸：<code>1024x1024</code>、<code>1792x1024</code>、<code>1024x1792</code></td></tr>
+<tr><td><code>--quality</code></td><td>standard</td><td><code>standard</code> 或 <code>hd</code></td></tr>
+<tr><td><code>--style</code></td><td>vivid</td><td><code>vivid</code> 或 <code>natural</code></td></tr>
+<tr><td><code>--model</code></td><td>dall-e-3</td><td><code>dall-e-3</code> 或 <code>gpt-image-1</code></td></tr>
+<tr><td><code>--output</code></td><td>./output</td><td>生成文件的输出目录</td></tr>
+</table>
+
+<h2>图像编辑</h2>
+<p><code>fal-image-edit</code> 技能处理生成后的编辑操作：局部重绘区域、扩展画布、风格迁移和背景移除。</p>
+
+<div class="callout-info">
+<strong>自然语言示例</strong><br>
+<code>"이 이미지에서 배경 지워줘"</code><br>
+<code>"사진의 하늘을 노을로 바꿔줘"</code><br>
+<code>"Extend this image to the right with more forest"</code>
+</div>
+
+<pre><code># 移除背景
+/fal-image-edit --task remove-bg input.png
+
+# 局部重绘区域（根据提示词自动检测蒙版）
+/fal-image-edit --task inpaint --prompt "replace the car with a bicycle" photo.jpg
+
+# 风格迁移
+/fal-image-edit --task style-transfer --style "oil painting" photo.jpg</code></pre>
+
+<h2>视频生成</h2>
+<p><code>sora</code> 技能使用 OpenAI Sora 根据文本或图像提示生成短视频片段。</p>
+
+<div class="callout-info">
+<strong>自然语言示例</strong><br>
+<code>"영상 만들어줘 -- 바닷가에서 뛰어노는 강아지"</code><br>
+<code>"Create a 5-second video of clouds forming over a mountain"</code><br>
+<code>"이 사진을 영상으로 변환해줘"</code>
+</div>
+
+<pre><code># 文本转视频
+/sora a timelapse of flowers blooming in a meadow --duration 5s
+
+# 图像转视频（将静态图像动画化）
+/sora --input cover.png --prompt "gentle camera zoom out" --duration 3s</code></pre>
+
+<h3>sora 参数</h3>
+<table>
+<tr><th>参数</th><th>默认值</th><th>描述</th></tr>
+<tr><td><code>--duration</code></td><td>5s</td><td>片段时长：<code>3s</code>、<code>5s</code>、<code>10s</code></td></tr>
+<tr><td><code>--resolution</code></td><td>720p</td><td><code>480p</code>、<code>720p</code>、<code>1080p</code></td></tr>
+<tr><td><code>--input</code></td><td>-</td><td>图像转视频的源图像</td></tr>
+<tr><td><code>--output</code></td><td>./output</td><td>输出目录</td></tr>
+</table>
+
+<h2>音频：语音合成与转录</h2>
+<p>两个互补的技能处理音频管线：<code>speech</code> 将文本转换为语音音频，<code>transcribe</code> 将音频/视频转换为带时间戳的文本。</p>
+
+<div class="callout-info">
+<strong>自然语言示例</strong><br>
+<code>"이 텍스트 읽어줘 -- 오늘의 뉴스 요약입니다"</code><br>
+<code>"이 영상 자막 만들어줘"</code><br>
+<code>"Convert this meeting recording to subtitles"</code><br>
+<code>"음성 파일로 변환해줘 -- alloy 목소리로"</code>
+</div>
+
+<pre><code># 文本转语音
+/speech "Welcome to podex. Your daily briefing is ready." --voice alloy
+
+# 自定义语速和格式的语音合成
+/speech --voice nova --speed 1.2 --format mp3 "오늘의 할 일을 알려드리겠습니다."
+
+# 转录音频
+/transcribe meeting-recording.m4a --format srt
+
+# 带语言提示的视频转录
+/transcribe presentation.mp4 --language ko --format vtt</code></pre>
+
+<h3>speech 参数</h3>
+<table>
+<tr><th>参数</th><th>默认值</th><th>描述</th></tr>
+<tr><td><code>--voice</code></td><td>alloy</td><td><code>alloy</code>、<code>echo</code>、<code>fable</code>、<code>onyx</code>、<code>nova</code>、<code>shimmer</code></td></tr>
+<tr><td><code>--speed</code></td><td>1.0</td><td>播放速度：0.25 到 4.0</td></tr>
+<tr><td><code>--format</code></td><td>mp3</td><td><code>mp3</code>、<code>opus</code>、<code>aac</code>、<code>flac</code>、<code>wav</code></td></tr>
+</table>
+
+<h3>transcribe 参数</h3>
+<table>
+<tr><th>参数</th><th>默认值</th><th>描述</th></tr>
+<tr><td><code>--format</code></td><td>srt</td><td><code>srt</code>、<code>vtt</code>、<code>json</code>、<code>text</code></td></tr>
+<tr><td><code>--language</code></td><td>auto</td><td>ISO 639-1 语言提示（例如 <code>ko</code>、<code>en</code>、<code>ja</code>）</td></tr>
+<tr><td><code>--model</code></td><td>whisper-1</td><td>Whisper 模型变体</td></tr>
+</table>
+
+<h2>Hugging Face 管线</h2>
+<p>三个技能封装了 Hugging Face 生态系统，可直接从命令行进行推理、评估和训练。</p>
+
+<div class="callout-info">
+<strong>自然语言示例</strong><br>
+<code>"이 이미지 분류해줘 -- Hugging Face 모델로"</code><br>
+<code>"모델 파인튜닝 해줘 -- LoRA로 학습"</code><br>
+<code>"Evaluate this model on the GLUE benchmark"</code>
+</div>
+
+<pre><code># 使用指定模型运行推理
+/hugging-face-cli --model stabilityai/stable-diffusion-xl-base-1.0 \
+  --task text-to-image "a serene japanese garden"
+
+# 评估模型
+/hugging-face-evaluation --model bert-base-uncased \
+  --benchmark glue --split validation
+
+# 使用 LoRA 微调
+/hugging-face-model-trainer --base meta-llama/Llama-3-8B \
+  --dataset ./training-data.jsonl \
+  --method lora --epochs 3 --lr 2e-4</code></pre>
+
+<h3>支持的任务类型</h3>
+<table>
+<tr><th>技能</th><th>任务</th></tr>
+<tr><td><code>hugging-face-cli</code></td><td>text-generation、text-to-image、image-classification、summarization、translation、fill-mask、question-answering</td></tr>
+<tr><td><code>hugging-face-evaluation</code></td><td>GLUE、SuperGLUE、SQuAD、自定义指标评估</td></tr>
+<tr><td><code>hugging-face-model-trainer</code></td><td>LoRA、QLoRA、全量微调、DPO、RLHF</td></tr>
+</table>
+
+<h2>生成艺术与设计</h2>
+<p>四个技能涵盖设计工作流——从算法图案到完整的设计令牌系统。</p>
+
+<h3>algorithmic-art</h3>
+<p>生成代码驱动的视觉艺术：分形、Voronoi 图、L-系统、流场和数学曲面。</p>
+<pre><code># 生成分形
+/algorithmic-art --type mandelbrot --palette ocean --size 2048x2048
+
+# 流场可视化
+/algorithmic-art --type flowfield --seed 42 --particles 5000</code></pre>
+
+<h3>canvas-design</h3>
+<p>将文本、形状和图像合成到画布上。适用于社交媒体图形、横幅和缩略图。</p>
+
+<div class="callout-info">
+<strong>自然语言示例</strong><br>
+<code>"배너 만들어줘 -- 1200x630, 제목은 '신제품 출시'"</code><br>
+<code>"Create an Instagram story template with gradient background"</code>
+</div>
+
+<pre><code># 创建社交媒体横幅
+/canvas-design --size 1200x630 \
+  --background "linear-gradient(135deg, #667eea, #764ba2)" \
+  --text "Product Launch" --font-size 64</code></pre>
+
+<h3>atlas</h3>
+<p>将多张图像打包为优化的精灵图和纹理图集，并附带 JSON 元数据。</p>
+<pre><code># 将图标打包为精灵图
+/atlas --input ./icons/ --output spritesheet.png --padding 2
+
+# 生成并附带元数据
+/atlas --input ./frames/ --output atlas.png --meta atlas.json</code></pre>
+
+<h3>theme-factory</h3>
+<p>从种子颜色、图像或概念生成完整的配色系统。输出 CSS 自定义属性、Tailwind 配置和设计令牌。</p>
+
+<div class="callout-info">
+<strong>自然语言示例</strong><br>
+<code>"테마 만들어줘 -- 따뜻한 가을 느낌, 다크모드 포함"</code><br>
+<code>"Generate a color palette from this brand logo"</code>
+</div>
+
+<pre><code># 从种子颜色生成
+/theme-factory --seed "#4F46E5" --mode both --format css
+
+# 从图像生成
+/theme-factory --from-image hero.jpg --format tailwind
+
+# 从概念生成
+/theme-factory --concept "warm autumn forest" --format tokens</code></pre>
+
+<h2>输出处理</h2>
+<p>所有媒体技能遵循一致的输出模式：</p>
+<ul>
+<li><strong>文件输出</strong>——生成的文件保存到 <code>--output</code> 目录（默认：<code>./output</code>）</li>
+<li><strong>内联预览</strong>——在 Electron 桌面应用或 Web UI 中运行时，图像会内联显示</li>
+<li><strong>剪贴板</strong>——传入 <code>--copy</code> 可将输出文件路径复制到系统剪贴板</li>
+<li><strong>管道友好</strong>——所有技能将输出文件路径打印到 stdout，便于链式调用</li>
+</ul>
+<pre><code># 将生成结果链式传入编辑
+/imagegen "a forest cabin" | xargs -I {} /fal-image-edit --task style-transfer --style "watercolor" {}
+
+# 生成后立即打开
+/imagegen "sunset over the ocean" && open ./output/latest.png</code></pre>
+
+<h2>配置</h2>
+<p>API 密钥和默认值通过 <code>~/.podex/config.yaml</code> 或环境变量进行配置：</p>
+<pre><code># config.yaml
+skills:
+  imagegen:
+    default_model: gpt-image-1
+    default_quality: hd
+    output_dir: ~/Pictures/podex
+  sora:
+    default_duration: 5s
+    default_resolution: 1080p
+  speech:
+    default_voice: nova
+  transcribe:
+    default_format: srt
+    default_language: ko</code></pre>
+
+<pre><code># 环境变量
+export OPENAI_API_KEY="sk-..."       # imagegen, sora, speech, transcribe
+export FAL_KEY="fal-..."             # nano-banana-pro, fal-image-edit
+export HF_TOKEN="hf_..."            # hugging-face-* skills</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="automation.html">Automation</a>
+<a class="next" href="communication.html">Communication</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

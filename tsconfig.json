@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": [
+      "ES2022"
+    ],
+    "outDir": "dist",
+    "rootDir": ".",
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false
+  },
+  "include": [
+    "src/**/*.ts",
+    "lib/**/*.ts",
+    "bin/**/*.ts",
+    "server.ts",
+    "types/**/*.ts",
+    "scripts/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests",
+    "src/lib/tui"
+  ]
+}

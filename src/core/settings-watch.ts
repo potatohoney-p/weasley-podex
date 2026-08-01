@@ -1,0 +1,125 @@
+﻿// ─── Settings File Watcher (#233 external-write detection) ──
+// A separate CLI process (`podex project set` in a terminal) writes
+// settings.json directly, so the running server's in-memory `settings`
+// goes stale and no `settings_change` ever reaches web UI or manager.
+// This watcher closes that gap: debounced fs.watch on the settings file,
+// self-write guard via the fingerprint recorded in saveSettings(), then
+// in-memory reload + broadcast.
+
+import fs from 'node:fs';
+import path from 'node:path';
+import {
+    SETTINGS_PATH, settings, replaceSettings, migrateSettings,
+    normalizeProjectDirs, getLastSavedSettingsRaw,
+} from './config.js';
+import { mergeSettingsPatch } from './settings-merge.js';
+import { broadcast } from './bus.js';
+
+export const SETTINGS_WATCH_DEBOUNCE_MS = 300;
+
+export type SettingsWatchOptions = {
+    debounceMs?: number;
+    /** Injectable for tests — must match fs.watch(dir, listener) surface. */
+    watchImpl?: (dir: string, listener: (event: string, filename: string | Buffer | null) => void) => { close: () => void };
+    /** Injectable for tests — reads the settings file content. */
+    readImpl?: (file: string) => string;
+};
+
+export type ReloadOptions = {
+    readImpl?: (file: string) => string;
+    /** Injectable for tests — defaults to the saveSettings fingerprint. */
+    lastSavedRaw?: string | null;
+};
+
+function selectedModelForCli(cli: unknown, currentSettings: Record<string, unknown>): string {
+    const key = typeof cli === 'string' && cli ? cli : 'claude';
+    const activeOverrides = currentSettings["activeOverrides"];
+    const perCli = currentSettings["perCli"];
+    const activeModel = activeOverrides && typeof activeOverrides === 'object'
+        ? (activeOverrides as Record<string, Record<string, unknown> | undefined>)[key]?.["model"]
+        : null;
+    const perCliModel = perCli && typeof perCli === 'object'
+        ? (perCli as Record<string, Record<string, unknown> | undefined>)[key]?.["model"]
+        : null;
+    return typeof activeModel === 'string' && activeModel
+        ? activeModel
+        : typeof perCliModel === 'string' && perCliModel
+        ? perCliModel
+        : 'default';
+}
+
+/** Re-read settings.json after an external write and broadcast the change.
+ *  Exported for direct unit testing without timers. Returns true when a
+ *  reload actually happened (false: self-write, unchanged, or bad JSON). */
+export function reloadSettingsFromDisk(options: ReloadOptions = {}): boolean {
+    const readImpl = options.readImpl ?? ((f: string) => fs.readFileSync(f, 'utf8'));
+    let raw: string;
+    try {
+        raw = readImpl(SETTINGS_PATH);
+    } catch (e: unknown) {
+        console.warn('[settings-watch] read failed:', (e as Error).message);
+        return false;
+    }
+    const lastSavedRaw = options.lastSavedRaw !== undefined ? options.lastSavedRaw : getLastSavedSettingsRaw();
+    if (raw === lastSavedRaw) return false; // self-write echo
+    let parsed: Record<string, unknown>;
+    try {
+        parsed = JSON.parse(raw) as Record<string, unknown>;
+    } catch {
+        console.warn('[settings-watch] settings.json is not valid JSON — keeping in-memory settings');
+        return false;
+    }
+    // Same normalize/migrate path as boot-time load; merge onto current
+    // in-memory settings so runtime-only keys survive a partial file.
+    const merged = mergeSettingsPatch(settings, parsed);
+    merged["projectDirs"] = normalizeProjectDirs(merged["projectDirs"]);
+    replaceSettings(migrateSettings(merged));
+    broadcast('settings_change', {
+        changedKeys: Object.keys(parsed),
+        cli: settings["cli"],
+        model: selectedModelForCli(settings["cli"], settings),
+        projectDirs: settings["projectDirs"] ?? null,
+        source: 'external',
+    });
+    return true;
+}
+
+/** Start the debounced watcher. Returns a stop function. */
+export function startSettingsWatch(options: SettingsWatchOptions = {}): () => void {
+    const debounceMs = options.debounceMs ?? SETTINGS_WATCH_DEBOUNCE_MS;
+    const readImpl = options.readImpl ?? ((f: string) => fs.readFileSync(f, 'utf8'));
+    const watchImpl = options.watchImpl ?? ((dir, listener) => fs.watch(dir, listener));
+    const dir = path.dirname(SETTINGS_PATH);
+    const file = path.basename(SETTINGS_PATH);
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    let watcher: { close: () => void };
+    try {
+        // Watch the directory, not the file: editors and atomic writers replace
+        // the inode (rename), which silently kills a file-level watcher.
+        watcher = watchImpl(dir, (_event, filename) => {
+            if (filename && String(filename) !== file) return;
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+                timer = null;
+                try {
+                    reloadSettingsFromDisk({ readImpl });
+                } catch (e: unknown) {
+                    console.warn('[settings-watch] reload failed:', (e as Error).message);
+                }
+            }, debounceMs);
+        });
+    } catch (e: unknown) {
+        console.warn('[settings-watch] watch unavailable:', (e as Error).message);
+        return () => {};
+    }
+
+    return () => {
+        if (timer) clearTimeout(timer);
+        timer = null;
+        try {
+            watcher.close();
+        } catch { /* already closed */ }
+    };
+}
+

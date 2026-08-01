@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browser Automation — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-category { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+
+.skill-header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.skill-header h1 { margin: 0; }
+.skill-badges { display: flex; gap: 8px; align-items: center; }
+
+.ref-table { margin: 24px 0; }
+.ref-table td:first-child { white-space: nowrap; font-weight: 500; }
+.ref-table td:nth-child(2) { font-family: var(--font-mono, monospace); font-size: 13px; }
+
+.cmd-section { margin: 28px 0; }
+.cmd-section h3 { margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+
+.workflow-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 20px 0; text-align: center; font-family: var(--font-mono, monospace); font-size: 15px; letter-spacing: 0.5px; }
+.workflow-box .arrow { color: var(--text-muted); margin: 0 6px; }
+
+.example-callout { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 12px 0; }
+.example-callout .example-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent); margin-bottom: 6px; }
+.example-callout code { font-size: 14px; }
+.example-callout .example-desc { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+
+.snapshot-demo { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 16px 0; font-family: var(--font-mono, monospace); font-size: 13px; line-height: 1.8; }
+.snapshot-demo .ref-id { color: var(--accent); font-weight: 600; }
+.snapshot-demo .ref-role { color: var(--green); }
+.snapshot-demo .ref-label { color: var(--text); }
+.snapshot-demo .ref-comment { color: var(--text-muted); }
+
+.recovery-step { display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
+.recovery-step .step-num { background: var(--accent); color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.recovery-step .step-text { flex: 1; }
+
+.comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 16px 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.comparison-grid .col-header { background: var(--surface); padding: 10px 14px; font-weight: 600; font-size: 13px; border-bottom: 1px solid var(--border); }
+.comparison-grid .col-header:first-child { border-right: 1px solid var(--border); }
+.comparison-grid .col-cell { padding: 6px 14px; font-family: var(--font-mono, monospace); font-size: 12px; border-bottom: 1px solid var(--border); }
+.comparison-grid .col-cell:nth-child(odd) { border-right: 1px solid var(--border); }
+.comparison-grid .col-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+@media (max-width: 768px) {
+  .skill-header { flex-direction: column; align-items: flex-start; }
+  .comparison-grid { grid-template-columns: 1fr; }
+  .comparison-grid .col-header:first-child,
+  .comparison-grid .col-cell:nth-child(odd) { border-right: none; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<div class="skill-header">
+  <h1>Browser Automation</h1>
+  <div class="skill-badges">
+    <span class="badge badge-active">Default Active</span>
+    <span class="badge badge-category">Automation</span>
+  </div>
+</div>
+<p class="lead">CDP Chrome automation &mdash; snapshot, click, navigate, screenshot, tabs. Control Chrome through ref-based element targeting with <code>podex browser</code> commands.</p>
+
+<div class="callout callout-info">This skill is <strong>active by default</strong> and injected into every session. It requires <code>podex serve</code> to be running and Google Chrome to be installed.</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Quick Reference</h2>
+
+<table class="ref-table">
+<tbody>
+<tr><td>Skill name</td><td><code>browser</code></td></tr>
+<tr><td>Category</td><td>Automation</td></tr>
+<tr><td>Status</td><td><span class="badge badge-active">Active</span> (loaded by default)</td></tr>
+<tr><td>Requires</td><td><code>podex</code> binary, Google Chrome</td></tr>
+<tr><td>Optional</td><td><code>cliclick</code> (Homebrew, for coordinate-based clicks)</td></tr>
+<tr><td>Screenshots</td><td><code>~/.podex/screenshots/</code></td></tr>
+<tr><td>Related skills</td><td><code>desktop-control</code>, <code>web-ai</code>, <code>vision-click</code></td></tr>
+<tr><td>Skill file</td><td><code>~/.podex/skills/browser/SKILL.md</code></td></tr>
+</tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Prerequisites</h2>
+
+<ul>
+<li><strong><code>podex serve</code></strong> must be running &mdash; the browser skill communicates through the podex server.</li>
+<li><strong>Google Chrome</strong> must be installed on the machine.</li>
+<li><strong><code>playwright-core</code></strong> must be installed in the podex project (used for CDP communication).</li>
+<li><em>Optional:</em> <code>brew install cliclick</code> for coordinate-based mouse operations.</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Core Workflow</h2>
+
+<p>All browser automation follows the same loop: take a snapshot to see interactive elements, act on them by ref ID, then snapshot again to verify the result.</p>
+
+<div class="workflow-box">
+  snapshot --interactive <span class="arrow">&rarr;</span> act by ref or key <span class="arrow">&rarr;</span> snapshot <span class="arrow">&rarr;</span> verify
+</div>
+
+<p>Use a fresh snapshot after navigation, reload, tab changes, or any action that substantially changes the page. Ref IDs belong to the latest usable snapshot and can go stale.</p>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Quick Start</h2>
+
+<pre><code># Start an automation session (headless, no visible window)
+podex browser start --agent
+
+# Start an interactive browser (manual, visible)
+podex browser start
+
+# Navigate to a URL
+podex browser navigate "https://example.com"
+
+# Take an interactive snapshot (shows ref IDs)
+podex browser snapshot --interactive
+
+# Click a ref
+podex browser click e3
+
+# Type text and submit
+podex browser type e5 "hello" --submit
+
+# Take a screenshot
+podex browser screenshot</code></pre>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Snapshot Output</h2>
+
+<p>The <code>snapshot --interactive</code> command returns a compact list of interactive elements on the page, each with a short <strong>ref ID</strong> you use in subsequent commands.</p>
+
+<div class="snapshot-demo">
+<span class="ref-id">e1</span> &nbsp; <span class="ref-role">link</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ref-label">"Gmail"</span><br>
+<span class="ref-id">e2</span> &nbsp; <span class="ref-role">link</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ref-label">"Images"</span><br>
+<span class="ref-id">e3</span> &nbsp; <span class="ref-role">textbox</span> &nbsp;&nbsp;&nbsp; <span class="ref-label">"Search"</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="ref-comment">&larr; To type here: type e3 "query"</span><br>
+<span class="ref-id">e4</span> &nbsp; <span class="ref-role">button</span> &nbsp;&nbsp;&nbsp;&nbsp; <span class="ref-label">"Google Search"</span> &nbsp;&nbsp;&nbsp;&nbsp; <span class="ref-comment">&larr; To click: click e4</span><br>
+<span class="ref-id">e5</span> &nbsp; <span class="ref-role">button</span> &nbsp;&nbsp;&nbsp;&nbsp; <span class="ref-label">"I'm Feeling Lucky"</span>
+</div>
+
+<p>Ref IDs like <code>e3</code> are <strong>short-lived</strong> and scoped to the latest snapshot. Always re-snapshot after page changes.</p>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Command Reference</h2>
+
+<div class="cmd-section">
+<h3>Browser Management</h3>
+<table>
+<thead><tr><th>Command</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>podex browser start [--port &lt;auto&gt;] [--headless] [--agent]</code></td><td>Launch Chrome. <code>--agent</code> = headless automation; plain = interactive visible.</td></tr>
+<tr><td><code>podex browser stop</code></td><td>Close the browser session.</td></tr>
+<tr><td><code>podex browser status</code></td><td>Report current CDP connection state and port.</td></tr>
+<tr><td><code>podex browser doctor [--json]</code></td><td>Diagnose CDP/runtime ownership mismatch and orphan cleanup scope.</td></tr>
+<tr><td><code>podex browser cleanup-runtimes [--json] [--close --force]</code></td><td>Dry-run by default. Only closes jaw-owned orphan runtimes with <code>--close --force</code>.</td></tr>
+<tr><td><code>podex browser reset [--force]</code></td><td>Clear browser profile and screenshots. Only when explicitly requested.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="cmd-section">
+<h3>Observe</h3>
+<table>
+<thead><tr><th>Command</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>podex browser snapshot</code></td><td>Full page snapshot (all nodes).</td></tr>
+<tr><td><code>podex browser snapshot --interactive</code></td><td>Interactive elements only with ref IDs. Preferred for token budget.</td></tr>
+<tr><td><code>podex browser snapshot --interactive --max-nodes 30 --json</code></td><td>Limit node count and output as JSON.</td></tr>
+<tr><td><code>podex browser screenshot</code></td><td>Capture current viewport. Saves to <code>~/.podex/screenshots/</code>.</td></tr>
+<tr><td><code>podex browser screenshot --full-page</code></td><td>Full-page screenshot (scrolled).</td></tr>
+<tr><td><code>podex browser screenshot --ref e5</code></td><td>Screenshot a specific element by ref ID.</td></tr>
+<tr><td><code>podex browser screenshot --clip 0 0 320 180 --json</code></td><td>Clip region screenshot with JSON output path.</td></tr>
+<tr><td><code>podex browser text</code></td><td>Extract all visible text from the page.</td></tr>
+<tr><td><code>podex browser text --format html</code></td><td>Extract page content as HTML.</td></tr>
+<tr><td><code>podex browser get-dom --selector ".card" --max-chars 2000 --json</code></td><td>Get DOM subtree matching a CSS selector.</td></tr>
+<tr><td><code>podex browser console --json --limit 20</code></td><td>Retrieve console log entries.</td></tr>
+<tr><td><code>podex browser network --json --limit 20</code></td><td>Retrieve network request log.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="cmd-section">
+<h3>Act</h3>
+<table>
+<thead><tr><th>Command</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>podex browser click e3</code></td><td>Click element by ref ID.</td></tr>
+<tr><td><code>podex browser click e3 --double</code></td><td>Double-click element.</td></tr>
+<tr><td><code>podex browser click e3 --right</code></td><td>Right-click (context menu).</td></tr>
+<tr><td><code>podex browser type e3 "hello"</code></td><td>Type text into an input field.</td></tr>
+<tr><td><code>podex browser type e3 "hello" --submit</code></td><td>Type text then press Enter.</td></tr>
+<tr><td><code>podex browser press Enter</code></td><td>Press a key (Enter, Escape, Tab, etc.).</td></tr>
+<tr><td><code>podex browser hover e5</code></td><td>Hover over an element.</td></tr>
+<tr><td><code>podex browser select e7 "option1"</code></td><td>Select an option in a dropdown.</td></tr>
+<tr><td><code>podex browser drag e3 e5</code></td><td>Drag from one element to another.</td></tr>
+<tr><td><code>podex browser mouse-click 400 300</code></td><td>Click at absolute coordinates.</td></tr>
+<tr><td><code>podex browser mouse-click 400 300 --double</code></td><td>Double-click at coordinates.</td></tr>
+<tr><td><code>podex browser move-mouse 400 300</code></td><td>Move mouse to coordinates (no click).</td></tr>
+<tr><td><code>podex browser mouse-down</code></td><td>Press mouse button down.</td></tr>
+<tr><td><code>podex browser mouse-up --right</code></td><td>Release mouse button (optionally right).</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="cmd-section">
+<h3>Navigate and Inspect</h3>
+<table>
+<thead><tr><th>Command</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>podex browser navigate "https://example.com"</code></td><td>Go to a URL.</td></tr>
+<tr><td><code>podex browser open "https://example.com"</code></td><td>Alias for <code>navigate</code>.</td></tr>
+<tr><td><code>podex browser tabs</code></td><td>List all open tabs.</td></tr>
+<tr><td><code>podex browser tabs --json</code></td><td>List tabs as JSON.</td></tr>
+<tr><td><code>podex browser active-tab --json</code></td><td>Get active tab info as JSON.</td></tr>
+<tr><td><code>podex browser tab-switch 2</code></td><td>Switch to tab by index.</td></tr>
+<tr><td><code>podex browser reload</code></td><td>Reload the current page.</td></tr>
+<tr><td><code>podex browser resize 1440 900</code></td><td>Resize the viewport.</td></tr>
+<tr><td><code>podex browser scroll --x 0 --y 1000</code></td><td>Scroll to absolute position.</td></tr>
+<tr><td><code>podex browser wait-for-selector ".toast-success" --timeout 30000</code></td><td>Wait until a CSS selector appears.</td></tr>
+<tr><td><code>podex browser wait-for-text "Dashboard" --timeout 30000</code></td><td>Wait until specific text appears on the page.</td></tr>
+<tr><td><code>podex browser evaluate "document.title"</code></td><td>Evaluate JavaScript in the page context.</td></tr>
+</tbody>
+</table>
+<div class="callout callout-warn"><code>evaluate</code> is a diagnostic command. Do not expose arbitrary user-provided JavaScript through higher-level vendor workflows such as web-ai.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Support Labels</h2>
+
+<table>
+<thead><tr><th>Surface</th><th>Label</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Local <code>podex browser</code> primitives</td><td><span class="badge badge-active">ready</span></td><td>Server-backed local Chrome/CDP only</td></tr>
+<tr><td><code>doctor</code> and <code>cleanup-runtimes</code></td><td><span class="badge badge-active">ready</span></td><td>Dry-run by default; close requires <code>--force</code></td></tr>
+<tr><td>Dashboard visible/headless start split</td><td><span class="badge badge-active">ready</span></td><td>Visible manual and headless agent modes are separate</td></tr>
+<tr><td>web-ai provider workflows</td><td><span class="badge badge-category">beta</span></td><td>Use the <code>web-ai</code> skill and provider-specific gates</td></tr>
+<tr><td>External hosted/cloud CDP</td><td><span class="badge badge-category">deferred</span></td><td>Do not claim remote browser hosting support</td></tr>
+</tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Rules and Constraints</h2>
+
+<ul>
+<li><strong>Ref IDs are ephemeral.</strong> They are scoped to the latest snapshot. Always re-run <code>snapshot --interactive</code> after navigation, reload, tab changes, or any action that changes the page.</li>
+<li><strong>Prefer <code>--interactive</code></strong> for snapshots to save token budget &mdash; full snapshots include non-interactive nodes and can be large.</li>
+<li><strong>Use <code>--agent</code></strong> for automation sessions. It starts headless and avoids popping a visible browser window.</li>
+<li><strong>Never close Chrome processes</strong> found via general <code>ps</code> output. Only use <code>cleanup-runtimes --close --force</code> which validates jaw-owned processes via durable runtime records.</li>
+<li><strong>Ask before <code>reset</code>.</strong> The <code>reset</code> command clears the browser profile and screenshots. Only use when the user explicitly requests it.</li>
+<li><strong><code>evaluate</code> is for diagnostics only.</strong> Do not pipe arbitrary user-provided JavaScript through <code>evaluate</code> in higher-level workflows.</li>
+<li><strong>Non-DOM elements</strong> (Canvas, WebGL, cross-origin iframes, custom UI) should fall back to the <code>vision-click</code> skill only after confirming no usable ref exists.</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Common Workflows</h2>
+
+<h3>Web Search</h3>
+<pre><code>podex browser start --agent
+podex browser navigate "https://www.google.com"
+podex browser snapshot --interactive
+podex browser type e3 "search query" --submit
+podex browser snapshot --interactive
+podex browser click e7</code></pre>
+
+<h3>Form Filling</h3>
+<pre><code>podex browser snapshot --interactive
+podex browser type e1 "John Doe"
+podex browser type e2 "john@example.com"
+podex browser click e3           # Submit button
+podex browser snapshot           # Verify submission</code></pre>
+
+<h3>Read Page Content</h3>
+<pre><code>podex browser navigate "https://news.ycombinator.com"
+podex browser text               # Plain text extraction
+podex browser text --format html # HTML content
+podex browser snapshot --interactive</code></pre>
+
+<h3>AI Web Workflows</h3>
+<p>For ChatGPT or other web-ai workflows, use the <code>web-ai</code> skill. The browser skill owns primitive page control; <code>web-ai</code> owns structured question rendering, active-tab safety, and response baseline handling.</p>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>~&#54644;&#51468; Examples</h2>
+
+<p>Natural language requests that trigger the browser skill. Use Korean or English &mdash; both work.</p>
+
+<div class="example-callout">
+  <div class="example-label">Example 1</div>
+  <code>"&#44396;&#44544; &#44160;&#49353;&#54644;&#51468; &mdash; podex &#49444;&#52824; &#48169;&#48277;"</code>
+  <div class="example-desc">Starts a headless browser, navigates to Google, types the search query, and returns results. Triggers <code>browser start --agent</code> + <code>navigate</code> + <code>type --submit</code> + <code>snapshot</code>.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">Example 2</div>
+  <code>"&#51060; &#50937;&#49324;&#51060;&#53944; &#49828;&#53356;&#47536;&#49399; &#52237;&#50612;&#51468;" / "&#51060; &#54168;&#51060;&#51648; &#52897;&#52376;&#54644;&#51468;"</code>
+  <div class="example-desc">Navigates to the given URL, takes a full-page screenshot, and returns the saved file path. Uses <code>navigate</code> + <code>screenshot --full-page</code>.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">Example 3</div>
+  <code>"&#51060; &#54168;&#51060;&#51648;&#50640;&#49436; &#47196;&#44536;&#51064; &#54256; &#52292;&#50892;&#51468; &mdash; ID: admin, PW: test1234"</code>
+  <div class="example-desc">Snapshots to find the login form fields, types the credentials into the username and password inputs, and submits. Uses <code>snapshot --interactive</code> + <code>type</code> + <code>click</code>.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">Example 4</div>
+  <code>"&#53485; &#47785;&#47197; &#48372;&#50668;&#51468;" / "&#50676; &#47140;&#51080;&#45716; &#53485; &#51473;&#50640; &#44396;&#44544; &#53485;&#51004;&#47196; &#51204;&#54872;&#54644;&#51468;"</code>
+  <div class="example-desc">Lists open tabs with <code>tabs</code>, then switches to the matching tab with <code>tab-switch</code>. Multi-tab management workflow.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">Example 5</div>
+  <code>"&#48652;&#46972;&#50864;&#51200; &#49345;&#53468; &#54869;&#51064;&#54644;&#51468;" / "Chrome &#50504; &#46104;&#47732; &#51652;&#45800;&#54644;&#51468;"</code>
+  <div class="example-desc">Runs <code>browser status</code> and <code>browser doctor --json</code> to check CDP connectivity, port ownership, and orphan runtime state. Diagnostic workflow.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Headless Mode</h2>
+
+<p>Three ways to run Chrome headless:</p>
+
+<pre><code># Recommended for automation
+podex browser start --agent
+
+# Explicit headless for manual mode
+podex browser start --headless
+
+# Via environment variable
+CHROME_HEADLESS=1 podex browser start</code></pre>
+
+<p>Use <code>--agent</code> for all agent automation. It avoids popping a visible browser window and is the expected default in automated sessions.</p>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Environment Variables</h2>
+
+<table>
+<thead><tr><th>Variable</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td><code>CHROME_HEADLESS=1</code></td><td>Enable headless mode for manual starts.</td></tr>
+<tr><td><code>CHROME_NO_SANDBOX=1</code></td><td>Disable Chrome sandbox. <strong>Docker/CI only</strong> &mdash; do not use on regular machines.</td></tr>
+</tbody>
+</table>
+
+<p>The default CDP port is derived from the <code>podex</code> server port. Use <code>podex browser start --port &lt;port&gt;</code> only when you need an explicit override.</p>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Standalone agbrowse Alternative</h2>
+
+<p>When you explicitly want to drive a <strong>single Chrome instance</strong> (e.g., keep one logged-in profile open, avoid running both <code>podex serve</code> and a second CDP session), the same browser commands are available through the standalone <code>agbrowse</code> CLI (<code>npm install -g agbrowse</code>). The flag surface is identical; only the binary prefix changes.</p>
+
+<div class="comparison-grid">
+  <div class="col-header">podex browser form</div>
+  <div class="col-header">agbrowse form</div>
+  <div class="col-cell">podex browser start --agent</div>
+  <div class="col-cell">agbrowse start</div>
+  <div class="col-cell">podex browser status</div>
+  <div class="col-cell">agbrowse status</div>
+  <div class="col-cell">podex browser navigate "&lt;url&gt;"</div>
+  <div class="col-cell">agbrowse navigate "&lt;url&gt;"</div>
+  <div class="col-cell">podex browser snapshot --interactive</div>
+  <div class="col-cell">agbrowse snapshot --interactive</div>
+  <div class="col-cell">podex browser click e3</div>
+  <div class="col-cell">agbrowse click e3</div>
+  <div class="col-cell">podex browser type e5 "hello" --submit</div>
+  <div class="col-cell">agbrowse type e5 "hello" --submit</div>
+  <div class="col-cell">podex browser screenshot</div>
+  <div class="col-cell">agbrowse screenshot</div>
+  <div class="col-cell">podex browser stop</div>
+  <div class="col-cell">agbrowse stop</div>
+</div>
+
+<div class="callout callout-warn">Do not run <code>podex browser</code> and <code>agbrowse</code> against the same <code>--port</code> simultaneously &mdash; the second start will reuse the first CDP and the persisted state files can collide.</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Runtime Cleanup</h2>
+
+<pre><code># Diagnose runtime state
+podex browser doctor --json
+
+# Dry-run: see what would be cleaned
+podex browser cleanup-runtimes
+
+# Actually close orphan jaw-owned runtimes
+podex browser cleanup-runtimes --close --force</code></pre>
+
+<p><code>cleanup-runtimes</code> is intentionally conservative. It only acts on a durable <code>browser-runtime-owner.json</code> record written by jaw-owned Chrome launches. The process command line must still match the recorded PID, CDP port, and profile. Chrome helper processes containing <code>--type=</code> are rejected. Never use general <code>ps</code> output as proof that a Chrome process is safe to close.</p>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Recovery Strategy</h2>
+
+<p>When things go wrong, stop and inspect state before taking the next action.</p>
+
+<div class="recovery-step">
+  <div class="step-num">1</div>
+  <div class="step-text"><strong>Snapshot fails</strong> &mdash; take a <code>screenshot</code> for visual inspection of what is actually on the page.</div>
+</div>
+<div class="recovery-step">
+  <div class="step-num">2</div>
+  <div class="step-text"><strong>Ref not found</strong> &mdash; re-run <code>snapshot --interactive</code>. Refs go stale after page changes.</div>
+</div>
+<div class="recovery-step">
+  <div class="step-num">3</div>
+  <div class="step-text"><strong>Async UI not ready</strong> &mdash; use <code>wait-for-selector</code> or <code>wait-for-text</code> with an appropriate timeout.</div>
+</div>
+<div class="recovery-step">
+  <div class="step-num">4</div>
+  <div class="step-text"><strong>CDP connection fails</strong> &mdash; report the exact error, then use <code>status</code>. Only <code>stop</code>/<code>start</code> when that is the selected recovery path.</div>
+</div>
+<div class="recovery-step">
+  <div class="step-num">5</div>
+  <div class="step-text"><strong>Chrome/profile is stuck</strong> &mdash; ask before <code>reset</code> unless the user already requested a destructive reset.</div>
+</div>
+<div class="recovery-step">
+  <div class="step-num">6</div>
+  <div class="step-text"><strong>DOM ref unavailable</strong> &mdash; use the <code>vision-click</code> skill as an explicit fallback only after confirming no usable ref exists.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Troubleshooting</h2>
+
+<table>
+<thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+<tbody>
+<tr><td>CDP connection refused</td><td>Chrome not started or wrong port</td><td><code>podex browser status</code>, then start with the expected port</td></tr>
+<tr><td><code>running:false</code> with <code>owner:jaw-owned</code></td><td>Stale runtime metadata or dead CDP</td><td><code>podex browser doctor</code>, then retry <code>browser start</code></td></tr>
+<tr><td>Old headless jaw Chrome remains</td><td>Durable jaw-owned orphan candidate</td><td><code>podex browser cleanup-runtimes</code> dry-run, then <code>--close --force</code></td></tr>
+<tr><td>Window only opens test browser</td><td>Chrome singleton absorbed launch</td><td>Close all Chrome windows, then use <code>start --agent</code></td></tr>
+<tr><td>Headless CDP not opening</td><td>Headless not requested in GUI-less env</td><td>Add <code>--headless</code> or use <code>--agent</code></td></tr>
+<tr><td>Port conflict</td><td>Another process owns the CDP port</td><td>Choose a different <code>--port</code></td></tr>
+<tr><td>Snapshot too large</td><td>Page has many nodes</td><td>Use <code>--interactive</code> or <code>--max-nodes</code> to limit output</td></tr>
+</tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Planned Runtime Delta</h2>
+
+<p>The following commands are planned parity targets from the <code>30_browser</code> reference design. They are <strong>not available</strong> in the current runtime unless explicitly upgraded in a later PRD.</p>
+
+<h3>Planned Observe and Diagnostics</h3>
+<pre><code>podex browser console --clear --reload --duration 3000
+podex browser network --reload --duration 1000
+podex browser wait 2000</code></pre>
+
+<h3>Planned Actions</h3>
+<pre><code>podex browser resize 0 0 --fullscreen
+podex browser scroll down
+podex browser scroll up --amount 1000</code></pre>
+
+<div class="callout callout-info"><code>wait-for &lt;ref&gt;</code> is deprecated in the reference design because refs are snapshot-scoped. Prefer selector-based or text-based waits.</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Related Skills</h2>
+
+<table>
+<thead><tr><th>Skill</th><th>Relationship</th></tr></thead>
+<tbody>
+<tr><td><code>desktop-control</code></td><td>Unified desktop + browser automation. Routes DOM targets to CDP (browser skill), desktop apps to Computer Use.</td></tr>
+<tr><td><code>web-ai</code></td><td>AI-powered web workflows (e.g., ChatGPT). Uses browser primitives but adds structured question rendering and response handling.</td></tr>
+<tr><td><code>vision-click</code></td><td>Vision-based click targeting. Fallback for non-DOM elements (Canvas, WebGL, cross-origin iframes).</td></tr>
+<tr><td><code>screen-capture</code></td><td>Screen capture and recording. Complements browser screenshots with system-level capture.</td></tr>
+</tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<h2>Notes</h2>
+
+<ul>
+<li>Ref IDs are short-lived and should be treated as latest-snapshot scoped.</li>
+<li>Always re-run <code>snapshot --interactive</code> after navigation or major page changes.</li>
+<li>Prefer <code>--interactive</code> for token budget.</li>
+<li>Screenshots save to <code>~/.podex/screenshots/</code>.</li>
+<li><code>start --agent</code> should be the default for agent automation.</li>
+<li>Non-DOM elements such as Canvas, WebGL, cross-origin iframes, and custom UI should use the <code>vision-click</code> skill only as an explicit fallback.</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="../index.html">Skill Catalog</a>
+<a class="next" href="desktop-control.html">Desktop Control</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

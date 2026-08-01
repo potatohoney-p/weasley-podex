@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Workflow Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link active" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="./">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Dev Workflow Skills</h1>
+<p class="lead">加速日常开发循环的技能 -- 从头脑风暴和规划，到 TDD、调试、代码导航，以及变更日志生成和依赖管理等维护任务。</p>
+
+<h2>概述</h2>
+<p>Dev Workflow 技能是伴随你日常开发周期的得力助手。与编排技能（管理多步骤项目）或云技能（处理部署）不同，这些技能在单个任务级别上运行：理解错误、选择数据结构、编写测试计划或总结日志文件。</p>
+
+<div class="callout callout-info">所有 Dev Workflow 技能都可以通过对话方式调用。只需描述你的需求 -- <code>"TDD로 개발해줘"</code>、<code>"이 에러 뭔지 설명해줘"</code>、<code>"changelog 만들어줘"</code> -- 相应的技能会自动激活。</div>
+
+<h2>技能目录</h2>
+<table>
+<tr><th>技能</th><th>分类</th><th>描述</th></tr>
+<tr><td><code>brainstorming</code></td><td>规划</td><td>结构化的创意会议，包含发散/收敛阶段、思维导图和排序输出</td></tr>
+<tr><td><code>writing-plans</code></td><td>规划</td><td>生成包含里程碑、验收标准和依赖图的实施计划</td></tr>
+<tr><td><code>tdd</code></td><td>开发</td><td>测试驱动开发循环：编写失败测试、实现、重构、重复</td></tr>
+<tr><td><code>debugging-helpers</code></td><td>调试</td><td>自动假设生成、二分查找辅助和修复建议</td></tr>
+<tr><td><code>debugging-checklist</code></td><td>调试</td><td>针对常见 Bug 类别（竞态条件、状态 Bug、差一错误）的系统化逐步检查清单</td></tr>
+<tr><td><code>git-worktrees</code></td><td>版本控制</td><td>管理并行的 git worktree，无需 stash 即可进行多分支开发</td></tr>
+<tr><td><code>dispatching-parallel-agents</code></td><td>编排</td><td>将子任务分发给并行代理并收集结果</td></tr>
+<tr><td><code>codebase-orientation</code></td><td>导航</td><td>分析陌生代码库：目录结构、入口点、依赖图、关键抽象</td></tr>
+<tr><td><code>context-compression</code></td><td>上下文</td><td>将长对话和大文件压缩为紧凑的上下文摘要</td></tr>
+<tr><td><code>deep-research</code></td><td>研究</td><td>多源研究，具备对抗性验证和带引用的报告</td></tr>
+<tr><td><code>skill-creator</code></td><td>元</td><td>从模板创建新的 podex 技能，包含 SKILL.md、触发器和参考文档</td></tr>
+<tr><td><code>error-message-explainer</code></td><td>诊断</td><td>用通俗语言解析和解释错误消息、堆栈跟踪和 panic 日志</td></tr>
+<tr><td><code>config-file-explainer</code></td><td>诊断</td><td>为配置文件（YAML、TOML、JSON、INI）的每个字段添加注释说明</td></tr>
+<tr><td><code>log-summarizer</code></td><td>诊断</td><td>将冗长的日志输出浓缩为带时间戳和严重级别的可操作摘要</td></tr>
+<tr><td><code>linter-fix-guide</code></td><td>维护</td><td>解释 linter/格式化工具的警告并在整个代码库中自动应用修复</td></tr>
+<tr><td><code>data-structure-chooser</code></td><td>设计</td><td>根据访问模式、约束条件和编程语言推荐最优数据结构</td></tr>
+<tr><td><code>dependency-install-helper</code></td><td>维护</td><td>解决安装失败、版本冲突、peer 依赖问题和 lockfile 不匹配</td></tr>
+<tr><td><code>changelog-generator</code></td><td>维护</td><td>按照 Keep a Changelog / Conventional Commits 规范从 git 历史生成变更日志</td></tr>
+</table>
+
+<h2>规划技能</h2>
+
+<h3>brainstorming</h3>
+<p>运行结构化的创意会议。该技能使用先发散后收敛的模式：首先尽可能多地生成创意，然后按可行性、影响力和工作量对其进行筛选和排序。</p>
+<pre><code># Start a brainstorming session
+"새로운 알림 시스템을 브레인스토밍해줘"
+
+# With constraints
+"Redis 없이 실시간 알림을 구현할 방법을 브레인스토밍해줘"</code></pre>
+
+<div class="callout callout-info">当启用 Jawsidian 时，头脑风暴的输出会自动保存到笔记中，方便你之后在仪表盘中回顾这些创意。</div>
+
+<h3>writing-plans</h3>
+<p>生成结构化的实施计划，包含阶段、里程碑、文件级任务和验收标准。输出可导入目标的 markdown 计划。</p>
+<pre><code># Generate an implementation plan
+"OAuth2 로그인 기능 구현 계획 세워줘"
+
+# Plan with time estimates
+"이 리팩터링 플랜 만들어줘, 시간 추정도 포함해서"</code></pre>
+<table>
+<tr><th>输出部分</th><th>内容</th></tr>
+<tr><td>概述</td><td>问题陈述、范围和非目标</td></tr>
+<tr><td>阶段</td><td>按依赖关系排序的实施阶段</td></tr>
+<tr><td>文件计划</td><td>每个文件的更改，带有创建/修改/删除注释</td></tr>
+<tr><td>验收标准</td><td>定义"完成"的可测试条件</td></tr>
+<tr><td>风险</td><td>已知风险和缓解策略</td></tr>
+</table>
+
+<h2>开发技能</h2>
+
+<h3>tdd</h3>
+<p>驱动完整的测试驱动开发周期。该技能遵循红-绿-重构循环：先编写一个失败的测试，然后实现使测试通过的最少代码，再在保持测试通过的前提下进行重构。</p>
+<pre><code># Start TDD for a new feature
+"TDD로 사용자 인증 모듈 개발해줘"
+
+# TDD with a specific test framework
+"Jest 기반으로 TDD 해줘, API rate limiter 만들어야 돼"</code></pre>
+
+<p>TDD 技能自动遵循以下循环：</p>
+<ol>
+<li><strong>Red</strong> -- 编写一个描述期望行为的失败测试</li>
+<li><strong>Green</strong> -- 编写使测试通过的最少实现</li>
+<li><strong>Refactor</strong> -- 清理重复代码、改进命名、提取辅助函数</li>
+<li><strong>Repeat</strong> -- 进入下一个行为，直到功能完成</li>
+</ol>
+
+<div class="callout callout-info">TDD 技能与项目现有的测试运行器集成。它能自动检测 Jest、Vitest、pytest、Go test 和 Cargo test 的配置。</div>
+
+<h3>git-worktrees</h3>
+<p>管理 git worktree 以实现并行多分支开发。无需 stash 或提交半成品更改，为每个分支创建隔离的 worktree 即可。</p>
+<pre><code># Create a worktree for a feature branch
+"feature/notifications 브랜치로 워크트리 만들어줘"
+
+# List active worktrees
+"현재 워크트리 목록 보여줘"
+
+# Clean up merged worktrees
+"머지된 워크트리 정리해줘"</code></pre>
+
+<h3>dispatching-parallel-agents</h3>
+<p>将独立的子任务分发给并行代理并收集结果。适用于大规模重构、多文件迁移或跨多个包运行检查。</p>
+<pre><code># Parallel lint + test + type-check
+"lint, test, type-check 병렬로 돌려줘"
+
+# Fan out file migrations
+"이 10개 파일을 병렬로 새 API 형식으로 마이그레이션해줘"</code></pre>
+
+<div class="callout callout-warn">并行代理共享文件系统但不共享对话上下文。每个代理只接收其特定的子任务指令。</div>
+
+<h2>调试技能</h2>
+
+<h3>debugging-helpers</h3>
+<p>自动化调试辅助，根据错误上下文和代码结构生成假设、建议诊断步骤并提出修复方案。</p>
+<pre><code># Debug a runtime error
+"이 TypeError 디버깅 도와줘"
+
+# Debug with stack trace
+"이 스택 트레이스 분석해줘:
+  TypeError: Cannot read properties of undefined (reading 'map')
+    at UserList (UserList.tsx:42)"</code></pre>
+
+<h3>debugging-checklist</h3>
+<p>提供针对特定 Bug 类别的系统化检查清单。每个清单按照从最可能到最不可能的原因顺序引导你完成验证步骤。</p>
+<table>
+<tr><th>Bug 类别</th><th>检查重点</th></tr>
+<tr><td>竞态条件</td><td>共享状态访问、异步顺序、锁争用</td></tr>
+<tr><td>状态管理</td><td>过期闭包、可变与不可变性、重新渲染触发器</td></tr>
+<tr><td>差一错误</td><td>循环边界、数组索引、栅栏柱模式</td></tr>
+<tr><td>内存泄漏</td><td>事件监听器、闭包、循环引用、定时器</td></tr>
+<tr><td>网络</td><td>超时、CORS、序列化、重试逻辑</td></tr>
+</table>
+<pre><code># Get a debugging checklist
+"메모리 릭 디버깅 체크리스트 줘"
+"race condition 체크리스트로 점검해줘"</code></pre>
+
+<h2>导航与上下文技能</h2>
+
+<h3>codebase-orientation</h3>
+<p>通过分析目录结构、入口点、模块边界和依赖关系来梳理陌生的代码库。生成简洁的导航文档。</p>
+<pre><code># Orient to a new project
+"이 프로젝트 구조 파악해줘"
+
+# Focus on a specific area
+"src/api 디렉터리 구조 설명해줘"</code></pre>
+
+<p>输出包括：</p>
+<ul>
+<li>带注释的目录树</li>
+<li>入口点和构建配置</li>
+<li>关键抽象及其关系</li>
+<li>数据流图（如适用）</li>
+<li>推荐的新手阅读顺序</li>
+</ul>
+
+<h3>context-compression</h3>
+<p>将长对话历史或大文件内容压缩为紧凑的摘要，在减少 token 使用量的同时保留关键上下文。</p>
+<pre><code># Compress current conversation
+"컨텍스트 압축해줘"
+
+# Summarize a large file for context
+"이 파일 요약해서 컨텍스트로 만들어줘"</code></pre>
+
+<div class="callout callout-info">当对话长度接近模型的上下文窗口限制时，上下文压缩会自动触发。你也可以手动调用它来为新指令腾出空间。</div>
+
+<h3>deep-research</h3>
+<p>执行多源研究，包括扇出式网络搜索、来源验证、对抗性声明检验，以及最终的带引用报告。最适合需要交叉引用多个来源的复杂技术问题。</p>
+<pre><code># Research a technical topic
+"WebSocket vs SSE 성능 비교 리서치해줘"
+
+# Deep dive with specific focus
+"Bun vs Node.js 번들 사이즈 차이를 deep research 해줘"</code></pre>
+
+<h2>诊断技能</h2>
+
+<h3>error-message-explainer</h3>
+<p>解析错误消息、堆栈跟踪和 panic 日志，然后用通俗语言进行解释，并提供可操作的修复建议。</p>
+<pre><code># Explain an error
+"이 에러 뭔지 설명해줘: ENOENT: no such file or directory"
+
+# Explain a complex stack trace
+"이 Rust panic 설명해줘:
+  thread 'main' panicked at 'index out of bounds: the len is 3 but the index is 5'"</code></pre>
+
+<table>
+<tr><th>支持的格式</th><th>示例</th></tr>
+<tr><td>JavaScript/TypeScript</td><td>TypeError, ReferenceError, SyntaxError, unhandled rejection</td></tr>
+<tr><td>Python</td><td>Traceback, ImportError, AttributeError, KeyError</td></tr>
+<tr><td>Rust</td><td>panic!, unwrap failures, borrow checker errors</td></tr>
+<tr><td>Go</td><td>runtime panics, goroutine traces, nil pointer dereferences</td></tr>
+<tr><td>System</td><td>POSIX signals, errno codes, segfaults, OOM kills</td></tr>
+</table>
+
+<h3>config-file-explainer</h3>
+<p>读取配置文件并为每个字段添加用途说明、有效值范围和常见陷阱的注释。</p>
+<pre><code># Explain a config file
+"tsconfig.json 설명해줘"
+"이 docker-compose.yml 각 필드 설명해줘"
+"wrangler.toml 설정 분석해줘"</code></pre>
+
+<h3>log-summarizer</h3>
+<p>将冗长的日志输出浓缩为按时间戳、严重级别和组件组织的结构化摘要。突出异常和重复出现的模式。</p>
+<pre><code># Summarize application logs
+"이 로그 요약해줘"
+
+# Filter and summarize
+"ERROR 레벨 로그만 요약해줘, 최근 1시간"</code></pre>
+
+<h2>维护技能</h2>
+
+<h3>linter-fix-guide</h3>
+<p>在上下文中解释 linter 和格式化工具的警告，然后在整个代码库中自动应用修复。支持 ESLint、Prettier、Ruff、Clippy、golangci-lint 等。</p>
+<pre><code># Fix all linter warnings
+"린터 경고 전부 고쳐줘"
+
+# Explain a specific rule
+"no-unused-vars 규칙이 왜 중요한지 설명해줘"
+
+# Fix with scope
+"src/components 폴더만 린트 수정해줘"</code></pre>
+
+<h3>data-structure-chooser</h3>
+<p>根据你的访问模式、大小约束和编程语言推荐最优数据结构。提供 Big-O 复杂度对比和实现示例。</p>
+<pre><code># Get a recommendation
+"빈번한 삽입/삭제가 있고 정렬 상태를 유지해야 해. 어떤 자료구조가 좋아?"
+
+# Compare options
+"HashMap vs BTreeMap, 내 유즈케이스에 뭐가 맞아?"</code></pre>
+
+<h3>dependency-install-helper</h3>
+<p>解决依赖安装失败问题，包括版本冲突、peer 依赖问题、lockfile 损坏和特定平台的构建错误。</p>
+<pre><code># Fix install failure
+"npm install 실패했어, 도와줘"
+
+# Resolve version conflict
+"peer dependency 충돌 해결해줘"
+
+# Clean reinstall
+"node_modules 완전히 초기화하고 다시 설치해줘"</code></pre>
+
+<h3>changelog-generator</h3>
+<p>按照 <a href="https://keepachangelog.com/">Keep a Changelog</a> 格式并结合 Conventional Commits 解析，从 git 历史生成变更日志。</p>
+<pre><code># Generate changelog for latest release
+"changelog 만들어줘"
+
+# Generate for a specific range
+"v1.2.0부터 v1.3.0까지 changelog 생성해줘"
+
+# With category grouping
+"changelog을 Added/Changed/Fixed/Removed로 분류해서 만들어줘"</code></pre>
+
+<table>
+<tr><th>提交前缀</th><th>变更日志分类</th></tr>
+<tr><td><code>feat:</code></td><td>Added</td></tr>
+<tr><td><code>fix:</code></td><td>Fixed</td></tr>
+<tr><td><code>refactor:</code>, <code>perf:</code></td><td>Changed</td></tr>
+<tr><td><code>BREAKING CHANGE:</code></td><td>Breaking Changes</td></tr>
+<tr><td><code>docs:</code></td><td>Documentation</td></tr>
+<tr><td><code>chore:</code>, <code>ci:</code></td><td>Maintenance</td></tr>
+</table>
+
+<h2>元技能</h2>
+
+<h3>skill-creator</h3>
+<p>从模板引导创建新的 podex 技能。生成 <code>SKILL.md</code> 编排器文件、触发模式和用于深度指导文档的 <code>references/</code> 目录。</p>
+<pre><code># Create a new skill
+"새 스킬 만들어줘: docker-compose-helper"
+
+# Create with trigger phrases
+"'도커 컴포즈', 'docker compose'를 트리거로 하는 스킬 만들어줘"</code></pre>
+
+<p>生成的结构：</p>
+<pre><code>skills/
+  docker-compose-helper/
+    SKILL.md           # Orchestrator with role, triggers, and workflow
+    references/
+      compose-spec.md  # Deep reference material
+      examples.md      # Example invocations</code></pre>
+
+<h2>常见模式</h2>
+
+<div class="callout callout-info"><strong>自然语言调用：</strong>你不需要记住技能名称。只需用自然语言描述你的意图，相应的技能就会自动激活。可以自由混合使用中文和英文 -- <code>"이 에러 explain 해줘"</code>、<code>"TDD로 auth module 만들어줘"</code>。</div>
+
+<h3>链式组合技能</h3>
+<p>Dev Workflow 技能可以自然地组合使用。一个典型的功能开发流程可能会按顺序链接多个技能：</p>
+<pre><code># 1. Brainstorm approaches
+"알림 시스템 설계를 브레인스토밍해줘"
+
+# 2. Create an implementation plan
+"2번 방안으로 구현 계획 세워줘"
+
+# 3. Develop with TDD
+"TDD로 개발 시작해줘"
+
+# 4. Debug any issues
+"이 테스트 실패 디버깅해줘"
+
+# 5. Generate changelog
+"작업 내용으로 changelog 업데이트해줘"</code></pre>
+
+<h3>与目标结合使用</h3>
+<p>对于较大的任务，将工作流技能包装在<a href="../concepts/goals.html">目标</a>中以实现进度跟踪和持久化：</p>
+<pre><code>/goal create "Implement notification system"
+# The goal orchestrator will invoke brainstorming, writing-plans,
+# tdd, and changelog-generator as needed throughout the lifecycle.</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="devtools-security.html">Security &amp; Review</a>
+<a class="next" href="productivity.html">Productivity</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

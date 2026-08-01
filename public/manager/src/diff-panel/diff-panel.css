@@ -1,0 +1,234 @@
+.diff-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-size: 12px;
+}
+.diff-unavailable {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+}
+.diff-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border-subtle);
+    flex-shrink: 0;
+}
+.diff-options {
+    gap: 6px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.diff-repo-label {
+    flex: 1;
+    font-size: 11px;
+    color: var(--text-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.diff-root-select {
+    min-width: 0;
+    flex: 1;
+    height: 24px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    background: var(--bg-panel);
+    color: var(--text-base);
+    font-size: 11px;
+}
+.diff-head-chip {
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-dim);
+    font-size: 10px;
+    font-family: 'SF Mono', 'Menlo', monospace;
+}
+.diff-pick-repo,
+.diff-follow-instance,
+.diff-refresh {
+    all: unset;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--text-dim);
+    white-space: nowrap;
+}
+.diff-pick-repo:hover,
+.diff-follow-instance:hover,
+.diff-refresh:hover { background: var(--bg-hover); color: var(--text-base); }
+.diff-pick-repo:disabled,
+.diff-follow-instance:disabled {
+    cursor: default;
+    opacity: 0.55;
+}
+.diff-mode-group {
+    display: flex;
+    min-width: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.diff-mode-button {
+    all: unset;
+    cursor: pointer;
+    padding: 3px 6px;
+    color: var(--text-dim);
+    font-size: 10px;
+    line-height: 16px;
+}
+.diff-mode-button:hover,
+.diff-mode-button.is-active {
+    background: var(--bg-active);
+    color: var(--text-base);
+}
+.diff-ref-input {
+    width: 78px;
+    min-width: 58px;
+    height: 22px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    background: var(--bg-panel);
+    color: var(--text-base);
+    font-size: 10px;
+}
+.diff-untracked-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-dim);
+    font-size: 10px;
+    white-space: nowrap;
+}
+.diff-error {
+    padding: 8px 10px;
+    font-size: 11px;
+    color: var(--status-error);
+    background: var(--bg-error-subtle, rgba(255,0,0,0.05));
+}
+.diff-action-status {
+    padding: 5px 10px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 11px;
+}
+.diff-body {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    overflow: hidden;
+}
+.diff-file-list {
+    width: 200px;
+    min-width: 120px;
+    border-right: 1px solid var(--border-subtle);
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+.diff-file-group {
+    padding-bottom: 4px;
+}
+.diff-file-group-heading {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 5px 8px 3px;
+    color: var(--text-dim);
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.diff-scm-action,
+.diff-scm-inline-action {
+    all: unset;
+    cursor: pointer;
+    border-radius: 3px;
+    color: var(--text-dim);
+    text-transform: none;
+}
+.diff-scm-action {
+    padding: 1px 4px;
+    font-size: 10px;
+    font-weight: 500;
+}
+.diff-scm-inline-action {
+    min-width: 14px;
+    align-self: stretch;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 0 4px;
+}
+.diff-scm-action:hover,
+.diff-scm-inline-action:hover {
+    background: var(--bg-hover);
+    color: var(--text-base);
+}
+.diff-file-item {
+    display: flex;
+    align-items: stretch;
+    gap: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.diff-file-select {
+    all: unset;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: var(--text-base);
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+}
+.diff-file-select:hover { background: var(--bg-hover); }
+.diff-file-select:focus-visible { outline: 1px solid var(--accent); outline-offset: -1px; }
+.diff-file-item.is-selected .diff-file-select { background: var(--bg-active); }
+.diff-file-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.diff-file-stats { display: flex; gap: 4px; flex-shrink: 0; font-size: 10px; }
+.diff-ins { color: var(--status-success); }
+.diff-del { color: var(--status-error); }
+.diff-status-added .diff-file-name { color: var(--status-success); }
+.diff-status-deleted .diff-file-name { color: var(--status-error); }
+.diff-file-item.is-conflict .diff-file-name { color: var(--status-warning, var(--status-error)); }
+.diff-empty {
+    padding: 12px;
+    color: var(--text-dim);
+    text-align: center;
+    font-size: 11px;
+}
+.diff-content {
+    flex: 1;
+    min-width: 0;
+    overflow: auto;
+}
+.diff-pre {
+    margin: 0;
+    padding: 8px;
+    font-family: 'SF Mono', 'Menlo', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+.diff-line { display: block; padding: 0 4px; }
+.diff-line-add { color: var(--status-success); background: color-mix(in srgb, var(--status-success) 10%, transparent); }
+.diff-line-del { color: var(--status-error); background: color-mix(in srgb, var(--status-error) 10%, transparent); }
+.diff-line-hunk { color: var(--accent); font-weight: 500; background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.diff-line-meta { color: var(--text-dim); font-weight: 500; }

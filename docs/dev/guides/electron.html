@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electron Desktop — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link active" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Skill Catalog</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utility</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Orchestration</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Electron Desktop</h1>
+<p class="lead">podex is available as a native Electron desktop application. Packaged builds include a Node.js 22 sidecar so the app can run the dashboard server and install a terminal <code>jaw</code> command without requiring a global npm install.</p>
+
+<h2>Installation</h2>
+<p>Download the desktop artifact from the release or manual desktop-release workflow. macOS builds ship as DMG/ZIP, Windows builds ship as NSIS/ZIP, and Linux builds ship as AppImage.</p>
+<pre><code># Build from source:
+npm run electron:dist:mac</code></pre>
+
+<h2>Bundled Sidecar</h2>
+<p>The release workflow runs <code>scripts/bundle-sidecar.sh</code> before packaging. The sidecar includes Node.js 24.17, compiled server output, frontend assets, production dependencies, rebuilt native modules such as <code>better-sqlite3</code>, and CLI shims under <code>server/bin/jaw</code> and <code>server/bin/jaw.cmd</code>.</p>
+<table>
+<tr><th>Platform</th><th>Target</th><th>Artifact</th></tr>
+<tr><td>macOS</td><td>arm64</td><td>DMG, ZIP</td></tr>
+<tr><td>Windows</td><td>x64</td><td>NSIS installer, ZIP</td></tr>
+<tr><td>Linux</td><td>x64</td><td>AppImage</td></tr>
+</table>
+<p>The Electron main process does not import native server modules directly. It discovers the bundled sidecar first, then falls back to a global <code>jaw</code> binary during development.</p>
+
+<h2>Panel Layout</h2>
+<p>The Electron app provides a multi-panel workspace:</p>
+<table>
+<tr><th>Panel</th><th>Location</th><th>Description</th></tr>
+<tr><td><strong>Dashboard</strong></td><td>Center</td><td>Full manager dashboard with instances, notes, board</td></tr>
+<tr><td><strong>Terminal</strong></td><td>Bottom</td><td>Embedded terminal for CLI commands</td></tr>
+<tr><td><strong>Browser</strong></td><td>Right</td><td>Webview-based browser with tabs (desktop only)</td></tr>
+<tr><td><strong>Diff Viewer</strong></td><td>Right</td><td>Git diff panel backed by server API (desktop only)</td></tr>
+<tr><td><strong>Folder Panel</strong></td><td>Left/Right</td><td>File tree navigation</td></tr>
+</table>
+
+<h2>Browser Panel</h2>
+<p>The desktop browser panel uses webview tags for full browsing. Features:</p>
+<ul>
+<li>Tab management (Cmd+T new tab, Cmd+W close tab, Cmd+1-4 switch tabs)</li>
+<li>URL bar with smart input -- URLs navigate directly, search terms go to Google</li>
+<li>Default new tab opens Google</li>
+<li>Local/private hosts are allowed (desktop only -- not available in Web UI)</li>
+</ul>
+
+<h2>Diff Viewer</h2>
+<p>The diff panel shows Git changes for your project:</p>
+<ul>
+<li>Repo root candidates from <code>projectDirs</code>, <code>workingDir</code>, pinned root, home fallback</li>
+<li>Configurable diff settings: root policy, diff mode, base ref, untracked files</li>
+<li>Server-backed API prevents git operations from running in Electron main process</li>
+<li>Path traversal and ref validation guards in <code>diff-service.ts</code></li>
+</ul>
+
+<h2>Keyboard Shortcuts</h2>
+<p>See the <a href="../reference/keyboard.html">Keyboard Shortcuts</a> reference for the complete list. Key desktop shortcuts:</p>
+<table>
+<tr><th>Shortcut</th><th>Action</th></tr>
+<tr><td><code>Cmd+T</code></td><td>New browser tab</td></tr>
+<tr><td><code>Cmd+W</code></td><td>Close current tab</td></tr>
+<tr><td><code>Cmd+1-4</code></td><td>Switch to tab 1-4</td></tr>
+<tr><td><code>Cmd+R</code></td><td>Reload main window</td></tr>
+<tr><td><code>Cmd+Shift+R</code></td><td>Hard reload</td></tr>
+</table>
+
+<h2>macOS Permissions</h2>
+<p>The Electron app may prompt for macOS automation access. Grant it in System Preferences > Privacy & Security > Automation. The app's quit flow is visible and handles cleanup gracefully. Current release artifacts are unsigned and un-notarized, so macOS may require right-click → Open on first launch.</p>
+
+<h2>Terminal Command Install</h2>
+<p>On first launch and from the tray menu, packaged apps can install a terminal <code>jaw</code> command that points at the bundled sidecar shim. macOS installs under <code>/usr/local/bin</code> with an admin prompt when needed. Linux uses <code>~/.local/bin</code>. Windows PATH registration is handled by the NSIS installer script.</p>
+
+<h2>Development</h2>
+<pre><code># Run Electron in dev mode (concurrent with jaw server):
+npm run electron:dev
+
+# Typecheck/build the Electron app:
+npm --prefix electron run build
+
+# Bundle sidecar and create macOS DMG/ZIP:
+npm run electron:dist:mac</code></pre>
+
+<div class="callout callout-info">
+<strong>Try it:</strong>
+<ul>
+<li>터미널에서 npm install 해줘</li>
+<li>diff 보여줘</li>
+<li>Cmd+W로 탭 닫아줘</li>
+</ul>
+</div>
+
+<div class="page-nav">
+<a class="prev" href="computer-use.html">Computer Use</a>
+<a class="next" href="web-ai.html">Web AI</a>
+</div>
+</main>
+</div>
+<script src="../_search.js"></script>
+</body>
+</html>
+

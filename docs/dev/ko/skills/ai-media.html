@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Media Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link active" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>AI Media Skills</h1>
+<p class="lead">podex에는 이미지, 영상, 오디오, 디자인 에셋을 생성하고 편집하고 처리하는 13개의 스킬이 내장되어 있습니다. 이 스킬들은 DALL-E, Sora, fal.ai, Hugging Face 등 외부 AI 서비스를 자연어 명령으로 감싸서 터미널을 벗어나지 않고도 미디어를 제작할 수 있게 해줍니다.</p>
+
+<h2>스킬 카탈로그</h2>
+<table>
+<tr><th>스킬</th><th>카테고리</th><th>설명</th></tr>
+<tr><td><code>imagegen</code></td><td>이미지 생성</td><td>DALL-E 3 / gpt-image-1을 통해 이미지를 생성합니다. 프롬프트, 크기, 품질, 스타일 매개변수를 지원합니다.</td></tr>
+<tr><td><code>nano-banana-pro</code></td><td>이미지 생성</td><td>fal.ai의 Nano Banana Pro 파이프라인을 통한 빠른 이미지 생성입니다. 품질보다 속도에 최적화되어 있습니다.</td></tr>
+<tr><td><code>fal-image-edit</code></td><td>이미지 편집</td><td>fal.ai 모델을 사용하여 기존 이미지를 편집합니다 -- 인페인팅, 아웃페인팅, 스타일 트랜스퍼, 배경 제거를 지원합니다.</td></tr>
+<tr><td><code>sora</code></td><td>영상 생성</td><td>OpenAI Sora를 사용하여 영상 클립을 생성하고 편집합니다. 텍스트-to-영상 및 이미지-to-영상 워크플로를 지원합니다.</td></tr>
+<tr><td><code>speech</code></td><td>오디오 생성</td><td>OpenAI TTS를 통한 텍스트 음성 합성입니다. 다양한 음성, 속도, 출력 형식을 지원합니다.</td></tr>
+<tr><td><code>transcribe</code></td><td>오디오 처리</td><td>Whisper를 통한 오디오 및 영상 전사입니다. SRT/VTT/JSON 형식의 타임스탬프 자막을 생성합니다.</td></tr>
+<tr><td><code>hugging-face-cli</code></td><td>ML 파이프라인</td><td>CLI에서 Hugging Face 모델 추론을 실행합니다. 텍스트, 이미지, 오디오 작업을 지원합니다.</td></tr>
+<tr><td><code>hugging-face-evaluation</code></td><td>ML 파이프라인</td><td>표준 벤치마크와 메트릭으로 Hugging Face 모델을 평가합니다.</td></tr>
+<tr><td><code>hugging-face-model-trainer</code></td><td>ML 파이프라인</td><td>LoRA/QLoRA를 지원하여 커스텀 데이터셋으로 Hugging Face 모델을 파인튜닝합니다.</td></tr>
+<tr><td><code>algorithmic-art</code></td><td>제너러티브 아트</td><td>코드 기반 패턴, 프랙탈, 수학적 시각화를 활용하여 알고리즘 및 제너러티브 아트를 생성합니다.</td></tr>
+<tr><td><code>canvas-design</code></td><td>디자인</td><td>캔버스 기반 그래픽을 디자인합니다 -- 레이아웃, 배너, 소셜 미디어 게시물, 합성 비주얼 등을 제작합니다.</td></tr>
+<tr><td><code>atlas</code></td><td>디자인</td><td>게임 및 UI 에셋용 텍스처 아틀라스와 스프라이트 시트를 생성하고 조작합니다.</td></tr>
+<tr><td><code>theme-factory</code></td><td>디자인</td><td>시드 색상이나 이미지에서 앱과 웹사이트용 컬러 테마, 팔레트, 디자인 토큰을 생성합니다.</td></tr>
+</table>
+
+<h2>이미지 생성</h2>
+<p><code>imagegen</code> 스킬은 이미지를 만드는 주요 진입점입니다. 모델 설정에 따라 DALL-E 3 또는 gpt-image-1에 위임합니다.</p>
+
+<div class="callout-info">
+<strong>자연어 예시</strong><br>
+<code>"이미지 생성해줘 -- 석양이 지는 서울 남산타워"</code><br>
+<code>"Generate a watercolor painting of a mountain lake at dawn"</code><br>
+<code>"로고 만들어줘 -- 미니멀한 고양이 실루엣, 파란색 배경"</code>
+</div>
+
+<pre><code># 기본 생성
+/imagegen a cyberpunk cityscape at night, neon lights reflecting on wet streets
+
+# 매개변수 지정
+/imagegen --size 1792x1024 --quality hd a photo-realistic coral reef
+
+# nano-banana-pro로 빠른 초안 생성
+/nano-banana-pro quick sketch of a robot barista</code></pre>
+
+<h3>imagegen 매개변수</h3>
+<table>
+<tr><th>매개변수</th><th>기본값</th><th>설명</th></tr>
+<tr><td><code>--size</code></td><td>1024x1024</td><td>출력 크기: <code>1024x1024</code>, <code>1792x1024</code>, <code>1024x1792</code></td></tr>
+<tr><td><code>--quality</code></td><td>standard</td><td><code>standard</code> 또는 <code>hd</code></td></tr>
+<tr><td><code>--style</code></td><td>vivid</td><td><code>vivid</code> 또는 <code>natural</code></td></tr>
+<tr><td><code>--model</code></td><td>dall-e-3</td><td><code>dall-e-3</code> 또는 <code>gpt-image-1</code></td></tr>
+<tr><td><code>--output</code></td><td>./output</td><td>생성된 파일의 출력 디렉토리</td></tr>
+</table>
+
+<h2>이미지 편집</h2>
+<p><code>fal-image-edit</code> 스킬은 생성 후 편집을 담당합니다: 영역 인페인팅, 캔버스 확장, 스타일 트랜스퍼, 배경 제거 등을 처리합니다.</p>
+
+<div class="callout-info">
+<strong>자연어 예시</strong><br>
+<code>"이 이미지에서 배경 지워줘"</code><br>
+<code>"사진의 하늘을 노을로 바꿔줘"</code><br>
+<code>"Extend this image to the right with more forest"</code>
+</div>
+
+<pre><code># 배경 제거
+/fal-image-edit --task remove-bg input.png
+
+# 영역 인페인팅 (프롬프트에서 마스크 자동 감지)
+/fal-image-edit --task inpaint --prompt "replace the car with a bicycle" photo.jpg
+
+# 스타일 트랜스퍼
+/fal-image-edit --task style-transfer --style "oil painting" photo.jpg</code></pre>
+
+<h2>영상 생성</h2>
+<p><code>sora</code> 스킬은 텍스트 또는 이미지 프롬프트에서 OpenAI Sora를 사용하여 짧은 영상 클립을 생성합니다.</p>
+
+<div class="callout-info">
+<strong>자연어 예시</strong><br>
+<code>"영상 만들어줘 -- 바닷가에서 뛰어노는 강아지"</code><br>
+<code>"Create a 5-second video of clouds forming over a mountain"</code><br>
+<code>"이 사진을 영상으로 변환해줘"</code>
+</div>
+
+<pre><code># 텍스트-to-영상
+/sora a timelapse of flowers blooming in a meadow --duration 5s
+
+# 이미지-to-영상 (정지 이미지 애니메이션화)
+/sora --input cover.png --prompt "gentle camera zoom out" --duration 3s</code></pre>
+
+<h3>sora 매개변수</h3>
+<table>
+<tr><th>매개변수</th><th>기본값</th><th>설명</th></tr>
+<tr><td><code>--duration</code></td><td>5s</td><td>클립 길이: <code>3s</code>, <code>5s</code>, <code>10s</code></td></tr>
+<tr><td><code>--resolution</code></td><td>720p</td><td><code>480p</code>, <code>720p</code>, <code>1080p</code></td></tr>
+<tr><td><code>--input</code></td><td>-</td><td>이미지-to-영상용 소스 이미지</td></tr>
+<tr><td><code>--output</code></td><td>./output</td><td>출력 디렉토리</td></tr>
+</table>
+
+<h2>오디오: 음성 합성과 전사</h2>
+<p>두 개의 상호보완적인 스킬이 오디오 파이프라인을 처리합니다: <code>speech</code>는 텍스트를 음성 오디오로 변환하고, <code>transcribe</code>는 오디오/영상을 타임스탬프가 포함된 텍스트로 변환합니다.</p>
+
+<div class="callout-info">
+<strong>자연어 예시</strong><br>
+<code>"이 텍스트 읽어줘 -- 오늘의 뉴스 요약입니다"</code><br>
+<code>"이 영상 자막 만들어줘"</code><br>
+<code>"Convert this meeting recording to subtitles"</code><br>
+<code>"음성 파일로 변환해줘 -- alloy 목소리로"</code>
+</div>
+
+<pre><code># 텍스트 음성 합성
+/speech "Welcome to podex. Your daily briefing is ready." --voice alloy
+
+# 커스텀 속도와 형식으로 음성 합성
+/speech --voice nova --speed 1.2 --format mp3 "오늘의 할 일을 알려드리겠습니다."
+
+# 오디오 전사
+/transcribe meeting-recording.m4a --format srt
+
+# 언어 힌트를 지정하여 영상 전사
+/transcribe presentation.mp4 --language ko --format vtt</code></pre>
+
+<h3>speech 매개변수</h3>
+<table>
+<tr><th>매개변수</th><th>기본값</th><th>설명</th></tr>
+<tr><td><code>--voice</code></td><td>alloy</td><td><code>alloy</code>, <code>echo</code>, <code>fable</code>, <code>onyx</code>, <code>nova</code>, <code>shimmer</code></td></tr>
+<tr><td><code>--speed</code></td><td>1.0</td><td>재생 속도: 0.25에서 4.0까지</td></tr>
+<tr><td><code>--format</code></td><td>mp3</td><td><code>mp3</code>, <code>opus</code>, <code>aac</code>, <code>flac</code>, <code>wav</code></td></tr>
+</table>
+
+<h3>transcribe 매개변수</h3>
+<table>
+<tr><th>매개변수</th><th>기본값</th><th>설명</th></tr>
+<tr><td><code>--format</code></td><td>srt</td><td><code>srt</code>, <code>vtt</code>, <code>json</code>, <code>text</code></td></tr>
+<tr><td><code>--language</code></td><td>auto</td><td>ISO 639-1 언어 힌트 (예: <code>ko</code>, <code>en</code>, <code>ja</code>)</td></tr>
+<tr><td><code>--model</code></td><td>whisper-1</td><td>Whisper 모델 변형</td></tr>
+</table>
+
+<h2>Hugging Face 파이프라인</h2>
+<p>세 개의 스킬이 Hugging Face 생태계를 감싸서 CLI에서 직접 추론, 평가, 학습을 수행할 수 있게 합니다.</p>
+
+<div class="callout-info">
+<strong>자연어 예시</strong><br>
+<code>"이 이미지 분류해줘 -- Hugging Face 모델로"</code><br>
+<code>"모델 파인튜닝 해줘 -- LoRA로 학습"</code><br>
+<code>"Evaluate this model on the GLUE benchmark"</code>
+</div>
+
+<pre><code># 특정 모델로 추론 실행
+/hugging-face-cli --model stabilityai/stable-diffusion-xl-base-1.0 \
+  --task text-to-image "a serene japanese garden"
+
+# 모델 평가
+/hugging-face-evaluation --model bert-base-uncased \
+  --benchmark glue --split validation
+
+# LoRA로 파인튜닝
+/hugging-face-model-trainer --base meta-llama/Llama-3-8B \
+  --dataset ./training-data.jsonl \
+  --method lora --epochs 3 --lr 2e-4</code></pre>
+
+<h3>지원하는 작업 유형</h3>
+<table>
+<tr><th>스킬</th><th>작업</th></tr>
+<tr><td><code>hugging-face-cli</code></td><td>text-generation, text-to-image, image-classification, summarization, translation, fill-mask, question-answering</td></tr>
+<tr><td><code>hugging-face-evaluation</code></td><td>GLUE, SuperGLUE, SQuAD, 커스텀 메트릭 평가</td></tr>
+<tr><td><code>hugging-face-model-trainer</code></td><td>LoRA, QLoRA, 전체 파인튜닝, DPO, RLHF</td></tr>
+</table>
+
+<h2>제너러티브 아트와 디자인</h2>
+<p>네 개의 스킬이 알고리즘 패턴부터 완전한 디자인 토큰 시스템까지 디자인 워크플로를 다룹니다.</p>
+
+<h3>algorithmic-art</h3>
+<p>코드 기반 비주얼 아트를 생성합니다: 프랙탈, 보로노이 다이어그램, L-시스템, 플로 필드, 수학적 서피스 등을 지원합니다.</p>
+<pre><code># 프랙탈 생성
+/algorithmic-art --type mandelbrot --palette ocean --size 2048x2048
+
+# 플로 필드 시각화
+/algorithmic-art --type flowfield --seed 42 --particles 5000</code></pre>
+
+<h3>canvas-design</h3>
+<p>텍스트, 도형, 이미지를 캔버스에 합성합니다. 소셜 미디어 그래픽, 배너, 썸네일 제작에 유용합니다.</p>
+
+<div class="callout-info">
+<strong>자연어 예시</strong><br>
+<code>"배너 만들어줘 -- 1200x630, 제목은 '신제품 출시'"</code><br>
+<code>"Create an Instagram story template with gradient background"</code>
+</div>
+
+<pre><code># 소셜 미디어 배너 생성
+/canvas-design --size 1200x630 \
+  --background "linear-gradient(135deg, #667eea, #764ba2)" \
+  --text "Product Launch" --font-size 64</code></pre>
+
+<h3>atlas</h3>
+<p>여러 이미지를 최적화된 스프라이트 시트와 텍스처 아틀라스로 패킹하고, JSON 메타데이터를 함께 생성합니다.</p>
+<pre><code># 아이콘을 스프라이트 시트로 패킹
+/atlas --input ./icons/ --output spritesheet.png --padding 2
+
+# 메타데이터와 함께 생성
+/atlas --input ./frames/ --output atlas.png --meta atlas.json</code></pre>
+
+<h3>theme-factory</h3>
+<p>시드 색상, 이미지 또는 컨셉에서 완전한 컬러 시스템을 생성합니다. CSS 커스텀 프로퍼티, Tailwind 설정, 디자인 토큰으로 출력합니다.</p>
+
+<div class="callout-info">
+<strong>자연어 예시</strong><br>
+<code>"테마 만들어줘 -- 따뜻한 가을 느낌, 다크모드 포함"</code><br>
+<code>"Generate a color palette from this brand logo"</code>
+</div>
+
+<pre><code># 시드 색상에서 생성
+/theme-factory --seed "#4F46E5" --mode both --format css
+
+# 이미지에서 생성
+/theme-factory --from-image hero.jpg --format tailwind
+
+# 컨셉에서 생성
+/theme-factory --concept "warm autumn forest" --format tokens</code></pre>
+
+<h2>출력 처리</h2>
+<p>모든 미디어 스킬은 일관된 출력 패턴을 따릅니다:</p>
+<ul>
+<li><strong>파일 출력</strong> -- 생성된 파일은 <code>--output</code> 디렉토리에 저장됩니다 (기본값: <code>./output</code>)</li>
+<li><strong>인라인 미리보기</strong> -- Electron 데스크톱 앱이나 Web UI에서 실행 중일 때 이미지가 인라인으로 표시됩니다</li>
+<li><strong>클립보드</strong> -- <code>--copy</code>를 전달하면 출력 파일 경로가 시스템 클립보드에 복사됩니다</li>
+<li><strong>파이프 호환</strong> -- 모든 스킬은 체이닝을 위해 출력 파일 경로를 stdout으로 출력합니다</li>
+</ul>
+<pre><code># 생성 후 편집으로 체이닝
+/imagegen "a forest cabin" | xargs -I {} /fal-image-edit --task style-transfer --style "watercolor" {}
+
+# 생성 후 바로 열기
+/imagegen "sunset over the ocean" && open ./output/latest.png</code></pre>
+
+<h2>설정</h2>
+<p>API 키와 기본값은 <code>~/.podex/config.yaml</code> 또는 환경 변수를 통해 설정합니다:</p>
+<pre><code># config.yaml
+skills:
+  imagegen:
+    default_model: gpt-image-1
+    default_quality: hd
+    output_dir: ~/Pictures/podex
+  sora:
+    default_duration: 5s
+    default_resolution: 1080p
+  speech:
+    default_voice: nova
+  transcribe:
+    default_format: srt
+    default_language: ko</code></pre>
+
+<pre><code># 환경 변수
+export OPENAI_API_KEY="sk-..."       # imagegen, sora, speech, transcribe
+export FAL_KEY="fal-..."             # nano-banana-pro, fal-image-edit
+export HF_TOKEN="hf_..."            # hugging-face-* 스킬</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="automation.html">Automation</a>
+<a class="next" href="communication.html">Communication</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

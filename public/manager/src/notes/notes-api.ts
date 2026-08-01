@@ -1,0 +1,15 @@
+export {
+    fetchNotesInfo,
+    fetchNotesIndex,
+    fetchNotesCapabilities,
+    fetchNotesTree,
+    fetchNoteTemplates,
+    fetchNoteTemplate,
+    searchNotes,
+    fetchNoteFile,
+    createNoteFile,
+    saveNoteFile,
+    createNoteFolder,
+    renameNotePath,
+    trashNotePath,
+} from '../api';

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automation Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link active" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="./">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Automation Skills</h1>
+<p class="lead">浏览器自动化、基于截图的交互以及请求路由。这些技能赋予 podex 通过 CDP 控制 Chrome、从截图中点击 UI 元素以及以编程方式路由 Web 请求的能力。</p>
+
+<!-- ================================================================== -->
+<!-- browser -->
+<!-- ================================================================== -->
+
+<h2 id="browser">browser</h2>
+<p>通过 Chrome DevTools Protocol (CDP) 控制 Chrome 浏览器。可以打开页面、导航、拍摄参考快照、点击元素、输入文本、提取内容以及捕获截图。需要 <code>podex</code> 浏览器服务器处于运行状态。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>browser</code></td></tr>
+<tr><td><strong>类别</strong></td><td>Automation</td></tr>
+<tr><td><strong>协议</strong></td><td>CDP (Chrome DevTools Protocol)</td></tr>
+<tr><td><strong>前置条件</strong></td><td><code>podex</code> 浏览器服务器正在运行</td></tr>
+<tr><td><strong>触发方式</strong></td><td>打开页面、截图、点击、输入、抓取、导航</td></tr>
+</table>
+
+<h3>功能</h3>
+<table>
+<tr><th>操作</th><th>说明</th></tr>
+<tr><td><strong>Open page</strong></td><td>在受控的 Chrome 实例中导航到指定 URL</td></tr>
+<tr><td><strong>Screenshot</strong></td><td>捕获整页或视口截图，格式为 PNG</td></tr>
+<tr><td><strong>Click</strong></td><td>通过 CSS 选择器或 XPath 点击 DOM 元素</td></tr>
+<tr><td><strong>Type</strong></td><td>在输入框和文本区域中输入文本</td></tr>
+<tr><td><strong>Extract</strong></td><td>读取元素的文本内容、属性或 innerHTML</td></tr>
+<tr><td><strong>Evaluate</strong></td><td>在页面上下文中执行任意 JavaScript</td></tr>
+<tr><td><strong>Wait</strong></td><td>等待选择器、导航或网络空闲</td></tr>
+<tr><td><strong>Ref snapshot</strong></td><td>拍摄当前 DOM 状态的参考快照，用于比对差异</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Open a page and take a screenshot
+/browser open https://example.com
+/browser screenshot
+
+# Click a button by selector
+/browser click "#submit-btn"
+
+# Type into an input field
+/browser type "#search-input" "podex documentation"
+
+# Extract text content from an element
+/browser extract ".main-content" text
+
+# Execute JavaScript in the page
+/browser eval "document.title"</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"https://example.com 열어줘" -- 在浏览器中打开该 URL<br>
+"이 페이지 스크래핑해줘" -- 抓取并提取当前页面的内容<br>
+"스크린샷 찍어줘" -- 捕获当前视口的截图<br>
+"로그인 페이지에서 이메일 입력해줘" -- 在登录页面的邮箱字段中输入内容
+</div>
+
+<h3>CDP 连接</h3>
+<p>browser 技能通过 <code>podex</code> 浏览器服务器连接到 Chrome，该服务器管理 CDP WebSocket 连接。使用浏览器命令前必须先启动服务器。</p>
+<pre><code># Start the browser server (runs on a dedicated port)
+jaw browser serve
+
+# The skill auto-connects when invoked
+# Connection is reused across commands in the same session</code></pre>
+
+<div class="callout callout-warn">
+<strong>注意：</strong>浏览器服务器管理单个 Chrome 实例。通过 CDP 目标（标签页）支持并发页面操作，但同一时间只有一个浏览器实例处于活动状态。
+</div>
+
+<!-- ================================================================== -->
+<!-- vision-click -->
+<!-- ================================================================== -->
+
+<h2 id="vision-click">vision-click</h2>
+<p>基于截图的 UI 交互，使用视觉模型。该技能不依赖 DOM 选择器，而是通过截图识别 UI 元素，并在正确的坐标位置进行点击。适用于屏幕上可见的任何应用程序——不仅限于浏览器。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>vision-click</code></td></tr>
+<tr><td><strong>类别</strong></td><td>Automation</td></tr>
+<tr><td><strong>方法</strong></td><td>截图分析 + 坐标映射</td></tr>
+<tr><td><strong>模型</strong></td><td>具备视觉能力的 LLM（Claude、GPT-4V）</td></tr>
+<tr><td><strong>适用范围</strong></td><td>任何屏幕上的 UI（浏览器、桌面应用、终端）</td></tr>
+</table>
+
+<h3>工作原理</h3>
+<ol>
+<li><strong>捕获</strong> -- 对当前屏幕或指定区域进行截图</li>
+<li><strong>分析</strong> -- 将截图发送给视觉模型以识别目标元素</li>
+<li><strong>定位</strong> -- 模型返回要点击的元素的像素坐标</li>
+<li><strong>执行</strong> -- 在识别到的坐标位置执行点击（或其他操作）</li>
+</ol>
+
+<table>
+<tr><th>操作</th><th>说明</th></tr>
+<tr><td><strong>Click</strong></td><td>点击视觉识别到的 UI 元素</td></tr>
+<tr><td><strong>Double-click</strong></td><td>双击目标元素</td></tr>
+<tr><td><strong>Right-click</strong></td><td>右键点击目标元素</td></tr>
+<tr><td><strong>Hover</strong></td><td>将光标移动到目标元素上方，但不点击</td></tr>
+<tr><td><strong>Describe</strong></td><td>返回屏幕上可见内容的描述</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Click a button described by its visual label
+/vision-click "the blue Submit button"
+
+# Click on a specific icon
+/vision-click "the gear icon in the top-right corner"
+
+# Right-click on a file in Finder
+/vision-click --right "the README.md file"
+
+# Describe what is currently visible
+/vision-click --describe</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"이 버튼 클릭해줘" -- 使用视觉识别点击所描述的按钮<br>
+"화면에서 저장 버튼 찾아서 눌러줘" -- 在屏幕上找到并点击保存按钮<br>
+"지금 화면에 뭐가 보여?" -- 描述当前屏幕上的内容<br>
+"오른쪽 위에 있는 설정 아이콘 클릭해줘" -- 点击右上角的设置图标
+</div>
+
+<h3>何时使用 vision-click 与 browser</h3>
+<table>
+<tr><th>场景</th><th>推荐技能</th><th>原因</th></tr>
+<tr><td>点击已知的 DOM 元素</td><td><code>browser</code></td><td>使用 CSS 选择器更快且更可靠</td></tr>
+<tr><td>点击 canvas 或 iframe 内的元素</td><td><code>vision-click</code></td><td>DOM 选择器无法触及 canvas 渲染的内容</td></tr>
+<tr><td>桌面应用交互</td><td><code>vision-click</code></td><td>唯一选择——浏览器之外没有 DOM 可用</td></tr>
+<tr><td>选择器不稳定的动态 UI</td><td><code>vision-click</code></td><td>视觉识别比脆弱的选择器更健壮</td></tr>
+<tr><td>高速重复操作</td><td><code>browser</code></td><td>CDP 命令比截图往返更快</td></tr>
+</table>
+
+<div class="callout callout-warn">
+<strong>注意：</strong>vision-click 需要具备视觉能力的模型，并且由于截图捕获和模型推理，每次操作会产生额外的延迟。当速度很重要时，对于可通过 DOM 访问的元素，请使用 <code>browser</code> 技能。
+</div>
+
+<!-- ================================================================== -->
+<!-- web-routing -->
+<!-- ================================================================== -->
+
+<h2 id="web-routing">web-routing</h2>
+<p>编程式 HTTP 请求路由和拦截。配置请求处理程序，可以重定向、重写、阻止或转换 Web 流量。适用于本地开发代理、API 模拟和流量整形。</p>
+
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>web-routing</code></td></tr>
+<tr><td><strong>类别</strong></td><td>Automation</td></tr>
+<tr><td><strong>层级</strong></td><td>HTTP 请求/响应拦截</td></tr>
+<tr><td><strong>适用范围</strong></td><td>URL 模式匹配、请求头操作、请求体转换</td></tr>
+</table>
+
+<h3>路由规则</h3>
+<table>
+<tr><th>规则类型</th><th>说明</th><th>示例</th></tr>
+<tr><td><strong>Redirect</strong></td><td>将匹配的请求发送到不同的 URL</td><td><code>/api/* -> http://localhost:8080/api/*</code></td></tr>
+<tr><td><strong>Rewrite</strong></td><td>修改请求路径而不进行重定向</td><td><code>/v2/* -> /v1/*</code></td></tr>
+<tr><td><strong>Block</strong></td><td>对匹配的请求返回错误</td><td>阻止所有 <code>*.tracking.com</code> 请求</td></tr>
+<tr><td><strong>Mock</strong></td><td>返回静态或动态响应</td><td>对 <code>GET /api/users</code> 返回 JSON 固定数据</td></tr>
+<tr><td><strong>Transform</strong></td><td>修改请求或响应的头部/主体</td><td>为所有 API 调用添加 <code>Authorization</code> 头</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Redirect API calls to local dev server
+/web-routing add /api/* -> http://localhost:8080/api/*
+
+# Mock a specific endpoint with a JSON response
+/web-routing mock GET /api/users '[{"id":1,"name":"Test"}]'
+
+# Block tracking requests
+/web-routing block *.analytics.com
+
+# Add auth header to all outgoing API requests
+/web-routing transform /api/* --header "Authorization: Bearer $TOKEN"
+
+# List active routing rules
+/web-routing list
+
+# Remove a routing rule
+/web-routing remove /api/*</code></pre>
+
+<div class="callout callout-info">
+<strong>自然语言触发：</strong><br>
+"API 요청을 로컬 서버로 돌려줘" -- 将 API 请求重定向到 localhost<br>
+"이 엔드포인트 목업 데이터로 응답해줘" -- 使用固定数据模拟端点响应<br>
+"트래킹 스크립트 차단해줘" -- 阻止跟踪域的请求<br>
+"모든 API 요청에 인증 헤더 추가해줘" -- 为 API 流量添加认证头
+</div>
+
+<h3>模式匹配</h3>
+<p>路由模式支持 glob 语法，可以基于路径、主机、方法和头部进行匹配。</p>
+<pre><code># Glob patterns
+/api/*                    # matches /api/users, /api/posts/1, etc.
+/api/users/:id            # named parameter capture
+*.example.com             # subdomain wildcard
+
+# Method-specific routes
+GET /api/users            # only match GET requests
+POST /api/users           # only match POST requests
+
+# Header-based matching
+/api/* [Content-Type: application/json]   # match by header</code></pre>
+
+<div class="callout callout-warn">
+<strong>注意：</strong>路由规则按特异性顺序进行评估。更具体的模式优先于通配符。规则在会话期间持续有效，除非被明确移除。
+</div>
+
+<!-- ================================================================== -->
+<!-- Skill Comparison -->
+<!-- ================================================================== -->
+
+<h2 id="comparison">技能对比</h2>
+<p>根据您的任务选择合适的自动化技能。</p>
+<table>
+<tr><th>特性</th><th>browser</th><th>vision-click</th><th>web-routing</th></tr>
+<tr><td>目标</td><td>Chrome DOM</td><td>任何屏幕上的 UI</td><td>HTTP 流量</td></tr>
+<tr><td>协议</td><td>CDP</td><td>截图 + 视觉模型</td><td>HTTP 拦截</td></tr>
+<tr><td>速度</td><td>快</td><td>较慢（模型推理）</td><td>快</td></tr>
+<tr><td>选择器类型</td><td>CSS / XPath</td><td>视觉描述</td><td>URL 模式</td></tr>
+<tr><td>适用范围</td><td>仅限浏览器</td><td>浏览器 + 桌面应用</td><td>网络层</td></tr>
+<tr><td>前置条件</td><td>浏览器服务器正在运行</td><td>可访问视觉模型</td><td>无</td></tr>
+</table>
+
+<!-- ================================================================== -->
+<!-- Common Patterns -->
+<!-- ================================================================== -->
+
+<h2 id="patterns">常见模式</h2>
+
+<h3>抓取与提取</h3>
+<p>将 <code>browser</code> 技能与内容提取相结合，从网页中获取结构化数据。</p>
+<pre><code># Open the target page
+/browser open https://news.example.com
+
+# Extract all article titles
+/browser eval "Array.from(document.querySelectorAll('h2.title')).map(el => el.textContent)"
+
+# Take a screenshot for reference
+/browser screenshot</code></pre>
+
+<h3>表单自动化</h3>
+<p>通过链式输入和点击命令来填写并提交表单。</p>
+<pre><code># Navigate to login page
+/browser open https://app.example.com/login
+
+# Fill in credentials
+/browser type "#email" "user@example.com"
+/browser type "#password" "secretpassword"
+
+# Submit the form
+/browser click "#login-btn"
+
+# Wait for navigation and verify
+/browser wait "nav.dashboard"
+/browser screenshot</code></pre>
+
+<h3>桌面应用 + 浏览器组合</h3>
+<p>在混合工作流中，使用 <code>vision-click</code> 操作桌面应用元素，使用 <code>browser</code> 操作 Web 内容。</p>
+<pre><code># Click "Open in Browser" in a desktop app
+/vision-click "the Open in Browser button"
+
+# Switch to browser skill for DOM-level control
+/browser wait ".main-content"
+/browser extract ".main-content" text</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="orchestration.html">Development</a>
+<a class="next" href="ai-media.html">AI Media</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

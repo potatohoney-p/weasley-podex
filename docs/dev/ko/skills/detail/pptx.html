@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PowerPoint — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.trigger-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 16px; }
+.trigger-tag { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 12px; font-family: var(--mono); background: var(--surface2); border: 1px solid var(--border); color: var(--accent); }
+.example-callout { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-callout .example-korean { font-size: 15px; color: var(--text); margin-bottom: 6px; }
+.example-callout .example-desc { font-size: 13px; color: var(--text-dim); }
+.escalation-level { display: inline-block; background: var(--accent-dim); color: var(--accent); font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-right: 4px; }
+.palette-swatch { display: inline-block; width: 16px; height: 16px; border-radius: 3px; vertical-align: middle; margin-right: 4px; border: 1px solid var(--border); }
+.dial-bar { display: inline-block; background: var(--surface2); border-radius: 3px; height: 8px; width: 80px; position: relative; vertical-align: middle; }
+.dial-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; background: var(--accent); }
+.checklist { list-style: none; padding-left: 0; }
+.checklist li { padding: 4px 0; padding-left: 24px; position: relative; }
+.checklist li::before { content: "\2610"; position: absolute; left: 0; color: var(--text-muted); font-size: 14px; }
+.subskill-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin: 8px 0; }
+.subskill-card strong { color: var(--accent); }
+.subskill-card p { margin: 4px 0 0; font-size: 13px; color: var(--text-dim); }
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="문서 검색..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">시작하기</div>
+      <a class="docs-nav-link" href="../../">개요</a>
+      <a class="docs-nav-link" href="../../quickstart.html">빠른 시작</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">첫 실행</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">개념</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">아키텍처</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">직원</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">목표</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">스킬</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">메모리</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">프롬프트</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">가이드</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">대시보드</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">노트 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">칸반 보드</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">텔레그램</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">디스코드</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">컴퓨터 사용</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 데스크톱</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">레퍼런스</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 명령어</a>
+      <a class="docs-nav-link" href="../../reference/api.html">서버 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">설정</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">키보드 단축키</a>
+      <a class="docs-nav-link" href="../../reference/events.html">이벤트</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">스킬</div>
+      <a class="docs-nav-link" href="../index.html">카탈로그</a>
+      <a class="docs-nav-link" href="../orchestration.html">개발</a>
+      <a class="docs-nav-link" href="../automation.html">자동화</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 미디어</a>
+      <a class="docs-nav-link" href="../communication.html">커뮤니케이션</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">클라우드 &amp; 배포</a>
+      <a class="docs-nav-link" href="../devtools-security.html">보안 &amp; 리뷰</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">개발 워크플로우</a>
+      <a class="docs-nav-link active" href="../productivity.html">생산성</a>
+      <a class="docs-nav-link" href="../smarthome.html">스마트 홈</a>
+      <a class="docs-nav-link" href="../utility.html">유틸리티</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">명령어</div>
+      <a class="docs-nav-link" href="../../commands/session.html">세션</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">워크플로우</a>
+      <a class="docs-nav-link" href="../../commands/model.html">모델 &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">도구</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI 전용</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">루트 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">변경 이력</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">한국어</a>
+    <a href="../../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">랜딩 페이지</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>PowerPoint <span class="badge badge-active">기본 활성</span></h1>
+<p class="lead">.pptx 생성, 편집, 분석 &mdash; 단일 슬라이드 수정부터 모프 전환과 데이터 기반 생성을 갖춘 투자자 발표자료까지.</p>
+
+<div class="callout callout-info">이 스킬은 <strong>기본 활성</strong> 상태이며, 요청에 PowerPoint, PPTX, 프레젠테이션, 슬라이드, 발표자료 등이 언급되면 자동으로 트리거됩니다. 수동 로딩이 필요 없습니다.</div>
+
+<h4>트리거 키워드</h4>
+<div class="trigger-list">
+  <span class="trigger-tag">PowerPoint</span>
+  <span class="trigger-tag">PPTX</span>
+  <span class="trigger-tag">presentation</span>
+  <span class="trigger-tag">slides</span>
+  <span class="trigger-tag">deck</span>
+</div>
+
+<hr>
+
+<h2>빠른 참조</h2>
+<table>
+<tr><th>작업</th><th>방법</th></tr>
+<tr><td><strong>기존 발표자료 서식 따르기</strong></td><td><code>cp source.pptx target.pptx &amp;&amp; officecli open target.pptx</code> &mdash; 테마/레이아웃/마스터 상속</td></tr>
+<tr><td>내용 읽기 / 분석</td><td><code>officecli view</code> 및 <code>officecli get</code> 명령어</td></tr>
+<tr><td>기존 프레젠테이션 편집</td><td>참조 기반 편집 워크플로우 (복사 &rarr; 수정)</td></tr>
+<tr><td>처음부터 새로 만들기</td><td><code>officecli create</code> &rarr; 슬라이드 추가 &rarr; 요소 추가</td></tr>
+<tr><td>피치덱 (Seed / Series)</td><td>서브스킬: <code>officecli-pitch-deck</code></td></tr>
+<tr><td>모프 전환 애니메이션</td><td>서브스킬: <code>morph-ppt</code></td></tr>
+<tr><td>3D 모프 효과</td><td>서브스킬: <code>morph-ppt-3d</code></td></tr>
+<tr><td>JS 프로그래밍 방식 대안</td><td>50개 이상의 데이터 기반 슬라이드에 <code>pptxgenjs</code></td></tr>
+<tr><td>색상 팔레트 / 타이포그래피</td><td>디자인 시스템: 20개 팔레트, 8개 폰트 조합</td></tr>
+<tr><td>썸네일 그리드 / 시각적 QA</td><td><code>python3 scripts/thumbnail.py deck.pptx grid.png</code></td></tr>
+<tr><td>압축 해제 / 복구</td><td><code>python3 scripts/pptx_cli.py {open|save|validate|repair}</code></td></tr>
+</table>
+
+<div class="callout callout-warn"><strong>실행 모델:</strong> 명령어를 하나씩 실행하세요. 다음으로 넘어가기 전에 종료 코드를 확인하세요. 0이 아니면 = 멈추고 수정하세요. 같은 <code>.pptx</code> 파일에 대해 병렬 명령어를 실행하지 마세요.</div>
+
+<hr>
+
+<h2>"~해줘" 예시</h2>
+<p>이 스킬을 활성화하는 자연어 요청입니다. 한국어, 영어, 혼합 모두 가능합니다.</p>
+
+<div class="example-callout">
+  <div class="example-korean">"회사 소개 PPT 만들어줘 &mdash; 10장짜리, 우리 브랜드 컬러(네이비+화이트) 써줘"</div>
+  <div class="example-desc">네이비 + 화이트 색상 팔레트를 사용한 10장짜리 회사 소개 발표자료를 생성합니다. 스킬이 적절한 디자인 시스템 팔레트를 선택하고, 슬라이드 마스터를 설정한 후, 다양한 레이아웃(히어로, 분할, 그리드, 차트)으로 슬라이드를 생성합니다.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"이 PPTX 파일 분석해줘 &mdash; 어떤 내용인지 요약하고 디자인 문제 있으면 알려줘"</div>
+  <div class="example-desc"><code>officecli view text</code>로 모든 슬라이드 내용을 읽고, <code>officecli view issues</code>로 디자인 문제를 확인하며, 검증을 실행한 후 요약과 문제점(오버플로우, alt 텍스트 누락, 낮은 대비)을 보고합니다.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"기존 템플릿(Brand.pptx) 기반으로 Q4 실적 보고서 만들어줘"</div>
+  <div class="example-desc">테마/레이아웃/마스터를 상속받기 위해 원본 파일을 복사하고, 샘플 슬라이드를 제거한 후, 기존 브랜드 레이아웃을 사용하여 새 콘텐츠 슬라이드를 구성합니다. 테마를 처음부터 다시 만들지 않습니다.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"이 데이터로 차트 슬라이드 추가해줘 &mdash; 월별 매출 바 차트"</div>
+  <div class="example-desc"><code>officecli add</code>에 차트 속성을 지정하여 컬럼 차트 요소가 포함된 새 슬라이드를 추가합니다. 데이터는 인라인으로 전달되며 차트는 적절한 여백으로 배치됩니다.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"발표자료 만들어줘 &mdash; 모프 전환 효과 넣고, 다크 테마로"</div>
+  <div class="example-desc"><code>morph-ppt</code> 서브스킬을 활성화합니다. 48개의 큐레이션된 스타일 정의에서 다크 스타일을 선택하고, 슬라이드 간 모프 전환을 적용하며, 썸네일로 시각적 QA를 수행합니다.</div>
+</div>
+
+<hr>
+
+<h2>주요 도구: OfficeCLI</h2>
+<p><code>officecli</code>는 PPTX 작업의 약 80%를 처리합니다: 슬라이드 추가/설정/제거, 검증, 쿼리, 시각적 검사. 이것이 주요 인터페이스이며 &mdash; 다른 도구로 에스컬레이션하기 전에 항상 OfficeCLI를 먼저 시도하세요.</p>
+
+<h3>탐색 규칙</h3>
+<div class="callout callout-info">요소나 속성 이름을 임의로 만들지 말고, 항상 <code>officecli --help</code>와 <code>officecli help pptx ... --json</code>을 먼저 실행하세요. CLI가 사용 가능한 속성과 구문의 기준점입니다.</div>
+
+<pre><code>officecli --help
+officecli help pptx
+officecli help pptx add slide --json       # 정확한 속성 목록
+officecli help pptx add shape --json
+officecli help pptx set slide --json
+officecli help pptx set shape --json
+officecli view --help                      # 모든 보기 모드
+officecli help pptx query</code></pre>
+
+<hr>
+
+<h2>핵심 워크플로우</h2>
+
+<h3>읽기 &amp; 분석</h3>
+<pre><code># 텍스트 추출
+officecli view slides.pptx text
+officecli view slides.pptx text --start 1 --end 5
+
+# 구조적 보기
+officecli view slides.pptx outline
+officecli view slides.pptx annotated
+officecli view slides.pptx stats</code></pre>
+
+<h3>요소 검사 (PATH 구문)</h3>
+<p>경로는 1부터 시작합니다: <code>/slide[1]</code>, <code>/shape[1]</code>. zsh에서 glob 확장을 방지하려면 항상 경로를 따옴표로 감싸세요.</p>
+<pre><code>officecli get slides.pptx '/slide[1]' --depth 1
+officecli get slides.pptx '/slide[1]/shape[1]'
+officecli get slides.pptx '/slide[1]/chart[1]'
+officecli get slides.pptx '/slide[1]/table[1]' --depth 3</code></pre>
+
+<h3>CSS 유사 쿼리</h3>
+<pre><code>officecli query slides.pptx 'shape:contains("Revenue")'
+officecli query slides.pptx "picture:no-alt"
+officecli query slides.pptx 'shape[fill=#4472C4]'
+officecli query slides.pptx "shape[width>=10cm]"</code></pre>
+
+<h3>시각적 검사</h3>
+<pre><code>officecli view slides.pptx html --browser    # 권장
+officecli view slides.pptx svg --start 1 --end 1 --browser</code></pre>
+
+<h3>상주 모드</h3>
+<p>상주 모드는 더 빠른 순차 편집을 위해 파일을 백그라운드 데몬으로 열어둡니다. <code>open</code> 명령어는 즉시 반환됩니다 &mdash; 백그라운드 셸 작업으로 실행하지 <strong>마세요</strong>.</p>
+<pre><code>officecli open slides.pptx      # 즉시 반환; 데몬이 백그라운드에서 실행
+officecli add slides.pptx ...
+officecli set slides.pptx ...
+officecli close slides.pptx     # 항상 명시적으로 닫기</code></pre>
+<div class="callout callout-danger"><strong>경고:</strong> <code>officecli open</code>을 백그라운드 셸 작업으로 실행하지 마세요. 즉시 반환되며 데몬이 자동으로 백그라운드에서 실행됩니다. 백그라운드 셸 생성은 좀비 프로세스와 파일 잠금을 유발합니다.</div>
+
+<h3>배치 모드</h3>
+<p>JSON을 사용하여 단일 호출로 여러 작업을 실행합니다. 셸 구문이 JSON에 유입되는 것을 방지하려면 작은따옴표 구분자가 있는 heredoc을 사용하세요.</p>
+<pre><code>cat &lt;&lt;'EOF' | officecli batch slides.pptx
+[
+  {"command":"add","parent":"/slide[1]","type":"shape","props":{"text":"Title","x":"2cm","y":"2cm","width":"20cm","height":"3cm","size":"36","bold":"true"}},
+  {"command":"add","parent":"/slide[1]","type":"shape","props":{"text":"Body","x":"2cm","y":"6cm","width":"20cm","height":"10cm","size":"16"}}
+]
+EOF</code></pre>
+<p>배치 지원 명령어: <code>add</code>, <code>set</code>, <code>get</code>, <code>query</code>, <code>remove</code>, <code>move</code>, <code>swap</code>, <code>view</code>, <code>raw</code>, <code>raw-set</code>, <code>validate</code>.</p>
+
+<hr>
+
+<h2>참조 기반 편집</h2>
+<p>사용자가 원본 파일을 제공하거나 "X.pptx처럼 서식 맞춰줘"라고 하면 &mdash; <strong>항상 원본에서 시작하세요</strong>. 테마를 처음부터 다시 만들지 마세요.</p>
+
+<h3>이것이 중요한 이유</h3>
+<p>슬라이드 마스터와 테마 정의(폰트, 색상, 플레이스홀더 geometry)는 문서마다 다릅니다. 처음부터 다시 만들면 슬라이드 간 일관된 브랜딩이 깨지고, 기존 플레이스홀더 위치가 틀어지며, 복사본을 수정하는 것보다 5~10배 더 오래 걸립니다.</p>
+
+<h3>워크플로우</h3>
+<ol>
+  <li><strong>원본 복사:</strong> <code>cp source.pptx target.pptx</code> &mdash; 테마, 슬라이드 마스터, 레이아웃, 폰트, 색상 상속</li>
+  <li><strong>열기:</strong> <code>officecli open target.pptx</code> &mdash; 데몬이 즉시 반환</li>
+  <li><strong>슬라이드 내용 제거</strong> &mdash; <code>/slideMaster</code>, <code>/slideLayout</code>, <code>/theme</code>는 유지</li>
+  <li><strong>새 슬라이드 추가</strong> &mdash; 기존 레이아웃 사용 (<code>--prop layout=Title+Content</code>) &mdash; 테마가 자동 상속됨</li>
+</ol>
+
+<h3>템플릿 소스 (우선순위 순)</h3>
+<table>
+<tr><th>우선순위</th><th>소스</th><th>사용 시기</th></tr>
+<tr><td>1</td><td>사용자 제공 원본 파일</td><td>최우선 템플릿 &mdash; 항상 우선</td></tr>
+<tr><td>2</td><td><code>tests/fixtures/*.pptx</code></td><td>스킬에 포함된 사전 제작 예시</td></tr>
+<tr><td>3</td><td><code>officecli-pitch-deck/</code> 템플릿</td><td>피치/투자자 맥락</td></tr>
+<tr><td>4</td><td><code>morph-ppt/reference/styles/*</code></td><td>48개 큐레이션된 스타일 정의</td></tr>
+<tr><td>5</td><td><code>officecli create</code> 빈 파일</td><td>다른 것이 해당되지 않을 때만</td></tr>
+</table>
+
+<h3>예시 &mdash; 기존 브랜드 상속</h3>
+<pre><code># 올바른 방법: 테마와 레이아웃 상속
+cp CompanyBrand.pptx Q4Report.pptx
+officecli open Q4Report.pptx
+officecli remove Q4Report.pptx "/slide[1]"
+officecli add Q4Report.pptx / --type slide --prop layout=Title
+officecli add Q4Report.pptx '/slide[1]' --type textbox \
+  --prop text="Q4 Report" --prop placeholder=title
+officecli close Q4Report.pptx
+
+# 잘못된 방법: 테마 재생성 (브랜드 손실)
+officecli create Q4Report.pptx
+# ... 모든 폰트, 색상, 마스터를 처음부터 추가 ...</code></pre>
+
+<hr>
+
+<h2>생성 워크플로우</h2>
+<pre><code># 1. /tmp/에서 ASCII 파일명으로 작업 (한국어 파일명은 상주 모드에서 손상 유발)
+officecli create /tmp/deck_work.pptx --type pptx
+
+# 2. 슬라이드 추가, 배경 설정, 도형/텍스트박스/차트 추가
+officecli add /tmp/deck_work.pptx /slide --type slide
+officecli set /tmp/deck_work.pptx '/slide[1]' --prop background=1E2761
+officecli add /tmp/deck_work.pptx '/slide[1]' --type textbox \
+  --prop 'text=Title Here' --prop x=2cm --prop y=3cm --prop w=30cm --prop h=4cm \
+  --prop fontsize=44 --prop bold=true --prop color=FFFFFF --prop fontFamily=Pretendard
+
+# 3. 편집 후 상주 모드 명시적 닫기
+officecli close /tmp/deck_work.pptx
+
+# 4. 최종 파일명으로 복사 (최종 출력에는 한국어 파일명 사용 가능)
+python3 -c "import shutil; shutil.copy2('/tmp/deck_work.pptx', 'final.pptx')"</code></pre>
+
+<hr>
+
+<h2>에스컬레이션 사다리</h2>
+<p>OfficeCLI로 처리할 수 없을 때 순서대로 에스컬레이션하세요. 대부분의 작업은 L1에서 해결됩니다.</p>
+
+<table>
+<tr><th>레벨</th><th>상황</th><th>도구</th></tr>
+<tr>
+  <td><span class="escalation-level">L1</span> officecli 고수준</td>
+  <td>일반적인 슬라이드/도형 추가/설정/제거</td>
+  <td><code>officecli add/set/remove/query/view</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L2</span> officecli raw-set</td>
+  <td>XML 주입 &mdash; 커스텀 애니메이션, 차트 XML, 테마 조정</td>
+  <td><code>officecli raw-set FILE PATH --xpath X --action A --xml ...</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L3</span> Python 스크립트</td>
+  <td>썸네일 생성, 고아 미디어 정리, 통합 CLI 작업</td>
+  <td><code>python3 scripts/*.py</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L4</span> 압축 해제 &rarr; XML 편집 &rarr; 재압축</td>
+  <td>officecli 범위를 넘는 모프 전환, 커스텀 <code>p:transition</code> XML, 매크로 처리</td>
+  <td><code>scripts/pptx_cli.py open</code> &rarr; XML 편집 &rarr; <code>save</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L5</span> pptxgenjs</td>
+  <td>데이터셋으로 50장 이상, 조합 가능한 팩토리, 복잡한 반복 로직</td>
+  <td><code>npm install pptxgenjs</code> + JS 파이프라인</td>
+</tr>
+</table>
+
+<h3>에스컬레이션 신호</h3>
+<ul>
+  <li>officecli가 <strong>"silently ignored"</strong> 또는 미지원 속성을 표시 &rarr; <span class="escalation-level">L2</span></li>
+  <li>고수준 명령어 범위를 넘는 <strong>모프/커스텀 전환</strong>이 필요 &rarr; <span class="escalation-level">L4</span></li>
+  <li>데이터 기반 <strong>대량 생성</strong> (50장 이상) &rarr; <span class="escalation-level">L5</span> (pptxgenjs)</li>
+  <li>정리/재구성을 위한 <strong>압축 해제 워크플로우</strong> &rarr; <span class="escalation-level">L3</span> (<code>pptx_cli.py clean</code>)</li>
+  <li><strong>디자인 선택</strong> (색상, 폰트, 스타일) &rarr; 먼저 <code>references/design-system.md</code> + <code>morph-ppt/reference/styles/INDEX.md</code> 읽기</li>
+</ul>
+
+<hr>
+
+<h2>요소 타입 &amp; 명령어</h2>
+<p>OfficeCLI는 다양한 요소 타입을 지원합니다. 적극적으로 활용하세요 &mdash; 텍스트만 있는 슬라이드는 기억에 남지 않습니다.</p>
+
+<h3>도형을 콘텐츠 컨테이너로 사용</h3>
+<pre><code>officecli add deck.pptx '/slide[1]' --type shape --prop geometry=roundRect \
+  --prop fill=1E2761 --prop x=1cm --prop y=4cm --prop w=15cm --prop h=12cm</code></pre>
+
+<h3>표</h3>
+<pre><code>officecli add deck.pptx '/slide[2]' --type table \
+  --prop rows=4 --prop cols=3 --prop x=1cm --prop y=3cm \
+  --prop width=24cm --prop height=6cm</code></pre>
+
+<h3>차트</h3>
+<pre><code>officecli add deck.pptx '/slide[3]' --type chart \
+  --prop chartType=column --prop title='Revenue' \
+  --prop 'data=Q1:12,Q2:15,Q3:18,Q4:20'</code></pre>
+
+<h3>이미지</h3>
+<pre><code>officecli add deck.pptx '/slide[1]' --type picture \
+  --prop path=photo.png --prop x=14cm --prop y=3cm \
+  --prop width=8cm --prop height=5cm --prop alt='Team photo'</code></pre>
+
+<h3>비디오 / 오디오</h3>
+<pre><code>officecli add deck.pptx '/slide[4]' --type video --prop path=demo.mp4 \
+  --prop x=2cm --prop y=3cm --prop width=20cm --prop height=12cm --prop autoplay=true</code></pre>
+
+<h3>OLE 임베드 (Excel, Word, PDF)</h3>
+<pre><code>officecli add deck.pptx '/slide[5]' --type ole --prop path=data.xlsx \
+  --prop x=2cm --prop y=3cm --prop width=20cm --prop height=12cm</code></pre>
+
+<h3>연결선 / 화살표</h3>
+<pre><code>officecli add deck.pptx '/slide[2]' --type connector \
+  --prop startShape=1 --prop endShape=2 --prop lineColor=4472C4 --prop tailEnd=arrow</code></pre>
+
+<h3>발표자 노트</h3>
+<pre><code>officecli add deck.pptx '/slide[1]' --type notes --prop 'text=Key talking point here.'</code></pre>
+
+<h3>애니메이션</h3>
+<pre><code>officecli set deck.pptx '/slide[1]/shape[2]' --prop animation=fadeIn --prop delay=500</code></pre>
+
+<h3>테마 색상</h3>
+<pre><code># 테마 인식 발표자료에는 hex 대신 테마 토큰 사용
+officecli set deck.pptx '/slide[1]/shape[1]' --prop fill=accent1
+# 사용 가능: accent1..accent6, dk1, dk2, lt1, lt2, tx1, tx2, bg1, bg2</code></pre>
+
+<h3>추가 작업</h3>
+<pre><code># 하이퍼링크
+officecli set deck.pptx '/slide[1]/shape[2]' --prop link='https://example.com'
+
+# 뒤집기 / 회전
+officecli set deck.pptx '/slide[1]/shape[2]' --prop flipH=true
+officecli set deck.pptx '/slide[1]/shape[2]' --prop rotation=45
+
+# 슬라이드 마스터 / 레이아웃 편집
+officecli set deck.pptx '/slideMaster[1]/shape[2]' --prop text='Company Name'
+officecli set deck.pptx '/slideLayout[2]/shape[1]' --prop fill=1E2761
+
+# 데이터와 템플릿 병합
+officecli merge template.pptx output.pptx --data '{"title":"Q4 Report","revenue":"$5.1M"}'
+
+# 감시 모드 (실시간 미리보기)
+officecli watch deck.pptx --port 3000
+
+# 슬라이드쇼 설정
+officecli set deck.pptx / --prop show.loop=true --prop show.narration=false</code></pre>
+
+<hr>
+
+<h2>디자인 시스템</h2>
+
+<h3>디자인 다이얼</h3>
+<p>생성 전에 이 세 가지 매개변수를 결정하세요. 모호한 경우 사용자에게 제시하세요.</p>
+<table>
+<tr><th>다이얼</th><th>범위</th><th>기본값</th><th>의미</th></tr>
+<tr><td>DESIGN_VARIANCE</td><td>1&ndash;10</td><td>4</td><td>1 = 대칭 그리드, 10 = 비대칭 아트 디렉팅</td></tr>
+<tr><td>VISUAL_DENSITY</td><td>1&ndash;10</td><td>5</td><td>1 = 갤러리 여백, 10 = 대시보드 밀도</td></tr>
+<tr><td>MOTION_INTENSITY</td><td>1&ndash;10</td><td>3</td><td>1 = 정적 컷, 10 = 시네마틱 모프</td></tr>
+</table>
+
+<h3>발표자료 유형별 프리셋</h3>
+<table>
+<tr><th>발표자료 유형</th><th>변화도</th><th>밀도</th><th>모션</th></tr>
+<tr><td>투자자 피치</td><td>6</td><td>3</td><td>4</td></tr>
+<tr><td>내부 리뷰</td><td>3</td><td>7</td><td>1</td></tr>
+<tr><td>컨퍼런스 키노트</td><td>8</td><td>2</td><td>7</td></tr>
+<tr><td>워크숍 / 교육</td><td>4</td><td>6</td><td>2</td></tr>
+<tr><td>제품 출시</td><td>7</td><td>4</td><td>6</td></tr>
+</table>
+
+<h3>권장 팔레트</h3>
+<p>주제에 맞는 색상을 선택하세요 &mdash; 기본 파란색을 그냥 쓰지 마세요.</p>
+<table>
+<tr><th>테마</th><th>주색</th><th>보조색</th><th>강조색</th><th>텍스트</th><th>뮤트</th></tr>
+<tr><td>Midnight Executive</td><td><span class="palette-swatch" style="background:#1E2761"></span><code>1E2761</code></td><td><span class="palette-swatch" style="background:#CADCFC"></span><code>CADCFC</code></td><td><span class="palette-swatch" style="background:#FFFFFF"></span><code>FFFFFF</code></td><td><code>333333</code></td><td><code>8899BB</code></td></tr>
+<tr><td>Slate Professional</td><td><span class="palette-swatch" style="background:#2C3E50"></span><code>2C3E50</code></td><td><span class="palette-swatch" style="background:#ECF0F1"></span><code>ECF0F1</code></td><td><span class="palette-swatch" style="background:#E74C3C"></span><code>E74C3C</code></td><td><code>333333</code></td><td><code>7A8A94</code></td></tr>
+<tr><td>Forest &amp; Moss</td><td><span class="palette-swatch" style="background:#2C5F2D"></span><code>2C5F2D</code></td><td><span class="palette-swatch" style="background:#97BC62"></span><code>97BC62</code></td><td><span class="palette-swatch" style="background:#F5F5F5"></span><code>F5F5F5</code></td><td><code>2D2D2D</code></td><td><code>6B8E6B</code></td></tr>
+<tr><td>Coral Energy</td><td><span class="palette-swatch" style="background:#F96167"></span><code>F96167</code></td><td><span class="palette-swatch" style="background:#F9E795"></span><code>F9E795</code></td><td><span class="palette-swatch" style="background:#2F3C7E"></span><code>2F3C7E</code></td><td><code>333333</code></td><td><code>8B7E6A</code></td></tr>
+<tr><td>Warm Terracotta</td><td><span class="palette-swatch" style="background:#B85042"></span><code>B85042</code></td><td><span class="palette-swatch" style="background:#E7E8D1"></span><code>E7E8D1</code></td><td><span class="palette-swatch" style="background:#A7BEAE"></span><code>A7BEAE</code></td><td><code>3D2B2B</code></td><td><code>8C7B75</code></td></tr>
+<tr><td>Ocean Gradient</td><td><span class="palette-swatch" style="background:#065A82"></span><code>065A82</code></td><td><span class="palette-swatch" style="background:#1C7293"></span><code>1C7293</code></td><td><span class="palette-swatch" style="background:#21295C"></span><code>21295C</code></td><td><code>2B3A4E</code></td><td><code>6B8FAA</code></td></tr>
+<tr><td>Charcoal Minimal</td><td><span class="palette-swatch" style="background:#36454F"></span><code>36454F</code></td><td><span class="palette-swatch" style="background:#F2F2F2"></span><code>F2F2F2</code></td><td><span class="palette-swatch" style="background:#212121"></span><code>212121</code></td><td><code>333333</code></td><td><code>7A8A94</code></td></tr>
+<tr><td>Berry &amp; Cream</td><td><span class="palette-swatch" style="background:#6D2E46"></span><code>6D2E46</code></td><td><span class="palette-swatch" style="background:#A26769"></span><code>A26769</code></td><td><span class="palette-swatch" style="background:#ECE2D0"></span><code>ECE2D0</code></td><td><code>3D2233</code></td><td><code>8C6B7A</code></td></tr>
+</table>
+<p>밝은 배경에서는 본문에 <strong>텍스트</strong> 색상, 캡션/라벨/축 텍스트에는 <strong>뮤트</strong> 색상을 사용하세요. 어두운 배경(밝기 &lt; 30%)에서는 모든 본문 텍스트를 흰색(<code>FFFFFF</code>) 또는 거의 흰색으로 해야 합니다. 순수 검정 대신: <code>000000</code>이 아닌 <code>0A0A0A</code>.</p>
+<div class="callout callout-warn"><strong>피해야 할 것:</strong> 흰 배경 위 보라색 그라데이션 (AI 스타일), 무지개 다중 강조색, <code>FFFFFF</code> 배경 + <code>000000</code> 텍스트 (개성 없음).</div>
+
+<h3>타이포그래피</h3>
+<table>
+<tr><th>제목 폰트</th><th>본문 폰트</th><th>적합한 용도</th></tr>
+<tr><td>Georgia</td><td>Calibri</td><td>격식 있는 비즈니스, 금융</td></tr>
+<tr><td>Arial Black</td><td>Arial</td><td>강렬한 마케팅, 출시</td></tr>
+<tr><td>Trebuchet MS</td><td>Calibri</td><td>친근한 테크, 스타트업</td></tr>
+<tr><td>Consolas</td><td>Calibri</td><td>개발자 도구, 엔지니어링</td></tr>
+</table>
+<p><strong>한국어:</strong> Pretendard, Noto Sans KR, Wanted Sans. <code>Malgun Gothic</code>을 단독 폰트로 사용하지 마세요 &mdash; <code>a:ea</code> 폰트 스택에서 CJK 대체용으로만 허용됩니다.</p>
+
+<table>
+<tr><th>요소</th><th>크기</th></tr>
+<tr><td>슬라이드 제목</td><td>36&ndash;44pt 볼드</td></tr>
+<tr><td>섹션 헤더</td><td>20&ndash;24pt 볼드</td></tr>
+<tr><td>본문 텍스트</td><td>16&ndash;20pt (최소 16pt)</td></tr>
+<tr><td>캡션 / 출처</td><td>10&ndash;12pt 뮤트</td></tr>
+<tr><td>핵심 지표</td><td>60&ndash;72pt 볼드, 강조색</td></tr>
+</table>
+<div class="callout callout-info">본문 텍스트 최소 16pt. 텍스트가 넘치면 내용을 줄이거나 슬라이드를 분할하세요 &mdash; 폰트를 절대 줄이지 마세요.</div>
+
+<h3>슬라이드 리듬</h3>
+<p>10장짜리 발표자료에는 최소 4가지 구별되는 레이아웃 유형이 있어야 합니다:</p>
+<ol>
+  <li><strong>전면 히어로</strong> &mdash; 제목 또는 핵심 지표</li>
+  <li><strong>분할 레이아웃</strong> &mdash; 텍스트 + 시각 자료</li>
+  <li><strong>그리드 또는 비교</strong> &mdash; 2&ndash;3개 항목</li>
+  <li><strong>데이터 시각화</strong> &mdash; 차트, 다이어그램 또는 인포그래픽</li>
+</ol>
+
+<h3>콘텐츠-레이아웃 가이드</h3>
+<table>
+<tr><th>콘텐츠 유형</th><th>권장 레이아웃</th></tr>
+<tr><td>가격 / 요금제 티어</td><td>2&ndash;3열 카드 (비교)</td></tr>
+<tr><td>팀 / 인물</td><td>아이콘 그리드 또는 2x3 카드</td></tr>
+<tr><td>타임라인 / 로드맵</td><td>화살표가 있는 프로세스 플로우 / 번호 단계</td></tr>
+<tr><td>핵심 지표 / KPI</td><td>큰 숫자 콜아웃 (3&ndash;4개 큰 숫자)</td></tr>
+<tr><td>고객 추천사 / 인용문</td><td>전체 너비 인용문 + 출처</td></tr>
+<tr><td>기능 비교</td><td>2열 전후 비교 또는 표</td></tr>
+<tr><td>아키텍처 / 시스템</td><td>도형 + 연결선 다이어그램</td></tr>
+<tr><td>재무 데이터</td><td>차트 + 요약 표 나란히 배치</td></tr>
+</table>
+
+<hr>
+
+<h2>서브스킬</h2>
+<p>작업에 맞는 서브스킬 하나만 로드하세요. 전부 로드하지 마세요.</p>
+
+<div class="subskill-card">
+  <strong>officecli-pitch-deck</strong> &mdash; 피치덱 (Seed / Series)
+  <p>투자자 피치덱을 위한 특화된 템플릿과 구조. 문제/솔루션/시장/트랙션/팀/재무 흐름을 처리합니다.</p>
+</div>
+
+<div class="subskill-card">
+  <strong>morph-ppt</strong> &mdash; 모프 전환 애니메이션
+  <p>슬라이드 간 시네마틱 모프 전환. 48개 큐레이션된 스타일 정의, 결정 규칙 (피라미드 원칙, SCQA), 캔버스 사양, 품질 게이트를 포함합니다.</p>
+</div>
+
+<div class="subskill-card">
+  <strong>morph-ppt-3d</strong> &mdash; 3D 모프 효과
+  <p>고급 시각적 프레젠테이션을 위한 3D 모델 통합 모프 전환.</p>
+</div>
+
+<div class="subskill-card">
+  <strong>pptxgenjs</strong> &mdash; JavaScript 프로그래밍 방식 생성
+  <p>조합 가능한 팩토리와 반복 로직으로 50장 이상의 데이터 기반 슬라이드를 대량 생성하는 PptxGenJS API.</p>
+</div>
+
+<hr>
+
+<h2>참조 자료</h2>
+
+<h3>디자인 참조</h3>
+<table>
+<tr><th>파일</th><th>읽어야 할 시점</th><th>포함 내용</th></tr>
+<tr><td><code>references/design-system.md</code></td><td>색상/폰트 선택 전</td><td>20개 팔레트, 8개 폰트 조합, 4개 한국어 폰트</td></tr>
+<tr><td><code>morph-ppt/reference/styles/INDEX.md</code></td><td>독특한 시각적 스타일 선택 시</td><td>사양 + 예시가 포함된 48개 스타일 정의</td></tr>
+<tr><td><code>morph-ppt/reference/decision-rules.md</code></td><td>콘텐츠가 많은 발표자료 기획 시</td><td>피라미드 원칙, SCQA, 페이지 유형</td></tr>
+<tr><td><code>morph-ppt/reference/pptx-design.md</code></td><td>캔버스 사양, 고스트 위치 계산</td><td>캔버스, 폰트, 간격 토큰</td></tr>
+<tr><td><code>morph-ppt/reference/quality-gates.md</code></td><td>4~5단계 QA 게이트</td><td>모프 발표자료 QA 체크리스트</td></tr>
+<tr><td><code>recipes.md</code></td><td>빠른 수정 패턴</td><td>섹션 구분선 z-order, KPI 오버플로우, 타임라인 간격</td></tr>
+</table>
+
+<h3>Python 스크립트 (<code>scripts/</code>)</h3>
+<table>
+<tr><th>스크립트</th><th>용도</th><th>명령어</th></tr>
+<tr><td><code>pptx_cli.py</code></td><td>통합 CLI: 압축 해제, 저장, 검증, 복구, 썸네일, 검색, 목차, 슬라이드 추가, 정리, PDF 내보내기</td><td><code>python3 scripts/pptx_cli.py {open|save|validate|repair|...}</code></td></tr>
+<tr><td><code>thumbnail.py</code></td><td>시각적 QA를 위한 슬라이드 썸네일 그리드 또는 개별 PNG</td><td><code>python3 scripts/thumbnail.py IN.pptx grid.png</code></td></tr>
+<tr><td><code>clean.py</code></td><td>압축 해제된 PPTX에서 고아 미디어 찾기/제거</td><td><code>python3 scripts/clean.py work/ [--delete]</code></td></tr>
+<tr><td><code>add_slide.py</code></td><td>압축 해제된 디렉토리에서 슬라이드 추가 또는 복제 (레거시 OOXML)</td><td><code>python3 scripts/add_slide.py work/ --blank</code></td></tr>
+<tr><td><code>run_tests.py</code></td><td>스킬 회귀 테스트 실행</td><td><code>python3 scripts/run_tests.py</code></td></tr>
+</table>
+
+<hr>
+
+<h2>QA (필수)</h2>
+<div class="callout callout-danger"><strong>문제가 있다고 가정하세요. 여러분의 임무는 그것을 찾는 것입니다.</strong> 첫 번째 렌더링은 거의 항상 정확하지 않습니다. QA를 확인 단계가 아닌 버그 사냥으로 접근하세요. 첫 검사에서 문제를 하나도 발견하지 못했다면, 충분히 꼼꼼하게 보지 않은 것입니다.</div>
+
+<h3>1단계 &mdash; 자동 QA</h3>
+<pre><code>officecli validate output.pptx
+officecli view output.pptx issues
+officecli view output.pptx text | grep -iE 'xxxx|lorem|ipsum|placeholder|TODO|click to'
+officecli view output.pptx stats</code></pre>
+
+<h3>2단계 &mdash; 시각적 QA</h3>
+<pre><code>officecli view output.pptx html --browser
+
+# 빠른 스캔을 위한 썸네일 그리드
+python3 scripts/thumbnail.py output.pptx grid.png</code></pre>
+<p>시각적 검사에는 서브에이전트를 사용하세요 &mdash; 2~3장짜리 슬라이드라도. 여러분은 실제로 있는 것이 아니라 기대하는 것을 보게 됩니다. 새로운 시각이 더 많은 버그를 잡습니다.</p>
+
+<h3>시각적 QA 체크리스트</h3>
+<ul>
+  <li>겹치는 요소 (도형을 통과하는 텍스트, 쌓인 요소)</li>
+  <li>텍스트 박스 경계에서 넘치거나 잘리는 텍스트</li>
+  <li>너무 가까운 요소 (&lt; 0.3인치 간격) 또는 거의 닿는 요소</li>
+  <li>불균일한 간격 (넓은 빈 영역 vs 빽빽한 부분)</li>
+  <li>슬라이드 가장자리에서 불충분한 여백 (&lt; 0.5인치)</li>
+  <li>열이나 유사 요소가 정렬되지 않음</li>
+  <li>대비가 낮은 텍스트 또는 아이콘</li>
+  <li>남아 있는 플레이스홀더 콘텐츠</li>
+  <li>과도한 줄바꿈을 유발하는 너무 좁은 텍스트 박스</li>
+</ul>
+
+<h3>3단계 &mdash; 수정 및 재검증</h3>
+<p><code>officecli set</code>으로 수정하고 QA를 다시 실행하세요. 최소 한 번의 수정-검증 사이클을 완료하기 전에는 완료를 선언하지 마세요.</p>
+
+<hr>
+
+<h2>납품 전 체크리스트</h2>
+<ul class="checklist">
+  <li>모든 콘텐츠 슬라이드에 발표자 노트</li>
+  <li>최소 하나의 전환 스타일 적용</li>
+  <li>모든 이미지에 alt 텍스트: <code>officecli query deck.pptx 'picture:no-alt'</code></li>
+  <li>슬라이드 전체에 레이아웃 다양성 &ge; 3가지 유형</li>
+  <li>오버플로우 없음: <code>y + height &le; 19.05cm</code>, <code>x + width &le; 33.87cm</code></li>
+  <li>남아 있는 플레이스홀더 텍스트 없음</li>
+  <li>모든 곳에서 본문 텍스트 &ge; 16pt</li>
+  <li>차트 제목에 실제 값 포함 (TBD, 빈 괄호 없음)</li>
+</ul>
+
+<hr>
+
+<h2>흔한 실수</h2>
+<table>
+<tr><th>실수</th><th>올바른 접근법</th></tr>
+<tr><td>zsh에서 따옴표 없는 <code>[N]</code></td><td>항상 따옴표 사용: <code>"/slide[1]"</code> 또는 <code>'/slide[1]'</code></td></tr>
+<tr><td><code>--name "foo"</code></td><td><code>--prop name="foo"</code> 사용 &mdash; 모든 속성은 <code>--prop</code>을 통해</td></tr>
+<tr><td>속성 이름 추측</td><td><code>officecli help pptx set shape --json</code>을 실행하여 정확한 이름 확인</td></tr>
+<tr><td><code>#</code>가 포함된 hex 색상</td><td><code>#FF0000</code>이 아닌 <code>FF0000</code> 사용</td></tr>
+<tr><td><code>--prop text=</code>에서 <code>$</code></td><td>작은따옴표 사용: <code>'$15M'</code></td></tr>
+<tr><td><code>view text</code>가 표를 놓침</td><td>전체 텍스트에는 <code>view annotated</code> 사용</td></tr>
+<tr><td>생성 후 차트 시리즈 추가</td><td>추가 불가 &mdash; 차트를 삭제하고 다시 만드세요</td></tr>
+<tr><td>한국어 파일명 + 상주 모드</td><td>CJK가 상주 모드 UTF-8 손상을 유발. ASCII 사용 후 복사</td></tr>
+<tr><td>상주 모드 좀비</td><td><code>pkill -9 -f "resident-serve"</code>, 1초 대기 후 재시도</td></tr>
+<tr><td>기존 테마/마스터를 처음부터 재생성</td><td><code>cp source.pptx target.pptx</code>를 먼저. 마스터/레이아웃/테마 유지</td></tr>
+<tr><td><code>officecli open</code>을 백그라운드 셸로</td><td>포그라운드에서 실행 &mdash; 즉시 반환되며 데몬이 자동으로 백그라운드에서 실행</td></tr>
+<tr><td>배치 JSON 파싱 오류</td><td>셸 구문이 유입됨. heredoc 사용: <code>cat &lt;&lt;'EOF' | officecli batch FILE.pptx</code></td></tr>
+<tr><td>색상/폰트를 막연히 선택</td><td>선택 전 <code>references/design-system.md</code> 읽기</td></tr>
+</table>
+
+<hr>
+
+<h2>안티패턴</h2>
+<ul>
+  <li>서브스킬 파일의 예시 데이터 사용 금지 (FitPulse, LearnFlow 등)</li>
+  <li>플레이스홀더 텍스트 남기기 금지: <code>lorem</code>, <code>ipsum</code>, <code>XXXX</code>, <code>TODO</code></li>
+  <li>모든 슬라이드에 제목 필수 (접근성)</li>
+  <li>모든 콘텐츠 슬라이드에 발표자 노트</li>
+  <li>발표자료당 최대 2개 폰트 패밀리</li>
+  <li><code>Malgun Gothic</code> 단독 사용 = 거부</li>
+  <li><code>view issues</code>에서 blank 레이아웃의 "(untitled)"는 예상된 결과이며 결함이 아님</li>
+  <li>제목 아래 강조선 &mdash; AI가 생성한 슬라이드의 전형적 특징; 대신 여백 활용</li>
+  <li>장식용 웹 UI 요소 (얇은 사이드바 선, 장식적 원) &mdash; PPT는 프로젝터 매체이지 웹 앱이 아님</li>
+  <li>모든 슬라이드에 동일한 레이아웃 &mdash; 열, 카드, 콜아웃을 다양하게</li>
+  <li>본문 텍스트 가운데 정렬 &mdash; 문단은 왼쪽 정렬; 가운데 정렬은 제목에만</li>
+  <li>불충분한 크기 대비 &mdash; 제목 36pt 이상 vs 본문 16pt</li>
+  <li>텍스트만 있는 슬라이드 &mdash; 도형, 차트, 색상 블록, 이미지 추가</li>
+</ul>
+
+<hr>
+
+<h2>접근성 (WCAG 2.1 AA)</h2>
+<ul>
+  <li>모든 슬라이드에 제목: <code>officecli view deck.pptx outline</code></li>
+  <li>이미지에 alt 텍스트: <code>officecli query deck.pptx 'picture:no-alt'</code></li>
+  <li>읽기 순서 = 도형 순서 (제목 먼저)</li>
+  <li>대비 &ge; 4.5:1 일반, &ge; 3:1 대형</li>
+  <li>색상만으로 정보를 전달하지 않음</li>
+</ul>
+
+<hr>
+
+<h2>CJK / 한국어 지원</h2>
+<p>podex 포크는 한국어 콘텐츠를 자동 감지하여 언어 태그 + 기본 폰트를 적용합니다. 상주 모드 편집 중에는 UTF-8 손상을 방지하기 위해 ASCII 파일명을 사용하세요; 최종 단계에서 한국어 파일명으로 복사하면 됩니다.</p>
+
+<hr>
+
+<h2>필수 조건</h2>
+<table>
+<tr><th>도구</th><th>용도</th><th>상태</th></tr>
+<tr><td><code>officecli</code> (PATH)</td><td>주요 PPTX CLI</td><td>필수</td></tr>
+<tr><td><code>python3</code> + <code>python-pptx</code></td><td>L3/L4 작업용 스크립트</td><td>스크립트 사용 시 필수</td></tr>
+<tr><td><code>pptxgenjs</code></td><td>대규모 프로그래밍 방식 생성 (L5)</td><td>선택</td></tr>
+<tr><td><code>soffice</code> (LibreOffice)</td><td>PDF 변환, QA용 썸네일</td><td>선택 (필요 시 자동 설치)</td></tr>
+</table>
+
+<pre><code># 필수 조건 확인
+python3 -c "import pptx" || echo "MISSING: pip install python-pptx"
+which officecli &gt;/dev/null 2&gt;&amp;1 || echo "INFO: OfficeCLI not installed"
+which soffice &gt;/dev/null 2&gt;&amp;1 || echo "INFO: LibreOffice not installed (optional)"</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">생산성 스킬</a>
+<a class="next" href="hwp.html">HWP (한국어 문서)</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

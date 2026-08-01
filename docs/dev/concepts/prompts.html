@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Pipeline — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link active" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Skills Overview</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI &amp; Media</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">DevTools Cloud</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">DevTools Security</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">DevTools Workflow</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Orchestration</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utility</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI Only</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model</a>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Prompt Pipeline</h1>
+<p class="lead">podex assembles system prompts through a multi-layer pipeline: static templates (A1/A2), dynamic injection (memory, orchestration, skills), disk caching (B.md/AGENTS.md), and per-CLI spawn adapters.</p>
+
+<h2>Assembly Order</h2>
+<p>The <code>getSystemPrompt()</code> function in <code>src/prompt/builder.ts</code> assembles the prompt in this order:</p>
+<ol>
+<li><strong>A-1.md</strong> -- System rules (browser control, memory, heartbeat, delegation)</li>
+<li><strong>A-2.md</strong> -- User settings (identity, vibe, working directory)</li>
+<li><strong>Memory injection</strong> -- Advanced (profile + soul + task snapshot) or legacy fallback</li>
+<li><strong>Orchestration section</strong> -- Employee dispatch rules + PABCD guide</li>
+<li><strong>Heartbeat jobs</strong> -- Scheduled task descriptions from <code>heartbeat.json</code></li>
+<li><strong>Skills section</strong> -- Active skills inline + available skill list</li>
+<li><strong>Vision-click hint</strong> -- Codex-only legacy fallback for desktop automation</li>
+<li><strong>Delegation rules</strong> -- CLI sub-agents vs jaw employees distinction</li>
+</ol>
+
+<h2>Static Templates</h2>
+<h3>A-1.md (System Rules)</h3>
+<p>Path: <code>~/.podex/prompts/A-1.md</code>. Falls back to <code>src/prompt/templates/a1-system.md</code> (305 lines). Contains core system behavior: browser control rules, memory/heartbeat instructions, jaw employee vs CLI sub-agent distinctions, and channel send rules.</p>
+<div class="callout callout-info">A-1.md uses hash-based migration. If you have not customized it, template updates apply automatically. Custom A-1 files are preserved.</div>
+
+<h3>A-2.md (User Settings)</h3>
+<p>Path: <code>~/.podex/prompts/A-2.md</code>. Template: <code>a2-default.md</code> (25 lines). Contains identity, user preferences, vibe, and working directory hints. Created only if missing -- never overwritten.</p>
+
+<h2>Dynamic Injection</h2>
+<h3>Memory Injection</h3>
+<p>Two paths depending on index readiness:</p>
+<ul>
+<li><strong>Advanced path</strong> (<code>src/memory/injection.ts</code>): Profile context (800 chars) + Soul &amp; Identity (1000 chars) + Task Snapshot (2800 chars, up to 4 hits)</li>
+<li><strong>Legacy fallback</strong>: Session memory (10000 chars budget) + Core Memory from <code>MEMORY.md</code> (1500 chars)</li>
+</ul>
+<p>Injection is role-aware: <code>boss</code> gets the full snapshot, <code>employee</code>/<code>subagent</code> gets a reduced profile, and <code>flush</code> role gets no memory injection.</p>
+
+<h3>Orchestration</h3>
+<p>If at least one employee is registered, the <code>orchestration.md</code> template is injected with <code>podex dispatch</code> usage examples. If <code>skills/dev-pabcd/SKILL.md</code> exists, a PABCD Orchestration Guide follows.</p>
+
+<h3>Heartbeat</h3>
+<p>Active heartbeat jobs from <code>~/.podex/heartbeat.json</code> are rendered with their enabled state, human-readable schedule, and prompt preview.</p>
+
+<h3>Skills</h3>
+<p>Active skills (<code>~/.podex/skills/*/SKILL.md</code>) are rendered inline. Reference skills (<code>~/.podex/skills_ref/registry.json</code>) are listed as available for discovery.</p>
+
+<h2>Disk Cache (B.md)</h2>
+<p><code>regenerateB()</code> creates a cached version of the system prompt for disk:</p>
+<table>
+<tr><th>Output</th><th>Purpose</th></tr>
+<tr><td><code>~/.podex/prompts/B.md</code></td><td>Debug and cache file</td></tr>
+<tr><td><code>{workDir}/AGENTS.md</code></td><td>Auto-read by Codex, Copilot, OpenCode</td></tr>
+</table>
+<p>Content hash is checked -- files are only rewritten when the prompt actually changes, preserving resume continuity.</p>
+
+<h2>Per-CLI Spawn Input</h2>
+<p>Each CLI runtime receives the prompt differently:</p>
+<table>
+<tr><th>CLI</th><th>System Prompt</th><th>User Input</th></tr>
+<tr><td>Claude</td><td><code>buildArgs(..., sysPrompt)</code></td><td>stdin: <code>withHistoryPrompt(prompt, historyBlock)</code></td></tr>
+<tr><td>Codex</td><td><code>AGENTS.md</code> auto-loaded</td><td>stdin: <code>[User Message]</code> block</td></tr>
+<tr><td>Gemini</td><td><code>GEMINI_SYSTEM_MD</code> tmpfile</td><td>Args-level prompt</td></tr>
+<tr><td>AGY</td><td>No system prompt flag; optional flags (e.g. <code>--model</code>) are capability-probed before emission</td><td><code>agy -p &lt;prompt&gt;</code></td></tr>
+<tr><td>Cursor</td><td><code>AGENTS.md</code> / <code>CLAUDE.md</code> auto-loaded</td><td>Args-level prompt</td></tr>
+<tr><td>Grok</td><td>CWD instruction files</td><td><code>-p &lt;prompt&gt;</code></td></tr>
+<tr><td>Copilot</td><td>ACP + cwd instruction files</td><td><code>session/prompt()</code></td></tr>
+</table>
+
+<h2>History Block</h2>
+<p>On new sessions (not resume), <code>buildHistoryBlock()</code> prepends recent conversation context:</p>
+<ul>
+<li>Source: <code>messages</code> DB, scoped to <code>workingDir</code></li>
+<li>Limit: 8000 characters, up to 10 sessions</li>
+<li>Compact markers stop history scanning and insert trace summaries</li>
+</ul>
+<pre><code>[Recent Context]
+assistant: Previous response summary...
+user: Previous question...
+
+---
+[Current Message]
+Your new prompt here</code></pre>
+
+<h2>Customizing Prompts</h2>
+<p>Edit <code>~/.podex/prompts/A-2.md</code> to customize identity, preferences, and working directory. Use <code>/prompt</code> to preview the current A2 content. The Web UI settings panel also provides a prompt template editor.</p>
+
+<div class="callout callout-info">
+<strong>Try it:</strong>
+<ul>
+<li>시스템 프롬프트 보여줘</li>
+<li>프롬프트 커스터마이징 하고 싶어</li>
+</ul>
+</div>
+
+<div class="page-nav">
+<a class="prev" href="memory.html">Memory</a>
+<a class="next" href="../guides/dashboard.html">Dashboard</a>
+</div>
+</main>
+</div>
+<script src="../_search.js"></script>
+</body>
+</html>
+

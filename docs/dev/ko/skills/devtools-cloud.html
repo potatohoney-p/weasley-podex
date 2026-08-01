@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloud & Deploy Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link active" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Cloud & Deploy Skills</h1>
+<p class="lead">클라우드 인프라 프로비저닝, 서버리스 배포, 엣지 컴퓨팅, 그리고 서비스형 플랫폼(PaaS) 통합을 제공합니다. podex에서 자연어 명령 하나로 모든 주요 클라우드 제공업체에 직접 배포할 수 있습니다.</p>
+
+<h2>Overview</h2>
+<p>Cloud & Deploy 스킬은 podex를 통합 배포 제어 플레인으로 변환합니다. 각 플랫폼의 CLI 플래그를 일일이 외울 필요 없이, 원하는 것을 자연어로 설명하면 적절한 스킬이 제공업체별 설정, 빌드 단계, 배포 오케스트레이션을 처리합니다.</p>
+
+<div class="callout callout-info">
+  <strong>자연어 배포</strong> &mdash; <code>"Vercel에 배포해줘"</code> 또는 <code>"Deploy this to Cloudflare Workers"</code>라고 말하면 podex가 적절한 스킬을 선택하고, 프레임워크를 감지하여, 전체 배포 파이프라인을 실행합니다.
+</div>
+
+<h2>Skill Catalog</h2>
+<table>
+<tr><th>Skill</th><th>Provider</th><th>Description</th></tr>
+<tr><td><code>cloudflare-deploy</code></td><td>Cloudflare</td><td>Workers, Pages, KV, R2, D1, AI, WAF, Tunnel, Spectrum. Wrangler 완전 통합.</td></tr>
+<tr><td><code>agents-sdk</code></td><td>Cloudflare</td><td>Workers에서 상태 유지 AI 에이전트 구축: Durable Objects 상태, WebSocket 실시간 통신, 예약된 작업, MCP 서버.</td></tr>
+<tr><td><code>durable-objects</code></td><td>Cloudflare</td><td>상태 유지 조정 프리미티브: 채팅방, 멀티플레이어, 예약 시스템, SQLite 스토리지, 알람.</td></tr>
+<tr><td><code>aws-skills</code></td><td>AWS</td><td>Lambda, S3, EC2, ECS, CloudFront, API Gateway, DynamoDB, SQS, SNS, IAM 정책 생성.</td></tr>
+<tr><td><code>terraform</code></td><td>Multi-cloud</td><td>코드형 인프라(IaC): plan, apply, 상태 관리, 모듈 작성, 드리프트 감지.</td></tr>
+<tr><td><code>vercel-deploy</code></td><td>Vercel</td><td>Next.js, SvelteKit, Nuxt, Remix용 제로 설정 배포. 프리뷰 URL, 엣지 함수, 환경 변수.</td></tr>
+<tr><td><code>netlify-deploy</code></td><td>Netlify</td><td>Jamstack 배포, 서버리스 함수, 폼 처리, ID 인증, 엣지 핸들러.</td></tr>
+<tr><td><code>render-deploy</code></td><td>Render</td><td>웹 서비스, 정적 사이트, 크론 작업, 데이터베이스, 프라이빗 서비스, 블루프린트.</td></tr>
+<tr><td><code>mcp-builder</code></td><td>Any</td><td>도구 통합을 위한 Model Context Protocol 서버 구축 및 배포.</td></tr>
+<tr><td><code>jupyter-notebook</code></td><td>Local / Remote</td><td>노트북 실행, 커널 관리, 셀 조작, 출력 캡처.</td></tr>
+</table>
+
+<h2>Framework Detection</h2>
+<p>Cloud 스킬은 프로젝트 프레임워크를 자동으로 감지하고 최적의 빌드 설정을 적용합니다. 지원되는 프레임워크:</p>
+<table>
+<tr><th>Framework</th><th>Detection Signal</th><th>Default Target</th></tr>
+<tr><td>Next.js</td><td><code>next.config.*</code></td><td>Vercel / Cloudflare Pages</td></tr>
+<tr><td>Nuxt</td><td><code>nuxt.config.*</code></td><td>Vercel / Netlify</td></tr>
+<tr><td>SvelteKit</td><td><code>svelte.config.js</code></td><td>Vercel / Cloudflare Pages</td></tr>
+<tr><td>Remix</td><td><code>remix.config.*</code></td><td>Vercel / Cloudflare Workers</td></tr>
+<tr><td>Astro</td><td><code>astro.config.*</code></td><td>Netlify / Cloudflare Pages</td></tr>
+<tr><td>Hono</td><td>deps 내 <code>hono</code></td><td>Cloudflare Workers</td></tr>
+<tr><td>Express / Fastify</td><td>deps 내 <code>express</code> / <code>fastify</code></td><td>Render / AWS Lambda</td></tr>
+<tr><td>Static HTML</td><td>루트에 <code>index.html</code></td><td>Cloudflare Pages / Netlify</td></tr>
+</table>
+
+<h2>Cloudflare Ecosystem</h2>
+<p>세 가지 전용 스킬이 Cloudflare 플랫폼을 심층적으로 다룹니다. 사전 학습된 지식보다 공식 Cloudflare 문서에서의 검색을 우선시합니다.</p>
+
+<h3>cloudflare-deploy</h3>
+<p>모든 Cloudflare 제품을 포괄하는 통합 스킬입니다. Workers, Pages, 스토리지(KV, D1, R2), AI(Workers AI, Vectorize), 네트워킹(Tunnel, Spectrum), 보안(WAF, DDoS), 그리고 Terraform 또는 Pulumi를 통한 코드형 인프라를 처리합니다.</p>
+<pre><code># Deploy a Worker
+"이 코드를 Cloudflare Worker로 배포해줘"
+
+# Create a KV namespace and bind it
+"KV 네임스페이스 만들고 Worker에 바인딩해줘"
+
+# Set up R2 bucket with custom domain
+"R2 버킷 생성하고 커스텀 도메인 연결해줘"</code></pre>
+
+<h3>agents-sdk</h3>
+<p>Cloudflare Workers에서 영구 상태, 실시간 WebSocket 통신, 예약된 작업 실행을 갖춘 AI 에이전트를 구축합니다.</p>
+<pre><code># Create a stateful chat agent
+"Cloudflare Agents SDK로 채팅 에이전트 만들어줘"
+
+# Add WebSocket real-time support
+"실시간 WebSocket 통신 추가해줘"
+
+# Build an MCP server on Workers
+"MCP 서버를 Workers에 만들어줘"</code></pre>
+
+<h3>durable-objects</h3>
+<p>멀티플레이어, 예약, 속도 제한 등을 위한 상태 유지 조정 기능입니다. RPC 메서드, SQLite 스토리지, 알람, WebSocket, 그리고 Vitest 테스트를 지원합니다.</p>
+<pre><code># Create a multiplayer game room
+"Durable Objects로 멀티플레이어 게임룸 만들어줘"
+
+# Add SQLite storage to a DO
+"DO에 SQLite 스토리지 추가해줘"</code></pre>
+
+<h2>AWS Skills</h2>
+<p><code>aws-skills</code> 모듈은 자연어 명령을 통해 가장 일반적으로 사용되는 AWS 서비스를 지원합니다.</p>
+
+<div class="callout callout-info">
+  <strong>IAM 정책 생성</strong> &mdash; <code>"Lambda에 S3 읽기 권한 추가해줘"</code>라고 말하면 podex가 최소 권한 IAM 정책 문서를 생성하고, 실행 역할에 연결한 뒤, 변경 사항을 검증합니다.
+</div>
+
+<pre><code># Create a Lambda function
+"AWS Lambda 만들어줘, Node.js 20 런타임으로"
+
+# Set up API Gateway + Lambda
+"API Gateway로 REST API 만들고 Lambda에 연결해줘"
+
+# Deploy to ECS with Fargate
+"Docker 이미지 빌드해서 ECS Fargate에 배포해줘"
+
+# Create S3 bucket with CloudFront CDN
+"S3 정적 호스팅이랑 CloudFront 설정해줘"</code></pre>
+
+<table>
+<tr><th>Service</th><th>Supported Operations</th></tr>
+<tr><td>Lambda</td><td>생성, 배포, 업데이트, 트리거 추가, 환경 변수 설정, 레이어 구성</td></tr>
+<tr><td>S3</td><td>버킷 생성, CORS 설정, 정적 호스팅 활성화, 라이프사이클 규칙</td></tr>
+<tr><td>EC2</td><td>인스턴스 시작, 보안 그룹, 키 페어, AMI 관리</td></tr>
+<tr><td>ECS</td><td>태스크 정의, 서비스, Fargate, ECR 이미지 푸시</td></tr>
+<tr><td>CloudFront</td><td>배포, 오리진, 캐시 정책, 무효화</td></tr>
+<tr><td>API Gateway</td><td>REST 및 HTTP API, 라우트, 통합, 인가자(authorizer)</td></tr>
+<tr><td>DynamoDB</td><td>테이블 생성, GSI, 쿼리/스캔, TTL 구성</td></tr>
+<tr><td>SQS / SNS</td><td>큐/토픽 생성, 구독, 데드 레터 큐</td></tr>
+</table>
+
+<h2>Terraform</h2>
+<p><code>terraform</code> 스킬은 모든 클라우드 제공업체에 걸쳐 코드형 인프라(IaC)를 제공합니다. HCL을 생성하고, 상태를 관리하며, plan/apply 라이프사이클을 처리합니다.</p>
+<pre><code># Generate Terraform for a full-stack app
+"Next.js 앱을 위한 Terraform 설정 만들어줘 — Vercel + PlanetScale"
+
+# Plan and apply changes
+"Terraform plan 돌려줘"
+"변경사항 확인했으니 apply 해줘"
+
+# Import existing resources
+"기존 AWS 리소스 Terraform state로 import 해줘"</code></pre>
+
+<div class="callout callout-warn">
+  <strong>상태 안전성</strong> &mdash; terraform 스킬은 항상 <code>terraform plan</code>을 먼저 실행하며, <code>apply</code> 전에 명시적인 확인을 요구합니다. 파괴적 변경(리소스 삭제)은 차이점 요약과 함께 추가 경고를 발생시킵니다.
+</div>
+
+<h2>Platform-as-a-Service</h2>
+<p>Vercel, Netlify, Render 스킬은 최소한의 설정으로 웹 애플리케이션의 간소화된 배포를 제공합니다.</p>
+
+<h3>vercel-deploy</h3>
+<pre><code># Deploy with preview URL
+"Vercel에 배포해줘"
+
+# Set environment variables
+"Vercel에 DATABASE_URL 환경변수 설정해줘"
+
+# Promote preview to production
+"프리뷰 배포를 프로덕션으로 올려줘"</code></pre>
+
+<h3>netlify-deploy</h3>
+<pre><code># Deploy a static site
+"Netlify에 빌드하고 배포해줘"
+
+# Configure serverless functions
+"Netlify Functions 추가해줘"
+
+# Set up form handling
+"Netlify Forms로 문의 폼 연결해줘"</code></pre>
+
+<h3>render-deploy</h3>
+<pre><code># Deploy a web service
+"Render에 Express 서버 배포해줘"
+
+# Create a cron job
+"Render에 매일 자정에 실행되는 크론잡 만들어줘"
+
+# Set up a managed database
+"Render PostgreSQL 데이터베이스 만들어줘"</code></pre>
+
+<h2>MCP Builder</h2>
+<p><code>mcp-builder</code> 스킬은 MCP 호환 클라이언트에 도구, 리소스, 프롬프트를 노출하는 Model Context Protocol 서버를 생성합니다.</p>
+<pre><code># Create an MCP server
+"Notion API를 MCP 서버로 감싸줘"
+
+# Add tools to an existing server
+"MCP 서버에 검색 도구 추가해줘"
+
+# Deploy MCP server to Workers
+"MCP 서버를 Cloudflare Workers에 배포해줘"</code></pre>
+
+<h2>Jupyter Notebook</h2>
+<p><code>jupyter-notebook</code> 스킬은 데이터 과학 및 실험 워크플로를 위한 노트북 실행, 커널 라이프사이클, 셀 단위 편집을 관리합니다.</p>
+<pre><code># Execute a notebook
+"이 노트북 전체 실행해줘"
+
+# Add a cell and run it
+"pandas로 CSV 로딩하는 셀 추가해줘"
+
+# Convert notebook to HTML report
+"노트북을 HTML 보고서로 변환해줘"</code></pre>
+
+<h2>Configuration</h2>
+<p>Cloud 스킬은 표준 제공업체 설정의 자격 증명을 사용합니다. 이미 제공업체 CLI가 설정되어 있다면 추가적인 podex 설정은 필요하지 않습니다.</p>
+
+<table>
+<tr><th>Provider</th><th>Credential Source</th><th>Required Setup</th></tr>
+<tr><td>Cloudflare</td><td><code>~/.wrangler/</code> 또는 <code>CLOUDFLARE_API_TOKEN</code></td><td><code>wrangler login</code></td></tr>
+<tr><td>AWS</td><td><code>~/.aws/credentials</code> 또는 환경 변수</td><td><code>aws configure</code></td></tr>
+<tr><td>Vercel</td><td><code>~/.vercel/</code></td><td><code>vercel login</code></td></tr>
+<tr><td>Netlify</td><td><code>~/.netlify/</code></td><td><code>netlify login</code></td></tr>
+<tr><td>Render</td><td><code>RENDER_API_KEY</code></td><td>대시보드에서 API 키 발급</td></tr>
+<tr><td>Terraform</td><td>제공업체별</td><td>제공업체별 인증</td></tr>
+</table>
+
+<div class="callout callout-info">
+  <strong>자격 증명 안전성</strong> &mdash; podex는 자격 증명을 자체적으로 저장하지 않습니다. 각 제공업체의 표준 자격 증명 체인에 위임합니다. 시크릿은 메모리, 로그, 대화 기록에 절대 기록되지 않습니다.
+</div>
+
+<h2>Common Patterns</h2>
+
+<h3>Multi-stage deployment</h3>
+<p>복잡한 워크플로를 위해 스킬을 조합할 수 있습니다. podex가 자동으로 단계를 연결합니다:</p>
+<pre><code># Build, test, and deploy
+"테스트 돌리고 통과하면 Vercel에 배포해줘"
+
+# Multi-provider setup
+"프론트엔드는 Cloudflare Pages, 백엔드는 AWS Lambda로 배포해줘"</code></pre>
+
+<h3>Environment promotion</h3>
+<pre><code># Promote staging to production
+"스테이징 확인했으니 프로덕션으로 승격해줘"
+
+# Rollback
+"이전 버전으로 롤백해줘"</code></pre>
+
+<h3>Infrastructure + deploy in one flow</h3>
+<pre><code># Full-stack provisioning
+"Terraform으로 인프라 구성하고 앱도 배포해줘"</code></pre>
+
+<h2>Error Handling</h2>
+<p>Cloud 스킬은 구조화된 오류 복구를 제공합니다:</p>
+<ul>
+<li><strong>인증 실패</strong> &mdash; 만료된 토큰을 감지하고 올바른 제공업체 CLI 명령으로 재인증을 안내합니다.</li>
+<li><strong>빌드 실패</strong> &mdash; 빌드 로그를 분석하여 근본 원인을 파악하고, 재시도 전에 수정 방법을 제안합니다.</li>
+<li><strong>할당량 한도</strong> &mdash; 어떤 리소스 한도에 도달했는지 보고하고, 정리 또는 플랜 업그레이드를 제안합니다.</li>
+<li><strong>네트워크 타임아웃</strong> &mdash; 일시적 장애에 대해 지수 백오프로 자동 재시도합니다.</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="communication.html">Communication</a>
+<a class="next" href="devtools-security.html">Security & Review</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

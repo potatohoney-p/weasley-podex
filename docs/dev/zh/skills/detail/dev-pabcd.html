@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PABCD 工作流 — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.3); }
+.phase-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px 28px; margin: 16px 0 24px; overflow-x: auto; }
+.phase-diagram pre { background: none; border: none; padding: 0; margin: 0; }
+.phase-diagram code { color: var(--accent); font-size: 14px; }
+.phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 16px 0; }
+.phase-card h3 { margin-top: 0; color: var(--accent); }
+.phase-card .gate { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; margin-left: 8px; }
+.gate-stop { background: rgba(248, 113, 113, 0.15); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.3); }
+.gate-auto { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.3); }
+.example-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 10px 0; }
+.example-block .example-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.example-block code { font-size: 14px; color: var(--green); background: none; padding: 0; }
+.pitfall-item { background: var(--surface); border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 12px 0; }
+.pitfall-item h4 { color: var(--red); margin: 0 0 6px; text-transform: none; letter-spacing: 0; font-size: 15px; }
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">快速入门</div>
+      <a class="docs-nav-link" href="../../">概览</a>
+      <a class="docs-nav-link" href="../../quickstart.html">快速开始</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">首次运行</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">核心概念</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">架构</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">员工</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">目标</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">技能</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">记忆</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">提示词</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">使用指南</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">计算机操控</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 桌面端</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">参考手册</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 命令</a>
+      <a class="docs-nav-link" href="../../reference/api.html">服务器 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">配置</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">快捷键</a>
+      <a class="docs-nav-link" href="../../reference/events.html">事件</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">技能</div>
+      <a class="docs-nav-link" href="../index.html">技能目录</a>
+      <a class="docs-nav-link active" href="../orchestration.html">开发</a>
+      <a class="docs-nav-link" href="../automation.html">自动化</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 媒体</a>
+      <a class="docs-nav-link" href="../communication.html">通信</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">云服务与部署</a>
+      <a class="docs-nav-link" href="../devtools-security.html">安全与审查</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">开发工作流</a>
+      <a class="docs-nav-link" href="../productivity.html">生产力</a>
+      <a class="docs-nav-link" href="../smarthome.html">智能家居</a>
+      <a class="docs-nav-link" href="../utility.html">工具集</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">命令</div>
+      <a class="docs-nav-link" href="../../commands/session.html">会话</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">工作流</a>
+      <a class="docs-nav-link" href="../../commands/model.html">模型与 CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">工具</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">仅限 CLI</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">根 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">更新日志</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">한국어</a>
+    <a href="../../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">首页</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>PABCD 工作流 <span class="badge badge-active">默认启用</span></h1>
+<p class="lead">结构化的 Plan（计划） &rarr; Audit（审计） &rarr; Build（构建） &rarr; Check（检查） &rarr; Done（完成）开发工作流，每个关卡都设有强制性的用户检查点。</p>
+
+<div class="callout callout-info"><strong>自动启用的技能。</strong> <code>dev-pabcd</code> 是每个会话自动注入的 10 个开发技能之一。它在编排模式下激活，提供结构化的五阶段工作流，确保在没有经过审核的计划之前不会执行任何构建。</div>
+
+<h2>快速参考</h2>
+<table>
+<tr><th>属性</th><th>值</th></tr>
+<tr><td>技能名称</td><td><code>dev-pabcd</code></td></tr>
+<tr><td>分类</td><td>开发 / 编排</td></tr>
+<tr><td>默认启用</td><td>是 &mdash; 会话启动时自动注入</td></tr>
+<tr><td>需要 <code>/skill load</code></td><td>否</td></tr>
+<tr><td>阶段</td><td>P（计划） &rarr; A（审计） &rarr; B（构建） &rarr; C（检查） &rarr; D（完成）</td></tr>
+<tr><td>用户关卡</td><td>P、A、B 需要用户批准 &mdash; C、D 自动推进</td></tr>
+<tr><td>Worker 角色</td><td>只读验证者（不编写代码）</td></tr>
+<tr><td>重置命令</td><td><code>podex orchestrate reset</code></td></tr>
+</table>
+
+<h2>状态机</h2>
+<p>PABCD 是一个<strong>单向循环</strong> &mdash; 只能前进，不能跳过阶段。每个阶段必须完成后才能进入下一个。</p>
+
+<div class="phase-diagram">
+<pre><code>IDLE ──&rarr; P ──&rarr; A ──&rarr; B ──&rarr; C ──&rarr; D ──&rarr; IDLE
+         │      │      │      │      │
+        STOP   STOP   STOP   auto   auto
+        wait   wait   wait</code></pre>
+</div>
+
+<p>阶段 <strong>P</strong>、<strong>A</strong> 和 <strong>B</strong> 会暂停并等待用户批准后才能推进。阶段 <strong>C</strong> 和 <strong>D</strong> 在工作完成后自动推进。</p>
+
+<h3>状态转换命令</h3>
+<table>
+<tr><th>命令</th><th>转换</th><th>前置条件</th></tr>
+<tr><td><code>podex orchestrate P</code></td><td>进入计划阶段</td><td>必须处于 IDLE 状态</td></tr>
+<tr><td><code>podex orchestrate A</code></td><td>进入计划审计阶段</td><td>必须处于 P 阶段（计划已批准）</td></tr>
+<tr><td><code>podex orchestrate B</code></td><td>进入构建阶段</td><td>必须处于 A 阶段（审计已通过）</td></tr>
+<tr><td><code>podex orchestrate C</code></td><td>进入检查阶段</td><td>必须处于 B 阶段（构建已批准）</td></tr>
+<tr><td><code>podex orchestrate D</code></td><td>进入完成阶段</td><td>必须处于 C 阶段（检查已完成）</td></tr>
+<tr><td><code>podex orchestrate reset</code></td><td>返回 IDLE 状态</td><td>任意状态</td></tr>
+</table>
+
+<h2>阶段详情</h2>
+
+<div class="phase-card">
+<h3>P &mdash; 计划 <span class="gate gate-stop">需要用户批准</span></h3>
+<p>计划阶段读取项目文档和开发技能，然后生成包含两部分的计划：</p>
+<ul>
+<li><strong>第一部分 &mdash; 通俗解释：</strong> 将要构建什么，用非开发人员的语言描述。任何人都应该能理解。</li>
+<li><strong>第二部分 &mdash; Diff 级精度：</strong> 精确的文件路径（<code>NEW</code> / <code>MODIFY</code> / <code>DELETE</code>），<code>MODIFY</code> 的前后对比差异，<code>NEW</code> 的完整内容。</li>
+</ul>
+
+<h4>范围澄清</h4>
+<p>如果请求的范围不明确或技术方案未指定，计划阶段会先进行澄清：</p>
+<ul>
+<li>以 <code>&lt;TechName&gt; -- &lt;通俗解释&gt;</code> 的格式提供 2-3 个选项</li>
+<li>根据项目具体情况推荐其中一个</li>
+<li>确认一次后继续执行</li>
+</ul>
+
+<h4>仓库扫描（大范围变更）</h4>
+<p>对于大范围变更或不熟悉的仓库，P 阶段必须包含：</p>
+<ul>
+<li>当前仓库结构的紧凑树形图</li>
+<li>检测到的仓库约定：文档、计划、架构说明、真实来源日志、命名规范、测试</li>
+<li>是否已读取现有的 <code>structure/</code>、<code>devlog/</code>、<code>docs/</code>、<code>plans/</code> 或等效日志，以及是否会复用</li>
+<li>是否建议创建 <code>structure/</code> 或 <code>devlog/</code></li>
+</ul>
+
+<h4>开发日志命名约定</h4>
+<p>如果 PABCD 工作创建或更新了 <code>devlog/</code> 计划产物，计划中必须列出精确的 Jawdev 编号文件名：</p>
+<pre><code>00_overview.md
+01_phase1_&lt;slug&gt;.md
+02_phase2_&lt;slug&gt;.md</code></pre>
+<p>裸文件名如 <code>PLAN.md</code>、<code>DIFF_PLAN.md</code>、<code>PHASES.md</code>、<code>RCA.md</code> 或 <code>plan.md</code> <strong>不允许</strong>作为新的开发日志阶段文件。</p>
+
+<h4>关卡问题</h4>
+<p>在展示计划之前，计划阶段会询问：</p>
+<ol>
+<li>"有没有我不应该独自决定的业务逻辑？"</li>
+<li>"第一部分是否符合您的意图？"</li>
+</ol>
+<p>计划会被展示，并根据反馈进行修改。当用户批准后，使用 <code>podex orchestrate A</code> 进行状态转换。</p>
+</div>
+
+<div class="phase-card">
+<h3>A &mdash; 计划审计 <span class="gate gate-stop">需要用户批准</span></h3>
+<p>系统会生成一个 Worker 来<strong>审计计划</strong>（不是代码）。Worker 验证以下内容：</p>
+<ul>
+<li>计划中的所有文件路径和导入是否实际存在</li>
+<li>函数签名是否与实际代码匹配</li>
+<li>是否存在集成风险</li>
+<li>现有的真实来源文档/日志是否已被读取</li>
+<li>未经用户批准不得引入新的 <code>structure/</code>、<code>devlog/</code>、文档或 AGENTS 文件</li>
+<li>新的 JS/TS 文件遵循 TypeScript 优先规则，除非计划中说明了为什么需要使用 JS</li>
+<li>新的 TypeScript 代码兼容严格模式，或已说明限制</li>
+<li>新的开发日志阶段文档使用编号的 Jawdev 文件名约定</li>
+</ul>
+<p>Worker 输出审计的 JSON 结果。审查结果：</p>
+<ul>
+<li><strong>FAIL</strong> &rarr; 修复计划，重新审计</li>
+<li><strong>PASS</strong> &rarr; 向用户报告结果</li>
+</ul>
+<p>当用户批准后，使用 <code>podex orchestrate B</code> 进行状态转换。</p>
+</div>
+
+<div class="phase-card">
+<h3>B &mdash; 构建 <span class="gate gate-stop">需要用户批准</span></h3>
+<p>实现阶段。<strong>Boss 直接编写所有代码</strong>。Worker 仅作为只读验证者。</p>
+<p>实现完成后，会派遣一个 Worker 进行验证 &mdash; 检查代码是否存在以及是否能顺利集成：</p>
+<ul>
+<li><strong>NEEDS_FIX</strong> &rarr; Boss 修复问题，重新验证</li>
+<li><strong>DONE</strong> &rarr; 向用户报告结果</li>
+</ul>
+<p>除非在 P 阶段已批准或用户明确要求，否则不创建 <code>structure/</code> 或 <code>devlog/</code>。</p>
+<p>当用户批准后，使用 <code>podex orchestrate C</code> 进行状态转换。</p>
+</div>
+
+<div class="phase-card">
+<h3>C &mdash; 检查 <span class="gate gate-auto">自动推进</span></h3>
+<p>自动运行的最终完整性检查：</p>
+<ol>
+<li>验证所有文件已保存且一致</li>
+<li>运行 <code>npx tsc --noEmit</code>（如果是 TypeScript 项目）</li>
+<li>如适用，更新项目结构文档</li>
+<li>报告完成摘要</li>
+</ol>
+<p>完成后，通过 <code>podex orchestrate D</code> 自动转换到 D 阶段。</p>
+</div>
+
+<div class="phase-card">
+<h3>D &mdash; 完成 <span class="gate gate-auto">自动推进</span></h3>
+<p>总结整个 PABCD 流程：</p>
+<ul>
+<li>计划了什么（P）、审计了什么（A）、构建了什么（B）、检查了什么（C）</li>
+<li>变更文件列表</li>
+<li>后续待办事项</li>
+</ul>
+<p>状态自动返回 <strong>IDLE</strong>。</p>
+</div>
+
+<h2>规则</h2>
+<table>
+<tr><th>#</th><th>规则</th><th>详情</th></tr>
+<tr><td>1</td><td>每次响应一个阶段</td><td>展示工作内容，然后在 P、A、B 关卡等待用户批准。绝不跳过。</td></tr>
+<tr><td>2</td><td>严格顺序</td><td>P &rarr; A &rarr; B &rarr; C &rarr; D。使用 <code>podex orchestrate reset</code> 从 IDLE 重新开始。</td></tr>
+<tr><td>3</td><td>Worker 验证，Boss 编写</td><td>Worker 是只读的。所有代码由 Boss 在 B 阶段直接编写。</td></tr>
+</table>
+
+<h2>仓库根目录约定</h2>
+<p>在编写 PABCD 计划或派遣 Worker 之前，需要从目标仓库使用 <code>pwd -P</code> 确定实际的工作仓库根目录。</p>
+
+<p>每个 A/B 阶段的 <code>podex dispatch</code> 任务体<strong>必须</strong>以以下内容开头：</p>
+<pre><code>Project root: /absolute/path/to/current/repo</code></pre>
+
+<table>
+<tr><th>规则</th><th>说明</th></tr>
+<tr><td><code>Project root</code> = 工作仓库</td><td>必须是当前工作仓库，而不是 <code>JAW_HOME</code></td></tr>
+<tr><td>禁止推断</td><td>绝不允许 Worker 从 <code>~/.podex*</code>、<code>process.cwd()</code> 或员工临时目录推断仓库根目录</td></tr>
+<tr><td>绝对路径</td><td>所有相对仓库路径（<code>src/</code>、<code>tests/</code>、<code>structure/</code>、<code>skills_ref/</code>）必须基于 <code>Project root</code> 解析</td></tr>
+<tr><td>根目录未知 = 停止</td><td>如果 <code>Project root</code> 未知，在派遣前停止并询问</td></tr>
+</table>
+
+<h2>共享计划注入</h2>
+<p>当 P 阶段完成时，计划保存到<strong>工作日志的 <code>## Plan</code> 部分</strong>（唯一的真实来源）并保持在 <code>ctx.plan</code> 中。不会创建项目根目录文件。</p>
+
+<div class="callout callout-info"><strong>自动注入：</strong>在 A 和 B 阶段，编排器会在每个 <code>podex dispatch</code> 任务顶部的 <code>## Approved Plan</code> 下自动注入完整的计划内容。Worker 无需读取计划文件 &mdash; 计划会自动添加到前面。</div>
+
+<p>你的派遣任务体应该只包含实际的审计/验证指令。示例：</p>
+<pre><code>podex dispatch --agent "Backend" --task "Project root: /path/to/repo
+
+Audit: verify the imports in src/routes/auth.ts..."</code></pre>
+<p>不需要"读取计划"的指令 &mdash; 计划已经被自动注入了。</p>
+
+<h2>常见陷阱</h2>
+<p>在 PABCD 执行过程中需要避免的关键反模式。</p>
+
+<div class="pitfall-item">
+<h4>委派陷阱</h4>
+<p>在 B 阶段，<strong>Boss 编写所有代码</strong>。Worker 是只读验证者。</p>
+<table>
+<tr><th></th><th>派遣内容</th><th>示例</th></tr>
+<tr><td style="color: var(--red); font-weight: 700;">禁止</td><td>编写/实现</td><td><code>"implement the feature"</code>、<code>"write the code"</code>、<code>"create the file"</code></td></tr>
+<tr><td style="color: var(--green); font-weight: 700;">允许</td><td>验证/检查</td><td><code>"verify src/x.ts compiles"</code>、<code>"check integration of Y"</code>、<code>"report DONE or NEEDS_FIX"</code></td></tr>
+</table>
+</div>
+
+<div class="pitfall-item">
+<h4>上下文偏移</h4>
+<p>如果 Worker 说<em>"我将根据我对计划的理解继续执行"</em> &mdash; <strong>停止</strong>。验证派遣是否通过 <code>/api/orchestrate/dispatch</code>（只有该路径才会自动注入计划）。绝不允许 Worker 从简短的任务描述中重新构建计划。</p>
+</div>
+
+<div class="pitfall-item">
+<h4>阶段跳过</h4>
+<p>A（审计）<strong>永远不是"不必要的"</strong>。即使是简单的计划也可能遇到集成问题。先进行审计。B 阶段的验证<strong>永远不能"跳过"</strong>。未经测试的代码不算"完成"。目前编排器不强制执行这些关卡 &mdash; <strong>你自己</strong>来强制执行。</p>
+</div>
+
+<h2>"~해줘" 使用示例</h2>
+<p>使用自然语言触发 PABCD 工作流的实际示例。</p>
+
+<div class="example-block">
+<div class="example-label">功能开发</div>
+<code>"이 프로젝트에 WebSocket 채팅 기능 추가해줘"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">触发完整的 PABCD 流程：规划 WebSocket 架构、审计导入和集成点、构建实现、检查 TypeScript 编译、总结变更文件。</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">有计划的重构</div>
+<code>"인증 시스템 전체 리팩토링해줘 -- JWT에서 세션 기반으로"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">范围较大，因此 P 阶段会扫描仓库树、识别所有与认证相关的文件，并生成 Diff 级精度的计划。A 阶段审计确保没有导入路径被破坏。</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">数据库迁移</div>
+<code>"D1 데이터베이스 스키마 마이그레이션 계획 세워줘"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">P 阶段澄清迁移范围（哪些表、向后兼容性），生成第一部分的通俗解释和第二部分的精确 SQL 迁移文件。A 阶段验证现有的 schema 引用。</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">多文件功能</div>
+<code>"API 라우트 5개 새로 만들고 테스트도 다 붙여줘"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">P 阶段列出所有 NEW 文件及其完整内容。B 阶段实现每个路由和测试文件。C 阶段在整个项目运行 <code>tsc --noEmit</code> 以捕获类型错误。</p>
+</div>
+
+<div class="example-block">
+<div class="example-label">带审计的 Bug 修复</div>
+<code>"프로덕션 에러 원인 찾아서 고쳐줘 -- PABCD로 진행해"</code>
+<p style="margin-top: 8px; font-size: 13px; color: var(--text-dim);">即使是 Bug 修复，PABCD 也能确保根本原因在 P 阶段被记录，修复计划在 A 阶段被审计，实现在 B 阶段被验证，并在 C 阶段确保没有其他东西被破坏。</p>
+</div>
+
+<h2>与其他技能的关系</h2>
+<p>PABCD 是<strong>结构化工作流层</strong>，包裹在其他开发技能之上。当 PABCD 处于活动状态时，专业技能如 <code>dev-backend</code>、<code>dev-frontend</code> 和 <code>dev-testing</code> 在 PABCD 的监督下于 B（构建）阶段中运行。</p>
+
+<table>
+<tr><th>技能</th><th>与 PABCD 的关系</th></tr>
+<tr><td><code>dev</code></td><td>可以为复杂任务激活 PABCD 的编排器</td></tr>
+<tr><td><code>dev-backend</code> / <code>dev-frontend</code></td><td>在 B 阶段实现过程中注入的专业上下文</td></tr>
+<tr><td><code>dev-testing</code></td><td>测试编写在 B 阶段进行；测试执行在 C 阶段进行</td></tr>
+<tr><td><code>dev-code-reviewer</code></td><td>在构建后通过代码质量审查补充 A 阶段</td></tr>
+<tr><td><code>dev-debugging</code></td><td>可以触发 PABCD 以进行结构化的 Bug 修复工作流</td></tr>
+<tr><td><code>dev-security</code></td><td>安全检查集成到 A（计划审计）和 C（检查）阶段</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>另请参阅：</strong><a href="../../concepts/pabcd.html">核心概念 &rarr; PABCD</a> 了解高层概览，以及<a href="../orchestration.html">开发技能</a>查看自动启用的开发技能完整列表。</div>
+
+<div class="page-nav">
+<a class="prev" href="../orchestration.html">开发技能</a>
+<a class="next" href="../index.html">技能目录</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Telegram Send &#8212; podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+.badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+.badge-category { background: rgba(99, 102, 241, 0.15); color: var(--accent); }
+.quick-ref { margin: 24px 0; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 160px; }
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-ko { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+.dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.dep-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.dep-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.dep-card code { font-size: 13px; }
+.dep-card .dep-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+.flow-table td:first-child { font-weight: 600; white-space: nowrap; width: 100px; }
+.api-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 16px 0; }
+.api-box h4 { margin: 0 0 8px; font-size: 14px; }
+.api-box p { margin: 4px 0; font-size: 13px; color: var(--text-dim); }
+@media (max-width: 768px) {
+  .dep-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link active" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Telegram Send</h1>
+<p class="lead">Telegram 봇을 통해 음성, 사진, 문서 파일을 전송합니다 &mdash; Bot API 우선 전송 정책, 자동 채팅 ID 확인, 텍스트 알림 및 재시도를 위한 로컬 엔드포인트 폴백을 지원합니다.</p>
+
+<p>
+  <span class="badge badge-active">기본 활성</span>
+  <span class="badge badge-category">커뮤니케이션</span>
+</p>
+
+<div class="callout callout-info">
+  <strong>기본적으로 활성화:</strong> <code>telegram-send</code>는 모든 세션에 자동으로 주입됩니다. 수동 로딩이 필요 없습니다. "send via Telegram" 또는 "텔레그램으로 보내줘"라고 말하면 스킬이 활성화되고 에이전트가 이 페이지에 설명된 전송 정책을 따릅니다.
+</div>
+
+<h2>빠른 참조</h2>
+<table class="quick-ref">
+<tr><td>스킬 이름</td><td><code>telegram-send</code></td></tr>
+<tr><td>카테고리</td><td>커뮤니케이션</td></tr>
+<tr><td>기본 활성</td><td>예 &mdash; 세션 시작 시 주입됨</td></tr>
+<tr><td>SKILL.md 경로</td><td><code>~/.podex/skills/telegram-send/SKILL.md</code></td></tr>
+<tr><td>시스템 도구</td><td><code>curl</code>, <code>jq</code></td></tr>
+<tr><td>설정 소스</td><td><code>~/.podex/settings.json</code> (<code>telegram.token</code>, <code>telegram.allowedChatIds</code>)</td></tr>
+<tr><td>기본 API</td><td>Telegram Bot API (<code>https://api.telegram.org/bot&lt;TOKEN&gt;/...</code>)</td></tr>
+<tr><td>폴백 API</td><td>로컬 엔드포인트 (<code>http://localhost:3457/api/telegram/send</code>)</td></tr>
+<tr><td>지원 유형</td><td><code>photo</code>, <code>voice</code>, <code>document</code>, <code>text</code></td></tr>
+<tr><td>관련 스킬</td><td><code>email-draft-polish</code>, <code>whatsapp</code>, <code>xurl</code></td></tr>
+<tr><td>관련 가이드</td><td><a href="../../guides/telegram.html">Telegram 가이드</a></td></tr>
+</table>
+
+<h2>전송 정책 (Bot 우선)</h2>
+<p>이 스킬은 엄격한 2단계 전송 전략을 따릅니다. Telegram Bot API가 항상 먼저 시도됩니다. 로컬 podex 엔드포인트는 텍스트 전송의 편의 레이어 및 Bot API 실패 시 폴백 역할을 합니다.</p>
+
+<table>
+<thead>
+<tr><th>메시지 유형</th><th>기본 방법</th><th>폴백</th></tr>
+</thead>
+<tbody>
+<tr><td><code>photo</code></td><td>Telegram Bot API (<code>sendPhoto</code>)</td><td>로컬 엔드포인트 (1회 재시도)</td></tr>
+<tr><td><code>voice</code></td><td>Telegram Bot API (<code>sendVoice</code>)</td><td>로컬 엔드포인트 (1회 재시도)</td></tr>
+<tr><td><code>document</code></td><td>Telegram Bot API (<code>sendDocument</code>)</td><td>로컬 엔드포인트 (1회 재시도)</td></tr>
+<tr><td><code>text</code></td><td>로컬 엔드포인트 (편의용)</td><td>Telegram Bot API (<code>sendMessage</code>)</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>핵심 규칙:</strong> <code>photo</code>, <code>voice</code>, <code>document</code> 유형의 경우, 에이전트는 항상 직접 Bot API를 먼저 시도합니다. 로컬 엔드포인트는 Bot API 호출이 실패한 경우에만 1회 재시도 폴백으로 사용됩니다. <code>text</code> 상태 알림의 경우, 편의를 위해 로컬 엔드포인트가 먼저 사용됩니다.
+</div>
+
+<h2>필수 입력값</h2>
+
+<table>
+<thead>
+<tr><th>입력값</th><th>소스</th><th>필수 대상</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>봇 토큰</strong></td><td><code>~/.podex/settings.json</code> &rarr; <code>telegram.token</code></td><td>모든 Bot API 호출</td></tr>
+<tr><td><strong>채팅 ID</strong></td><td><code>~/.podex/settings.json</code> &rarr; <code>telegram.allowedChatIds[-1]</code></td><td>모든 Bot API 호출</td></tr>
+<tr><td><strong>파일 경로</strong></td><td>사용자가 제공하거나 이전 작업에서 생성됨</td><td><code>photo</code>, <code>voice</code>, <code>document</code></td></tr>
+<tr><td><strong>캡션 / 텍스트</strong></td><td>사용자가 제공 (미디어의 경우 선택 사항)</td><td><code>text</code>; 미디어의 경우 선택적 캡션</td></tr>
+</tbody>
+</table>
+
+<h2>단계별 워크플로우</h2>
+
+<h3>1단계: 토큰 및 채팅 ID 읽기</h3>
+<p>에이전트가 podex 설정 파일에서 자격 증명을 읽습니다. 토큰은 셸 변수에만 보관되며 &mdash; stdout이나 로그에는 절대 출력되지 않습니다.</p>
+
+<pre><code>TOKEN=$(jq -r '.telegram.token' ~/.podex/settings.json)
+CHAT_ID=$(jq -r '.telegram.allowedChatIds[-1]' ~/.podex/settings.json)</code></pre>
+
+<p><code>CHAT_ID</code>가 <code>null</code>로 확인되는 경우(이전 Telegram 메시지 기록이 없는 경우), 에이전트는 로컬 엔드포인트에 핑을 보내 복구합니다:</p>
+
+<pre><code>CHAT_ID=$(curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"text","text":"chat_id check"}' | jq -r '.chat_id')</code></pre>
+
+<div class="callout callout-info">
+  <strong>보안:</strong> 봇 토큰은 절대 출력, echo, 또는 에이전트 텍스트 응답에 포함되지 않습니다. 명령 실행 동안 셸 변수에만 존재합니다. 이를 통해 로그와 채팅 기록으로의 자격 증명 유출을 방지합니다.
+</div>
+
+<h3>2단계: Bot API로 전송 (기본)</h3>
+<p>에이전트는 메시지 유형에 따라 적절한 Telegram Bot API 엔드포인트로 <code>curl</code> 멀티파트 폼 POST를 구성합니다.</p>
+
+<h4>사진 전송</h4>
+<pre><code>curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendPhoto" \
+  -F "chat_id=${CHAT_ID}" \
+  -F "photo=@/tmp/chart.png" \
+  -F "caption=Analysis chart"</code></pre>
+
+<h4>음성 메시지 전송</h4>
+<pre><code>curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendVoice" \
+  -F "chat_id=${CHAT_ID}" \
+  -F "voice=@/tmp/reply.ogg" \
+  -F "caption=Voice response"</code></pre>
+
+<h4>문서 전송</h4>
+<pre><code>curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendDocument" \
+  -F "chat_id=${CHAT_ID}" \
+  -F "document=@/tmp/report.pdf" \
+  -F "caption=Weekly report"</code></pre>
+
+<h3>3단계: 로컬 엔드포인트 (보조 / 폴백)</h3>
+<p>로컬 podex 서버는 다음 경로에 Telegram 전송 엔드포인트를 노출합니다:</p>
+
+<div class="api-box">
+  <h4>POST http://localhost:3457/api/telegram/send</h4>
+  <p>Content-Type: <code>application/json</code></p>
+  <p>허용 필드: <code>type</code>, <code>text</code>, <code>file_path</code>, <code>caption</code></p>
+</div>
+
+<h4>텍스트 메시지 (로컬 엔드포인트의 주요 용도)</h4>
+<pre><code>curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"text","text":"Deployment complete!"}'</code></pre>
+
+<h4>로컬 엔드포인트를 통한 미디어 폴백</h4>
+<pre><code>curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"photo","file_path":"/tmp/chart.png","caption":"Analysis chart"}'</code></pre>
+
+<h3>4단계: 전송 확인</h3>
+<p>전송 성공 시 <code>"ok": true</code>가 포함된 JSON 응답이 반환됩니다:</p>
+<pre><code>{"ok":true,"chat_id":8231528245,"type":"text"}</code></pre>
+<p>에이전트는 사용자에게 성공을 보고하기 전에 이 응답을 확인합니다. 응답이 실패를 나타내고 기본 방법이 Bot API였다면, 로컬 엔드포인트를 통해 1회 재시도가 수행됩니다.</p>
+
+<h2>지원되는 메시지 유형</h2>
+
+<table>
+<thead>
+<tr><th>유형</th><th>Bot API 메서드</th><th>필수 필드</th><th>선택적 필드</th></tr>
+</thead>
+<tbody>
+<tr><td><code>photo</code></td><td><code>sendPhoto</code></td><td><code>chat_id</code>, <code>photo</code> (파일)</td><td><code>caption</code>, <code>parse_mode</code></td></tr>
+<tr><td><code>voice</code></td><td><code>sendVoice</code></td><td><code>chat_id</code>, <code>voice</code> (파일, OGG 형식)</td><td><code>caption</code>, <code>duration</code></td></tr>
+<tr><td><code>document</code></td><td><code>sendDocument</code></td><td><code>chat_id</code>, <code>document</code> (파일)</td><td><code>caption</code>, <code>parse_mode</code></td></tr>
+<tr><td><code>text</code></td><td><code>sendMessage</code> / 로컬 엔드포인트</td><td><code>chat_id</code>, <code>text</code></td><td><code>parse_mode</code>, <code>disable_notification</code></td></tr>
+</tbody>
+</table>
+
+<h2>설정</h2>
+<p>이 스킬은 모든 설정을 <code>~/.podex/settings.json</code>에서 읽습니다. 별도의 설정 파일은 필요하지 않습니다.</p>
+
+<pre><code>// ~/.podex/settings.json (관련 키)
+{
+  "telegram": {
+    "token": "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
+    "allowedChatIds": [8231528245]
+  }
+}</code></pre>
+
+<table>
+<thead>
+<tr><th>키</th><th>유형</th><th>설명</th></tr>
+</thead>
+<tbody>
+<tr><td><code>telegram.token</code></td><td>string</td><td><a href="https://t.me/BotFather">@BotFather</a>에서 발급받은 Telegram Bot API 토큰</td></tr>
+<tr><td><code>telegram.allowedChatIds</code></td><td>number[]</td><td>허용된 채팅 ID 배열. 스킬은 기본적으로 마지막 항목을 사용합니다.</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>채팅 ID 얻기:</strong> 봇에 메시지를 보낸 적이 없다면 <code>allowedChatIds</code>가 비어 있을 수 있습니다. 스킬은 로컬 엔드포인트를 통해 탐색 메시지를 전송하고 응답의 <code>chat_id</code> 필드를 읽어 채팅 ID를 자동으로 검색합니다.
+</div>
+
+<h2>의존성</h2>
+<p>이 스킬은 macOS 및 대부분의 Linux 배포판에 사전 설치된 표준 Unix 도구만 필요합니다.</p>
+
+<div class="dep-grid">
+  <div class="dep-card">
+    <strong>curl</strong>
+    <code>macOS 및 Linux에 사전 설치됨</code>
+    <div class="dep-desc">모든 Bot API 및 로컬 엔드포인트 요청에 사용되는 HTTP 클라이언트</div>
+  </div>
+  <div class="dep-card">
+    <strong>jq</strong>
+    <code>brew install jq</code>
+    <div class="dep-desc">설정 읽기 및 API 응답 파싱에 사용되는 JSON 처리기</div>
+  </div>
+</div>
+
+<h3>의존성 확인</h3>
+<pre><code># curl 확인
+curl --version
+
+# jq 확인
+jq --version
+
+# jq가 없는 경우 설치 (macOS)
+brew install jq
+
+# jq가 없는 경우 설치 (Ubuntu/Debian)
+sudo apt-get install -y jq</code></pre>
+
+<h2>보안 규칙</h2>
+<p>이 스킬은 토큰 처리에 대해 엄격한 보안 관행을 적용합니다:</p>
+
+<table>
+<thead>
+<tr><th>규칙</th><th>세부 사항</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>토큰 출력 금지</strong></td><td>봇 토큰은 절대 echo, print 또는 에이전트 텍스트 출력에 포함되지 않습니다. 셸 변수에만 존재합니다.</td></tr>
+<tr><td><strong>셸 전용 저장</strong></td><td>토큰은 <code>$TOKEN</code>에 읽혀져 인라인으로 사용됩니다. 임시 파일에 기록되거나 환경 변수로 내보내지지 않습니다.</td></tr>
+<tr><td><strong>로그 유출 방지</strong></td><td>명령은 <code>-sS</code> 플래그를 사용하여 진행률 표시를 억제하면서 오류는 계속 표시하여, 상세 로그에서 토큰이 실수로 노출되는 것을 방지합니다.</td></tr>
+<tr><td><strong>단일 재시도 제한</strong></td><td>Bot API가 실패하면 로컬 엔드포인트를 통한 폴백 시도는 1회만 허용됩니다. 무한 재시도 루프는 없습니다.</td></tr>
+<tr><td><strong>허용된 채팅 ID</strong></td><td>스킬은 <code>telegram.allowedChatIds</code>에 나열된 채팅 ID로만 전송하여, 무단 채팅으로의 실수 전송을 방지합니다.</td></tr>
+</tbody>
+</table>
+
+<h2>빠른 확인</h2>
+<p>Telegram 연동이 정상적으로 작동하는지 테스트하려면 다음 핑 명령을 실행하세요:</p>
+
+<pre><code>curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"text","text":"ping"}'</code></pre>
+
+<p>예상 응답:</p>
+<pre><code>{"ok":true,"chat_id":8231528245,"type":"text"}</code></pre>
+
+<p>오류가 발생하면 다음을 확인하세요:</p>
+<ol>
+<li>podex 서버가 실행 중인지 확인 (<code>jaw server status</code>)</li>
+<li><code>~/.podex/settings.json</code>에 봇 토큰이 설정되어 있는지 확인</li>
+<li>Telegram에서 봇에 최소 한 번 이상 메시지를 보냈는지 확인 (채팅을 설정하기 위해)</li>
+</ol>
+
+<h2>"~해줘" 사용 예시</h2>
+<p>자연어로 telegram-send 스킬을 트리거하는 실제 사용 예시입니다. 한국어와 영어 모두 사용 가능합니다.</p>
+
+<div class="example-card">
+  <div class="example-ko">"이 차트 텔레그램으로 보내줘"</div>
+  <div class="example-desc">가장 최근에 생성된 차트 이미지(PNG)를 Bot API <code>sendPhoto</code> 엔드포인트를 통해 사진으로 전송합니다. 에이전트가 현재 작업 컨텍스트에서 차트 파일을 찾아 자동으로 첨부합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"분석 결과 음성 메시지로 텔레그램에 보내줘"</div>
+  <div class="example-desc">분석 요약을 음성 메시지(OGG 형식)로 변환하여 <code>sendVoice</code>를 통해 전송합니다. TTS 생성이 가능한 경우 에이전트가 먼저 오디오를 생성한 후 전달합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"주간 보고서 PDF 텔레그램으로 보내줘"</div>
+  <div class="example-desc"><code>sendDocument</code>를 통해 주간 보고서 PDF를 문서로 전송합니다. 캡션은 파일에 대한 간단한 설명으로 설정됩니다. 에이전트는 <code>output/pdf/</code> 또는 사용자가 지정한 경로에서 파일을 확인합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"배포 완료되면 텔레그램으로 알려줘"</div>
+  <div class="example-desc">배포 작업이 완료된 후 "Deployment complete"와 같은 텍스트 알림을 로컬 엔드포인트를 통해 Telegram으로 전송합니다. 상태 알림이므로 로컬 엔드포인트가 기본으로 사용됩니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"스크린샷 찍어서 텔레그램으로 바로 보내줘"</div>
+  <div class="example-desc">현재 화면 또는 브라우저의 스크린샷을 캡처하여 PNG로 저장한 후 Bot API를 통해 즉시 사진으로 전송합니다. <code>screen-capture</code> 스킬 출력과 <code>telegram-send</code>를 결합합니다.</div>
+</div>
+
+<h2>다른 스킬과의 통합</h2>
+<p><code>telegram-send</code> 스킬은 다중 스킬 워크플로우의 마지막 단계로 자주 사용됩니다. 출력 파일이나 상태 업데이트를 생성하는 모든 스킬과 자연스럽게 결합됩니다.</p>
+
+<table>
+<thead>
+<tr><th>워크플로우</th><th>관련 스킬</th><th>예시</th></tr>
+</thead>
+<tbody>
+<tr><td>보고서 생성 + 전달</td><td><code>pdf</code> + <code>telegram-send</code></td><td>"보고서 PDF 만들어서 텔레그램으로 보내줘"</td></tr>
+<tr><td>차트 + 알림</td><td><code>dev-data</code> + <code>telegram-send</code></td><td>"매출 차트 만들어서 텔레그램에 공유해줘"</td></tr>
+<tr><td>스크린샷 캡처 + 전송</td><td><code>screen-capture</code> + <code>telegram-send</code></td><td>"화면 찍어서 텔레그램으로 바로 보내줘"</td></tr>
+<tr><td>음성 답장</td><td><code>video</code> (TTS) + <code>telegram-send</code></td><td>"이 내용 음성으로 변환해서 텔레그램에 보내줘"</td></tr>
+<tr><td>멀티 채널 브로드캐스트</td><td><code>telegram-send</code> + <code>whatsapp</code> + <code>xurl</code></td><td>"이 공지사항 텔레그램, 왓츠앱, X 전부 보내줘"</td></tr>
+<tr><td>배포 알림</td><td><code>cloudflare</code> + <code>telegram-send</code></td><td>"Workers 배포하고 결과 텔레그램으로 알려줘"</td></tr>
+</tbody>
+</table>
+
+<h2>API 참조</h2>
+
+<h3>사용되는 Bot API 엔드포인트</h3>
+<table>
+<thead>
+<tr><th>엔드포인트</th><th>메서드</th><th>용도</th></tr>
+</thead>
+<tbody>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendPhoto</code></td><td>POST (multipart/form-data)</td><td>이미지 파일 전송</td></tr>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendVoice</code></td><td>POST (multipart/form-data)</td><td>OGG 음성 메시지 전송</td></tr>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendDocument</code></td><td>POST (multipart/form-data)</td><td>모든 파일을 문서로 전송</td></tr>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendMessage</code></td><td>POST (application/json)</td><td>텍스트 메시지 전송 (text 유형의 폴백)</td></tr>
+</tbody>
+</table>
+
+<h3>로컬 엔드포인트</h3>
+<table>
+<thead>
+<tr><th>엔드포인트</th><th>메서드</th><th>본문</th></tr>
+</thead>
+<tbody>
+<tr><td><code>http://localhost:3457/api/telegram/send</code></td><td>POST</td><td><code>{"type": "photo|voice|document|text", "text": "...", "file_path": "...", "caption": "..."}</code></td></tr>
+</tbody>
+</table>
+
+<h3>응답 형식</h3>
+<pre><code>// 성공
+{"ok": true, "chat_id": 8231528245, "type": "text"}
+
+// 실패 (예시)
+{"ok": false, "error": "Bot token not configured"}</code></pre>
+
+<h2>문제 해결</h2>
+
+<h3>채팅 ID가 null인 경우</h3>
+<p><code>jq -r '.telegram.allowedChatIds[-1]'</code>이 <code>null</code>을 반환하면 봇이 아직 사용자로부터 메시지를 받지 못한 것입니다. 먼저 Telegram에서 봇에 아무 메시지나 보내면 채팅 ID가 설정에 기록됩니다. 또는 에이전트가 로컬 엔드포인트를 탐색하여 자동으로 복구합니다.</p>
+
+<h3>Bot API가 401 Unauthorized를 반환하는 경우</h3>
+<p>봇 토큰이 유효하지 않거나 만료되었습니다. <a href="https://t.me/BotFather">@BotFather</a>에서 새 토큰을 생성하고 <code>~/.podex/settings.json</code>을 업데이트하세요.</p>
+
+<h3>Bot API가 400 Bad Request를 반환하는 경우</h3>
+<p>일반적인 원인:</p>
+<ul>
+<li><strong>잘못된 chat_id:</strong> 채팅 ID가 봇과의 활성 대화에 해당하지 않습니다.</li>
+<li><strong>파일이 너무 큼:</strong> Telegram Bot API는 업로드 파일 크기를 50 MB로 제한합니다. 더 큰 파일의 경우 청크 업로드를 처리할 수 있는 로컬 엔드포인트를 사용하세요.</li>
+<li><strong>음성 파일 형식 오류:</strong> 음성 메시지는 OPUS 인코딩의 OGG 형식이어야 합니다. 다른 오디오 형식은 <code>document</code>로 전송해야 합니다.</li>
+</ul>
+
+<h3>로컬 엔드포인트 연결 거부</h3>
+<p>podex 서버가 실행되고 있지 않습니다. 다음 명령으로 시작하세요:</p>
+<pre><code>jaw server start
+
+# 또는 상태 확인
+jaw server status</code></pre>
+
+<h3>jq를 찾을 수 없는 경우</h3>
+<p>설정 파일을 파싱하려면 jq를 설치하세요:</p>
+<pre><code># macOS
+brew install jq
+
+# Ubuntu/Debian
+sudo apt-get install -y jq
+
+# 확인
+jq --version</code></pre>
+
+<h2>Telegram 가이드와의 비교</h2>
+<p>podex 문서에서 Telegram은 두 곳에서 다루어집니다. 각각 다른 목적을 가지고 있습니다:</p>
+
+<table>
+<thead>
+<tr><th></th><th>이 페이지 (스킬 참조)</th><th><a href="../../guides/telegram.html">Telegram 가이드</a></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>초점</strong></td><td><code>telegram-send</code> 스킬의 기술적 세부 사항 &mdash; API 명령, 전송 정책, 보안 규칙</td><td>Telegram을 podex에 연결하기 위한 전체 설정 가이드</td></tr>
+<tr><td><strong>대상 독자</strong></td><td>Telegram으로 전송할 때 에이전트가 정확히 무엇을 하는지 이해하고 싶은 사용자</td><td>처음으로 Telegram 연동을 설정하는 새 사용자</td></tr>
+<tr><td><strong>다루는 내용</strong></td><td>SKILL.md 내부 구조, Bot API 호출, 폴백 로직, 문제 해결</td><td>봇 생성, 토큰 설정, 초기 메시지 페어링, 대시보드 설정</td></tr>
+</tbody>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="../communication.html">커뮤니케이션 스킬</a>
+<a class="next" href="memory.html">Memory</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

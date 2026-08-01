@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagrams — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-version { background: rgba(34, 211, 238, 0.12); color: var(--accent); }
+.meta-table { margin: 20px 0 32px; }
+.meta-table td:first-child { font-weight: 600; color: var(--text-dim); width: 160px; white-space: nowrap; }
+.example-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0 16px; }
+.example-block .example-label { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.example-block code { display: block; background: none; padding: 2px 0; color: var(--text); font-size: 14px; line-height: 1.7; }
+.example-block code .comment { color: var(--text-muted); }
+.forbidden-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.forbidden-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.forbidden-card .card-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.forbidden-card .card-title.do-not { color: var(--red); }
+.forbidden-card .card-title.do { color: var(--green); }
+.forbidden-card p { font-size: 13px; color: var(--text-dim); margin: 0; }
+.forbidden-card code { font-size: 12px; }
+.color-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: middle; margin-right: 6px; }
+@media (max-width: 768px) {
+  .forbidden-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link active" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Diagrams <span class="badge badge-active">Default Active</span> <span class="badge badge-version">v1.1.0</span></h1>
+<p class="lead">SVG 다이어그램, Mermaid 차트, 인터랙티브 시각화 &mdash; 채팅 UI에 인라인으로 렌더링됩니다. 아키텍처 개요부터 인터랙티브 데이터 대시보드까지, 이 스킬은 모든 시각적 요청을 대화 내에서 직접 렌더링된 결과물로 변환합니다.</p>
+
+<table class="meta-table">
+<tr><td>스킬 이름</td><td><code>diagram</code></td></tr>
+<tr><td>버전</td><td>1.1.0</td></tr>
+<tr><td>기본 활성화</td><td>예 &mdash; 항상 주입되므로 <code>/skill load</code>가 필요 없습니다</td></tr>
+<tr><td>출력 형식</td><td>인라인 SVG, Mermaid 코드 블록, <code>diagram-html</code> 위젯</td></tr>
+<tr><td>트리거</td><td>시각적 설명이 필요한 모든 요청: 순서도, 비교, 타임라인, 차트, 지도, 시뮬레이션, 목업</td></tr>
+<tr><td>참조 모듈</td><td>svg-components, color-palette, module-chart, module-widget, module-interactive, module-map, module-mockup, module-art</td></tr>
+</table>
+
+<h2>디자인 원칙</h2>
+<p>이 스킬이 생성하는 모든 다이어그램은 네 가지 핵심 원칙을 따릅니다:</p>
+<ul>
+<li><strong>플랫</strong> &mdash; 그라데이션, 그림자, 블러, 글로우 또는 장식 효과 없음. 깔끔한 플랫 표면만 사용합니다.</li>
+<li><strong>컴팩트</strong> &mdash; 핵심만 인라인으로 표시합니다. 나머지는 응답 텍스트로 설명합니다.</li>
+<li><strong>테마 인식</strong> &mdash; 모든 색상이 라이트/다크 모드 모두에서 작동합니다. SVG에는 CSS 클래스, canvas/JS에는 <code>window.__jawTokens</code>를 사용합니다.</li>
+<li><strong>텍스트는 응답에, 비주얼은 도구에</strong> &mdash; 모든 설명 텍스트는 다이어그램 외부에 배치합니다. SVG나 위젯 HTML 내부에 설명 문단을 넣지 마세요.</li>
+</ul>
+
+<h2>복잡도 제한</h2>
+<p>시각적 노이즈를 방지하기 위해 모든 다이어그램에 적용되는 엄격한 제한:</p>
+<table>
+<tr><th>제약 조건</th><th>제한값</th><th>초과 시 전략</th></tr>
+<tr><td>박스 부제목</td><td>최대 5단어</td><td>세부 내용은 <code>sendPrompt()</code> 또는 텍스트로 이동</td></tr>
+<tr><td>다이어그램당 색상 램프</td><td>최대 2개</td><td>카테고리 통합</td></tr>
+<tr><td>가로 행 (680px)</td><td>최대 4개 박스</td><td>축소하거나 2행으로 줄바꿈</td></tr>
+<tr><td>다이어그램당 노드</td><td>최대 6개</td><td>개요 + 상세 다이어그램으로 분할</td></tr>
+<tr><td>연속 비주얼 블록</td><td>불가</td><td>SVG/위젯 블록 사이에 항상 텍스트 추가</td></tr>
+</table>
+
+<h2>다이어그램 유형 선택</h2>
+<p>이 스킬은 명사가 아닌 <strong>동사</strong>에 따라 분기합니다. 같은 주제라도 사용자의 요청에 따라 다른 다이어그램 유형이 생성될 수 있습니다. Mermaid 네이티브 구문으로 깔끔하게 표현 가능한 유형은 직접 작성한 SVG보다 Mermaid가 우선됩니다.</p>
+
+<h3>SVG 유형</h3>
+<table>
+<tr><th>사용자 의도</th><th>유형</th><th>출력</th></tr>
+<tr><td>"X가 어떻게 작동하나요"</td><td>설명적 SVG</td><td>공간적 비유, 단면도, 물리적 레이아웃</td></tr>
+<tr><td>"X의 아키텍처" (시스템 컨텍스트)</td><td>구조적 SVG</td><td>컨테이너, 영역, 중첩</td></tr>
+<tr><td>"X의 단계" (일반 프로세스)</td><td>순서도 SVG 또는 Mermaid <code>flowchart</code></td><td>위에서 아래로 박스 + 화살표</td></tr>
+<tr><td>"A vs B 비교"</td><td>비교 SVG</td><td>나란히 배치된 열</td></tr>
+</table>
+
+<h3>Mermaid 유형</h3>
+<table>
+<tr><th>사용자 의도</th><th>Mermaid 구문</th><th>상태</th></tr>
+<tr><td>DB 스키마 / 엔티티 관계</td><td><code>erDiagram</code></td><td>안정</td></tr>
+<tr><td>클래스 다이어그램 / OOP 구조</td><td><code>classDiagram</code></td><td>안정</td></tr>
+<tr><td>상태 머신 / 생명주기</td><td><code>stateDiagram-v2</code></td><td>안정</td></tr>
+<tr><td>시퀀스 / 호출 순서 / API 흐름</td><td><code>sequenceDiagram</code></td><td>안정</td></tr>
+<tr><td>타임라인 / 로드맵 / 히스토리</td><td><code>timeline</code></td><td>안정</td></tr>
+<tr><td>마인드맵 / 브레인스토밍</td><td><code>mindmap</code></td><td>안정</td></tr>
+<tr><td>Git 브랜칭 / 릴리스 히스토리</td><td><code>gitGraph</code></td><td>안정</td></tr>
+<tr><td>우선순위 사분면 / 2x2 매트릭스</td><td><code>quadrantChart</code></td><td>안정</td></tr>
+<tr><td>간트 / 프로젝트 일정</td><td><code>gantt</code></td><td>안정</td></tr>
+<tr><td>사용자 여정 맵</td><td><code>journey</code></td><td>안정</td></tr>
+<tr><td>파이 차트 분석</td><td><code>pie</code></td><td>안정</td></tr>
+<tr><td>레이더 / 스파이더 / 스킬 프로필</td><td><code>radar-beta</code></td><td>베타 (v11.6+)</td></tr>
+<tr><td>칸반 보드</td><td><code>kanban</code></td><td>베타 (v11.12+)</td></tr>
+<tr><td>클라우드 / 인프라 아키텍처</td><td><code>architecture-beta</code></td><td>베타</td></tr>
+<tr><td>계층 구조 / 비례 크기</td><td><code>treemap-beta</code></td><td>베타</td></tr>
+<tr><td>자유 형식 블록 레이아웃</td><td><code>block-beta</code></td><td>베타</td></tr>
+</table>
+
+<h3>인터랙티브 HTML 위젯 유형</h3>
+<table>
+<tr><th>사용자 의도</th><th>출력</th><th>라이브러리</th></tr>
+<tr><td>"데이터 / 차트 보여줘"</td><td><code>diagram-html</code> 위젯</td><td>Chart.js, D3, ECharts</td></tr>
+<tr><td>"시뮬레이션 / 인터랙티브"</td><td><code>diagram-html</code> 위젯</td><td>Matter.js, Canvas, 슬라이더</td></tr>
+<tr><td>"인터랙티브 지도"</td><td><code>diagram-html</code> 위젯</td><td>Leaflet + OpenStreetMap</td></tr>
+<tr><td>"정적 단계구분도"</td><td><code>diagram-html</code> 위젯</td><td>D3 + TopoJSON</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>기본 동작:</strong> "X가 어떻게 작동하나요?"는 순서도가 아닌 <strong>설명적 SVG</strong>가 기본입니다. 다이어그램 유형이 위의 Mermaid 표에 해당하면 Mermaid가 사용됩니다 &mdash; <code>classDiagram</code>/<code>sequenceDiagram</code>/<code>stateDiagram</code>이 이미 존재하는 경우 SVG를 직접 작성하지 않습니다.</div>
+
+<h2>Mermaid 주의사항</h2>
+<p>Mermaid 다이어그램 유형 작업 시 중요한 주의사항:</p>
+
+<div class="callout callout-danger"><strong>C4 다이어그램을 사용하지 마세요</strong> (<code>C4Context</code>, <code>C4Container</code> 등) &mdash; 다크 모드에서 테마 토큰이 적용되지 않아 텍스트를 읽을 수 없게 됩니다. 아래 대체 표를 사용하세요.</div>
+
+<table>
+<tr><th>C4 유형</th><th>대체</th></tr>
+<tr><td>C4 System Context</td><td>구조적 SVG (커스텀) 또는 subgraph가 있는 Mermaid <code>flowchart</code></td></tr>
+<tr><td>C4 Container</td><td>Mermaid <code>architecture-beta</code></td></tr>
+<tr><td>C4 Component</td><td><code>subgraph</code> 그룹화가 있는 Mermaid <code>flowchart</code></td></tr>
+<tr><td>C4 Dynamic</td><td>Mermaid <code>sequenceDiagram</code></td></tr>
+<tr><td>C4 Deployment</td><td>Mermaid <code>architecture-beta</code></td></tr>
+</table>
+
+<p>추가 참고사항:</p>
+<ul>
+<li><code>sankey-beta</code> / <code>xychart-beta</code>는 좁은 채팅 너비에서 깨집니다. Sankey 차트는 <code>diagram-html</code> + ECharts를, XY 차트는 Chart.js를 권장합니다.</li>
+<li><code>radar-beta</code>는 <code>-beta</code> 접미사가 필요합니다 (Mermaid v11.6+). 기타 베타 유형: <code>treemap-beta</code>, <code>block-beta</code>, <code>architecture-beta</code>, <code>packet-beta</code>, <code>kanban</code>.</li>
+<li>모든 안정 Mermaid 유형은 호스트의 다크/라이트 테마를 자동으로 상속합니다. 의미적 이유로 재정의하는 경우가 아니라면 <code>%%{init: ...}%%</code>에서 명시적 색상을 설정하지 마세요.</li>
+</ul>
+
+<h2>출력 형식</h2>
+
+<h3>1. 인라인 SVG (정적 다이어그램)</h3>
+<p>응답에 직접 출력되는 원시 <code>&lt;svg&gt;</code> 마크업입니다. 채팅 UI가 인라인으로 렌더링합니다.</p>
+<pre><code>&lt;svg viewBox="0 0 680 {height}" xmlns="http://www.w3.org/2000/svg"
+  role="img" aria-labelledby="title-id desc-id"&gt;
+  &lt;title id="title-id"&gt;Diagram Title&lt;/title&gt;
+  &lt;desc id="desc-id"&gt;Brief description for screen readers&lt;/desc&gt;
+  &lt;!-- shapes, text, paths --&gt;
+&lt;/svg&gt;</code></pre>
+
+<h4>인라인 SVG 규칙</h4>
+<ul>
+<li>viewBox 너비는 반드시 <strong>680</strong>이어야 합니다 (컨테이너 너비와 일치 &mdash; 절대 변경하지 마세요)</li>
+<li>높이는 콘텐츠에 따라 달라짐: 마지막 요소 하단 + 40px 패딩</li>
+<li>모든 SVG에 <code>role="img"</code> + <code>&lt;title&gt;</code> + <code>&lt;desc&gt;</code>가 반드시 있어야 합니다</li>
+<li>디자인 시스템의 CSS 클래스 사용 (<code>.node</code>, <code>.connector</code>, <code>.label</code>, <code>.label-start</code>)</li>
+<li><code>.label</code>은 <code>text-anchor: middle</code>을 강제합니다 (중앙 정렬만 가능); 왼쪽 정렬 텍스트에는 <code>.label-start</code> 사용</li>
+<li>색상: 인라인 <code>fill</code>/<code>stroke</code>가 아닌 CSS 클래스 사용</li>
+<li>폰트 패밀리는 호스트에서 상속 &mdash; 명시적 폰트를 설정하지 마세요</li>
+</ul>
+
+<h3>2. Mermaid (구조화된 다이어그램)</h3>
+<p>표준 <code>```mermaid</code> 코드 블록입니다. 기존 렌더러가 자동으로 처리합니다.</p>
+<pre><code>```mermaid
+sequenceDiagram
+    participant A as Client
+    participant B as Server
+    A->>B: GET /api/data
+    B-->>A: 200 OK (JSON)
+```</code></pre>
+
+<h3>3. 인터랙티브 HTML 위젯 (차트, 컨트롤, 시뮬레이션)</h3>
+<p><code>```diagram-html</code> 코드 블록으로 래핑됩니다. 호스트가 생성하는 샌드박스 iframe 내부에서 렌더링됩니다.</p>
+<pre><code>```diagram-html
+&lt;div id="chart-wrapper" style="position: relative; width: 100%; height: 300px;"&gt;
+  &lt;canvas id="myChart" role="img" aria-label="Chart description"&gt;
+    Fallback text
+  &lt;/canvas&gt;
+&lt;/div&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
+  onerror="document.body.innerHTML='&lt;p&gt;Chart library failed to load.&lt;/p&gt;'"&gt;
+&lt;/script&gt;
+&lt;script&gt;
+  const isDark = window.__jawTheme?.isDark ?? true;
+  // ... Chart.js code
+&lt;/script&gt;
+```</code></pre>
+
+<div class="callout callout-info"><strong>스타일 먼저, 스크립트 나중에:</strong> <code>diagram-html</code> 위젯의 경우 항상 <code>&lt;style&gt;</code>과 <code>&lt;link&gt;</code> 태그를 먼저 배치하고, 그 다음 HTML 구조, 마지막으로 <code>&lt;script&gt;</code> 태그를 배치하세요. 이렇게 하면 스트리밍 중 스크립트가 실행되기 전에 시각적 콘텐츠가 먼저 표시됩니다.</div>
+
+<h2>전달 메커니즘</h2>
+<p>세 가지 형식 모두 &mdash; 인라인 SVG, <code>```mermaid</code>, <code>```diagram-html</code> &mdash; 채팅 응답에 인라인으로 렌더링됩니다. jaw 프론트엔드가 응답 텍스트를 파싱하여 자동으로 마운트합니다. <code>diagram-html</code>은 호스트가 생성하는 샌드박스 <code>&lt;iframe&gt;</code>에 들어갑니다; 스킬이 iframe을 직접 생성하지 <strong>않습니다</strong>.</p>
+
+<div class="forbidden-grid">
+<div class="forbidden-card">
+<div class="card-title do-not">하지 마세요</div>
+<p><code>.svg</code> / <code>.html</code> / <code>.png</code> 파일로 저장 (Write 도구, <code>cat &gt;</code>, fs.writeFile)</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">이렇게 하세요</div>
+<p>원시 블록을 응답 텍스트에 직접 붙여넣기</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do-not">하지 마세요</div>
+<p><code>diagram-html</code>을 <code>&lt;iframe&gt;</code> / <code>&lt;html&gt;</code> / <code>&lt;body&gt;</code> / <code>&lt;head&gt;</code>로 래핑</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">이렇게 하세요</div>
+<p><code>&lt;div&gt;</code> / <code>&lt;canvas&gt;</code> / <code>&lt;style&gt;</code>로 시작 &mdash; 호스트가 셸을 주입합니다</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do-not">하지 마세요</div>
+<p><code>/api/channel/send</code> 또는 Telegram/Discord로 전송 (첨부 파일이 아닙니다)</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">이렇게 하세요</div>
+<p>렌더러가 처리하도록 합니다; 다이어그램은 응답 텍스트입니다</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do-not">하지 마세요</div>
+<p>외부 이미지 URL을 참조하고 그것을 다이어그램이라고 부르기</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">이렇게 하세요</div>
+<p>SVG/위젯 코드 자체를 출력</p>
+</div>
+</div>
+
+<div class="callout callout-warn"><strong>파일 저장:</strong> 사용자가 "이 다이어그램 저장해줘" 또는 "다운로드해줘"라고 해도, 렌더링된 모습을 볼 수 있도록 먼저 인라인으로 출력하세요. 사용자가 명시적으로 파일을 요청한 경우에만 디스크에 파일을 작성하세요 &mdash; 그 경우에도 인라인 버전이 정식 전달 방식입니다.</div>
+
+<h2>SVG 디자인 시스템</h2>
+
+<h3>디자인 금지 목록</h3>
+<p>모든 SVG 출력에 적용되는 품질 규칙 (아래 보안 제한 사항과 별도):</p>
+<ul>
+<li>그라데이션, 드롭 섀도우, 블러, 글로우 또는 네온 효과 금지</li>
+<li>이모지 금지 &mdash; CSS 도형 또는 SVG 경로 사용</li>
+<li>장식적 단계 번호 또는 과도하게 큰 제목 금지</li>
+<li>순서도 박스 내부에 아이콘 또는 일러스트레이션 금지 &mdash; 텍스트만 허용</li>
+<li>회전된 텍스트 금지</li>
+<li>외부 컨테이너에 어두운/색상 배경 금지 (투명만 허용 &mdash; 호스트가 배경을 제공)</li>
+<li>선 두께: 테두리와 모서리에 <strong>0.5px</strong> (1px나 2px가 아님)</li>
+<li>폰트 두께: <strong>400</strong> (보통)과 <strong>500</strong> (볼드)만 허용 &mdash; 600이나 700은 절대 사용 금지</li>
+<li>폰트 크기: <strong>14px</strong> (노드 라벨)와 <strong>12px</strong> (부제목/화살표 라벨)만 허용</li>
+<li><strong>소문자 시작</strong> 항상 &mdash; Title Case나 ALL CAPS 금지</li>
+</ul>
+
+<h3>보안 제한 사항 (인라인 SVG)</h3>
+<p>다음 요소와 속성은 DOMPurify에 의해 제거됩니다. 인라인 <code>&lt;svg&gt;</code>에서 절대 사용하지 마세요:</p>
+<table>
+<tr><th>금지된 요소 / 속성</th><th>이유</th><th>대안</th></tr>
+<tr><td><code>&lt;foreignObject&gt;</code></td><td>SVG에 HTML 삽입 (XSS 벡터)</td><td>네이티브 SVG 요소 사용</td></tr>
+<tr><td><code>&lt;animate&gt;</code>, <code>&lt;set&gt;</code>, <code>&lt;animateTransform&gt;</code>, <code>&lt;animateMotion&gt;</code></td><td>애니메이션 XSS 벡터</td><td>정적 SVG만 허용</td></tr>
+<tr><td>중첩된 <code>&lt;svg&gt;</code></td><td>파싱 문제</td><td><code>&lt;g&gt;</code> 그룹 사용</td></tr>
+<tr><td><code>xlink:href</code></td><td>외부 URL 삽입</td><td><code>&lt;use&gt;</code>에서 <code>href="#fragment"</code>만 사용</td></tr>
+<tr><td>모든 <code>on*</code> 이벤트 핸들러</td><td>DOMPurify에 의해 제거됨</td><td>인라인 SVG에서 사용 불가</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>참고:</strong> <code>diagram-html</code> 콘텐츠는 샌드박스 iframe 내부에서 실행되므로 <code>&lt;script&gt;</code>, <code>on*</code> 핸들러, CDN 임포트가 허용됩니다. 위 제한 사항은 메인 문서에서 렌더링되는 인라인 SVG에만 적용됩니다.</div>
+
+<h3>색상 램프 (9가지 시맨틱 색상)</h3>
+<p>각 램프에는 3가지 쉐이드가 있습니다: fill (배경), stroke (테두리), text (라벨). 인라인 색상이 아닌 항상 CSS 클래스 이름을 사용하세요.</p>
+<table>
+<tr><th>램프</th><th>CSS 접두사</th><th>권장 용도</th></tr>
+<tr><td><span class="color-swatch" style="background:#22d3ee;"></span> Cyan</td><td><code>.c-cyan</code></td><td>일반 카테고리 (중립 정보에 권장)</td></tr>
+<tr><td><span class="color-swatch" style="background:#f472b6;"></span> Pink</td><td><code>.c-pink</code></td><td>일반 카테고리, 강조</td></tr>
+<tr><td><span class="color-swatch" style="background:#a78bfa;"></span> Purple</td><td><code>.c-purple</code></td><td>일반 카테고리, 그룹화</td></tr>
+<tr><td><span class="color-swatch" style="background:#fb923c;"></span> Orange</td><td><code>.c-orange</code></td><td>일반 카테고리, 악센트</td></tr>
+<tr><td><span class="color-swatch" style="background:#94a3b8;"></span> Slate</td><td><code>.c-slate</code></td><td>중립, 비활성, 구조적 (시작/종료 노드)</td></tr>
+<tr><td><span class="color-swatch" style="background:#60a5fa;"></span> Blue</td><td><code>.c-blue</code></td><td>정보성 (시맨틱 &mdash; "정보"에만 사용)</td></tr>
+<tr><td><span class="color-swatch" style="background:#4ade80;"></span> Green</td><td><code>.c-green</code></td><td>성공, 긍정 (시맨틱)</td></tr>
+<tr><td><span class="color-swatch" style="background:#fbbf24;"></span> Amber</td><td><code>.c-amber</code></td><td>경고, 주의 (시맨틱)</td></tr>
+<tr><td><span class="color-swatch" style="background:#f87171;"></span> Red</td><td><code>.c-red</code></td><td>오류, 부정 (시맨틱)</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>색상 할당 규칙:</strong> 색상은 순서가 아닌 <strong>의미</strong>를 인코딩합니다. 무지개처럼 색상을 순환시키지 마세요. 카테고리별로 그룹화하세요 &mdash; 같은 유형의 모든 노드는 하나의 색상을 공유합니다. 일반 카테고리에는 cyan/pink/purple/orange를 권장합니다. blue/green/amber/red는 진정한 시맨틱 개념에만 사용하세요.</div>
+
+<h3>레이아웃 패턴</h3>
+<table>
+<tr><th>패턴</th><th>레이아웃</th><th>크기</th></tr>
+<tr><td>순서도</td><td>위에서 아래로</td><td>680 x auto</td></tr>
+<tr><td>비교</td><td>나란히 배치된 열</td><td>680 x auto</td></tr>
+<tr><td>타임라인</td><td>수평 마커 배치</td><td>680 x auto</td></tr>
+<tr><td>조직도</td><td>계층적 트리</td><td>680 x auto</td></tr>
+</table>
+
+<h2>테마 통합</h2>
+
+<h3>CSS 변수 매핑</h3>
+<p>podex 호스트는 다이어그램 테마를 위해 다음 CSS 변수를 제공합니다:</p>
+<table>
+<tr><th>변수</th><th>용도</th></tr>
+<tr><td><code>--bg</code></td><td>페이지 배경</td></tr>
+<tr><td><code>--surface</code></td><td>카드/서피스 배경</td></tr>
+<tr><td><code>--text</code></td><td>기본 텍스트</td></tr>
+<tr><td><code>--text-dim</code></td><td>흐린/보조 텍스트</td></tr>
+<tr><td><code>--border</code></td><td>기본 테두리</td></tr>
+<tr><td><code>--accent</code></td><td>악센트 색상</td></tr>
+<tr><td><code>--font-ui</code></td><td>UI 폰트 패밀리</td></tr>
+<tr><td><code>--font-mono</code></td><td>코드 폰트 패밀리</td></tr>
+<tr><td><code>--radius-md</code></td><td>8px 테두리 반경</td></tr>
+<tr><td><code>--radius-lg</code></td><td>12px 테두리 반경</td></tr>
+</table>
+
+<h3>형식별 테마 감지</h3>
+<table>
+<tr><th>형식</th><th>테마 방법</th></tr>
+<tr><td>인라인 SVG</td><td>CSS 클래스가 호스트 테마에 자동으로 적응</td></tr>
+<tr><td><code>diagram-html</code> iframe (JS)</td><td><code>window.__jawTheme.isDark</code> (boolean)</td></tr>
+<tr><td><code>diagram-html</code> iframe (CSS 값)</td><td><code>window.__jawTokens['--bg']</code>, <code>['--text']</code> 등</td></tr>
+<tr><td>Mermaid</td><td>podex <code>themeVariables</code>를 통해 자동 적용</td></tr>
+</table>
+
+<div class="callout callout-danger"><strong>절대</strong> 다이어그램에서 <code>matchMedia('prefers-color-scheme')</code>을 사용하지 마세요. 테마는 OS 설정이 아닌 호스트가 제어합니다.</div>
+
+<h2>참조 모듈</h2>
+<p>다이어그램 스킬은 특수 다이어그램 유형을 위한 추가 참조 파일을 로드합니다. 이 파일들은 상세한 패턴, 라이브러리 통합 가이드, 템플릿을 제공합니다:</p>
+<table>
+<tr><th>모듈</th><th>파일</th><th>다루는 내용</th></tr>
+<tr><td>SVG 컴포넌트</td><td><code>reference/svg-components.md</code></td><td>SVG 프리미티브, viewBox 체크리스트, 레이아웃 템플릿</td></tr>
+<tr><td>색상 팔레트</td><td><code>reference/color-palette.md</code></td><td>전체 색상 값 (라이트 + 다크), 할당 규칙</td></tr>
+<tr><td>차트</td><td><code>reference/module-chart.md</code></td><td>Chart.js + D3 + ECharts 6 &mdash; 바, 라인, 파이, 단계구분도, 히트맵, 생키, 레이더, 트리맵, 게이지, 퍼널, 캔들스틱, 코드</td></tr>
+<tr><td>위젯</td><td><code>reference/module-widget.md</code></td><td>물리 (Matter.js), 수학 그래프 (Math.js), 3D (Three.js), 크리에이티브 코딩 (p5.js), 오디오 (Tone.js), 미니게임</td></tr>
+<tr><td>인터랙티브</td><td><code>reference/module-interactive.md</code></td><td>슬라이더, 셀렉트, 세그먼트 버튼, 토글, 재생/일시정지/리셋, 디바운싱, sendPrompt, 키보드 접근성</td></tr>
+<tr><td>지도</td><td><code>reference/module-map.md</code></td><td>Leaflet 인터랙티브 지도 &mdash; OpenStreetMap 타일, 마커, 팝업, 다크 모드</td></tr>
+<tr><td>UI 목업</td><td><code>reference/module-mockup.md</code></td><td>UI 목업 패턴</td></tr>
+<tr><td>아트</td><td><code>reference/module-art.md</code></td><td>장식적 SVG 패턴</td></tr>
+</table>
+
+<h2>사용 예시</h2>
+
+<div class="example-block">
+<div class="example-label">~&#54644;&#51452; example 1 &mdash; 아키텍처 다이어그램</div>
+<code>"&#47560;&#51060;&#53356;&#47196;&#49436;&#48708;&#49828; &#50500;&#53412;&#53581;&#52376; &#44536;&#47140;&#51460;" <span class="comment"># 트리거: 구조적 SVG &mdash; 컨테이너, 영역, 중첩</span></code>
+<code><span class="comment"># 스킬이 서비스 박스, 화살표, 그룹 영역이 포함된 인라인 SVG를 생성합니다.</span></code>
+<code><span class="comment"># Mermaid C4 미사용 (다크 모드 문제) &mdash; 대신 커스텀 구조적 SVG를 사용합니다.</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">~&#54644;&#51452; example 2 &mdash; 데이터베이스 ER 다이어그램</div>
+<code>"&#51060; DB &#49828;&#53412;&#47560; ER &#45796;&#51060;&#50612;&#44536;&#47016;&#51004;&#47196; &#48372;&#50668;&#51452;" <span class="comment"># 트리거: Mermaid erDiagram</span></code>
+<code><span class="comment"># erDiagram 구문이 포함된 ```mermaid 블록을 출력합니다.</span></code>
+<code><span class="comment"># 테마가 자동으로 적응합니다 &mdash; 수동 색상 설정이 필요 없습니다.</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">~&#54644;&#51452; example 3 &mdash; 인터랙티브 데이터 차트</div>
+<code>"&#50900;&#48324; &#47588;&#52636; &#45936;&#51060;&#53552; &#52264;&#53944;&#47196; &#44536;&#47140;&#51452;" <span class="comment"># 트리거: diagram-html + Chart.js</span></code>
+<code><span class="comment"># Chart.js 바/라인 차트가 포함된 ```diagram-html 블록을 생성합니다.</span></code>
+<code><span class="comment"># 다크 모드 색상에 window.__jawTheme.isDark를 사용합니다.</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">~&#54644;&#51452; example 4 &mdash; API 시퀀스 흐름</div>
+<code>"&#47196;&#44536;&#51064; API &#55120;&#47492; &#49884;&#53008;&#49828; &#45796;&#51060;&#50612;&#44536;&#47016;&#51004;&#47196; &#44536;&#47140;&#51452;" <span class="comment"># 트리거: Mermaid sequenceDiagram</span></code>
+<code><span class="comment"># Client &rarr; Auth Server &rarr; API &rarr; DB &mdash; 전체 요청/응답 흐름.</span></code>
+<code><span class="comment"># sequenceDiagram이 이를 네이티브로 지원하므로 SVG 대신 Mermaid를 선택합니다.</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">~&#54644;&#51452; example 5 &mdash; 비교 다이어그램</div>
+<code>"React vs Vue vs Svelte &#48708;&#44368;&#54644;&#51452;" <span class="comment"># 트리거: 비교 SVG (나란히 배치된 열)</span></code>
+<code><span class="comment"># 3개 열, 주요 속성이 시각적으로 비교된 인라인 SVG를 생성합니다.</span></code>
+<code><span class="comment"># 최대 2개 색상 램프 &mdash; 하나는 카테고리 헤더, 하나는 강조용.</span></code>
+</div>
+
+<h2>빠른 참조</h2>
+<p>올바른 출력 형식을 선택하기 위한 의사결정 트리:</p>
+<table>
+<tr><th>질문</th><th>답변</th><th>형식</th></tr>
+<tr><td>Mermaid에 이를 위한 네이티브 구문이 있나요?</td><td>예</td><td><code>```mermaid</code> 사용</td></tr>
+<tr><td>정적 레이아웃/아키텍처/비교인가요?</td><td>예</td><td>인라인 <code>&lt;svg&gt;</code> 사용</td></tr>
+<tr><td>인터랙티브, 데이터 시각화, 또는 JS 라이브러리가 필요한가요?</td><td>예</td><td><code>```diagram-html</code> 사용</td></tr>
+<tr><td>C4 다이어그램인가요?</td><td>예</td><td>위의 C4 매핑 표에 따라 대체</td></tr>
+<tr><td>"X가 어떻게 작동하나요" 질문인가요?</td><td>예</td><td>설명적 SVG (순서도가 아님)</td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">Productivity Skills</a>
+<a class="next" href="../utility.html">Utility Skills</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Development Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link active" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="./">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Development Skills</h1>
+<p class="lead">podex 内置了 10 个开发编排技能，它们<strong>始终自动注入</strong>（auto-active）到每个会话中。这些技能构成了一个分层的专业角色团队——从通用编码到安全审计——因此你无需手动加载它们。只需描述你的需求，合适的技能就会自动激活。</p>
+
+<div class="callout callout-info">本页列出的所有 10 个开发技能均为<strong>自动激活</strong>状态。它们在会话启动时注入系统提示词，无需使用 <code>/skill load</code>。编排器（<code>dev</code>）会自动协调其他技能。</div>
+
+<h2>技能概览</h2>
+<table>
+<tr><th>技能</th><th>角色</th><th>触发条件</th></tr>
+<tr><td><code>dev</code></td><td>编排器 &mdash; 将工作路由到专业技能</td><td>任何编码请求（始终激活）</td></tr>
+<tr><td><code>dev-backend</code></td><td>服务端逻辑、API、数据库、认证</td><td>后端代码、API 路由、数据库 Schema</td></tr>
+<tr><td><code>dev-frontend</code></td><td>UI 组件、样式、客户端渲染</td><td>React/Vue/HTML/CSS、组件代码、<code>role=frontend</code></td></tr>
+<tr><td><code>dev-data</code></td><td>数据管道、分析、转换</td><td>SQL、数据处理、ETL、分析</td></tr>
+<tr><td><code>dev-testing</code></td><td>编写测试、覆盖率、测试策略</td><td>"写测试"、"增加覆盖率"、测试文件</td></tr>
+<tr><td><code>dev-debugging</code></td><td>根因分析、错误追踪、修复</td><td>错误信息、堆栈追踪、"为什么报错？"</td></tr>
+<tr><td><code>dev-security</code></td><td>漏洞扫描、安全编码</td><td>认证代码、密钥、输入验证、CVE</td></tr>
+<tr><td><code>dev-scaffolding</code></td><td>项目初始化、样板代码、目录结构</td><td>"创建新项目"、"初始化仓库"、脚手架</td></tr>
+<tr><td><code>dev-code-reviewer</code></td><td>代码审查、PR 反馈、最佳实践</td><td>"审查一下"、"看看这个 PR"、diff 分析</td></tr>
+<tr><td><code>dev-pabcd</code></td><td>面向开发任务的 PABCD 提示工程</td><td>结构化提示、Persona/Audience/Behavior/Context/Deliverable</td></tr>
+</table>
+
+<h2>dev &mdash; 编排器</h2>
+<p><code>dev</code> 技能是顶层编排器。它会检测技术栈（语言、框架、项目类型）并将请求路由到合适的专业技能。当多个技能相关时——例如编写带测试的后端 API——它会按顺序协调它们。</p>
+<pre><code># 编排器自动选择 dev-backend + dev-testing
+"이 Express API에 JWT 인증 추가하고 테스트도 작성해줘"
+
+# 技术栈检测触发 dev-frontend 规则
+"React 컴포넌트 만들어줘 — 드래그 앤 드롭 칸반 보드"</code></pre>
+<div class="callout callout-info"><strong>提示：</strong>你无需直接调用 <code>dev</code>。它会观察你的请求并注入合适的专业上下文。可以把它想象成一个负责分配任务的团队负责人。</div>
+
+<h2>dev-backend</h2>
+<p>处理服务端开发：API 端点、数据库查询、认证流程、中间件和服务器配置。它支持 Node.js、Python、Go 及其他后端技术栈。</p>
+<pre><code># 触发 dev-backend
+"REST API 만들어줘 — 유저 CRUD, PostgreSQL 연동"
+"GraphQL resolver에 pagination 추가해줘"
+"Redis 캐시 레이어 붙여줘"</code></pre>
+<table>
+<tr><th>能力</th><th>示例</th></tr>
+<tr><td>API 设计</td><td>REST、GraphQL、gRPC 端点脚手架</td></tr>
+<tr><td>数据库</td><td>Schema 设计、迁移、查询优化</td></tr>
+<tr><td>认证</td><td>JWT、OAuth2、会话管理、RBAC</td></tr>
+<tr><td>基础设施</td><td>Docker、环境配置、服务器中间件</td></tr>
+</table>
+
+<h2>dev-frontend</h2>
+<p>生产级前端开发，具有独特的美学风格。它会检测框架（React、Vue、Svelte、原生 JS）并从其模块化参考系统中应用专门的规则。当检测到 <code>role=frontend</code> 时自动注入。</p>
+<pre><code># 触发 dev-frontend
+"다크 모드 토글 컴포넌트 만들어줘"
+"이 페이지 반응형으로 만들어줘 — 모바일 우선"
+"Tailwind으로 이 디자인 구현해줘"</code></pre>
+<div class="callout callout-info"><strong>模块化架构：</strong><code>dev-frontend</code> 使用 SKILL.md 编排器加上 <code>references/</code> 目录来提供深度的框架特定指导。它不仅能创建基本组件，还会确保无障碍访问、性能和视觉精细度。</div>
+
+<h2>dev-data</h2>
+<p>数据管道、分析和转换。处理 SQL 查询、pandas/polars DataFrame、ETL 工作流和数据可视化。</p>
+<pre><code># 触发 dev-data
+"이 CSV 데이터 정리해줘 — 중복 제거, 날짜 포맷 통일"
+"매출 데이터 분석해줘 — 월별 트렌드 차트"
+"D1 데이터베이스에서 집계 쿼리 작성해줘"</code></pre>
+
+<h2>dev-testing</h2>
+<p>编写测试、提升覆盖率、设计测试策略。支持 Jest、Vitest、Pytest、Go testing 等。涵盖单元测试、集成测试和端到端测试模式。</p>
+<pre><code># 触发 dev-testing
+"이 함수에 단위 테스트 작성해줘"
+"테스트 커버리지 80% 이상으로 올려줘"
+"E2E 테스트 시나리오 만들어줘 — 로그인 플로우"</code></pre>
+<table>
+<tr><th>测试类型</th><th>使用场景</th></tr>
+<tr><td>单元测试</td><td>独立函数、工具类、纯逻辑</td></tr>
+<tr><td>集成测试</td><td>API 路由、数据库交互、服务层</td></tr>
+<tr><td>端到端测试</td><td>完整用户流程、浏览器自动化、关键路径</td></tr>
+<tr><td>快照测试</td><td>UI 组件、序列化输出验证</td></tr>
+</table>
+
+<h2>dev-debugging</h2>
+<p>根因分析和错误追踪。当你粘贴错误信息或堆栈追踪时，此技能会激活以诊断问题、识别根本原因并提出修复方案。</p>
+<pre><code># 触发 dev-debugging
+"이 에러 왜 나와? TypeError: Cannot read properties of undefined"
+"빌드가 깨졌어 — 로그 봐줘"
+"메모리 누수 있는 것 같아 — 프로파일링 도와줘"</code></pre>
+<div class="callout callout-info"><strong>工作原理：</strong><code>dev-debugging</code> 会读取错误上下文、检查相关源文件、追踪调用链，并在提出有针对性的修复方案之前缩小根本原因范围——而非散弹枪式的方法。</div>
+
+<h2>dev-security</h2>
+<p>扫描漏洞、执行安全编码模式、审查认证/加密实现。当代码涉及认证、密钥、用户输入或已知 CVE 模式时激活。</p>
+<pre><code># 触发 dev-security
+"이 인증 코드 보안 검토해줘"
+"SQL injection 취약점 없는지 확인해줘"
+"환경변수 관리 best practice 적용해줘"</code></pre>
+<table>
+<tr><th>检查项</th><th>检测内容</th></tr>
+<tr><td>注入</td><td>SQL 注入、XSS、命令注入、模板注入</td></tr>
+<tr><td>认证</td><td>认证流程缺陷、弱令牌、缺失 RBAC</td></tr>
+<tr><td>密钥</td><td>硬编码 API 密钥、泄露的凭据、不安全的存储</td></tr>
+<tr><td>依赖</td><td>包中的已知 CVE、过时的库</td></tr>
+</table>
+
+<h2>dev-scaffolding</h2>
+<p>项目初始化和样板代码生成。设置目录结构、配置文件、CI/CD 流水线以及常见技术栈的入门模板。</p>
+<pre><code># 触发 dev-scaffolding
+"Next.js 프로젝트 새로 만들어줘 — TypeScript, Tailwind, Prisma"
+"모노레포 구조 잡아줘 — apps/, packages/"
+"GitHub Actions CI 파이프라인 설정해줘"</code></pre>
+
+<h2>dev-code-reviewer</h2>
+<p>结构化反馈的代码审查。检查 diff 中的正确性缺陷、简化机会、性能问题和风格一致性。适用于暂存的更改、PR 或任意代码块。</p>
+<pre><code># 触发 dev-code-reviewer
+"이 코드 리뷰해줘"
+"PR 봐줘 — 주요 이슈만 알려줘"
+"이 리팩토링 괜찮은지 확인해줘"</code></pre>
+<div class="callout callout-info"><strong>审查级别：</strong>使用 <code>/code-review</code> 搭配不同的力度级别——<code>low</code>/<code>medium</code> 仅报告高置信度的发现，<code>high</code> 提供更广泛的覆盖，<code>ultra</code> 进行深度多代理云端审查。添加 <code>--comment</code> 以发布内联 PR 评论，或添加 <code>--fix</code> 以自动应用修复。</div>
+
+<h2>dev-pabcd</h2>
+<p>将 <strong>PABCD 框架</strong>（Persona、Audience、Behavior、Context、Deliverable）应用于开发任务。此技能将提示结构化以实现最大清晰度，并确保输出符合预期格式。</p>
+<pre><code># 触发 dev-pabcd
+"PABCD로 이 태스크 구조화해줘"
+"이 요구사항을 Persona/Audience/Behavior/Context/Deliverable로 분해해줘"</code></pre>
+<table>
+<tr><th>组成部分</th><th>用途</th></tr>
+<tr><td><strong>P</strong>ersona</td><td>执行任务的角色（例如：高级后端工程师）</td></tr>
+<tr><td><strong>A</strong>udience</td><td>输出的消费者（例如：初级开发者、CI 流水线）</td></tr>
+<tr><td><strong>B</strong>ehavior</td><td>要执行的操作（例如：编写、审查、重构）</td></tr>
+<tr><td><strong>C</strong>ontext</td><td>背景约束（例如：TypeScript 单仓库、Node 20）</td></tr>
+<tr><td><strong>D</strong>eliverable</td><td>预期输出格式（例如：可合并的代码及测试）</td></tr>
+</table>
+
+<h2>编排工作原理</h2>
+<p>当你发送消息时，<code>dev</code> 编排器会根据所有 10 个技能对消息进行评估，并注入合适的专业上下文。多个技能可以同时激活。</p>
+
+<table>
+<tr><th>你的请求</th><th>激活的技能</th></tr>
+<tr><td>"API 만들어줘"</td><td><code>dev</code> + <code>dev-backend</code></td></tr>
+<tr><td>"이 코드 리뷰하고 테스트 추가해줘"</td><td><code>dev</code> + <code>dev-code-reviewer</code> + <code>dev-testing</code></td></tr>
+<tr><td>"이 에러 고쳐줘"</td><td><code>dev</code> + <code>dev-debugging</code></td></tr>
+<tr><td>"새 프로젝트 만들어줘 — 보안 best practice 적용"</td><td><code>dev</code> + <code>dev-scaffolding</code> + <code>dev-security</code></td></tr>
+<tr><td>"프론트엔드 컴포넌트 만들고 스냅샷 테스트 추가"</td><td><code>dev</code> + <code>dev-frontend</code> + <code>dev-testing</code></td></tr>
+<tr><td>"PABCD로 데이터 파이프라인 설계해줘"</td><td><code>dev</code> + <code>dev-pabcd</code> + <code>dev-data</code></td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" 示例：</strong>你可以使用自然韩语或英语。编排器两者都能理解。试试："리팩토링해줘"、"버그 잡아줘"、"성능 최적화해줘"、"코드 정리해줘"、"타입 추가해줘"。</div>
+
+<h2>与其他技能的关系</h2>
+<p>开发技能专注于<em>编写和审查代码</em>。对于相关但不同的工作流：</p>
+<ul>
+<li><strong>Automation skills</strong> &mdash; CI/CD 流水线、定时任务和工作流触发器</li>
+<li><strong>Cloud &amp; Deploy skills</strong> &mdash; Cloudflare Workers、部署、基础设施</li>
+<li><strong>Security &amp; Review skills</strong> &mdash; 超越 <code>dev-security</code> 的专项深度安全审计</li>
+<li><strong>Dev Workflow skills</strong> &mdash; Git 操作、PR 管理、分支策略</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="index.html">Skill Catalog</a>
+<a class="next" href="automation.html">Automation Skills</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

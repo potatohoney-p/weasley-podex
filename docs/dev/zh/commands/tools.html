@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Commands — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link active" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="./">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Tool Commands</h1>
+<p class="lead">工具命令用于管理 podex 的内部子系统 &mdash; 技能、员工、MCP 服务器、记忆、浏览器、编排和项目目录。这些斜杠命令可在任何 podex 会话中使用。</p>
+
+<div class="callout callout-info">所有工具命令都以 <code>/</code> 开头，也可以通过自然语言触发。韩语 "~해줘" 模式会自动映射 &mdash; 请参阅每个命令下方的提示框。</div>
+
+<h2>命令概览</h2>
+<table>
+<tr><th>命令</th><th>用途</th><th>韩语快捷方式</th></tr>
+<tr><td><code>/skill</code></td><td>技能管理（列表、重置）</td><td>"스킬 목록 보여줘"</td></tr>
+<tr><td><code>/employee</code></td><td>员工重置</td><td>"직원 리셋해줘"</td></tr>
+<tr><td><code>/mcp</code></td><td>MCP 服务器管理</td><td>"MCP 서버 동기화해줘"</td></tr>
+<tr><td><code>/memory</code></td><td>记忆搜索</td><td>"메모리 검색해줘"</td></tr>
+<tr><td><code>/browser</code></td><td>浏览器控制</td><td>"브라우저 상태 보여줘"</td></tr>
+<tr><td><code>/orchestrate</code></td><td>PABCD 编排</td><td>"PABCD 시작해줘"</td></tr>
+<tr><td><code>/project</code></td><td>项目目录管理</td><td>"프로젝트 설정해줘"</td></tr>
+</table>
+
+<!-- ───────────────────────────── /skill ───────────────────────────── -->
+<h2 id="skill">/skill</h2>
+<p>管理技能目录。列出所有可用技能及其激活状态，或将技能系统重置为默认值。</p>
+
+<h3>子命令</h3>
+<table>
+<tr><th>子命令</th><th>参数</th><th>描述</th></tr>
+<tr><td><code>/skill list</code></td><td>&mdash;</td><td>显示所有已注册的技能及其状态（活跃、已加载、可用）。自动激活的技能会带有标记。</td></tr>
+<tr><td><code>/skill reset</code></td><td>&mdash;</td><td>将所有技能重置为默认状态。卸载手动加载的技能并恢复自动激活的技能。</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># List all skills and their activation status
+/skill list
+
+# Reset skills after experimenting with manual loads
+/skill reset</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" 提示：</strong> "스킬 목록 보여줘" &rarr; <code>/skill list</code> &nbsp;|&nbsp; "스킬 초기화해줘" &rarr; <code>/skill reset</code></div>
+
+<!-- ───────────────────────────── /employee ───────────────────────────── -->
+<h2 id="employee">/employee</h2>
+<p>重置员工系统。员工是处理委派任务的专用子代理。当员工卡住或其状态过时时，可以重置它。</p>
+
+<h3>子命令</h3>
+<table>
+<tr><th>子命令</th><th>参数</th><th>描述</th></tr>
+<tr><td><code>/employee reset</code></td><td>&mdash;</td><td>将所有员工重置为初始状态。清除排队的任务，重置内部计数器，并重新初始化员工池。</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Reset all employees when tasks are stuck
+/employee reset
+
+# Useful after changing project context
+/employee reset</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" 提示：</strong> "직원 리셋해줘" &rarr; <code>/employee reset</code> &nbsp;|&nbsp; "employee 초기화" &rarr; <code>/employee reset</code></div>
+
+<!-- ───────────────────────────── /mcp ───────────────────────────── -->
+<h2 id="mcp">/mcp</h2>
+<p>管理 MCP（模型上下文协议）服务器。MCP 服务器通过提供额外的工具、资源和上下文来扩展 podex 的功能。同步操作会发现可用的服务器；安装操作会添加新的服务器。</p>
+
+<h3>子命令</h3>
+<table>
+<tr><th>子命令</th><th>参数</th><th>描述</th></tr>
+<tr><td><code>/mcp sync</code></td><td>&mdash;</td><td>与所有已配置的 MCP 服务器同步。重新发现可用工具，刷新服务器健康状态，并更新工具注册表。</td></tr>
+<tr><td><code>/mcp install</code></td><td>&mdash;</td><td>从已配置的服务器列表中安装或注册新的 MCP 服务器。获取服务器清单并注册其工具。</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Refresh all MCP server connections
+/mcp sync
+
+# Install a new MCP server after adding it to config
+/mcp install
+
+# Typical workflow: add server to config, then install + sync
+/mcp install
+/mcp sync</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" 提示：</strong> "MCP 서버 동기화해줘" &rarr; <code>/mcp sync</code> &nbsp;|&nbsp; "MCP 설치해줘" &rarr; <code>/mcp install</code></div>
+
+<!-- ───────────────────────────── /memory ───────────────────────────── -->
+<h2 id="memory">/memory</h2>
+<p>搜索 podex 的持久化记忆系统。记忆系统跨会话存储决策、上下文和事实信息。使用此命令可以回忆之前的上下文或验证系统记住了什么。</p>
+
+<h3>语法</h3>
+<table>
+<tr><th>形式</th><th>参数</th><th>描述</th></tr>
+<tr><td><code>/memory</code></td><td>&mdash;</td><td>不带查询词打开记忆搜索（列出最近的条目）。</td></tr>
+<tr><td><code>/memory [query]</code></td><td><code>query</code> &mdash; 自由文本搜索字符串</td><td>在记忆中搜索与查询匹配的条目。使用语义搜索覆盖所有记忆层（L0 会话、L1 项目、L2 联邦）。</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Search for JWT-related decisions
+/memory JWT authentication
+
+# Find previous architecture discussions
+/memory architecture decisions
+
+# Broad search across all memory
+/memory deployment strategy
+
+# No query — see recent memory entries
+/memory</code></pre>
+
+<h3>记忆层级</h3>
+<table>
+<tr><th>层级</th><th>范围</th><th>描述</th></tr>
+<tr><td>L0</td><td>会话</td><td>当前对话上下文，临时性</td></tr>
+<tr><td>L1</td><td>项目</td><td>以 SQLite 存储的每项目持久化记忆</td></tr>
+<tr><td>L2</td><td>联邦</td><td>通过仪表盘记忆联邦进行的跨实例搜索</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" 提示：</strong> "메모리 검색해줘" &rarr; <code>/memory</code> &nbsp;|&nbsp; "JWT 관련 기억 찾아줘" &rarr; <code>/memory JWT</code> &nbsp;|&nbsp; "이전에 뭐라고 했는지 찾아줘" &rarr; <code>/memory [키워드]</code></div>
+
+<!-- ───────────────────────────── /browser ───────────────────────────── -->
+<h2 id="browser">/browser</h2>
+<p>控制由 podex 管理的无头 Chrome 浏览器实例。检查浏览器健康状态，列出已打开的标签页，并管理用于网页自动化和截图的浏览器会话。</p>
+
+<h3>子命令</h3>
+<table>
+<tr><th>子命令</th><th>参数</th><th>描述</th></tr>
+<tr><td><code>/browser status</code></td><td>&mdash;</td><td>显示当前浏览器状态：podex 浏览器服务器是否正在运行、Chrome DevTools Protocol (CDP) 连接状态、视口大小和当前页面 URL。</td></tr>
+<tr><td><code>/browser tabs</code></td><td>&mdash;</td><td>列出所有已打开的浏览器标签页及其标题、URL 和活跃/非活跃状态。适用于调试多标签页自动化工作流。</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Check if the browser is connected and healthy
+/browser status
+
+# See all open tabs in the managed browser
+/browser tabs
+
+# Typical workflow: check status, then use browser skill
+/browser status
+"이 페이지 스크린샷 찍어줘"</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" 提示：</strong> "브라우저 상태 보여줘" &rarr; <code>/browser status</code> &nbsp;|&nbsp; "열린 탭 보여줘" &rarr; <code>/browser tabs</code></div>
+
+<!-- ───────────────────────────── /orchestrate ───────────────────────────── -->
+<h2 id="orchestrate">/orchestrate</h2>
+<p>运行 PABCD 编排框架。PABCD 将复杂任务结构化为五个阶段：<strong>I</strong>ntake（接收）、<strong>P</strong>ersona（角色）、<strong>A</strong>udience（受众）、<strong>B</strong>ehavior（行为）、<strong>C</strong>ontext（上下文）、<strong>D</strong>eliverable（交付物）。使用此命令可以启动结构化工作流、推进各阶段或检查进度。</p>
+
+<h3>子命令</h3>
+<table>
+<tr><th>子命令</th><th>参数</th><th>描述</th></tr>
+<tr><td><code>/orchestrate I</code></td><td>&mdash;</td><td><strong>Intake（接收）</strong> &mdash; 开始编排流程。收集原始任务描述，并在结构化之前澄清需求。</td></tr>
+<tr><td><code>/orchestrate P</code></td><td>&mdash;</td><td><strong>Persona（角色）</strong> &mdash; 定义谁来执行任务（例如"高级后端工程师"、"用户体验研究员"）。设定语气和专业水平。</td></tr>
+<tr><td><code>/orchestrate A</code></td><td>&mdash;</td><td><strong>Audience（受众）</strong> &mdash; 定义谁消费输出（例如"初级开发者"、"产品经理"、"CI 流水线"）。</td></tr>
+<tr><td><code>/orchestrate B</code></td><td>&mdash;</td><td><strong>Behavior（行为）</strong> &mdash; 指定要执行的操作（例如"编写"、"审查"、"重构"、"分析"、"迁移"）。</td></tr>
+<tr><td><code>/orchestrate C</code></td><td>&mdash;</td><td><strong>Context（上下文）</strong> &mdash; 提供背景约束（例如"TypeScript 单体仓库，Node 20，Cloudflare Workers"）。</td></tr>
+<tr><td><code>/orchestrate D</code></td><td>&mdash;</td><td><strong>Deliverable（交付物）</strong> &mdash; 定义预期输出格式（例如"可合并的代码及测试"、"架构图"、"迁移计划"）。</td></tr>
+<tr><td><code>/orchestrate status</code></td><td>&mdash;</td><td>显示当前编排进度。展示哪些 PABCD 阶段已完成、待处理或进行中。</td></tr>
+<tr><td><code>/orchestrate reset</code></td><td>&mdash;</td><td>重置编排状态。清除所有 PABCD 阶段并返回初始状态。</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Start a full PABCD orchestration from intake
+/orchestrate I
+
+# Jump directly to defining the Persona phase
+/orchestrate P
+
+# Run through the full workflow step by step
+/orchestrate I    # Intake: describe the task
+/orchestrate P    # Persona: who does it
+/orchestrate A    # Audience: who reads it
+/orchestrate B    # Behavior: what actions
+/orchestrate C    # Context: constraints
+/orchestrate D    # Deliverable: output format
+
+# Check progress mid-workflow
+/orchestrate status
+
+# Start over if the framing is wrong
+/orchestrate reset</code></pre>
+
+<h3>PABCD 阶段流程</h3>
+<table>
+<tr><th>阶段</th><th>回答的问题</th><th>示例</th></tr>
+<tr><td><strong>I</strong> &mdash; Intake</td><td>原始任务是什么？</td><td>"构建一个使用 JWT 的用户认证系统"</td></tr>
+<tr><td><strong>P</strong> &mdash; Persona</td><td>谁来执行？</td><td>具有安全专长的高级后端工程师</td></tr>
+<tr><td><strong>A</strong> &mdash; Audience</td><td>谁消费输出？</td><td>加入团队的初级开发者</td></tr>
+<tr><td><strong>B</strong> &mdash; Behavior</td><td>采取什么行动？</td><td>设计、实现、编写测试、编写文档</td></tr>
+<tr><td><strong>C</strong> &mdash; Context</td><td>有哪些约束？</td><td>Express + TypeScript，PostgreSQL，部署在 Cloudflare 上</td></tr>
+<tr><td><strong>D</strong> &mdash; Deliverable</td><td>输出格式是什么？</td><td>可合并的代码，包含单元测试和 API 文档</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" 提示：</strong> "PABCD 시작해줘" &rarr; <code>/orchestrate I</code> &nbsp;|&nbsp; "오케스트레이션 상태 보여줘" &rarr; <code>/orchestrate status</code> &nbsp;|&nbsp; "PABCD 리셋해줘" &rarr; <code>/orchestrate reset</code></div>
+
+<!-- ───────────────────────────── /project ───────────────────────────── -->
+<h2 id="project">/project</h2>
+<p>管理项目目录。podex 跟踪哪些目录已注册为项目，并将此上下文用于记忆范围划定、技能选择和文件操作。可以在项目之间切换或注册新项目。</p>
+
+<h3>子命令</h3>
+<table>
+<tr><th>子命令</th><th>参数</th><th>描述</th></tr>
+<tr><td><code>/project set</code></td><td><code>[path]</code> &mdash; 可选的目录路径</td><td>设置活跃项目目录。如果未指定路径，则使用当前工作目录。这将更新记忆范围、技能上下文和文件解析。</td></tr>
+<tr><td><code>/project reset</code></td><td>&mdash;</td><td>清除活跃项目。重置为无项目上下文，这意味着记忆回退到全局范围，技能失去项目特定的提示。</td></tr>
+<tr><td><code>/project list</code></td><td>&mdash;</td><td>列出所有已注册的项目目录及其名称、路径和最后活跃时间戳。</td></tr>
+</table>
+
+<h3>使用示例</h3>
+<pre><code># Set the current directory as the active project
+/project set
+
+# Set a specific project path
+/project set ~/Developer/my-app
+
+# List all known projects
+/project list
+
+# Clear the project context
+/project reset
+
+# Typical workflow: switch project before starting work
+/project set ~/Developer/podex
+"이 프로젝트의 TODO 보여줘"</code></pre>
+
+<h3>设置项目后的变化</h3>
+<table>
+<tr><th>系统</th><th>影响</th></tr>
+<tr><td>记忆</td><td>L1 项目记忆的范围限定为所设置的目录</td></tr>
+<tr><td>技能</td><td>针对新项目重新运行技术栈检测（例如检测 TypeScript、Python）</td></tr>
+<tr><td>文件</td><td>相对路径基于项目根目录解析</td></tr>
+<tr><td>目标</td><td>目标跟踪的范围限定为活跃项目</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" 提示：</strong> "프로젝트 설정해줘" &rarr; <code>/project set</code> &nbsp;|&nbsp; "프로젝트 목록 보여줘" &rarr; <code>/project list</code> &nbsp;|&nbsp; "프로젝트 초기화해줘" &rarr; <code>/project reset</code></div>
+
+<!-- ───────────────────────────── Quick Reference ───────────────────────────── -->
+<h2>快速参考</h2>
+<p>所有工具命令一览，按管理对象分组。</p>
+
+<table>
+<tr><th>类别</th><th>命令</th><th>功能</th></tr>
+<tr><td rowspan="2">技能管理</td><td><code>/skill list</code></td><td>列出所有技能及其状态</td></tr>
+<tr><td><code>/skill reset</code></td><td>将技能重置为默认值</td></tr>
+<tr><td>员工管理</td><td><code>/employee reset</code></td><td>重置所有员工</td></tr>
+<tr><td rowspan="2">MCP 服务器</td><td><code>/mcp sync</code></td><td>刷新 MCP 服务器连接</td></tr>
+<tr><td><code>/mcp install</code></td><td>安装新的 MCP 服务器</td></tr>
+<tr><td>记忆</td><td><code>/memory [query]</code></td><td>搜索持久化记忆</td></tr>
+<tr><td rowspan="2">浏览器</td><td><code>/browser status</code></td><td>检查浏览器健康状态</td></tr>
+<tr><td><code>/browser tabs</code></td><td>列出已打开的标签页</td></tr>
+<tr><td rowspan="8">编排</td><td><code>/orchestrate I</code></td><td>启动接收阶段</td></tr>
+<tr><td><code>/orchestrate P</code></td><td>定义角色</td></tr>
+<tr><td><code>/orchestrate A</code></td><td>定义受众</td></tr>
+<tr><td><code>/orchestrate B</code></td><td>指定行为</td></tr>
+<tr><td><code>/orchestrate C</code></td><td>提供上下文</td></tr>
+<tr><td><code>/orchestrate D</code></td><td>定义交付物</td></tr>
+<tr><td><code>/orchestrate status</code></td><td>显示编排进度</td></tr>
+<tr><td><code>/orchestrate reset</code></td><td>重置编排状态</td></tr>
+<tr><td rowspan="3">项目</td><td><code>/project set [path]</code></td><td>设置活跃项目目录</td></tr>
+<tr><td><code>/project reset</code></td><td>清除项目上下文</td></tr>
+<tr><td><code>/project list</code></td><td>列出已注册的项目</td></tr>
+</table>
+
+<h2>自然语言映射</h2>
+<p>您不需要记住斜杠命令。podex 会将自然韩语和英语短语映射到相应的工具命令。</p>
+
+<table>
+<tr><th>您说的话</th><th>podex 执行的命令</th></tr>
+<tr><td>"메모리 검색해줘"</td><td><code>/memory</code></td></tr>
+<tr><td>"JWT 관련 메모리 찾아줘"</td><td><code>/memory JWT</code></td></tr>
+<tr><td>"PABCD 시작해줘"</td><td><code>/orchestrate P</code></td></tr>
+<tr><td>"오케스트레이션 상태 확인해줘"</td><td><code>/orchestrate status</code></td></tr>
+<tr><td>"스킬 목록 보여줘"</td><td><code>/skill list</code></td></tr>
+<tr><td>"스킬 리셋해줘"</td><td><code>/skill reset</code></td></tr>
+<tr><td>"직원 리셋해줘"</td><td><code>/employee reset</code></td></tr>
+<tr><td>"MCP 서버 동기화해줘"</td><td><code>/mcp sync</code></td></tr>
+<tr><td>"MCP 설치해줘"</td><td><code>/mcp install</code></td></tr>
+<tr><td>"브라우저 상태 보여줘"</td><td><code>/browser status</code></td></tr>
+<tr><td>"열린 탭 보여줘"</td><td><code>/browser tabs</code></td></tr>
+<tr><td>"프로젝트 설정해줘"</td><td><code>/project set</code></td></tr>
+<tr><td>"프로젝트 목록 보여줘"</td><td><code>/project list</code></td></tr>
+<tr><td>"프로젝트 초기화해줘"</td><td><code>/project reset</code></td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="model.html">Model &amp; CLI</a>
+<a class="next" href="cli-only.html">CLI-Only</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

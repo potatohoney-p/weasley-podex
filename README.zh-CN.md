@@ -1,0 +1,590 @@
+<div align="center">
+
+# podex
+
+### 你的个人 AI 助手。2 行安装。13 个 AI 运行时入口，一个仪表盘。
+
+[![npm](https://img.shields.io/npm/v/podex)](https://npmjs.com/package/podex)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-blue)](https://typescriptlang.org)
+[![Node](https://img.shields.io/badge/node-%3E%3D22.4-blue)](https://nodejs.org)
+[![License](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
+[![Docker](https://img.shields.io/badge/Docker-supported-2496ED?logo=docker&logoColor=white)](#docker)
+
+[English](README.md) / [한국어](README.ko.md) / **中文** / [日本語](README.ja.md)
+
+</div>
+
+## 安装
+
+<details>
+<summary><b>安全安装</b> — 面向现有用户，最小改动</summary>
+
+```bash
+# macOS / Linux
+JAW_SAFE=1 npm install -g podex    # skips optional tool/runtime setup
+jaw init                              # 准备好后再交互式配置
+```
+
+Windows 用户应使用下方的 WSL 安装路径。原生 PowerShell 不是 podex 支持的安装目标。
+
+</details>
+
+```bash
+# macOS / Linux / WSL，已安装 Node.js 22.4+
+npm install -g podex
+jaw dashboard
+```
+
+完成。打开 **http://localhost:24576** 进入管理仪表盘。单个 agent Web UI 在运行 `jaw serve` 时仍从 **http://localhost:3457** 提供。需要 [Node.js 22.4+](https://nodejs.org)。
+
+> **第一次用？** 默认 npm 安装会初始化 podex，并尝试配置原生 Claude。其他 AI CLI 是可选项；在 macOS/Linux 上如需安装全部工具，可运行 `podex_INSTALL_CLI_TOOLS=1 npm install -g podex`。Windows 请使用下方 WSL 安装路径。
+
+<details>
+<summary><b>macOS 一键安装</b> — 没有 Node.js？用这个</summary>
+
+```bash
+source "${ZDOTDIR:-$HOME}/.zshrc" 2>/dev/null || true
+bash "$(npm root -g)/podex/scripts/verify-fresh-install.sh"
+```
+
+</details>
+
+<details>
+<summary><b>Windows（WSL — Windows 子系统 Linux）</b> — 从零一键安装</summary>
+
+```powershell
+# 1. 安装 WSL（以管理员身份运行 PowerShell）
+wsl --install
+```
+
+重启后打开 **Ubuntu**，然后：
+
+```bash
+# 2. 安装 podex + 所有依赖
+source ~/.bashrc
+jaw dashboard
+bash "$(npm root -g)/podex/scripts/verify-fresh-install.sh"
+```
+
+从 Windows PowerShell 进入 WSL 时，请通过 login shell 运行命令，以便加载 WSL profile PATH：
+
+```powershell
+wsl.exe -d Ubuntu -- bash -lc "jaw dashboard"
+```
+
+</details>
+
+<details>
+<summary><b>Fresh-machine evidence</b> — maintainer release check</summary>
+
+发布安装器变更前，请在干净 VM 上运行此流程。collector 会把环境快照、installer 日志、实际运行的 collector/installer/verifier 脚本及其 SHA-256 哈希、verifier 日志和新 shell PATH probe 写入 `~/podex-fresh-install-evidence-*`。
+
+```bash
+# macOS Terminal
+COLLECTOR=/tmp/podex-collect-fresh-install-evidence.sh
+bash "$COLLECTOR" --target macos
+
+# Ubuntu inside WSL
+COLLECTOR=/tmp/podex-collect-fresh-install-evidence.sh
+bash "$COLLECTOR" --target wsl
+```
+
+从 Windows PowerShell 运行时，请走受支持的 WSL 路径：
+
+```powershell
+```
+
+把 evidence 目录作为发布证据前，请先 audit：
+
+```bash
+EVIDENCE_DIR="$(ls -dt ~/podex-fresh-install-evidence-* | head -1)"
+AUDITOR="$(npm root -g)/podex/scripts/audit-fresh-install-evidence.mjs"
+node "$AUDITOR" "$EVIDENCE_DIR" --target macos
+node "$AUDITOR" "$EVIDENCE_DIR" --target wsl
+```
+
+发布前 matrix gate 需要同时传入 macOS 和 WSL evidence：
+
+```bash
+GATE="$(npm root -g)/podex/scripts/verify-release-evidence.mjs"
+node "$GATE" --macos /path/to/macos-evidence --wsl /path/to/wsl-evidence
+```
+
+</details>
+
+<details>
+<summary><b>Docker</b></summary>
+
+```bash
+docker compose up -d       # → http://localhost:3457
+```
+
+</details>
+
+---
+
+## podex 是什么？
+
+podex 是一个开源平台，将你已经在用的 AI 编码 CLI — Pi、Antigravity、AI-E、Claude、Claude E、Codex、Codex App、Cursor、Gemini、Grok、Kiro、OpenCode、Copilot — 统一成**一个助手、一份记忆、一个仪表盘**。
+
+你的主 CLI（Boss）调度其他 CLI 作为"员工"。不用在各种应用之间来回切换，直接在一个地方下达指令。
+
+- **无需 API 密钥** — 通过你已有的订阅路由
+- **无按 token 计费** — 和你现在的月费一样
+- **本地运行** — 代码不会离开你的机器
+
+<div align="center">
+
+![podex Manager Dashboard](docs/screenshots/manager-dashboard-light.png)
+
+</div>
+
+### 桌面应用
+
+如果你更喜欢原生窗口而不是浏览器标签页，podex 提供 **Electron 桌面壳**。桌面应用会启动 manager dashboard，并管理底层的 `jaw dashboard serve` 进程。打包版包含 Node.js sidecar 服务器，因此会优先使用应用内 bundled `jaw` shim，再回退到全局终端安装。
+
+最终用户可以直接从 **GitHub Releases** 下载桌面 artifact：
+
+- **macOS**：下载 DMG，把 podex 拖到 Applications 后启动。当前构建仍是 unsigned / un-notarized，首次启动可能需要在 Finder 中右键 → **Open**。
+- **Windows**：下载 NSIS installer。它包含同一个 sidecar server，并把打包的 `jaw` shim 加入 PATH。
+- **Linux**：下载 AppImage，赋予执行权限后运行。
+
+首次启动后，接受 **Install CLI command** 提示即可从 bundled sidecar 创建终端 `jaw` 命令。如果跳过了提示，之后可在 tray menu 使用 **Install CLI to Terminal**。这个路径不要求为打包应用或终端 shim 进行全局 npm 安装。
+
+开发者构建：
+
+```bash
+# 在仓库根目录执行一次
+npm install && npm --prefix electron install
+
+npm run electron:dev          # hot reload 开发
+npm run electron:dist:mac     # 构建包含 bundled sidecar 的 macOS arm64 .dmg + .zip
+```
+
+打包产物位于 `electron/dist/`。GitHub Actions desktop release workflow 会在 release publish 或 manual dispatch 时构建 macOS arm64 DMG/ZIP、Windows x64 NSIS/ZIP 和 Linux AppImage artifacts。`better-sqlite3` 等原生模块保留在 manager/sidecar server 中；Electron main process 不直接 import 它们。
+
+---
+
+## 认证
+
+只需一个。选择你已经订阅的服务：
+
+```bash
+# 免费选项（无需信用卡）
+copilot login        # GitHub Copilot（有免费层）
+opencode             # OpenCode — 有免费模型
+kiro                 # AWS Kiro（AWS 账户免费层）
+
+# 付费（你已经在付的月订阅）
+claude auth login    # Anthropic Claude Pro 或更高
+codex login          # OpenAI ChatGPT Pro 或更高
+cursor-agent login   # Cursor
+grok login --oauth   # xAI Grok / Grok Heavy
+```
+
+一次性检查全部：`jaw doctor`
+
+<details>
+<summary>jaw doctor 输出示例</summary>
+
+```
+🦈 podex Doctor — 13 checks
+
+ ✅ Node.js        v22.15.0
+ ✅ Claude CLI      installed
+ ✅ Codex CLI       installed
+ ✅ Cursor CLI      installed
+ ✅ OpenCode CLI    installed
+ ✅ Copilot CLI     installed
+ ✅ Database        jaw.db OK
+ ✅ Skills          29 active, 238 reference
+ ✅ MCP（插件）      3 servers configured
+ ✅ Memory          structured/ exists
+ ✅ Server          port 3457 available
+```
+
+</details>
+
+---
+
+## 仪表盘
+
+仪表盘是你的指挥中心：`jaw dashboard` 会在 `http://localhost:24576` 启动管理器；单个 agent Web UI 由 `jaw serve` 在 `http://localhost:3457` 及相邻 managed ports 提供。
+Web/TUI 实时更新使用 SSE-first `GET /api/events` 通道；WebSocket 只作为旧服务器在 SSE 从未打开时的 fallback。
+
+### 实例管理器
+
+查看每个正在运行的 AI 实例——一键启动、停止、重启。在仪表盘中直接预览实时 Web UI。
+
+<div align="center">
+
+![Dashboard Navigator](docs/screenshots/dashboard-navigator.png)
+
+</div>
+
+### 看板
+
+将实例卡片拖入泳道（Backlog → Ready → In Progress → Review → Done）。跟踪每个 AI 会话正在做什么。
+
+<div align="center">
+
+![看板](docs/screenshots/dashboard-kanban.png)
+
+</div>
+
+### 优先级矩阵
+
+艾森豪威尔矩阵管理你的任务和提醒。优先处理重要的事。
+
+<div align="center">
+
+![优先级矩阵](docs/screenshots/priority-matrix.png)
+
+</div>
+
+### 笔记
+
+仪表盘内的迷你 Obsidian。文件夹、可视化（WYSIWYG）+ 源码 + 分屏编辑、KaTeX（数学公式渲染）、Mermaid（图表即代码）、语法高亮代码块。
+
+<div align="center">
+
+![笔记编辑器](docs/screenshots/notes-wysiwyg.png)
+
+</div>
+
+### 代理状态
+
+一目了然地监控每个 AI 引擎的健康状况和使用情况。
+
+<div align="center">
+
+![Claude 状态](docs/screenshots/claude-status-widget.png)
+
+</div>
+
+---
+
+## 员工系统的工作原理
+
+核心理念：**你的主 CLI 调用其他 CLI 作为工作者。**
+
+你和一个 AI（Boss）对话。当它需要专业工作时，会向员工分派任务——每个员工运行自己的 CLI 和模型：
+
+```
+你："修复前端样式，并更新 API 端点"
+
+Boss（Claude）思考中...
+  ├── 分派到 Frontend 员工（OpenCode）→ "修复 dashboard.tsx 中的 CSS grid 布局"
+  ├── 分派到 Backend 员工（Codex）     → "更新 /api/users 以返回分页元数据"
+  └── 综合两方结果返回给你
+```
+
+```bash
+# 底层就是一条命令：
+jaw dispatch --agent "Frontend" --task "修复 dashboard.tsx 中的 CSS grid 布局"
+jaw dispatch --agent "Backend" --task "运行只读验证" --watch
+jaw worker status Backend
+```
+
+员工是在你的设置中配置的其他 AI CLI。每个有自己的会话、模型和上下文。Boss 审核它们的输出后再呈现给你。
+
+### 员工 vs 子代理
+
+这是两个不同的东西：
+
+| | 员工 | 子代理 |
+|---|---|---|
+| **是什么** | 配置为工作者的其他 AI CLI（Codex、OpenCode 等） | 单个 CLI 内置的并行任务工具 |
+| **何时用** | 跨不同代码库或领域的多专家协作 | 内部研究、文件读取、并行分析 |
+| **如何用** | `jaw dispatch --agent "Name" --task "..."` | 自动——CLI 在内部生成 |
+
+员工用于"Frontend 做 CSS，Backend 做 API"。子代理用于"做决定前并行读取 5 个文件"。
+
+---
+
+## AI 运行时
+
+无按 token 的 API 计费。通过你已有的订阅路由。
+
+| CLI | 默认模型 | 认证 | 费用 |
+|---|---|---|---|
+| **Pi** | `grok-composer-2.5-fast` | Settings profile API key、local proxy，或 `PI_CODING_AGENT_BIN` | 通过隔离的 `PI_CODING_AGENT_DIR` 连接 local/API endpoint 的 first-class `pi --mode rpc` runtime |
+| **Claude** | `claude-opus-4-8` | `claude auth login` | Claude Pro 或更高订阅 |
+| **Claude E** | `claude-opus-4-8` | underlying `claude auth login` | Claude Pro 或更高订阅；6 月订阅赠送额度的推荐 runtime |
+| **AI-E** | provider-selected | 所选 provider 认证 | 多 provider runtime wrapper |
+| **Antigravity** | AGY-selected | 由 `agy` 在运行时检查 | `agy -p` 实验性 AGY print-mode runtime；可选 `--model` 会先做 capability probe，确认支持时才传递（AGY 1.0.12 已观察到）；通过 `--conversation` resume；无独立 effort flag |
+| **Codex** | `gpt-5.5` | `codex login` | ChatGPT Pro 或更高订阅 |
+| **Codex App** | `gpt-5.5` | `codex login` | ChatGPT Pro 或更高订阅 |
+| **Cursor** | `composer-2.5` | `cursor-agent login` 或 `CURSOR_API_KEY` | Cursor 订阅；quota 为 auth/status-only |
+| **Grok** | `grok-build` | `grok login --oauth` | Grok 订阅；配额仅限认证/状态 |
+| **Kiro** | registry-selected | `kiro` | AWS Kiro 免费层 |
+| **OpenCode** | `opencode-go/kimi-k2.6` | `opencode` | 有免费模型 |
+| **Copilot** | `claude-sonnet-4.6` | `copilot login` | 有免费层 |
+
+GPT 5.5 和 Claude Opus 4.8 从 Pro 订阅及以上开放。自 6 月起，如果要使用订阅计划赠送的 Claude 用量，请选择 `claude-e` runtime。
+
+配额/状态面板保持与 registry 相同的 runtime keyset。Wrapper runtime（`ai-e`, `claude-e`, `codex-app`）委托给 underlying provider；Pi/AGY/Cursor/Grok/OpenCode 这类 CLI 不暴露 quota window 时，会以 auth/status-only 显示。
+
+**回退链**：当一个引擎被限速时，下一个自动接上。用 `/fallback [cli1 cli2...]` 配置。
+
+**OpenCode 通配符**：连接任意模型端点——OpenRouter、本地 LLM（大语言模型）、任何 OpenAI 兼容 API。
+
+> 切换引擎：`/cli codex`。切换模型：`/model gpt-5.5`。Web、终端、Telegram 或 Discord 均可。
+
+---
+
+## PABCD 编排（Plan → Audit → Build → Check → Done）
+
+对于复杂任务，podex 使用结构化的 5 阶段工作流。每次转换都需要你的批准——没有你的确认什么都不会发布。
+
+```
+P (Plan) → A (Audit) → B (Build) → C (Check) → D (Done) → IDLE
+   ⛔          ⛔          ⛔         auto        auto
+```
+
+| 阶段 | 发生什么 |
+|---|---|
+| **P — Plan** | Boss AI 编写 diff 级别的计划。停下等你审查 |
+| **A — Audit** | 只读工作者验证计划是否可行（imports 存在、签名匹配） |
+| **B — Build** | Boss 实现。只读工作者验证结果 |
+| **C — Check** | 类型检查（`tsc --noEmit`）、文档更新、一致性检查 |
+| **D — Done** | 汇总所有变更。返回空闲状态 |
+
+状态持久化在数据库中，服务器重启后仍然保留。工作者不能修改文件——只能验证。用 `jaw orchestrate`、`/orchestrate` 或 `/pabcd` 启动，并用 `/continue` 显式恢复进行中的 worklog。阶段前进需要证据 attestation，例如 `jaw orchestrate B --attest '{"from":"A","to":"B","did":"<what you did>"}'`（C→D 还需粘贴 `checkOutput` 和 `exitCode`）。Workflow helper slash commands 包括 `/plan`、`/interview`、`/deliberate`、`/planaudit`、`/review`、`/search`、`/goal`、`/goalplan`、`/team`、`/task`、`/fork`、`/gd`；`/plan` 是说明“这就是 PABCD P”的兼容指南，不会创建第二套计划模式。`/search <query>` 通过 active search skill 路由搜索意图。Bounded automation 用 `/goal run ...` 表达，没有单独的 `/autopilot`。Durable goal（`/goal <objective>` 加 `update`/`done`/`cancel`/`pause`/`resume`）在重启后仍保留，goal 恢复会在 Web/CLI 等所有界面重新触发工作。AI `goal pause --agent --audit` 使用两步审计 gate（`goal_pause_gate_pending` 抑制自动 continuation）。`/gd` 是 `/goal done --force` 的简写（跳过完成证据 gate）。`/goal run`（`preflight`/`start`/`stop`/`status`）是需通过 preflight 的仅跟踪预览，记录 turn/dispatch 预算（强制尚未落地）。
+
+---
+
+## 记忆
+
+三个层次，各覆盖不同的回忆范围。
+
+| 层 | 存储内容 | 工作方式 |
+|---|---|---|
+| **History Block** | 近期会话上下文 | 最近 10 个会话，最多 8000 字符，按工作目录限定范围。注入到提示开头 |
+| **Memory Flush** | 从对话中提取的结构化知识 | 达到阈值后触发（默认 10 轮）。提取为事件记录、每日日志、语义笔记，保存为 markdown |
+| **Soul + Task Snapshot** | 身份和语义检索 | 核心价值观、语调、边界。全文搜索索引每次提示返回最多 4 条语义相关结果 |
+
+三层全部自动注入系统提示。记忆可搜索：
+
+```bash
+jaw memory search "我们是怎么设置 API 认证的？"
+```
+
+---
+
+## 技能
+
+200+ 参考技能和活跃运行时技能覆盖开发工作流、办公文档、自动化、媒体和内容写作。
+
+| 分类 | 技能 | 覆盖范围 |
+|---|---|---|
+| **办公** | `pdf`, `docx`, `xlsx`, `pptx`, `hwp` | 读取、创建、编辑文档。HWP/HWPX（韩国文字处理器格式）原生支持 |
+| **自动化** | `browser`, `vision-click`, `screen-capture`, `desktop-control` | Chrome DevTools Protocol（CDP）浏览器控制、AI 坐标点击、macOS 截屏、Computer Use |
+| **媒体** | `video`, `imagegen`, `lecture-stt`, `tts` | Remotion 视频、OpenAI 图像生成、讲座转录、文字转语音 |
+| **集成** | `github`, `notion`, `telegram-send`, `memory` | Issues/PRs/CI、Notion 页面、Telegram 媒体发送、持久记忆 |
+| **可视化** | `diagram` | 在聊天中渲染 SVG 图表、图形、交互式可视化 |
+| **内容/写作** | `k-writing` | 韩语推广/内容写作：thread、Instagram 卡片新闻、LinkedIn、网站/博客和润色输出，包含强制搜索、钩子评分和去 AI 痕迹校验 |
+| **开发指南** | `dev`, `dev-frontend`, `dev-backend`, `dev-data`, `dev-testing`, `dev-pabcd` | 注入代理提示的工程指南 |
+
+参考技能位于 `skills_ref/`，按需安装到活跃运行时。
+
+```bash
+jaw skill install <name>    # 激活参考技能
+jaw skill list              # 查看可用技能
+```
+
+---
+
+## 浏览器和桌面自动化
+
+| 功能 | 工作方式 |
+|---|---|
+| **Chrome DevTools Protocol** | 导航、点击、输入、截屏、执行 JS、滚动、按键——Chrome 的远程控制 |
+| **Vision-click** | 截屏 → AI 提取目标坐标 → 点击。`jaw browser vision-click "Login button"` |
+| **Computer Use** | 通过 Codex Computer Use 自动化桌面应用。用 Safari 访问 localhost，体验如同 Codex 应用 |
+| **Web-AI 供应商** | `jaw browser web-ai --vendor chatgpt\|gemini\|grok`——会话生命周期、诊断、源码审计、ChatGPT code-mode zip 回收支持 |
+| **Diagram 技能** | 生成 SVG 图表和交互式可视化，在聊天中内联渲染 |
+
+Computer Use 让你用自然语言控制任何 macOS 应用——Finder、Safari、系统设置、Xcode。
+
+---
+
+## 消息
+
+### Telegram
+
+```
+📱 Telegram ←→ 🦈 podex ←→ 🤖 AI Engines
+```
+
+文字聊天、语音消息（通过多供应商 STT——语音转文字 自动转录）、文件/照片上传、斜杠命令（51 个已注册；workflow helper：`/plan`、`/interview`、`/review`、`/search`、`/goal`、`/orchestrate`、`/task`、`/fork`、`/gd`；CLI/Web 动态 `/skill:<id>`）、论坛主题路由与 **Dashboard Telegram Hub**（`/setthread`、`/threads`、`/hubhelp`、Manager UI 中按主题的 `model`/`systemPrompt` override）、定时任务（`every`/`cron` heartbeat）结果自动送达。
+
+<details>
+<summary>设置（3 步）</summary>
+
+1. 给 [@BotFather](https://t.me/BotFather) 发消息 → `/newbot` → 复制 token
+2. `jaw init --telegram-token YOUR_TOKEN` 或在 Web UI 设置中输入
+3. 给 bot 发送任意消息。Chat ID 首次消息时自动保存
+
+</details>
+
+### Discord
+
+与 Telegram 功能相同——文字、文件、命令。频道/线程路由、规范 `/api/channel/send`、代理结果广播转发器。通过 Web UI 设置配置。
+
+### 语音 & STT
+
+语音输入支持 Web（麦克风按钮）、Telegram（语音消息）和 Discord。供应商：OpenAI 兼容、Google Vertex AI 或任意自定义端点。
+
+---
+
+## MCP（Model Context Protocol）
+
+[MCP](https://modelcontextprotocol.io) 是一个让 AI 工具共享能力的标准——就像 AI 代理的插件。podex 用一个文件管理所有引擎的 MCP 配置。
+
+```bash
+jaw mcp install @anthropic/context7
+# → 同步到 Claude、Codex、Gemini、Kiro、OpenCode、Copilot、Antigravity 的配置文件
+```
+
+不用再分别编辑多个 JSON 文件。安装一次，每个 MCP 感知引擎都会获得配置。Grok CLI 是标准运行时，但在 Grok 暴露兼容配置面之前不计为 MCP 同步对象。Antigravity MCP 同步是独立的 config target，不等同于 `agy` runtime registry entry。
+
+```bash
+jaw mcp sync       # 手动编辑后重新同步
+```
+
+---
+
+## CLI 命令
+
+```bash
+# 核心
+jaw dashboard                     # 启动管理仪表盘
+jaw serve                         # 启动服务器（http://localhost:3457）
+jaw chat                          # 终端聊天 UI
+jaw chat search "query"           # 搜索聊天历史
+jaw doctor                        # 安装和运行时诊断
+
+# 实例
+jaw clone ~/project               # 克隆实例到新目录
+jaw --home ~/project serve --port 3458  # 运行第二个实例
+jaw service install               # 开机自启
+jaw project set ~/repo            # 为 review/orchestration 设置 projectDirs
+jaw lock                          # 保护当前实例不被 stop-all 流程停止
+
+# AI 和编排
+jaw employee list                         # 列出已配置员工 + static 员工
+jaw dispatch --agent "Backend" --task "..."  # 分派员工
+jaw dispatch --agent "Backend" --task "..." --watch  # 分派并流式查看安全进度
+jaw worker status Backend            # 查看当前/上一轮员工进度
+jaw orchestrate                   # 进入/控制 PABCD 工作流
+jaw goal status                   # 持久 goal 生命周期
+jaw task list                     # 代理原生任务清单
+# 聊天中：/continue                 # 显式恢复 worklog/PABCD
+
+# 技能和 MCP
+jaw skill install <name>          # 激活技能
+jaw skill list                    # 列出可用技能
+jaw mcp install <package>         # 安装 MCP → 同步支持的 MCP 感知引擎
+jaw mcp sync                      # 重新同步 MCP 配置
+
+# 记忆
+jaw memory search <query>         # 跨所有记忆层搜索
+jaw memory save <file> <content>  # 保存到结构化记忆
+
+# 浏览器
+jaw browser start                 # 启动 Chrome 自动化
+jaw browser fetch "https://example.com" --json --trace  # 自适应 URL 读取
+jaw browser snapshot              # 捕获页面状态
+jaw browser vision-click "Login"  # AI 驱动的点击
+jaw browser web-ai status         # ChatGPT/Gemini/Grok web-AI 会话工具
+jaw browser web-ai code --vendor chatgpt --model thinking --effort heavy --prompt "Build an MVP" --output-zip ./result.zip
+
+# 仪表盘连接器
+jaw dashboard memory search "query"  # 只读跨实例记忆搜索
+jaw dashboard chat search "query"    # 跨实例聊天搜索
+jaw connector board add --title "Fix docs"
+jaw reminders add "Follow up tomorrow"
+
+# 维护
+jaw reset                         # 完全重置
+```
+
+---
+
+## 多实例
+
+运行互相隔离的独立实例，各有独立的设置、记忆和数据库：
+
+```bash
+jaw clone ~/my-project
+jaw --home ~/my-project serve --port 3458
+```
+
+每个实例完全独立——不同的工作目录、记忆、MCP 配置。管理仪表盘可以看到全部。
+
+---
+
+## 开发
+
+```bash
+npm run build          # tsc → dist/
+npm run build:frontend # vite → public/dist/
+npm run dev            # tsx server.ts（热重载）
+npm test               # programmatic node:test driver (tests/run.mts, isolation:'process')
+npm run gate:all       # 命名 release/docs parity gates
+bash structure/check-doc-drift.sh
+```
+
+架构详情：[ARCHITECTURE.md](docs/ARCHITECTURE.md) · 测试覆盖：[TESTS.md](TESTS.md) · 内部结构文档：[structure/](structure/)
+
+---
+
+## 对比
+
+| | podex 2.x | Hermes Agent | Claude Code |
+|---|---|---|---|
+| **模型接入** | Pi、Antigravity、AI-E、Claude、Claude E、Codex、Codex App、Cursor、Gemini、Grok、Kiro、OpenCode 和 Copilot（通过厂商/原生认证） | API 密钥（OpenRouter 200+、Nous Portal） | 仅 Anthropic |
+| **费用模型** | 你已经在付的月订阅 | 按 token API 计费 | Anthropic 订阅 |
+| **主 UI** | 管理仪表盘 + Web 应用 + Mac 应用 + 终端 UI | 仅终端 | CLI + IDE 插件 |
+| **仪表盘** | 多实例管理器、看板、笔记工作区 | 无 | 无 |
+| **消息** | Telegram（语音）+ Discord | Telegram/Discord/Slack/WhatsApp/Signal | 无 |
+| **记忆** | 3 层（History/Flush/Soul）+ 全文搜索 | 自我改进循环 + Honcho | 文件型自动记忆 |
+| **多代理** | 员工系统（分派其他 CLI）+ PABCD | 子代理生成 | Task 工具 |
+| **浏览器自动化** | Chrome DevTools + vision-click + Computer Use | 有限 | 通过 MCP |
+| **运行环境** | 本地 + Docker | 本地/Docker/SSH/Daytona/Modal | 本地 |
+| **技能** | 200+ 参考技能 + 活跃运行时技能 | 自动创建 + agentskills.io | 用户配置 |
+| **多语言** | 英语、韩语、中文、日语 | 英语 | 英语 |
+
+---
+
+## 故障排查
+
+| 问题 | 解决办法 |
+|---|---|
+| `podex: command not found` | 重新运行 `npm install -g podex`。macOS/Linux/WSL：检查 `~/.local/bin` 或 `npm prefix -g` + `/bin` 是否在 `$PATH` 中。从 Windows PowerShell 运行时，请通过 WSL login shell：`wsl.exe -d Ubuntu -- bash -lc "jaw dashboard"` |
+| `Error: node version` | 升级到 Node.js 22.4+：`nvm install 22` |
+| `NODE_MODULE_VERSION` mismatch | `npm run ensure:native`（自动重编译原生模块） |
+| `EADDRINUSE: port 3457` | 另一个实例正在运行。使用 `--port 3458` 或先停止 |
+| Telegram / Discord 认证失败 | 运行 `jaw doctor`，检查 token，重启 `jaw serve` |
+| 浏览器命令失败 | 安装 Chrome/Chromium。先运行 `jaw browser start` |
+| 员工分派挂起 | 运行 `jaw employee list`，确认员工 CLI 已认证（`jaw doctor`），然后用 `jaw dispatch --watch` 重试 |
+| 员工分派返回 non-JSON 或 HTML | 服务器可能过旧或缺少 route。运行 `npm run build`，或重启 manager/dashboard 进程 |
+| Computer Use 不工作 | 仅限 macOS。需要 Codex CLI。在系统设置中检查自动化权限 |
+
+---
+
+## 参与贡献
+
+1. 从 `dev` Fork 并创建分支
+2. `npm run build && npm run build:frontend && npm test`
+3. release-sensitive 修改还要运行 `npm run gate:all` 和 touched surface focused checks
+4. 提交 PR
+
+
+---
+
+<div align="center">
+
+
+</div>

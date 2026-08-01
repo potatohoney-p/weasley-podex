@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Commands — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.cmd-block { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px 28px; margin: 24px 0; }
+.cmd-block h3 { margin: 0 0 6px; font-size: 18px; }
+.cmd-block h3 code { font-size: 16px; color: var(--accent); background: none; padding: 0; }
+.cmd-block .cmd-sig { font-size: 14px; color: var(--text-dim); margin-bottom: 14px; font-family: var(--mono); }
+.cmd-block .cmd-sig .arg { color: var(--text-muted); font-style: italic; }
+.cmd-block p { margin: 0 0 12px; line-height: 1.7; }
+.cmd-block .cmd-example { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; margin: 10px 0; font-size: 13px; font-family: var(--mono); line-height: 1.6; }
+.cmd-block .cmd-example .comment { color: var(--text-muted); }
+.cmd-block .cmd-tip { font-size: 13px; color: var(--text-dim); margin-top: 12px; padding: 8px 12px; background: rgba(136,136,160,0.06); border-radius: 6px; border-left: 3px solid var(--accent); }
+.cmd-block .cmd-tip strong { color: var(--text); }
+
+.quick-ref { margin: 20px 0 32px; }
+.quick-ref table td:first-child { white-space: nowrap; font-family: var(--mono); font-size: 13px; }
+.quick-ref table td:nth-child(2) { color: var(--text-dim); font-size: 13px; }
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link active" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="./">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Session Commands</h1>
+<p class="lead">会话命令用于管理当前的 podex 对话：查看帮助、浏览命令、检查状态、清除历史记录、压缩上下文、重置状态以及在对话中途重新引导智能体。这些是你在交互使用中最常用的命令。</p>
+
+<div class="callout callout-info">所有会话命令以 <code>/</code> 开头，可直接在聊天输入框中输入。你也可以使用自然语言触发它们 &mdash; podex 同样理解韩语和英语。请参阅下方每个命令的"~해줘"提示。</div>
+
+<h2>Quick Reference</h2>
+<div class="quick-ref">
+<table>
+<tr><th>Command</th><th>Description</th></tr>
+<tr><td><code>/help [command]</code></td><td>显示所有命令或特定命令的帮助信息</td></tr>
+<tr><td><code>/commands</code></td><td>打开支持模糊搜索的命令面板</td></tr>
+<tr><td><code>/status</code></td><td>显示当前会话状态和诊断信息</td></tr>
+<tr><td><code>/clear [all]</code></td><td>删除对话 / <code>all</code>：重置技能+员工+MCP</td></tr>
+<tr><td><code>/purge</code></td><td>删除对话 + 记忆</td></tr>
+<tr><td><code>/compact [instructions]</code></td><td>压缩上下文并保留关键信息</td></tr>
+<tr><td><code>/reset [confirm]</code></td><td>引导重置 &mdash; 对话、记忆、技能、员工、MCP全部删除</td></tr>
+<tr><td><code>/steer &lt;prompt&gt;</code></td><td>在对话中途将智能体重定向到新方向</td></tr>
+</table>
+</div>
+
+<h2>Commands in Detail</h2>
+
+<!-- /help -->
+<div class="cmd-block" id="help">
+<h3><code>/help</code></h3>
+<div class="cmd-sig">/help <span class="arg">[command]</span></div>
+<p>显示 podex 命令的文档。不带参数调用时，会按类别分组列出所有可用命令。提供命令名称时，会显示该特定命令的详细用法、参数和示例。</p>
+
+<p><strong>参数：</strong></p>
+<table>
+<tr><th>参数</th><th>必填</th><th>描述</th></tr>
+<tr><td><code>command</code></td><td>否</td><td>要获取详细帮助的特定命令名称（不含 <code>/</code> 前缀）</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># List all commands</span><br>
+/help<br><br>
+<span class="comment"># Get detailed help for a specific command</span><br>
+/help compact<br><br>
+<span class="comment"># Help for the steer command</span><br>
+/help steer
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" 提示：</strong> "도움말 보여줘"、"명령어 뭐 있어?"、"compact 사용법 알려줘" 都会映射到 <code>/help</code>。podex 会检测你的意图并显示相关文档。</div>
+</div>
+
+<!-- /commands -->
+<div class="cmd-block" id="commands">
+<h3><code>/commands</code></h3>
+<div class="cmd-sig">/commands</div>
+<p>打开命令面板 &mdash; 一个交互式、可搜索的所有斜杠命令列表。面板支持模糊匹配，你可以输入部分名称来快速找到所需内容。这是发现你从未使用过的命令的最快方式。</p>
+
+<p>面板会显示每个命令的类别、简要描述和键盘快捷键（如果有的话）。选择一个命令可以立即执行，或将其插入输入框以便进一步编辑。</p>
+
+<div class="cmd-example">
+<span class="comment"># Open the command palette</span><br>
+/commands<br><br>
+<span class="comment"># In the palette, type to filter:</span><br>
+<span class="comment">#   "mod" &rarr; shows /model, /model-list</span><br>
+<span class="comment">#   "sk"  &rarr; shows /skill, /skill load, /skill list</span>
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" 提示：</strong> "명령어 팔레트 열어줘"、"커맨드 목록 보여줘" 会触发命令面板。你也可以说 "뭐 할 수 있어?" 来获取功能的对话式概览。</div>
+</div>
+
+<!-- /status -->
+<div class="cmd-block" id="status">
+<h3><code>/status</code></h3>
+<div class="cmd-sig">/status</div>
+<p>显示当前会话的综合快照。包括活动模型和 CLI 后端、已加载的技能、对话 token 数量、内存使用情况、活动目标、已连接的集成（Telegram、Discord 等）以及服务器健康状态。对于调试或理解智能体为何有某种行为非常有用。</p>
+
+<p><strong>状态字段包括：</strong></p>
+<table>
+<tr><th>字段</th><th>描述</th></tr>
+<tr><td>Model</td><td>当前活动的 LLM（例如 claude-opus-4-8、gpt-5.5）</td></tr>
+<tr><td>CLI</td><td>活动的 CLI 后端（Claude Code、Codex 等）</td></tr>
+<tr><td>Skills</td><td>当前已加载的技能列表及其活动/非活动状态</td></tr>
+<tr><td>Tokens</td><td>当前上下文窗口使用量（已使用 / 最大值）</td></tr>
+<tr><td>Goals</td><td>活动目标及其完成状态</td></tr>
+<tr><td>Integrations</td><td>已连接的服务（Telegram、Discord、Electron）</td></tr>
+<tr><td>Memory</td><td>内存索引大小和上次同步时间戳</td></tr>
+<tr><td>Uptime</td><td>当前会话已运行的时长</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># Check current session state</span><br>
+/status<br><br>
+<span class="comment"># Example output:</span><br>
+<span class="comment"># Model: claude-opus-4-8 via Claude Code</span><br>
+<span class="comment"># Skills: dev (active), github (active), memory (active) + 7 more</span><br>
+<span class="comment"># Tokens: 42,318 / 200,000 (21%)</span><br>
+<span class="comment"># Goals: 2 active, 1 completed</span><br>
+<span class="comment"># Uptime: 1h 23m</span>
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" 提示：</strong> "지금 상태 보여줘"、"현재 세션 정보"、"토큰 얼마나 썼어?" 都会解析为 <code>/status</code>。智能体会以可读格式呈现状态信息。</div>
+</div>
+
+<!-- /clear -->
+<div class="cmd-block" id="clear">
+<h3><code>/clear</code></h3>
+<div class="cmd-sig">/clear <span class="arg">[all]</span></div>
+<p>删除当前会话的对话历史记录。技能、记忆和会话配置保持不变。</p>
+
+<p>添加 <code>all</code> 参数后，还会重置技能、重置员工、重新同步 MCP 并清除会话状态。记忆仍然保留。</p>
+
+<p><strong>清理层级（由轻到重）：</strong></p>
+<table>
+<tr><th>命令</th><th>对话</th><th>技能/员工/MCP</th><th>记忆</th></tr>
+<tr><td><code>/clear</code></td><td>✅ 删除</td><td>保留</td><td>保留</td></tr>
+<tr><td><code>/clear all</code></td><td>✅ 删除</td><td>✅ 重置</td><td>保留</td></tr>
+<tr><td><code>/purge</code></td><td>✅ 删除</td><td>保留</td><td>✅ 删除</td></tr>
+<tr><td><code>/reset confirm</code></td><td>✅ 删除</td><td>✅ 硬重置</td><td>✅ 删除</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># 仅删除对话</span><br>
+/clear<br><br>
+<span class="comment"># 重置技能、员工、MCP、会话（保留记忆）</span><br>
+/clear all
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" 提示：</strong> "대화 초기화해줘"、"히스토리 지워줘" → <code>/clear</code>。"스킬까지 초기화해줘" → <code>/clear all</code>。</div>
+</div>
+
+<!-- /purge -->
+<div class="cmd-block" id="purge">
+<h3><code>/purge</code></h3>
+<div class="cmd-sig">/purge</div>
+<p>删除对话历史记录和所有结构化记忆（<code>memory/structured/</code>）。技能、员工和配置保持不变。当你想让智能体忘记在此实例中学到的一切，但保留工具和集成时使用。</p>
+
+<div class="cmd-example">
+<span class="comment"># 删除对话 + 记忆，保留技能</span><br>
+/purge
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" 提示：</strong> "메모리까지 지워줘"、"기억 다 삭제해줘" → <code>/purge</code>。</div>
+</div>
+
+<!-- /compact -->
+<div class="cmd-block" id="compact">
+<h3><code>/compact</code></h3>
+<div class="cmd-sig">/compact <span class="arg">[instructions]</span></div>
+<p>通过总结之前的交流来压缩当前对话上下文，同时保留关键决策、代码更改和重要上下文。这对于即将达到上下文窗口限制但又不想完全丢失线索的长会话至关重要。</p>
+
+<p>智能体会读取完整对话，识别关键信息（已做的决策、修改的文件、遇到的错误、进行中的目标），并生成一份密集的摘要来替换完整历史记录。你可以选择性地传入指令来指导摘要应侧重的内容。</p>
+
+<p><strong>参数：</strong></p>
+<table>
+<tr><th>参数</th><th>必填</th><th>描述</th></tr>
+<tr><td><code>instructions</code></td><td>否</td><td>自然语言指导，说明在摘要中应优先保留哪些内容（例如 "keep the API decisions"、"focus on the auth flow"）</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># Basic context compression</span><br>
+/compact<br><br>
+<span class="comment"># Compress with specific focus</span><br>
+/compact keep the database schema decisions and migration plan<br><br>
+<span class="comment"># Compress focusing on errors and fixes</span><br>
+/compact focus on the bugs we found and how we fixed them<br><br>
+<span class="comment"># Korean instructions work too</span><br>
+/compact API 설계 결정사항만 유지해줘
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" 提示：</strong> "컨텍스트 줄여줘"、"대화 요약해줘"、"컨텍스트 압축해줘"、"토큰 아껴줘" 都会映射到 <code>/compact</code>。当你看到 token 使用率超过 60-70% 时，这是你最好的帮手。</div>
+</div>
+
+<!-- /reset -->
+<div class="cmd-block" id="reset">
+<h3><code>/reset</code></h3>
+<div class="cmd-sig">/reset <span class="arg">[confirm]</span></div>
+<p>执行完整的引导重置 &mdash; 最具破坏性的清理选项。删除对话历史记录、所有结构化记忆、硬重置技能、重置员工并重新同步 MCP。只有 <code>settings.json</code>（服务器配置、认证令牌、CLI 订阅）得以保留。</p>
+
+<p>由于此操作具有破坏性，需要 <code>confirm</code> 参数。</p>
+
+<p><strong>参数：</strong></p>
+<table>
+<tr><th>参数</th><th>必填</th><th>描述</th></tr>
+<tr><td><code>confirm</code></td><td>是</td><td>必填。不传入则显示确认提示。</td></tr>
+</table>
+
+<p><strong>删除与保留：</strong></p>
+<table>
+<tr><th>删除（引导重置）</th><th>保留</th></tr>
+<tr><td>对话历史记录</td><td>settings.json（端口、令牌、订阅）</td></tr>
+<tr><td>结构化记忆（memory/structured/）</td><td>&mdash;</td></tr>
+<tr><td>所有已安装技能（硬重置）</td><td>&mdash;</td></tr>
+<tr><td>员工配置</td><td>&mdash;</td></tr>
+<tr><td>MCP 状态</td><td>&mdash;</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># 显示确认提示</span><br>
+/reset<br><br>
+<span class="comment"># 立即执行引导重置</span><br>
+/reset confirm<br><br>
+<span class="comment"># 实例严重损坏时从头开始</span><br>
+/reset confirm<br>
+"처음부터 다시 설정하자"
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" 提示：</strong> "완전히 초기화해줘"、"공장 초기화해줘"、"부트스트랩 리셋해줘" → <code>/reset confirm</code>。如需更轻量的清理，请使用 <code>/clear</code>、<code>/clear all</code> 或 <code>/purge</code>。</div>
+</div>
+
+<!-- /steer -->
+<div class="cmd-block" id="steer">
+<h3><code>/steer</code></h3>
+<div class="cmd-sig">/steer <span class="arg">&lt;prompt&gt;</span></div>
+<p>在不清除历史记录的情况下重定向智能体。当智能体朝着错误的方向前进，或者你想在保留现有上下文的同时切换到不同的方法时使用。引导提示会作为高优先级系统级指令注入，覆盖智能体当前的轨迹。</p>
+
+<p>这比 <code>/clear</code> 更精准 &mdash; 你保留完整的对话历史记录和上下文，但智能体会根据你的新方向重新评估其方法。它非常适合路线修正："停止做 X，改为做 Y。"</p>
+
+<p><strong>参数：</strong></p>
+<table>
+<tr><th>参数</th><th>必填</th><th>描述</th></tr>
+<tr><td><code>prompt</code></td><td>是</td><td>描述新方向、方法或约束的自然语言指令</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># Redirect approach</span><br>
+/steer stop using class components, use hooks instead<br><br>
+<span class="comment"># Change language/framework</span><br>
+/steer switch to TypeScript for all new files<br><br>
+<span class="comment"># Adjust behavior</span><br>
+/steer be more concise, skip explanations, just show code<br><br>
+<span class="comment"># Korean works naturally</span><br>
+/steer 설명 생략하고 코드만 보여줘<br><br>
+<span class="comment"># Pivot task direction</span><br>
+/steer 이 방식 말고 WebSocket으로 구현하자
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" 提示：</strong> "방향 바꿔줘"、"다른 방법으로 해줘"、"이렇게 말고 저렇게 해"、"접근 방식 바꿔" 都会触发引导行为。你也可以直接用自然语言表述新方向 &mdash; 智能体会捕捉到转向意图。<code>/steer</code> 使其更加明确和有力。</div>
+</div>
+
+<h2>When to Use Which</h2>
+<p>选择合适的会话命令取决于你希望保留多少状态：</p>
+<table>
+<tr><th>场景</th><th>命令</th><th>原因</th></tr>
+<tr><td>对话过长，接近 token 限制</td><td><code>/compact</code></td><td>在释放 token 的同时保留关键决策</td></tr>
+<tr><td>当前话题已结束，开始新任务</td><td><code>/clear</code></td><td>全新对话，工作空间状态保持不变</td></tr>
+<tr><td>智能体走错了方向</td><td><code>/steer</code></td><td>在不丢失上下文的情况下纠正路线</td></tr>
+<tr><td>会话严重混乱或损坏</td><td><code>/reset</code></td><td>终极选项 &mdash; 完全重启</td></tr>
+<tr><td>记不住命令名称</td><td><code>/commands</code></td><td>可搜索的全部可用命令面板</td></tr>
+<tr><td>需要检查 token 使用量或已加载的技能</td><td><code>/status</code></td><td>一目了然的会话诊断信息</td></tr>
+<tr><td>刚接触 podex，探索功能中</td><td><code>/help</code></td><td>内置于聊天中的文档</td></tr>
+</table>
+
+<h2>Command Lifecycle</h2>
+<p>会话命令在 podex 技术栈的不同层级上运行：</p>
+<ul>
+<li><strong><code>/help</code></strong> 和 <strong><code>/commands</code></strong> 是只读的 &mdash; 它们显示信息而不修改状态。</li>
+<li><strong><code>/status</code></strong> 从多个子系统（模型、技能、记忆、目标）读取数据并汇总为快照。</li>
+<li><strong><code>/clear</code></strong> 清除消息缓冲区，但保留会话外壳（技能、配置、目标）不变。</li>
+<li><strong><code>/compact</code></strong> 重写消息缓冲区 &mdash; 它读取所有消息，生成摘要，然后用压缩版本替换完整历史记录。</li>
+<li><strong><code>/steer</code></strong> 在不触碰消息历史记录的情况下，向系统上下文注入优先级指令。</li>
+<li><strong><code>/reset</code></strong> 销毁整个会话（消息 + 技能 + 目标 + 状态），并从启动默认值重新初始化。</li>
+</ul>
+
+<div class="callout callout-info"><strong>自然语言始终有效。</strong>你永远<em>不必</em>记住斜杠命令。说 "대화 지워줘" 和输入 <code>/clear</code> 效果相同。斜杠命令的存在是为了精确和速度，但 podex 的意图检测会处理其余一切。</div>
+
+<div class="page-nav">
+<a class="prev" href="../skills/utility.html">Utility Skills</a>
+<a class="next" href="workflow.html">Workflow Commands</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

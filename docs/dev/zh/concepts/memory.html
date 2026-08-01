@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>记忆系统 — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link active" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="../">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>记忆系统</h1>
+<p class="lead">podex 拥有三层记忆系统：结构化文件存储、基于片段的对话摘要，以及带有 FTS5 索引的语义搜索。记忆在会话间持久保存，并注入到智能体的系统提示中。</p>
+
+<h2>三个层级</h2>
+<table>
+<tr><th>层级</th><th>用途</th><th>存储位置</th></tr>
+<tr><td><strong>结构化</strong></td><td>用户档案、偏好设置、决策记录、灵魂/身份</td><td><code>~/.podex/memory/structured/</code></td></tr>
+<tr><td><strong>片段</strong></td><td>记忆刷新产生的对话摘要</td><td><code>~/.podex/memory/structured/episodes/live/</code></td></tr>
+<tr><td><strong>语义</strong></td><td>导入并分类的知识</td><td><code>~/.podex/memory/structured/semantic/</code></td></tr>
+</table>
+
+<h2>记忆目录结构</h2>
+<pre><code>~/.podex/memory/structured/
+├── profile.md          # User profile and preferences
+├── shared/
+│   ├── preferences.md  # Reflected preferences
+│   ├── decisions.md    # Key decisions
+│   ├── projects.md     # Project context
+│   └── soul.md         # Soul and identity
+├── episodes/
+│   ├── live/           # Daily conversation summaries
+│   └── imported/       # Imported from legacy memory
+├── semantic/           # Categorized knowledge
+├── procedures/         # Runbooks and procedures
+├── sessions/           # (not indexed)
+└── index.sqlite        # FTS5 search index</code></pre>
+
+<h2>记忆的工作原理</h2>
+<h3>1. 历史区块（对话上下文）</h3>
+<p>在新会话开始时，最近的对话历史（最多 8000 字符、10 个会话）会以 <code>[Recent Context]</code> 的形式添加到用户提示的前面。该内容仅限于当前 <code>workingDir</code> 的范围。</p>
+
+<h3>2. 记忆刷新（对话转存储）</h3>
+<p>每隔 N 次助手响应（默认为 10 次，可通过 <code>settings.memory.flushEvery</code> 配置），一个独立的智能体会提取关键信息并追加到当日的片段文件中。</p>
+<pre><code>## 15:30
+User discussed refactoring the auth module. Decided to use JWT tokens.
+Prefers ES Module only, no CommonJS.</code></pre>
+
+<h3>3. 高级提示注入</h3>
+<p>当 FTS5 索引就绪后，系统提示中将包含：</p>
+<ul>
+<li><strong>用户档案上下文</strong> -- 来自 <code>profile.md</code>（800 字符）</li>
+<li><strong>灵魂与身份</strong> -- 来自 <code>shared/soul.md</code>（1000 字符）</li>
+<li><strong>任务快照</strong> -- 与当前提示相关的 FTS5 搜索结果（最多 4 条匹配，2800 字符）</li>
+</ul>
+
+<h2>CLI 命令</h2>
+<pre><code># Search memory
+jaw memory search "JWT authentication"
+
+# Read a memory file
+jaw memory read shared/decisions.md
+
+# Save to memory
+jaw memory save shared/notes.md "New note content"
+
+# List memory files
+jaw memory list
+
+# Initialize memory
+jaw memory init
+
+# Reflect recent episodes into structured memory
+jaw memory reflect
+
+# Trigger memory flush
+jaw memory flush
+
+# Cleanup old entries
+jaw memory cleanup --days 30</code></pre>
+
+<h2>斜杠命令</h2>
+<table>
+<tr><th>命令</th><th>说明</th></tr>
+<tr><td><code>/memory</code> 或 <code>/memory list</code></td><td>列出记忆文件</td></tr>
+<tr><td><code>/memory &lt;query&gt;</code></td><td>搜索记忆</td></tr>
+<tr><td><code>/memory status</code></td><td>显示运行时状态</td></tr>
+<tr><td><code>/memory bootstrap</code></td><td>导入旧版记忆源</td></tr>
+<tr><td><code>/memory reindex</code></td><td>重建 FTS5 索引</td></tr>
+<tr><td><code>/memory flush</code></td><td>立即触发记忆刷新</td></tr>
+<tr><td><code>/memory embed status</code></td><td>显示嵌入状态</td></tr>
+<tr><td><code>/memory embed estimate</code></td><td>估算嵌入成本</td></tr>
+</table>
+
+<h2>L1 / L2 记忆边界</h2>
+<table>
+<tr><th>层</th><th>命令</th><th>作用范围</th><th>访问权限</th></tr>
+<tr><td><strong>L1（实例本地）</strong></td><td><code>jaw memory</code></td><td>当前 <code>JAW_HOME</code></td><td>读/写</td></tr>
+<tr><td><strong>L2（仪表盘联合）</strong></td><td><code>jaw dashboard memory</code></td><td>所有 <code>~/.podex*</code> 实例</td><td>只读</td></tr>
+</table>
+<div class="callout callout-info">日常操作请使用 L1（<code>jaw memory</code>）。L2（<code>jaw dashboard memory</code>）用于需要从其他实例获取上下文时的跨实例搜索。</div>
+
+<h2>仪表盘嵌入（可选）</h2>
+<p>仪表盘支持在 FTS5 搜索之上添加可选的向量嵌入。这是一个附加层，<strong>默认关闭</strong>。支持的提供商：OpenAI、Gemini、Voyage、Vertex、Local (Ollama)。</p>
+<pre><code># Configure via dashboard settings or CLI:
+jaw dashboard memory config set --provider openai --api-key sk-...
+jaw dashboard memory reindex --embedding</code></pre>
+
+<h2>记忆设置</h2>
+<pre><code>{
+  "memory": {
+    "enabled": true,
+    "flushEvery": 10,
+    "cli": "claude",
+    "model": "haiku"
+  }
+}</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="skills.html">Skills</a>
+<a class="next" href="prompts.html">Prompts</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

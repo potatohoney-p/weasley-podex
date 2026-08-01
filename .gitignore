@@ -1,0 +1,39 @@
+node_modules/
+*.db
+*.db-shm
+*.db-wal
+settings.json
+.DS_Store
+.env
+.artifacts/
+cache/
+public/dist/
+dist/
+.dist-staging/
+.dist-old/
+native/**/target/
+
+out/
+_INBOX/
+*.tgz
+.claude/worktrees/
+
+# build-local: entire directory (large native binaries)
+build-local/
+
+# generated bundles (large + may contain embedded secrets)
+src/lib/tui/jawcode-interactive-bundle.mjs
+src/lib/tui/jawcode-tui-bundle.mjs
+src/lib/tui/jawcode-tui-bundle.js
+src/lib/native/*.node
+
+# electron sidecar dist bundles
+electron/sidecar/jawcode/packages/jwc/dist-node/
+
+# reference repos (cloned for analysis, not tracked)
+devlog/_plan/*/_ref_*/
+
+# local/private planning workspace; devlog is a tracked submodule pointer
+devlog/
+.codegraph
+.codexclaw/

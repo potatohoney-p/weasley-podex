@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PowerPoint — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.trigger-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 16px; }
+.trigger-tag { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 12px; font-family: var(--mono); background: var(--surface2); border: 1px solid var(--border); color: var(--accent); }
+.example-callout { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-callout .example-korean { font-size: 15px; color: var(--text); margin-bottom: 6px; }
+.example-callout .example-desc { font-size: 13px; color: var(--text-dim); }
+.escalation-level { display: inline-block; background: var(--accent-dim); color: var(--accent); font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-right: 4px; }
+.palette-swatch { display: inline-block; width: 16px; height: 16px; border-radius: 3px; vertical-align: middle; margin-right: 4px; border: 1px solid var(--border); }
+.dial-bar { display: inline-block; background: var(--surface2); border-radius: 3px; height: 8px; width: 80px; position: relative; vertical-align: middle; }
+.dial-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; background: var(--accent); }
+.checklist { list-style: none; padding-left: 0; }
+.checklist li { padding: 4px 0; padding-left: 24px; position: relative; }
+.checklist li::before { content: "\2610"; position: absolute; left: 0; color: var(--text-muted); font-size: 14px; }
+.subskill-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin: 8px 0; }
+.subskill-card strong { color: var(--accent); }
+.subskill-card p { margin: 4px 0 0; font-size: 13px; color: var(--text-dim); }
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link active" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">한국어</a>
+    <a href="../../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>PowerPoint <span class="badge badge-active">Default Active</span></h1>
+<p class="lead">.pptx create, edit, analyze &mdash; from single-slide fixes to full investor decks with morph transitions and data-driven generation.</p>
+
+<div class="callout callout-info">This skill is <strong>default active</strong> and triggers automatically when your request mentions PowerPoint, PPTX, presentations, slides, or decks. No manual loading required.</div>
+
+<h4>Trigger Keywords</h4>
+<div class="trigger-list">
+  <span class="trigger-tag">PowerPoint</span>
+  <span class="trigger-tag">PPTX</span>
+  <span class="trigger-tag">presentation</span>
+  <span class="trigger-tag">slides</span>
+  <span class="trigger-tag">deck</span>
+</div>
+
+<hr>
+
+<h2>Quick Reference</h2>
+<table>
+<tr><th>Task</th><th>Action</th></tr>
+<tr><td><strong>Format like existing deck</strong></td><td><code>cp source.pptx target.pptx &amp;&amp; officecli open target.pptx</code> &mdash; inherit theme/layouts/masters</td></tr>
+<tr><td>Read / analyze content</td><td><code>officecli view</code> and <code>officecli get</code> commands</td></tr>
+<tr><td>Edit existing presentation</td><td>Reference-based editing workflow (copy &rarr; modify)</td></tr>
+<tr><td>Create from scratch</td><td><code>officecli create</code> &rarr; add slides &rarr; add elements</td></tr>
+<tr><td>Pitch deck (Seed / Series)</td><td>Subskill: <code>officecli-pitch-deck</code></td></tr>
+<tr><td>Morph transition animations</td><td>Subskill: <code>morph-ppt</code></td></tr>
+<tr><td>3D morph effects</td><td>Subskill: <code>morph-ppt-3d</code></td></tr>
+<tr><td>JS programmatic fallback</td><td><code>pptxgenjs</code> for 50+ data-driven slides</td></tr>
+<tr><td>Color palette / typography</td><td>Design system: 20 palettes, 8 font pairings</td></tr>
+<tr><td>Thumbnail grid / visual QA</td><td><code>python3 scripts/thumbnail.py deck.pptx grid.png</code></td></tr>
+<tr><td>Unpack / repair</td><td><code>python3 scripts/pptx_cli.py {open|save|validate|repair}</code></td></tr>
+</table>
+
+<div class="callout callout-warn"><strong>Execution model:</strong> Run commands one at a time. Check exit code before proceeding. Non-zero = stop and fix. Do not run parallel commands against the same <code>.pptx</code> file.</div>
+
+<hr>
+
+<h2>"~해줘" Examples</h2>
+<p>Natural language requests that activate this skill. Works in Korean, English, or mixed.</p>
+
+<div class="example-callout">
+  <div class="example-korean">"회사 소개 PPT 만들어줘 &mdash; 10장짜리, 우리 브랜드 컬러(네이비+화이트) 써줘"</div>
+  <div class="example-desc">Creates a 10-slide company intro deck using a navy + white color palette. The skill picks a matching design-system palette, sets up slide masters, and generates slides with varied layouts (hero, split, grid, chart).</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"이 PPTX 파일 분석해줘 &mdash; 어떤 내용인지 요약하고 디자인 문제 있으면 알려줘"</div>
+  <div class="example-desc">Reads all slide content with <code>officecli view text</code>, checks for design issues with <code>officecli view issues</code>, runs validation, and reports a summary plus any problems (overflow, missing alt text, low contrast).</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"기존 템플릿(Brand.pptx) 기반으로 Q4 실적 보고서 만들어줘"</div>
+  <div class="example-desc">Copies the source file to inherit theme/layouts/masters, removes sample slides, then builds new content slides using the existing brand layouts. Never recreates themes from scratch.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"이 데이터로 차트 슬라이드 추가해줘 &mdash; 월별 매출 바 차트"</div>
+  <div class="example-desc">Adds a new slide with a column chart element using <code>officecli add</code> with chart properties. Data is passed inline and the chart is positioned with proper margins.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"발표자료 만들어줘 &mdash; 모프 전환 효과 넣고, 다크 테마로"</div>
+  <div class="example-desc">Activates the <code>morph-ppt</code> subskill. Selects a dark style from the 48 curated style definitions, applies morph transitions between slides, and runs visual QA with thumbnails.</div>
+</div>
+
+<hr>
+
+<h2>Primary Tool: OfficeCLI</h2>
+<p><code>officecli</code> handles approximately 80% of PPTX tasks: slide add/set/remove, validation, queries, and visual inspection. It is the primary interface &mdash; always try OfficeCLI first before escalating to other tools.</p>
+
+<h3>Discovery Rule</h3>
+<div class="callout callout-info">Always run <code>officecli --help</code> and <code>officecli help pptx ... --json</code> before inventing element or property names. The CLI is the source of truth for available properties and syntax.</div>
+
+<pre><code>officecli --help
+officecli help pptx
+officecli help pptx add slide --json       # exact property list
+officecli help pptx add shape --json
+officecli help pptx set slide --json
+officecli help pptx set shape --json
+officecli view --help                      # all view modes
+officecli help pptx query</code></pre>
+
+<hr>
+
+<h2>Core Workflows</h2>
+
+<h3>Reading &amp; Analyzing</h3>
+<pre><code># Text extraction
+officecli view slides.pptx text
+officecli view slides.pptx text --start 1 --end 5
+
+# Structural views
+officecli view slides.pptx outline
+officecli view slides.pptx annotated
+officecli view slides.pptx stats</code></pre>
+
+<h3>Element Inspection (PATH Syntax)</h3>
+<p>Paths are 1-based: <code>/slide[1]</code>, <code>/shape[1]</code>. Always quote paths in zsh to prevent glob expansion.</p>
+<pre><code>officecli get slides.pptx '/slide[1]' --depth 1
+officecli get slides.pptx '/slide[1]/shape[1]'
+officecli get slides.pptx '/slide[1]/chart[1]'
+officecli get slides.pptx '/slide[1]/table[1]' --depth 3</code></pre>
+
+<h3>CSS-like Queries</h3>
+<pre><code>officecli query slides.pptx 'shape:contains("Revenue")'
+officecli query slides.pptx "picture:no-alt"
+officecli query slides.pptx 'shape[fill=#4472C4]'
+officecli query slides.pptx "shape[width>=10cm]"</code></pre>
+
+<h3>Visual Inspection</h3>
+<pre><code>officecli view slides.pptx html --browser    # recommended
+officecli view slides.pptx svg --start 1 --end 1 --browser</code></pre>
+
+<h3>Resident Mode</h3>
+<p>Resident mode keeps the file open as a background daemon for faster sequential edits. The <code>open</code> command returns immediately &mdash; do <strong>not</strong> run it as a background shell job.</p>
+<pre><code>officecli open slides.pptx      # returns IMMEDIATELY; daemon in bg
+officecli add slides.pptx ...
+officecli set slides.pptx ...
+officecli close slides.pptx     # always close explicitly</code></pre>
+<div class="callout callout-danger"><strong>Warning:</strong> Do NOT run <code>officecli open</code> as a background shell job. It returns immediately and the daemon runs in the background automatically. Background shell spawn creates zombies and file locks.</div>
+
+<h3>Batch Mode</h3>
+<p>Execute multiple operations in a single call using JSON. Use a heredoc with single-quoted delimiter to prevent shell syntax leaking into JSON.</p>
+<pre><code>cat &lt;&lt;'EOF' | officecli batch slides.pptx
+[
+  {"command":"add","parent":"/slide[1]","type":"shape","props":{"text":"Title","x":"2cm","y":"2cm","width":"20cm","height":"3cm","size":"36","bold":"true"}},
+  {"command":"add","parent":"/slide[1]","type":"shape","props":{"text":"Body","x":"2cm","y":"6cm","width":"20cm","height":"10cm","size":"16"}}
+]
+EOF</code></pre>
+<p>Batch supports: <code>add</code>, <code>set</code>, <code>get</code>, <code>query</code>, <code>remove</code>, <code>move</code>, <code>swap</code>, <code>view</code>, <code>raw</code>, <code>raw-set</code>, <code>validate</code>.</p>
+
+<hr>
+
+<h2>Reference-Based Editing</h2>
+<p>When the user provides a source file or says "format like X.pptx" &mdash; <strong>always start from the source</strong>. Never rebuild themes from scratch.</p>
+
+<h3>Why This Matters</h3>
+<p>Slide master and theme definitions (fonts, colors, placeholder geometry) are document-specific. Recreating them from scratch loses consistent branding across slides, breaks existing placeholder positions, and takes 5-10x longer than modifying a copy.</p>
+
+<h3>Workflow</h3>
+<ol>
+  <li><strong>Copy the source:</strong> <code>cp source.pptx target.pptx</code> &mdash; inherits theme, slide masters, layouts, fonts, colors</li>
+  <li><strong>Open:</strong> <code>officecli open target.pptx</code> &mdash; daemon returns immediately</li>
+  <li><strong>Remove slide content</strong> but keep <code>/slideMaster</code>, <code>/slideLayout</code>, <code>/theme</code></li>
+  <li><strong>Add new slides</strong> using existing layouts (<code>--prop layout=Title+Content</code>) &mdash; they auto-inherit theme</li>
+</ol>
+
+<h3>Template Sources (Priority Order)</h3>
+<table>
+<tr><th>Priority</th><th>Source</th><th>When to Use</th></tr>
+<tr><td>1</td><td>User-provided source file</td><td>First-class template &mdash; always preferred</td></tr>
+<tr><td>2</td><td><code>tests/fixtures/*.pptx</code></td><td>Pre-built examples shipped with skill</td></tr>
+<tr><td>3</td><td><code>officecli-pitch-deck/</code> templates</td><td>Pitch/investor context</td></tr>
+<tr><td>4</td><td><code>morph-ppt/reference/styles/*</code></td><td>48 curated style definitions</td></tr>
+<tr><td>5</td><td><code>officecli create</code> blank</td><td>Only when nothing else applies</td></tr>
+</table>
+
+<h3>Example &mdash; Inherit Existing Brand</h3>
+<pre><code># CORRECT: inherit theme and layouts
+cp CompanyBrand.pptx Q4Report.pptx
+officecli open Q4Report.pptx
+officecli remove Q4Report.pptx "/slide[1]"
+officecli add Q4Report.pptx / --type slide --prop layout=Title
+officecli add Q4Report.pptx '/slide[1]' --type textbox \
+  --prop text="Q4 Report" --prop placeholder=title
+officecli close Q4Report.pptx
+
+# WRONG: recreate theme (loses brand)
+officecli create Q4Report.pptx
+# ... add all fonts, colors, masters from scratch ...</code></pre>
+
+<hr>
+
+<h2>Creation Workflow</h2>
+<pre><code># 1. Work in /tmp/ with ASCII filenames (Korean filenames cause resident corruption)
+officecli create /tmp/deck_work.pptx --type pptx
+
+# 2. Add slide, set background, add shapes/textboxes/charts
+officecli add /tmp/deck_work.pptx /slide --type slide
+officecli set /tmp/deck_work.pptx '/slide[1]' --prop background=1E2761
+officecli add /tmp/deck_work.pptx '/slide[1]' --type textbox \
+  --prop 'text=Title Here' --prop x=2cm --prop y=3cm --prop w=30cm --prop h=4cm \
+  --prop fontsize=44 --prop bold=true --prop color=FFFFFF --prop fontFamily=Pretendard
+
+# 3. Explicitly close resident after edits
+officecli close /tmp/deck_work.pptx
+
+# 4. Copy to final filename (Korean OK for final output)
+python3 -c "import shutil; shutil.copy2('/tmp/deck_work.pptx', 'final.pptx')"</code></pre>
+
+<hr>
+
+<h2>Escalation Ladder</h2>
+<p>When OfficeCLI cannot do the job, escalate in order. Most tasks stay at L1.</p>
+
+<table>
+<tr><th>Level</th><th>When</th><th>Tool</th></tr>
+<tr>
+  <td><span class="escalation-level">L1</span> officecli high-level</td>
+  <td>Typical slide/shape add/set/remove</td>
+  <td><code>officecli add/set/remove/query/view</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L2</span> officecli raw-set</td>
+  <td>XML injection &mdash; custom animations, chart XML, theme tweaks</td>
+  <td><code>officecli raw-set FILE PATH --xpath X --action A --xml ...</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L3</span> Python script</td>
+  <td>Thumbnail generation, orphan cleanup, unified CLI ops</td>
+  <td><code>python3 scripts/*.py</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L4</span> Unpack &rarr; edit XML &rarr; repack</td>
+  <td>Morph transitions beyond officecli, custom <code>p:transition</code> XML, macro handling</td>
+  <td><code>scripts/pptx_cli.py open</code> &rarr; edit XML &rarr; <code>save</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L5</span> pptxgenjs</td>
+  <td>50+ slides from datasets, composable factories, heavy loop logic</td>
+  <td><code>npm install pptxgenjs</code> + JS pipeline</td>
+</tr>
+</table>
+
+<h3>Escalation Signals</h3>
+<ul>
+  <li>officecli shows <strong>"silently ignored"</strong> or unsupported prop &rarr; <span class="escalation-level">L2</span></li>
+  <li>Need <strong>morph/custom transitions</strong> beyond high-level &rarr; <span class="escalation-level">L4</span></li>
+  <li><strong>Bulk generation</strong> from data (50+ slides) &rarr; <span class="escalation-level">L5</span> (pptxgenjs)</li>
+  <li><strong>Unpacked workflow</strong> for cleanup/reorg &rarr; <span class="escalation-level">L3</span> (<code>pptx_cli.py clean</code>)</li>
+  <li><strong>Design pick</strong> (color, font, style) &rarr; Read <code>references/design-system.md</code> + <code>morph-ppt/reference/styles/INDEX.md</code> first</li>
+</ul>
+
+<hr>
+
+<h2>Element Types &amp; Commands</h2>
+<p>OfficeCLI supports a rich set of element types. Use these actively &mdash; text-only slides are forgettable.</p>
+
+<h3>Shapes as Content Containers</h3>
+<pre><code>officecli add deck.pptx '/slide[1]' --type shape --prop geometry=roundRect \
+  --prop fill=1E2761 --prop x=1cm --prop y=4cm --prop w=15cm --prop h=12cm</code></pre>
+
+<h3>Tables</h3>
+<pre><code>officecli add deck.pptx '/slide[2]' --type table \
+  --prop rows=4 --prop cols=3 --prop x=1cm --prop y=3cm \
+  --prop width=24cm --prop height=6cm</code></pre>
+
+<h3>Charts</h3>
+<pre><code>officecli add deck.pptx '/slide[3]' --type chart \
+  --prop chartType=column --prop title='Revenue' \
+  --prop 'data=Q1:12,Q2:15,Q3:18,Q4:20'</code></pre>
+
+<h3>Pictures</h3>
+<pre><code>officecli add deck.pptx '/slide[1]' --type picture \
+  --prop path=photo.png --prop x=14cm --prop y=3cm \
+  --prop width=8cm --prop height=5cm --prop alt='Team photo'</code></pre>
+
+<h3>Video / Audio</h3>
+<pre><code>officecli add deck.pptx '/slide[4]' --type video --prop path=demo.mp4 \
+  --prop x=2cm --prop y=3cm --prop width=20cm --prop height=12cm --prop autoplay=true</code></pre>
+
+<h3>OLE Embed (Excel, Word, PDF)</h3>
+<pre><code>officecli add deck.pptx '/slide[5]' --type ole --prop path=data.xlsx \
+  --prop x=2cm --prop y=3cm --prop width=20cm --prop height=12cm</code></pre>
+
+<h3>Connectors / Arrows</h3>
+<pre><code>officecli add deck.pptx '/slide[2]' --type connector \
+  --prop startShape=1 --prop endShape=2 --prop lineColor=4472C4 --prop tailEnd=arrow</code></pre>
+
+<h3>Speaker Notes</h3>
+<pre><code>officecli add deck.pptx '/slide[1]' --type notes --prop 'text=Key talking point here.'</code></pre>
+
+<h3>Animations</h3>
+<pre><code>officecli set deck.pptx '/slide[1]/shape[2]' --prop animation=fadeIn --prop delay=500</code></pre>
+
+<h3>Theme Colors</h3>
+<pre><code># Use theme tokens instead of hex for theme-aware decks
+officecli set deck.pptx '/slide[1]/shape[1]' --prop fill=accent1
+# Available: accent1..accent6, dk1, dk2, lt1, lt2, tx1, tx2, bg1, bg2</code></pre>
+
+<h3>Additional Operations</h3>
+<pre><code># Hyperlinks
+officecli set deck.pptx '/slide[1]/shape[2]' --prop link='https://example.com'
+
+# Flip / rotate
+officecli set deck.pptx '/slide[1]/shape[2]' --prop flipH=true
+officecli set deck.pptx '/slide[1]/shape[2]' --prop rotation=45
+
+# Slide master / layout editing
+officecli set deck.pptx '/slideMaster[1]/shape[2]' --prop text='Company Name'
+officecli set deck.pptx '/slideLayout[2]/shape[1]' --prop fill=1E2761
+
+# Template merge with data
+officecli merge template.pptx output.pptx --data '{"title":"Q4 Report","revenue":"$5.1M"}'
+
+# Watch mode (live preview)
+officecli watch deck.pptx --port 3000
+
+# Slideshow settings
+officecli set deck.pptx / --prop show.loop=true --prop show.narration=false</code></pre>
+
+<hr>
+
+<h2>Design System</h2>
+
+<h3>Design Dials</h3>
+<p>Before creating, decide these three parameters. Present to user if ambiguous.</p>
+<table>
+<tr><th>Dial</th><th>Range</th><th>Default</th><th>Meaning</th></tr>
+<tr><td>DESIGN_VARIANCE</td><td>1&ndash;10</td><td>4</td><td>1 = symmetric grid, 10 = asymmetric art-directed</td></tr>
+<tr><td>VISUAL_DENSITY</td><td>1&ndash;10</td><td>5</td><td>1 = gallery whitespace, 10 = dashboard dense</td></tr>
+<tr><td>MOTION_INTENSITY</td><td>1&ndash;10</td><td>3</td><td>1 = static cuts, 10 = cinematic morph</td></tr>
+</table>
+
+<h3>Presets by Deck Type</h3>
+<table>
+<tr><th>Deck Type</th><th>Variance</th><th>Density</th><th>Motion</th></tr>
+<tr><td>Investor pitch</td><td>6</td><td>3</td><td>4</td></tr>
+<tr><td>Internal review</td><td>3</td><td>7</td><td>1</td></tr>
+<tr><td>Conference keynote</td><td>8</td><td>2</td><td>7</td></tr>
+<tr><td>Workshop / training</td><td>4</td><td>6</td><td>2</td></tr>
+<tr><td>Product launch</td><td>7</td><td>4</td><td>6</td></tr>
+</table>
+
+<h3>Recommended Palettes</h3>
+<p>Choose colors that match your topic &mdash; don't default to generic blue.</p>
+<table>
+<tr><th>Theme</th><th>Primary</th><th>Secondary</th><th>Accent</th><th>Text</th><th>Muted</th></tr>
+<tr><td>Midnight Executive</td><td><span class="palette-swatch" style="background:#1E2761"></span><code>1E2761</code></td><td><span class="palette-swatch" style="background:#CADCFC"></span><code>CADCFC</code></td><td><span class="palette-swatch" style="background:#FFFFFF"></span><code>FFFFFF</code></td><td><code>333333</code></td><td><code>8899BB</code></td></tr>
+<tr><td>Slate Professional</td><td><span class="palette-swatch" style="background:#2C3E50"></span><code>2C3E50</code></td><td><span class="palette-swatch" style="background:#ECF0F1"></span><code>ECF0F1</code></td><td><span class="palette-swatch" style="background:#E74C3C"></span><code>E74C3C</code></td><td><code>333333</code></td><td><code>7A8A94</code></td></tr>
+<tr><td>Forest &amp; Moss</td><td><span class="palette-swatch" style="background:#2C5F2D"></span><code>2C5F2D</code></td><td><span class="palette-swatch" style="background:#97BC62"></span><code>97BC62</code></td><td><span class="palette-swatch" style="background:#F5F5F5"></span><code>F5F5F5</code></td><td><code>2D2D2D</code></td><td><code>6B8E6B</code></td></tr>
+<tr><td>Coral Energy</td><td><span class="palette-swatch" style="background:#F96167"></span><code>F96167</code></td><td><span class="palette-swatch" style="background:#F9E795"></span><code>F9E795</code></td><td><span class="palette-swatch" style="background:#2F3C7E"></span><code>2F3C7E</code></td><td><code>333333</code></td><td><code>8B7E6A</code></td></tr>
+<tr><td>Warm Terracotta</td><td><span class="palette-swatch" style="background:#B85042"></span><code>B85042</code></td><td><span class="palette-swatch" style="background:#E7E8D1"></span><code>E7E8D1</code></td><td><span class="palette-swatch" style="background:#A7BEAE"></span><code>A7BEAE</code></td><td><code>3D2B2B</code></td><td><code>8C7B75</code></td></tr>
+<tr><td>Ocean Gradient</td><td><span class="palette-swatch" style="background:#065A82"></span><code>065A82</code></td><td><span class="palette-swatch" style="background:#1C7293"></span><code>1C7293</code></td><td><span class="palette-swatch" style="background:#21295C"></span><code>21295C</code></td><td><code>2B3A4E</code></td><td><code>6B8FAA</code></td></tr>
+<tr><td>Charcoal Minimal</td><td><span class="palette-swatch" style="background:#36454F"></span><code>36454F</code></td><td><span class="palette-swatch" style="background:#F2F2F2"></span><code>F2F2F2</code></td><td><span class="palette-swatch" style="background:#212121"></span><code>212121</code></td><td><code>333333</code></td><td><code>7A8A94</code></td></tr>
+<tr><td>Berry &amp; Cream</td><td><span class="palette-swatch" style="background:#6D2E46"></span><code>6D2E46</code></td><td><span class="palette-swatch" style="background:#A26769"></span><code>A26769</code></td><td><span class="palette-swatch" style="background:#ECE2D0"></span><code>ECE2D0</code></td><td><code>3D2233</code></td><td><code>8C6B7A</code></td></tr>
+</table>
+<p>Use <strong>Text</strong> for body copy on light backgrounds, <strong>Muted</strong> for captions, labels, and axis text. On dark backgrounds (brightness &lt; 30%), all body text must be white (<code>FFFFFF</code>) or near-white. Off-black: <code>0A0A0A</code> not <code>000000</code>.</p>
+<div class="callout callout-warn"><strong>Avoid:</strong> Purple gradient on white (AI slop), rainbow multi-accent, <code>FFFFFF</code> bg + <code>000000</code> text (zero personality).</div>
+
+<h3>Typography</h3>
+<table>
+<tr><th>Header Font</th><th>Body Font</th><th>Best For</th></tr>
+<tr><td>Georgia</td><td>Calibri</td><td>Formal business, finance</td></tr>
+<tr><td>Arial Black</td><td>Arial</td><td>Bold marketing, launches</td></tr>
+<tr><td>Trebuchet MS</td><td>Calibri</td><td>Friendly tech, startups</td></tr>
+<tr><td>Consolas</td><td>Calibri</td><td>Developer tools, engineering</td></tr>
+</table>
+<p><strong>Korean:</strong> Pretendard, Noto Sans KR, Wanted Sans. Avoid <code>Malgun Gothic</code> as sole font &mdash; acceptable only as CJK fallback in <code>a:ea</code> font stack.</p>
+
+<table>
+<tr><th>Element</th><th>Size</th></tr>
+<tr><td>Slide title</td><td>36&ndash;44pt bold</td></tr>
+<tr><td>Section header</td><td>20&ndash;24pt bold</td></tr>
+<tr><td>Body text</td><td>16&ndash;20pt (min 16pt)</td></tr>
+<tr><td>Caption / source</td><td>10&ndash;12pt muted</td></tr>
+<tr><td>Key metric</td><td>60&ndash;72pt bold, accent color</td></tr>
+</table>
+<div class="callout callout-info">Body text minimum 16pt. If text overflows, reduce content or split slides &mdash; never shrink font.</div>
+
+<h3>Slide Rhythm</h3>
+<p>A 10-slide deck should have at minimum 4 distinct layout types:</p>
+<ol>
+  <li><strong>Full-bleed hero</strong> &mdash; title or key metric</li>
+  <li><strong>Split layout</strong> &mdash; text + visual</li>
+  <li><strong>Grid or comparison</strong> &mdash; 2&ndash;3 items</li>
+  <li><strong>Data visualization</strong> &mdash; chart, diagram, or infographic</li>
+</ol>
+
+<h3>Content-to-Layout Guide</h3>
+<table>
+<tr><th>Content Type</th><th>Recommended Layout</th></tr>
+<tr><td>Pricing / plan tiers</td><td>2&ndash;3 column cards (comparison)</td></tr>
+<tr><td>Team / people</td><td>Icon grid or 2x3 cards</td></tr>
+<tr><td>Timeline / roadmap</td><td>Process flow with arrows / numbered steps</td></tr>
+<tr><td>Key metrics / KPIs</td><td>Large stat callouts (3&ndash;4 big numbers)</td></tr>
+<tr><td>Testimonials / quotes</td><td>Full-width quote with attribution</td></tr>
+<tr><td>Feature comparison</td><td>Two-column before/after or table</td></tr>
+<tr><td>Architecture / system</td><td>Shapes + connectors diagram</td></tr>
+<tr><td>Financial data</td><td>Chart + summary table side-by-side</td></tr>
+</table>
+
+<hr>
+
+<h2>Subskills</h2>
+<p>Load only the one subskill matching your task. Do not load all of them.</p>
+
+<div class="subskill-card">
+  <strong>officecli-pitch-deck</strong> &mdash; Pitch Deck (Seed / Series)
+  <p>Specialized templates and structure for investor pitch decks. Handles problem/solution/market/traction/team/financials flow.</p>
+</div>
+
+<div class="subskill-card">
+  <strong>morph-ppt</strong> &mdash; Morph Transition Animations
+  <p>Cinematic morph transitions between slides. Includes 48 curated style definitions, decision rules (Pyramid Principle, SCQA), canvas spec, and quality gates.</p>
+</div>
+
+<div class="subskill-card">
+  <strong>morph-ppt-3d</strong> &mdash; 3D Morph Effects
+  <p>3D model integration with morph transitions for advanced visual presentations.</p>
+</div>
+
+<div class="subskill-card">
+  <strong>pptxgenjs</strong> &mdash; JavaScript Programmatic Generation
+  <p>PptxGenJS API for bulk generation of 50+ data-driven slides with composable factories and loop logic.</p>
+</div>
+
+<hr>
+
+<h2>Reference Materials</h2>
+
+<h3>Design References</h3>
+<table>
+<tr><th>File</th><th>Read When</th><th>Contains</th></tr>
+<tr><td><code>references/design-system.md</code></td><td>Before picking colors/fonts</td><td>20 palettes, 8 font pairings, 4 Korean fonts</td></tr>
+<tr><td><code>morph-ppt/reference/styles/INDEX.md</code></td><td>Picking a distinct visual style</td><td>48 style definitions with spec + example</td></tr>
+<tr><td><code>morph-ppt/reference/decision-rules.md</code></td><td>Planning content-heavy decks</td><td>Pyramid Principle, SCQA, page types</td></tr>
+<tr><td><code>morph-ppt/reference/pptx-design.md</code></td><td>Canvas spec, ghost position math</td><td>Canvas, fonts, spacing tokens</td></tr>
+<tr><td><code>morph-ppt/reference/quality-gates.md</code></td><td>Phase 4&ndash;5 QA gates</td><td>QA checklist for morph decks</td></tr>
+<tr><td><code>recipes.md</code></td><td>Quick repair patterns</td><td>Section divider z-order, KPI overflow, timeline spacing</td></tr>
+</table>
+
+<h3>Python Scripts (<code>scripts/</code>)</h3>
+<table>
+<tr><th>Script</th><th>Purpose</th><th>Command</th></tr>
+<tr><td><code>pptx_cli.py</code></td><td>Unified CLI: unpack, save, validate, repair, thumbnail, search, TOC, add-slide, clean, export-pdf</td><td><code>python3 scripts/pptx_cli.py {open|save|validate|repair|...}</code></td></tr>
+<tr><td><code>thumbnail.py</code></td><td>Slide thumbnail grid or individual PNGs for visual QA</td><td><code>python3 scripts/thumbnail.py IN.pptx grid.png</code></td></tr>
+<tr><td><code>clean.py</code></td><td>Find/remove orphaned media from unpacked PPTX</td><td><code>python3 scripts/clean.py work/ [--delete]</code></td></tr>
+<tr><td><code>add_slide.py</code></td><td>Add or duplicate slides on unpacked dir (legacy OOXML)</td><td><code>python3 scripts/add_slide.py work/ --blank</code></td></tr>
+<tr><td><code>run_tests.py</code></td><td>Run skill regression tests</td><td><code>python3 scripts/run_tests.py</code></td></tr>
+</table>
+
+<hr>
+
+<h2>QA (Required)</h2>
+<div class="callout callout-danger"><strong>Assume there are problems. Your job is to find them.</strong> Your first render is almost never correct. Approach QA as a bug hunt, not a confirmation step. If you found zero issues on first inspection, you weren't looking hard enough.</div>
+
+<h3>Step 1 &mdash; Machine QA</h3>
+<pre><code>officecli validate output.pptx
+officecli view output.pptx issues
+officecli view output.pptx text | grep -iE 'xxxx|lorem|ipsum|placeholder|TODO|click to'
+officecli view output.pptx stats</code></pre>
+
+<h3>Step 2 &mdash; Visual QA</h3>
+<pre><code>officecli view output.pptx html --browser
+
+# Thumbnail grid for quick scan
+python3 scripts/thumbnail.py output.pptx grid.png</code></pre>
+<p>Use subagents for visual inspection &mdash; even for 2&ndash;3 slides. You will see what you expect, not what is actually there. Fresh eyes catch more bugs.</p>
+
+<h3>Visual QA Checklist</h3>
+<ul>
+  <li>Overlapping elements (text through shapes, stacked elements)</li>
+  <li>Text overflow or cut off at box boundaries</li>
+  <li>Elements too close (&lt; 0.3" gaps) or nearly touching</li>
+  <li>Uneven gaps (large empty area vs cramped)</li>
+  <li>Insufficient margin from slide edges (&lt; 0.5")</li>
+  <li>Columns or similar elements not aligned</li>
+  <li>Low-contrast text or icons</li>
+  <li>Leftover placeholder content</li>
+  <li>Text boxes too narrow causing excessive wrapping</li>
+</ul>
+
+<h3>Step 3 &mdash; Fix and Re-verify</h3>
+<p>Fix with <code>officecli set</code>, rerun QA. Do not declare success until you have completed at least one fix-and-verify cycle.</p>
+
+<hr>
+
+<h2>Pre-Delivery Checklist</h2>
+<ul class="checklist">
+  <li>Speaker notes on all content slides</li>
+  <li>At least one transition style applied</li>
+  <li>Alt text on all pictures: <code>officecli query deck.pptx 'picture:no-alt'</code></li>
+  <li>Layout variety &ge; 3 types across slides</li>
+  <li>No overflow: <code>y + height &le; 19.05cm</code>, <code>x + width &le; 33.87cm</code></li>
+  <li>No placeholder text remaining</li>
+  <li>Body text &ge; 16pt everywhere</li>
+  <li>Chart titles contain actual values (no TBD, empty parens)</li>
+</ul>
+
+<hr>
+
+<h2>Common Pitfalls</h2>
+<table>
+<tr><th>Pitfall</th><th>Correct Approach</th></tr>
+<tr><td>Unquoted <code>[N]</code> in zsh</td><td>Always quote: <code>"/slide[1]"</code> or <code>'/slide[1]'</code></td></tr>
+<tr><td><code>--name "foo"</code></td><td>Use <code>--prop name="foo"</code> &mdash; all attributes through <code>--prop</code></td></tr>
+<tr><td>Guessing property names</td><td>Run <code>officecli help pptx set shape --json</code> for exact names</td></tr>
+<tr><td>Hex colors with <code>#</code></td><td>Use <code>FF0000</code> not <code>#FF0000</code></td></tr>
+<tr><td><code>$</code> in <code>--prop text=</code></td><td>Use single quotes: <code>'$15M'</code></td></tr>
+<tr><td><code>view text</code> misses tables</td><td>Use <code>view annotated</code> for full text</td></tr>
+<tr><td>Chart series after creation</td><td>Cannot add &mdash; delete and recreate the chart</td></tr>
+<tr><td>Korean filename + resident</td><td>CJK causes resident UTF-8 corruption. Use ASCII, then copy</td></tr>
+<tr><td>Resident zombie</td><td><code>pkill -9 -f "resident-serve"</code>, wait 1s, retry</td></tr>
+<tr><td>Recreating theme/masters that exist</td><td><code>cp source.pptx target.pptx</code> first. Keep masters/layouts/theme</td></tr>
+<tr><td><code>officecli open</code> as background shell</td><td>Run foreground &mdash; returns immediately, daemon runs in bg automatically</td></tr>
+<tr><td>Batch JSON parse error</td><td>Shell syntax leaked. Use heredoc: <code>cat &lt;&lt;'EOF' | officecli batch FILE.pptx</code></td></tr>
+<tr><td>Picking colors/fonts blindly</td><td>Read <code>references/design-system.md</code> before picking</td></tr>
+</table>
+
+<hr>
+
+<h2>Anti-Patterns</h2>
+<ul>
+  <li>Never use example data from subskill files (FitPulse, LearnFlow, etc.)</li>
+  <li>Never leave placeholder text: <code>lorem</code>, <code>ipsum</code>, <code>XXXX</code>, <code>TODO</code></li>
+  <li>Every slide must have a title (accessibility)</li>
+  <li>Speaker notes on all content slides</li>
+  <li>Max 2 font families per deck</li>
+  <li><code>Malgun Gothic</code> as sole font = rejected</li>
+  <li><code>view issues</code> "(untitled)" for blank-layout is expected, not a defect</li>
+  <li>Accent lines under titles &mdash; hallmark of AI-generated slides; use whitespace instead</li>
+  <li>Decorative web-UI elements (thin sidebar lines, ornamental circles) &mdash; PPT is a projector medium, not a web app</li>
+  <li>Same layout on every slide &mdash; vary columns, cards, callouts</li>
+  <li>Center-aligned body text &mdash; left-align paragraphs; center only titles</li>
+  <li>Insufficient size contrast &mdash; titles 36pt+ vs body 16pt</li>
+  <li>Text-only slides &mdash; add shapes, charts, color blocks, pictures</li>
+</ul>
+
+<hr>
+
+<h2>Accessibility (WCAG 2.1 AA)</h2>
+<ul>
+  <li>Every slide has a title: <code>officecli view deck.pptx outline</code></li>
+  <li>Alt text on images: <code>officecli query deck.pptx 'picture:no-alt'</code></li>
+  <li>Reading order = shape order (title first)</li>
+  <li>Contrast &ge; 4.5:1 normal, &ge; 3:1 large</li>
+  <li>Information not conveyed by color alone</li>
+</ul>
+
+<hr>
+
+<h2>CJK / Korean Support</h2>
+<p>The podex fork auto-detects Korean content and applies language tags + default fonts. Use ASCII filenames during resident mode editing to avoid UTF-8 corruption; copy to Korean filenames as a final step.</p>
+
+<hr>
+
+<h2>Prerequisites</h2>
+<table>
+<tr><th>Tool</th><th>Purpose</th><th>Status</th></tr>
+<tr><td><code>officecli</code> (PATH)</td><td>Primary PPTX CLI</td><td>Required</td></tr>
+<tr><td><code>python3</code> + <code>python-pptx</code></td><td>Scripts for L3/L4 operations</td><td>Required for scripts</td></tr>
+<tr><td><code>pptxgenjs</code></td><td>Large programmatic generation (L5)</td><td>Optional</td></tr>
+<tr><td><code>soffice</code> (LibreOffice)</td><td>PDF conversion, thumbnails for QA</td><td>Optional (auto-install on demand)</td></tr>
+</table>
+
+<pre><code># Check prerequisites
+python3 -c "import pptx" || echo "MISSING: pip install python-pptx"
+which officecli &gt;/dev/null 2&gt;&amp;1 || echo "INFO: OfficeCLI not installed"
+which soffice &gt;/dev/null 2&gt;&amp;1 || echo "INFO: LibreOffice not installed (optional)"</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">Productivity Skills</a>
+<a class="next" href="hwp.html">HWP (Korean Documents)</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

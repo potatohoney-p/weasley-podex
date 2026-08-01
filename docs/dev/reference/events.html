@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events — podex Docs</title>
+  <link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<main class="docs-main">
+  <h1>Events</h1>
+  <p class="lead">podex uses an SSE-first event channel for the Web UI, with legacy WebSocket fallback and provider-specific stream parsers behind it.</p>
+
+  <h2>SSE Event Channel</h2>
+  <pre><code>GET http://localhost:3457/api/events</code></pre>
+  <p>The preferred browser event transport is <code>GET /api/events</code>. It is a data-only SSE stream: the server does not set an SSE <code>event:</code> field. Each message carries <code>topic</code> and <code>event</code> inside the JSON payload.</p>
+  <table>
+    <tr><th>Behavior</th><th>Contract</th></tr>
+    <tr><td>Replay cursor</td><td><code>Last-Event-ID</code> header or <code>?lastEventId=</code> query</td></tr>
+    <tr><td>Replay buffer</td><td>1000 events in <code>src/core/event-bus.ts</code></td></tr>
+    <tr><td>Listener cap</td><td>256 active SSE listeners; overflow returns <code>503 {error:"SSE_CAPACITY"}</code></td></tr>
+    <tr><td>Heartbeat</td><td>comment ping every 15 seconds</td></tr>
+    <tr><td>Replay gap</td><td><code>{"topic":"system","event":"replay_gap"}</code></td></tr>
+    <tr><td>Fallback</td><td>WebSocket is used only when SSE never opens, usually against an older server</td></tr>
+    <tr><td>Transient drop UX</td><td>Fast SSE reconnects stay silent; only a disconnect lasting longer than 8 seconds posts a disconnected message</td></tr>
+  </table>
+
+  <h2>WebSocket Compatibility</h2>
+  <pre><code>ws://localhost:3457/ws</code></pre>
+  <p>The WebSocket path is a client/TUI fallback for pre-X-01 servers where <code>/api/events</code> never opens. Current servers deliver public browser events through SSE only. Internal-only events are not delivered to public SSE clients.</p>
+
+  <h2>Common Event Names</h2>
+  <table>
+    <tr><th>Event</th><th>Description</th></tr>
+    <tr><td><code>agent_status</code></td><td>Agent lifecycle status such as running, done, error, evaluating.</td></tr>
+    <tr><td><code>agent_tool</code></td><td>Tool, thinking, search, command, or subagent progress step.</td></tr>
+    <tr><td><code>agent_output</code></td><td>Live assistant text preview chunk.</td></tr>
+    <tr><td><code>agent_done</code></td><td>Authoritative final response, error, and bounded tool log.</td></tr>
+    <tr><td><code>agent_retry</code> / <code>agent_fallback</code></td><td>Transient retry and fallback-chain status.</td></tr>
+    <tr><td><code>queue_update</code></td><td>Pending message queue length.</td></tr>
+    <tr><td><code>new_message</code></td><td>Inbound or queued user message bubble.</td></tr>
+    <tr><td><code>orc_state</code></td><td>PABCD/IPABCD state update.</td></tr>
+    <tr><td><code>orchestrate_done</code> / <code>orchestrate_warning</code></td><td>Workflow completion or non-blocking warning.</td></tr>
+    <tr><td><code>steer_started</code></td><td>Accepted steer prompt.</td></tr>
+    <tr><td><code>goal_done</code> / <code>goal_cancel</code> / <code>goal_pause_detected</code> / <code>goal_pause_gate_pending</code></td><td>Persistent goal lifecycle events.</td></tr>
+    <tr><td><code>session_switched</code> / <code>session_created</code> / <code>session_list</code></td><td>Multi-session updates.</td></tr>
+    <tr><td><code>memory_status</code></td><td>Memory runtime/sidebar refresh signal.</td></tr>
+    <tr><td><code>worker_stalled</code> / <code>worker_disconnected</code> / <code>worker_timeout</code></td><td>Distributed worker progress failure signals.</td></tr>
+    <tr><td><code>schedule_wakeup</code> / <code>schedule_wakeup_failed</code></td><td>ScheduleWakeup lifecycle.</td></tr>
+  </table>
+
+  <h2>Provider Streams</h2>
+  <p>Provider CLIs still use their own stdout protocols internally. Claude, Codex, Cursor, Grok, and Copilot are normalized through <code>src/agent/events/*</code>. AGY uses plain-text print mode. The normalized events pass through <code>src/core/bus.ts</code>, which publishes public events to the SSE event bus and still fans out to internal collectors/forwarders.</p>
+
+  <h2>Manager Worker SSE</h2>
+  <p>The <code>jaw dashboard serve</code> React manager app reads manager HTTP endpoints by polling. Worker instance live progress is bridged server-side: <code>src/manager/worker-events.ts</code> and <code>src/manager/worker-sse-client.ts</code> subscribe to each worker's <code>GET /api/events</code> stream and update the latest-message cache.</p>
+
+  <p>Detailed source-of-truth: <code>structure/stream-events.md</code> and <code>structure/server_api.md</code>.</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,568 @@
+/* ── Modal ── */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--modal-bg);
+    backdrop-filter: blur(10px) saturate(1.2);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.open {
+    display: flex;
+    animation: overlayIn 0.2s ease-out;
+}
+
+@keyframes overlayIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.modal-box {
+    background: color-mix(in oklch, var(--surface) 85%, transparent);
+    backdrop-filter: blur(24px) saturate(1.5);
+    -webkit-backdrop-filter: blur(24px) saturate(1.5);
+    border: 1px solid color-mix(in oklch, var(--accent) 10%, var(--border));
+    border-radius: var(--radius-xl);
+    box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+        0 0 60px -20px color-mix(in oklch, var(--accent) 6%, transparent);
+    width: 500px;
+    max-width: 90vw;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    animation: modalBounce 0.35s var(--ease-spring);
+}
+
+@keyframes modalBounce {
+    from { opacity: 0; transform: translateY(24px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.modal-textarea {
+    flex: 1;
+    min-height: 250px;
+    background: var(--bg);
+    border: none;
+    color: var(--text);
+    padding: 12px 16px;
+    font-size: 12px;
+    font-family: inherit;
+    resize: none;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+}
+
+.modal-footer .btn-save {
+    width: auto;
+    padding: 6px 20px;
+}
+
+/* ── Contextual help dialog ── */
+.label-with-help,
+.section-title-row,
+.sidebar-action-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.label-with-help,
+.section-title-row {
+    justify-content: space-between;
+}
+
+.sidebar-action-row .sidebar-hb-btn {
+    flex: 1;
+}
+
+.help-trigger {
+    --help-trigger-visual-size: 20px;
+    --help-trigger-hit-size: 44px;
+    width: var(--help-trigger-visual-size);
+    height: var(--help-trigger-visual-size);
+    min-width: var(--help-trigger-visual-size);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    opacity: 0.78;
+    transition: border-color 0.15s, color 0.15s, background 0.15s, opacity 0.15s;
+}
+
+.help-trigger:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: color-mix(in oklch, var(--accent) 8%, transparent);
+    opacity: 1;
+}
+
+.help-trigger:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    opacity: 1;
+}
+
+.help-dialog-box {
+    width: 640px;
+    max-width: calc(100vw - 32px);
+    max-height: min(80vh, 640px);
+    background: var(--surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.help-dialog-body {
+    padding: 14px 16px;
+    overflow-y: auto;
+}
+
+.help-dialog-content {
+    min-width: 0;
+}
+
+.help-dialog-layout {
+    display: grid;
+    grid-template-columns: minmax(132px, 0.34fr) minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+
+.help-dialog-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--bg);
+}
+
+.help-dialog-nav-item {
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    line-height: 1.3;
+    padding: 8px 9px;
+    text-align: left;
+}
+
+.help-dialog-nav-item:hover,
+.help-dialog-nav-item.active {
+    background: color-mix(in oklch, var(--accent) 10%, transparent);
+    color: var(--text);
+}
+
+.help-dialog-nav-item:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.help-dialog-section {
+    margin-bottom: 14px;
+}
+
+.help-dialog-section:last-child {
+    margin-bottom: 0;
+}
+
+.help-dialog-section h3 {
+    margin: 0 0 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.help-dialog-section p,
+.help-dialog-section li {
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--text-dim);
+}
+
+.help-effect-text,
+.help-example-list {
+    margin: 0;
+}
+
+.help-dialog-list,
+.help-related-list,
+.help-example-list {
+    margin: 0;
+    padding-left: 18px;
+}
+
+/* Numbered steps for setup guides (Telegram/Discord howTo) */
+.help-howto-list {
+    list-style: decimal;
+    padding-left: 1.6em;
+    margin: 0;
+}
+.help-howto-list li {
+    margin-bottom: 3px;
+    line-height: 1.5;
+}
+
+/* Subcommand reference list */
+.help-subcmd-list {
+    margin: 0;
+    padding: 0;
+}
+.help-subcmd-list dt {
+    margin-top: 8px;
+}
+.help-subcmd-list dt:first-child {
+    margin-top: 0;
+}
+.help-subcmd-list dt code {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: var(--code-bg, rgba(0,0,0,0.06));
+    color: var(--text);
+}
+.help-subcmd-list dd {
+    margin: 2px 0 0 14px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text-dim);
+}
+
+.help-dialog-done {
+    width: auto;
+    padding: 6px 18px;
+}
+
+.help-doc-links-nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.help-doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: var(--accent, #22d3ee);
+    color: var(--surface, #1a1a2e);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.15s;
+}
+
+.help-doc-link:hover {
+    opacity: 0.85;
+}
+
+.help-doc-link-icon {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+    .help-trigger {
+        position: relative;
+        width: var(--help-trigger-visual-size);
+        height: var(--help-trigger-visual-size);
+        min-width: var(--help-trigger-visual-size);
+    }
+
+    .help-trigger::before {
+        content: "";
+        position: absolute;
+        inset: calc((var(--help-trigger-visual-size) - var(--help-trigger-hit-size)) / 2);
+    }
+
+    .help-dialog-box {
+        max-width: calc(100vw - 24px);
+        max-height: min(84vh, 640px);
+    }
+
+    .help-dialog-layout {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .help-dialog-nav {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .help-dialog-nav-item {
+        white-space: nowrap;
+    }
+}
+
+/* ── Heartbeat popup ── */
+.hb-job-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+}
+
+.hb-job-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.hb-job-header input[type=text] {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+.hb-job-header select,
+.hb-job-header input[type=number] {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+.hb-job-header input[type=number] {
+    width: 50px;
+}
+
+.hb-job-schedule {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+
+.hb-job-schedule select,
+.hb-job-schedule input[type=number],
+.hb-job-schedule input[type=text] {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+.hb-job-schedule input[type=number] {
+    width: 72px;
+}
+
+.hb-job-schedule input[type=text] {
+    flex: 1 1 120px;
+}
+
+.hb-chip {
+    font-size: 11px;
+    color: var(--text-dim);
+}
+
+.hb-schedule-meta {
+    font-size: 11px;
+    margin: -2px 0 6px;
+}
+
+.hb-help {
+    color: var(--text-dim);
+}
+
+.hb-error {
+    color: var(--error);
+}
+
+.hb-toggle {
+    width: var(--toggle-w);
+    height: var(--toggle-h);
+    border-radius: calc(var(--toggle-h) / 2);
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: background .2s;
+}
+
+.hb-toggle.on {
+    background: var(--accent);
+}
+
+.hb-toggle.off {
+    background: var(--toggle-off);
+}
+
+.hb-toggle::after {
+    content: '';
+    position: absolute;
+    top: calc((var(--toggle-h) - var(--toggle-knob)) / 2);
+    width: var(--toggle-knob);
+    height: var(--toggle-knob);
+    border-radius: 50%;
+    background: var(--toggle-on);
+    transition: left .2s;
+}
+
+.hb-toggle.on::after {
+    left: calc(var(--toggle-w) - var(--toggle-knob) - 2px);
+}
+
+.hb-toggle.off::after {
+    left: 2px;
+}
+
+.hb-del {
+    background: none;
+    border: none;
+    color: var(--delete-color);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.hb-prompt {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    resize: vertical;
+}
+
+.hb-add {
+    width: 100%;
+    padding: 8px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.hb-add:hover {
+    opacity: .9;
+}
+
+/* ── MCP Modal overrides ── */
+.mcp-modal-overlay {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.mcp-modal-box {
+    background: var(--surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    width: 620px;
+    max-height: 85vh;
+}
+
+.mcp-modal-box .modal-header {
+    font-size: 14px;
+}
+
+.mcp-active-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.mcp-active-name {
+    font-weight: 600;
+    min-width: 80px;
+}
+
+.mcp-active-detail {
+    flex: 1;
+    opacity: 0.6;
+    font-size: 0.9em;
+    word-break: break-all;
+}
+
+.mcp-active-tag {
+    opacity: 0.5;
+    font-size: 0.85em;
+    white-space: nowrap;
+}
+
+.mcp-active-remove {
+    color: var(--color-error);
+    font-size: 0.85em;
+    white-space: nowrap;
+}
+
+.mcp-help-inner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 16px;
+    max-width: 460px;
+    max-height: 70vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    position: relative;
+    z-index: 1001;
+}
+
+.mcp-help-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mcp-help-inner h4 { margin: 0 0 8px; font-size: 13px; }
+.mcp-help-inner p { margin: 4px 0; font-size: 12px; opacity: 0.85; }
+.mcp-help-inner code { background: var(--bg); padding: 1px 4px; border-radius: 3px; font-size: 11px; }
+.mcp-help-inner pre { background: var(--bg); padding: 8px; border-radius: 6px; font-size: 11px; overflow-x: auto; margin: 6px 0; }

@@ -1,0 +1,369 @@
+/**
+ * PRD32.4 — ChatGPT Answer Polling and Response Capture
+ *
+ * Captures only the assistant turn that landed *after* a committed baseline.
+ * Filters placeholder shells, prompt echo, and "Pro Thinking" stalls. Detects
+ * Canvas-opened answer state. Copy-markdown fallback is opt-in only and
+ * recorded in `usedFallbacks`.
+ */
+
+import type { ResponseCaptureResult } from './provider-adapter.js';
+import { ActionTranscript } from '../primitives.js';
+import { readTopLevelAssistantTexts, readTopLevelAssistantTextsFromLocators } from './chatgpt-response-dom.js';
+import { observeAssistantResponse, recoverAssistantResponse } from './chatgpt-response-observer.js';
+import { stripUndefined } from '../../core/strip-undefined.js';
+import { captureCopiedResponseText, CHATGPT_COPY_SELECTORS, preferCopiedText } from './copy-markdown.js';
+import { resolveActionTarget } from './self-heal.js';
+import { isPageDeathError } from './interstitial.js';
+import { createTraceContext, getSessionTrace, recordTraceStep } from './action-trace.js';
+import type { ResolveActionTargetResult, TargetCandidate } from './self-heal.js';
+import type { TraceContext, TraceStep } from './action-trace.js';
+import type { Page } from 'playwright-core';
+
+export const ASSISTANT_TURN_SELECTORS = [
+    '[data-message-author-role="assistant"]',
+    '[data-turn="assistant"]',
+    'article[data-testid^="conversation-turn"]',
+];
+
+export const CANVAS_SELECTORS = [
+    '[data-testid="canvas-panel"]',
+    'aside[data-testid*="canvas" i]',
+    'section[aria-label*="Canvas" i]',
+];
+
+export const STOP_BUTTON_SELECTORS = [
+    'button[data-testid="stop-button"]',
+    'button[aria-label*="Stop" i]',
+];
+
+const FINISHED_ACTIONS_SELECTOR = [
+    'button[data-testid="copy-turn-action-button"]',
+    'button[data-testid="good-response-turn-action-button"]',
+    'button[data-testid="bad-response-turn-action-button"]',
+    'button[aria-label="Share"]',
+].join(', ');
+
+const PLACEHOLDER_PATTERNS: RegExp[] = [
+    /^answer now$/i,
+    /^pro thinking/i,
+    /^finalizing answer$/i,
+    /^thinking…?$/i,
+    /^instant$/i,
+    /^thinking$/i,
+    /^pro$/i,
+    /^configure\.{0,3}$/i,
+    /^searching the web…?$/i,
+    /^reading documents?$/i,
+    /^analyzing files?$/i,
+    /^\s*$/,
+];
+
+export function isPlaceholderAssistantText(text: string): boolean {
+    const trimmed = String(text || '').trim();
+    if (!trimmed) return true;
+    return PLACEHOLDER_PATTERNS.some(p => p.test(trimmed));
+}
+
+export function normalizeAssistantText(text: unknown): string {
+    return String(text ?? '')
+        .replace(/^Thought for\s+\d+s\s*/i, '')
+        .replace(/\u00a0/g, ' ')
+        .replace(/[ \t]+\n/g, '\n')
+        .trim();
+}
+
+export interface AssistantSnapshot {
+    /** Number of assistant turns currently in the DOM. */
+    assistantCount: number;
+    /** Last assistant turn after the baseline, or undefined if none new yet. */
+    latestNewText?: string;
+    /** True while a stop/streaming indicator is visible. */
+    streaming: boolean;
+    /** True when ChatGPT routed the answer into a Canvas surface. */
+    canvasOpened: boolean;
+}
+
+export interface CaptureOptions {
+    /** Baseline assistant count captured before send. */
+    minTurnIndex: number;
+    /** Hash of the user prompt to filter prompt echo. */
+    promptText?: string;
+    /** Total budget. */
+    timeoutMs: number;
+    /** Window of stable text before declaring complete. */
+    stableWindowMs?: number;
+    /** Enable copy-button fallback after streaming completes. */
+    allowCopyMarkdownFallback?: boolean;
+    /** Polling interval in ms. */
+    pollIntervalMs?: number;
+    /**
+     * 104.18: per-tick conversation-drift guard. Returns a reason string when the held tab has
+     * drifted to a different conversation (poll should bail), or null to keep polling.
+     */
+    driftCheck?: () => Promise<string | null>;
+}
+
+export async function readAssistantSnapshot(page: Page, minTurnIndex: number, promptText = ''): Promise<AssistantSnapshot> {
+    const allTexts = await readAssistantTexts(page);
+    const streaming = await isStreaming(page);
+    const canvasOpened = await isCanvasOpened(page);
+    const newTexts = allTexts.slice(minTurnIndex);
+    const latestNewText = pickLatestRealAnswer(newTexts, promptText);
+    return stripUndefined({
+        assistantCount: allTexts.length,
+        latestNewText,
+        streaming,
+        canvasOpened,
+    });
+}
+
+async function readAssistantTexts(page: Page): Promise<string[]> {
+    // Descendant-dedup (catalog 106.13): prefer top-level assistant nodes so a nested
+    // match never double-counts its parent's text. page.evaluate first, locator fallback.
+    const viaEvaluate = await page.evaluate(readTopLevelAssistantTexts, ASSISTANT_TURN_SELECTORS)
+        .catch(() => [] as string[]);
+    const texts = viaEvaluate.length
+        ? viaEvaluate
+        : await readTopLevelAssistantTextsFromLocators(page, ASSISTANT_TURN_SELECTORS);
+    return texts.map(normalizeAssistantText).filter(Boolean);
+}
+
+export async function captureAssistantResponse(page: Page, options: CaptureOptions): Promise<ResponseCaptureResult> {
+    const transcript = new ActionTranscript();
+    const resolverTrace = createTraceContext('chatgpt-response');
+    const pollIntervalMs = Math.max(100, options.pollIntervalMs ?? 500);
+    const deadline = Date.now() + Math.max(1000, options.timeoutMs);
+    let stableSince: number | null = null;
+    let stableText: string | undefined;
+
+    // 101 #2 early-wake: a MutationObserver wakes the loop as soon as the response settles.
+    // The poller stays authoritative — this only reduces latency (worst case = identical polling).
+    const observerBudgetMs = Math.min(Math.max(0, deadline - Date.now()), 120_000);
+    let observerWake: Promise<{ settled: true } | null> | null = observerBudgetMs > 1000
+        ? observeAssistantResponse(page, { baselineAssistantCount: options.minTurnIndex, timeoutMs: observerBudgetMs })
+        : null;
+
+    while (Date.now() < deadline) {
+        try {
+            // 104.18: per-tick guard — if the held tab drifted to a different chat, stop polling the
+            // wrong thread and report it so the caller can rebind instead of timing out on stale DOM.
+            if (options.driftCheck) {
+                const driftReason = await options.driftCheck();
+                if (driftReason) {
+                    return withResolverTrace(stripUndefined({
+                        ok: false,
+                        drift: { status: 'conversation-mismatch', reason: driftReason },
+                        usedFallbacks: transcript.usedFallbacks,
+                        warnings: [...transcript.warnings, `conversation-drift:${driftReason}`],
+                    }), resolverTrace);
+                }
+            }
+            const snap = await readAssistantSnapshot(page, options.minTurnIndex, options.promptText);
+            if (snap.canvasOpened) {
+                return withResolverTrace(stripUndefined({
+                    ok: true,
+                    canvas: { kind: 'opened', reason: 'ChatGPT routed answer into Canvas' },
+                    answerText: snap.latestNewText,
+                    usedFallbacks: transcript.usedFallbacks,
+                    warnings: transcript.warnings,
+                }), resolverTrace);
+            }
+            if (!snap.streaming && snap.latestNewText) {
+                if (snap.latestNewText === stableText) {
+                    const finished = await isResponseFinished(page);
+                    const textLen = snap.latestNewText.length;
+                    const adaptiveMs = finished ? 1000
+                        : textLen < 16 ? 8000
+                        : textLen < 40 ? 3000
+                        : textLen < 500 ? 2000
+                        : 3000;
+                    if (stableSince !== null && Date.now() - stableSince >= adaptiveMs) {
+                        if (options.allowCopyMarkdownFallback) {
+                            const copyTarget = await resolveOptionalChatGptCopyTarget(page, resolverTrace);
+                            const copied = await captureCopiedResponseText(page, CHATGPT_COPY_SELECTORS, { copyTarget });
+                            const copiedText = preferCopiedText(snap.latestNewText, copied);
+                            if (copiedText) {
+                                transcript.fallback('copy-markdown');
+                                return withResolverTrace({ ok: true, answerText: normalizeAssistantText(copiedText), usedFallbacks: transcript.usedFallbacks, warnings: transcript.warnings }, resolverTrace);
+                            }
+                            transcript.warn(`copy-markdown-fallback-unavailable:${copied.status || 'unknown'}`);
+                        }
+                        return withResolverTrace({ ok: true, answerText: snap.latestNewText, usedFallbacks: transcript.usedFallbacks, warnings: transcript.warnings }, resolverTrace);
+                    }
+                } else {
+                    stableText = snap.latestNewText;
+                    stableSince = Date.now();
+                }
+            } else {
+                stableSince = null;
+                stableText = undefined;
+            }
+            if (observerWake) {
+                await Promise.race([wait(pollIntervalMs), observerWake]);
+                observerWake = null; // one-shot: wake once on settle, then poll normally
+            } else {
+                await wait(pollIntervalMs);
+            }
+        } catch (pollErr) {
+            // 104.18: a crashed/closed tab is recoverable — surface it as a typed result instead of
+            // throwing past the poll boundary, so the caller can relaunch + resume the session.
+            if (isPageDeathError(pollErr)) {
+                return withResolverTrace(stripUndefined({
+                    ok: false,
+                    drift: { status: 'tab-crashed', reason: String((pollErr as Error)?.message || pollErr), recoverable: true },
+                    usedFallbacks: transcript.usedFallbacks,
+                    warnings: [...transcript.warnings, 'tab-crashed-during-poll'],
+                }), resolverTrace);
+            }
+            throw pollErr;
+        }
+    }
+
+    if (options.allowCopyMarkdownFallback && stableText) {
+        const copyTarget = await resolveOptionalChatGptCopyTarget(page, resolverTrace);
+        const copied = await captureCopiedResponseText(page, CHATGPT_COPY_SELECTORS, { copyTarget });
+        const copiedText = preferCopiedText(stableText, copied);
+        if (copiedText) {
+            transcript.fallback('copy-markdown');
+            return withResolverTrace({ ok: true, answerText: normalizeAssistantText(copiedText), usedFallbacks: transcript.usedFallbacks, warnings: transcript.warnings }, resolverTrace);
+        }
+        transcript.warn(`copy-markdown-fallback-unavailable:${copied.status || 'unknown'}`);
+    }
+
+    // 101 #2 3rd-tier recovery (after the opt-in copy fallback): re-read the latest
+    // assistant turn once, recovering a final answer the poll loop missed (late DOM settle).
+    const recovered = await recoverAssistantResponse(page, {
+        baselineAssistantCount: options.minTurnIndex,
+        isFinalAnswer: (t) => !isPlaceholderAssistantText(t),
+        readStreaming: () => isStreaming(page),
+        readFinished: () => isResponseFinished(page),
+    });
+    if (recovered?.text && !recovered.streaming && (recovered.finished || recovered.responseStableMs > 0)) {
+        transcript.fallback('recovery');
+        return withResolverTrace({ ok: true, answerText: normalizeAssistantText(recovered.text), usedFallbacks: transcript.usedFallbacks, warnings: transcript.warnings }, resolverTrace);
+    }
+
+    return withResolverTrace(stripUndefined({ ok: false, answerText: stableText, usedFallbacks: transcript.usedFallbacks, warnings: transcript.warnings }), resolverTrace);
+}
+
+async function resolveOptionalChatGptCopyTarget(page: Page, traceCtx: TraceContext): Promise<{ selector?: string | null } | null> {
+    try {
+        const result = await resolveActionTarget(page, {
+            provider: 'chatgpt',
+            intent: 'copy.lastResponse',
+            actionKind: 'click',
+        });
+        recordResolverTrace(traceCtx, result, 'copy.lastResponse');
+        if (result.ok && result.target?.selector) return result.target;
+    } catch {
+        recordTraceStep(traceCtx, {
+            action: 'target-resolve',
+            provider: 'chatgpt',
+            intentId: 'copy.lastResponse',
+            operation: 'click',
+            status: 'error',
+            errorCode: 'TARGET_RESOLVE_EXCEPTION',
+        });
+        // Copy fallback remains optional; unresolved self-heal targets use the legacy scoped scan.
+    }
+    return null;
+}
+
+function withResolverTrace<T extends ResponseCaptureResult>(result: T, traceCtx: TraceContext): T {
+    const resolverTrace = getSessionTrace(traceCtx);
+    return resolverTrace.length ? { ...result, resolverTrace } : result;
+}
+
+function recordResolverTrace(traceCtx: TraceContext, result: ResolveActionTargetResult, fallbackIntentId: string): void {
+    recordTraceStep(traceCtx, stripUndefined({
+        action: 'target-resolve',
+        provider: result.provider || 'chatgpt',
+        intentId: result.intent || fallbackIntentId,
+        operation: result.actionKind || 'click',
+        status: result.ok ? 'ok' : 'unresolved',
+        target: scrubResolverTarget(result.target),
+        confidence: result.target?.confidence ?? null,
+        resolutionSource: result.target?.["resolution"] || null,
+        errorCode: result.errorCode || undefined,
+        attempts: summarizeResolverAttempts(result.attempts),
+    }));
+}
+
+function summarizeResolverAttempts(attempts: ResolveActionTargetResult['attempts'] = []): TraceStep[] {
+    return attempts.map(attempt => ({
+        source: attempt.source || null,
+        selector: attempt.selector || null,
+        ref: attempt.ref || null,
+        validation: attempt.validation ? {
+            ok: attempt.validation.ok === true,
+            reason: attempt.validation.reason || null,
+            confidence: attempt.validation.confidence ?? null,
+            count: attempt.validation.count ?? null,
+        } : null,
+    }));
+}
+
+function scrubResolverTarget(target: TargetCandidate | null | undefined): Record<string, unknown> | null {
+    if (!target) return null;
+    return {
+        resolution: target["resolution"] || null,
+        source: target.source || null,
+        ref: target.ref || null,
+        selector: target.selector || null,
+        role: target.role || null,
+    };
+}
+
+function pickLatestRealAnswer(texts: string[], promptText: string): string | undefined {
+    const promptTrim = promptText.trim();
+    for (let i = texts.length - 1; i >= 0; i -= 1) {
+        const text = texts[i];
+        if (text === undefined) continue;
+        if (isPlaceholderAssistantText(text)) continue;
+        if (promptTrim && text.trim() === promptTrim) continue;
+        return text;
+    }
+    return undefined;
+}
+
+async function isStreaming(page: Page): Promise<boolean> {
+    for (const selector of STOP_BUTTON_SELECTORS) {
+        try {
+            if (await page.locator(selector).first().isVisible().catch(() => false)) return true;
+        } catch {
+            // ignore
+        }
+    }
+    return false;
+}
+
+async function isResponseFinished(page: Page): Promise<boolean> {
+    try {
+        for (const sel of FINISHED_ACTIONS_SELECTOR.split(', ')) {
+            const count = await page.locator(sel).count().catch(() => 0);
+            if (count > 0) {
+                const visible = await page.locator(sel).last().isVisible().catch(() => false);
+                if (visible) return true;
+            }
+        }
+        return false;
+    } catch {
+        return false;
+    }
+}
+
+async function isCanvasOpened(page: Page): Promise<boolean> {
+    for (const selector of CANVAS_SELECTORS) {
+        try {
+            if (await page.locator(selector).first().isVisible().catch(() => false)) return true;
+        } catch {
+            // ignore
+        }
+    }
+    return false;
+}
+
+function wait(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

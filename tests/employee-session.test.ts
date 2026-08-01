@@ -1,0 +1,199 @@
+// ─── Employee Session DB 단위 테스트 ──────────────────
+// Phase 100: employee_sessions 테이블 CRUD + main session 보호 검증
+
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const ROOT = process.cwd();
+const DB_SRC = path.join(ROOT, 'src/core/db.ts');
+const PIPELINE_SRC = path.join(ROOT, 'src/orchestrator/pipeline.ts');
+const DISTRIBUTE_SRC = path.join(ROOT, 'src/orchestrator/distribute.ts');
+
+// ─── 1. employee_sessions 테이블 존재 확인 ──────────
+
+test('P100-ES-001: employee_sessions 테이블 스키마가 db.js에 정의됨', () => {
+    const src = fs.readFileSync(DB_SRC, 'utf8');
+    assert.match(src, /CREATE TABLE IF NOT EXISTS employee_sessions/,
+        'employee_sessions CREATE TABLE 문이 존재해야 함');
+    assert.match(src, /employee_id\s+TEXT\s+PRIMARY KEY/,
+        'employee_id가 PRIMARY KEY여야 함');
+    assert.match(src, /session_id\s+TEXT/,
+        'session_id 컬럼이 있어야 함');
+    assert.match(src, /cli\s+TEXT/,
+        'cli 컬럼이 있어야 함');
+    assert.match(src, /model\s+TEXT DEFAULT ''/,
+        'model 컬럼이 있어야 함');
+});
+
+// ─── 2. getEmployeeSession — 없는 ID 조회 시 undefined ──
+
+test('P100-ES-002: getEmployeeSession 없는 ID 조회 시 undefined', async () => {
+    const { getEmployeeSession } = await import('../src/core/db.ts');
+    const result = getEmployeeSession.get('nonexistent_employee_999');
+    assert.equal(result, undefined, '존재하지 않는 employee_id 조회 시 undefined 반환');
+});
+
+// ─── 3. upsertEmployeeSession — 저장 후 조회 일치 ──────
+
+test('P100-ES-003: upsertEmployeeSession 저장 후 조회 일치', async () => {
+    const { upsertEmployeeSession, getEmployeeSession, clearAllEmployeeSessions } = await import('../src/core/db.ts');
+
+    const testId = `test_emp_${Date.now()}`;
+    const testSid = 'session_abc123';
+    const testCli = 'codex';
+    const testModel = 'gpt-5.4';
+
+    try {
+        upsertEmployeeSession.run(testId, testSid, testCli, testModel, 0);
+        const row = getEmployeeSession.get(testId);
+
+        assert.ok(row, '저장 후 조회 결과가 존재해야 함');
+        assert.equal(row.employee_id, testId);
+        assert.equal(row.session_id, testSid);
+        assert.equal(row.cli, testCli);
+        assert.equal(row.model, testModel);
+    } finally {
+        // cleanup: 테스트 데이터 삭제
+        clearAllEmployeeSessions.run();
+    }
+});
+
+// ─── 4. upsertEmployeeSession — 같은 ID로 업데이트 시 덮어쓰기 ──
+
+test('P100-ES-004: upsertEmployeeSession 같은 ID로 업데이트 시 덮어쓰기', async () => {
+    const { upsertEmployeeSession, getEmployeeSession, clearAllEmployeeSessions } = await import('../src/core/db.ts');
+
+    const testId = `test_emp_overwrite_${Date.now()}`;
+
+    try {
+        // 첫 저장
+        upsertEmployeeSession.run(testId, 'session_old', 'codex', 'gpt-5.4-mini', 0);
+        // 덮어쓰기
+        upsertEmployeeSession.run(testId, 'session_new', 'gemini', 'gemini-3-pro-preview', 0);
+
+        const row = getEmployeeSession.get(testId);
+        assert.ok(row, '덮어쓰기 후에도 조회 가능해야 함');
+        assert.equal(row.session_id, 'session_new', 'session_id가 새 값으로 업데이트');
+        assert.equal(row.cli, 'gemini', 'cli가 새 값으로 업데이트');
+        assert.equal(row.model, 'gemini-3-pro-preview', 'model이 새 값으로 업데이트');
+    } finally {
+        clearAllEmployeeSessions.run();
+    }
+});
+
+// ─── 5. clearAllEmployeeSessions — 전체 삭제 후 조회 시 undefined ──
+
+test('P100-ES-005: clearAllEmployeeSessions 전체 삭제 후 조회 시 undefined', async () => {
+    const { upsertEmployeeSession, getEmployeeSession, clearAllEmployeeSessions } = await import('../src/core/db.ts');
+
+    const id1 = `test_clear_1_${Date.now()}`;
+    const id2 = `test_clear_2_${Date.now()}`;
+
+    // 2개 저장
+    upsertEmployeeSession.run(id1, 'sid1', 'codex', 'gpt-5.4', 0);
+    upsertEmployeeSession.run(id2, 'sid2', 'gemini', 'gemini-3-pro-preview', 0);
+
+    // 전체 삭제
+    clearAllEmployeeSessions.run();
+
+    assert.equal(getEmployeeSession.get(id1), undefined, '삭제 후 첫 번째 조회 시 undefined');
+    assert.equal(getEmployeeSession.get(id2), undefined, '삭제 후 두 번째 조회 시 undefined');
+});
+
+// ─── 6. clearAllEmployeeSessions가 main session 테이블 안 건드리는지 확인 ──
+
+test('P100-ES-006: clearAllEmployeeSessions가 main session 테이블을 건드리지 않음', async () => {
+    const { getSession, upsertEmployeeSession, clearAllEmployeeSessions } = await import('../src/core/db.ts');
+
+    // main session 상태 스냅샷
+    const before = getSession();
+    assert.ok(before, 'main session이 존재해야 함');
+
+    // employee 데이터 추가 후 전체 삭제
+    upsertEmployeeSession.run('test_main_guard', 'sid_guard', 'codex', 'gpt-5.4', 0);
+    clearAllEmployeeSessions.run();
+
+    // main session 상태 확인
+    const after = getSession();
+    assert.ok(after, 'clearAll 후에도 main session이 존재해야 함');
+    assert.equal(after.id, before.id, 'main session id 보존');
+    assert.equal(after.active_cli, before.active_cli, 'main session active_cli 보존');
+    assert.equal(after.session_id, before.session_id, 'main session session_id 보존');
+});
+
+test('P100-ES-006b: employee resume-key change clears only the affected employee session', async () => {
+    const { upsertEmployeeSession, getEmployeeSession, clearAllEmployeeSessions } = await import('../src/core/db.ts');
+    const { clearEmployeeSessionIfResumeKeyChanged } = await import('../src/core/employees.ts');
+
+    const id1 = `test_resume_key_1_${Date.now()}`;
+    const id2 = `test_resume_key_2_${Date.now()}`;
+
+    try {
+        upsertEmployeeSession.run(id1, 'sid1', 'codex', 'gpt-5.4', 0);
+        upsertEmployeeSession.run(id2, 'sid2', 'codex', 'gpt-5.4', 0);
+
+        const cleared = clearEmployeeSessionIfResumeKeyChanged(
+            id1,
+            { cli: 'codex', model: 'gpt-5.4' },
+            { cli: 'grok', model: 'grok-composer-2.5-fast' },
+        );
+
+        assert.equal(cleared, true, 'resume-key change should clear the stale session');
+        assert.equal(getEmployeeSession.get(id1), undefined, 'changed employee session is cleared');
+        assert.ok(getEmployeeSession.get(id2), 'unrelated employee session remains');
+    } finally {
+        clearAllEmployeeSessions.run();
+    }
+});
+
+test('P100-ES-006c: dispatch-time stale employee session mismatch is cleared', async () => {
+    const { upsertEmployeeSession, getEmployeeSession, clearAllEmployeeSessions } = await import('../src/core/db.ts');
+    const { clearStaleEmployeeSessionIfResumeKeyMismatch } = await import('../src/core/employees.ts');
+
+    const id = `test_stale_dispatch_${Date.now()}`;
+    try {
+        upsertEmployeeSession.run(id, 'sid-stale', 'grok', 'grok-composer-2.5-fast', 0);
+        const cleared = clearStaleEmployeeSessionIfResumeKeyMismatch(
+            id,
+            { cli: 'grok', model: 'grok-composer-2.5-fast' },
+            { cli: 'codex', model: 'gpt-5.3-codex-spark' },
+        );
+
+        assert.equal(cleared, true, 'stale dispatch resume key should be cleared');
+        assert.equal(getEmployeeSession.get(id), undefined);
+    } finally {
+        clearAllEmployeeSessions.run();
+    }
+});
+
+test('P100-ES-006d: manual employee session reset clears sessions without touching employees', async () => {
+    const { getEmployees, upsertEmployeeSession, getEmployeeSession, clearAllEmployeeSessions } = await import('../src/core/db.ts');
+    const { resetEmployeeSessions } = await import('../src/core/employees.ts');
+
+    const id = `test_manual_reset_${Date.now()}`;
+    const beforeEmployees = getEmployees.all().length;
+    try {
+        upsertEmployeeSession.run(id, 'sid-manual', 'codex', 'gpt-5.4', 0);
+        const result = resetEmployeeSessions();
+
+        assert.ok(result.cleared >= 1, 'reset should report at least the inserted row');
+        assert.equal(getEmployeeSession.get(id), undefined);
+        assert.equal(getEmployees.all().length, beforeEmployees, 'employee definitions are preserved');
+    } finally {
+        clearAllEmployeeSessions.run();
+    }
+});
+
+// ─── 7. Phase 합치기 프롬프트에 '적극 권장' 문구 존재 확인 ──
+
+test('P100-ES-007: Phase Merging prompt includes recommendation', () => {
+    const src = fs.readFileSync(PIPELINE_SRC, 'utf8') + '\n' + fs.readFileSync(DISTRIBUTE_SRC, 'utf8');
+    assert.match(src, /Highly Recommended/,
+        'distribute.ts should include "Highly Recommended" text');
+    assert.match(src, /Phase Merging/,
+        'distribute.ts should include "Phase Merging" section');
+    assert.match(src, /phases_completed/,
+        'distribute.ts should have phases_completed parsing logic');
+});

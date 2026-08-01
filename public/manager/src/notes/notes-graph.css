@@ -1,0 +1,382 @@
+.notes-graph-workspace {
+    grid-row: 3;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: grid;
+    grid-template-rows: max-content minmax(0, 1fr);
+    background: var(--canvas-deep, #111827);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+.notes-graph-toolbar {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: color-mix(in srgb, var(--canvas-mid, #151b23) 88%, transparent);
+}
+
+.notes-graph-counts,
+.notes-graph-actions,
+.notes-graph-control-row {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notes-graph-counts {
+    color: var(--text-secondary);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.notes-graph-counts strong {
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.notes-graph-actions button,
+.notes-graph-controls button {
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-panel, #161b22);
+    color: var(--text-primary);
+    border-radius: 6px;
+    min-height: 30px;
+    padding: 4px 9px;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.notes-graph-actions button:hover,
+.notes-graph-controls button:hover {
+    background: var(--surface-hover, #232b36);
+}
+
+.notes-graph-actions button:active,
+.notes-graph-controls button:active {
+    transform: translateY(1px);
+}
+
+.notes-graph-body {
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 318px);
+    overflow: hidden;
+}
+
+.notes-graph-workspace:not(.has-controls) .notes-graph-body {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.notes-graph-canvas {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background:
+        linear-gradient(color-mix(in srgb, var(--border-subtle, #30363d) 35%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--border-subtle, #30363d) 35%, transparent) 1px, transparent 1px),
+        var(--canvas-deep, #111827);
+    background-size: 28px 28px;
+}
+
+.notes-graph-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    color: var(--text-tertiary);
+}
+
+.notes-graph-empty-state {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--text-secondary);
+    font-size: 13px;
+    pointer-events: none;
+}
+
+.notes-graph-link {
+    stroke: var(--border-strong, #536173);
+    stroke-width: 1.2;
+    stroke-opacity: 0.54;
+}
+
+.notes-graph-link-resolved.is-virtual {
+    stroke-dasharray: 4 5;
+    stroke-opacity: 0.42;
+}
+
+.notes-graph-link-missing {
+    stroke: var(--status-error, #ff7b72);
+}
+
+.notes-graph-link-ambiguous {
+    stroke: var(--status-warning, #f2cc60);
+}
+
+.notes-graph-node {
+    outline: none;
+    cursor: default;
+}
+
+.notes-graph-node-note {
+    cursor: pointer;
+}
+
+.notes-graph-node circle {
+    fill: var(--surface-secondary, #2d333b);
+    stroke: color-mix(in srgb, var(--text-secondary, #8b949e) 42%, transparent);
+    stroke-width: 1.2;
+    transition: filter 0.15s, stroke-width 0.15s;
+}
+
+.notes-graph-node-note circle {
+    fill: var(--accent-muted, #244872);
+}
+
+.notes-graph-node-missing circle {
+    fill: var(--status-error, #ff7b72);
+}
+
+.notes-graph-node-ambiguous circle {
+    fill: var(--status-warning, #f2cc60);
+}
+
+.notes-graph-node-tag circle {
+    fill: var(--status-info, #56d4dd);
+}
+
+.notes-graph-node.is-selected circle {
+    stroke: var(--accent-primary, #8ab4ff);
+    stroke-width: 3;
+}
+
+.notes-graph-node:hover circle,
+.notes-graph-node:focus-visible circle {
+    filter: brightness(1.22);
+    stroke-width: 2;
+}
+
+.notes-graph-label {
+    opacity: 0;
+    fill: var(--text-secondary);
+    font-size: 11px;
+    paint-order: stroke;
+    stroke: var(--canvas-deep, #111827);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+    pointer-events: none;
+    user-select: none;
+}
+
+.notes-graph-node.is-label-visible .notes-graph-label,
+.notes-graph-node:hover .notes-graph-label,
+.notes-graph-node:focus-visible .notes-graph-label {
+    opacity: 1;
+}
+
+.notes-graph-controls {
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    border-left: 1px solid var(--border-subtle);
+    background: var(--canvas-mid, #151b23);
+}
+
+.notes-graph-controls-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 10px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--canvas-mid, #151b23);
+}
+
+.notes-graph-controls-header h3 {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.notes-graph-controls-header span {
+    color: var(--text-tertiary);
+    font-size: 11px;
+}
+
+.notes-graph-icon-button {
+    width: 30px;
+    min-width: 30px;
+    padding-inline: 0;
+}
+
+.notes-graph-control-section {
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.notes-graph-section-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 8px 10px;
+    font-weight: 600;
+}
+
+.notes-graph-control-body {
+    display: grid;
+    gap: 8px;
+    padding: 0 10px 10px;
+}
+
+.notes-graph-field,
+.notes-graph-toggle {
+    display: grid;
+    gap: 5px;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.notes-graph-toggle {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    align-items: center;
+}
+
+.notes-graph-toggle.is-disabled {
+    opacity: 0.55;
+}
+
+.notes-graph-field input:not([type="range"]),
+.notes-graph-group-row input:not([type="color"]) {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-panel, #161b22);
+    color: var(--text-primary);
+    border-radius: 6px;
+    min-height: 30px;
+    padding: 4px 8px;
+    font: inherit;
+    font-size: 12px;
+}
+
+.notes-graph-field input[type="range"] {
+    width: 100%;
+}
+
+.notes-graph-groups {
+    display: grid;
+    gap: 8px;
+}
+
+.notes-graph-group-row {
+    display: grid;
+    grid-template-columns: 28px minmax(52px, 0.7fr) minmax(72px, 1fr) max-content 30px;
+    align-items: center;
+    gap: 5px;
+}
+
+.notes-graph-color {
+    width: 28px;
+    min-width: 28px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: transparent;
+}
+
+.notes-graph-swatches {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.notes-graph-swatches span {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    border: 1px solid color-mix(in srgb, var(--text-primary, #f0f6fc) 30%, transparent);
+}
+
+@media (max-width: 860px) {
+    .notes-graph-body {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr) minmax(160px, 34vh);
+    }
+
+    .notes-graph-controls {
+        border-left: 0;
+        border-top: 1px solid var(--border-subtle);
+    }
+}
+
+@media (max-width: 540px) {
+    .notes-mode-graph .notes-toolbar {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .notes-mode-graph .notes-view-tabs {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .notes-mode-graph .notes-view-tabs button {
+        width: 100%;
+        min-height: 30px;
+        padding-inline: 3px;
+        font-size: 11px;
+    }
+
+    .notes-mode-graph .notes-toolbar-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .notes-mode-graph .notes-toolbar-actions > button {
+        min-width: 0;
+        padding-inline: 6px;
+    }
+
+    .notes-graph-toolbar {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding: 7px 8px;
+    }
+
+    .notes-graph-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .notes-graph-body {
+        grid-template-rows: minmax(180px, 1fr) minmax(220px, 42vh);
+    }
+}

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLI-Only Commands — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link active" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>CLI-Only Commands</h1>
+<p class="lead">이 명령어들은 터미널 CLI 인터페이스에서만 사용할 수 있습니다. Web UI, Telegram 봇, Discord 봇에서는 <strong>사용할 수 없으며</strong> -- 로컬 터미널 프로세스에 의존하고 서버 측 대응 기능이 없습니다. CLI가 아닌 채널에서 사용하려 하면 무시되거나 오류가 반환됩니다.</p>
+
+<div class="callout-info">
+<strong>왜 CLI 전용인가요?</strong><br>
+이 명령어들은 CLI 프로세스 자체와 직접 상호작용합니다 -- 로컬 머신의 파일을 읽거나, 터미널 화면을 제어하거나, 버전 메타데이터를 출력하거나, 프로세스를 종료합니다. 요청/응답 API로 변환할 수 없으므로 대화형 터미널 세션에서만 의미가 있습니다.
+</div>
+
+<h2>명령어 레퍼런스</h2>
+
+<table>
+<tr><th>명령어</th><th>인자</th><th>설명</th></tr>
+<tr><td><code>/version</code></td><td>없음</td><td>현재 podex 버전 문자열을 출력합니다</td></tr>
+<tr><td><code>/quit</code></td><td>없음</td><td>podex 프로세스를 정상적으로 종료합니다</td></tr>
+<tr><td><code>/q</code></td><td>없음</td><td><code>/quit</code>의 단축 명령어</td></tr>
+<tr><td><code>/file</code></td><td><code>&lt;path&gt; [caption]</code></td><td>로컬 파일을 대화에 첨부합니다 (화면에 표시되지 않음)</td></tr>
+<tr><td><code>/ide</code></td><td><code>pop | on | off</code></td><td>IDE diff 뷰 패널을 제어합니다</td></tr>
+</table>
+
+<hr>
+
+<h2 id="version">/version</h2>
+<p>설치된 podex 버전, 빌드 해시, 런타임 정보를 터미널에 출력합니다. 버그 리포트를 작성하거나 업데이트가 정상적으로 적용되었는지 확인할 때 유용합니다.</p>
+
+<h3>구문</h3>
+<pre><code>/version</code></pre>
+
+<h3>인자</h3>
+<p>없음. 이 명령어는 인자나 플래그를 받지 않습니다.</p>
+
+<h3>출력</h3>
+<pre><code>podex v2.14.0 (build a3f8c1d)
+node: v22.11.0 | platform: darwin-arm64
+config: ~/.podex/config.yaml</code></pre>
+
+<h3>사용 예시</h3>
+<pre><code># 이슈 리포트 전 버전 확인
+/version
+
+# 클립보드에 복사 (jaw 세션 내부가 아닌 쉘에서 실행)
+jaw --version | pbcopy</code></pre>
+
+<div class="callout-info">
+<strong>~해줘 tip</strong><br>
+<code>"버전 확인해줘"</code> -- 어시스턴트가 <code>/version</code>을 실행하고 결과를 알려줍니다. <code>"지금 어떤 버전 쓰고 있어?"</code>라고 해도 같은 결과를 얻을 수 있습니다.
+</div>
+
+<hr>
+
+<h2 id="quit">/quit, /q</h2>
+<p>podex 프로세스를 정상적으로 종료합니다. 현재 대화를 세션 로그에 저장하고, 대기 중인 메모리 쓰기를 모두 처리한 뒤, 종료 코드 0으로 Node.js 프로세스를 종료합니다. <code>/q</code>는 동일하게 동작하는 단축 명령어입니다.</p>
+
+<h3>구문</h3>
+<pre><code>/quit
+/q</code></pre>
+
+<h3>인자</h3>
+<p>없음. 이 명령어는 인자나 플래그를 받지 않습니다.</p>
+
+<h3>동작</h3>
+<ul>
+<li><strong>세션 저장</strong> -- 현재 대화가 <code>~/.podex/sessions/</code>에 저장되어 나중에 <code>/session load</code>로 다시 불러올 수 있습니다.</li>
+<li><strong>메모리 플러시</strong> -- 처리 중인 모든 메모리 쓰기가 종료 전에 커밋됩니다.</li>
+<li><strong>정상 종료</strong> -- 프로세스가 종료 코드 <code>0</code>으로 종료됩니다. 5초 이상 종료가 지연되면 프로세스가 강제 종료됩니다.</li>
+<li><strong>확인 없음</strong> -- "정말 종료하시겠습니까?"와 같은 확인 없이 즉시 종료됩니다.</li>
+</ul>
+
+<h3>사용 예시</h3>
+<pre><code># 세션 종료
+/quit
+
+# 같은 동작, 더 짧게
+/q</code></pre>
+
+<div class="callout-info">
+<strong>~해줘 tip</strong><br>
+<code>"종료해줘"</code> 또는 <code>"나갈게"</code> -- 어시스턴트가 자연어 종료 의도를 인식하고 <code>/quit</code>을 대신 실행합니다. <code>Ctrl+C</code>를 두 번 눌러 즉시 종료할 수도 있지만, 그러면 정상적인 플러시 과정이 생략됩니다.
+</div>
+
+<hr>
+
+<h2 id="file">/file</h2>
+<p>로컬 파일을 현재 대화 컨텍스트에 첨부합니다. 파일은 디스크에서 읽혀 메시지 히스토리에 숨겨진 첨부 파일로 주입됩니다 -- 터미널 출력에는 시각적으로 표시되지 않지만, AI 모델은 전체 내용을 수신합니다. 문서, 이미지, 데이터 파일을 화면을 어지럽히지 않고 대화에 전달할 때 유용합니다.</p>
+
+<h3>구문</h3>
+<pre><code>/file &lt;path&gt; [caption]</code></pre>
+
+<h3>인자</h3>
+<table>
+<tr><th>인자</th><th>필수</th><th>설명</th></tr>
+<tr><td><code>&lt;path&gt;</code></td><td>예</td><td>파일의 절대 경로 또는 상대 경로. <code>~</code> 확장을 지원합니다. 글로브 패턴은 지원되지 않으며 -- 명령어당 하나의 파일만 첨부할 수 있습니다.</td></tr>
+<tr><td><code>[caption]</code></td><td>아니오</td><td>컨텍스트로 추가되는 선택적 설명. 생략하면 파일 내용만 전송됩니다.</td></tr>
+</table>
+
+<h3>지원 파일 형식</h3>
+<table>
+<tr><th>카테고리</th><th>확장자</th></tr>
+<tr><td>텍스트 / 코드</td><td><code>.txt</code>, <code>.md</code>, <code>.py</code>, <code>.js</code>, <code>.ts</code>, <code>.json</code>, <code>.yaml</code>, <code>.toml</code>, <code>.csv</code>, <code>.html</code>, <code>.css</code> 및 기타 일반 텍스트 형식</td></tr>
+<tr><td>이미지</td><td><code>.png</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.gif</code>, <code>.webp</code>, <code>.svg</code></td></tr>
+<tr><td>문서</td><td><code>.pdf</code>, <code>.docx</code>, <code>.xlsx</code>, <code>.pptx</code>, <code>.hwpx</code></td></tr>
+<tr><td>오디오</td><td><code>.mp3</code>, <code>.wav</code>, <code>.m4a</code>, <code>.ogg</code></td></tr>
+</table>
+
+<h3>동작</h3>
+<ul>
+<li><strong>숨겨진 첨부</strong> -- 파일 내용이 AI 컨텍스트에 추가되지만 터미널에는 출력되지 않습니다. 대용량 파일을 첨부할 때 화면을 깔끔하게 유지할 수 있습니다.</li>
+<li><strong>크기 제한</strong> -- 모델의 컨텍스트 윈도우를 초과하는 파일은 경고와 함께 잘립니다. 매우 큰 파일의 경우 먼저 분할하거나 요약하는 것이 좋습니다.</li>
+<li><strong>상대 경로</strong> -- 현재 작업 디렉토리(<code>jaw</code>를 실행한 디렉토리) 기준으로 해석됩니다.</li>
+<li><strong>바이너리 파일</strong> -- 이미지와 문서는 base64로 인코딩됩니다. 지원되지 않는 바이너리 형식은 오류가 발생합니다.</li>
+</ul>
+
+<h3>사용 예시</h3>
+<pre><code># 소스 파일을 첨부하여 리뷰 요청
+/file src/auth/middleware.ts Review this middleware for security issues
+
+# 스크린샷을 첨부하여 분석 요청
+/file ~/Desktop/screenshot.png What error is shown here?
+
+# CSV 파일을 첨부하여 데이터 분석
+/file ./sales-q4.csv
+
+# PDF 문서 첨부
+/file ~/Documents/contract.pdf 이 계약서 요약해줘</code></pre>
+
+<div class="callout-info">
+<strong>~해줘 tip</strong><br>
+<code>"이 파일 봐줘 -- ~/report.pdf"</code> -- 어시스턴트가 <code>/file ~/report.pdf</code>를 실행한 뒤 내용을 분석합니다. <code>"src/index.ts 파일 첨부해서 리뷰해줘"</code>라고 하면 첨부와 리뷰를 한 번에 처리합니다.
+</div>
+
+<hr>
+
+<h2 id="ide">/ide</h2>
+<p>IDE diff 뷰 패널을 제어합니다. 활성화하면, 어시스턴트가 제안하는 코드 변경 사항이 채팅 인라인이 아닌 VS Code의 diff 에디터와 유사한 나란히 보기 또는 통합 diff 형식으로 표시됩니다. 여러 파일의 변경 사항을 수락하기 전에 검토하기 편리합니다.</p>
+
+<h3>구문</h3>
+<pre><code>/ide &lt;mode&gt;</code></pre>
+
+<h3>인자</h3>
+<table>
+<tr><th>인자</th><th>설명</th></tr>
+<tr><td><code>pop</code></td><td>새 터미널 창에서 diff 뷰를 엽니다 (팝아웃). 지원되는 터미널 에뮬레이터(iTerm2, Wezterm, 또는 tmux)가 필요합니다.</td></tr>
+<tr><td><code>on</code></td><td>현재 터미널에서 인라인 diff 뷰를 활성화합니다. 채팅 아래 분할 창에 diff가 표시됩니다.</td></tr>
+<tr><td><code>off</code></td><td>diff 뷰를 비활성화합니다. 코드 변경 사항이 채팅 출력 내 인라인 표시로 돌아갑니다.</td></tr>
+</table>
+
+<h3>모드 설명</h3>
+<ul>
+<li><strong><code>pop</code></strong> -- diff를 표시하는 별도의 터미널 창을 생성합니다. 채팅과 함께 diff를 항상 볼 수 있는 멀티 모니터 환경에 적합합니다. 팝아웃 창은 어시스턴트가 변경 사항을 제안할 때 실시간으로 업데이트됩니다.</li>
+<li><strong><code>on</code></strong> -- 현재 터미널을 수직으로 분할합니다. 상단에는 대화가, 하단에는 활성 diff가 표시됩니다. 어떤 터미널에서든 작동하지만 채팅 공간이 줄어듭니다.</li>
+<li><strong><code>off</code></strong> -- 코드 블록과 diff가 대화 스트림 내에 인라인으로 렌더링되는 기본 동작으로 돌아갑니다.</li>
+</ul>
+
+<h3>터미널 요구 사항</h3>
+<table>
+<tr><th>모드</th><th>요구 사항</th></tr>
+<tr><td><code>pop</code></td><td>iTerm2, Wezterm, 또는 tmux. 지원되는 에뮬레이터가 감지되지 않으면 <code>on</code> 모드로 폴백됩니다.</td></tr>
+<tr><td><code>on</code></td><td>최소 80열, 40행 이상의 터미널 권장.</td></tr>
+<tr><td><code>off</code></td><td>요구 사항 없음.</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># 별도 창에서 diff 뷰 열기
+/ide pop
+
+# 인라인 diff 뷰 활성화
+/ide on
+
+# diff 뷰 끄기
+/ide off
+
+# 일반적인 워크플로우: diff 활성화, 변경 요청, 검토
+/ide on
+"이 함수 리팩터링해줘 -- async/await으로 바꿔줘"
+# 패널에서 diff를 검토한 후 수락 또는 거부</code></pre>
+
+<div class="callout-info">
+<strong>~해줘 tip</strong><br>
+<code>"IDE 모드 켜줘"</code> -- <code>/ide on</code>을 활성화합니다. <code>"diff 뷰 팝업으로 열어줘"</code>라고 하면 <code>/ide pop</code>이 실행되고, <code>"IDE 모드 꺼줘"</code>라고 하면 <code>/ide off</code>가 실행됩니다.
+</div>
+
+<hr>
+
+<h2>플랫폼 지원 현황</h2>
+<p>아래 표는 각 명령어가 어디에서 작동하고 어디에서 작동하지 않는지 보여줍니다:</p>
+<table>
+<tr><th>명령어</th><th>CLI</th><th>Web UI</th><th>Telegram</th><th>Discord</th><th>Electron</th></tr>
+<tr><td><code>/version</code></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>Yes*</td></tr>
+<tr><td><code>/quit</code>, <code>/q</code></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>No</td></tr>
+<tr><td><code>/file</code></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>Yes*</td></tr>
+<tr><td><code>/ide</code></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>Yes*</td></tr>
+</table>
+<p><small>* Electron 데스크톱 앱에는 CLI 전용 명령어를 지원하는 내장 터미널이 포함되어 있습니다. 브라우저를 통해 제공되는 Web UI에서는 지원되지 않습니다.</small></p>
+
+<h2>문제 해결</h2>
+
+<h3>/file에서 "file not found"가 표시되는 경우</h3>
+<p><code>jaw</code>를 실행한 디렉토리 기준으로 경로가 올바른지 확인하세요. 확실하지 않다면 절대 경로를 사용하세요:</p>
+<pre><code># 상대 경로 대신
+/file ./data/report.csv
+
+# 절대 경로 사용
+/file /Users/jun/projects/data/report.csv</code></pre>
+
+<h3>/ide pop이 아무 반응이 없는 경우</h3>
+<p><code>pop</code> 모드는 iTerm2, Wezterm, 또는 tmux가 필요합니다. 다른 터미널 에뮬레이터(Terminal.app, Alacritty, Hyper)를 사용 중이라면 명령어가 자동으로 <code>on</code> 모드로 폴백됩니다. 터미널을 확인하세요:</p>
+<pre><code>echo $TERM_PROGRAM
+# iTerm.app, WezTerm, 또는 tmux가 출력되어야 합니다</code></pre>
+
+<h3>/quit이 멈추는 경우</h3>
+<p><code>/quit</code>이 5초 이내에 종료되지 않으면 대기 중인 네트워크 요청이나 파일 쓰기가 있을 수 있습니다. <code>Ctrl+C</code>를 눌러 프로세스를 강제 종료하세요. <code>~/.podex/sessions/</code>를 확인하여 세션이 저장되었는지 검증하세요.</p>
+
+<div class="page-nav">
+<a class="prev" href="tools.html">Tools</a>
+<a class="next" href="root-cli.html">Root CLI</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

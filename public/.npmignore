@@ -1,0 +1,3 @@
+# package.json includes public/; this nested ignore prunes generated artifacts.
+public/
+dist/dist/

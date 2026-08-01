@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PABCD 编排 — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link active" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="../">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>PABCD 编排</h1>
+<p class="lead">PABCD 是一种结构化的开发工作流：Plan（计划）、Audit（审核）、Build（构建）、Check（检查）、Done（完成）。它为多步骤项目提供了一个可重复的框架，具有明确的阶段转换和员工调度机制。</p>
+
+<h2>五个阶段</h2>
+<table>
+<tr><th>阶段</th><th>名称</th><th>用途</th></tr>
+<tr><td><strong>P</strong></td><td>Plan</td><td>将需求分解为具体计划。代理生成一份结构化的计划文档。</td></tr>
+<tr><td><strong>A</strong></td><td>Audit</td><td>审核计划。员工以只读验证者身份被调度。结论：通过或失败。</td></tr>
+<tr><td><strong>B</strong></td><td>Build</td><td>执行计划。工作者实现任务。实现措辞受委派规则约束。</td></tr>
+<tr><td><strong>C</strong></td><td>Check</td><td>验证实现结果。工作者以验证者身份运行。结论：完成、需要修复或失败。</td></tr>
+<tr><td><strong>D</strong></td><td>Done</td><td>标记编排完成。清理状态并生成摘要。</td></tr>
+</table>
+
+<h2>访谈模式 (I)</h2>
+<p>在进入 Plan 阶段之前，您可以使用 <code>/interview</code> 命令来细化模糊的需求。访谈模式每轮提出 1-3 个问题，并使用结构化追踪器跟踪已知和未知信息。</p>
+<pre><code>/interview Build a real-time dashboard for IoT sensor data</code></pre>
+<p>代理从每次响应中提取 <code>&lt;interview_tracker&gt;</code> 块，维护已知/未知列表，这些列表会显示在 Web UI 的访谈面板中。需求明确后，状态将转换为 Plan (P)。</p>
+
+<h2>命令</h2>
+<table>
+<tr><th>命令</th><th>描述</th></tr>
+<tr><td><code>/orchestrate P</code></td><td>进入 Plan 阶段</td></tr>
+<tr><td><code>/orchestrate A</code></td><td>进入 Audit 阶段</td></tr>
+<tr><td><code>/orchestrate B</code></td><td>进入 Build 阶段</td></tr>
+<tr><td><code>/orchestrate C</code></td><td>进入 Check 阶段</td></tr>
+<tr><td><code>/orchestrate D</code></td><td>进入 Done 阶段</td></tr>
+<tr><td><code>/orchestrate status</code></td><td>显示当前 PABCD 状态</td></tr>
+<tr><td><code>/orchestrate reset</code></td><td>重置所有编排状态</td></tr>
+<tr><td><code>/interview &lt;request&gt;</code></td><td>启动访谈以收集需求</td></tr>
+<tr><td><code>/deliberate &lt;plan&gt;</code></td><td>从 Planner/Architect/Critic 角度审查计划</td></tr>
+<tr><td><code>/planaudit [plan]</code></td><td>为员工生成只读审核任务文本</td></tr>
+</table>
+<p>CLI 等效命令：<code>jaw orchestrate P|A|B|C|D|status|reset</code></p>
+
+<h2>流水线流程</h2>
+<pre><code>orchestrate(prompt, meta)
+  1. Drain pending worker replays
+  2. Resolve scope (workingDir) + read current state
+  3. PABCD entry is explicit only (no auto-entry)
+  4. First planning turn: getStatePrompt('P') + user request
+  5. Inject prompt prefix + approved plan block (A/B/C)
+  6. Build memory injection (boss snapshot)
+  7. Spawn agent with origin and memory
+  8. Broadcast result + update worklog/state</code></pre>
+
+<h2>状态机</h2>
+<p>编排器状态机（<code>src/orchestrator/state-machine.ts</code>）管理六个状态：<code>IDLE | P | A | B | C | D</code>。上下文包括：</p>
+<ul>
+<li><code>auditStatus</code>（pending/pass/fail）</li>
+<li><code>verificationStatus</code>（pending/done/needs_fix）</li>
+<li><code>userApproved</code> 标志</li>
+<li><code>worklogPath</code></li>
+<li><code>planHash</code> 和 <code>planUpdatedAt</code></li>
+<li><code>taskAnchor</code> 和 <code>resolvedSelection</code></li>
+<li><code>interview</code>（request/round/known/unknown）</li>
+</ul>
+
+<h2>计划锁定</h2>
+<p>计划获批且状态转移到 A/B/C 后，已批准的计划会通过 <code>buildApprovedPlanPromptBlock()</code> 注入到每次调度提示词的顶部。工作者无法重建或修改计划——他们只负责执行。</p>
+<div class="callout callout-info">每次调度都包含 <code>Project root: &lt;absolute path&gt;</code>，以防止工作者将临时目录与实际仓库根目录混淆。</div>
+
+<h2>技巧</h2>
+<ul>
+<li>对于复杂项目，务必先使用 <code>/interview</code>，以避免在信息不完整的情况下制定计划。</li>
+<li>阶段转换是显式的——代理会在计划完成后提示您运行 <code>jaw orchestrate A</code>。</li>
+<li>使用 <code>/continue</code> 进行显式的 worklog/PABCD 恢复。自然语言的"continue"消息会被视为普通提示词处理。</li>
+<li>阶段前进需要证据 attestation：<code>jaw orchestrate B --attest '{"from":"A","to":"B","did":"..."}'</code>（C→D 还需 <code>checkOutput</code> 和 <code>exitCode</code>）。</li>
+<li><code>/orchestrate reset</code> 命令会清理所有内容：活跃代理、工作者、队列、员工会话、状态和工作日志。</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="employees.html">Employees</a>
+<a class="next" href="goals.html">Goals</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

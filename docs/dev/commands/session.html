@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Commands — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+<style>
+.cmd-block { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px 28px; margin: 24px 0; }
+.cmd-block h3 { margin: 0 0 6px; font-size: 18px; }
+.cmd-block h3 code { font-size: 16px; color: var(--accent); background: none; padding: 0; }
+.cmd-block .cmd-sig { font-size: 14px; color: var(--text-dim); margin-bottom: 14px; font-family: var(--mono); }
+.cmd-block .cmd-sig .arg { color: var(--text-muted); font-style: italic; }
+.cmd-block p { margin: 0 0 12px; line-height: 1.7; }
+.cmd-block .cmd-example { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; margin: 10px 0; font-size: 13px; font-family: var(--mono); line-height: 1.6; }
+.cmd-block .cmd-example .comment { color: var(--text-muted); }
+.cmd-block .cmd-tip { font-size: 13px; color: var(--text-dim); margin-top: 12px; padding: 8px 12px; background: rgba(136,136,160,0.06); border-radius: 6px; border-left: 3px solid var(--accent); }
+.cmd-block .cmd-tip strong { color: var(--text); }
+
+.quick-ref { margin: 20px 0 32px; }
+.quick-ref table td:first-child { white-space: nowrap; font-family: var(--mono); font-size: 13px; }
+.quick-ref table td:nth-child(2) { color: var(--text-dim); font-size: 13px; }
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link active" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Session Commands</h1>
+<p class="lead">Session commands manage your current podex conversation: viewing help, navigating commands, checking status, clearing history, compressing context, resetting state, and redirecting the agent mid-conversation. These are the commands you reach for most often during interactive use.</p>
+
+<div class="callout callout-info">All session commands start with <code>/</code> and can be typed directly in the chat input. You can also trigger them via natural language &mdash; podex understands Korean and English equally. See the "~해줘" tips on each command below.</div>
+
+<h2>Quick Reference</h2>
+<div class="quick-ref">
+<table>
+<tr><th>Command</th><th>Description</th></tr>
+<tr><td><code>/help [command]</code></td><td>Show help for all commands or a specific command</td></tr>
+<tr><td><code>/commands</code></td><td>Open the command palette with fuzzy search</td></tr>
+<tr><td><code>/status</code></td><td>Display current session status and diagnostics</td></tr>
+<tr><td><code>/clear [all]</code></td><td>Clear conversation history / <code>all</code>: reset skills+employees+MCP</td></tr>
+<tr><td><code>/purge</code></td><td>Clear conversation + delete memory</td></tr>
+<tr><td><code>/compact [instructions]</code></td><td>Compress context while preserving key information</td></tr>
+<tr><td><code>/reset [confirm]</code></td><td>Bootstrap reset &mdash; conversation, memory, skills, employees, MCP</td></tr>
+<tr><td><code>/steer &lt;prompt&gt;</code></td><td>Redirect the agent to a new direction mid-conversation</td></tr>
+</table>
+</div>
+
+<h2>Commands in Detail</h2>
+
+<!-- /help -->
+<div class="cmd-block" id="help">
+<h3><code>/help</code></h3>
+<div class="cmd-sig">/help <span class="arg">[command]</span></div>
+<p>Shows documentation for podex commands. When called without arguments, it lists all available commands grouped by category. When a command name is provided, it shows detailed usage, arguments, and examples for that specific command.</p>
+
+<p><strong>Arguments:</strong></p>
+<table>
+<tr><th>Argument</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>command</code></td><td>No</td><td>Name of a specific command to get detailed help for (without the <code>/</code> prefix)</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># List all commands</span><br>
+/help<br><br>
+<span class="comment"># Get detailed help for a specific command</span><br>
+/help compact<br><br>
+<span class="comment"># Help for the steer command</span><br>
+/help steer
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "도움말 보여줘", "명령어 뭐 있어?", "compact 사용법 알려줘" all map to <code>/help</code>. podex will detect your intent and show the relevant documentation.</div>
+</div>
+
+<!-- /commands -->
+<div class="cmd-block" id="commands">
+<h3><code>/commands</code></h3>
+<div class="cmd-sig">/commands</div>
+<p>Opens the command palette &mdash; an interactive, searchable list of every available slash command. The palette supports fuzzy matching, so you can type partial names to quickly find what you need. This is the fastest way to discover commands you have not used before.</p>
+
+<p>The palette displays each command with its category, brief description, and keyboard shortcut (if one exists). Select a command to either execute it immediately or insert it into the input for further editing.</p>
+
+<div class="cmd-example">
+<span class="comment"># Open the command palette</span><br>
+/commands<br><br>
+<span class="comment"># In the palette, type to filter:</span><br>
+<span class="comment">#   "mod" &rarr; shows /model, /model-list</span><br>
+<span class="comment">#   "sk"  &rarr; shows /skill, /skill load, /skill list</span>
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "명령어 팔레트 열어줘", "커맨드 목록 보여줘" will trigger the command palette. You can also say "뭐 할 수 있어?" for a conversational overview of capabilities.</div>
+</div>
+
+<!-- /status -->
+<div class="cmd-block" id="status">
+<h3><code>/status</code></h3>
+<div class="cmd-sig">/status</div>
+<p>Displays a comprehensive snapshot of your current session. This includes the active model and CLI backend, loaded skills, conversation token count, memory usage, active goals, connected integrations (Telegram, Discord, etc.), and server health. Useful for debugging or understanding why the agent is behaving a certain way.</p>
+
+<p><strong>Status fields include:</strong></p>
+<table>
+<tr><th>Field</th><th>Description</th></tr>
+<tr><td>Model</td><td>Currently active LLM (e.g., claude-opus-4-8, gpt-5.5)</td></tr>
+<tr><td>CLI</td><td>Active CLI backend (Claude Code, Codex, etc.)</td></tr>
+<tr><td>Skills</td><td>List of currently loaded skills with active/inactive state</td></tr>
+<tr><td>Tokens</td><td>Current context window usage (used / max)</td></tr>
+<tr><td>Goals</td><td>Active goals and their completion status</td></tr>
+<tr><td>Integrations</td><td>Connected services (Telegram, Discord, Electron)</td></tr>
+<tr><td>Memory</td><td>Memory index size and last sync timestamp</td></tr>
+<tr><td>Uptime</td><td>How long the current session has been running</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># Check current session state</span><br>
+/status<br><br>
+<span class="comment"># Example output:</span><br>
+<span class="comment"># Model: claude-opus-4-8 via Claude Code</span><br>
+<span class="comment"># Skills: dev (active), github (active), memory (active) + 7 more</span><br>
+<span class="comment"># Tokens: 42,318 / 200,000 (21%)</span><br>
+<span class="comment"># Goals: 2 active, 1 completed</span><br>
+<span class="comment"># Uptime: 1h 23m</span>
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "지금 상태 보여줘", "현재 세션 정보", "토큰 얼마나 썼어?" all resolve to <code>/status</code>. The agent will present the status in a readable format.</div>
+</div>
+
+<!-- /clear -->
+<div class="cmd-block" id="clear">
+<h3><code>/clear</code></h3>
+<div class="cmd-sig">/clear <span class="arg">[all]</span></div>
+<p>Clears the conversation history from the current session. This removes all previous messages from the context window, giving you a fresh start while keeping your loaded skills, memory, and session configuration intact.</p>
+
+<p>With the <code>all</code> argument, it performs a deeper reset: skills are re-synced to defaults, employees are reset, MCP is re-synced, and the session state is cleared. Memory is still preserved.</p>
+
+<p><strong>Cleanup tiers (lightest to heaviest):</strong></p>
+<table>
+<tr><th>Command</th><th>Conversation</th><th>Skills/Employees/MCP</th><th>Memory</th></tr>
+<tr><td><code>/clear</code></td><td>✅ Deleted</td><td>Preserved</td><td>Preserved</td></tr>
+<tr><td><code>/clear all</code></td><td>✅ Deleted</td><td>✅ Reset</td><td>Preserved</td></tr>
+<tr><td><code>/purge</code></td><td>✅ Deleted</td><td>Preserved</td><td>✅ Deleted</td></tr>
+<tr><td><code>/reset confirm</code></td><td>✅ Deleted</td><td>✅ Hard reset</td><td>✅ Deleted</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># Clear conversation only</span><br>
+/clear<br><br>
+<span class="comment"># Reset skills, employees, MCP, and session (memory kept)</span><br>
+/clear all
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "대화 초기화해줘", "히스토리 지워줘" → <code>/clear</code>. "스킬까지 초기화해줘" → <code>/clear all</code>.</div>
+</div>
+
+<!-- /purge -->
+<div class="cmd-block" id="purge">
+<h3><code>/purge</code></h3>
+<div class="cmd-sig">/purge</div>
+<p>Deletes conversation history <strong>and</strong> all structured memory (<code>memory/structured/</code>). Skills, employees, and configuration are preserved. Use this when you want the agent to forget everything it learned about you and your project in this instance, but keep the tools and integrations intact.</p>
+
+<p>This is stronger than <code>/clear</code> (which keeps memory) but lighter than <code>/reset confirm</code> (which also wipes skills and employees).</p>
+
+<div class="cmd-example">
+<span class="comment"># Wipe conversation + memory, keep skills</span><br>
+/purge
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "메모리까지 지워줘", "기억 다 삭제해줘", "대화랑 메모리 초기화" → <code>/purge</code>.</div>
+</div>
+
+<!-- /compact -->
+<div class="cmd-block" id="compact">
+<h3><code>/compact</code></h3>
+<div class="cmd-sig">/compact <span class="arg">[instructions]</span></div>
+<p>Compresses the current conversation context by summarizing previous exchanges while preserving key decisions, code changes, and important context. This is essential for long sessions where you are approaching the context window limit but do not want to lose the thread entirely.</p>
+
+<p>The agent reads the full conversation, identifies critical information (decisions made, files modified, errors encountered, goals in progress), and produces a dense summary that replaces the full history. You can optionally pass instructions to guide what the summary should focus on.</p>
+
+<p><strong>Arguments:</strong></p>
+<table>
+<tr><th>Argument</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>instructions</code></td><td>No</td><td>Natural language guidance for what to prioritize in the summary (e.g., "keep the API decisions", "focus on the auth flow")</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># Basic context compression</span><br>
+/compact<br><br>
+<span class="comment"># Compress with specific focus</span><br>
+/compact keep the database schema decisions and migration plan<br><br>
+<span class="comment"># Compress focusing on errors and fixes</span><br>
+/compact focus on the bugs we found and how we fixed them<br><br>
+<span class="comment"># Korean instructions work too</span><br>
+/compact API 설계 결정사항만 유지해줘
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "컨텍스트 줄여줘", "대화 요약해줘", "컨텍스트 압축해줘", "토큰 아껴줘" all map to <code>/compact</code>. When you see token usage climbing past 60-70%, this is your best friend.</div>
+</div>
+
+<!-- /reset -->
+<div class="cmd-block" id="reset">
+<h3><code>/reset</code></h3>
+<div class="cmd-sig">/reset <span class="arg">[confirm]</span></div>
+<p>Performs a full bootstrap reset &mdash; the most destructive cleanup option. Clears conversation history, deletes all structured memory, hard-resets skills to factory defaults, resets employees, and re-syncs MCP. Only <code>settings.json</code> (server config, auth tokens, CLI subscriptions) survives.</p>
+
+<p>Because this is destructive, the command requires <code>confirm</code> as an argument. Without it, the agent shows what will be deleted and asks you to confirm.</p>
+
+<p><strong>Arguments:</strong></p>
+<table>
+<tr><th>Argument</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>confirm</code></td><td>Yes</td><td>Required to execute. Without it, shows a confirmation prompt.</td></tr>
+</table>
+
+<p><strong>What is deleted vs. preserved:</strong></p>
+<table>
+<tr><th>Deleted (bootstrap reset)</th><th>Preserved</th></tr>
+<tr><td>Conversation history</td><td>settings.json (ports, tokens, subscriptions)</td></tr>
+<tr><td>Structured memory (memory/structured/)</td><td>&mdash;</td></tr>
+<tr><td>All installed skills (hard reset to defaults)</td><td>&mdash;</td></tr>
+<tr><td>Employee configurations</td><td>&mdash;</td></tr>
+<tr><td>MCP state</td><td>&mdash;</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># Show confirmation prompt</span><br>
+/reset<br><br>
+<span class="comment"># Execute bootstrap reset immediately</span><br>
+/reset confirm<br><br>
+<span class="comment"># Typical flow: instance is deeply broken, start from scratch</span><br>
+/reset confirm<br>
+"처음부터 다시 설정하자"
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "완전히 초기화해줘", "공장 초기화해줘", "부트스트랩 리셋해줘" → <code>/reset confirm</code>. For lighter cleanup, use <code>/clear</code>, <code>/clear all</code>, or <code>/purge</code> instead.</div>
+</div>
+
+<!-- /steer -->
+<div class="cmd-block" id="steer">
+<h3><code>/steer</code></h3>
+<div class="cmd-sig">/steer <span class="arg">&lt;prompt&gt;</span></div>
+<p>Redirects the agent mid-conversation without clearing history. Use this when the agent is heading in the wrong direction or you want to pivot to a different approach while keeping the existing context. The steer prompt is injected as a high-priority system-level instruction that overrides the agent's current trajectory.</p>
+
+<p>This is more surgical than <code>/clear</code> &mdash; you keep the full conversation history and context, but the agent re-evaluates its approach based on your new direction. It is ideal for course corrections: "stop doing X, do Y instead."</p>
+
+<p><strong>Arguments:</strong></p>
+<table>
+<tr><th>Argument</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>prompt</code></td><td>Yes</td><td>A natural language instruction describing the new direction, approach, or constraint</td></tr>
+</table>
+
+<div class="cmd-example">
+<span class="comment"># Redirect approach</span><br>
+/steer stop using class components, use hooks instead<br><br>
+<span class="comment"># Change language/framework</span><br>
+/steer switch to TypeScript for all new files<br><br>
+<span class="comment"># Adjust behavior</span><br>
+/steer be more concise, skip explanations, just show code<br><br>
+<span class="comment"># Korean works naturally</span><br>
+/steer 설명 생략하고 코드만 보여줘<br><br>
+<span class="comment"># Pivot task direction</span><br>
+/steer 이 방식 말고 WebSocket으로 구현하자
+</div>
+
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "방향 바꿔줘", "다른 방법으로 해줘", "이렇게 말고 저렇게 해", "접근 방식 바꿔" all invoke steering behavior. You can also just state your new direction naturally &mdash; the agent will pick up the pivot. <code>/steer</code> makes it explicit and forceful.</div>
+</div>
+
+<h2>When to Use Which</h2>
+<p>Choosing the right session command depends on how much state you want to preserve:</p>
+<table>
+<tr><th>Scenario</th><th>Command</th><th>Why</th></tr>
+<tr><td>Conversation is too long, approaching token limit</td><td><code>/compact</code></td><td>Preserves key decisions while freeing tokens</td></tr>
+<tr><td>Done with current topic, starting a new task</td><td><code>/clear</code></td><td>Fresh conversation, same workspace state</td></tr>
+<tr><td>Want to reset skills/employees too, but keep memory</td><td><code>/clear all</code></td><td>Deeper cleanup without losing memory</td></tr>
+<tr><td>Agent is going the wrong way</td><td><code>/steer</code></td><td>Course-correct without losing context</td></tr>
+<tr><td>Want the agent to forget everything learned</td><td><code>/purge</code></td><td>Conversation + memory gone, tools stay</td></tr>
+<tr><td>Instance is deeply broken, start from scratch</td><td><code>/reset confirm</code></td><td>Bootstrap reset &mdash; only settings.json survives</td></tr>
+<tr><td>Cannot remember a command name</td><td><code>/commands</code></td><td>Searchable palette of everything available</td></tr>
+<tr><td>Need to check token usage or loaded skills</td><td><code>/status</code></td><td>Session diagnostics at a glance</td></tr>
+<tr><td>New to podex, exploring features</td><td><code>/help</code></td><td>Documentation built into the chat</td></tr>
+</table>
+
+<h2>Command Lifecycle</h2>
+<p>Session commands operate at different levels of the podex stack:</p>
+<ul>
+<li><strong><code>/help</code></strong> and <strong><code>/commands</code></strong> are read-only &mdash; they display information without modifying state.</li>
+<li><strong><code>/status</code></strong> reads from multiple subsystems (model, skills, memory, goals) and aggregates a snapshot.</li>
+<li><strong><code>/clear</code></strong> wipes the message buffer but leaves the session shell (skills, config, memory) intact. <code>/clear all</code> also resets skills, employees, and MCP.</li>
+<li><strong><code>/purge</code></strong> wipes messages <em>and</em> structured memory, but keeps skills and employees.</li>
+<li><strong><code>/compact</code></strong> rewrites the message buffer &mdash; it reads all messages, generates a summary, then replaces the history with the compressed version.</li>
+<li><strong><code>/steer</code></strong> injects a priority instruction into the system context without touching the message history.</li>
+<li><strong><code>/reset confirm</code></strong> performs a full bootstrap reset &mdash; messages, memory, skills (hard), employees, and MCP are all cleared. Only settings.json survives.</li>
+</ul>
+
+<div class="callout callout-info"><strong>Natural language always works.</strong> You never <em>have</em> to remember slash commands. Saying "대화 지워줘" is the same as typing <code>/clear</code>. The slash commands exist for precision and speed, but podex's intent detection handles the rest.</div>
+
+<div class="page-nav">
+<a class="prev" href="../skills/utility.html">Utility Skills</a>
+<a class="next" href="workflow.html">Workflow Commands</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,343 @@
+﻿name: npm Publish
+
+on:
+  push:
+    branches:
+      - preview
+      - main
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish; must equal package.json"
+        required: true
+        type: string
+      tag:
+        description: "npm dist-tag"
+        required: true
+        type: choice
+        options:
+          - preview
+          - latest
+        default: preview
+      dry-run:
+        description: "Dry run: build, pack, and validate without publishing"
+        required: false
+        type: boolean
+        default: true
+      create-github-release:
+        description: "Create a GitHub release after a real publish"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: npm-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Checkout public skill fixtures
+        run: git submodule update --init --depth 1 skills_ref
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          registry-url: "https://registry.npmjs.org"
+          cache: npm
+
+      - name: Use npm with provenance support
+        run: npm install -g npm@11.5.1
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Resolve release config
+        id: release
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_TAG: ${{ inputs.tag }}
+          INPUT_DRY_RUN: ${{ inputs['dry-run'] }}
+          INPUT_CREATE_RELEASE: ${{ inputs['create-github-release'] }}
+        run: |
+          set -euo pipefail
+          pkg_version="$(node -p "require('./package.json').version")"
+          tag=""
+          version="$pkg_version"
+          dry_run="false"
+          create_release="true"
+          skip_publish="false"
+          skip_reason=""
+
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            version="$INPUT_VERSION"
+            tag="$INPUT_TAG"
+            dry_run="${INPUT_DRY_RUN:-true}"
+            create_release="${INPUT_CREATE_RELEASE:-false}"
+          else
+            case "$GITHUB_REF_NAME" in
+              preview)
+                tag="preview"
+                ;;
+              main)
+                tag="latest"
+                ;;
+              *)
+                echo "::error::Unsupported publish branch: $GITHUB_REF_NAME"
+                exit 1
+                ;;
+            esac
+          fi
+
+          echo "package.json=${pkg_version}"
+          echo "release.version=${version}"
+          echo "release.tag=${tag}"
+          echo "release.dry_run=${dry_run}"
+
+          test "$pkg_version" = "$version" || {
+            echo "::error::package.json version must equal release version";
+            exit 1;
+          }
+
+          if [ "$dry_run" != "true" ]; then
+            case "$tag:$GITHUB_REF_NAME" in
+              preview:preview) ;;
+              latest:main) ;;
+              *)
+                echo "::error::Real $tag publishes must run from the matching branch; got $GITHUB_REF_NAME";
+                exit 1;
+                ;;
+            esac
+          fi
+
+          if [ "$EVENT_NAME" != "workflow_dispatch" ] && [ "$GITHUB_REF_NAME" = "preview" ]; then
+            case "$version" in
+              *-preview.*) ;;
+              *)
+                skip_publish="true"
+                skip_reason="preview branch stable sync"
+                dry_run="true"
+                create_release="false"
+                echo "::notice::Skipping npm publish for preview branch stable sync: $version"
+                ;;
+            esac
+          fi
+
+          if [ "$EVENT_NAME" != "workflow_dispatch" ] && [ "$GITHUB_REF_NAME" = "main" ]; then
+            case "$version" in
+              *-*)
+                skip_publish="true"
+                skip_reason="main branch prerelease sync"
+                dry_run="true"
+                create_release="false"
+                echo "::notice::Skipping npm publish for main branch prerelease sync: $version"
+                ;;
+            esac
+          fi
+
+          if [ "$tag" = "preview" ] && [ "$skip_publish" != "true" ]; then
+            case "$version" in
+              *-preview.*) ;;
+              *)
+                echo "::error::preview publishes require a preview prerelease version; got $version";
+                exit 1;
+                ;;
+            esac
+          fi
+
+          if [ "$tag" = "latest" ] && [ "$skip_publish" != "true" ]; then
+            case "$version" in
+              *-*)
+                echo "::error::latest publishes cannot use a prerelease version; got $version";
+                exit 1;
+                ;;
+            esac
+          fi
+
+          {
+            echo "version=$version"
+            echo "tag=$tag"
+            echo "dry-run=$dry_run"
+            echo "create-release=$create_release"
+            echo "skip-publish=$skip_publish"
+            echo "skip-reason=$skip_reason"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Report skipped publish
+        if: ${{ steps.release.outputs.skip-publish == 'true' }}
+        run: echo "::notice::${{ steps.release.outputs.skip-reason }}"
+
+      - name: Guard npm package metadata
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const sections = ['dependencies', 'optionalDependencies'];
+          const offenders = [];
+          for (const section of sections) {
+            for (const [name, spec] of Object.entries(pkg[section] ?? {})) {
+              if (String(spec).startsWith('file:')) offenders.push(`${section}.${name}=${spec}`);
+            }
+          }
+          if (offenders.length) {
+            console.error(`file: dependencies cannot be published:\n${offenders.join('\n')}`);
+            process.exit(1);
+          }
+          console.log('package metadata OK');
+          NODE
+
+      - name: Build and package gates
+        run: |
+          set -euo pipefail
+          npm run prepublishOnly
+          npm run gate:all
+
+      - name: Pack audit
+        run: |
+          set -euo pipefail
+          npm pack --dry-run --json > /tmp/pack.json
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const rawPack = JSON.parse(fs.readFileSync('/tmp/pack.json', 'utf8'));
+          const pack = Array.isArray(rawPack)
+            ? rawPack[0]
+            : rawPack?.files
+              ? rawPack
+              : Object.values(rawPack ?? {})[0];
+          if (!pack?.files) {
+            console.error(`unexpected npm pack --json shape:\n${JSON.stringify(rawPack, null, 2).slice(0, 2000)}`);
+            process.exit(1);
+          }
+          const forbidden = pack.files
+            .map(file => file.path)
+            .filter(path => /(^|\/)(devlog|skills_ref|officecli|node_modules)(\/|$)|\.node$/.test(path));
+          if (forbidden.length) {
+            console.error(`forbidden files in npm pack:\n${forbidden.join('\n')}`);
+            process.exit(1);
+          }
+          if (pack.size > 25_000_000) {
+            console.error(`packed tarball too large: ${pack.size}`);
+            process.exit(1);
+          }
+          console.log(`pack OK: ${pack.filename}, ${pack.files.length} files, ${pack.size} bytes`);
+          NODE
+
+      - name: Check registry package version
+        id: registry
+        if: ${{ steps.release.outputs.skip-publish != 'true' }}
+        run: |
+          set -euo pipefail
+          if npm view "podex@${{ steps.release.outputs.version }}" version >/tmp/npm-version.txt 2>/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::podex@${{ steps.release.outputs.version }} already exists on npm; publish will be skipped."
+            cat /tmp/npm-version.txt
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::podex@${{ steps.release.outputs.version }} is not on npm yet; publish will run."
+          fi
+
+      - name: Publish or dry-run
+        if: ${{ steps.release.outputs.skip-publish != 'true' }}
+        run: |
+          set -euo pipefail
+          if [ "${{ steps.release.outputs.dry-run }}" = "true" ]; then
+            echo "::notice::DRY RUN - npm publish will not write to registry"
+            npm publish --dry-run --tag "${{ steps.release.outputs.tag }}" --access public --provenance
+          elif [ "${{ steps.registry.outputs.exists }}" = "true" ]; then
+            echo "::notice::SKIP - podex@${{ steps.release.outputs.version }} is already published"
+          else
+            npm publish --tag "${{ steps.release.outputs.tag }}" --access public --provenance
+          fi
+
+      - name: Registry smoke
+        if: ${{ steps.release.outputs.skip-publish != 'true' && steps.release.outputs.dry-run != 'true' }}
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 30); do
+            if version="$(npm view "podex@${{ steps.release.outputs.version }}" version 2>/dev/null)"; then
+              test "$version" = "${{ steps.release.outputs.version }}"
+              npm dist-tag ls podex
+              exit 0
+            fi
+            echo "::notice::podex@${{ steps.release.outputs.version }} not visible yet (${attempt}/30)"
+            sleep 10
+          done
+          echo "::error::registry smoke failed"
+          exit 1
+
+      - name: Create GitHub release
+        if: ${{ steps.release.outputs.skip-publish != 'true' && steps.release.outputs.dry-run != 'true' && steps.release.outputs.create-release == 'true' && steps.registry.outputs.exists != 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="v${{ steps.release.outputs.version }}"
+          notes_file="$(mktemp)"
+          previous_tag="$(git tag --sort=-creatordate | grep -E '^v[0-9]' | grep -v -F "$tag" | head -1 || true)"
+          if [ -n "$previous_tag" ]; then
+            previous_label="$previous_tag"
+            commit_count="$(git rev-list "$previous_tag"..HEAD --count)"
+            changelog="$(git log "$previous_tag"..HEAD -n 80 --pretty=format:'- %s' --no-merges)"
+          else
+            previous_label="(first release)"
+            commit_count="$(git rev-list HEAD --count)"
+            changelog="$(git log HEAD -n 80 --pretty=format:'- %s' --no-merges)"
+          fi
+
+          {
+            echo "## Release v${{ steps.release.outputs.version }}"
+            echo
+            echo "**Previous**: $previous_label"
+            echo "**Commits**: $commit_count"
+            echo
+            echo "### Changes"
+            if [ -n "$changelog" ]; then
+              printf '%s\n' "$changelog"
+            else
+              echo "- No commit changes found."
+            fi
+            echo
+            echo "### Install"
+            echo '```sh'
+            echo "npm install -g podex@${{ steps.release.outputs.tag }}"
+            echo "npm install -g podex@${{ steps.release.outputs.version }}"
+            echo '```'
+            echo
+            echo "### Verification"
+            echo "- Published from \`${{ github.ref_name }}\` with npm dist-tag \`${{ steps.release.outputs.tag }}\`."
+            echo "- npm package gates passed in this workflow."
+            echo "- npm registry smoke confirmed \`podex@${{ steps.release.outputs.version }}\`."
+            echo "- npm provenance was requested through GitHub OIDC Trusted Publishing."
+          } > "$notes_file"
+
+          create_args=()
+          edit_args=()
+          if [ "${{ steps.release.outputs.tag }}" = "preview" ]; then
+            create_args+=(--prerelease)
+            edit_args+=(--prerelease)
+            title="v${{ steps.release.outputs.version }} (preview)"
+          else
+            create_args+=(--latest)
+            edit_args+=(--latest)
+            title="v${{ steps.release.outputs.version }}"
+          fi
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release edit "$tag" --target "$GITHUB_SHA" --title "$title" --notes-file "$notes_file" "${edit_args[@]}"
+          else
+            gh release create "$tag" --target "$GITHUB_SHA" --title "$title" --notes-file "$notes_file" "${create_args[@]}"
+          fi
+

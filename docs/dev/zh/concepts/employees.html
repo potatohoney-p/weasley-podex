@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee 系统 — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link active" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="../">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Employee 系统</h1>
+<p class="lead">Boss 代理将任务分派给 CLI employee -- 即其他并行执行工作的 AI 运行时。podex 支持 12 种运行时，并管理 employee 会话、隔离和结果收集。</p>
+
+<h2>工作原理</h2>
+<p>你的主代理（即 "boss"）可以使用 <code>jaw dispatch</code> 命令将特定任务委派给 employee 代理。每个 employee 在独立的临时工作目录中运行，并注入上下文文件。</p>
+<pre><code>jaw dispatch --agent "Frontend" --task "Implement the login page"</code></pre>
+<p>Boss 提示词包含委派规则，引导代理使用 <code>podex dispatch</code> 来执行 employee 工作，同时允许 CLI 原生子代理（Task/Agent 工具）用于内部并行化。</p>
+
+<h2>12 种 CLI 运行时</h2>
+<p>podex 的注册表（<code>src/cli/registry.ts</code>）定义了 12 种顶级运行时。每个 employee 可以分配任意运行时。</p>
+<table>
+<tr><th>运行时</th><th>二进制文件</th><th>默认模型</th><th>默认 Effort</th></tr>
+<tr><td>agy</td><td><code>agy</code></td><td>gemini-3.5-flash</td><td>-</td></tr>
+<tr><td>ai-e</td><td><code>ai-e</code></td><td>claude-opus-4-8</td><td>medium</td></tr>
+<tr><td>claude</td><td><code>claude</code></td><td>claude-opus-4-8</td><td>medium</td></tr>
+<tr><td>claude-e</td><td><code>claude-e</code></td><td>claude-opus-4-8</td><td>medium</td></tr>
+<tr><td>codex</td><td><code>codex</code></td><td>gpt-5.5</td><td>medium</td></tr>
+<tr><td>codex-app</td><td><code>codex</code></td><td>gpt-5.5</td><td>medium</td></tr>
+<tr><td>cursor</td><td><code>cursor-agent</code></td><td>composer-2.5</td><td>medium-fast</td></tr>
+<tr><td>gemini</td><td><code>gemini</code></td><td>gemini-3-flash-preview</td><td>-</td></tr>
+<tr><td>grok</td><td><code>grok</code></td><td>grok-build</td><td>-</td></tr>
+<tr><td>opencode</td><td><code>opencode</code></td><td>opencode-go/kimi-k2.6</td><td>-</td></tr>
+<tr><td>copilot</td><td><code>copilot</code></td><td>claude-sonnet-4.6</td><td>high</td></tr>
+</table>
+
+<h2>Employee 与子代理的区别</h2>
+<div class="callout callout-warn">Employee 和 CLI 子代理用途不同，请勿混淆。</div>
+<table>
+<tr><th></th><th>Employee (jaw dispatch)</th><th>CLI 子代理 (Task/Agent 工具)</th></tr>
+<tr><td><strong>范围</strong></td><td>跨 CLI 委派</td><td>同一 CLI 内部的并行化</td></tr>
+<tr><td><strong>隔离性</strong></td><td>独立的临时目录，注入 AGENTS.md</td><td>同一进程/会话</td></tr>
+<tr><td><strong>认证</strong></td><td>需要 Boss token（employee 不能再次分派）</td><td>无需额外认证</td></tr>
+<tr><td><strong>深度</strong></td><td>仅限 1 级（employee 不能向其他 employee 分派）</td><td>Employee 可自由使用子代理</td></tr>
+</table>
+
+<h2>Dispatch 命令</h2>
+<pre><code># From the boss prompt:
+podex dispatch --agent "Backend" --task "Add rate limiting to /api/upload"
+
+# From the CLI:
+jaw dispatch --agent "Frontend" --task "Fix responsive layout" --port 3457</code></pre>
+<p>Dispatch 端点（<code>POST /api/orchestrate/dispatch</code>）需要 boss 范围的 <code>x-jaw-boss-token</code>。该 token 会从 employee 启动环境中移除，防止 employee 进一步分派。</p>
+
+<h2>Employee 提示词</h2>
+<p>Employee 提示词由 <code>getEmployeePromptV2()</code> 构建，包含以下内容：</p>
+<ol>
+<li>基础 <code>employee.md</code> 模板</li>
+<li>静态系统补丁和声明式技能注入</li>
+<li>通用 <code>dev/SKILL.md</code></li>
+<li>角色特定技能（例如 <code>dev-frontend</code>、<code>dev-backend</code>）</li>
+<li>阶段特定技能（例如审计阶段的 <code>dev-code-reviewer</code>、检查阶段的 <code>dev-testing</code>）</li>
+<li>带有阶段特定规则的 Worker 上下文</li>
+<li>委派规则（禁止再次分派，允许使用子代理）</li>
+</ol>
+
+<h2>管理 Employee</h2>
+<pre><code># List employees
+jaw employee help
+
+# Reset to defaults
+jaw employee reset
+
+# Via slash command
+/employee reset</code></pre>
+<p>Web UI 在侧边栏设置面板中提供完整的 Employee CRUD 功能。你可以设置每个 employee 的名称、CLI 运行时、模型和角色。</p>
+
+<h2>默认 Employee</h2>
+<p>首次运行时，podex 会预设一组默认 employee（Frontend、Backend、Documentation 等）。<code>/employee reset</code> 命令可重新恢复这些默认设置。</p>
+
+<div class="page-nav">
+<a class="prev" href="architecture.html">Architecture</a>
+<a class="next" href="pabcd.html">PABCD</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

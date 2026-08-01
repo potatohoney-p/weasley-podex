@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF &mdash; podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+.badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.badge-category { background: rgba(99, 102, 241, 0.15); color: var(--accent); }
+.quick-ref { margin: 24px 0; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 160px; }
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-ko { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+.dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.dep-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.dep-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.dep-card code { font-size: 13px; }
+.dep-card .dep-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+@media (max-width: 768px) {
+  .dep-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link active" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>PDF</h1>
+<p class="lead">PDF read, create, edit, review + vision-based extraction. This skill handles the full lifecycle of PDF documents &mdash; from generating new files with <code>reportlab</code> to extracting text with <code>pdfplumber</code>, rendering pages to images with Poppler, and performing visual quality verification after every edit.</p>
+
+<p>
+  <span class="badge badge-ref">Reference</span>
+  <span class="badge badge-category">AI &amp; Media</span>
+</p>
+
+<div class="callout callout-info">
+  <strong>Reference skill:</strong> <code>pdf</code> is not active by default. Install it with <code>jaw skill install pdf</code> or say "PDF &#49828;&#53420; &#49444;&#52824;&#54644;&#51468;" in chat. Once active, it is injected into the system prompt and the agent follows its workflow automatically whenever PDF tasks are detected.
+</div>
+
+<h2>Quick Reference</h2>
+<table class="quick-ref">
+<tr><td>Skill name</td><td><code>pdf</code></td></tr>
+<tr><td>Category</td><td>AI &amp; Media</td></tr>
+<tr><td>Default active</td><td>No &mdash; requires <code>jaw skill install pdf</code></td></tr>
+<tr><td>SKILL.md path</td><td><code>~/.podex/skills/pdf/SKILL.md</code> (active) or <code>~/.podex/skills_ref/pdf/SKILL.md</code> (ref)</td></tr>
+<tr><td>Python packages</td><td><code>reportlab</code>, <code>pdfplumber</code>, <code>pypdf</code></td></tr>
+<tr><td>System tools</td><td><code>pdftoppm</code> (from Poppler)</td></tr>
+<tr><td>Temp directory</td><td><code>tmp/pdfs/</code></td></tr>
+<tr><td>Output directory</td><td><code>output/pdf/</code></td></tr>
+<tr><td>Related skills</td><td><code>pdf-vision</code>, <code>docx</code>, <code>pptx</code>, <code>xlsx</code></td></tr>
+</table>
+
+<h2>Workflow</h2>
+<p>When the <code>pdf</code> skill is active, the agent follows a strict four-step workflow for every PDF task:</p>
+
+<table>
+<thead>
+<tr><th>Step</th><th>Action</th><th>Tools Used</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>1. Render</strong></td><td>Render PDF pages to PNG images for visual review</td><td><code>pdftoppm</code> (Poppler). Falls back to asking the user if Poppler is unavailable.</td></tr>
+<tr><td><strong>2. Generate</strong></td><td>Create new PDFs or edit existing ones</td><td><code>reportlab</code> for creation; <code>pypdf</code> for merging/splitting; <code>nano-pdf</code> for natural-language page edits</td></tr>
+<tr><td><strong>3. Extract</strong></td><td>Pull text and data from PDF files</td><td><code>pdfplumber</code> or <code>pypdf</code> for text extraction (note: layout fidelity is unreliable)</td></tr>
+<tr><td><strong>4. Verify</strong></td><td>Re-render and visually confirm quality after each meaningful update</td><td><code>pdftoppm</code> + visual inspection of alignment, spacing, and legibility</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>Verify-after-edit loop:</strong> The skill mandates re-rendering after every meaningful change. The agent will not deliver a PDF without first confirming zero visual defects in the latest PNG render. This is the most important rule in the skill.
+</div>
+
+<h2>Dependencies</h2>
+<p>The skill auto-detects missing dependencies and will attempt to install them. If installation is blocked (permissions, network), the agent tells you exactly what is missing and how to install it manually.</p>
+
+<div class="dep-grid">
+  <div class="dep-card">
+    <strong>reportlab</strong>
+    <code>uv pip install reportlab</code>
+    <div class="dep-desc">PDF generation: layout, text, tables, images, and vector graphics</div>
+  </div>
+  <div class="dep-card">
+    <strong>pdfplumber</strong>
+    <code>uv pip install pdfplumber</code>
+    <div class="dep-desc">Text extraction with positional data, table detection, and page geometry</div>
+  </div>
+  <div class="dep-card">
+    <strong>pypdf</strong>
+    <code>uv pip install pypdf</code>
+    <div class="dep-desc">PDF manipulation: merge, split, rotate, encrypt, and metadata editing</div>
+  </div>
+  <div class="dep-card">
+    <strong>Poppler (pdftoppm)</strong>
+    <code>brew install poppler</code>
+    <div class="dep-desc">Render PDF pages to high-quality PNG images for visual verification</div>
+  </div>
+</div>
+
+<p>The skill prefers <code>uv</code> for Python dependency management. If <code>uv</code> is unavailable, it falls back to <code>python3 -m pip install</code>.</p>
+
+<h3>Full install commands</h3>
+<pre><code># Python packages (preferred: uv)
+uv pip install reportlab pdfplumber pypdf
+
+# Python packages (fallback: pip)
+python3 -m pip install reportlab pdfplumber pypdf
+
+# System tools: macOS (Homebrew)
+brew install poppler
+
+# System tools: Ubuntu/Debian
+sudo apt-get install -y poppler-utils</code></pre>
+
+<h2>Rendering Command</h2>
+<p>The core rendering command converts PDF pages to PNG images:</p>
+<pre><code>pdftoppm -png $INPUT_PDF $OUTPUT_PREFIX</code></pre>
+<p>This produces files like <code>$OUTPUT_PREFIX-1.png</code>, <code>$OUTPUT_PREFIX-2.png</code>, etc. &mdash; one PNG per page. The agent reads these images to verify layout quality before delivering the final PDF.</p>
+
+<h2>File Conventions</h2>
+
+<table>
+<thead>
+<tr><th>Directory</th><th>Purpose</th><th>Lifecycle</th></tr>
+</thead>
+<tbody>
+<tr><td><code>tmp/pdfs/</code></td><td>Intermediate renders, draft PDFs, PNG previews</td><td>Deleted after task completion</td></tr>
+<tr><td><code>output/pdf/</code></td><td>Final deliverable PDF files</td><td>Persisted; stable descriptive filenames</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>Filename stability:</strong> The skill keeps filenames stable and descriptive across edits. Avoid random suffixes or timestamps in final output names. Use clear names like <code>quarterly-report-2026-Q1.pdf</code> or <code>invoice-0042.pdf</code>.
+</div>
+
+<h2>Quality Rules</h2>
+<p>The skill enforces strict visual and typographic standards. Every PDF produced must pass these checks:</p>
+
+<table>
+<thead>
+<tr><th>Rule</th><th>Detail</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Typography</strong></td><td>Consistent fonts, sizes, and weights across the document. No mixed typefaces unless intentional.</td></tr>
+<tr><td><strong>Spacing &amp; margins</strong></td><td>Uniform margins, line spacing, and section gaps. No cramped or overflowing content.</td></tr>
+<tr><td><strong>Section hierarchy</strong></td><td>Clear visual distinction between headings, subheadings, and body text.</td></tr>
+<tr><td><strong>No rendering defects</strong></td><td>Zero clipped text, overlapping elements, broken tables, black squares, or unreadable glyphs.</td></tr>
+<tr><td><strong>Charts &amp; tables</strong></td><td>Sharp rendering, correct alignment, clearly labeled axes and headers.</td></tr>
+<tr><td><strong>Images</strong></td><td>No blurring, correct aspect ratio, properly positioned within the layout.</td></tr>
+<tr><td><strong>ASCII hyphens only</strong></td><td>Use standard ASCII hyphens (<code>-</code>). Unicode dashes (e.g., U+2011 non-breaking hyphen) cause rendering issues in some PDF viewers.</td></tr>
+<tr><td><strong>Citations &amp; references</strong></td><td>Human-readable text only. No tool tokens, placeholder markers, or raw IDs.</td></tr>
+</tbody>
+</table>
+
+<h2>Final Delivery Checklist</h2>
+<p>Before marking a PDF task as complete, the agent runs through this checklist:</p>
+<ol>
+<li>Verify the <strong>latest PNG render</strong> shows zero visual defects.</li>
+<li>Confirm <strong>headers and footers</strong> appear correctly on every page.</li>
+<li>Verify <strong>page numbering</strong> is sequential and correctly positioned.</li>
+<li>Check <strong>section transitions</strong> &mdash; no orphaned headings or widowed paragraphs.</li>
+<li><strong>Clean up</strong> intermediate files in <code>tmp/pdfs/</code> after user approval.</li>
+</ol>
+
+<h2>DOCX-to-PDF Conversion</h2>
+<p>The skill also covers converting Word documents to PDF using LibreOffice:</p>
+<pre><code># Convert DOCX to PDF via soffice (LibreOffice headless)
+soffice --headless --convert-to pdf input.docx --outdir output/pdf/</code></pre>
+<p>This is useful when the source material is a Word document and the final deliverable must be PDF. The agent will still run the full verify-after-render loop on the converted output.</p>
+
+<h2>Capabilities Summary</h2>
+<table>
+<thead>
+<tr><th>Capability</th><th>Tool</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>Create new PDFs</td><td><code>reportlab</code></td><td>Full control over layout, fonts, tables, images, and vector graphics</td></tr>
+<tr><td>Read / extract text</td><td><code>pdfplumber</code>, <code>pypdf</code></td><td>Text extraction; layout fidelity is approximate, not pixel-perfect</td></tr>
+<tr><td>Edit existing PDFs</td><td><code>nano-pdf</code></td><td>Natural-language page edits on existing PDF content</td></tr>
+<tr><td>Merge / split</td><td><code>pypdf</code></td><td>Combine multiple PDFs or extract page ranges</td></tr>
+<tr><td>Render to image</td><td><code>pdftoppm</code></td><td>High-quality PNG renders for visual QA</td></tr>
+<tr><td>DOCX conversion</td><td><code>soffice</code></td><td>LibreOffice headless Word-to-PDF conversion</td></tr>
+<tr><td>Visual QA</td><td>Agent vision</td><td>Agent reads rendered PNGs to verify quality</td></tr>
+</tbody>
+</table>
+
+<h2>"~&#54644;&#51468;" Usage Examples</h2>
+<p>These are real-world examples of how to invoke PDF tasks in natural language. Korean and English both work.</p>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; &#48372;&#44256;&#49436; PDF&#47196; &#47564;&#46308;&#50612;&#51468; &mdash; &#54364;&#51648;, &#47785;&#52264;, &#48376;&#47928; 3&#51109;"</div>
+  <div class="example-desc">Creates a new PDF document with a cover page, table of contents, and 3 pages of body content using reportlab. The agent will render each page to PNG and verify layout before delivery.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; PDF&#50640;&#49436; &#53581;&#49828;&#53944; &#52628;&#52636;&#54644;&#51468; &mdash; &#54364; &#45936;&#51060;&#53552;&#46020; &#54252;&#54632;&#54644;&#49436;"</div>
+  <div class="example-desc">Extracts all text and table data from the given PDF using pdfplumber. Returns structured text with table rows preserved. Warns if layout fidelity is unreliable for the specific document.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; &#46160; PDF &#54633;&#52432;&#51468; &mdash; report-part1.pdf&#47004;&#47161; report-part2.pdf"</div>
+  <div class="example-desc">Merges two PDF files into a single document using pypdf. Preserves page numbering and bookmarks. Output goes to <code>output/pdf/</code>.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; &#44228;&#50557;&#49436; PDF 2&#54168;&#51060;&#51648; &#45216;&#51676; &#49688;&#51221;&#54644;&#51468;"</div>
+  <div class="example-desc">Edits page 2 of an existing contract PDF using nano-pdf (natural-language editing). After the edit, the agent re-renders the page and visually verifies that the date change is correct and nothing else shifted.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"Word &#54028;&#51068; PDF&#47196; &#48320;&#54872;&#54644;&#51468; &mdash; proposal.docx"</div>
+  <div class="example-desc">Converts a DOCX file to PDF using LibreOffice headless mode (<code>soffice --headless --convert-to pdf</code>). The agent then renders the output to PNG and checks for any formatting issues introduced during conversion.</div>
+</div>
+
+<h2>Comparison with pdf-vision</h2>
+<p>podex ships two PDF-related skills. They are complementary, not redundant:</p>
+
+<table>
+<thead>
+<tr><th></th><th><code>pdf</code></th><th><code>pdf-vision</code></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Focus</strong></td><td>Create, edit, extract, and merge PDFs</td><td>Vision-based analysis of existing PDFs</td></tr>
+<tr><td><strong>Best for</strong></td><td>Generating reports, editing documents, extracting text</td><td>OCR on scanned docs, layout understanding, table extraction from images</td></tr>
+<tr><td><strong>Tools</strong></td><td>reportlab, pdfplumber, pypdf, pdftoppm</td><td>Vision model, OCR pipeline</td></tr>
+<tr><td><strong>When to use both</strong></td><td colspan="2">When you need to extract data from a scanned PDF (<code>pdf-vision</code>) and then generate a new clean PDF from that data (<code>pdf</code>).</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>Tip:</strong> Install both with <code>jaw skill install pdf pdf-vision</code> or say "PDF &#49828;&#53420;&#51060;&#47049; pdf-vision &#46168; &#45796; &#49444;&#52824;&#54644;&#51468;". They work together seamlessly when both are active.
+</div>
+
+<h2>Troubleshooting</h2>
+
+<h3>Poppler not found</h3>
+<p>If the agent reports that <code>pdftoppm</code> is not available, install Poppler:</p>
+<pre><code># macOS
+brew install poppler
+
+# Ubuntu/Debian
+sudo apt-get install -y poppler-utils
+
+# Verify
+pdftoppm -v</code></pre>
+
+<h3>Unicode dash rendering issues</h3>
+<p>If you see garbled or missing characters in hyphens and dashes, the source data may contain Unicode dashes (U+2011, U+2013, U+2014). The skill enforces ASCII hyphens (<code>-</code>) to avoid viewer compatibility issues. The agent will auto-replace these during generation.</p>
+
+<h3>Layout fidelity warnings</h3>
+<p><code>pdfplumber</code> and <code>pypdf</code> extract text based on character positions, not visual layout. Complex multi-column layouts, overlapping text boxes, and rotated text may not extract correctly. For those cases, consider using <code>pdf-vision</code> instead, which uses visual analysis rather than text-stream parsing.</p>
+
+<h3>LibreOffice not installed</h3>
+<p>DOCX-to-PDF conversion requires LibreOffice. If <code>soffice</code> is not found:</p>
+<pre><code># macOS
+brew install --cask libreoffice
+
+# Ubuntu/Debian
+sudo apt-get install -y libreoffice</code></pre>
+
+<h2>Installation</h2>
+<pre><code># CLI
+jaw skill install pdf
+
+# In-chat (Korean)
+"PDF &#49828;&#53420; &#49444;&#52824;&#54644;&#51468;"
+
+# In-chat (English)
+"Install the PDF skill"
+
+# Verify installation
+jaw skill info pdf</code></pre>
+
+<pre><code># Expected output of jaw skill info pdf:
+#   Name:     pdf
+#   Status:   active
+#   Category: AI &amp; Media
+#   Path:     ~/.podex/skills/pdf/SKILL.md
+#   Description: PDF creation, reading, editing, merging, and text extraction</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="../ai-media.html">AI Media Skills</a>
+<a class="next" href="pdf-vision.html">PDF Vision</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

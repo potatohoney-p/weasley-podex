@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screen Capture &mdash; podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+.badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+.badge-category { background: rgba(99, 102, 241, 0.15); color: var(--accent); }
+.quick-ref { margin: 24px 0; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 160px; }
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-ko { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+.dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.dep-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.dep-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.dep-card code { font-size: 13px; }
+.dep-card .dep-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+.flag-table td:first-child { font-family: var(--font-mono, monospace); white-space: nowrap; }
+@media (max-width: 768px) {
+  .dep-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link active" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Screen Capture</h1>
+<p class="lead">macOS 스크린샷, 웹캠, 화면 녹화 &mdash; 전체 화면, 영역, 윈도우, 클립보드, 다중 디스플레이, 비디오, 웹캠 캡처를 네이티브 macOS 도구로 수행합니다.</p>
+
+<p>
+  <span class="badge badge-active">Default Active</span>
+  <span class="badge badge-category">Utility</span>
+</p>
+
+<div class="callout callout-info">
+  <strong>내장 스킬:</strong> <code>screen-capture</code>는 모든 podex 세션에서 기본적으로 활성화되어 있습니다. 별도 설치가 필요 없습니다. 스크린샷과 비디오에는 macOS 네이티브 <code>screencapture</code>를 사용하며, 웹캠 캡처에는 선택적으로 <code>imagesnap</code>을 사용합니다. 브라우저 전용 스크린샷은 CDP를 통해 캡처하는 <code>podex browser screenshot</code>을 사용하는 것이 좋습니다.
+</div>
+
+<h2>빠른 참조</h2>
+<table class="quick-ref">
+<tr><td>스킬 이름</td><td><code>screen-capture</code></td></tr>
+<tr><td>카테고리</td><td>Utility</td></tr>
+<tr><td>기본 활성화</td><td>예 &mdash; 내장되어 있으며 항상 사용 가능</td></tr>
+<tr><td>SKILL.md 경로</td><td><code>~/.podex/skills/screen-capture/SKILL.md</code></td></tr>
+<tr><td>주요 도구</td><td><code>screencapture</code> (macOS 내장)</td></tr>
+<tr><td>웹캠 도구</td><td><code>imagesnap</code> (선택 사항, Homebrew를 통해 설치)</td></tr>
+<tr><td>플랫폼</td><td>macOS 전용</td></tr>
+<tr><td>출력 형식</td><td>PNG (기본값), JPEG, PDF, TIFF, MOV (비디오)</td></tr>
+<tr><td>필요 권한</td><td>시스템 설정 &gt; 개인정보 보호 &gt; 화면 기록</td></tr>
+<tr><td>관련 스킬</td><td><code>vision-click</code>, <code>browser</code>, <code>desktop-control</code></td></tr>
+</table>
+
+<h2>빠른 시작</h2>
+<p>바로 시작할 수 있는 세 가지 명령어입니다:</p>
+<pre><code># Full screen capture (silent, no shutter sound)
+screencapture -x ~/screenshot.png
+
+# Interactive region selection
+screencapture -i ~/selection.png
+
+# Capture directly to clipboard
+screencapture -c</code></pre>
+
+<h2>명령어</h2>
+
+<h3>전체 화면</h3>
+<p>전체 디스플레이를 캡처합니다. 셔터 소리를 끄려면 <code>-x</code> 플래그를 사용하고, 카운트다운 지연을 설정하려면 <code>-T</code>를 사용합니다.</p>
+<pre><code># Silent full screen
+screencapture -x ~/screenshot.png
+
+# Full screen with shutter sound
+screencapture ~/screenshot.png
+
+# 3-second delay before capture
+screencapture -T 3 ~/screenshot.png</code></pre>
+
+<h3>영역 및 윈도우</h3>
+<p>대화형으로 특정 영역을 선택하거나 정확한 좌표로 지정합니다.</p>
+<pre><code># Interactive: drag to select a region
+screencapture -i ~/region.png
+
+# Interactive: click to select a window
+screencapture -iW ~/window.png
+
+# Specific coordinates (x, y, width, height)
+screencapture -R 0,0,1280,720 ~/region.png</code></pre>
+
+<h3>특정 애플리케이션 윈도우</h3>
+<p>AppleScript를 통해 윈도우 ID를 확인하여 특정 애플리케이션 윈도우를 캡처합니다. 사용자 상호작용 없이 특정 앱을 캡처해야 하는 자동화 파이프라인에 유용합니다.</p>
+<pre><code># Capture Google Chrome window
+screencapture -l$(osascript -e 'tell app "Google Chrome" to id of window 1') ~/chrome.png
+
+# Capture Safari window
+screencapture -l$(osascript -e 'tell app "Safari" to id of window 1') ~/safari.png
+
+# Capture the frontmost window of whatever app is active
+screencapture -l$(osascript -e 'tell app "System Events" to id of first window of (first process whose frontmost is true)') ~/front.png</code></pre>
+
+<div class="callout callout-info">
+  <strong>윈도우 ID 확인:</strong> <code>-l</code> 플래그는 CGWindowID를 받습니다. AppleScript 표현식 <code>tell app "AppName" to id of window 1</code>이 올바른 ID를 반환합니다. 앱에 여러 윈도우가 있는 경우 <code>window 1</code>을 <code>window 2</code> 등으로 변경하면 됩니다.
+</div>
+
+<h3>클립보드</h3>
+<p>파일 대신 시스템 클립보드로 캡처합니다. 채팅이나 다른 앱에 빠르게 붙여넣기할 때 유용합니다.</p>
+<pre><code># Full screen to clipboard
+screencapture -c
+
+# Region select to clipboard
+screencapture -ic</code></pre>
+
+<h3>다중 디스플레이</h3>
+<p>디스플레이 번호를 지정하거나 모든 디스플레이를 한 번에 캡처하여 멀티 모니터 환경을 처리합니다.</p>
+<pre><code># One file per display (auto-creates screen1.png, screen2.png, ...)
+screencapture ~/screen1.png ~/screen2.png
+
+# Main display only
+screencapture -D 1 ~/main.png
+
+# Secondary display
+screencapture -D 2 ~/secondary.png</code></pre>
+
+<h3>비디오 녹화</h3>
+<p>화면을 MOV 비디오로 녹화합니다. 시간 제한 녹화에는 <code>-V</code>와 함께 초 단위 시간을 지정하고, 수동 중지 녹화에는 <code>-v</code>를 사용합니다.</p>
+<pre><code># Record screen video (stop with Ctrl+C)
+screencapture -v ~/recording.mov
+
+# Record exactly 10 seconds
+screencapture -V 10 ~/recording.mov</code></pre>
+
+<h2>웹캠 캡처</h2>
+<p>웹캠 캡처에는 선택적 Homebrew 의존성인 <code>imagesnap</code>이 필요합니다. FaceTime 카메라 또는 연결된 USB 카메라에서 정지 이미지를 캡처합니다.</p>
+
+<pre><code># Install imagesnap
+brew install imagesnap
+
+# Take a photo from the default camera
+imagesnap ~/camera.png
+
+# 2-second warmup for better image quality (recommended)
+imagesnap -w 2 ~/camera.png
+
+# Use a specific camera by name
+imagesnap -d "FaceTime HD Camera" ~/camera.png
+
+# List all available cameras
+imagesnap -l</code></pre>
+
+<div class="callout callout-info">
+  <strong>워밍업 팁:</strong> 웹캠은 노출과 화이트 밸런스를 조정하기 위해 짧은 워밍업 시간이 필요합니다. 프로덕션 품질의 캡처를 위해 항상 <code>-w 2</code>(또는 그 이상)를 사용하세요. 워밍업 없이는 첫 프레임이 어둡거나 색상이 왜곡되는 경우가 많습니다.
+</div>
+
+<h2>출력 형식</h2>
+<p>이미지 형식을 지정하려면 <code>-t</code> 플래그를 사용합니다. 기본값은 PNG입니다.</p>
+<pre><code># PNG (default, lossless)
+screencapture -t png ~/screenshot.png
+
+# JPEG (smaller file size, lossy)
+screencapture -t jpg ~/screenshot.jpg
+
+# PDF (vector-friendly, useful for documents)
+screencapture -t pdf ~/screenshot.pdf
+
+# TIFF (high quality, large file size)
+screencapture -t tiff ~/screenshot.tiff</code></pre>
+
+<h2>플래그 참조</h2>
+<p>이 스킬에서 사용하는 모든 <code>screencapture</code> 플래그의 전체 참조입니다.</p>
+<table class="flag-table">
+<thead>
+<tr><th>플래그</th><th>설명</th><th>예시</th></tr>
+</thead>
+<tbody>
+<tr><td><code>-x</code></td><td>무음 모드 (셔터 소리 끔)</td><td><code>screencapture -x out.png</code></td></tr>
+<tr><td><code>-i</code></td><td>대화형 선택 모드 (영역 드래그 또는 Space 키로 윈도우 선택)</td><td><code>screencapture -i out.png</code></td></tr>
+<tr><td><code>-c</code></td><td>파일 대신 클립보드로 캡처 복사</td><td><code>screencapture -c</code></td></tr>
+<tr><td><code>-R x,y,w,h</code></td><td>좌표로 특정 사각형 영역 캡처</td><td><code>screencapture -R 0,0,1280,720 out.png</code></td></tr>
+<tr><td><code>-T seconds</code></td><td>캡처 전 N초 지연</td><td><code>screencapture -T 3 out.png</code></td></tr>
+<tr><td><code>-t format</code></td><td>출력 형식: png, jpg, pdf, 또는 tiff</td><td><code>screencapture -t jpg out.jpg</code></td></tr>
+<tr><td><code>-l windowID</code></td><td>CGWindowID로 특정 윈도우 캡처</td><td><code>screencapture -l12345 out.png</code></td></tr>
+<tr><td><code>-D displayNum</code></td><td>특정 디스플레이 캡처 (1 = 메인)</td><td><code>screencapture -D 2 out.png</code></td></tr>
+<tr><td><code>-v</code></td><td>화면 비디오 녹화 (MOV)</td><td><code>screencapture -v out.mov</code></td></tr>
+<tr><td><code>-V seconds</code></td><td>정확히 N초 동안 비디오 녹화</td><td><code>screencapture -V 10 out.mov</code></td></tr>
+<tr><td><code>-W</code></td><td>윈도우 선택 모드로 시작 (<code>-i</code>와 함께 사용)</td><td><code>screencapture -iW out.png</code></td></tr>
+</tbody>
+</table>
+
+<h2>주요 워크플로우</h2>
+
+<h3>특정 앱 상태 캡처</h3>
+<p>AppleScript로 애플리케이션을 포그라운드로 가져온 후, 렌더링을 기다린 다음 캡처합니다.</p>
+<pre><code># Activate Finder, wait, then capture
+osascript -e 'tell app "Finder" to activate'
+sleep 0.5
+screencapture -x ~/finder.png</code></pre>
+
+<h3>캡처 및 분석</h3>
+<p>스크린샷을 찍고 즉시 에이전트의 비전 모델에 전달하여 분석합니다. 이것은 <code>vision-click</code>과 <code>desktop-control</code>에서 사용하는 패턴입니다.</p>
+<pre><code># In a podex session, just say:
+"화면 캡처해서 뭐가 보이는지 설명해줘"
+
+# The agent runs:
+screencapture -x /tmp/screen.png
+# Then reads the image and describes its contents</code></pre>
+
+<h3>타이머 캡처로 UI 상태 기록</h3>
+<p>캡처가 실행되기 전에 특정 UI 상태(예: 드롭다운 열기, 툴팁 위에 마우스 올리기)를 설정할 시간을 확보하기 위해 지연 플래그를 사용합니다.</p>
+<pre><code># 5-second delay: enough time to open a menu
+screencapture -T 5 -x ~/menu-state.png</code></pre>
+
+<h3>다중 디스플레이 문서화</h3>
+<p>작업 환경 문서화나 버그 리포트를 위해 모든 모니터를 한 번에 캡처합니다.</p>
+<pre><code># Captures one PNG per connected display
+screencapture ~/display-main.png ~/display-secondary.png</code></pre>
+
+<h2>의존성</h2>
+<p>핵심 <code>screencapture</code> 명령어는 macOS에 내장되어 있어 별도 설치가 필요 없습니다. 웹캠 캡처에는 선택적 Homebrew 패키지 하나가 필요합니다.</p>
+
+<div class="dep-grid">
+  <div class="dep-card">
+    <strong>screencapture</strong>
+    <code>built-in (macOS)</code>
+    <div class="dep-desc">전체 화면, 영역, 윈도우, 클립보드, 다중 디스플레이, 비디오 캡처. 설치 불필요.</div>
+  </div>
+  <div class="dep-card">
+    <strong>imagesnap</strong>
+    <code>brew install imagesnap</code>
+    <div class="dep-desc">선택 사항. FaceTime 또는 USB 카메라에서 웹캠 정지 이미지 캡처. 카메라 관련 작업에만 필요.</div>
+  </div>
+</div>
+
+<h3>설치 명령어</h3>
+<pre><code># Webcam capture (optional)
+brew install imagesnap
+
+# Verify installation
+imagesnap -l    # Lists available cameras
+which screencapture    # Should print /usr/sbin/screencapture</code></pre>
+
+<h2>규칙 및 동작</h2>
+<p><code>screen-capture</code> 스킬이 활성화되면 에이전트는 다음 규칙을 따릅니다:</p>
+
+<table>
+<thead>
+<tr><th>규칙</th><th>상세 내용</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>기본 캡처 방법</strong></td><td>도구별 캡처(Figma, Playwright, CDP)를 사용할 수 없을 때 <code>screencapture</code>를 기본으로 사용합니다.</td></tr>
+<tr><td><strong>브라우저 스크린샷</strong></td><td>웹 페이지에는 <code>podex browser screenshot</code>을 우선 사용합니다 (Chrome DevTools Protocol을 통해 픽셀 단위로 정확한 캡처).</td></tr>
+<tr><td><strong>무음 모드</strong></td><td>프로그래밍 방식의 캡처에서는 셔터 소리를 끄기 위해 항상 <code>-x</code> 플래그를 사용합니다.</td></tr>
+<tr><td><strong>웹캠 워밍업</strong></td><td>더 나은 이미지 품질을 위해 <code>imagesnap</code>에서 항상 <code>-w 2</code> 이상을 사용합니다.</td></tr>
+<tr><td><strong>개인정보 보호 권한</strong></td><td>화면 기록 권한이 필요합니다 (시스템 설정 &gt; 개인정보 보호 &gt; 화면 기록). 권한이 없으면 에이전트가 경고합니다.</td></tr>
+<tr><td><strong>임시 파일 정리</strong></td><td>분석용으로 촬영된 스크린샷(명시적으로 저장하지 않은 것)은 사용 후 정리해야 합니다.</td></tr>
+</tbody>
+</table>
+
+<h2>"~해줘" 사용 예시</h2>
+<p>자연어로 화면 캡처 작업을 요청하는 실제 사용 예시입니다. 한국어와 영어 모두 사용할 수 있습니다.</p>
+
+<div class="example-card">
+  <div class="example-ko">"지금 화면 스크린샷 찍어줘"</div>
+  <div class="example-desc"><code>screencapture -x</code>로 전체 화면을 무음으로 캡처하고 저장합니다. 에이전트가 결과 이미지를 읽어 성공적으로 캡처되었는지 확인합니다. 가장 간단하고 흔한 사용법입니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"크롬 창 캡처해서 로그인 페이지 제대로 나오는지 확인해줘"</div>
+  <div class="example-desc">AppleScript를 통해 Chrome의 윈도우 ID를 확인하고, <code>screencapture -l</code>로 해당 윈도우를 캡처한 다음, 비전 모델로 이미지를 분석하여 로그인 페이지가 올바르게 렌더링되는지 검증합니다. 캡처 + 시각적 QA를 결합합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"웹캠 사진 찍어줘 &mdash; 얼굴 인식용"</div>
+  <div class="example-desc"><code>imagesnap -w 2</code>를 사용하여 적절한 워밍업 시간으로 웹캠 사진을 캡처합니다. 결과 이미지는 얼굴 감지나 신원 확인 워크플로우를 위해 다른 스킬(예: 비전 분석)에 전달할 수 있습니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"화면 녹화 10초만 해줘 &mdash; 버그 재현 과정 기록용"</div>
+  <div class="example-desc"><code>screencapture -V 10 ~/recording.mov</code>로 10초 화면 비디오를 녹화합니다. 버그 재현 과정 문서화, UI 애니메이션 리뷰, 빠른 데모 클립 생성에 유용합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"두번째 모니터 스크린샷 찍어서 클립보드에 복사해줘"</div>
+  <div class="example-desc"><code>screencapture -D 2 -c</code>로 보조 디스플레이를 대상으로 하여 캡처를 클립보드로 직접 전송합니다. 채팅, 문서, 이미지 편집기에 바로 붙여넣기할 수 있습니다.</div>
+</div>
+
+<h2>관련 스킬 비교</h2>
+<p>podex에는 시각적 캡처와 관련된 여러 스킬이 있습니다. 작업에 맞는 올바른 도구를 선택하세요:</p>
+
+<table>
+<thead>
+<tr><th></th><th><code>screen-capture</code></th><th><code>browser</code></th><th><code>desktop-control</code></th><th><code>vision-click</code></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>주요 기능</strong></td><td>네이티브 macOS 스크린샷 및 녹화</td><td>CDP 기반 브라우저 자동화</td><td>데스크톱 + 브라우저 통합 자동화</td><td>비전 기반 클릭 대상 지정</td></tr>
+<tr><td><strong>적합한 용도</strong></td><td>빠른 캡처, 다중 디스플레이, 비디오, 웹캠</td><td>웹 페이지 스크린샷, DOM 상호작용</td><td>크로스 앱 워크플로우, 하이브리드 대상</td><td>시각적 인식으로 UI 요소 클릭</td></tr>
+<tr><td><strong>캡처 방법</strong></td><td><code>screencapture</code> CLI</td><td>Chrome DevTools Protocol</td><td>CDP + Computer Use</td><td>스크린샷 + 좌표 매핑</td></tr>
+<tr><td><strong>브라우저 필요 여부</strong></td><td>아니오</td><td>예 (podex server)</td><td>대상에 따라 다름</td><td>아니오</td></tr>
+<tr><td><strong>우선 사용 시기</strong></td><td>브라우저 불필요, 시스템 수준 캡처, 비디오, 웹캠</td><td>웹 페이지 (픽셀 단위 정확도)</td><td>복잡한 다중 앱 자동화</td><td>화면 상의 요소 클릭</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>경험 법칙:</strong> 브라우저 외부의 모든 것이나 비디오/웹캠이 필요할 때는 <code>screen-capture</code>를 사용하세요. 웹 페이지에는 <code>browser screenshot</code>을 사용하세요. 데스크톱 앱을 캡처하면서 동시에 상호작용해야 할 때는 <code>desktop-control</code>을 사용하세요.
+</div>
+
+<h2>문제 해결</h2>
+
+<h3>화면 기록 권한 거부</h3>
+<p><code>screencapture</code>가 빈 화면이나 완전히 검은 이미지를 생성하는 경우, 터미널 앱(Terminal.app, iTerm2, 또는 podex Electron 앱)에 화면 기록 권한이 없을 가능성이 높습니다.</p>
+<pre><code># Fix: Grant permission in System Settings
+# System Settings > Privacy & Security > Screen Recording
+# Enable your terminal application
+# Restart the terminal after granting permission</code></pre>
+
+<h3>imagesnap을 찾을 수 없음</h3>
+<p><code>imagesnap</code>이 설치되어 있지 않으면 웹캠 캡처 명령이 실패합니다. 이것은 선택적 의존성입니다.</p>
+<pre><code># Install via Homebrew
+brew install imagesnap
+
+# Verify
+imagesnap -l
+# Expected: lists available cameras (e.g., "FaceTime HD Camera")</code></pre>
+
+<h3>웹캠 이미지가 어둡거나 흐릿함</h3>
+<p>카메라 센서는 조정 시간이 필요합니다. 항상 워밍업 지연을 포함하세요:</p>
+<pre><code># Bad: no warmup, likely dark/blurry
+imagesnap ~/photo.png
+
+# Good: 2-second warmup for proper exposure
+imagesnap -w 2 ~/photo.png
+
+# Better: 3-second warmup for low-light conditions
+imagesnap -w 3 ~/photo.png</code></pre>
+
+<h3>다중 디스플레이 캡처 시 파일이 하나만 저장됨</h3>
+<p>여러 디스플레이를 캡처할 때는 디스플레이당 하나의 출력 파일명을 제공해야 합니다:</p>
+<pre><code># Wrong: only captures the main display
+screencapture ~/screenshot.png
+
+# Right: one filename per connected display
+screencapture ~/display1.png ~/display2.png</code></pre>
+
+<h3>비디오 녹화가 멈추지 않음</h3>
+<p><code>screencapture -v</code>(시간 제한 없음)를 사용하면 중단할 때까지 녹화가 계속됩니다. 시간 제한 녹화에는 <code>-V seconds</code>를 사용하고, 수동 녹화를 중지하려면 Ctrl+C를 누르세요.</p>
+
+<h2>기능 요약</h2>
+<table>
+<thead>
+<tr><th>기능</th><th>도구</th><th>비고</th></tr>
+</thead>
+<tbody>
+<tr><td>전체 화면 캡처</td><td><code>screencapture</code></td><td><code>-x</code>로 무음, <code>-T</code>로 지연</td></tr>
+<tr><td>영역 선택</td><td><code>screencapture -i</code></td><td>대화형 드래그 또는 <code>-R</code>로 좌표 지정</td></tr>
+<tr><td>윈도우 캡처</td><td><code>screencapture -l</code></td><td>AppleScript를 통한 CGWindowID로 지정</td></tr>
+<tr><td>클립보드 캡처</td><td><code>screencapture -c</code></td><td><code>-i</code>와 결합하여 영역을 클립보드로</td></tr>
+<tr><td>다중 디스플레이</td><td><code>screencapture -D</code></td><td>특정 디스플레이 지정 또는 전체 캡처</td></tr>
+<tr><td>비디오 녹화</td><td><code>screencapture -v/-V</code></td><td>MOV 형식, 시간 제한 또는 수동 중지</td></tr>
+<tr><td>웹캠 사진</td><td><code>imagesnap</code></td><td>선택적 의존성, 워밍업에 <code>-w 2</code> 사용</td></tr>
+<tr><td>형식 제어</td><td><code>screencapture -t</code></td><td>PNG (기본값), JPEG, PDF, TIFF</td></tr>
+</tbody>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="pdf.html">PDF</a>
+<a class="next" href="memory.html">Memory</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

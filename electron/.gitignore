@@ -1,0 +1,6 @@
+node_modules/
+out/
+dist/
+sidecar/server/
+*.log
+.env

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>칸반 보드 — podex 문서</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link active" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a class="active" href="../">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>칸반 보드</h1>
+<p class="lead">내장된 칸반 보드는 표준 워크플로 레인을 사용한 작업 관리를 제공합니다. Dashboard의 Board 탭에서 접근할 수 있습니다.</p>
+
+<h2>워크플로 레인</h2>
+<p>작업은 다음 레인을 통해 진행됩니다:</p>
+<table>
+<tr><th>레인</th><th>용도</th></tr>
+<tr><td><strong>Backlog</strong></td><td>시작 대기 중인 작업</td></tr>
+<tr><td><strong>Ready</strong></td><td>준비가 완료되어 착수 가능한 작업</td></tr>
+<tr><td><strong>Active</strong></td><td>현재 진행 중인 작업</td></tr>
+<tr><td><strong>Review</strong></td><td>완료되어 검토 대기 중인 작업</td></tr>
+<tr><td><strong>Done</strong></td><td>완료된 작업</td></tr>
+</table>
+
+<h2>카드 조작</h2>
+<ul>
+<li><strong>생성</strong> -- 원하는 레인에 새 카드를 추가합니다</li>
+<li><strong>편집</strong> -- 카드의 제목, 설명, 메타데이터를 수정합니다</li>
+<li><strong>이동</strong> -- 카드를 레인 간에 드래그하거나 레인 내에서 순서를 변경합니다</li>
+<li><strong>삭제</strong> -- 보드에서 카드를 제거합니다</li>
+</ul>
+
+<h2>보드 API</h2>
+<table>
+<tr><th>메서드</th><th>경로</th><th>설명</th></tr>
+<tr><td>GET</td><td><code>/api/dashboard/board/tasks</code></td><td>모든 작업 목록 조회</td></tr>
+<tr><td>POST</td><td><code>/api/dashboard/board/tasks</code></td><td>작업 생성</td></tr>
+<tr><td>PATCH</td><td><code>/api/dashboard/board/tasks</code></td><td>작업 수정 (이동, 편집)</td></tr>
+<tr><td>DELETE</td><td><code>/api/dashboard/board/tasks</code></td><td>작업 삭제</td></tr>
+</table>
+
+<h2>CLI 접근</h2>
+<pre><code># Add a task
+jaw connector board add "Implement user auth" --lane backlog
+
+# Update a task
+jaw connector board update &lt;id&gt; --lane active
+
+# List tasks
+jaw connector board list</code></pre>
+
+<h2>향후 계획: 인스턴스 동기화</h2>
+<div class="callout callout-info">향후 버전에서는 보드 작업을 인스턴스 오케스트레이션 상태와 동기화하는 기능을 지원할 예정이며, PABCD 단계가 자동으로 보드 카드를 생성하고 이동할 수 있게 됩니다.</div>
+
+<div class="page-nav">
+<a class="prev" href="notes.html">Notes (Jawsidian)</a>
+<a class="next" href="telegram.html">Telegram</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

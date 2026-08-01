@@ -1,0 +1,204 @@
+export type WebAiVendor = 'chatgpt' | 'gemini' | 'grok';
+// 104.18: 'conversation-mismatch' (the held tab drifted to a different chat) and 'tab-crashed'
+// (the tab died mid-poll, recoverable) are per-tick poll bail-out states.
+export type WebAiStatus = 'ready' | 'rendered' | 'sent' | 'streaming' | 'complete' | 'blocked' | 'timeout' | 'error' | 'interstitial' | 'conversation-mismatch' | 'tab-crashed';
+export type WebAiNotificationStatus = 'pending' | 'sent' | 'failed' | 'skipped';
+/**
+ * ChatGPT supports the `upload` runtime after PRD32.7-B. Gemini upload remains
+ * fail-closed until a Gemini-specific frontend capability schema and runtime
+ * adapter exist.
+ */
+export type AttachmentPolicy = 'inline-only' | 'upload' | 'auto';
+
+export interface QuestionEnvelope {
+    vendor: WebAiVendor;
+    system?: string;
+    prompt: string;
+    project?: string;
+    goal?: string;
+    context?: string;
+    question?: string;
+    output?: string;
+    constraints?: string;
+    attachmentPolicy: AttachmentPolicy;
+}
+
+export interface QuestionEnvelopeInput {
+    vendor?: string;
+    url?: string;
+    system?: string;
+    prompt?: string;
+    project?: string;
+    goal?: string;
+    context?: string;
+    question?: string;
+    output?: string;
+    constraints?: string;
+    attachmentPolicy?: string;
+    filePath?: string;
+    filePaths?: string[];
+    thinkingTime?: string;
+    model?: string;
+    reasoningEffort?: string;
+    contextFromFiles?: string[];
+    contextExclude?: string[];
+    contextFile?: string;
+    maxInput?: string | number;
+    maxFileSize?: string | number;
+    filesReport?: boolean;
+    contextTransport?: 'inline' | 'upload' | 'auto' | 'none';
+    inlineOnly?: boolean;
+    /** Explicit opt-in for provider Copy button capture; does not read the OS clipboard. */
+    allowCopyMarkdownFallback?: boolean;
+    allowGrokContextPack?: boolean;
+    reuseTab?: boolean;
+    newTab?: boolean;
+    requireSourceAudit?: boolean;
+    sourceAuditRatio?: string | number;
+    sourceAuditScope?: string;
+    sourceAuditDate?: string;
+    tools?: string[];
+    autoTools?: boolean;
+    research?: string;
+    followUps?: string[];
+}
+
+export interface RenderedQuestionBundle {
+    markdown: string;
+    composerText: string;
+    estimatedChars: number;
+    warnings: string[];
+}
+
+export interface CommittedTurnBaseline {
+    vendor: WebAiVendor;
+    targetId: string;
+    url: string;
+    promptHash: string;
+    assistantCount: number;
+    committedTurnCount?: number;
+    textHash?: string;
+    capturedAt: string;
+}
+
+export type WebAiSessionStatus = 'sent' | 'streaming' | 'complete' | 'timeout' | 'error' | 'crashed';
+
+export interface WebAiSessionTabState {
+    createdAt: string;
+    lastActiveAt: string;
+    recoveryCount: number;
+    closeCount: number;
+}
+
+export interface WebAiTurnRecord {
+    index: number;
+    prompt: string;
+    answer: string | null;
+    status: 'complete' | 'failed';
+    warnings: string[];
+    sentAt: string;
+    completedAt: string | null;
+}
+
+export interface WebAiArtifactDescriptor {
+    kind: 'transcript' | 'report' | 'image' | 'file' | 'diagnostics';
+    label: string;
+    path: string;
+    mimeType?: string;
+    sizeBytes?: number;
+    sourceUrl?: string;
+    screenshotPath?: string;
+    savedAt: string;
+}
+
+export interface WebAiSessionRecord {
+    vendor: WebAiVendor;
+    sessionId: string;
+    targetId: string;
+    tabId?: string;
+    url: string;
+    conversationUrl?: string;
+    promptHash: string;
+    assistantCount: number;
+    committedTurnCount?: number;
+    status: WebAiSessionStatus;
+    timeoutMs: number;
+    notifyOnComplete?: boolean;
+    capabilityMode?: string;
+    answerText?: string;
+    answerArtifact?: import('./answer-artifact.js').AnswerArtifact;
+    sourceAudit?: import('./source-audit.js').SourceAuditResult;
+    lastSeenTextHash?: string;
+    tabState?: WebAiSessionTabState;
+    turns?: WebAiTurnRecord[];
+    followUpCount?: number;
+    artifacts?: WebAiArtifactDescriptor[];
+    modelSelection?: import('./chatgpt-model.js').ChatGptModelSelectionEvidence;
+    // 105.5: streaming-progress fields persisted for cross-process resume / progress display.
+    envelopeSummary?: Record<string, unknown>;
+    lastDomHash?: string | null;
+    lastAxHash?: string | null;
+    lastStreamingState?: string;
+    lastResponseCharCount?: number;
+    completedAt?: string;
+    failedAt?: string;
+    staleAt?: string;
+    lastError?: string;
+    trace?: Array<Record<string, unknown>>;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface WebAiNotificationEvent {
+    eventId: string;
+    type: 'web-ai.answer.completed' | 'web-ai.answer.failed' | 'web-ai.session.stale' | 'web-ai.capability.unsupported' | 'web-ai.provider.login-required';
+    vendor: WebAiVendor;
+    sessionId: string;
+    url?: string;
+    conversationUrl?: string;
+    status: WebAiNotificationStatus;
+    answerExcerpt?: string;
+    answerHash?: string;
+    capabilityMode?: string;
+    elapsedMs?: number;
+    reason?: string;
+    createdAt: string;
+    deliveredAt?: string;
+    error?: string;
+}
+
+export interface WebAiOutput {
+    ok: boolean;
+    vendor: WebAiVendor;
+    status: WebAiStatus;
+    url?: string;
+    answerText?: string;
+    answerArtifact?: import('./answer-artifact.js').AnswerArtifact;
+    sourceAudit?: import('./source-audit.js').SourceAuditResult;
+    rendered?: RenderedQuestionBundle;
+    baseline?: CommittedTurnBaseline;
+    sessionId?: string;
+    sessions?: WebAiSessionRecord[];
+    notifications?: WebAiNotificationEvent[];
+    watchers?: Array<{
+        sessionId: string;
+        vendor: WebAiVendor;
+        startedAt: string;
+        deadlineAt: string;
+        status: 'running' | 'complete' | 'timeout' | 'error';
+    }>;
+    next?: 'poll' | 'reattach' | 'stop';
+    // 104.18: a 'tab-crashed' poll outcome is recoverable (relaunch + resume).
+    recoverable?: boolean;
+    // 104.8: runtime capability-probe rows + worst-state. Named `capabilityProbes` to stay distinct
+    // from the DECLARATIVE `capabilities` (CapabilitySchemaRow[]) that top-level status() attaches.
+    capabilityProbes?: import('./capability-probe.js').CapabilityRow[];
+    capabilityState?: import('./capability-probe.js').CapabilityState;
+    canvas?: { kind: 'opened'; reason?: string };
+    traceSummary?: import('./action-trace.js').TraceSummary;
+    contextPack?: import('./context-pack/index.js').ContextPackSummary;
+    usedFallbacks?: string[];
+    warnings: string[];
+    error?: string;
+    interstitial?: import('./interstitial.js').InterstitialResult;
+}

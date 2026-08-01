@@ -1,0 +1,63 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { normalizeGeminiModelChoice } from '../../src/browser/web-ai/gemini-model.js';
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const geminiLiveSrc = readFileSync(join(root, 'src/browser/web-ai/gemini-live.ts'), 'utf8');
+const geminiModelSrc = readFileSync(join(root, 'src/browser/web-ai/gemini-model.ts'), 'utf8');
+
+test('GEM-LIVE-001: Gemini upload uses observed filechooser flow with evidence checks', () => {
+    assert.match(geminiLiveSrc, /page\.waitForEvent\('filechooser'/);
+    assert.match(geminiLiveSrc, /GEMINI_UPLOAD_SELECTORS/);
+    assert.match(geminiLiveSrc, /Upload & tools/);
+    assert.match(geminiLiveSrc, /Upload files/);
+    assert.match(geminiLiveSrc, /업로드 및 도구/);
+    assert.match(geminiLiveSrc, /local-images-files-uploader-button/);
+    assert.match(geminiLiveSrc, /uploader-file-preview/);
+    assert.match(geminiLiveSrc, /Gemini sent turn has no attachment evidence/);
+    assert.match(geminiLiveSrc, /context package attached:/);
+    assert.doesNotMatch(geminiLiveSrc, /gemini file\/context upload is not implemented/);
+});
+
+test('GEM-LIVE-002: Deep Think activation cannot silently degrade to default Gemini mode', () => {
+    assert.match(geminiLiveSrc, /active Deep Think chip was not verified/);
+    assert.doesNotMatch(geminiLiveSrc, /deep-think-not-activated/);
+    assert.doesNotMatch(geminiLiveSrc, /default mode\)/);
+});
+
+test('GEM-LIVE-003: Gemini supports observed mode picker choices when --model is set', () => {
+    assert.match(geminiModelSrc, /bard-mode-menu-button/);
+    assert.match(geminiModelSrc, /bard-mode-option-fast/);
+    assert.match(geminiModelSrc, /bard-mode-option-thinking/);
+    assert.match(geminiModelSrc, /bard-mode-option-pro/);
+    assert.match(geminiModelSrc, /GEMINI_MODE_OPTION_SELECTOR/);
+    assert.doesNotMatch(geminiModelSrc, /\[role="option"\], button/);
+    assert.match(geminiModelSrc, /candidate\.locator\('\.label'\)/);
+    assert.match(geminiModelSrc, /flash-lite/);
+    assert.match(geminiModelSrc, /isGeminiDeepThinkChoice/);
+    assert.doesNotMatch(geminiModelSrc, /3\.1-pro/);
+    assert.match(geminiLiveSrc, /selectGeminiModel/);
+    assert.match(geminiLiveSrc, /model selected:/);
+});
+
+test('GEM-LIVE-004: Gemini new chat click retries transient Angular detach failures', () => {
+    assert.match(geminiLiveSrc, /clickFirstSelectorWithRetry/);
+    assert.match(geminiLiveSrc, /'gemini new chat'/);
+    assert.match(geminiLiveSrc, /click retry:\$\{sel\}/);
+    assert.match(geminiLiveSrc, /detached\|Timeout\|not attached\|not stable/);
+});
+
+test('GEM-LIVE-005: Gemini model labels normalize without pinned version numbers', () => {
+    assert.equal(normalizeGeminiModelChoice('flash-lite'), 'flash-lite');
+    assert.equal(normalizeGeminiModelChoice('3.1 Flash-Lite'), 'flash-lite');
+    assert.equal(normalizeGeminiModelChoice('3 Flash'), 'flash');
+    assert.equal(normalizeGeminiModelChoice('3.5 Flash'), 'flash');
+    assert.equal(normalizeGeminiModelChoice('3.1 Pro'), 'pro');
+    assert.equal(normalizeGeminiModelChoice('3.2 Pro'), 'pro');
+    assert.equal(normalizeGeminiModelChoice('thinking'), 'pro');
+    assert.equal(normalizeGeminiModelChoice('flashlight'), null);
+    assert.equal(normalizeGeminiModelChoice('profile'), null);
+});

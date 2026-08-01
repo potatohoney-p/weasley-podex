@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Home Skills — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link active" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Smart Home Skills</h1>
+<p class="lead">Control your physical environment directly from podex. Smart Home skills bridge the gap between your AI assistant and IoT devices, letting you manage Philips Hue lighting and Spotify playback with natural language commands.</p>
+
+<h2>Overview</h2>
+<p>podex ships with two smart home skills that connect to popular device ecosystems via their respective APIs. Both skills are implemented as MCP (Model Context Protocol) servers and are loaded on demand when the agent detects a relevant request.</p>
+
+<table>
+<tr><th>Skill</th><th>Target</th><th>Protocol</th><th>Auth</th><th>Description</th></tr>
+<tr><td><code>openhue</code></td><td>Philips Hue Bridge</td><td>Hue API v2 (REST)</td><td>Bridge API key</td><td>Control lights, rooms, scenes, and schedules on your Hue network</td></tr>
+<tr><td><code>spotify-player</code></td><td>Spotify</td><td>Spotify Web API</td><td>OAuth 2.0 PKCE</td><td>Play, pause, skip, search, queue, and manage Spotify playback</td></tr>
+</table>
+
+<h2 id="openhue">openhue &mdash; Philips Hue Control</h2>
+<p>The <code>openhue</code> skill communicates with a Philips Hue Bridge on your local network. It exposes MCP tools for controlling individual lights, rooms, zones, and scenes.</p>
+
+<h3>Capabilities</h3>
+<table>
+<tr><th>Tool</th><th>Description</th><th>Example</th></tr>
+<tr><td><code>get_lights</code></td><td>List all lights and their current state</td><td>Retrieve brightness, color, on/off status</td></tr>
+<tr><td><code>set_light</code></td><td>Control a single light</td><td>Turn on, set brightness, change color</td></tr>
+<tr><td><code>get_rooms</code></td><td>List rooms defined on the bridge</td><td>Living Room, Bedroom, Office</td></tr>
+<tr><td><code>set_room</code></td><td>Control all lights in a room</td><td>Turn off entire room, dim to 30%</td></tr>
+<tr><td><code>get_scenes</code></td><td>List available Hue scenes</td><td>Energize, Relax, Concentrate</td></tr>
+<tr><td><code>set_scene</code></td><td>Activate a predefined scene</td><td>Apply "Relax" scene to living room</td></tr>
+</table>
+
+<h3>Configuration</h3>
+<p>Add the openhue MCP server to your podex settings. The bridge IP and API key are required.</p>
+<pre><code>{
+  "mcpServers": {
+    "openhue": {
+      "command": "npx",
+      "args": ["-y", "@openhue/mcp-server"],
+      "env": {
+        "OPENHUE_BRIDGE_IP": "192.168.1.100",
+        "OPENHUE_API_KEY": "your-hue-api-key"
+      }
+    }
+  }
+}</code></pre>
+
+<p>To obtain your Hue API key, press the physical link button on your Hue Bridge and then run:</p>
+<pre><code>curl -X POST http://192.168.1.100/api \
+  -d '{"devicetype":"podex#instance"}'</code></pre>
+
+<h3>Natural Language Examples</h3>
+<div class="callout-info">
+<strong>Korean (natural prompts)</strong>
+<ul>
+<li><code>"거실 불 켜줘"</code> &mdash; Turn on the living room lights</li>
+<li><code>"방 불 다 꺼줘"</code> &mdash; Turn off all bedroom lights</li>
+<li><code>"불 밝기 50%로 해줘"</code> &mdash; Set brightness to 50%</li>
+<li><code>"불 따뜻한 색으로 바꿔줘"</code> &mdash; Change lights to warm white</li>
+<li><code>"집중 모드로 불 바꿔줘"</code> &mdash; Activate the Concentrate scene</li>
+<li><code>"릴렉스 씬 틀어줘"</code> &mdash; Activate the Relax scene</li>
+</ul>
+</div>
+
+<div class="callout-info">
+<strong>English examples</strong>
+<ul>
+<li><code>"Turn on the office lights"</code></li>
+<li><code>"Dim the living room to 30%"</code></li>
+<li><code>"Set all lights to warm white"</code></li>
+<li><code>"Activate the Relax scene in the bedroom"</code></li>
+<li><code>"Turn off all the lights"</code></li>
+</ul>
+</div>
+
+<h3>How It Works</h3>
+<p>When you say something like "불 켜줘", podex routes the request through its skill matching system:</p>
+<ol>
+<li>The agent recognizes the intent as a smart home command</li>
+<li>The <code>openhue</code> MCP server is loaded (if not already running)</li>
+<li>The agent calls the appropriate tool (e.g., <code>set_room</code> with <code>on: true</code>)</li>
+<li>The Hue Bridge executes the command and returns the updated state</li>
+<li>The agent confirms the action in natural language</li>
+</ol>
+
+<h2 id="spotify-player">spotify-player &mdash; Spotify Control</h2>
+<p>The <code>spotify-player</code> skill connects to the Spotify Web API, giving podex full control over music playback. It supports searching tracks, managing queues, controlling playback, and browsing playlists.</p>
+
+<h3>Capabilities</h3>
+<table>
+<tr><th>Tool</th><th>Description</th><th>Example</th></tr>
+<tr><td><code>play</code></td><td>Start or resume playback</td><td>Play a track, album, or playlist</td></tr>
+<tr><td><code>pause</code></td><td>Pause current playback</td><td>Pause music</td></tr>
+<tr><td><code>next</code></td><td>Skip to the next track</td><td>Skip current song</td></tr>
+<tr><td><code>previous</code></td><td>Go back to the previous track</td><td>Replay last song</td></tr>
+<tr><td><code>search</code></td><td>Search tracks, albums, artists</td><td>Find "Bohemian Rhapsody"</td></tr>
+<tr><td><code>queue</code></td><td>Add a track to the playback queue</td><td>Queue a song for next</td></tr>
+<tr><td><code>get_playback</code></td><td>Get current playback state</td><td>What is currently playing</td></tr>
+<tr><td><code>set_volume</code></td><td>Adjust playback volume</td><td>Set volume to 60%</td></tr>
+<tr><td><code>get_playlists</code></td><td>List user playlists</td><td>Browse saved playlists</td></tr>
+<tr><td><code>set_shuffle</code></td><td>Toggle shuffle mode</td><td>Enable or disable shuffle</td></tr>
+<tr><td><code>set_repeat</code></td><td>Set repeat mode</td><td>Repeat track, context, or off</td></tr>
+</table>
+
+<h3>Configuration</h3>
+<p>Add the spotify-player MCP server with your Spotify OAuth credentials.</p>
+<pre><code>{
+  "mcpServers": {
+    "spotify-player": {
+      "command": "npx",
+      "args": ["-y", "spotify-player-mcp"],
+      "env": {
+        "SPOTIFY_CLIENT_ID": "your-client-id",
+        "SPOTIFY_CLIENT_SECRET": "your-client-secret",
+        "SPOTIFY_REDIRECT_URI": "http://localhost:8888/callback"
+      }
+    }
+  }
+}</code></pre>
+
+<h3>OAuth Setup</h3>
+<ol>
+<li>Go to the <a href="https://developer.spotify.com/dashboard" target="_blank">Spotify Developer Dashboard</a></li>
+<li>Create a new app with redirect URI <code>http://localhost:8888/callback</code></li>
+<li>Copy the Client ID and Client Secret into your config</li>
+<li>On first use, podex will open a browser window for Spotify authorization</li>
+<li>After approval, the refresh token is cached locally for subsequent sessions</li>
+</ol>
+
+<h3>Natural Language Examples</h3>
+<div class="callout-info">
+<strong>Korean (natural prompts)</strong>
+<ul>
+<li><code>"음악 틀어줘"</code> &mdash; Resume playback</li>
+<li><code>"재즈 음악 틀어줘"</code> &mdash; Search and play jazz music</li>
+<li><code>"다음 곡으로 넘겨줘"</code> &mdash; Skip to the next track</li>
+<li><code>"볼륨 좀 줄여줘"</code> &mdash; Lower the volume</li>
+<li><code>"지금 뭐 듣고 있어?"</code> &mdash; Show current playback info</li>
+<li><code>"이 노래 반복 재생해줘"</code> &mdash; Repeat the current track</li>
+<li><code>"셔플 켜줘"</code> &mdash; Enable shuffle mode</li>
+<li><code>"BTS 노래 틀어줘"</code> &mdash; Search and play BTS</li>
+</ul>
+</div>
+
+<div class="callout-info">
+<strong>English examples</strong>
+<ul>
+<li><code>"Play some lo-fi beats"</code></li>
+<li><code>"What song is playing right now?"</code></li>
+<li><code>"Skip this track"</code></li>
+<li><code>"Add Blinding Lights to the queue"</code></li>
+<li><code>"Set volume to 40%"</code></li>
+<li><code>"Show my playlists"</code></li>
+</ul>
+</div>
+
+<h2 id="combined">Combined Workflows</h2>
+<p>Smart home skills become powerful when combined with each other or with other podex capabilities. Because the agent understands context, you can issue compound commands naturally.</p>
+
+<div class="callout-info">
+<strong>Multi-skill examples</strong>
+<ul>
+<li><code>"영화 볼 준비 해줘"</code> &mdash; Dim lights to 20%, activate Relax scene, pause Spotify</li>
+<li><code>"작업 모드로 바꿔줘"</code> &mdash; Set lights to Concentrate scene, play lo-fi playlist at low volume</li>
+<li><code>"잘 준비 해줘"</code> &mdash; Turn off all lights, stop music</li>
+<li><code>"Set up movie night"</code> &mdash; Combines lighting and audio adjustments</li>
+</ul>
+</div>
+
+<pre><code># Example: the agent interprets "영화 볼 준비 해줘" as:
+1. openhue → set_room(room="Living Room", brightness=20)
+2. openhue → set_scene(scene="Relax", room="Living Room")
+3. spotify-player → pause()</code></pre>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Solution</th></tr>
+<tr><td>Hue Bridge not found</td><td>Wrong IP or bridge offline</td><td>Verify <code>OPENHUE_BRIDGE_IP</code> and ensure the bridge is on the same network</td></tr>
+<tr><td>API key rejected</td><td>Key expired or never created</td><td>Press the bridge link button and regenerate the key</td></tr>
+<tr><td>Spotify auth fails</td><td>Invalid credentials or redirect URI mismatch</td><td>Check Client ID/Secret and ensure redirect URI matches exactly</td></tr>
+<tr><td>No active device</td><td>Spotify has no active playback device</td><td>Open Spotify on a device first, then retry the command</td></tr>
+<tr><td>MCP server won't start</td><td>npx not found or network issue</td><td>Ensure Node.js is installed and <code>npx</code> is in your PATH</td></tr>
+<tr><td>Lights respond slowly</td><td>Network latency to bridge</td><td>Use a wired connection for the Hue Bridge if possible</td></tr>
+</table>
+
+<h2 id="env-reference">Environment Variables Reference</h2>
+<table>
+<tr><th>Variable</th><th>Skill</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>OPENHUE_BRIDGE_IP</code></td><td>openhue</td><td>Yes</td><td>Local IP address of your Philips Hue Bridge</td></tr>
+<tr><td><code>OPENHUE_API_KEY</code></td><td>openhue</td><td>Yes</td><td>API key generated via the bridge link button</td></tr>
+<tr><td><code>SPOTIFY_CLIENT_ID</code></td><td>spotify-player</td><td>Yes</td><td>OAuth Client ID from Spotify Developer Dashboard</td></tr>
+<tr><td><code>SPOTIFY_CLIENT_SECRET</code></td><td>spotify-player</td><td>Yes</td><td>OAuth Client Secret from Spotify Developer Dashboard</td></tr>
+<tr><td><code>SPOTIFY_REDIRECT_URI</code></td><td>spotify-player</td><td>Yes</td><td>OAuth redirect URI (must match dashboard config)</td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="productivity.html">Productivity</a>
+<a class="next" href="utility.html">Utilities</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

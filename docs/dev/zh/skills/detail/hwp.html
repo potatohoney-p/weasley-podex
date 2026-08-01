@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HWP (한글) — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-experimental { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.badge-fallback { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.badge-blocked { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+
+.trigger-list { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 16px; }
+.trigger-tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; background: var(--surface2); border: 1px solid var(--border); color: var(--text-dim); font-family: var(--mono); }
+
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-label { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.example-card .example-prompt { font-size: 15px; color: var(--text); margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+
+.level-indicator { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; font-family: var(--mono); margin-left: 4px; }
+.level-l1 { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.level-l2 { background: rgba(34, 211, 238, 0.15); color: var(--accent); }
+.level-l3 { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.level-l4 { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+
+.checklist { list-style: none; padding-left: 0; }
+.checklist li { padding: 4px 0 4px 24px; position: relative; }
+.checklist li::before { content: "\2610"; position: absolute; left: 0; color: var(--text-dim); }
+
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 24px; }
+.meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.meta-card .meta-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px; }
+.meta-card .meta-value { font-size: 14px; color: var(--text); }
+
+@media (max-width: 768px) {
+  .meta-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">快速入门</div>
+      <a class="docs-nav-link" href="../../">概览</a>
+      <a class="docs-nav-link" href="../../quickstart.html">快速开始</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">首次运行</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">核心概念</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">架构</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">员工</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">目标</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">技能</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">记忆</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">提示词</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">指南</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">计算机控制</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 桌面端</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">参考</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 命令</a>
+      <a class="docs-nav-link" href="../../reference/api.html">服务端 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">配置</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">键盘快捷键</a>
+      <a class="docs-nav-link" href="../../reference/events.html">事件</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">技能</div>
+      <a class="docs-nav-link" href="../index.html">目录</a>
+      <a class="docs-nav-link" href="../orchestration.html">开发</a>
+      <a class="docs-nav-link" href="../automation.html">自动化</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 媒体</a>
+      <a class="docs-nav-link" href="../communication.html">通讯</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">云与部署</a>
+      <a class="docs-nav-link" href="../devtools-security.html">安全与审查</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">开发工作流</a>
+      <a class="docs-nav-link active" href="../productivity.html">生产力</a>
+      <a class="docs-nav-link" href="../smarthome.html">智能家居</a>
+      <a class="docs-nav-link" href="../utility.html">实用工具</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">命令</div>
+      <a class="docs-nav-link" href="../../commands/session.html">会话</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">工作流</a>
+      <a class="docs-nav-link" href="../../commands/model.html">模型与 CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">工具</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">仅 CLI</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">根 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">更新日志</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">首页</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>HWP (&#54620;&#44544;)</h1>
+<p class="lead">通过 OfficeCLI 创建、读取、编辑 HWP/HWPX 韩文文档</p>
+
+<p>
+  <span class="badge badge-active">默认启用：是</span>
+  <span class="badge badge-experimental" style="margin-left: 4px;">二进制 HWP：实验性</span>
+</p>
+
+<div class="trigger-list">
+  <span class="trigger-tag">&#54620;&#44544;</span>
+  <span class="trigger-tag">.hwp</span>
+  <span class="trigger-tag">.hwpx</span>
+  <span class="trigger-tag">HWP</span>
+  <span class="trigger-tag">HWPX</span>
+  <span class="trigger-tag">Korean documents</span>
+  <span class="trigger-tag">&#54620;&#52980;&#50724;&#54588;&#49828;</span>
+  <span class="trigger-tag">OWPML</span>
+</div>
+
+<div class="meta-grid">
+  <div class="meta-card">
+    <div class="meta-label">主要工具</div>
+    <div class="meta-value"><code>officecli</code>（全局安装，已加入 PATH）</div>
+  </div>
+  <div class="meta-card">
+    <div class="meta-label">备选方案</div>
+    <div class="meta-value">Python OOXML/OWPML 脚本（<code>scripts/*.py</code>）</div>
+  </div>
+  <div class="meta-card">
+    <div class="meta-label">适用范围</div>
+    <div class="meta-value">仅限 HWP/HWPX &mdash; 不支持 DOCX、PPTX、XLSX、PDF</div>
+  </div>
+  <div class="meta-card">
+    <div class="meta-label">二进制 HWP</div>
+    <div class="meta-value">通过 <code>rhwp</code> 桥接实现（实验性，受能力门控限制）</div>
+  </div>
+</div>
+
+<div class="callout callout-info"><strong>适用范围规则：</strong>本技能仅处理 <code>.hwp</code> 和 <code>.hwpx</code> 文件。如果任务涉及 DOCX、PPTX、XLSX 或 PDF，本技能将不会激活 &mdash; 请使用对应的格式专用技能。</div>
+
+<!-- ─── Quick Reference ─── -->
+<h2>快速参考</h2>
+<p>完整的任务到命令查询表。每行显示该操作是否受支持以及使用哪个命令。</p>
+
+<table>
+<tr><th>任务</th><th>状态</th><th>命令</th></tr>
+<tr><td>按现有 .hwpx 格式化</td><td><span class="badge badge-active">支持</span></td><td><code>cp source.hwpx target.hwpx &amp;&amp; officecli open target.hwpx</code></td></tr>
+<tr><td>基于模板创建</td><td><span class="badge badge-active">支持</span></td><td><code>python3 scripts/build_hwpx.py --template {base|gonmun|minutes|proposal|report}</code></td></tr>
+<tr><td>创建新 .hwpx</td><td><span class="badge badge-active">支持</span></td><td><code>officecli create file.hwpx</code></td></tr>
+<tr><td>从 Markdown 创建</td><td><span class="badge badge-active">支持</span></td><td><code>officecli create file.hwpx --from-markdown input.md</code></td></tr>
+<tr><td>读取/分析 .hwpx</td><td><span class="badge badge-active">支持</span></td><td><code>view text|annotated|outline|stats|html|markdown|tables|forms|objects</code></td></tr>
+<tr><td>编辑现有 .hwpx</td><td><span class="badge badge-active">支持</span></td><td><code>set</code>、<code>add</code>、<code>remove</code>、<code>move</code>、<code>swap</code></td></tr>
+<tr><td>基于标签填充</td><td><span class="badge badge-active">支持</span></td><td><code>set /table/fill --prop 'fill:label=val'</code></td></tr>
+<tr><td>表单识别</td><td><span class="badge badge-active">支持</span></td><td><code>view forms --auto</code></td></tr>
+<tr><td>表格映射</td><td><span class="badge badge-active">支持</span></td><td><code>view tables</code></td></tr>
+<tr><td>Markdown 导出</td><td><span class="badge badge-active">支持</span></td><td><code>view markdown</code></td></tr>
+<tr><td>公式（&#49688;&#49885;）</td><td><span class="badge badge-active">支持</span></td><td><code>add --type equation --prop 'script={1 over 2}'</code></td></tr>
+<tr><td>对象查找器</td><td><span class="badge badge-active">支持</span></td><td><code>view objects</code></td></tr>
+<tr><td>查询（扩展语法）</td><td><span class="badge badge-active">支持</span></td><td><code>query 'tc[text~=&#54861;&#44600;&#46041;]'</code>、<code>:has()</code>、<code>&gt;</code> 组合器</td></tr>
+<tr><td>模板合并</td><td><span class="badge badge-active">支持</span></td><td><code>merge template.hwpx out.hwpx --data '{"key":"val"}'</code></td></tr>
+<tr><td>交换元素</td><td><span class="badge badge-active">支持</span></td><td><code>swap file.hwpx '/p[1]' '/p[2]'</code></td></tr>
+<tr><td>分栏符</td><td><span class="badge badge-active">支持</span></td><td><code>add --type columnbreak --prop cols=2</code></td></tr>
+<tr><td>图片/浮动对象</td><td><span class="badge badge-active">支持</span></td><td><code>add --type picture --prop anchor=page --prop halign=center</code></td></tr>
+<tr><td>文档比较</td><td><span class="badge badge-active">支持</span></td><td><code>compare a.hwpx b.hwpx</code>（LCS 差异比较 + 表格比较）</td></tr>
+<tr><td>安全验证</td><td><span class="badge badge-active">支持</span></td><td>ZIP 炸弹、路径穿越、符号链接、XXE 防护</td></tr>
+<tr><td>损坏 ZIP 修复</td><td><span class="badge badge-active">支持</span></td><td>通过本地文件头扫描自动修复损坏的 HWPX</td></tr>
+<tr><td>HTML 预览</td><td><span class="badge badge-active">支持</span></td><td><code>view html --browser</code></td></tr>
+<tr><td>实时预览监控</td><td><span class="badge badge-active">支持</span></td><td><code>watch file.hwpx</code></td></tr>
+<tr><td>验证 .hwpx</td><td><span class="badge badge-active">支持</span></td><td><code>validate</code>（9 级检查）</td></tr>
+<tr><td>原始 XML</td><td><span class="badge badge-active">支持</span></td><td><code>raw</code>、<code>raw-set</code></td></tr>
+<tr><td>水印（图片）</td><td><span class="badge badge-active">支持</span></td><td><code>add --type watermark --prop src=img.png</code></td></tr>
+<tr><td>模式匹配编辑</td><td><span class="badge badge-fallback">Python L4</span></td><td><code>scripts/hwpx_cli.py open</code> &rarr; 模式编辑 XML &rarr; <code>save</code></td></tr>
+<tr><td>视觉 QA</td><td><span class="badge badge-fallback">Python L3</span></td><td><code>scripts/contact_sheet.py</code> + 子代理审查</td></tr>
+<tr><td>创建新表单字段</td><td><span class="badge badge-blocked">已阻止</span></td><td>源原型已存在；韩软验证尚未完成</td></tr>
+<tr><td>创建新 .hwp（二进制）</td><td><span class="badge badge-experimental">实验性</span></td><td><code>officecli create file.hwp --json</code></td></tr>
+<tr><td>读取/导出 .hwp（二进制）</td><td><span class="badge badge-experimental">实验性</span></td><td><code>officecli view file.hwp text --json</code> + svg/png/pdf/markdown</td></tr>
+<tr><td>编辑 .hwp 文本/字段</td><td><span class="badge badge-experimental">实验性</span></td><td><code>officecli hwp --json</code> 操作方案</td></tr>
+<tr><td>导出 HWPX 为 .hwp</td><td><span class="badge badge-experimental">实验性</span></td><td><code>officecli set input.hwpx /save-as-hwp --prop output=out.hwp --json</code></td></tr>
+<tr><td>转换 .hwp 为 .hwpx</td><td><span class="badge badge-fallback">备选方案</span></td><td><code>scripts/hwp_convert.py IN.hwp OUT.hwpx</code></td></tr>
+</table>
+
+<!-- ─── Usage Examples ─── -->
+<h2>"~&#54644;&#51468;" 使用示例</h2>
+<p>触发此技能的自然韩语提示。只需描述你需要什么即可。</p>
+
+<div class="example-card">
+  <div class="example-label">&#44277;&#47928; &#51089;&#49457;</div>
+  <div class="example-prompt">"&#44277;&#47928; &#50577;&#49885;&#51004;&#47196; &#47928;&#49436; &#47564;&#46308;&#50612;&#51468; &mdash; &#47928;&#49436;&#48264;&#54840;, &#49688;&#49888;, &#51228;&#47785; &#52292;&#50892;&#49436;"</div>
+  <div class="example-desc">触发使用 <code>--template gonmun</code> 的模板组装，然后使用 <code>/table/fill</code> 填充标签值字段，如 &#47928;&#49436;&#48264;&#54840;、&#49688;&#49888;、&#52280;&#51312;、&#51228;&#47785;。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">&#47928;&#49436; &#48516;&#49437;</div>
+  <div class="example-prompt">"&#51060; HWPX &#54028;&#51068; &#48516;&#49437;&#54644;&#51468; &mdash; &#54364; &#44396;&#51312;&#46993; &#50577;&#49885; &#50508;&#47140;&#51468;"</div>
+  <div class="example-desc">运行 <code>view tables</code>、<code>view forms --auto</code> 和 <code>view stats</code>，提供文档的结构分析。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">&#54364; &#52292;&#50864;&#44592;</div>
+  <div class="example-prompt">"&#51060; &#49888;&#52397;&#49436;&#50640;&#49436; &#49457;&#47749;=&#54861;&#44600;&#46041;, &#50672;&#46973;&#52376;=010-1234-5678 &#52292;&#50892;&#51468;"</div>
+  <div class="example-desc">使用基于标签的填充：<code>officecli set form.hwpx / --prop 'fill:&#49457;&#47749;=&#54861;&#44600;&#46041;' --prop 'fill:&#50672;&#46973;&#52376;=010-1234-5678'</code></div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">&#54924;&#51032;&#47197; &#51089;&#49457;</div>
+  <div class="example-prompt">"&#54924;&#51032;&#47197; &#47564;&#46308;&#50612;&#51468; &mdash; &#51068;&#49884;, &#51109;&#49548;, &#52280;&#49437;&#51088;, &#50504;&#44148; &#54252;&#54632;&#54644;&#49436;"</div>
+  <div class="example-desc">从 <code>--template minutes</code> 创建，填充日期、地点、参会人员和议程项目等结构化字段。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">HWP &#48320;&#54872;</div>
+  <div class="example-prompt">"&#51060; .hwp &#54028;&#51068; &#51069;&#50612;&#49436; &#45236;&#50857; &#48372;&#50668;&#51468;"</div>
+  <div class="example-desc">检查 <code>officecli hwp doctor --json</code> 以确认原生 rhwp 支持。如果就绪，使用 <code>officecli view file.hwp text --json</code>。否则回退到 <code>scripts/hwp_reader.py</code>。</div>
+</div>
+
+<!-- ─── Editing Escalation Ladder ─── -->
+<h2>编辑升级阶梯</h2>
+<p>当主要工具无法处理任务时，技能会逐级升级，共四个级别。优先使用低级别；仅在必要时才使用高级别。</p>
+
+<table>
+<tr><th>级别</th><th>适用场景</th><th>工具</th></tr>
+<tr><td><span class="level-indicator level-l1">L1</span> OfficeCLI 高级操作</td><td>常规的 add/set/remove、标签填充、查看模式</td><td><code>officecli add/set/remove/query/view/merge</code></td></tr>
+<tr><td><span class="level-indicator level-l2">L2</span> OfficeCLI raw/raw-set</td><td>直接修改 section0.xml / header.xml</td><td><code>officecli raw FILE /Contents/section0.xml</code></td></tr>
+<tr><td><span class="level-indicator level-l3">L3</span> Python 脚本</td><td>批量查找/替换、模板组装、模式匹配</td><td><code>python3 scripts/hwpx_cli.py ...</code> 或 <code>scripts/build_hwpx.py</code></td></tr>
+<tr><td><span class="level-indicator level-l4">L4</span> 解包 &rarr; 编辑 XML &rarr; 重新打包</td><td>KICE 考试、法规、多文件 XML 编辑</td><td><code>hwpx_cli.py open</code> &rarr; 编辑 <code>work/Contents/*.xml</code> &rarr; 去除 lineseg &rarr; <code>save</code></td></tr>
+</table>
+
+<h3>升级信号</h3>
+<ul>
+<li>OfficeCLI 无法添加自定义样式 &rarr; <strong>L2</strong>（raw-set header.xml）+ 阅读 <code>reference/header-xml-guide.md</code></li>
+<li>自定义模板覆盖 &rarr; <strong>L3</strong>（<code>scripts/build_hwpx.py</code>）+ 阅读 <code>reference/style_id_maps.md</code></li>
+<li>HWP 二进制输入 &rarr; 先检查 <code>officecli hwp doctor --json</code>；就绪时使用原生 rhwp，否则 <strong>L3</strong></li>
+<li>多文件模式匹配（考试、法规） &rarr; <strong>L4</strong></li>
+<li>样式 ID 查找 &rarr; 先阅读 <code>reference/style_id_maps.md</code></li>
+</ul>
+
+<!-- ─── Core Workflows ─── -->
+<h2>核心工作流</h2>
+
+<h3>创建与导入</h3>
+<pre><code># 空文档
+officecli create doc.hwpx
+
+# 从 Markdown 创建（默认 JUSTIFY 对齐）
+officecli create doc.hwpx --from-markdown input.md
+
+# 左对齐 Markdown 导入
+officecli create doc.hwpx --from-markdown input.md --align left
+
+# 通过 rhwp 桥接创建二进制 HWP
+officecli create file.hwp --json
+
+# 使用数据合并模板
+officecli merge template.hwpx out.hwpx --data '{"&#51060;&#47492;":"&#54861;&#44600;&#46041;"}'
+officecli merge template.hwpx out.hwpx --data data.json
+
+# 模板组装（推荐用于结构化文档）
+python3 scripts/build_hwpx.py --template gonmun --output gonmun.hwpx</code></pre>
+
+<h3>查看模式</h3>
+<pre><code>officecli view doc.hwpx text                    # 带行号的文本
+officecli view doc.hwpx annotated               # 路径 + 样式详情
+officecli view doc.hwpx outline                 # 仅标题
+officecli view doc.hwpx stats                   # 文档统计信息
+officecli view doc.hwpx html --browser          # A4 HTML 预览
+officecli view doc.hwpx markdown                # GFM markdown 导出
+officecli view doc.hwpx tables                  # 表格 2D 网格 + 标签映射
+officecli view doc.hwpx forms --auto            # CLICK_HERE + 标签-值自动检测
+officecli view doc.hwpx forms --auto --json     # 用于 AI 流水线的 JSON
+officecli view doc.hwpx objects                 # 图片/字段/书签/公式列表
+officecli view doc.hwpx objects --object-type field  # 按类型过滤
+officecli view doc.hwpx styles                  # charPr/paraPr 样式
+officecli view doc.hwpx issues                  # 9 级验证问题</code></pre>
+
+<div class="callout callout-warn"><strong>常见错误：</strong><code>officecli view file.hwpx</code> 不带模式参数会报错。必须始终指定模式：<code>text</code>、<code>tables</code>、<code>markdown</code> 等。</div>
+
+<h3>编辑操作</h3>
+<pre><code># 添加带文本和字号的段落
+officecli add doc.hwpx /section[1] --type paragraph --prop text="content" --prop fontsize=11
+
+# 添加表格
+officecli add doc.hwpx /section[1] --type table --prop rows=3 --prop cols=4
+
+# 设置属性（加粗、对齐）
+officecli set doc.hwpx '/section[1]/p[1]' --prop bold=true --prop align=CENTER
+
+# 查找并替换文本
+officecli set doc.hwpx / --prop find="old" --prop replace="new"
+
+# 删除元素
+officecli remove doc.hwpx /section[1]/p[3]
+
+# 交换两个元素
+officecli swap doc.hwpx '/p[1]' '/p[2]'</code></pre>
+
+<h3>标签填充（表格自动填充）</h3>
+<pre><code># 按标签填充（fill: 前缀）
+officecli set doc.hwpx / --prop 'fill:&#45824;&#54364;&#51088;=&#54861;&#44600;&#46041;' --prop 'fill:&#50672;&#46973;&#52376;=010-1234'
+
+# 方向性填充：right（默认）、down、left、up
+officecli set doc.hwpx / --prop 'fill:&#51452;&#49548;&gt;down=&#49436;&#50872;&#49884;'
+
+# 简写（/table/fill 路径下 fill: 前缀可选）
+officecli set doc.hwpx /table/fill --prop '&#51060;&#47492;=&#44608;&#49436;&#51456;'</code></pre>
+
+<h3>查询（扩展语法）</h3>
+<pre><code>officecli query doc.hwpx 'p'                          # 所有段落
+officecli query doc.hwpx 'tc[text~=&#54861;&#44600;&#46041;]'           # 单元格文本搜索
+officecli query doc.hwpx 'run[bold=true]'              # 加粗的 run
+officecli query doc.hwpx 'p:has(tbl)'                  # 包含表格的段落
+officecli query doc.hwpx 'tbl &gt; tr &gt; tc[colSpan!=1]'   # 合并的单元格
+officecli query doc.hwpx 'run[fontsize&gt;=20]'           # 20pt 及以上字号
+officecli query doc.hwpx 'p[heading=1]'                # 一级标题</code></pre>
+<p><strong>运算符：</strong><code>=</code>、<code>!=</code>、<code>~=</code>（包含）、<code>&gt;=</code>、<code>&lt;=</code><br>
+<strong>伪选择器：</strong><code>:empty</code>、<code>:contains(text)</code>、<code>:has(child)</code>、<code>:first</code>、<code>:last</code><br>
+<strong>虚拟属性：</strong><code>text</code>、<code>bold</code>、<code>italic</code>、<code>fontsize</code>、<code>colSpan</code>、<code>rowSpan</code>、<code>heading</code></p>
+
+<h3>常驻模式（实时连接）</h3>
+<pre><code>officecli open doc.hwpx          # 立即返回；守护进程在后台运行
+officecli view text               # 无需重新打开即可查看
+officecli set '/p[1]' --prop bold=true
+officecli close                   # 关闭会话</code></pre>
+<div class="callout callout-danger"><strong>请勿</strong>将 <code>officecli open</code> 作为后台 shell 任务运行。它会立即返回，守护进程会自动在后台运行。将其作为受监控的后台 shell 运行会产生僵尸进程和文件锁。</div>
+
+<h3>批处理模式</h3>
+<pre><code>officecli batch doc.hwpx &lt;&lt;'EOF'
+view text
+view stats
+view forms --auto
+EOF</code></pre>
+
+<h3>比较</h3>
+<pre><code>officecli compare a.hwpx b.hwpx                    # 文本差异（默认）
+officecli compare a.hwpx b.hwpx --mode outline      # 标题差异
+officecli compare a.hwpx b.hwpx --mode table --json  # 表格差异 JSON</code></pre>
+<p>使用 LCS DP 对齐（超过 1000 万单元格时回退到贪心算法）。表格相似度：维度权重 0.3 + 内容权重 0.7。页面范围过滤：<code>--pages "1-3,5"</code>。</p>
+
+<h3>图片与水印</h3>
+<pre><code># 内联图片
+officecli add doc.hwpx /section[1] --type picture --prop path=/path/to/image.png
+
+# 页面居中浮动图片
+officecli add doc.hwpx /section[1] --type picture \
+  --prop path=/path/to/image.png \
+  --prop anchor=page --prop halign=center --prop valign=middle
+
+# 水印（建议使用不透明 RGB PNG）
+officecli add doc.hwpx /section[1] --type watermark \
+  --prop src=/path/to/watermark.png --prop bright=0 --prop contrast=0</code></pre>
+
+<h3>监控与 HTML 预览</h3>
+<pre><code>officecli watch doc.hwpx           # 文件变更时自动刷新 HTML
+officecli unwatch doc.hwpx         # 停止监控
+officecli view doc.hwpx html --browser  # 一次性 A4 预览</code></pre>
+
+<!-- ─── Template Assembly ─── -->
+<h2>模板组装系统</h2>
+<p>HWP 使用独特的<strong>基础 + 覆盖模板系统</strong>。大多数 &#44277;&#47928;/&#48372;&#44256;&#49436;/&#54924;&#51032;&#47197;/&#51228;&#50504;&#49436; 的 HWPX 创建应使用此系统，而非 <code>officecli create</code> 空白文档。</p>
+
+<h3>可用模板</h3>
+<table>
+<tr><th>模板</th><th>用途</th><th>关键字段</th></tr>
+<tr><td><code>base</code></td><td>空 HWPX 骨架</td><td>mimetype、META-INF、空 header/section</td></tr>
+<tr><td><code>gonmun</code></td><td>公文（&#44277;&#47928;）</td><td>&#47928;&#49436;&#48264;&#54840;、&#49688;&#49888;、&#52280;&#51312;、&#51228;&#47785;、&#48376;&#47928;</td></tr>
+<tr><td><code>minutes</code></td><td>会议纪要（&#54924;&#51032;&#47197;）</td><td>&#51068;&#49884;、&#51109;&#49548;、&#52280;&#49437;&#51088;、&#50504;&#44148;、&#44208;&#51221;&#49324;&#54637;</td></tr>
+<tr><td><code>proposal</code></td><td>提案书（&#51228;&#50504;&#49436;）</td><td>&#51228;&#50504;&#44060;&#50836;、&#48176;&#44221;、&#45236;&#50857;、&#44592;&#45824;&#54952;&#44284;</td></tr>
+<tr><td><code>report</code></td><td>报告书（&#48372;&#44256;&#49436;）</td><td>&#50836;&#50557;、&#54788;&#54889;、&#48516;&#49437;、&#51228;&#50616;</td></tr>
+</table>
+
+<h3>方法 1：build_hwpx.py（推荐）</h3>
+<pre><code>python3 scripts/build_hwpx.py --template report --output Q4Report.hwpx
+
+# 然后使用 officecli 编辑内容
+officecli open Q4Report.hwpx
+officecli set Q4Report.hwpx /table/fill --prop '&#51228;&#47785;=2026 Q4 &#48372;&#44256;'
+# ... 继续编辑 ...
+officecli close Q4Report.hwpx</code></pre>
+
+<h3>方法 2：手动覆盖（用于自定义）</h3>
+<pre><code># 1. 复制基础骨架
+cp -r templates/base/ work/
+
+# 2. 覆盖领域特定样式
+cp -r templates/gonmun/* work/Contents/
+
+# 3. 根据需要编辑 header.xml 和 section0.xml
+#    参考：reference/header-xml-guide.md、reference/section0-xml-guide.md
+#    样式 ID：reference/style_id_maps.md
+
+# 4. 重新打包为 HWPX（ZIP 格式，含去除和压缩）
+python3 scripts/ooxml/pack.py work/ out.hwpx
+
+# 5. 验证
+officecli validate out.hwpx</code></pre>
+
+<!-- ─── Reference-Based Editing ─── -->
+<h2>基于参考的编辑</h2>
+<p>当用户说"按 X.hwpx 的格式"、"&#44277;&#47928; &#50577;&#49885;&#52376;&#47100;"、"&#44592;&#51316; &#48372;&#44256;&#49436; &#49828;&#53440;&#51068;"或提供源文件时 &mdash; <strong>从源文件开始，不要从零重建</strong>。</p>
+
+<h3>工作流</h3>
+<ol>
+<li><strong>复制源文件：</strong><code>cp source.hwpx target.hwpx</code> &mdash; 继承 header.xml（样式）、section0.xml（结构）、META-INF</li>
+<li><strong>打开：</strong><code>officecli open target.hwpx</code> &mdash; 守护进程立即返回（请勿作为后台任务运行）</li>
+<li><strong>仅删除正文段落</strong> &mdash; 保留 <code>header.xml</code>（charPr/paraPr/borderFill）、META-INF、settings</li>
+<li><strong>添加新内容</strong>使用已有的 <code>styleidref</code> 值 &mdash; 它们会自动应用</li>
+</ol>
+
+<div class="callout callout-warn"><strong>为什么先复制？</strong>HWPX 的 <code>header.xml</code> 保存了所有样式定义（charPr、paraPr、borderFill、listItems）。从零重建会破坏 styleidref 交叉引用、丢失一致的视觉规范、导致验证失败，并且耗时增加 10 倍。</div>
+
+<h3>模板优先级</h3>
+<ol>
+<li><strong>用户提供的源文件</strong> &mdash; 最高优先级模板</li>
+<li><strong><code>tests/fixtures/agentic/*.hwpx</code></strong> &mdash; 真实样本（公文、报告、含表格的会议纪要）</li>
+<li><strong><code>templates/{base,gonmun,minutes,proposal,report}/</code></strong> &mdash; 模板组装系统</li>
+<li><strong><code>officecli create</code> 空白文档</strong> &mdash; 仅在没有其他选择时使用</li>
+</ol>
+
+<!-- ─── Form Recognition & Fill ─── -->
+<h2>表单识别与填充</h2>
+
+<h3>四策略识别</h3>
+<table>
+<tr><th>#</th><th>策略</th><th>描述</th></tr>
+<tr><td>1</td><td>相邻单元格标签-值</td><td>表格标签 &rarr; 值检测（默认）</td></tr>
+<tr><td>2</td><td>表头 + 数据行</td><td>列标题识别</td></tr>
+<tr><td>3</td><td>单元格内模式</td><td><code>&#9744;</code> 复选框、<code>keyword(  )</code> 括号留空、<code>(label:  )</code> 标注</td></tr>
+<tr><td>4</td><td>键值表检测</td><td>16 个韩语关键词触发自动检测</td></tr>
+</table>
+
+<h3>三阶段填充流水线</h3>
+<ol>
+<li><strong>单元格内模式：</strong>复选框 <code>&#9744;</code> &rarr; <code>&#9745;</code>、括号留空填充、标注填充</li>
+<li><strong>表格标签-值：</strong>精确匹配 + 前缀 60% 匹配，四方向（<code>right</code>/<code>down</code>/<code>left</code>/<code>up</code>）</li>
+<li><strong>内联段落：</strong>正则后向引用匹配表格外的 <code>"label: value"</code></li>
+</ol>
+
+<h3>AI 表单填充工作流</h3>
+<pre><code># 步骤 1：识别所有字段
+officecli view form.hwpx forms --auto --json &gt; fields.json
+
+# 步骤 2：AI 映射标签 -&gt; 值（你的逻辑在此）
+
+# 步骤 3：填充匹配的字段
+officecli set form.hwpx /table/fill --prop '&#49457; &#47749;=&#54861;&#44600;&#46041;'</code></pre>
+
+<!-- ─── Binary HWP ─── -->
+<h2>二进制 HWP 支持（实验性）</h2>
+<p>原生二进制 <code>.hwp</code> 操作由 <code>rhwp</code> 桥接驱动。所有操作都受<strong>能力门控</strong>限制 &mdash; 在假定支持之前务必检查就绪状态。</p>
+
+<h3>发现命令</h3>
+<pre><code># 务必先运行这些命令
+officecli hwp doctor --json       # 运行时就绪检查
+officecli capabilities --json     # 完整能力矩阵
+officecli hwp --json              # 当前操作方案和策略</code></pre>
+
+<h3>已支持的操作（就绪时）</h3>
+<pre><code># 创建
+officecli create file.hwp --json
+
+# 查看/导出
+officecli view file.hwp text --json
+officecli view file.hwp svg --page 1 --json
+officecli view file.hwp png --page 1 --out /tmp/hwp-png --json
+officecli view file.hwp pdf --page 1 --out out.pdf --json
+officecli view file.hwp markdown --json
+officecli view file.hwp thumbnail --out thumb.png --json
+officecli view file.hwp info --json
+officecli view file.hwp tables --section 0 --json
+
+# 编辑字段
+officecli set file.hwp /field --prop name=&#54924;&#49324;&#47749; --prop value=&#47532;&#51648; --prop output=out.hwp --json
+
+# 编辑文本
+officecli set file.hwp /text --prop find=&#47560;&#52992;&#54021; --prop value=&#48652;&#47551;&#51648; --prop output=out.hwp --json
+
+# 插入文本
+officecli add file.hwp /text --type paragraph --prop value=&#49352;&#48376;&#47928; --prop output=out.hwp --json
+
+# 编辑表格单元格
+officecli set file.hwp /table/cell --prop section=0 --prop parent-para=3 \
+  --prop control=0 --prop cell=0 --prop value=&#50724;&#54588;&#49828;&#49472; --prop output=out.hwp --json
+
+# 原生操作（逃生舱口）
+officecli view file.hwp native --op get-style-list --json
+officecli set file.hwp /native-op --prop op=split-paragraph --prop output=out.hwp --json
+
+# HWPX 导出为 HWP
+officecli set input.hwpx /save-as-hwp --prop output=out.hwp --json</code></pre>
+
+<div class="callout callout-warn"><strong>策略：</strong>二进制 <code>.hwp</code> 变更优先使用输出模式：<code>--prop output=out.hwp</code>。仅在 <code>/text</code> 替换时使用原地模式，且仅在明确请求并确认 <code>safeInPlace.ready=true</code> 之后。原地模式必须包含 <code>--in-place --backup --verify</code>。</div>
+
+<!-- ─── Equation Handling ─── -->
+<h2>公式处理（&#49688;&#49885;）</h2>
+<p>HWPX 公式使用韩软的<strong>专有脚本语言</strong>。这不是 MathML，不是 LaTeX，也不是 OMML。</p>
+
+<table>
+<tr><th>脚本</th><th>结果</th></tr>
+<tr><td><code>{1 over 2}</code></td><td>1/2（分数）</td></tr>
+<tr><td><code>sqrt{x}</code></td><td>x 的平方根</td></tr>
+<tr><td><code>x^2</code>、<code>x_i</code></td><td>上标、下标</td></tr>
+<tr><td><code>int _0 ^1 f(x)dx</code></td><td>定积分</td></tr>
+<tr><td><code>sum _{i=1} ^n</code></td><td>求和</td></tr>
+<tr><td><code>lim _{x-&gt;0}</code></td><td>极限</td></tr>
+<tr><td><code>matrix{a&amp;b # c&amp;d}</code></td><td>2x2 矩阵</td></tr>
+</table>
+
+<pre><code># 创建公式
+officecli add doc.hwpx /section --type equation --prop 'script=x^2 + y^2 = r^2'
+
+# 查看所有公式
+officecli view doc.hwpx objects --object-type equation</code></pre>
+
+<div class="callout callout-info">公式脚本是不透明的 &mdash; 只能编辑 <code>&lt;hp:script&gt;</code> 文本，不能编辑二进制负载。数学考试文档（KICE）的每个表达式都需要 <code>&lt;hp:equation&gt;</code>。绝不要用纯文本表示数学公式。</div>
+
+<!-- ─── Korean Document Design ─── -->
+<h2>韩文文档设计原则</h2>
+
+<h3>政府表单美学（&#54620;&#44397; &#44277;&#44277;&#50577;&#49885; &#48120;&#44048;）</h3>
+<ul>
+<li><strong>表格是骨干：</strong>韩国表单以表格驱动。每个标签-值对都位于精确合并的单元格网格中。请精确保留网格结构。</li>
+<li><strong>标题层级：</strong>&#51228;1&#51312;（条） &gt; &#51228;1&#54637;（款） &gt; &#51228;1&#54840;（项）。使用 <code>styleidref</code> 设置大纲级别。</li>
+<li><strong>固定边距：</strong>政府表单使用标准 A4 边距（上下约 15mm，左右约 20mm）。不要修改现有文档的边距。</li>
+<li><strong>对齐方式：</strong>正文默认为 JUSTIFY（&#50577;&#51901; &#51221;&#47148;）。标题可能居中。正式文档的正文绝不要使用 LEFT 对齐。</li>
+</ul>
+
+<h3>均匀间距检测（&#44512;&#46321;&#48516;&#54624;）</h3>
+<p>韩国表单通常在单元格中对姓名使用均匀字符间距：<code>"&#54861; &#44600; &#46041;"</code>（每个字符之间有空格）。这是一种显示惯例，不是数据。</p>
+<ul>
+<li><strong>读取时：</strong>去除均匀空格以获得实际值（<code>"&#54861;&#44600;&#46041;"</code>）</li>
+<li><strong>写入时：</strong>如果模板单元格使用均匀间距，则插入空格以匹配（2 字：<code>"&#51060; &#51456;"</code>，3 字：<code>"&#54861; &#44600; &#46041;"</code>，4 字：<code>"&#45224;&#44417;&#48124;&#49688;"</code>）</li>
+<li><strong>检测正则：</strong><code>^(\S)\s(\S)\s(\S)$</code> 等（单字符组之间以 1 个空格分隔）</li>
+</ul>
+
+<h3>文档类型分类</h3>
+<table>
+<tr><th>类型</th><th>关键信号</th><th>示例</th></tr>
+<tr><td><code>exam</code></td><td>公式 10+ 个、矩形对象</td><td>KICE &#49688;&#45733;/&#47784;&#51032;&#44256;&#49324; 试卷</td></tr>
+<tr><td><code>form</code></td><td>表格 3+ 个、复选框（&#9744;/&#9632;）</td><td>&#45824;&#54617; &#49888;&#52397;&#49436;、&#51221;&#48512; &#50577;&#49885;</td></tr>
+<tr><td><code>regulation</code></td><td>&#9675; 项目符号 10+ 个、&#48324;&#52392;/&#51312;&#54637; 引用、表格 10+ 个</td><td>&#50868;&#50689;&#51648;&#52840;、&#45236;&#44508;、&#49884;&#54665;&#49464;&#52825;</td></tr>
+<tr><td><code>report</code></td><td>长文本、表格较少</td><td>&#48372;&#44256;&#49436;、&#45436;&#47928;</td></tr>
+<tr><td><code>mixed</code></td><td>以上皆不符</td><td>&#49324;&#50629;&#44228;&#54925;&#49436;</td></tr>
+</table>
+
+<!-- ─── Validation & QA ─── -->
+<h2>强制验证</h2>
+<div class="callout callout-danger"><strong>绝不跳过验证。</strong>在任何 HWPX 编辑操作之后，务必按顺序执行验证和视觉检查。</div>
+
+<pre><code># 1. 结构验证（必须通过）
+officecli validate output.hwpx
+
+# 2. PDF 视觉验证（必须检查）
+soffice --headless --convert-to pdf --outdir /tmp output.hwpx
+# 验证：表格位置、引导文字已移除、复选框正确、
+#         合并单元格文本在正确的行、数字未损坏
+
+# 3. 通过子代理进行视觉 QA（使用 reference/visual_qa_prompt.md）
+python3 scripts/contact_sheet.py /tmp/output.pdf sheet.png
+
+# 4. 如果有韩软 Office，也直接打开 .hwpx 检查</code></pre>
+
+<h3>交付前检查清单</h3>
+<ul class="checklist">
+<li><code>officecli validate</code> 通过（0 个错误）</li>
+<li><code>soffice --headless --convert-to pdf</code> &rarr; 视觉检查</li>
+<li>表格单元格位置正确（cellAddr 映射）</li>
+<li>引导文字（&#8251;、&#50696;&#49884;）已完全移除</li>
+<li>复选框 &#9744;/&#9632; 仅在预期单元格中</li>
+<li>合并单元格文本在正确的行</li>
+<li>如果有韩软 Office，直接打开 .hwpx 检查</li>
+</ul>
+
+<!-- ─── Security ─── -->
+<h2>安全</h2>
+<table>
+<tr><th>检查项</th><th>限制</th></tr>
+<tr><td>ZIP 炸弹</td><td>1000 个条目、200 MB、100:1 比率</td></tr>
+<tr><td>路径穿越</td><td>空字节、<code>..</code>、绝对路径、驱动器字母、符号链接</td></tr>
+<tr><td>XXE</td><td><code>DtdProcessing.Prohibit</code></td></tr>
+<tr><td>表格大小</td><td>200 列 x 10,000 行</td></tr>
+</table>
+
+<!-- ─── Reference Materials ─── -->
+<h2>参考资料与脚本</h2>
+
+<h3>参考文档（<code>reference/</code>）</h3>
+<table>
+<tr><th>文件</th><th>何时阅读</th><th>内容</th></tr>
+<tr><td><code>reference/hwpx-format.md</code></td><td>进行任何直接 XML 编辑之前</td><td>OWPML ZIP 结构、命名空间、文件布局、mimetype</td></tr>
+<tr><td><code>reference/header-xml-guide.md</code></td><td>添加/修改 charPr/paraPr/borderFill 样式时</td><td>如何向 header.xml 添加新样式</td></tr>
+<tr><td><code>reference/section0-xml-guide.md</code></td><td>编辑段落/表格/混合格式 XML 时</td><td>section0.xml 正文的 XML 模板</td></tr>
+<tr><td><code>reference/style_id_maps.md</code></td><td>模板覆盖时查找样式 ID</td><td>所有模板的完整样式 ID 索引</td></tr>
+<tr><td><code>reference/dependencies.md</code></td><td>首次设置/环境检查时</td><td>所需的 Python/系统软件包</td></tr>
+<tr><td><code>reference/visual_qa_prompt.md</code></td><td>通过子代理进行视觉 QA 时</td><td>用于 PDF 图像检查的即用提示词</td></tr>
+<tr><td><code>reference/table_templates/*.xml</code></td><td>插入预构建表格时</td><td>2x6、3x3、4x4、5x4 网格 XML 片段</td></tr>
+</table>
+
+<h3>Python 脚本（<code>scripts/</code>）</h3>
+<table>
+<tr><th>脚本</th><th>用途</th><th>命令</th></tr>
+<tr><td><code>hwpx_cli.py</code></td><td>统一 Python CLI（14+ 个命令）</td><td><code>python3 scripts/hwpx_cli.py {command} ...</code></td></tr>
+<tr><td><code>build_hwpx.py</code></td><td>基于模板创建</td><td><code>python3 scripts/build_hwpx.py --template {type}</code></td></tr>
+<tr><td><code>analyze_template.py</code></td><td>检查模板结构</td><td><code>python3 scripts/analyze_template.py work/</code></td></tr>
+<tr><td><code>create_document.py</code></td><td>创建空白或自定义 HWPX</td><td><code>python3 scripts/create_document.py OUT.hwpx</code></td></tr>
+<tr><td><code>table_builder.py</code></td><td>从 Python 对象构建表格 XML</td><td>内部使用</td></tr>
+<tr><td><code>page_guard.py</code></td><td>检测段落/表格/文本偏移</td><td><code>python3 scripts/page_guard.py -r ref.hwpx -o out.hwpx</code></td></tr>
+<tr><td><code>contact_sheet.py</code></td><td>QA 总览图（页面网格图像）</td><td><code>python3 scripts/contact_sheet.py INPUT.pdf sheet.png</code></td></tr>
+<tr><td><code>validate.py</code></td><td>9 级结构验证</td><td><code>python3 scripts/validate.py INPUT.hwpx</code></td></tr>
+<tr><td><code>hwp_reader.py</code></td><td>读取 HWP 5.0 二进制（只读）</td><td><code>python3 scripts/hwp_reader.py INPUT.hwp</code></td></tr>
+<tr><td><code>hwp_convert.py</code></td><td>HWP &rarr; HWPX 转换</td><td><code>python3 scripts/hwp_convert.py IN.hwp OUT.hwpx</code></td></tr>
+<tr><td><code>text_extract.py</code></td><td>从 HWPX 提取纯文本</td><td><code>python3 scripts/text_extract.py INPUT.hwpx</code></td></tr>
+</table>
+
+<!-- ─── Pattern-Match Editing ─── -->
+<h2>模式匹配编辑（L4 备选方案）</h2>
+<p>用于超出 officecli <code>set</code>/<code>find-replace</code> 能力的复杂表单编辑 &mdash; KICE 考试、多章节法规、碎片化文本节点。</p>
+
+<h3>核心流程</h3>
+<pre><code># 解包 HWPX
+python3 scripts/hwpx_cli.py open input.hwpx
+
+# 编辑 work/Contents/ 中的 XML 文件
+#（hwpx_cli.py 会自动去除 lineseg）
+
+# 重新打包
+python3 scripts/hwpx_cli.py save output.hwpx</code></pre>
+
+<h3>关键模式</h3>
+<table>
+<tr><th>模式</th><th>描述</th></tr>
+<tr><td>Lineseg 去除</td><td>在每次直接 XML 写入时移除过期的 <code>&lt;hp:linesegarray&gt;</code> 缓存</td></tr>
+<tr><td>复选框替换</td><td><code>&#9744;</code> &rarr; <code>&#9745;</code>，支持多 <code>&lt;t&gt;</code> 节点处理</td></tr>
+<tr><td>均匀间距规范化</td><td><code>"&#54861; &#44600; &#46041;"</code> &#8596; <code>"&#54861;&#44600;&#46041;"</code> 转换</td></tr>
+<tr><td>p[0] 巨型段落</td><td>secPr + tbl + 问题 1 文本合并在第一个段落中</td></tr>
+<tr><td>公式交错</td><td><code>&lt;t&gt;</code> &#8596; <code>&lt;equation&gt;</code> 交替排列 &mdash; 提取文本时跳过公式</td></tr>
+</table>
+
+<h3>Lineseg 去除（关键）</h3>
+<p>直接编辑 HWPX XML 时（非通过 officecli 或 <code>scripts/hwpx_cli.py</code>），必须去除所有 <code>&lt;hp:linesegarray&gt;</code> 元素。过期的布局缓存会导致字符重叠在一行上。</p>
+<pre><code>import re
+xml = re.sub(r'&lt;(?:hp:)?linesegarray[^&gt;]*&gt;.*?&lt;/(?:hp:)?linesegarray&gt;', '', xml, flags=re.DOTALL)
+xml = re.sub(r'&lt;(?:hp:)?linesegarray[^/]*/&gt;', '', xml)  # self-closing</code></pre>
+<div class="callout callout-info"><code>officecli</code> 和 <code>scripts/hwpx_cli.py</code> 会自动处理 lineseg 去除。此规则仅适用于原始 Python XML 编辑。</div>
+
+<!-- ─── Common Pitfalls ─── -->
+<h2>常见陷阱</h2>
+<table>
+<tr><th>陷阱</th><th>正确做法</th></tr>
+<tr><td><code>--props text=Hello</code></td><td><code>--prop text=Hello</code> &mdash; 始终使用单数 <code>--prop</code></td></tr>
+<tr><td><code>/body/p[1]</code> 路径</td><td>HWPX 使用 <code>/section[1]/p[1]</code> &mdash; 基于 section，不是 body</td></tr>
+<tr><td>shell 中未加引号的 <code>[N]</code></td><td><code>"/section[1]/p[1]"</code> &mdash; 路径始终加引号</td></tr>
+<tr><td>遗漏 <code>fontsize</code></td><td><code>--prop fontsize=11</code> 始终添加 &mdash; 防止 charPr 0 污染</td></tr>
+<tr><td><code>officecli view file.hwpx</code>（无模式）</td><td>报错。必须指定：<code>text</code>、<code>markdown</code>、<code>tables</code> 等。</td></tr>
+<tr><td>手动表格映射</td><td><code>view tables</code> 取代手动检查</td></tr>
+<tr><td>从模板重建 header.xml 样式</td><td>先 <code>cp source.hwpx target.hwpx</code>。阅读 <code>reference/style_id_maps.md</code></td></tr>
+<tr><td>将 <code>officecli open</code> 作为后台 shell 运行</td><td>在前台运行 &mdash; 它会立即返回，守护进程自动在后台运行</td></tr>
+<tr><td>直接编辑 XML 未去除 lineseg</td><td>过期缓存导致文本重叠。使用 <code>hwpx_cli.py</code> 或手动去除</td></tr>
+<tr><td>未阅读 reference/ 就进行自定义样式工作</td><td><code>reference/header-xml-guide.md</code> + <code>reference/style_id_maps.md</code> 为必读</td></tr>
+</table>
+
+<!-- ─── Anti-Patterns ─── -->
+<h2>反模式（必须避免）</h2>
+<ol>
+<li><strong>数学考试中没有公式 = 输出损坏</strong> &mdash; KICE 文档必须包含 <code>&lt;hp:equation&gt;</code> 元素</li>
+<li><strong>不要对 HWP 二进制进行无保护的覆盖</strong> &mdash; 优先使用 <code>--prop output=...</code>；仅在 <code>safeInPlace.ready=true</code> 时使用安全原地模式</li>
+<li><strong>当 rhwp 有原生原语时不要使用伪造的 HWPX 备选方案</strong> &mdash; 如果 OfficeCLI 缺少路由，报告缺口并等待批准</li>
+<li><strong>不要在未去除 lineseg 的情况下编辑 XML</strong> &mdash; 过期缓存导致文本重叠</li>
+<li><strong>不要在固定布局考试中使用可见的 QA 标记</strong> &mdash; 改用截图或附件证据</li>
+<li><strong>不要跨格式加载技能</strong> &mdash; 本技能仅限 <code>.hwp</code>/<code>.hwpx</code></li>
+<li><strong>不要重建模板中已有的样式</strong> &mdash; 先 <code>cp</code> 然后阅读 <code>reference/style_id_maps.md</code></li>
+<li><strong>不要忽略参考资料</strong> &mdash; <code>header-xml-guide.md</code>、<code>section0-xml-guide.md</code> 和 <code>style_id_maps.md</code> 是自定义 XML 工作的必读文件</li>
+</ol>
+
+<!-- ─── Dependencies ─── -->
+<h2>依赖项</h2>
+<table>
+<tr><th>工具</th><th>用途</th><th>是否必需？</th></tr>
+<tr><td><code>officecli</code>（全局）</td><td>主要 HWPX CLI + 实验性 rhwp 驱动的 HWP 桥接</td><td><strong>必需</strong></td></tr>
+<tr><td><code>python3</code></td><td>备选脚本（<code>scripts/*.py</code>）</td><td><strong>L3/L4 必需</strong></td></tr>
+<tr><td><code>lxml</code></td><td>scripts/* 的 XML 处理</td><td>L3/L4 必需</td></tr>
+<tr><td><code>pyhwp</code></td><td>旧版 HWP 5.0 二进制读取/转换备选方案</td><td>HWP&rarr;HWPX 备选方案必需</td></tr>
+<tr><td><code>soffice</code>（LibreOffice）</td><td>PDF 转换 + 视觉验证</td><td>推荐</td></tr>
+<tr><td>Java（<code>JAVA_HOME</code>）</td><td>H2Orestart HWP 转换引擎</td><td>仅用于 HWP&rarr;HWPX</td></tr>
+<tr><td><code>dotnet</code></td><td>从源码构建 officecli</td><td>仅用于构建</td></tr>
+</table>
+
+<h3>前置条件检查</h3>
+<pre><code># OfficeCLI（必需）
+which officecli &gt;/dev/null 2&gt;&amp;1 || echo "WARN: OfficeCLI not installed"
+
+# LibreOffice（推荐，需要时自动安装）
+which soffice &gt;/dev/null 2&gt;&amp;1 || echo "INFO: LibreOffice not installed"
+
+# Python 软件包（L3/L4 可选）
+python3 -c "import lxml; import pyhwp" 2&gt;/dev/null || echo "OPTIONAL: pip install lxml pyhwp"
+
+# Java（仅用于 HWP 转换）
+echo "JAVA_HOME=$JAVA_HOME"</code></pre>
+
+<!-- ─── Tool Discovery ─── -->
+<h2>工具发现</h2>
+<p>在猜测之前，始终先通过帮助确认语法。</p>
+<pre><code>officecli --help
+officecli hwp --json
+officecli hwp doctor --json
+officecli capabilities --json
+officecli view --help
+officecli set --help
+python3 scripts/hwpx_cli.py --help
+python3 scripts/build_hwpx.py --help</code></pre>
+
+<!-- ─── Exam Structure ─── -->
+<h2>考试 XML 结构模式</h2>
+<p>KICE 风格的考试试卷因固定布局限制需要特殊处理。</p>
+
+<table>
+<tr><th>模式</th><th>描述</th><th>检测方式</th></tr>
+<tr><td>分页/分栏符</td><td><code>pageBreak="1"</code> / <code>columnBreak="1"</code></td><td>页面边界 = 题目组边界</td></tr>
+<tr><td>p[0] 巨型段落</td><td>secPr + colPr + 标题 tbl + 问题 1 文本合并</td><td>所有内容在第一个段落中</td></tr>
+<tr><td>公式交错</td><td><code>&lt;t&gt;</code> &#8596; <code>&lt;equation&gt;</code> 交替排列</td><td>提取文本时跳过公式</td></tr>
+<tr><td>答案选项</td><td><code>&#9312;</code> + 5 个 <code>&lt;equation&gt;</code>（5 选 1）</td><td>自动检测答案段落</td></tr>
+<tr><td>文本碎片化</td><td>1-2 字符 <code>&lt;t&gt;</code> 拆分（HWP 转换产物）</td><td>先拼接所有文本再匹配</td></tr>
+<tr><td>双栏布局</td><td><code>&lt;hp:colPr type="NEWSPAPER" colCount="2"&gt;</code></td><td>考试特有布局</td></tr>
+</table>
+
+<div class="callout callout-danger"><strong>固定布局规则：</strong>不要在考试文档的可见正文中插入 QA/校对标记。在题目正文中出现 <code>[CU TEMPLATE EDIT ...]</code> 或 <code>VISUAL QA</code> 等字符串属于严重视觉错误。请改用截图作为前后对照。</div>
+
+<!-- ─── HWP to HWPX Conversion ─── -->
+<h2>HWP &rarr; HWPX 转换</h2>
+
+<h3>格式检测</h3>
+<pre><code>file doc.hwpx   # "Zip archive" -&gt; HWPX（ZIP + OWPML XML）
+file doc.hwp    # "HWP Document" -&gt; HWP 5.0 二进制</code></pre>
+
+<h3>结构差异</h3>
+<table>
+<tr><th>方面</th><th>原生 HWPX</th><th>HWP &rarr; HWPX 转换后</th></tr>
+<tr><td>文本单元</td><td>每个 run 一个短 <code>&lt;t&gt;</code></td><td>整个段落在一个 <code>&lt;t&gt;</code> 中</td></tr>
+<tr><td>标题 p[0]</td><td>secPr + tbl + 内容</td><td>页码碎片 <code>&lt;t&gt;20&lt;/t&gt;</code> + <code>&lt;t&gt;1&lt;/t&gt;</code> 混入</td></tr>
+<tr><td>编辑方式</td><td>run 级别精确替换</td><td>需要原始字符串替换或整段落交换</td></tr>
+</table>
+
+<h3>转换文件的编辑策略</h3>
+<ol>
+<li><strong>标题：</strong>run 感知替换 &mdash; <code>set_run_text(p0, 'old', 'new')</code>（跳过页码 run）</li>
+<li><strong>正文：</strong>对序列化 XML 进行原始字符串替换 &mdash; <code>sec0.replace(old, new)</code></li>
+<li><strong>多 <code>&lt;t&gt;</code> 单元格：</strong>使用 <code>ReplaceTextInCell()</code> &mdash; 拼接所有 <code>&lt;t&gt;</code> &rarr; 匹配 &rarr; 重新分配</li>
+</ol>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">生产力技能</a>
+<a class="next" href="docx.html">DOCX 技能</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

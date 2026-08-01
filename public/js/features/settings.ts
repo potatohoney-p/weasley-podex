@@ -1,0 +1,10 @@
+// settings.ts — barrel re-export (preserves all import paths)
+export { loadSettings, updateSettings, setPerm, getModelValue, handleModelSelect, applyCustomModel, onPerCliProviderChange, onCliChange, saveActiveCliSettings, savePerCli, onFlushCliChange, loadFlushAgentSidebar } from './settings-core.js';
+export { setTelegram, setForwardAll, setTelegramMentionOnly, saveTelegramSettings } from './settings-telegram.js';
+export { setDiscord, setDiscordForwardAll, setDiscordAllowBots, setDiscordMentionOnly, saveDiscordSettings } from './settings-discord.js';
+export { setActiveChannel, loadFallbackOrder, saveFallbackOrder } from './settings-channel.js';
+export { loadMcpServers, syncMcpServers, installMcpGlobal, openMcpModal, initMcpModal } from './settings-mcp.js';
+export { loadCliStatus, scheduleCliStatusRefresh, setCliStatusInterval } from './settings-cli-status.js';
+export { initCliStatusToggle, initCliStatusPreviewHooks, isCliStatusExpanded, expandCliStatus, isEmbeddedPreviewFrame } from './settings-cli-status.js';
+export { initSttSettings } from './settings-stt.js';
+export { openPromptModal, closePromptModal, savePromptFromModal, openTemplateModal, saveTemplateFromModal, closeTemplateModal, templateGoBack, toggleDevMode } from './settings-templates.js';

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workflow Commands — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link active" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Workflow Commands</h1>
+<p class="lead">기획, 숙의, 감사, 목표 관리, 병렬 팀 오케스트레이션을 위한 슬래시 커맨드입니다. 이 커맨드들은 podex의 구조화된 워크플로우 라이프사이클을 구동합니다 -- 초기 아이디어부터 실행과 완료까지.</p>
+
+<h2>개요</h2>
+<p>워크플로우 커맨드는 채팅 인터페이스에서 <code>/</code>를 앞에 붙여 실행합니다. 이 커맨드들은 단일 대화 턴으로는 수행하기 어려운 전문적인 기획 및 오케스트레이션 루틴을 실행합니다. 각 커맨드는 고유한 컨텍스트, 프롬프트, 출력 구조를 가진 전용 워크플로우를 활성화합니다.</p>
+
+<div class="callout callout-info">정확한 구문을 외울 필요는 없습니다. 자연어로도 동작합니다 -- <code>"이 기능 계획 세워줘"</code>라고 말하면 podex가 자동으로 <code>/plan</code>으로 라우팅합니다. 슬래시 커맨드 형식은 정밀한 제어가 필요할 때 사용하세요.</div>
+
+<table>
+<tr><th>커맨드</th><th>용도</th><th>간단한 예시</th></tr>
+<tr><td><code>/plan</code></td><td>구현 계획 생성</td><td><code>/plan add OAuth2 login</code></td></tr>
+<tr><td><code>/interview</code></td><td>목표 지향적 질문으로 요구사항 명확화</td><td><code>/interview build a notification system</code></td></tr>
+<tr><td><code>/deliberate</code></td><td>다중 페르소나 숙의 (기획자 + 아키텍트 + 비평가)</td><td><code>/deliberate database migration strategy</code></td></tr>
+<tr><td><code>/planaudit</code></td><td>기존 계획의 읽기 전용 감사</td><td><code>/planaudit</code></td></tr>
+<tr><td><code>/goal</code></td><td>영속적 목표 라이프사이클 관리</td><td><code>/goal set Implement auth module</code></td></tr>
+<tr><td><code>/team</code></td><td>병렬 멀티 에이전트 팀 오케스트레이션</td><td><code>/team plan Refactor API layer</code></td></tr>
+<tr><td><code>/gd</code></td><td>활성 goal 강제 완료 (<code>/goal done --force</code> 축약)</td><td><code>/gd evidence on disk</code></td></tr>
+</table>
+
+<h2 id="plan">/plan [request]</h2>
+<p>자연어 요청으로부터 구조화된 구현 계획을 생성합니다. 계획에는 단계, 파일 수준 작업, 수락 기준, 위험 요소, 예상 공수가 포함됩니다. 출력은 마크다운 형식이며 <code>/goal</code>로 직접 전달할 수 있습니다.</p>
+
+<h3>인자</h3>
+<table>
+<tr><th>인자</th><th>필수 여부</th><th>설명</th></tr>
+<tr><td><code>[request]</code></td><td>선택</td><td>계획할 내용의 자유 형식 설명. 생략하면 podex가 현재 대화 컨텍스트를 사용합니다.</td></tr>
+</table>
+
+<h3>생성되는 내용</h3>
+<ul>
+<li><strong>문제 정의</strong> -- 어떤 문제를 왜 해결하는지</li>
+<li><strong>범위 및 비목표</strong> -- 범위 확대를 방지하기 위한 명시적 경계</li>
+<li><strong>구현 단계</strong> -- 의존성이 포함된 순서화된 단계</li>
+<li><strong>파일 계획</strong> -- 파일별 생성/수정/삭제 주석</li>
+<li><strong>수락 기준</strong> -- "완료"를 정의하는 테스트 가능한 조건</li>
+<li><strong>위험 및 완화 방안</strong> -- 알려진 불확실성과 대안 전략</li>
+<li><strong>공수 추정</strong> -- 대략적인 시간/복잡도 등급</li>
+</ul>
+
+<h3>사용 예시</h3>
+<pre><code># Plan a new feature
+/plan add SSE-first real-time notifications
+
+# Plan a refactor
+/plan refactor the authentication middleware to support multiple providers
+
+# Plan from conversation context (no argument)
+/plan
+
+# Plan with constraints
+/plan migrate from REST to GraphQL, keep backward compatibility for 2 releases</code></pre>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"이 기능 계획 세워줘"</code>, <code>"플랜 만들어줘"</code>, <code>"구현 계획 짜줘"</code> -- 모두 <code>/plan</code>으로 라우팅됩니다. 한국어와 영어를 자유롭게 섞어 쓸 수 있습니다: <code>"OAuth 로그인 plan 세워줘"</code>.</div>
+
+<h2 id="interview">/interview &lt;request&gt;</h2>
+<p>구현에 바로 뛰어들기 전에, <code>/interview</code>는 모호한 요구사항을 명확히 하기 위해 1--3개의 목표 지향적 질문을 던집니다. 이를 통해 잘못 이해한 스펙으로 인한 불필요한 작업을 방지하고, 하위 커맨드(<code>/plan</code>, <code>/goal</code>)가 활용할 수 있는 정제된 요구사항 문서를 생성합니다.</p>
+
+<h3>인자</h3>
+<table>
+<tr><th>인자</th><th>필수 여부</th><th>설명</th></tr>
+<tr><td><code>&lt;request&gt;</code></td><td>필수</td><td>명확히 할 기능 또는 작업 설명. 모호해도 괜찮습니다 -- 그것이 이 커맨드의 목적입니다.</td></tr>
+</table>
+
+<h3>동작 방식</h3>
+<ol>
+<li><strong>분석</strong> -- 요청을 파싱하여 모호한 영역, 암묵적 가정, 누락된 제약 조건을 식별합니다</li>
+<li><strong>질문</strong> -- 구현 결정에 미치는 영향도 순으로 정렬된 1--3개의 집중 질문을 생성합니다</li>
+<li><strong>정제</strong> -- 답변을 반영하여 정제된 요구사항 요약을 작성합니다</li>
+<li><strong>인계</strong> -- 정제된 요구사항은 <code>/plan</code> 또는 <code>/goal set</code>에서 바로 사용할 수 있습니다</li>
+</ol>
+
+<h3>사용 예시</h3>
+<pre><code># Clarify a vague request
+/interview build a notification system
+
+# Clarify with some context already provided
+/interview add user roles -- we need admin and viewer at minimum
+
+# Clarify a complex migration
+/interview migrate the monolith to microservices</code></pre>
+
+<p>인터뷰에서 생성될 수 있는 일반적인 질문 예시:</p>
+<pre><code>1. Should notifications use the SSE-first event channel or polling?
+   This affects architecture, infrastructure, and client complexity.
+
+2. What notification channels are in scope -- in-app only, or also
+   email/push/SMS?
+
+3. Do notifications need to persist (read/unread state, history) or
+   are they ephemeral?</code></pre>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"요구사항 정리해줘"</code>, <code>"질문 좀 해줘"</code>, <code>"뭐가 필요한지 인터뷰해줘"</code> -- 모두 <code>/interview</code>로 라우팅됩니다. 대략적인 아이디어는 있지만 세부 사항을 아직 정리하지 못했을 때 유용합니다.</div>
+
+<h2 id="deliberate">/deliberate &lt;topic&gt;</h2>
+<p>주제에 대해 구조화된 다중 페르소나 숙의를 실행합니다. 세 가지 내부 페르소나 -- <strong>기획자</strong>, <strong>아키텍트</strong>, <strong>비평가</strong> -- 가 서로 다른 관점에서 주제를 토론하여, 트레이드오프, 권장 사항, 반대 의견이 포함된 균형 잡힌 분석을 생성합니다.</p>
+
+<h3>인자</h3>
+<table>
+<tr><th>인자</th><th>필수 여부</th><th>설명</th></tr>
+<tr><td><code>&lt;topic&gt;</code></td><td>필수</td><td>숙의할 설계 결정, 아키텍처 선택, 또는 기술적 트레이드오프.</td></tr>
+</table>
+
+<h3>세 가지 페르소나</h3>
+<table>
+<tr><th>페르소나</th><th>역할</th><th>초점</th></tr>
+<tr><td><strong>Planner</strong></td><td>프로젝트 리드</td><td>실현 가능성, 일정, 리소스 배분, 단계 구성, 위험 관리</td></tr>
+<tr><td><strong>Architect</strong></td><td>시스템 설계자</td><td>기술적 건전성, 확장성, 유지보수성, 패턴, 데이터 흐름</td></tr>
+<tr><td><strong>Critic</strong></td><td>악마의 변호인</td><td>엣지 케이스, 장애 시나리오, 숨겨진 비용, 과잉 설계, 누락된 대안</td></tr>
+</table>
+
+<h3>출력 구조</h3>
+<ul>
+<li><strong>요약</strong> -- 합의(또는 합의 부재)에 대한 한 문단 요약</li>
+<li><strong>기획자의 관점</strong> -- 실행 가능성 및 단계 구성 권장 사항</li>
+<li><strong>아키텍트의 관점</strong> -- 해당되는 경우 다이어그램을 포함한 기술 분석</li>
+<li><strong>비평가의 관점</strong> -- 반론, 위험 요소, 대안적 접근 방식</li>
+<li><strong>권장 사항</strong> -- 신뢰 수준 및 주의 사항이 포함된 최종 권장 사항</li>
+</ul>
+
+<h3>사용 예시</h3>
+<pre><code># Deliberate an architecture decision
+/deliberate should we use event sourcing or CRUD for the order service?
+
+# Deliberate a technology choice
+/deliberate database migration strategy: PostgreSQL vs CockroachDB for multi-region
+
+# Deliberate a process decision
+/deliberate monorepo vs polyrepo for our 5-service backend
+
+# Deliberate with constraints
+/deliberate real-time sync approach -- must work offline, team of 2, 3-week deadline</code></pre>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"이것 좀 토론해줘"</code>, <code>"장단점 분석해줘"</code>, <code>"설계 논의해줘"</code>, <code>"아키텍처 deliberate 해줘"</code> -- 모두 <code>/deliberate</code>로 라우팅됩니다. 단순한 의견 이상이 필요할 때 -- 결정이 장기적인 영향을 미칠 때 사용하세요.</div>
+
+<h2 id="planaudit">/planaudit [plan]</h2>
+<p>기존 계획에 대한 읽기 전용 감사를 수행합니다. 계획을 생성하는 <code>/plan</code>과 달리, <code>/planaudit</code>는 계획을 검토합니다 -- 누락 사항, 비현실적인 추정, 놓친 엣지 케이스, 의존성 문제, 범위 위험을 확인합니다. 계획을 수정하지 않으며, 감사 보고서를 생성합니다.</p>
+
+<h3>인자</h3>
+<table>
+<tr><th>인자</th><th>필수 여부</th><th>설명</th></tr>
+<tr><td><code>[plan]</code></td><td>선택</td><td>감사할 계획 텍스트. 생략하면 현재 대화에서 가장 최근에 생성된 계획을 감사합니다.</td></tr>
+</table>
+
+<h3>감사 차원</h3>
+<table>
+<tr><th>차원</th><th>확인 내용</th></tr>
+<tr><td><strong>완전성</strong></td><td>모든 요구사항이 반영되었는가? 누락된 단계나 작업이 있는가?</td></tr>
+<tr><td><strong>실현 가능성</strong></td><td>시간 추정이 현실적인가? 의존성이 확보되어 있는가?</td></tr>
+<tr><td><strong>정확성</strong></td><td>제안된 접근 방식이 기술적으로 건전한가?</td></tr>
+<tr><td><strong>엣지 케이스</strong></td><td>오류 처리, 동시성, 장애 시나리오를 고려했는가?</td></tr>
+<tr><td><strong>범위 위험</strong></td><td>범위 확대가 있는가? 비목표가 명확히 정의되어 있는가?</td></tr>
+<tr><td><strong>테스트 가능성</strong></td><td>수락 기준이 측정 가능하고 검증 가능한가?</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Audit the current plan in conversation
+/planaudit
+
+# Audit a specific plan
+/planaudit The plan is: Phase 1 - Set up database schema ...
+
+# Audit after generating a plan
+/plan add user authentication
+/planaudit</code></pre>
+
+<p>감사 출력 예시:</p>
+<pre><code>Plan Audit Report
+=================
+Overall score: 7/10
+
+[PASS] Completeness -- All stated requirements have corresponding tasks
+[WARN] Feasibility  -- Phase 2 estimates 2 days for OAuth integration;
+                       typical implementations take 3-5 days
+[FAIL] Edge cases   -- No error handling for token refresh failures
+[PASS] Scope risk   -- Non-goals clearly stated
+[WARN] Testability  -- "Works correctly" is not a measurable criterion;
+                       suggest specific test scenarios</code></pre>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"플랜 검토해줘"</code>, <code>"계획 감사해줘"</code>, <code>"이 플랜 괜찮은지 봐줘"</code> -- 모두 <code>/planaudit</code>로 라우팅됩니다. 계획을 확정하기 전에 실행하여 사각지대를 조기에 발견하세요.</div>
+
+<h2 id="goal">/goal set|status|done|cancel|update|history</h2>
+<p>대화 세션을 넘어 유지되는 영속적 목표를 관리합니다. 목표는 진행 상황을 추적하고, 컨텍스트를 축적하며, 생성부터 완료까지 구조화된 라이프사이클을 제공합니다. 목표 상태는 디스크에 저장되며 대시보드를 통해 인스턴스 간에 동기화됩니다.</p>
+
+<h3>하위 커맨드</h3>
+<table>
+<tr><th>하위 커맨드</th><th>인자</th><th>설명</th></tr>
+<tr><td><code>/goal set &lt;description&gt;</code></td><td>목표 설명 (자유 텍스트)</td><td>주어진 설명으로 새 목표를 생성합니다. 목표 ID를 반환합니다.</td></tr>
+<tr><td><code>/goal status</code></td><td>없음</td><td>현재 진행 상황, 단계, 마지막 활동과 함께 모든 활성 목표를 표시합니다.</td></tr>
+<tr><td><code>/goal done [id]</code></td><td>선택적 목표 ID</td><td>목표를 완료로 표시합니다. 목표 기록을 최종 확정하는 API 호출을 트리거합니다. ID를 지정하지 않으면 가장 최근의 활성 목표를 완료합니다.</td></tr>
+<tr><td><code>/goal cancel [id]</code></td><td>선택적 목표 ID</td><td>목표를 취소합니다. 목표는 아카이브되지만 삭제되지 않아 기록이 보존됩니다.</td></tr>
+<tr><td><code>/goal update &lt;message&gt;</code></td><td>진행 상황 업데이트 텍스트</td><td>활성 목표에 진행 상황 업데이트를 추가합니다. 업데이트에는 타임스탬프가 찍히며 목표 타임라인에 표시됩니다.</td></tr>
+<tr><td><code>/goal history</code></td><td>없음</td><td>활성, 완료, 취소된 모든 목표의 전체 이력을 타임스탬프 및 진행 기록과 함께 표시합니다.</td></tr>
+</table>
+
+<h3>목표 라이프사이클</h3>
+<pre><code>  set ──> active ──> done
+             │
+             ├──> update (repeatable, appends progress)
+             │
+             └──> cancel (archived)</code></pre>
+
+<h3>사용 예시</h3>
+<pre><code># Create a goal
+/goal set Implement SSE-first notification system with read/unread tracking
+
+# Check progress
+/goal status
+
+# Record incremental progress
+/goal update Phase 1 complete -- schema and migrations are in place
+/goal update Phase 2 in progress -- SSE event publisher done, client pending
+
+# Complete the goal
+/goal done
+
+# Cancel a goal that is no longer relevant
+/goal cancel 3
+
+# Review all past goals
+/goal history</code></pre>
+
+<div class="callout callout-warn"><code>/goal done</code>은 CLI 커맨드가 아니라 API 호출입니다. 목표를 아카이브하고, 최종 컨텍스트 스냅샷을 저장하고, 대시보드를 업데이트하는 서버 측 최종 확정을 트리거합니다. 서버가 실행 중인지 확인하세요.</div>
+
+<h3>다른 커맨드와의 통합</h3>
+<p>목표는 다른 워크플로우 커맨드와 자연스럽게 조합됩니다:</p>
+<pre><code># Interview, plan, then set a goal from the refined output
+/interview build user authentication
+# (answer the clarifying questions)
+/plan
+/goal set Implement user authentication per refined requirements
+
+# The goal tracks progress as you work
+/goal update Auth middleware scaffolded, starting JWT integration
+/goal update JWT working, adding refresh token rotation
+/goal done</code></pre>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"목표 설정해줘"</code>는 <code>/goal set</code>으로 라우팅됩니다. <code>"지금 상태 알려줘"</code>는 <code>/goal status</code>로 라우팅됩니다. <code>"이거 다 했어"</code>는 <code>/goal done</code>으로 라우팅됩니다. <code>"목표 취소해줘"</code>는 <code>/goal cancel</code>로 라우팅됩니다. <code>"진행 상황 업데이트해줘"</code>는 <code>/goal update</code>로 라우팅됩니다. <code>"지금까지 한 거 보여줘"</code>는 <code>/goal history</code>로 라우팅됩니다.</div>
+
+<h2 id="team">/team plan|audit|status|collect|stop</h2>
+<p>대규모 작업을 위한 병렬 멀티 에이전트 팀을 오케스트레이션합니다. <code>/team</code> 커맨드는 여러 하위 에이전트를 생성하고, 독립적인 작업 스트림을 할당하며, 진행 상황을 모니터링하고, 결과를 통합된 출력으로 수집합니다.</p>
+
+<h3>하위 커맨드</h3>
+<table>
+<tr><th>하위 커맨드</th><th>인자</th><th>설명</th></tr>
+<tr><td><code>/team plan &lt;request&gt;</code></td><td>작업 설명</td><td>요청을 병렬 작업 스트림으로 분해하고, 에이전트를 할당하고, 실행을 시작합니다. 팀 세션 ID를 반환합니다.</td></tr>
+<tr><td><code>/team audit</code></td><td>없음</td><td>교차 에이전트 감사를 실행합니다 -- 모든 활성 에이전트에 걸쳐 충돌, 중복 작업, 일관성 없는 가정, 통합 누락을 확인합니다.</td></tr>
+<tr><td><code>/team status</code></td><td>없음</td><td>현재 팀 세션의 모든 에이전트 상태를 표시합니다: 할당된 작업, 진행 상황, 차단 요소.</td></tr>
+<tr><td><code>/team collect</code></td><td>없음</td><td>완료된 모든 에이전트의 결과를 수집하고, 출력을 병합하고, 충돌을 해결하여 통합된 산출물을 생성합니다.</td></tr>
+<tr><td><code>/team stop</code></td><td>없음</td><td>현재 팀 세션의 모든 에이전트를 정상적으로 중지합니다. 진행 중인 작업은 저장되지만 최종 확정되지 않습니다.</td></tr>
+</table>
+
+<h3>동작 방식</h3>
+<ol>
+<li><strong>분해</strong> -- <code>/team plan</code>이 요청을 분석하고 병렬로 실행할 수 있는 독립적인 작업 스트림을 식별합니다</li>
+<li><strong>할당</strong> -- 각 작업 스트림은 고유한 컨텍스트와 지시 사항을 가진 하위 에이전트에 할당됩니다</li>
+<li><strong>실행</strong> -- 에이전트들이 병렬로 실행됩니다. 각 에이전트는 파일 시스템 접근 권한이 있지만 대화 컨텍스트는 공유하지 않습니다</li>
+<li><strong>모니터링</strong> -- <code>/team status</code>가 모든 에이전트의 진행 상황 업데이트를 폴링합니다</li>
+<li><strong>감사</strong> -- <code>/team audit</code>가 병합 전에 교차 에이전트 충돌을 확인합니다</li>
+<li><strong>수집</strong> -- <code>/team collect</code>가 모든 에이전트 출력을 하나의 일관된 결과로 병합합니다</li>
+</ol>
+
+<h3>사용 예시</h3>
+<pre><code># Refactor 4 API modules in parallel
+/team plan Refactor user, order, product, and payment modules to use new BaseService class
+
+# Check how agents are doing
+/team status
+
+# Run an audit to catch conflicts
+/team audit
+
+# Collect all results when agents finish
+/team collect
+
+# Emergency stop
+/team stop</code></pre>
+
+<h3>실전 워크플로우</h3>
+<pre><code># Full team workflow for a large migration
+/interview migrate from Express to Hono
+# (answer clarifying questions)
+/plan
+/planaudit
+/goal set Migrate Express to Hono
+
+# Execute in parallel
+/team plan Migrate Express to Hono -- routes, middleware, tests, docs
+
+# Monitor and audit
+/team status
+/team audit
+
+# Collect and finalize
+/team collect
+/goal update Migration complete, all tests passing
+/goal done</code></pre>
+
+<div class="callout callout-warn">병렬 에이전트들은 파일 시스템을 공유하지만 대화 컨텍스트는 공유하지 않습니다. 동일한 파일을 수정하는 작업을 에이전트에 할당하지 마세요 -- 병합 충돌이 발생할 수 있습니다. <code>/team collect</code> 전에 <code>/team audit</code>를 사용하여 이러한 문제를 감지하세요.</div>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"팀으로 나눠서 작업해줘"</code>는 <code>/team plan</code>으로 라우팅됩니다. <code>"팀 상태 확인해줘"</code>는 <code>/team status</code>로 라우팅됩니다. <code>"결과 모아줘"</code>는 <code>/team collect</code>로 라우팅됩니다. <code>"팀 작업 중지해줘"</code>는 <code>/team stop</code>으로 라우팅됩니다. <code>"팀 감사해줘"</code>는 <code>/team audit</code>로 라우팅됩니다.</div>
+
+<h2>커맨드 체이닝</h2>
+<p>워크플로우 커맨드는 조합하도록 설계되었습니다. 일반적인 기능 개발 라이프사이클은 여러 커맨드를 순서대로 연결합니다:</p>
+
+<pre><code># 1. Clarify requirements
+/interview 실시간 알림 시스템 만들어야 돼
+
+# 2. Generate a plan from the refined requirements
+/plan
+
+# 3. Audit the plan for gaps
+/planaudit
+
+# 4. Deliberate on key design decisions
+/deliberate SSE event channel vs polling for our notification delivery
+
+# 5. Set a persistent goal
+/goal set Implement real-time notification system (SSE-first)
+
+# 6. Execute with a parallel team (for large tasks)
+/team plan Implement notification system -- server, client, tests, docs
+
+# 7. Monitor and collect
+/team status
+/team collect
+
+# 8. Finalize
+/goal update All modules integrated and tested
+/goal done</code></pre>
+
+<h2>빠른 참조</h2>
+<table>
+<tr><th>하고 싶은 것</th><th>커맨드</th><th>한국어 단축 표현</th></tr>
+<tr><td>계획 생성</td><td><code>/plan [request]</code></td><td><code>"계획 세워줘"</code></td></tr>
+<tr><td>요구사항 명확화</td><td><code>/interview &lt;request&gt;</code></td><td><code>"요구사항 정리해줘"</code></td></tr>
+<tr><td>다중 페르소나 숙의</td><td><code>/deliberate &lt;topic&gt;</code></td><td><code>"장단점 분석해줘"</code></td></tr>
+<tr><td>계획 감사</td><td><code>/planaudit</code></td><td><code>"플랜 검토해줘"</code></td></tr>
+<tr><td>목표 생성</td><td><code>/goal set &lt;desc&gt;</code></td><td><code>"목표 설정해줘"</code></td></tr>
+<tr><td>목표 진행 상황 확인</td><td><code>/goal status</code></td><td><code>"상태 알려줘"</code></td></tr>
+<tr><td>목표 완료</td><td><code>/goal done</code></td><td><code>"다 했어"</code></td></tr>
+<tr><td>목표 취소</td><td><code>/goal cancel</code></td><td><code>"목표 취소"</code></td></tr>
+<tr><td>목표 진행 상황 업데이트</td><td><code>/goal update &lt;msg&gt;</code></td><td><code>"진행 상황 업데이트"</code></td></tr>
+<tr><td>목표 이력 보기</td><td><code>/goal history</code></td><td><code>"목표 히스토리"</code></td></tr>
+<tr><td>병렬 팀 시작</td><td><code>/team plan &lt;request&gt;</code></td><td><code>"팀으로 나눠서 해줘"</code></td></tr>
+<tr><td>팀 상태 확인</td><td><code>/team status</code></td><td><code>"팀 상태 확인"</code></td></tr>
+<tr><td>팀 작업 감사</td><td><code>/team audit</code></td><td><code>"팀 감사"</code></td></tr>
+<tr><td>팀 결과 수집</td><td><code>/team collect</code></td><td><code>"결과 모아줘"</code></td></tr>
+<tr><td>모든 에이전트 중지</td><td><code>/team stop</code></td><td><code>"팀 중지"</code></td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="session.html">Session</a>
+<a class="next" href="model.html">Model &amp; CLI</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

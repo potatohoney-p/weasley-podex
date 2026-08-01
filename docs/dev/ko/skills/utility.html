@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Utility Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link active" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Utility Skills</h1>
+<p class="lead">일상적인 작업을 위한 범용 도우미 스킬입니다. 문서 처리(PDF, XLSX), 메모리 관리, 화면 캡처, 비밀번호, 날씨, 텍스트 음성 변환, 동영상 다운로드 등을 포함합니다. 이 스킬들은 다른 카테고리에 깔끔하게 분류되지 않는 다양하지만 필수적인 작업들을 처리합니다.</p>
+
+<h2>Overview</h2>
+<p>Utility 스킬은 광범위한 일상 작업을 다룹니다. 일부는 하네스에서 직접 로드하는 내장 스킬이고, 나머지는 MCP 서버 또는 외부 도구 연동으로 구현됩니다. 이 중 5개 스킬은 기본 활성화(Active) 상태로 제공되며, 나머지 7개는 사용 가능하지만 설정이나 외부 의존성이 필요합니다.</p>
+
+<table>
+<tr><th>스킬</th><th>상태</th><th>유형</th><th>설명</th></tr>
+<tr><td><code>memory</code></td><td><strong>Active</strong></td><td>Built-in</td><td>자동 저장 및 불러오기를 지원하는 세션 간 영구 메모리</td></tr>
+<tr><td><code>pdf</code></td><td><strong>Active</strong></td><td>Built-in</td><td>PDF 문서 읽기, 파싱, 텍스트 추출 및 요약</td></tr>
+<tr><td><code>pdf-vision</code></td><td><strong>Active</strong></td><td>Built-in</td><td>스캔 문서 및 이미지에 대한 비전 기반 PDF 읽기</td></tr>
+<tr><td><code>screen-capture</code></td><td><strong>Active</strong></td><td>Built-in</td><td>현재 화면 또는 특정 영역의 스크린샷 캡처</td></tr>
+<tr><td><code>xlsx</code></td><td><strong>Active</strong></td><td>Built-in</td><td>Excel 스프레드시트 읽기, 쓰기 및 조작</td></tr>
+<tr><td><code>1password</code></td><td>Available</td><td>MCP</td><td>1Password 볼트에서 자격 증명 및 비밀 조회</td></tr>
+<tr><td><code>goplaces</code></td><td>Available</td><td>MCP</td><td>장소 검색, 길찾기 및 장소 정보 제공</td></tr>
+<tr><td><code>summarize</code></td><td>Available</td><td>Built-in</td><td>긴 텍스트, 기사 또는 트랜스크립트 요약</td></tr>
+<tr><td><code>tts</code></td><td>Available</td><td>External</td><td>음성 출력을 위한 텍스트 음성 변환</td></tr>
+<tr><td><code>video-downloader</code></td><td>Available</td><td>External</td><td>URL에서 동영상 다운로드 (YouTube 등)</td></tr>
+<tr><td><code>video-frames</code></td><td>Available</td><td>External</td><td>분석을 위한 동영상 파일 프레임 추출</td></tr>
+<tr><td><code>weather</code></td><td>Available</td><td>MCP</td><td>위치별 현재 날씨 및 예보</td></tr>
+</table>
+
+<!-- ================================================================== -->
+<!-- memory -->
+<!-- ================================================================== -->
+
+<h2 id="memory">memory</h2>
+<p>세션 간에 유지되는 영구 메모리입니다. memory 스킬은 중요한 컨텍스트 -- 결정 사항, 선호 설정, 프로젝트 노트, 피드백 -- 를 자동으로 저장하고 관련될 때 불러옵니다. 메모리는 <code>~/.podex/memory/</code> 아래에 Markdown 파일로 저장되며, 빠른 검색을 위해 SQLite로 인덱싱됩니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>memory</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Storage</strong></td><td><code>~/.podex/memory/</code> (Markdown + SQLite index)</td></tr>
+<tr><td><strong>Trigger</strong></td><td>Remember, recall, note, preference, feedback</td></tr>
+</table>
+
+<h3>기능</h3>
+<table>
+<tr><th>동작</th><th>설명</th></tr>
+<tr><td><strong>Auto-save</strong></td><td>대화에서 중요한 컨텍스트를 자동으로 감지하여 저장합니다</td></tr>
+<tr><td><strong>Recall</strong></td><td>현재 대화와의 의미적 유사성을 기반으로 관련 메모리를 검색합니다</td></tr>
+<tr><td><strong>Manual save</strong></td><td><code>/memory save</code>를 통해 노트나 결정 사항을 명시적으로 저장합니다</td></tr>
+<tr><td><strong>Search</strong></td><td>저장된 모든 메모리에 대한 전문 검색 및 의미 검색을 지원합니다</td></tr>
+<tr><td><strong>List</strong></td><td>주제별로 정리된 모든 메모리 파일을 탐색합니다</td></tr>
+<tr><td><strong>Delete</strong></td><td>특정 메모리 항목을 삭제합니다</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Manually save a note
+/memory save "JWT tokens expire after 24h in this project"
+
+# Search memories
+/memory search "authentication"
+
+# List all memory files
+/memory list
+
+# Delete a specific memory
+/memory delete shared/old-decision.md</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"이거 기억해줘" -- 현재 컨텍스트를 메모리에 저장합니다<br>
+"지난번에 뭐라고 했었지?" -- 관련 과거 대화 컨텍스트를 불러옵니다<br>
+"내가 선호하는 설정 뭐였어?" -- 저장된 선호 설정을 검색합니다<br>
+"피드백 메모해둬" -- 향후 참조를 위해 피드백을 저장합니다
+</div>
+
+<h3>메모리 구조</h3>
+<p>메모리는 네임스페이스가 지정된 Markdown 파일로 구성됩니다. 자동 메모리 시스템은 <code>MEMORY.md</code>를 인덱스로 작성하고, 세부 항목은 주제별 파일에 기록합니다.</p>
+<pre><code>~/.podex/memory/
+  MEMORY.md                    # Index with links to detailed files
+  feedback_goal_done_method.md # Specific feedback entry
+  feedback_poll_dont_wait.md   # Another feedback entry
+  shared/
+    decisions.md               # Shared project decisions
+    preferences.md             # User preferences</code></pre>
+
+<!-- ================================================================== -->
+<!-- pdf -->
+<!-- ================================================================== -->
+
+<h2 id="pdf">pdf</h2>
+<p>텍스트 기반 PDF 처리 스킬입니다. PDF 파일을 읽고, 텍스트 내용을 추출하며, 구조(제목, 표, 목록)를 파싱하고, 요약을 지원합니다. 선택 가능한 텍스트가 포함된 디지털 PDF에서 가장 잘 동작합니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>pdf</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Input</strong></td><td>로컬 파일 경로 또는 URL</td></tr>
+<tr><td><strong>Best for</strong></td><td>선택 가능한 텍스트가 있는 디지털 PDF</td></tr>
+</table>
+
+<h3>기능</h3>
+<table>
+<tr><th>동작</th><th>설명</th></tr>
+<tr><td><strong>Read</strong></td><td>PDF 파일에서 전체 텍스트 내용을 추출합니다</td></tr>
+<tr><td><strong>Page range</strong></td><td>특정 페이지를 읽습니다 (예: 대용량 문서의 1-5페이지)</td></tr>
+<tr><td><strong>Summarize</strong></td><td>PDF 내용의 간결한 요약을 생성합니다</td></tr>
+<tr><td><strong>Search</strong></td><td>문서 내에서 특정 텍스트나 패턴을 찾습니다</td></tr>
+<tr><td><strong>Metadata</strong></td><td>제목, 저자, 페이지 수 및 기타 PDF 메타데이터를 추출합니다</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Read a PDF file
+/pdf read ~/Documents/report.pdf
+
+# Read specific pages
+/pdf read ~/Documents/report.pdf --pages 1-5
+
+# Summarize a PDF
+/pdf summarize ~/Documents/whitepaper.pdf
+
+# Extract metadata
+/pdf info ~/Documents/contract.pdf</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"이 PDF 요약해줘" -- PDF 문서를 요약합니다<br>
+"이 문서에서 계약 조건 찾아줘" -- PDF에서 계약 조건을 검색합니다<br>
+"PDF 몇 페이지야?" -- 페이지 수와 메타데이터를 반환합니다<br>
+"3페이지부터 7페이지까지 읽어줘" -- 지정된 페이지 범위를 읽습니다
+</div>
+
+<!-- ================================================================== -->
+<!-- pdf-vision -->
+<!-- ================================================================== -->
+
+<h2 id="pdf-vision">pdf-vision</h2>
+<p>비전 기반 PDF 읽기 스킬입니다. 멀티모달 모델을 사용하여 스캔 문서, 이미지가 많은 PDF, 텍스트 추출이 실패하는 페이지를 해석합니다. 각 페이지를 이미지로 렌더링하여 시각적으로 분석하므로, 손글씨 메모, 스캔된 영수증, 복잡한 레이아웃 처리에 필수적입니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>pdf-vision</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Model</strong></td><td>비전 지원 LLM (Claude, GPT-4V)</td></tr>
+<tr><td><strong>Best for</strong></td><td>스캔 문서, 손글씨, 이미지가 많은 PDF</td></tr>
+</table>
+
+<h3>pdf-vision과 pdf 중 어떤 것을 사용할지</h3>
+<table>
+<tr><th>시나리오</th><th>추천</th><th>이유</th></tr>
+<tr><td>선택 가능한 텍스트가 있는 디지털 PDF</td><td><code>pdf</code></td><td>더 빠르고 정확한 텍스트 추출</td></tr>
+<tr><td>스캔된 문서 (이미지 전용)</td><td><code>pdf-vision</code></td><td>추출할 수 있는 텍스트가 없음</td></tr>
+<tr><td>차트와 다이어그램이 있는 PDF</td><td><code>pdf-vision</code></td><td>시각적 요소를 설명할 수 있음</td></tr>
+<tr><td>손글씨 메모</td><td><code>pdf-vision</code></td><td>비전 모델을 통한 OCR</td></tr>
+<tr><td>텍스트 + 이미지 혼합</td><td><code>pdf-vision</code></td><td>텍스트와 시각적 내용 모두 캡처</td></tr>
+<tr><td>대용량 문서 (&gt;50페이지)</td><td><code>pdf</code></td><td>더 낮은 지연 시간과 토큰 비용</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Read a scanned PDF with vision
+/pdf-vision read ~/Documents/scanned-receipt.pdf
+
+# Analyze specific pages visually
+/pdf-vision read ~/Documents/diagram-heavy.pdf --pages 3-5
+
+# Extract text from a handwritten note
+/pdf-vision read ~/Documents/handwritten.pdf</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"이 스캔 문서 읽어줘" -- 비전을 사용하여 스캔된 PDF를 읽습니다<br>
+"이 영수증 내용 정리해줘" -- 영수증 내용을 추출하고 정리합니다<br>
+"이 차트 설명해줘" -- PDF의 차트와 다이어그램을 설명합니다<br>
+"손글씨 읽어줘" -- 손글씨 내용에 대해 OCR을 수행합니다
+</div>
+
+<!-- ================================================================== -->
+<!-- screen-capture -->
+<!-- ================================================================== -->
+
+<h2 id="screen-capture">screen-capture</h2>
+<p>전체 화면, 특정 창 또는 지정된 영역의 스크린샷을 캡처합니다. 캡처된 이미지는 비전 모델로 분석하거나, 디스크에 저장하거나, <code>vision-click</code> 같은 다른 스킬의 입력으로 사용할 수 있습니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>screen-capture</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Output</strong></td><td>PNG 이미지 (파일 또는 인라인)</td></tr>
+<tr><td><strong>Platform</strong></td><td>macOS (screencapture), Linux (scrot/gnome-screenshot)</td></tr>
+</table>
+
+<h3>기능</h3>
+<table>
+<tr><th>동작</th><th>설명</th></tr>
+<tr><td><strong>Full screen</strong></td><td>전체 디스플레이를 캡처합니다</td></tr>
+<tr><td><strong>Window</strong></td><td>특정 애플리케이션 창을 캡처합니다</td></tr>
+<tr><td><strong>Region</strong></td><td>좌표로 지정된 직사각형 영역을 캡처합니다</td></tr>
+<tr><td><strong>Analyze</strong></td><td>캡처 후 비전 모델을 사용하여 내용을 즉시 설명합니다</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Capture full screen
+/screen-capture
+
+# Capture and analyze the screen
+/screen-capture --analyze
+
+# Save to a specific path
+/screen-capture --output ~/Desktop/screenshot.png
+
+# Capture a specific region (x, y, width, height)
+/screen-capture --region 0,0,800,600</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"스크린샷 찍어줘" -- 현재 화면을 캡처합니다<br>
+"지금 화면 보여줘" -- 현재 화면을 캡처하여 표시합니다<br>
+"이 화면에 뭐가 보여?" -- 화면 내용을 캡처하고 분석합니다<br>
+"화면 캡처해서 저장해줘" -- 캡처하여 파일로 저장합니다
+</div>
+
+<!-- ================================================================== -->
+<!-- xlsx -->
+<!-- ================================================================== -->
+
+<h2 id="xlsx">xlsx</h2>
+<p>Excel 스프레드시트 처리 스킬입니다. <code>.xlsx</code> 파일을 읽고, 쓰고, 조작합니다 -- 시트에서 데이터를 추출하고, 새 워크북을 만들고, 셀을 업데이트하고, 형식 간 변환(CSV, JSON)을 수행합니다. 수식, 다중 시트, 기본 서식 지정을 지원합니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>xlsx</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Formats</strong></td><td><code>.xlsx</code>, <code>.xls</code>, <code>.csv</code> (읽기/쓰기)</td></tr>
+<tr><td><strong>Library</strong></td><td>SheetJS (xlsx)</td></tr>
+</table>
+
+<h3>기능</h3>
+<table>
+<tr><th>동작</th><th>설명</th></tr>
+<tr><td><strong>Read</strong></td><td>스프레드시트의 셀, 행, 시트에서 데이터를 추출합니다</td></tr>
+<tr><td><strong>Write</strong></td><td>새 워크북을 생성하거나 기존 워크북을 업데이트합니다</td></tr>
+<tr><td><strong>Convert</strong></td><td>XLSX, CSV, JSON 형식 간 변환합니다</td></tr>
+<tr><td><strong>Analyze</strong></td><td>데이터를 요약하고, 통계를 계산하고, 시트 구조를 설명합니다</td></tr>
+<tr><td><strong>Filter</strong></td><td>특정 기준에 맞는 행을 추출합니다</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Read an Excel file
+/xlsx read ~/Documents/sales-data.xlsx
+
+# Read a specific sheet
+/xlsx read ~/Documents/report.xlsx --sheet "Q4 Summary"
+
+# Convert XLSX to CSV
+/xlsx convert ~/Documents/data.xlsx --to csv
+
+# Create a new spreadsheet from data
+/xlsx write ~/Documents/output.xlsx --data '[{"name":"Alice","score":95},{"name":"Bob","score":87}]'</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"이 엑셀 파일 읽어줘" -- 스프레드시트 내용을 읽고 표시합니다<br>
+"이 데이터 엑셀로 만들어줘" -- 데이터로 새 XLSX 파일을 생성합니다<br>
+"CSV로 변환해줘" -- 스프레드시트를 CSV 형식으로 변환합니다<br>
+"매출 데이터 요약해줘" -- 스프레드시트 데이터를 분석하고 요약합니다
+</div>
+
+<!-- ================================================================== -->
+<!-- 1password -->
+<!-- ================================================================== -->
+
+<h2 id="1password">1password</h2>
+<p>1Password 볼트에서 안전하게 자격 증명을 조회합니다. <code>1password</code> 스킬은 1Password CLI(<code>op</code>)를 사용하여 로그인 정보, 비밀번호, 보안 메모, API 키 등의 항목을 검색하고 가져옵니다 -- 대화에 평문으로 노출하지 않습니다. 자격 증명은 명령어나 환경 변수에 직접 주입됩니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>1password</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Available (1Password CLI 필요)</td></tr>
+<tr><td><strong>Prerequisite</strong></td><td><code>op</code> CLI 설치 및 로그인 완료</td></tr>
+<tr><td><strong>Auth</strong></td><td><code>op</code>를 통한 생체 인증 또는 마스터 비밀번호</td></tr>
+</table>
+
+<h3>기능</h3>
+<table>
+<tr><th>동작</th><th>설명</th></tr>
+<tr><td><strong>Search</strong></td><td>이름, 태그 또는 볼트별로 항목을 찾습니다</td></tr>
+<tr><td><strong>Get</strong></td><td>특정 필드(비밀번호, 사용자명, OTP)를 가져옵니다</td></tr>
+<tr><td><strong>Inject</strong></td><td><code>op run</code>을 통해 명령어에 시크릿을 주입합니다</td></tr>
+<tr><td><strong>List vaults</strong></td><td>사용 가능한 볼트와 항목 수를 표시합니다</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Search for a credential
+/1password search "GitHub token"
+
+# Get a specific password
+/1password get "AWS Production" --field password
+
+# Inject a secret into a command
+op run --env-file=.env -- jaw serve
+
+# List all vaults
+/1password vaults</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"비밀번호 찾아줘" -- 1Password에서 일치하는 자격 증명을 검색합니다<br>
+"GitHub 토큰 가져와줘" -- 1Password에서 GitHub 토큰을 가져옵니다<br>
+"AWS 키 환경변수에 넣어줘" -- AWS 자격 증명을 환경에 주입합니다<br>
+"내 비밀번호 뭐였지?" -- 볼트에서 일치하는 항목을 검색합니다
+</div>
+
+<div class="callout callout-warn">
+<strong>보안:</strong> 이 스킬은 대화에서 비밀번호를 절대 로깅하거나 표시하지 않습니다. 자격 증명은 <code>op</code> CLI를 통해 검색되며 보안 참조(<code>op://vault/item/field</code>)를 통해 전달됩니다. 사용 전에 1Password CLI 세션이 인증되어 있는지 확인하세요.
+</div>
+
+<!-- ================================================================== -->
+<!-- goplaces -->
+<!-- ================================================================== -->
+
+<h2 id="goplaces">goplaces</h2>
+<p>위치 기반 검색 및 내비게이션 스킬입니다. 장소를 찾고, 길을 안내하며, 상점, 랜드마크, 주소에 대한 정보를 제공합니다. MCP 서버를 통해 지도 API로 구동됩니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>goplaces</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Available (MCP server)</td></tr>
+<tr><td><strong>API</strong></td><td>Google Maps / Apple Maps</td></tr>
+<tr><td><strong>Prerequisite</strong></td><td>Maps API 키 설정 필요</td></tr>
+</table>
+
+<h3>기능</h3>
+<table>
+<tr><th>동작</th><th>설명</th></tr>
+<tr><td><strong>Search places</strong></td><td>쿼리로 식당, 상점, 랜드마크를 찾습니다</td></tr>
+<tr><td><strong>Directions</strong></td><td>두 위치 간의 경로와 이동 시간을 제공합니다</td></tr>
+<tr><td><strong>Place details</strong></td><td>영업시간, 평점, 전화번호, 장소 주소를 제공합니다</td></tr>
+<tr><td><strong>Nearby</strong></td><td>주어진 위치 또는 현재 위치 근처의 장소를 찾습니다</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Search for a place
+/goplaces search "coffee shops near Gangnam Station"
+
+# Get directions
+/goplaces directions "Seoul Station" "Gangnam Station"
+
+# Get details about a specific place
+/goplaces details "Starbucks Gangnam"
+
+# Find nearby restaurants
+/goplaces nearby --type restaurant --radius 500m</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"근처 카페 찾아줘" -- 주변 카페를 검색합니다<br>
+"강남역에서 서울역까지 어떻게 가?" -- 두 위치 간의 길을 안내합니다<br>
+"이 가게 영업시간 알려줘" -- 해당 장소의 영업시간을 가져옵니다<br>
+"주변 맛집 추천해줘" -- 주변의 평점 높은 식당을 찾습니다
+</div>
+
+<!-- ================================================================== -->
+<!-- summarize -->
+<!-- ================================================================== -->
+
+<h2 id="summarize">summarize</h2>
+<p>긴 텍스트를 간결한 요약으로 압축합니다. 기사, 트랜스크립트, 회의록, 문서 등 긴 텍스트 입력에 사용할 수 있습니다. 글머리 기호, 문단, 경영진 요약, 핵심 요점 등 다양한 요약 스타일을 지원합니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>summarize</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Available</td></tr>
+<tr><td><strong>Input</strong></td><td>텍스트, 파일 경로 또는 URL</td></tr>
+<tr><td><strong>Styles</strong></td><td>Bullets, paragraph, executive, key-takeaways</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Summarize a file
+/summarize ~/Documents/meeting-notes.md
+
+# Summarize with a specific style
+/summarize ~/Documents/report.pdf --style bullets
+
+# Summarize clipboard content
+/summarize --clipboard
+
+# Summarize a web article
+/summarize https://example.com/long-article</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"이거 요약해줘" -- 제공된 내용을 요약합니다<br>
+"회의록 정리해줘" -- 회의록을 핵심 포인트로 요약합니다<br>
+"이 기사 핵심만 알려줘" -- 기사에서 핵심 요점을 추출합니다<br>
+"3줄로 요약해줘" -- 간결한 3줄 요약을 생성합니다
+</div>
+
+<!-- ================================================================== -->
+<!-- tts -->
+<!-- ================================================================== -->
+
+<h2 id="tts">tts</h2>
+<p>텍스트 음성 변환 스킬입니다. TTS 엔진(시스템 음성 또는 클라우드 API)을 사용하여 텍스트 입력을 음성 오디오로 변환합니다. 문서를 소리 내어 읽거나, 텍스트에서 오디오 파일을 생성하거나, 접근성을 위해 유용합니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>tts</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Available (external)</td></tr>
+<tr><td><strong>Engines</strong></td><td>macOS <code>say</code>, OpenAI TTS, ElevenLabs</td></tr>
+<tr><td><strong>Output</strong></td><td>직접 재생 또는 오디오 파일 (MP3, WAV)</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Speak text aloud
+/tts "Hello, this is a test of the text-to-speech system."
+
+# Save to file
+/tts "Meeting summary follows..." --output ~/Desktop/summary.mp3
+
+# Use a specific voice
+/tts "안녕하세요" --voice korean --engine openai
+
+# Read a file aloud
+/tts --file ~/Documents/notes.md</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"이거 읽어줘" -- TTS를 사용하여 내용을 소리 내어 읽습니다<br>
+"소리로 들려줘" -- 텍스트를 음성으로 변환하여 재생합니다<br>
+"이 메모 음성 파일로 만들어줘" -- 텍스트에서 오디오 파일을 생성합니다<br>
+"영어로 발음해줘" -- 텍스트를 영어 발음으로 읽습니다
+</div>
+
+<!-- ================================================================== -->
+<!-- video-downloader -->
+<!-- ================================================================== -->
+
+<h2 id="video-downloader">video-downloader</h2>
+<p><code>yt-dlp</code>를 사용하여 URL에서 동영상을 다운로드합니다. YouTube, Vimeo 및 수백 개의 동영상 플랫폼을 지원합니다. 화질 선택, 오디오만 추출, 자막 다운로드, 지정된 디렉토리에 저장 등의 기능을 제공합니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>video-downloader</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Available (external)</td></tr>
+<tr><td><strong>Prerequisite</strong></td><td><code>yt-dlp</code> 설치 필요</td></tr>
+<tr><td><strong>Platforms</strong></td><td>YouTube, Vimeo, Twitter 및 1000개 이상의 사이트</td></tr>
+</table>
+
+<h3>기능</h3>
+<table>
+<tr><th>동작</th><th>설명</th></tr>
+<tr><td><strong>Download</strong></td><td>최고 화질 또는 지정된 해상도로 동영상을 다운로드합니다</td></tr>
+<tr><td><strong>Audio only</strong></td><td>오디오 트랙만 추출하여 저장합니다 (MP3, M4A)</td></tr>
+<tr><td><strong>Subtitles</strong></td><td>지정된 언어로 자막을 다운로드합니다</td></tr>
+<tr><td><strong>Info</strong></td><td>다운로드 없이 동영상 메타데이터를 표시합니다</td></tr>
+<tr><td><strong>Playlist</strong></td><td>재생목록의 모든 동영상을 다운로드합니다</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Download a video
+/video-downloader https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+# Download audio only
+/video-downloader https://www.youtube.com/watch?v=dQw4w9WgXcQ --audio
+
+# Download with specific quality
+/video-downloader https://www.youtube.com/watch?v=dQw4w9WgXcQ --quality 720p
+
+# Download subtitles
+/video-downloader https://www.youtube.com/watch?v=dQw4w9WgXcQ --subs ko</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"이 영상 다운받아줘" -- 주어진 URL에서 동영상을 다운로드합니다<br>
+"음성만 추출해줘" -- 동영상에서 오디오 트랙을 추출합니다<br>
+"자막 다운받아줘" -- 동영상의 자막을 다운로드합니다<br>
+"이 유튜브 영상 저장해줘" -- YouTube 동영상을 다운로드하여 저장합니다
+</div>
+
+<!-- ================================================================== -->
+<!-- video-frames -->
+<!-- ================================================================== -->
+
+<h2 id="video-frames">video-frames</h2>
+<p>분석을 위해 동영상 파일에서 개별 프레임을 추출합니다. 지정된 간격이나 타임스탬프에서 프레임을 캡처하고, 이미지로 출력하며, 선택적으로 비전 모델에 보내 설명을 생성합니다. 동영상 요약, 콘텐츠 분석, 썸네일 생성에 유용합니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>video-frames</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Available (external)</td></tr>
+<tr><td><strong>Prerequisite</strong></td><td><code>ffmpeg</code> 설치 필요</td></tr>
+<tr><td><strong>Output</strong></td><td>PNG/JPEG 프레임 이미지</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Extract one frame per second
+/video-frames ~/Videos/demo.mp4 --interval 1s
+
+# Extract frame at a specific timestamp
+/video-frames ~/Videos/demo.mp4 --at 01:23:45
+
+# Extract and analyze frames with vision model
+/video-frames ~/Videos/demo.mp4 --interval 10s --analyze
+
+# Generate thumbnails for a video
+/video-frames ~/Videos/demo.mp4 --count 5 --output ~/Desktop/thumbs/</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"이 영상에서 프레임 추출해줘" -- 동영상에서 프레임을 추출합니다<br>
+"영상 내용 분석해줘" -- 프레임을 추출하고 동영상 내용을 설명합니다<br>
+"썸네일 만들어줘" -- 대표 썸네일 이미지를 생성합니다<br>
+"1분 30초 장면 캡처해줘" -- 지정된 타임스탬프의 프레임을 캡처합니다
+</div>
+
+<!-- ================================================================== -->
+<!-- weather -->
+<!-- ================================================================== -->
+
+<h2 id="weather">weather</h2>
+<p>현재 날씨 상태 및 예보를 제공합니다. 모든 위치에 대한 기온, 습도, 바람, 강수량 및 다일 예보를 제공합니다. 날씨 API를 조회하는 MCP 서버로 구현되어 있습니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>weather</code></td></tr>
+<tr><td><strong>Category</strong></td><td>Utility</td></tr>
+<tr><td><strong>Status</strong></td><td>Available (MCP server)</td></tr>
+<tr><td><strong>API</strong></td><td>OpenWeatherMap / WeatherAPI</td></tr>
+<tr><td><strong>Data</strong></td><td>현재 상태, 시간별, 일별 예보</td></tr>
+</table>
+
+<h3>기능</h3>
+<table>
+<tr><th>동작</th><th>설명</th></tr>
+<tr><td><strong>Current</strong></td><td>현재 기온, 습도, 바람, 기상 상태를 제공합니다</td></tr>
+<tr><td><strong>Forecast</strong></td><td>최고/최저 기온, 강수량을 포함한 다일 예보를 제공합니다</td></tr>
+<tr><td><strong>Hourly</strong></td><td>향후 24-48시간의 시간별 상세 예보를 제공합니다</td></tr>
+<tr><td><strong>Alerts</strong></td><td>해당 지역의 기상 특보 및 경보를 제공합니다</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Get current weather
+/weather Seoul
+
+# Get a 5-day forecast
+/weather forecast "San Francisco" --days 5
+
+# Get hourly forecast
+/weather hourly Tokyo --hours 24
+
+# Check weather alerts
+/weather alerts "New York"</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"날씨 알려줘" -- 기본 위치의 현재 날씨를 표시합니다<br>
+"서울 날씨 어때?" -- 서울의 현재 날씨를 표시합니다<br>
+"내일 비 와?" -- 내일의 강수량 예보를 확인합니다<br>
+"이번 주 날씨 예보 알려줘" -- 주간 날씨 예보를 제공합니다<br>
+"우산 가져가야 해?" -- 비 올 확률을 확인하고 그에 따라 조언합니다
+</div>
+
+<h3>설정</h3>
+<pre><code>{
+  "mcpServers": {
+    "weather": {
+      "command": "npx",
+      "args": ["-y", "weather-mcp-server"],
+      "env": {
+        "WEATHER_API_KEY": "your-api-key",
+        "WEATHER_DEFAULT_LOCATION": "Seoul"
+      }
+    }
+  }
+}</code></pre>
+
+<!-- ================================================================== -->
+<!-- Skill Comparison -->
+<!-- ================================================================== -->
+
+<h2 id="comparison">스킬 비교</h2>
+<p>작업에 적합한 유틸리티 스킬을 선택하기 위한 빠른 참조표입니다.</p>
+
+<h3>문서 처리</h3>
+<table>
+<tr><th>작업</th><th>스킬</th><th>비고</th></tr>
+<tr><td>디지털 PDF 읽기</td><td><code>pdf</code></td><td>빠른 텍스트 추출, 페이지 범위 지원</td></tr>
+<tr><td>스캔된 PDF 읽기</td><td><code>pdf-vision</code></td><td>비전 기반 OCR, 느리지만 이미지 처리 가능</td></tr>
+<tr><td>Excel 읽기/쓰기</td><td><code>xlsx</code></td><td>XLSX/CSV/JSON 완벽 지원</td></tr>
+<tr><td>텍스트 요약</td><td><code>summarize</code></td><td>파일, URL, 클립보드와 함께 사용 가능</td></tr>
+</table>
+
+<h3>미디어 및 캡처</h3>
+<table>
+<tr><th>작업</th><th>스킬</th><th>비고</th></tr>
+<tr><td>스크린샷</td><td><code>screen-capture</code></td><td>전체 화면, 창 또는 영역</td></tr>
+<tr><td>동영상 다운로드</td><td><code>video-downloader</code></td><td><code>yt-dlp</code> 필요</td></tr>
+<tr><td>동영상 프레임 추출</td><td><code>video-frames</code></td><td><code>ffmpeg</code> 필요</td></tr>
+<tr><td>텍스트 음성 변환</td><td><code>tts</code></td><td>시스템 또는 클라우드 음성</td></tr>
+</table>
+
+<h3>정보 및 시크릿</h3>
+<table>
+<tr><th>작업</th><th>스킬</th><th>비고</th></tr>
+<tr><td>자격 증명 조회</td><td><code>1password</code></td><td><code>op</code> CLI 필요</td></tr>
+<tr><td>장소 찾기 / 길찾기</td><td><code>goplaces</code></td><td>Maps API 키 필요</td></tr>
+<tr><td>날씨 확인</td><td><code>weather</code></td><td>Weather API 키 필요</td></tr>
+<tr><td>컨텍스트 기억</td><td><code>memory</code></td><td>항상 활성화, 자동 저장</td></tr>
+</table>
+
+<!-- ================================================================== -->
+<!-- Common Patterns -->
+<!-- ================================================================== -->
+
+<h2 id="patterns">일반적인 패턴</h2>
+
+<h3>문서 파이프라인</h3>
+<p>PDF와 요약 스킬을 결합하여 문서를 처음부터 끝까지 처리합니다.</p>
+<pre><code># Read a PDF, summarize it, and save the summary
+"이 PDF 읽고 요약해서 엑셀로 정리해줘"
+
+# The agent chains:
+# 1. pdf → read the document
+# 2. summarize → condense key points
+# 3. xlsx → write summary to a spreadsheet</code></pre>
+
+<h3>리서치 워크플로우</h3>
+<p>날씨, 위치, 메모리 스킬을 함께 사용하여 계획 작업을 수행합니다.</p>
+<pre><code># Plan a trip
+"이번 주말 부산 날씨 알려주고, 근처 맛집 찾아줘. 결과 기억해둬."
+
+# The agent chains:
+# 1. weather → forecast for Busan this weekend
+# 2. goplaces → search restaurants near Busan
+# 3. memory → save results for later reference</code></pre>
+
+<h3>보안 개발</h3>
+<p>1Password에서 자격 증명을 가져와 개발 환경에 주입합니다.</p>
+<pre><code># Set up dev environment with secure credentials
+"1Password에서 DB 비밀번호 찾아서 .env에 넣어줘"
+
+# The agent chains:
+# 1. 1password → get "Database Production" password
+# 2. inject into .env file via op:// reference</code></pre>
+
+<div class="callout callout-warn">
+<strong>참고:</strong> 스킬을 연계할 때 에이전트가 자동으로 최적의 실행 순서를 결정합니다. 개별 스킬 호출을 지정할 필요 없이 자연어로 원하는 것을 설명하면 됩니다.
+</div>
+
+<div class="page-nav">
+<a class="prev" href="smarthome.html">Smart Home</a>
+<a class="next" href="../commands/session.html">Session Commands</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

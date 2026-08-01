@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.badge-req { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.skill-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 24px; }
+.skill-meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.skill-meta-card dt { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px; }
+.skill-meta-card dd { font-size: 14px; color: var(--text); }
+.use-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0 20px; }
+.use-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.use-card h4 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+.use-card.do h4 { color: var(--green); }
+.use-card.dont h4 { color: var(--red); }
+.use-card ul { margin: 0; padding-left: 18px; font-size: 13px; }
+.use-card li { margin: 3px 0; color: var(--text-dim); }
+.example-callout { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 10px 0; }
+.example-callout .example-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 6px; }
+.example-callout .example-kr { font-size: 15px; color: var(--text); margin-bottom: 4px; }
+.example-callout .example-desc { font-size: 13px; color: var(--text-dim); }
+.flow-steps { counter-reset: flow; margin: 12px 0 20px; padding: 0; list-style: none; }
+.flow-steps li { counter-increment: flow; padding: 10px 0 10px 48px; position: relative; border-left: 2px solid var(--border); margin-left: 16px; }
+.flow-steps li::before { content: counter(flow); position: absolute; left: -14px; top: 8px; width: 26px; height: 26px; background: var(--surface2); border: 2px solid var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--accent); }
+.flow-steps li:last-child { border-left-color: transparent; }
+@media (max-width: 768px) {
+  .skill-meta { grid-template-columns: 1fr; }
+  .use-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="문서 검색..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">시작하기</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="문서 검색..."></div>
+      <a class="docs-nav-link" href="../../">개요</a>
+      <a class="docs-nav-link" href="../../quickstart.html">빠른 시작</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">첫 실행</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">개념</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">아키텍처</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">직원</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">목표</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">스킬</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">메모리</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">프롬프트</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">가이드</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">대시보드</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">노트 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">칸반 보드</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">텔레그램</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">디스코드</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">컴퓨터 사용</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 데스크톱</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">레퍼런스</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 명령어</a>
+      <a class="docs-nav-link" href="../../reference/api.html">서버 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">설정</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">키보드 단축키</a>
+      <a class="docs-nav-link" href="../../reference/events.html">이벤트</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">스킬</div>
+      <a class="docs-nav-link" href="../index.html">카탈로그</a>
+      <a class="docs-nav-link" href="../orchestration.html">개발</a>
+      <a class="docs-nav-link" href="../automation.html">자동화</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 미디어</a>
+      <a class="docs-nav-link" href="../communication.html">커뮤니케이션</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">클라우드 &amp; 배포</a>
+      <a class="docs-nav-link" href="../devtools-security.html">보안 &amp; 리뷰</a>
+      <a class="docs-nav-link active" href="../devtools-workflow.html">개발 워크플로우</a>
+      <a class="docs-nav-link" href="../productivity.html">생산성</a>
+      <a class="docs-nav-link" href="../smarthome.html">스마트홈</a>
+      <a class="docs-nav-link" href="../utility.html">유틸리티</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">명령어</div>
+      <a class="docs-nav-link" href="../../commands/session.html">세션</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">워크플로우</a>
+      <a class="docs-nav-link" href="../../commands/model.html">모델 &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">도구</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI 전용</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">루트 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">변경 로그</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">한국어</a>
+    <a href="../../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">랜딩 페이지</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>GitHub <span class="badge badge-active">기본 활성</span></h1>
+<p class="lead">GitHub <code>gh</code> CLI &mdash; 이슈, PR, CI, 코드 리뷰, 릴리스</p>
+
+<div class="skill-meta">
+  <div class="skill-meta-card">
+    <dt>스킬 이름</dt>
+    <dd><code>github</code></dd>
+  </div>
+  <div class="skill-meta-card">
+    <dt>카테고리</dt>
+    <dd>개발 워크플로우</dd>
+  </div>
+  <div class="skill-meta-card">
+    <dt>필수 요건</dt>
+    <dd><code>gh</code> CLI <span class="badge badge-req">바이너리</span></dd>
+  </div>
+  <div class="skill-meta-card">
+    <dt>소스</dt>
+    <dd><code>~/.podex/skills/github/SKILL.md</code></dd>
+  </div>
+</div>
+
+<div class="callout callout-info">이 스킬은 <strong>기본으로 활성화</strong>되어 있으며 모든 세션에 주입됩니다. 이전에 분리되어 있던 <code>gh-address-comments</code>, <code>gh-fix-ci</code>, <code>gh-issues</code>, <code>yeet</code> 스킬의 통합 기능을 포함하여 <code>gh</code> CLI를 통한 모든 GitHub 상호작용을 처리합니다.</div>
+
+<!-- ================================================================ -->
+<h2>빠른 참조</h2>
+
+<table>
+<tr><th>명령어</th><th>설명</th><th>예시</th></tr>
+<tr><td><code>gh pr list</code></td><td>풀 리퀘스트 목록 조회</td><td><code>gh pr list --repo owner/repo</code></td></tr>
+<tr><td><code>gh pr view</code></td><td>PR 상세 정보 조회</td><td><code>gh pr view 55 --repo owner/repo</code></td></tr>
+<tr><td><code>gh pr checks</code></td><td>PR의 CI 상태 확인</td><td><code>gh pr checks 55 --repo owner/repo</code></td></tr>
+<tr><td><code>gh pr create</code></td><td>풀 리퀘스트 생성</td><td><code>gh pr create --title "feat: X" --body "..."</code></td></tr>
+<tr><td><code>gh pr merge</code></td><td>풀 리퀘스트 병합</td><td><code>gh pr merge 55 --squash</code></td></tr>
+<tr><td><code>gh issue list</code></td><td>이슈 목록 조회</td><td><code>gh issue list --state open</code></td></tr>
+<tr><td><code>gh issue create</code></td><td>이슈 생성</td><td><code>gh issue create --title "Bug: X"</code></td></tr>
+<tr><td><code>gh issue close</code></td><td>이슈 닫기</td><td><code>gh issue close 42</code></td></tr>
+<tr><td><code>gh run list</code></td><td>CI 워크플로우 실행 목록 조회</td><td><code>gh run list --limit 10</code></td></tr>
+<tr><td><code>gh run view</code></td><td>특정 CI 실행 조회</td><td><code>gh run view &lt;id&gt; --log-failed</code></td></tr>
+<tr><td><code>gh run rerun</code></td><td>실패한 작업 재실행</td><td><code>gh run rerun &lt;id&gt; --failed</code></td></tr>
+<tr><td><code>gh api</code></td><td>GitHub REST/GraphQL API 쿼리</td><td><code>gh api repos/o/r/pulls/55 --jq '.title'</code></td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2>사용 시점 / 사용하지 말아야 할 시점</h2>
+
+<div class="use-grid">
+  <div class="use-card do">
+    <h4>이 스킬을 사용할 때</h4>
+    <ul>
+      <li>PR 상태, 리뷰, 병합 가능 여부 확인</li>
+      <li>CI/워크플로우 실행 상태 및 로그 확인</li>
+      <li>이슈 생성, 닫기, 코멘트 작성</li>
+      <li>풀 리퀘스트 생성 또는 병합</li>
+      <li>GitHub API를 통한 저장소 데이터 쿼리</li>
+      <li>저장소, 릴리스, 협력자 목록 조회</li>
+      <li>PR 리뷰 코멘트 처리</li>
+      <li>실패한 CI 체크 디버깅 및 수정</li>
+      <li>이슈 자동 수정 및 PR 생성</li>
+      <li>스테이징, 커밋, 푸시, PR을 한 번에 처리 (yeet)</li>
+    </ul>
+  </div>
+  <div class="use-card dont">
+    <h4>사용하지 말아야 할 때</h4>
+    <ul>
+      <li>로컬 git 작업 (commit, push, pull, branch) &mdash; <code>git</code>을 직접 사용하세요</li>
+      <li>GitHub 이외의 저장소 (GitLab, Bitbucket, 자체 호스팅) &mdash; 별도의 CLI를 사용하세요</li>
+      <li>저장소 클론 &mdash; <code>git clone</code>을 사용하세요</li>
+      <li>실제 코드 변경 사항 리뷰 &mdash; <code>coding-agent</code> 스킬을 사용하세요</li>
+      <li>복잡한 다중 파일 diff &mdash; <code>coding-agent</code>를 사용하거나 파일을 직접 읽으세요</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<h2>설치 및 설정</h2>
+
+<p><code>github</code> 스킬은 <code>gh</code> CLI 바이너리가 필요합니다. podex가 자동으로 설치할 수 있으며, 수동으로 설치할 수도 있습니다:</p>
+
+<div class="install-box">
+  <code># macOS (Homebrew)</code>
+  <code>brew install gh</code>
+</div>
+
+<div class="install-box">
+  <code># Linux (apt)</code>
+  <code>sudo apt install gh</code>
+</div>
+
+<p>설치 후 한 번 인증을 진행합니다:</p>
+<pre><code># 일회성 인증
+gh auth login
+
+# 인증 상태 확인
+gh auth status</code></pre>
+
+<div class="callout callout-warn"><strong>토큰 범위:</strong> <code>gh</code> 토큰에 <code>repo</code>, <code>read:org</code>, <code>workflow</code> 스코프가 있는지 확인하세요. CI 작업이 실패하면 <code>gh auth login</code>으로 다시 인증하고 필요한 스코프를 선택하세요.</div>
+
+<!-- ================================================================ -->
+<h2>풀 리퀘스트</h2>
+
+<h3>PR 목록 조회</h3>
+<pre><code># 저장소의 열린 PR 목록 조회
+gh pr list --repo owner/repo
+
+# 상태별 필터링
+gh pr list --repo owner/repo --state merged --limit 20
+
+# jq 필터링을 사용한 JSON 출력
+gh pr list --json number,title,state,mergeable \
+  --jq '.[] | select(.mergeable == "MERGEABLE")'</code></pre>
+
+<h3>PR 상세 정보 조회</h3>
+<pre><code># 번호로 PR 조회
+gh pr view 55 --repo owner/repo
+
+# URL로 직접 조회
+gh pr view https://github.com/owner/repo/pull/55
+
+# 구조화된 JSON 출력
+gh pr view 55 --repo owner/repo \
+  --json title,body,author,additions,deletions,changedFiles \
+  --jq '"**\(.title)** by @\(.author.login)\n+\(.additions) -\(.deletions) across \(.changedFiles) files"'</code></pre>
+
+<h3>CI 상태 확인</h3>
+<pre><code># PR의 모든 CI 체크 확인
+gh pr checks 55 --repo owner/repo</code></pre>
+
+<h3>PR 생성</h3>
+<pre><code># 기본 PR 생성
+gh pr create --title "feat: add feature" --body "Description"
+
+# 리뷰어 및 라벨 지정
+gh pr create --title "fix: resolve timeout" \
+  --body "Fixes #42" \
+  --reviewer alice,bob \
+  --label bug,urgent
+
+# 드래프트 PR
+gh pr create --title "wip: new dashboard" --body "WIP" --draft</code></pre>
+
+<h3>PR 병합</h3>
+<pre><code># 스쿼시 병합
+gh pr merge 55 --squash --repo owner/repo
+
+# 머지 커밋
+gh pr merge 55 --merge --repo owner/repo
+
+# 리베이스 병합
+gh pr merge 55 --rebase --repo owner/repo
+
+# 체크 통과 시 자동 병합
+gh pr merge 55 --auto --squash</code></pre>
+
+<!-- ================================================================ -->
+<h2>이슈</h2>
+
+<h3>이슈 목록 조회</h3>
+<pre><code># 열린 이슈
+gh issue list --repo owner/repo --state open
+
+# 라벨로 필터링
+gh issue list --repo owner/repo --label bug --limit 10
+
+# 서식 지정된 JSON
+gh issue list --repo owner/repo --state open \
+  --json number,title,labels,createdAt \
+  --jq '.[] | "[\(.number)] \(.title) - \([.labels[].name] | join(", ")) (\(.createdAt[:10]))"'</code></pre>
+
+<h3>이슈 생성</h3>
+<pre><code># 기본 이슈
+gh issue create --title "Bug: something broken" --body "Details..."
+
+# 라벨 및 담당자 지정
+gh issue create --title "Feature: dark mode" \
+  --body "Add dark mode toggle" \
+  --label enhancement \
+  --assignee @me</code></pre>
+
+<h3>이슈 닫기</h3>
+<pre><code># 번호로 닫기
+gh issue close 42 --repo owner/repo
+
+# 코멘트와 함께 닫기
+gh issue close 42 --comment "Fixed in PR #55"</code></pre>
+
+<!-- ================================================================ -->
+<h2>CI / 워크플로우 실행</h2>
+
+<h3>실행 목록 조회</h3>
+<pre><code># 최근 실행
+gh run list --repo owner/repo --limit 10
+
+# 워크플로우별 필터링
+gh run list --workflow build.yml --limit 5
+
+# 상태별 필터링
+gh run list --status failure --limit 10</code></pre>
+
+<h3>실행 상세 정보 조회</h3>
+<pre><code># 특정 실행 조회
+gh run view &lt;run-id&gt; --repo owner/repo
+
+# 실패한 단계의 로그만 조회 (디버깅에 가장 유용)
+gh run view &lt;run-id&gt; --repo owner/repo --log-failed</code></pre>
+
+<h3>실패한 작업 재실행</h3>
+<pre><code># 실패한 작업만 재실행
+gh run rerun &lt;run-id&gt; --failed --repo owner/repo
+
+# 모든 작업 재실행
+gh run rerun &lt;run-id&gt; --repo owner/repo</code></pre>
+
+<!-- ================================================================ -->
+<h2>API 쿼리</h2>
+
+<p><code>gh api</code> 명령어는 GitHub REST 및 GraphQL API에 직접 접근할 수 있게 합니다. <code>--jq</code>를 사용하여 JSON 결과를 필터링할 수 있습니다.</p>
+
+<pre><code># 특정 필드로 PR 조회
+gh api repos/owner/repo/pulls/55 --jq '.title, .state, .user.login'
+
+# 모든 라벨 목록
+gh api repos/owner/repo/labels --jq '.[].name'
+
+# 저장소 통계
+gh api repos/owner/repo --jq '{stars: .stargazers_count, forks: .forks_count}'
+
+# PR 리뷰 코멘트 목록
+gh api repos/{owner}/{repo}/pulls/{pr}/comments \
+  --jq '.[] | "\(.id): \(.body[:80])"'
+
+# 반복 쿼리 캐시 (1시간)
+gh api --cache 1h repos/owner/repo</code></pre>
+
+<h3>JSON 출력 모드</h3>
+<p>대부분의 <code>gh</code> 명령어는 <code>--json</code>을 통한 구조화된 출력과 <code>--jq</code> 필터링을 지원합니다:</p>
+<pre><code># 서식 지정된 이슈 목록
+gh issue list --repo owner/repo --json number,title \
+  --jq '.[] | "\(.number): \(.title)"'
+
+# 병합 가능한 PR
+gh pr list --json number,title,state,mergeable \
+  --jq '.[] | select(.mergeable == "MERGEABLE")'</code></pre>
+
+<!-- ================================================================ -->
+<h2>통합 워크플로우</h2>
+
+<p><code>github</code> 스킬은 이전에 분리되어 있던 여러 스킬을 통합 워크플로우로 합쳤습니다. 이러한 워크플로우는 자연어로 트리거되는 다단계 절차로 실행됩니다.</p>
+
+<h3>PR 코멘트 처리</h3>
+<p>현재 브랜치의 열린 PR에 달린 리뷰 코멘트와 이슈 코멘트를 처리합니다.</p>
+
+<ol class="flow-steps">
+  <li>인증 확인: <code>gh auth status</code></li>
+  <li>현재 PR 찾기: <code>gh pr view --json number,url</code></li>
+  <li>리뷰 코멘트 목록 조회: <code>gh api repos/{owner}/{repo}/pulls/{pr}/comments --jq '.[] | "\(.id): \(.body[:80])"'</code></li>
+  <li>각 코멘트를 처리하고, 수정 사항을 구현한 뒤 변경 사항을 커밋</li>
+  <li>푸시 후 원래 리뷰어에게 리뷰를 다시 요청</li>
+</ol>
+
+<h3>실패한 CI 수정</h3>
+<p>실패한 GitHub Actions 체크를 자동으로 디버깅하고 수정합니다.</p>
+
+<ol class="flow-steps">
+  <li>실패한 체크 찾기: <code>gh pr checks &lt;PR&gt; --repo owner/repo</code></li>
+  <li>실패한 실행 로그 가져오기: <code>gh run view &lt;run-id&gt; --log-failed</code></li>
+  <li>실패 내용을 요약하고 근본 원인 파악</li>
+  <li>수정 계획을 작성하고, 승인을 받은 후 수정 구현</li>
+  <li>수정 사항을 푸시하고 CI 통과 여부 확인</li>
+</ol>
+
+<h3>이슈 자동 수정</h3>
+<p>저장소에서 이슈를 가져와 수정을 구현하고 각 이슈에 대해 PR을 생성합니다.</p>
+
+<ol class="flow-steps">
+  <li>대상 이슈 목록 조회: <code>gh issue list --label bug --limit 5</code></li>
+  <li>각 이슈에 대해: 브랜치 생성, 수정 구현, PR 생성</li>
+  <li>PR 리뷰를 모니터링하고 코멘트 처리</li>
+  <li>자동화를 위해 <code>$GH_TOKEN</code>과 함께 GitHub REST API 사용</li>
+</ol>
+
+<h3>Yeet: 스테이징, 커밋, 푸시, PR 한 번에</h3>
+<p>작업 트리의 변경 사항을 단일 명령으로 PR까지 한 번에 처리하는 원샷 플로우입니다.</p>
+
+<ol class="flow-steps">
+  <li><code>main</code>/<code>master</code>에 있는 경우 새 브랜치 생성: <code>git checkout -b codex/{description}</code></li>
+  <li>모든 변경 사항 스테이징: <code>git add -A</code></li>
+  <li>설명과 함께 커밋: <code>git commit -m "{description}"</code></li>
+  <li>리모트에 푸시: <code>git push -u origin HEAD</code></li>
+  <li>PR 생성: <code>gh pr create --title "[codex] {description}" --body "..."</code></li>
+</ol>
+
+<!-- ================================================================ -->
+<h2>템플릿</h2>
+
+<h3>PR 리뷰 요약</h3>
+<pre><code>PR=55 REPO=owner/repo
+echo "## PR #$PR Summary"
+gh pr view $PR --repo $REPO \
+  --json title,body,author,additions,deletions,changedFiles \
+  --jq '"**\(.title)** by @\(.author.login)\n\n\(.body)\n\n+\(.additions) -\(.deletions) across \(.changedFiles) files"'
+gh pr checks $PR --repo $REPO</code></pre>
+
+<h3>이슈 분류 보고서</h3>
+<pre><code>gh issue list --repo owner/repo --state open \
+  --json number,title,labels,createdAt \
+  --jq '.[] | "[\(.number)] \(.title) - \([.labels[].name] | join(", ")) (\(.createdAt[:10]))"'</code></pre>
+
+<!-- ================================================================ -->
+<h2>규칙 및 모범 사례</h2>
+
+<table>
+<tr><th>규칙</th><th>상세 내용</th></tr>
+<tr><td>항상 <code>--repo</code> 지정</td><td>git 디렉토리 내부가 아닌 경우, 모호함을 피하기 위해 항상 <code>--repo owner/repo</code>를 전달하세요.</td></tr>
+<tr><td>URL을 직접 사용</td><td><code>gh pr view https://github.com/owner/repo/pull/55</code>는 동작하며 모호함이 없습니다.</td></tr>
+<tr><td>반복 API 호출 캐시</td><td>자주 실행하는 쿼리에는 <code>gh api --cache 1h</code>를 사용하여 속도 제한을 방지하세요.</td></tr>
+<tr><td><code>--log-failed</code> 우선 사용</td><td>CI 디버깅 시 방대한 출력을 피하기 위해 <code>--log</code> 대신 <code>gh run view &lt;id&gt; --log-failed</code>를 사용하세요.</td></tr>
+<tr><td><code>--json</code> + <code>--jq</code> 사용</td><td>구조화된 데이터 추출 시 텍스트 파싱보다 항상 JSON 출력과 jq 필터링을 사용하세요.</td></tr>
+<tr><td>로컬 git은 로컬에서</td><td><code>git commit</code>, <code>git push</code>, <code>git pull</code>, <code>git branch</code>에는 이 스킬을 사용하지 마세요. git을 직접 사용하세요.</td></tr>
+<tr><td>속도 제한</td><td>GitHub API에는 속도 제한이 있습니다 (인증 시 5,000 요청/시간). 적극적으로 캐시하고 쿼리를 일괄 처리하세요.</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2>사용 예시 (~haejwo)</h2>
+
+<p>아래 예시들은 자연어로 <code>github</code> 스킬을 호출하는 방법을 보여줍니다. 한국어와 영어 모두 동일하게 사용할 수 있습니다.</p>
+
+<div class="example-callout">
+  <div class="example-label">예시 1</div>
+  <div class="example-kr">"PR 55번 상태 확인해줘 -- CI 다 통과했는지 봐줘"</div>
+  <div class="example-desc"><code>gh pr checks 55</code>를 사용하여 PR #55의 CI 상태를 확인하고 통과/실패 결과를 요약합니다.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">예시 2</div>
+  <div class="example-kr">"이 변경사항 PR로 올려줘 -- 리뷰어 alice 지정하고 bug 라벨 붙여줘"</div>
+  <div class="example-desc">yeet 플로우를 실행합니다: 모든 변경 사항을 스테이징하고, 커밋하고, 푸시한 뒤 <code>--reviewer alice --label bug</code>로 PR을 생성합니다.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">예시 3</div>
+  <div class="example-kr">"CI 실패한 거 고쳐줘 -- 로그 보고 원인 분석해줘"</div>
+  <div class="example-desc">실패한 CI 수정 워크플로우를 트리거합니다: 실패한 체크를 찾고, <code>--log-failed</code>를 가져와 근본 원인을 진단하고 수정을 제안합니다.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">예시 4</div>
+  <div class="example-kr">"이 리포에 bug 라벨 이슈 목록 보여주고 정리해줘"</div>
+  <div class="example-desc"><code>bug</code> 라벨이 붙은 열린 이슈를 나열하고, 생성 날짜와 라벨을 포함한 분류 보고서로 서식을 지정합니다.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">예시 5</div>
+  <div class="example-kr">"PR 리뷰 코멘트 다 처리하고 다시 리뷰 요청해줘"</div>
+  <div class="example-desc">PR 코멘트 처리 플로우를 실행합니다: 모든 리뷰 코멘트를 읽고, 각각을 처리하고, 수정 사항을 커밋하고 푸시한 뒤 리뷰를 다시 요청합니다.</div>
+</div>
+
+<!-- ================================================================ -->
+<h2>관련 스킬</h2>
+
+<table>
+<tr><th>스킬</th><th>관계</th></tr>
+<tr><td><code>dev-code-reviewer</code></td><td>코드 내용을 리뷰합니다. <code>github</code>는 PR 메커니즘(생성, 병합, 코멘트)을 처리합니다.</td></tr>
+<tr><td><code>dev</code> 오케스트레이터</td><td>개발 작업에 PR 생성이나 CI 확인이 필요한 경우 <code>github</code>에 위임할 수 있습니다.</td></tr>
+<tr><td><code>code-review</code></td><td>심층 코드 리뷰 스킬로, <code>github</code>의 <code>--comment</code>와 함께 사용하여 PR에 인라인 피드백을 게시합니다.</td></tr>
+<tr><td><code>security-review</code></td><td>보안 감사 스킬로, <code>github</code>를 사용하여 종속성 경고 및 보안 권고를 확인합니다.</td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="../devtools-workflow.html">개발 워크플로우 스킬</a>
+<a class="next" href="../index.html">스킬 카탈로그</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,135 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - dev
+      - preview
+      - main
+    paths-ignore:
+      - 'README*.md'
+      - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - 'README*.md'
+      - 'docs/**'
+
+concurrency:
+  group: tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node-tests:
+    runs-on: ubuntu-latest
+    env:
+      SUBMODULE_PAT: ${{ secrets.SUBMODULE_PAT }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Checkout public submodules
+        run: |
+          git submodule update --init skills_ref
+          git submodule update --init officecli
+
+      - name: Checkout private submodules (needs SUBMODULE_PAT secret)
+        if: ${{ env.SUBMODULE_PAT != '' }}
+        run: |
+          git submodule update --init devlog
+        env:
+          GIT_CONFIG_COUNT: 1
+          GIT_CONFIG_KEY_0: url.https://x-access-token:${{ env.SUBMODULE_PAT }}@github.com/.insteadOf
+          GIT_CONFIG_VALUE_0: https://github.com/
+
+      - name: Skip private submodules when SUBMODULE_PAT is unavailable
+        if: ${{ env.SUBMODULE_PAT == '' }}
+        run: echo "Skipping private devlog checkout because SUBMODULE_PAT is not configured."
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Build native modules
+        run: npm rebuild better-sqlite3
+
+      - name: Build TypeScript
+        run: npx tsc
+
+      - name: Run tests
+        run: npx tsx --import ./tests/setup/test-home.ts --experimental-test-module-mocks --test-force-exit --test tests/*.test.ts tests/unit/*.test.ts
+        timeout-minutes: 3
+
+      - name: Release gates (gate:all)
+        run: npm run gate:all
+
+      - name: Build frontend
+        run: npm run build:frontend
+
+      - name: Check frontend build output
+        run: npm run check:frontend-build-output
+
+      - name: Fresh install smoke (safe mode)
+        run: npm run test:fresh-install
+
+      - name: Deps security check
+        run: npm run check:deps
+
+      - name: Strict-baseline regression gate
+        run: npm run check:strict-baseline
+
+      - name: Verify devlog submodule
+        id: devlog-check
+        run: |
+          if [[ ! -d devlog/_fin ]]; then
+            echo "⚠️ devlog submodule not checked out — SUBMODULE_PAT secret may be missing"
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Devlog _fin status gate
+        if: steps.devlog-check.outputs.available == 'true'
+        run: bash structure/audit-fin-status.sh
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: fin-status-audit
+          path: devlog/_fin/_status_audit.md
+          if-no-files-found: ignore
+
+      - name: Copilot gap check
+        run: npm run check:copilot-gap
+
+      - name: File size check
+        run: |
+          echo "=== Files over 500 lines ==="
+          find . \( -name '*.js' -o -name '*.ts' \) -not -path './node_modules/*' -not -path './skills_ref/*' -not -name '*.d.ts' \
+            | xargs wc -l | sort -rn | awk '$1 > 500 && !/total/ { print "⚠️ " $0; found=1 } END { if (!found) print "✅ All files under 500 lines" }'
+
+      - name: CLI basic tests
+        run: npx tsx --test tests/integration/cli-basic.test.ts
+
+      - name: API smoke tests
+        run: |
+          npx tsx server.ts &
+          SERVER_PID=$!
+          # Wait for server to be ready (max 10s)
+          for i in $(seq 1 20); do
+            if curl -sf http://localhost:3457/api/session > /dev/null 2>&1; then
+              echo "✅ Server ready after $((i/2))s"
+              break
+            fi
+            sleep 0.5
+          done
+          TEST_PORT=3457 npx tsx --test tests/integration/api-smoke.test.ts || SMOKE_EXIT=$?
+          kill $SERVER_PID 2>/dev/null || true
+          exit ${SMOKE_EXIT:-0}
+        env:
+          NODE_ENV: test

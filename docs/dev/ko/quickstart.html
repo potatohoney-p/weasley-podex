@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quickstart — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="./">Overview</a>
+      <a class="docs-nav-link active" href="./quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="./quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="./concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="./concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="./concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="./concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="./concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="./concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="./concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="./guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="./guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="./guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="./guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="./guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="./guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="./guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="./guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="./reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="./reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="./reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="./reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="./reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="./changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../dev/">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="./zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>빠른 시작</h1>
+<p class="lead">podex를 설치하고 5분 안에 첫 AI 에이전트 세션을 시작하세요.</p>
+
+<h2>사전 요구사항</h2>
+<ul>
+<li><strong>Node.js 22.4+</strong> — <a href="https://nodejs.org">nodejs.org</a></li>
+<li><strong>npm</strong> (Node.js에 포함)</li>
+<li>최소 하나의 AI CLI 구독 (예: Claude Code는 Claude Pro 이상, Codex는 ChatGPT Pro 이상, Gemini CLI는 Google AI)</li>
+</ul>
+
+<h2>설치</h2>
+<h3>macOS / Linux</h3>
+<pre><code>npm install -g podex</code></pre>
+
+<h3>Windows</h3>
+<div class="callout callout-warn">Windows는 WSL(Windows Subsystem for Linux)이 필요합니다. 먼저 WSL을 설치한 후, 시작 메뉴에서 Ubuntu를 열고 거기서 명령어를 실행하세요.</div>
+<pre><code># WSL Ubuntu 터미널에서:
+npm install -g podex</code></pre>
+<p>Windows 상세 가이드: <a href="../windows.html">Windows 설정</a></p>
+
+<h2>초기 설정</h2>
+<pre><code>jaw init</code></pre>
+<p>설정 마법사가 다음을 안내합니다:</p>
+<ol>
+<li>기본 CLI 선택 (Claude Code, Codex, Gemini CLI 등)</li>
+<li>CLI 구독 인증</li>
+<li>서버 포트 설정 (기본값: 3457)</li>
+</ol>
+
+<h2>CLI 인증</h2>
+<p>각 CLI는 자체 구독으로 인증합니다. 별도 터미널에서 로그인하세요:</p>
+<pre><code># Claude Code (Claude Pro 구독 이상 필요)
+claude
+
+# Codex (ChatGPT Pro 구독 이상 필요)
+codex
+
+# Gemini CLI (Google AI 구독 필요)
+gemini</code></pre>
+<div class="callout callout-info">기본 프리미엄 모델은 Claude <code>claude-opus-4-8</code>, Codex <code>gpt-5.5</code>입니다. 6월부터 구독제에 포함된 Claude 사용량을 쓰려면 <code>claude-e</code>를 선택하세요.</div>
+<p>그 다음 jaw에서 사용할 CLI를 설정하세요:</p>
+<pre><code>jaw init   # 또는 채팅에서 /cli claude</code></pre>
+<div class="callout callout-info"><code>settings.json</code>의 API 키는 음성인식(Gemini API)이나 이미지 생성(OpenAI API) 같은 선택 기능에만 필요합니다. 메인 CLI 인증은 각 도구의 로그인으로 처리됩니다.</div>
+
+<h2>설치 확인</h2>
+<pre><code>jaw doctor</code></pre>
+<p>설정을 확인하고 문제가 있으면 보고합니다.</p>
+
+<h2>문제 해결</h2>
+<table>
+<tr><th>에러</th><th>해결 방법</th></tr>
+<tr><td><code>command not found: jaw</code></td><td>npm 글로벌 bin이 PATH에 있는지 확인. <code>npm bin -g</code>로 경로 확인.</td></tr>
+<tr><td><code>EACCES permission denied</code></td><td><code>sudo npm install -g podex</code>를 사용하거나 npm 권한 수정.</td></tr>
+<tr><td><code>node: command not found</code></td><td>nodejs.org에서 Node.js 22.4+ 설치.</td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="./">Overview</a>
+<a class="next" href="quickstart-first-run.html">First Run</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

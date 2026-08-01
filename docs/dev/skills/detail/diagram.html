@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagrams — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-version { background: rgba(34, 211, 238, 0.12); color: var(--accent); }
+.meta-table { margin: 20px 0 32px; }
+.meta-table td:first-child { font-weight: 600; color: var(--text-dim); width: 160px; white-space: nowrap; }
+.example-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0 16px; }
+.example-block .example-label { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.example-block code { display: block; background: none; padding: 2px 0; color: var(--text); font-size: 14px; line-height: 1.7; }
+.example-block code .comment { color: var(--text-muted); }
+.forbidden-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.forbidden-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.forbidden-card .card-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.forbidden-card .card-title.do-not { color: var(--red); }
+.forbidden-card .card-title.do { color: var(--green); }
+.forbidden-card p { font-size: 13px; color: var(--text-dim); margin: 0; }
+.forbidden-card code { font-size: 12px; }
+.color-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: middle; margin-right: 6px; }
+@media (max-width: 768px) {
+  .forbidden-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link active" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Diagrams <span class="badge badge-active">Default Active</span> <span class="badge badge-version">v1.1.0</span></h1>
+<p class="lead">SVG diagrams, Mermaid charts, and interactive visualizations &mdash; rendered inline in the chat UI. From architecture overviews to interactive data dashboards, this skill turns any visual request into a rendered output directly in the conversation.</p>
+
+<table class="meta-table">
+<tr><td>Skill name</td><td><code>diagram</code></td></tr>
+<tr><td>Version</td><td>1.1.0</td></tr>
+<tr><td>Default active</td><td>Yes &mdash; always injected, no <code>/skill load</code> needed</td></tr>
+<tr><td>Output formats</td><td>Inline SVG, Mermaid code blocks, <code>diagram-html</code> widgets</td></tr>
+<tr><td>Triggers</td><td>Any request that benefits from visual explanation: flowcharts, comparisons, timelines, charts, maps, simulations, mockups</td></tr>
+<tr><td>Reference modules</td><td>svg-components, color-palette, module-chart, module-widget, module-interactive, module-map, module-mockup, module-art</td></tr>
+</table>
+
+<h2>Design Principles</h2>
+<p>Every diagram produced by this skill follows four core principles:</p>
+<ul>
+<li><strong>Flat</strong> &mdash; No gradients, shadows, blur, glow, or decorative effects. Clean flat surfaces only.</li>
+<li><strong>Compact</strong> &mdash; Show the essential inline. Explain the rest in response text.</li>
+<li><strong>Theme-aware</strong> &mdash; Every color works in both light and dark mode. CSS classes for SVG, <code>window.__jawTokens</code> for canvas/JS.</li>
+<li><strong>Text in response, visuals in tool</strong> &mdash; All explanatory prose goes outside the diagram. Never put paragraphs of explanation inside the SVG or widget HTML.</li>
+</ul>
+
+<h2>Complexity Budget</h2>
+<p>Hard limits enforced on every diagram to prevent visual noise:</p>
+<table>
+<tr><th>Constraint</th><th>Limit</th><th>Overflow strategy</th></tr>
+<tr><td>Box subtitles</td><td>5 words max</td><td>Move detail to <code>sendPrompt()</code> or prose</td></tr>
+<tr><td>Color ramps per diagram</td><td>2 ramps max</td><td>Consolidate categories</td></tr>
+<tr><td>Horizontal row (680px)</td><td>4 boxes max</td><td>Shrink or wrap to 2 rows</td></tr>
+<tr><td>Nodes per diagram</td><td>6 max</td><td>Split into overview + detail diagrams</td></tr>
+<tr><td>Consecutive visual blocks</td><td>Never</td><td>Always add prose between SVG/widget blocks</td></tr>
+</table>
+
+<h2>Diagram Type Selection</h2>
+<p>The skill routes on the <strong>verb</strong>, not the noun. The same subject can produce different diagram types depending on what the user asks. When a type maps cleanly to native Mermaid syntax, Mermaid is preferred over hand-rolled SVG.</p>
+
+<h3>SVG types</h3>
+<table>
+<tr><th>User intent</th><th>Type</th><th>Output</th></tr>
+<tr><td>"how does X work"</td><td>Illustrative SVG</td><td>Spatial metaphor, cross-section, physical layout</td></tr>
+<tr><td>"architecture of X" (system context)</td><td>Structural SVG</td><td>Containers, regions, nesting</td></tr>
+<tr><td>"steps of X" (generic process)</td><td>Flowchart SVG or Mermaid <code>flowchart</code></td><td>Top-down boxes + arrows</td></tr>
+<tr><td>"compare A vs B"</td><td>Comparison SVG</td><td>Side-by-side columns</td></tr>
+</table>
+
+<h3>Mermaid types</h3>
+<table>
+<tr><th>User intent</th><th>Mermaid syntax</th><th>Status</th></tr>
+<tr><td>DB schema / entity relationship</td><td><code>erDiagram</code></td><td>Stable</td></tr>
+<tr><td>Class diagram / OOP structure</td><td><code>classDiagram</code></td><td>Stable</td></tr>
+<tr><td>State machine / lifecycle</td><td><code>stateDiagram-v2</code></td><td>Stable</td></tr>
+<tr><td>Sequence / call order / API flow</td><td><code>sequenceDiagram</code></td><td>Stable</td></tr>
+<tr><td>Timeline / roadmap / history</td><td><code>timeline</code></td><td>Stable</td></tr>
+<tr><td>Mind map / brainstorm</td><td><code>mindmap</code></td><td>Stable</td></tr>
+<tr><td>Git branching / release history</td><td><code>gitGraph</code></td><td>Stable</td></tr>
+<tr><td>Priority quadrant / 2x2 matrix</td><td><code>quadrantChart</code></td><td>Stable</td></tr>
+<tr><td>Gantt / project schedule</td><td><code>gantt</code></td><td>Stable</td></tr>
+<tr><td>User journey map</td><td><code>journey</code></td><td>Stable</td></tr>
+<tr><td>Pie breakdown</td><td><code>pie</code></td><td>Stable</td></tr>
+<tr><td>Radar / spider / skill profile</td><td><code>radar-beta</code></td><td>Beta (v11.6+)</td></tr>
+<tr><td>Kanban board</td><td><code>kanban</code></td><td>Beta (v11.12+)</td></tr>
+<tr><td>Cloud / infra architecture</td><td><code>architecture-beta</code></td><td>Beta</td></tr>
+<tr><td>Hierarchy / proportional size</td><td><code>treemap-beta</code></td><td>Beta</td></tr>
+<tr><td>Free-form block layout</td><td><code>block-beta</code></td><td>Beta</td></tr>
+</table>
+
+<h3>Interactive HTML widget types</h3>
+<table>
+<tr><th>User intent</th><th>Output</th><th>Libraries</th></tr>
+<tr><td>"show data / chart"</td><td><code>diagram-html</code> widget</td><td>Chart.js, D3, ECharts</td></tr>
+<tr><td>"simulate / interactive"</td><td><code>diagram-html</code> widget</td><td>Matter.js, Canvas, sliders</td></tr>
+<tr><td>"interactive map"</td><td><code>diagram-html</code> widget</td><td>Leaflet + OpenStreetMap</td></tr>
+<tr><td>"static choropleth"</td><td><code>diagram-html</code> widget</td><td>D3 + TopoJSON</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>Default behavior:</strong> "how does X work?" defaults to <strong>illustrative SVG</strong>, not a flowchart. When the diagram type is in the Mermaid table above, Mermaid is used &mdash; the skill does not hand-roll SVG when <code>classDiagram</code>/<code>sequenceDiagram</code>/<code>stateDiagram</code> already exists.</div>
+
+<h2>Mermaid Gotchas</h2>
+<p>Important caveats when working with Mermaid diagram types:</p>
+
+<div class="callout callout-danger"><strong>Do NOT use C4 diagrams</strong> (<code>C4Context</code>, <code>C4Container</code>, etc.) &mdash; theme tokens are not applied in dark mode, making text unreadable. Use the substitution table below instead.</div>
+
+<table>
+<tr><th>C4 type</th><th>Substitute</th></tr>
+<tr><td>C4 System Context</td><td>Structural SVG (custom) or Mermaid <code>flowchart</code> with subgraphs</td></tr>
+<tr><td>C4 Container</td><td>Mermaid <code>architecture-beta</code></td></tr>
+<tr><td>C4 Component</td><td>Mermaid <code>flowchart</code> with <code>subgraph</code> grouping</td></tr>
+<tr><td>C4 Dynamic</td><td>Mermaid <code>sequenceDiagram</code></td></tr>
+<tr><td>C4 Deployment</td><td>Mermaid <code>architecture-beta</code></td></tr>
+</table>
+
+<p>Additional notes:</p>
+<ul>
+<li><code>sankey-beta</code> / <code>xychart-beta</code> break at narrow chat widths. Prefer <code>diagram-html</code> + ECharts sankey or Chart.js for XY charts.</li>
+<li><code>radar-beta</code> requires the <code>-beta</code> suffix (Mermaid v11.6+). Other beta types: <code>treemap-beta</code>, <code>block-beta</code>, <code>architecture-beta</code>, <code>packet-beta</code>, <code>kanban</code>.</li>
+<li>All stable Mermaid types inherit the host dark/light theme automatically. Do NOT set explicit colors in <code>%%{init: ...}%%</code> unless overriding for semantic reasons.</li>
+</ul>
+
+<h2>Output Formats</h2>
+
+<h3>1. Inline SVG (static diagrams)</h3>
+<p>Raw <code>&lt;svg&gt;</code> markup output directly in the response. The chat UI renders it inline.</p>
+<pre><code>&lt;svg viewBox="0 0 680 {height}" xmlns="http://www.w3.org/2000/svg"
+  role="img" aria-labelledby="title-id desc-id"&gt;
+  &lt;title id="title-id"&gt;Diagram Title&lt;/title&gt;
+  &lt;desc id="desc-id"&gt;Brief description for screen readers&lt;/desc&gt;
+  &lt;!-- shapes, text, paths --&gt;
+&lt;/svg&gt;</code></pre>
+
+<h4>Inline SVG rules</h4>
+<ul>
+<li>viewBox width MUST be <strong>680</strong> (matches container width &mdash; never change this)</li>
+<li>Height varies by content: last element bottom + 40px padding</li>
+<li>Every SVG MUST have <code>role="img"</code> + <code>&lt;title&gt;</code> + <code>&lt;desc&gt;</code></li>
+<li>Use CSS classes from the design system (<code>.node</code>, <code>.connector</code>, <code>.label</code>, <code>.label-start</code>)</li>
+<li><code>.label</code> forces <code>text-anchor: middle</code> (centered only); use <code>.label-start</code> for left-aligned text</li>
+<li>Colors: use CSS classes, not inline <code>fill</code>/<code>stroke</code></li>
+<li>Font-family inherited from host &mdash; do NOT set explicit fonts</li>
+</ul>
+
+<h3>2. Mermaid (structured diagrams)</h3>
+<p>Standard <code>```mermaid</code> code blocks. The existing renderer handles these automatically.</p>
+<pre><code>```mermaid
+sequenceDiagram
+    participant A as Client
+    participant B as Server
+    A->>B: GET /api/data
+    B-->>A: 200 OK (JSON)
+```</code></pre>
+
+<h3>3. Interactive HTML widget (charts, controls, simulations)</h3>
+<p>Wrapped in <code>```diagram-html</code> code blocks. Rendered inside a sandboxed iframe created by the host.</p>
+<pre><code>```diagram-html
+&lt;div id="chart-wrapper" style="position: relative; width: 100%; height: 300px;"&gt;
+  &lt;canvas id="myChart" role="img" aria-label="Chart description"&gt;
+    Fallback text
+  &lt;/canvas&gt;
+&lt;/div&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
+  onerror="document.body.innerHTML='&lt;p&gt;Chart library failed to load.&lt;/p&gt;'"&gt;
+&lt;/script&gt;
+&lt;script&gt;
+  const isDark = window.__jawTheme?.isDark ?? true;
+  // ... Chart.js code
+&lt;/script&gt;
+```</code></pre>
+
+<div class="callout callout-info"><strong>Style-first, script-last:</strong> For <code>diagram-html</code> widgets, always put <code>&lt;style&gt;</code> and <code>&lt;link&gt;</code> tags first, then HTML structure, then <code>&lt;script&gt;</code> tags last. This ensures visual content appears before scripts execute during streaming.</div>
+
+<h2>Delivery Mechanism</h2>
+<p>All three formats &mdash; inline SVG, <code>```mermaid</code>, <code>```diagram-html</code> &mdash; are rendered inline in the chat response. The jaw frontend parses the reply text and mounts them automatically. <code>diagram-html</code> goes into a sandboxed <code>&lt;iframe&gt;</code> that the host creates; the skill does <strong>not</strong> create the iframe.</p>
+
+<div class="forbidden-grid">
+<div class="forbidden-card">
+<div class="card-title do-not">Do NOT</div>
+<p>Save to <code>.svg</code> / <code>.html</code> / <code>.png</code> file (Write tool, <code>cat &gt;</code>, fs.writeFile)</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">Do</div>
+<p>Paste raw block directly into the reply text</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do-not">Do NOT</div>
+<p>Wrap <code>diagram-html</code> in <code>&lt;iframe&gt;</code> / <code>&lt;html&gt;</code> / <code>&lt;body&gt;</code> / <code>&lt;head&gt;</code></p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">Do</div>
+<p>Start at <code>&lt;div&gt;</code> / <code>&lt;canvas&gt;</code> / <code>&lt;style&gt;</code> &mdash; host injects the shell</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do-not">Do NOT</div>
+<p>Send via <code>/api/channel/send</code> or Telegram/Discord (not an attachment)</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">Do</div>
+<p>Let the renderer handle it; diagrams are response text</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do-not">Do NOT</div>
+<p>Reference an external image URL and call it a diagram</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">Do</div>
+<p>Output the SVG/widget code itself</p>
+</div>
+</div>
+
+<div class="callout callout-warn"><strong>File saves:</strong> If the user says "save this diagram" or "download it", still output it inline first so they see it rendered. Only write a file to disk if they explicitly request a file &mdash; and even then, the inline version is the canonical delivery.</div>
+
+<h2>SVG Design System</h2>
+
+<h3>Design forbidden list</h3>
+<p>Quality rules enforced on all SVG output (separate from the security restrictions below):</p>
+<ul>
+<li>No gradients, drop shadows, blur, glow, or neon effects</li>
+<li>No emoji &mdash; use CSS shapes or SVG paths</li>
+<li>No decorative step numbers or oversized headings</li>
+<li>No icons or illustrations inside flowchart boxes &mdash; text only</li>
+<li>No rotated text</li>
+<li>No dark/colored backgrounds on outer containers (transparent only &mdash; host provides bg)</li>
+<li>Stroke width: <strong>0.5px</strong> for borders and edges (not 1px or 2px)</li>
+<li>Font weights: <strong>400</strong> (regular) and <strong>500</strong> (bold) only &mdash; never 600 or 700</li>
+<li>Font sizes: <strong>14px</strong> (node labels) and <strong>12px</strong> (subtitles/arrow labels) only</li>
+<li><strong>Sentence case</strong> always &mdash; never Title Case or ALL CAPS</li>
+</ul>
+
+<h3>Security restrictions (inline SVG)</h3>
+<p>These elements and attributes are stripped by DOMPurify. Never use them in inline <code>&lt;svg&gt;</code>:</p>
+<table>
+<tr><th>Forbidden element / attribute</th><th>Reason</th><th>Alternative</th></tr>
+<tr><td><code>&lt;foreignObject&gt;</code></td><td>Embeds HTML in SVG (XSS vector)</td><td>Use native SVG elements</td></tr>
+<tr><td><code>&lt;animate&gt;</code>, <code>&lt;set&gt;</code>, <code>&lt;animateTransform&gt;</code>, <code>&lt;animateMotion&gt;</code></td><td>Animation XSS vectors</td><td>Static SVG only</td></tr>
+<tr><td>Nested <code>&lt;svg&gt;</code></td><td>Parsing issues</td><td>Use <code>&lt;g&gt;</code> groups</td></tr>
+<tr><td><code>xlink:href</code></td><td>External URL injection</td><td>Use <code>href="#fragment"</code> on <code>&lt;use&gt;</code> only</td></tr>
+<tr><td>All <code>on*</code> event handlers</td><td>Stripped by DOMPurify</td><td>Not available in inline SVG</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>Note:</strong> <code>diagram-html</code> content runs inside a sandboxed iframe where <code>&lt;script&gt;</code>, <code>on*</code> handlers, and CDN imports ARE allowed. The restrictions above apply only to inline SVG rendered in the main document.</div>
+
+<h3>Color ramps (9 semantic colors)</h3>
+<p>Each ramp has 3 shades: fill (background), stroke (border), and text (label). Always use CSS class names, not inline colors.</p>
+<table>
+<tr><th>Ramp</th><th>CSS prefix</th><th>Preferred use</th></tr>
+<tr><td><span class="color-swatch" style="background:#22d3ee;"></span> Cyan</td><td><code>.c-cyan</code></td><td>General categories (preferred for neutral info)</td></tr>
+<tr><td><span class="color-swatch" style="background:#f472b6;"></span> Pink</td><td><code>.c-pink</code></td><td>General categories, highlights</td></tr>
+<tr><td><span class="color-swatch" style="background:#a78bfa;"></span> Purple</td><td><code>.c-purple</code></td><td>General categories, grouping</td></tr>
+<tr><td><span class="color-swatch" style="background:#fb923c;"></span> Orange</td><td><code>.c-orange</code></td><td>General categories, accent</td></tr>
+<tr><td><span class="color-swatch" style="background:#94a3b8;"></span> Slate</td><td><code>.c-slate</code></td><td>Neutral, disabled, structural (start/end nodes)</td></tr>
+<tr><td><span class="color-swatch" style="background:#60a5fa;"></span> Blue</td><td><code>.c-blue</code></td><td>Informational (semantic &mdash; use only for "info")</td></tr>
+<tr><td><span class="color-swatch" style="background:#4ade80;"></span> Green</td><td><code>.c-green</code></td><td>Success, positive (semantic)</td></tr>
+<tr><td><span class="color-swatch" style="background:#fbbf24;"></span> Amber</td><td><code>.c-amber</code></td><td>Warning, attention (semantic)</td></tr>
+<tr><td><span class="color-swatch" style="background:#f87171;"></span> Red</td><td><code>.c-red</code></td><td>Error, negative (semantic)</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>Color assignment rule:</strong> Color encodes <strong>meaning</strong>, not sequence. Do not cycle through colors like a rainbow. Group by category &mdash; all nodes of the same type share one color. Prefer cyan/pink/purple/orange for general categories. Reserve blue/green/amber/red for genuinely semantic concepts.</div>
+
+<h3>Layout patterns</h3>
+<table>
+<tr><th>Pattern</th><th>Layout</th><th>Size</th></tr>
+<tr><td>Flowchart</td><td>Top-to-bottom</td><td>680 x auto</td></tr>
+<tr><td>Comparison</td><td>Side-by-side columns</td><td>680 x auto</td></tr>
+<tr><td>Timeline</td><td>Horizontal with markers</td><td>680 x auto</td></tr>
+<tr><td>Org chart</td><td>Hierarchical tree</td><td>680 x auto</td></tr>
+</table>
+
+<h2>Theme Integration</h2>
+
+<h3>CSS variable mapping</h3>
+<p>The podex host exposes these CSS variables for diagram theming:</p>
+<table>
+<tr><th>Variable</th><th>Use</th></tr>
+<tr><td><code>--bg</code></td><td>Page background</td></tr>
+<tr><td><code>--surface</code></td><td>Card/surface background</td></tr>
+<tr><td><code>--text</code></td><td>Primary text</td></tr>
+<tr><td><code>--text-dim</code></td><td>Muted/secondary text</td></tr>
+<tr><td><code>--border</code></td><td>Default border</td></tr>
+<tr><td><code>--accent</code></td><td>Accent color</td></tr>
+<tr><td><code>--font-ui</code></td><td>UI font family</td></tr>
+<tr><td><code>--font-mono</code></td><td>Code font family</td></tr>
+<tr><td><code>--radius-md</code></td><td>8px border radius</td></tr>
+<tr><td><code>--radius-lg</code></td><td>12px border radius</td></tr>
+</table>
+
+<h3>Theme detection by format</h3>
+<table>
+<tr><th>Format</th><th>Theme method</th></tr>
+<tr><td>Inline SVG</td><td>CSS classes adapt to host theme automatically</td></tr>
+<tr><td><code>diagram-html</code> iframe (JS)</td><td><code>window.__jawTheme.isDark</code> (boolean)</td></tr>
+<tr><td><code>diagram-html</code> iframe (CSS values)</td><td><code>window.__jawTokens['--bg']</code>, <code>['--text']</code>, etc.</td></tr>
+<tr><td>Mermaid</td><td>Automatic via podex <code>themeVariables</code></td></tr>
+</table>
+
+<div class="callout callout-danger"><strong>Never</strong> use <code>matchMedia('prefers-color-scheme')</code> in diagrams. The host controls the theme, not the OS setting.</div>
+
+<h2>Reference Modules</h2>
+<p>The diagram skill loads additional reference files for specialized diagram types. These provide detailed patterns, library integration guides, and templates:</p>
+<table>
+<tr><th>Module</th><th>File</th><th>Coverage</th></tr>
+<tr><td>SVG components</td><td><code>reference/svg-components.md</code></td><td>SVG primitives, viewBox checklist, layout templates</td></tr>
+<tr><td>Color palette</td><td><code>reference/color-palette.md</code></td><td>Full color values (light + dark), assignment rules</td></tr>
+<tr><td>Charts</td><td><code>reference/module-chart.md</code></td><td>Chart.js + D3 + ECharts 6 &mdash; bar, line, pie, choropleth, heatmap, sankey, radar, treemap, gauge, funnel, candlestick, chord</td></tr>
+<tr><td>Widgets</td><td><code>reference/module-widget.md</code></td><td>Physics (Matter.js), math graphs (Math.js), 3D (Three.js), creative coding (p5.js), audio (Tone.js), mini-games</td></tr>
+<tr><td>Interactive</td><td><code>reference/module-interactive.md</code></td><td>Sliders, selects, segmented buttons, toggles, play/pause/reset, debouncing, sendPrompt, keyboard accessibility</td></tr>
+<tr><td>Maps</td><td><code>reference/module-map.md</code></td><td>Leaflet interactive maps &mdash; OpenStreetMap tiles, markers, popups, dark mode</td></tr>
+<tr><td>UI Mockups</td><td><code>reference/module-mockup.md</code></td><td>UI mockup patterns</td></tr>
+<tr><td>Art</td><td><code>reference/module-art.md</code></td><td>Decorative SVG patterns</td></tr>
+</table>
+
+<h2>Usage Examples</h2>
+
+<div class="example-block">
+<div class="example-label">~&#54644;&#51452; example 1 &mdash; Architecture diagram</div>
+<code>"&#47560;&#51060;&#53356;&#47196;&#49436;&#48708;&#49828; &#50500;&#53412;&#53581;&#52376; &#44536;&#47140;&#51460;" <span class="comment"># Triggers: Structural SVG &mdash; containers, regions, nesting</span></code>
+<code><span class="comment"># The skill produces an inline SVG with service boxes, arrows, and grouping regions.</span></code>
+<code><span class="comment"># No Mermaid C4 (dark mode issue) &mdash; uses custom structural SVG instead.</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">~&#54644;&#51452; example 2 &mdash; Database ER diagram</div>
+<code>"&#51060; DB &#49828;&#53412;&#47560; ER &#45796;&#51060;&#50612;&#44536;&#47016;&#51004;&#47196; &#48372;&#50668;&#51452;" <span class="comment"># Triggers: Mermaid erDiagram</span></code>
+<code><span class="comment"># Outputs a ```mermaid block with erDiagram syntax.</span></code>
+<code><span class="comment"># Theme adapts automatically &mdash; no manual color config needed.</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">~&#54644;&#51452; example 3 &mdash; Interactive data chart</div>
+<code>"&#50900;&#48324; &#47588;&#52636; &#45936;&#51060;&#53552; &#52264;&#53944;&#47196; &#44536;&#47140;&#51452;" <span class="comment"># Triggers: diagram-html + Chart.js</span></code>
+<code><span class="comment"># Produces a ```diagram-html block with Chart.js bar/line chart.</span></code>
+<code><span class="comment"># Uses window.__jawTheme.isDark for dark mode colors.</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">~&#54644;&#51452; example 4 &mdash; API sequence flow</div>
+<code>"&#47196;&#44536;&#51064; API &#55120;&#47492; &#49884;&#53008;&#49828; &#45796;&#51060;&#50612;&#44536;&#47016;&#51004;&#47196; &#44536;&#47140;&#51452;" <span class="comment"># Triggers: Mermaid sequenceDiagram</span></code>
+<code><span class="comment"># Client &rarr; Auth Server &rarr; API &rarr; DB &mdash; full request/response flow.</span></code>
+<code><span class="comment"># Mermaid chosen over SVG because sequenceDiagram natively supports this.</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">~&#54644;&#51452; example 5 &mdash; Comparison diagram</div>
+<code>"React vs Vue vs Svelte &#48708;&#44368;&#54644;&#51452;" <span class="comment"># Triggers: Comparison SVG (side-by-side columns)</span></code>
+<code><span class="comment"># Produces an inline SVG with 3 columns, key attributes compared visually.</span></code>
+<code><span class="comment"># Max 2 color ramps &mdash; one for category headers, one for highlights.</span></code>
+</div>
+
+<h2>Quick Reference</h2>
+<p>Decision tree for choosing the right output format:</p>
+<table>
+<tr><th>Question</th><th>Answer</th><th>Format</th></tr>
+<tr><td>Does Mermaid have a native syntax for this?</td><td>Yes</td><td>Use <code>```mermaid</code></td></tr>
+<tr><td>Is it a static layout/architecture/comparison?</td><td>Yes</td><td>Use inline <code>&lt;svg&gt;</code></td></tr>
+<tr><td>Does it need interactivity, data viz, or JS libs?</td><td>Yes</td><td>Use <code>```diagram-html</code></td></tr>
+<tr><td>Is it a C4 diagram?</td><td>Yes</td><td>Substitute per C4 mapping table above</td></tr>
+<tr><td>Is it a "how does X work" question?</td><td>Yes</td><td>Illustrative SVG (not flowchart)</td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">Productivity Skills</a>
+<a class="next" href="../utility.html">Utility Skills</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

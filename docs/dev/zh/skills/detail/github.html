@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.badge-req { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.skill-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 24px; }
+.skill-meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.skill-meta-card dt { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px; }
+.skill-meta-card dd { font-size: 14px; color: var(--text); }
+.use-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0 20px; }
+.use-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.use-card h4 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+.use-card.do h4 { color: var(--green); }
+.use-card.dont h4 { color: var(--red); }
+.use-card ul { margin: 0; padding-left: 18px; font-size: 13px; }
+.use-card li { margin: 3px 0; color: var(--text-dim); }
+.example-callout { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 10px 0; }
+.example-callout .example-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 6px; }
+.example-callout .example-kr { font-size: 15px; color: var(--text); margin-bottom: 4px; }
+.example-callout .example-desc { font-size: 13px; color: var(--text-dim); }
+.flow-steps { counter-reset: flow; margin: 12px 0 20px; padding: 0; list-style: none; }
+.flow-steps li { counter-increment: flow; padding: 10px 0 10px 48px; position: relative; border-left: 2px solid var(--border); margin-left: 16px; }
+.flow-steps li::before { content: counter(flow); position: absolute; left: -14px; top: 8px; width: 26px; height: 26px; background: var(--surface2); border: 2px solid var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--accent); }
+.flow-steps li:last-child { border-left-color: transparent; }
+@media (max-width: 768px) {
+  .skill-meta { grid-template-columns: 1fr; }
+  .use-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">快速入门</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+      <a class="docs-nav-link" href="../../">概览</a>
+      <a class="docs-nav-link" href="../../quickstart.html">快速开始</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">首次运行</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">核心概念</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">架构</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">员工</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">目标</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">技能</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">记忆</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">提示词</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">使用指南</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">计算机操控</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 桌面端</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">参考</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 命令</a>
+      <a class="docs-nav-link" href="../../reference/api.html">服务器 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">配置</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">键盘快捷键</a>
+      <a class="docs-nav-link" href="../../reference/events.html">事件</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">技能</div>
+      <a class="docs-nav-link" href="../index.html">技能目录</a>
+      <a class="docs-nav-link" href="../orchestration.html">开发</a>
+      <a class="docs-nav-link" href="../automation.html">自动化</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 媒体</a>
+      <a class="docs-nav-link" href="../communication.html">通信</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">云 &amp; 部署</a>
+      <a class="docs-nav-link" href="../devtools-security.html">安全 &amp; 审查</a>
+      <a class="docs-nav-link active" href="../devtools-workflow.html">开发工作流</a>
+      <a class="docs-nav-link" href="../productivity.html">生产力</a>
+      <a class="docs-nav-link" href="../smarthome.html">智能家居</a>
+      <a class="docs-nav-link" href="../utility.html">实用工具</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">命令</div>
+      <a class="docs-nav-link" href="../../commands/session.html">会话</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">工作流</a>
+      <a class="docs-nav-link" href="../../commands/model.html">模型 &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">工具</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">仅 CLI</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">根 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">更新日志</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">한국어</a>
+    <a href="../../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">首页</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>GitHub <span class="badge badge-active">默认启用</span></h1>
+<p class="lead">GitHub <code>gh</code> CLI &mdash; 议题、拉取请求、CI、代码审查、发布</p>
+
+<div class="skill-meta">
+  <div class="skill-meta-card">
+    <dt>技能名称</dt>
+    <dd><code>github</code></dd>
+  </div>
+  <div class="skill-meta-card">
+    <dt>分类</dt>
+    <dd>开发工作流</dd>
+  </div>
+  <div class="skill-meta-card">
+    <dt>依赖</dt>
+    <dd><code>gh</code> CLI <span class="badge badge-req">可执行文件</span></dd>
+  </div>
+  <div class="skill-meta-card">
+    <dt>源文件</dt>
+    <dd><code>~/.podex/skills/github/SKILL.md</code></dd>
+  </div>
+</div>
+
+<div class="callout callout-info">此技能<strong>默认启用</strong>，会在每个会话中自动注入。它涵盖了通过 <code>gh</code> CLI 进行的所有 GitHub 交互，包括先前 <code>gh-address-comments</code>、<code>gh-fix-ci</code>、<code>gh-issues</code> 和 <code>yeet</code> 技能的合并功能。</div>
+
+<!-- ================================================================ -->
+<h2>快速参考</h2>
+
+<table>
+<tr><th>命令</th><th>说明</th><th>示例</th></tr>
+<tr><td><code>gh pr list</code></td><td>列出拉取请求</td><td><code>gh pr list --repo owner/repo</code></td></tr>
+<tr><td><code>gh pr view</code></td><td>查看 PR 详情</td><td><code>gh pr view 55 --repo owner/repo</code></td></tr>
+<tr><td><code>gh pr checks</code></td><td>检查 PR 的 CI 状态</td><td><code>gh pr checks 55 --repo owner/repo</code></td></tr>
+<tr><td><code>gh pr create</code></td><td>创建拉取请求</td><td><code>gh pr create --title "feat: X" --body "..."</code></td></tr>
+<tr><td><code>gh pr merge</code></td><td>合并拉取请求</td><td><code>gh pr merge 55 --squash</code></td></tr>
+<tr><td><code>gh issue list</code></td><td>列出议题</td><td><code>gh issue list --state open</code></td></tr>
+<tr><td><code>gh issue create</code></td><td>创建议题</td><td><code>gh issue create --title "Bug: X"</code></td></tr>
+<tr><td><code>gh issue close</code></td><td>关闭议题</td><td><code>gh issue close 42</code></td></tr>
+<tr><td><code>gh run list</code></td><td>列出 CI 工作流运行</td><td><code>gh run list --limit 10</code></td></tr>
+<tr><td><code>gh run view</code></td><td>查看特定 CI 运行</td><td><code>gh run view &lt;id&gt; --log-failed</code></td></tr>
+<tr><td><code>gh run rerun</code></td><td>重新运行失败的作业</td><td><code>gh run rerun &lt;id&gt; --failed</code></td></tr>
+<tr><td><code>gh api</code></td><td>查询 GitHub REST/GraphQL API</td><td><code>gh api repos/o/r/pulls/55 --jq '.title'</code></td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2>何时使用 / 何时不使用</h2>
+
+<div class="use-grid">
+  <div class="use-card do">
+    <h4>适用场景</h4>
+    <ul>
+      <li>检查 PR 状态、审查结果或合并就绪状态</li>
+      <li>查看 CI/工作流运行状态和日志</li>
+      <li>创建、关闭或评论议题</li>
+      <li>创建或合并拉取请求</li>
+      <li>通过 GitHub API 查询仓库数据</li>
+      <li>列出仓库、发布版本或协作者</li>
+      <li>处理 PR 审查评论</li>
+      <li>调试和修复失败的 CI 检查</li>
+      <li>自动修复议题并创建 PR</li>
+      <li>一键暂存、提交、推送并创建 PR（yeet）</li>
+    </ul>
+  </div>
+  <div class="use-card dont">
+    <h4>不适用场景</h4>
+    <ul>
+      <li>本地 git 操作（commit、push、pull、branch）&mdash; 请直接使用 <code>git</code></li>
+      <li>非 GitHub 仓库（GitLab、Bitbucket、自托管）&mdash; 需使用不同的 CLI</li>
+      <li>克隆仓库 &mdash; 请使用 <code>git clone</code></li>
+      <li>审查实际代码变更 &mdash; 请使用 <code>coding-agent</code> 技能</li>
+      <li>复杂的多文件差异 &mdash; 请使用 <code>coding-agent</code> 或直接读取文件</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<h2>安装与配置</h2>
+
+<p><code>github</code> 技能需要 <code>gh</code> CLI 可执行文件。podex 可以为您自动安装，也可以手动安装：</p>
+
+<div class="install-box">
+  <code># macOS (Homebrew)</code>
+  <code>brew install gh</code>
+</div>
+
+<div class="install-box">
+  <code># Linux (apt)</code>
+  <code>sudo apt install gh</code>
+</div>
+
+<p>安装完成后，进行一次性身份验证：</p>
+<pre><code># 一次性身份验证
+gh auth login
+
+# 验证身份验证状态
+gh auth status</code></pre>
+
+<div class="callout callout-warn"><strong>令牌权限范围：</strong>请确保您的 <code>gh</code> 令牌拥有 <code>repo</code>、<code>read:org</code> 和 <code>workflow</code> 权限范围。如果 CI 操作失败，请使用 <code>gh auth login</code> 重新进行身份验证并选择所需的权限范围。</div>
+
+<!-- ================================================================ -->
+<h2>拉取请求</h2>
+
+<h3>列出 PR</h3>
+<pre><code># 列出仓库中的开放 PR
+gh pr list --repo owner/repo
+
+# 按状态筛选
+gh pr list --repo owner/repo --state merged --limit 20
+
+# JSON 输出配合 jq 过滤
+gh pr list --json number,title,state,mergeable \
+  --jq '.[] | select(.mergeable == "MERGEABLE")'</code></pre>
+
+<h3>查看 PR 详情</h3>
+<pre><code># 按编号查看 PR
+gh pr view 55 --repo owner/repo
+
+# 通过 URL 直接查看
+gh pr view https://github.com/owner/repo/pull/55
+
+# 结构化 JSON 输出
+gh pr view 55 --repo owner/repo \
+  --json title,body,author,additions,deletions,changedFiles \
+  --jq '"**\(.title)** by @\(.author.login)\n+\(.additions) -\(.deletions) across \(.changedFiles) files"'</code></pre>
+
+<h3>检查 CI 状态</h3>
+<pre><code># 检查 PR 上的所有 CI 检查
+gh pr checks 55 --repo owner/repo</code></pre>
+
+<h3>创建 PR</h3>
+<pre><code># 基本 PR 创建
+gh pr create --title "feat: add feature" --body "Description"
+
+# 指定审查者和标签
+gh pr create --title "fix: resolve timeout" \
+  --body "Fixes #42" \
+  --reviewer alice,bob \
+  --label bug,urgent
+
+# 草稿 PR
+gh pr create --title "wip: new dashboard" --body "WIP" --draft</code></pre>
+
+<h3>合并 PR</h3>
+<pre><code># 压缩合并
+gh pr merge 55 --squash --repo owner/repo
+
+# 合并提交
+gh pr merge 55 --merge --repo owner/repo
+
+# 变基合并
+gh pr merge 55 --rebase --repo owner/repo
+
+# 检查通过后自动合并
+gh pr merge 55 --auto --squash</code></pre>
+
+<!-- ================================================================ -->
+<h2>议题</h2>
+
+<h3>列出议题</h3>
+<pre><code># 开放的议题
+gh issue list --repo owner/repo --state open
+
+# 按标签筛选
+gh issue list --repo owner/repo --label bug --limit 10
+
+# JSON 格式化输出
+gh issue list --repo owner/repo --state open \
+  --json number,title,labels,createdAt \
+  --jq '.[] | "[\(.number)] \(.title) - \([.labels[].name] | join(", ")) (\(.createdAt[:10]))"'</code></pre>
+
+<h3>创建议题</h3>
+<pre><code># 基本议题
+gh issue create --title "Bug: something broken" --body "Details..."
+
+# 带标签和指派人
+gh issue create --title "Feature: dark mode" \
+  --body "Add dark mode toggle" \
+  --label enhancement \
+  --assignee @me</code></pre>
+
+<h3>关闭议题</h3>
+<pre><code># 按编号关闭
+gh issue close 42 --repo owner/repo
+
+# 关闭并附带评论
+gh issue close 42 --comment "Fixed in PR #55"</code></pre>
+
+<!-- ================================================================ -->
+<h2>CI / 工作流运行</h2>
+
+<h3>列出运行记录</h3>
+<pre><code># 最近的运行记录
+gh run list --repo owner/repo --limit 10
+
+# 按工作流筛选
+gh run list --workflow build.yml --limit 5
+
+# 按状态筛选
+gh run list --status failure --limit 10</code></pre>
+
+<h3>查看运行详情</h3>
+<pre><code># 查看特定运行
+gh run view &lt;run-id&gt; --repo owner/repo
+
+# 仅查看失败步骤的日志（调试时最有用）
+gh run view &lt;run-id&gt; --repo owner/repo --log-failed</code></pre>
+
+<h3>重新运行失败的作业</h3>
+<pre><code># 仅重新运行失败的作业
+gh run rerun &lt;run-id&gt; --failed --repo owner/repo
+
+# 重新运行所有作业
+gh run rerun &lt;run-id&gt; --repo owner/repo</code></pre>
+
+<!-- ================================================================ -->
+<h2>API 查询</h2>
+
+<p><code>gh api</code> 命令提供对 GitHub REST 和 GraphQL API 的直接访问。使用 <code>--jq</code> 来过滤 JSON 结果。</p>
+
+<pre><code># 获取指定字段的 PR 信息
+gh api repos/owner/repo/pulls/55 --jq '.title, .state, .user.login'
+
+# 列出所有标签
+gh api repos/owner/repo/labels --jq '.[].name'
+
+# 获取仓库统计信息
+gh api repos/owner/repo --jq '{stars: .stargazers_count, forks: .forks_count}'
+
+# 列出 PR 审查评论
+gh api repos/{owner}/{repo}/pulls/{pr}/comments \
+  --jq '.[] | "\(.id): \(.body[:80])"'
+
+# 缓存重复查询（1 小时）
+gh api --cache 1h repos/owner/repo</code></pre>
+
+<h3>JSON 输出模式</h3>
+<p>大多数 <code>gh</code> 命令支持 <code>--json</code> 进行结构化输出，并可配合 <code>--jq</code> 过滤：</p>
+<pre><code># 格式化的议题列表
+gh issue list --repo owner/repo --json number,title \
+  --jq '.[] | "\(.number): \(.title)"'
+
+# 可合并的 PR
+gh pr list --json number,title,state,mergeable \
+  --jq '.[] | select(.mergeable == "MERGEABLE")'</code></pre>
+
+<!-- ================================================================ -->
+<h2>集成工作流</h2>
+
+<p><code>github</code> 技能将多个先前独立的技能整合为统一的工作流。这些工作流作为多步骤流程，通过自然语言触发。</p>
+
+<h3>PR 评论处理</h3>
+<p>处理当前分支对应的开放 PR 上的审查评论和议题评论。</p>
+
+<ol class="flow-steps">
+  <li>检查身份验证：<code>gh auth status</code></li>
+  <li>查找当前 PR：<code>gh pr view --json number,url</code></li>
+  <li>列出审查评论：<code>gh api repos/{owner}/{repo}/pulls/{pr}/comments --jq '.[] | "\(.id): \(.body[:80])"'</code></li>
+  <li>逐一处理评论、实施修复并提交变更</li>
+  <li>推送代码并向原始审查者重新请求审查</li>
+</ol>
+
+<h3>修复失败的 CI</h3>
+<p>自动调试和修复失败的 GitHub Actions 检查。</p>
+
+<ol class="flow-steps">
+  <li>查找失败的检查：<code>gh pr checks &lt;PR&gt; --repo owner/repo</code></li>
+  <li>获取失败运行的日志：<code>gh run view &lt;run-id&gt; --log-failed</code></li>
+  <li>总结失败片段并确定根本原因</li>
+  <li>制定修复方案，获得批准后实施修复</li>
+  <li>推送修复并验证 CI 是否通过</li>
+</ol>
+
+<h3>自动修复议题</h3>
+<p>从仓库获取议题，实施修复，并为每个议题创建 PR。</p>
+
+<ol class="flow-steps">
+  <li>列出目标议题：<code>gh issue list --label bug --limit 5</code></li>
+  <li>对每个议题：创建分支、实施修复、创建 PR</li>
+  <li>监控 PR 审查并处理评论</li>
+  <li>使用 GitHub REST API 和 <code>$GH_TOKEN</code> 进行自动化操作</li>
+</ol>
+
+<h3>Yeet：暂存、提交、推送、创建 PR</h3>
+<p>一键式流程，将工作目录中的变更通过单条命令发布为 PR。</p>
+
+<ol class="flow-steps">
+  <li>如果在 <code>main</code>/<code>master</code> 分支上，创建新分支：<code>git checkout -b codex/{description}</code></li>
+  <li>暂存所有变更：<code>git add -A</code></li>
+  <li>提交并附带描述：<code>git commit -m "{description}"</code></li>
+  <li>推送到远程：<code>git push -u origin HEAD</code></li>
+  <li>创建 PR：<code>gh pr create --title "[codex] {description}" --body "..."</code></li>
+</ol>
+
+<!-- ================================================================ -->
+<h2>模板</h2>
+
+<h3>PR 审查摘要</h3>
+<pre><code>PR=55 REPO=owner/repo
+echo "## PR #$PR Summary"
+gh pr view $PR --repo $REPO \
+  --json title,body,author,additions,deletions,changedFiles \
+  --jq '"**\(.title)** by @\(.author.login)\n\n\(.body)\n\n+\(.additions) -\(.deletions) across \(.changedFiles) files"'
+gh pr checks $PR --repo $REPO</code></pre>
+
+<h3>议题分类报告</h3>
+<pre><code>gh issue list --repo owner/repo --state open \
+  --json number,title,labels,createdAt \
+  --jq '.[] | "[\(.number)] \(.title) - \([.labels[].name] | join(", ")) (\(.createdAt[:10]))"'</code></pre>
+
+<!-- ================================================================ -->
+<h2>规则与最佳实践</h2>
+
+<table>
+<tr><th>规则</th><th>详情</th></tr>
+<tr><td>始终指定 <code>--repo</code></td><td>当不在 git 目录内时，始终传递 <code>--repo owner/repo</code> 以避免歧义。</td></tr>
+<tr><td>直接使用 URL</td><td><code>gh pr view https://github.com/owner/repo/pull/55</code> 可以直接使用且无歧义。</td></tr>
+<tr><td>缓存重复的 API 调用</td><td>对频繁运行的查询使用 <code>gh api --cache 1h</code>，以避免达到速率限制。</td></tr>
+<tr><td>优先使用 <code>--log-failed</code></td><td>调试 CI 时，使用 <code>gh run view &lt;id&gt; --log-failed</code> 而非 <code>--log</code>，以避免输出过多。</td></tr>
+<tr><td>使用 <code>--json</code> + <code>--jq</code></td><td>提取结构化数据时，始终优先使用 JSON 输出配合 jq 过滤，而非解析文本。</td></tr>
+<tr><td>本地 git 保持本地</td><td>不要使用此技能执行 <code>git commit</code>、<code>git push</code>、<code>git pull</code> 或 <code>git branch</code>。请直接使用 git。</td></tr>
+<tr><td>速率限制</td><td>GitHub API 有速率限制（已认证用户每小时 5,000 次请求）。请积极使用缓存并批量处理查询。</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2>使用示例（~haejwo）</h2>
+
+<p>以下示例展示了如何通过自然语言调用 <code>github</code> 技能。韩语和英语可以互换使用。</p>
+
+<div class="example-callout">
+  <div class="example-label">示例 1</div>
+  <div class="example-kr">"PR 55번 상태 확인해줘 -- CI 다 통과했는지 봐줘"</div>
+  <div class="example-desc">使用 <code>gh pr checks 55</code> 检查 PR #55 的 CI 状态并汇总通过/失败结果。</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">示例 2</div>
+  <div class="example-kr">"이 변경사항 PR로 올려줘 -- 리뷰어 alice 지정하고 bug 라벨 붙여줘"</div>
+  <div class="example-desc">运行 yeet 流程：暂存所有变更、提交、推送，并使用 <code>--reviewer alice --label bug</code> 创建 PR。</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">示例 3</div>
+  <div class="example-kr">"CI 실패한 거 고쳐줘 -- 로그 보고 원인 분석해줘"</div>
+  <div class="example-desc">触发修复失败 CI 工作流：查找失败的检查，拉取 <code>--log-failed</code> 日志，诊断根本原因，并提出修复方案。</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">示例 4</div>
+  <div class="example-kr">"이 리포에 bug 라벨 이슈 목록 보여주고 정리해줘"</div>
+  <div class="example-desc">列出带有 <code>bug</code> 标签的开放议题，并按创建日期和标签格式化为分类报告。</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">示例 5</div>
+  <div class="example-kr">"PR 리뷰 코멘트 다 처리하고 다시 리뷰 요청해줘"</div>
+  <div class="example-desc">运行 PR 评论处理流程：读取所有审查评论，逐一处理，提交修复，推送代码，并重新请求审查。</div>
+</div>
+
+<!-- ================================================================ -->
+<h2>相关技能</h2>
+
+<table>
+<tr><th>技能</th><th>关系</th></tr>
+<tr><td><code>dev-code-reviewer</code></td><td>审查代码内容；<code>github</code> 处理 PR 机制（创建、合并、评论）。</td></tr>
+<tr><td><code>dev</code> 编排器</td><td>当开发任务需要创建 PR 或检查 CI 时，可能会委托给 <code>github</code>。</td></tr>
+<tr><td><code>code-review</code></td><td>深度代码审查技能；与 <code>github</code> 配合使用 <code>--comment</code> 发布内联 PR 反馈。</td></tr>
+<tr><td><code>security-review</code></td><td>安全审计技能；使用 <code>github</code> 检查依赖警报和安全公告。</td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="../devtools-workflow.html">开发工作流技能</a>
+<a class="next" href="../index.html">技能目录</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,68 @@
+﻿#!/usr/bin/env expect -f
+
+if {[info exists env(JAW_TUI_SMOKE_TIMEOUT)]} {
+    set timeout $env(JAW_TUI_SMOKE_TIMEOUT)
+} else {
+    set timeout 15
+}
+
+if {![info exists env(COLUMNS)]} {
+    set env(COLUMNS) 100
+}
+
+if {![info exists env(LINES)]} {
+    set env(LINES) 30
+}
+
+set env(JAW_TUI_FULLSCREEN) 1
+set saw_bye 0
+
+spawn node dist/bin/podex.js chat
+
+expect {
+    -re {Type your message|shortcuts|/quit} {
+        puts "\nSMOKE_COMPOSER_READY"
+    }
+    timeout {
+        puts "\nSMOKE_TIMEOUT waiting for fullscreen composer"
+        exit 2
+    }
+    eof {
+        puts "\nSMOKE_EOF before fullscreen composer"
+        exit 4
+    }
+}
+
+after 200
+foreach ch [split "/quit" ""] {
+    send -- $ch
+    after 50
+}
+send -- "\r"
+
+expect {
+    -re {Bye!?} {
+        set saw_bye 1
+        puts "\nSMOKE_BYE_SEEN"
+        exp_continue
+    }
+    eof {
+        set wait_result [wait]
+        set exit_status [lindex $wait_result 3]
+        if {$exit_status == 0} {
+            if {$saw_bye} {
+                puts "\nSMOKE_OK composer_ready bye_seen exit_status=0"
+            } else {
+                puts "\nSMOKE_OK composer_ready eof exit_status=0"
+            }
+            exit 0
+        }
+        puts "\nSMOKE_EXIT_STATUS $exit_status"
+        exit $exit_status
+    }
+    timeout {
+        puts "\nSMOKE_TIMEOUT waiting for /quit exit"
+        exit 3
+    }
+}
+

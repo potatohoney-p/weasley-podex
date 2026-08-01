@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HWP (한글) — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-experimental { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.badge-fallback { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.badge-blocked { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+
+.trigger-list { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 16px; }
+.trigger-tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; background: var(--surface2); border: 1px solid var(--border); color: var(--text-dim); font-family: var(--mono); }
+
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-label { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.example-card .example-prompt { font-size: 15px; color: var(--text); margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+
+.level-indicator { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; font-family: var(--mono); margin-left: 4px; }
+.level-l1 { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.level-l2 { background: rgba(34, 211, 238, 0.15); color: var(--accent); }
+.level-l3 { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.level-l4 { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+
+.checklist { list-style: none; padding-left: 0; }
+.checklist li { padding: 4px 0 4px 24px; position: relative; }
+.checklist li::before { content: "\2610"; position: absolute; left: 0; color: var(--text-dim); }
+
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 24px; }
+.meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.meta-card .meta-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px; }
+.meta-card .meta-value { font-size: 14px; color: var(--text); }
+
+@media (max-width: 768px) {
+  .meta-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link active" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>HWP (&#54620;&#44544;)</h1>
+<p class="lead">HWP/HWPX Korean document create, read, edit via OfficeCLI</p>
+
+<p>
+  <span class="badge badge-active">Default Active: Yes</span>
+  <span class="badge badge-experimental" style="margin-left: 4px;">Binary HWP: Experimental</span>
+</p>
+
+<div class="trigger-list">
+  <span class="trigger-tag">&#54620;&#44544;</span>
+  <span class="trigger-tag">.hwp</span>
+  <span class="trigger-tag">.hwpx</span>
+  <span class="trigger-tag">HWP</span>
+  <span class="trigger-tag">HWPX</span>
+  <span class="trigger-tag">Korean documents</span>
+  <span class="trigger-tag">&#54620;&#52980;&#50724;&#54588;&#49828;</span>
+  <span class="trigger-tag">OWPML</span>
+</div>
+
+<div class="meta-grid">
+  <div class="meta-card">
+    <div class="meta-label">Primary Tool</div>
+    <div class="meta-value"><code>officecli</code> (global install, on PATH)</div>
+  </div>
+  <div class="meta-card">
+    <div class="meta-label">Fallback</div>
+    <div class="meta-value">Python OOXML/OWPML scripts (<code>scripts/*.py</code>)</div>
+  </div>
+  <div class="meta-card">
+    <div class="meta-label">Scope</div>
+    <div class="meta-value">HWP/HWPX only &mdash; no DOCX, PPTX, XLSX, PDF</div>
+  </div>
+  <div class="meta-card">
+    <div class="meta-label">Binary HWP</div>
+    <div class="meta-value">Experimental via <code>rhwp</code> bridge (capability-gated)</div>
+  </div>
+</div>
+
+<div class="callout callout-info"><strong>Scope rule:</strong> This skill handles <code>.hwp</code> and <code>.hwpx</code> files exclusively. If the task involves DOCX, PPTX, XLSX, or PDF, it will not activate &mdash; use the corresponding format-specific skill instead.</div>
+
+<!-- ─── Quick Reference ─── -->
+<h2>Quick Reference</h2>
+<p>Complete task-to-command lookup. Each row shows whether the operation is supported and which command to use.</p>
+
+<table>
+<tr><th>Task</th><th>Status</th><th>Command</th></tr>
+<tr><td>Format like existing .hwpx</td><td><span class="badge badge-active">Yes</span></td><td><code>cp source.hwpx target.hwpx &amp;&amp; officecli open target.hwpx</code></td></tr>
+<tr><td>Template-based create</td><td><span class="badge badge-active">Yes</span></td><td><code>python3 scripts/build_hwpx.py --template {base|gonmun|minutes|proposal|report}</code></td></tr>
+<tr><td>Create new .hwpx</td><td><span class="badge badge-active">Yes</span></td><td><code>officecli create file.hwpx</code></td></tr>
+<tr><td>Create from Markdown</td><td><span class="badge badge-active">Yes</span></td><td><code>officecli create file.hwpx --from-markdown input.md</code></td></tr>
+<tr><td>Read / analyze .hwpx</td><td><span class="badge badge-active">Yes</span></td><td><code>view text|annotated|outline|stats|html|markdown|tables|forms|objects</code></td></tr>
+<tr><td>Edit existing .hwpx</td><td><span class="badge badge-active">Yes</span></td><td><code>set</code>, <code>add</code>, <code>remove</code>, <code>move</code>, <code>swap</code></td></tr>
+<tr><td>Label-based fill</td><td><span class="badge badge-active">Yes</span></td><td><code>set /table/fill --prop 'fill:label=val'</code></td></tr>
+<tr><td>Form recognize</td><td><span class="badge badge-active">Yes</span></td><td><code>view forms --auto</code></td></tr>
+<tr><td>Table map</td><td><span class="badge badge-active">Yes</span></td><td><code>view tables</code></td></tr>
+<tr><td>Markdown export</td><td><span class="badge badge-active">Yes</span></td><td><code>view markdown</code></td></tr>
+<tr><td>Equation (&#49688;&#49885;)</td><td><span class="badge badge-active">Yes</span></td><td><code>add --type equation --prop 'script={1 over 2}'</code></td></tr>
+<tr><td>Object finder</td><td><span class="badge badge-active">Yes</span></td><td><code>view objects</code></td></tr>
+<tr><td>Query (expanded)</td><td><span class="badge badge-active">Yes</span></td><td><code>query 'tc[text~=&#54861;&#44600;&#46041;]'</code>, <code>:has()</code>, <code>&gt;</code> combinator</td></tr>
+<tr><td>Template merge</td><td><span class="badge badge-active">Yes</span></td><td><code>merge template.hwpx out.hwpx --data '{"key":"val"}'</code></td></tr>
+<tr><td>Swap elements</td><td><span class="badge badge-active">Yes</span></td><td><code>swap file.hwpx '/p[1]' '/p[2]'</code></td></tr>
+<tr><td>Column break</td><td><span class="badge badge-active">Yes</span></td><td><code>add --type columnbreak --prop cols=2</code></td></tr>
+<tr><td>Image / floating</td><td><span class="badge badge-active">Yes</span></td><td><code>add --type picture --prop anchor=page --prop halign=center</code></td></tr>
+<tr><td>Compare documents</td><td><span class="badge badge-active">Yes</span></td><td><code>compare a.hwpx b.hwpx</code> (LCS diff + table compare)</td></tr>
+<tr><td>Security validation</td><td><span class="badge badge-active">Yes</span></td><td>ZIP bomb, path traversal, symlink, XXE defense</td></tr>
+<tr><td>Broken ZIP recovery</td><td><span class="badge badge-active">Yes</span></td><td>Corrupted HWPX auto-recovery via Local File Header scan</td></tr>
+<tr><td>HTML preview</td><td><span class="badge badge-active">Yes</span></td><td><code>view html --browser</code></td></tr>
+<tr><td>Watch live preview</td><td><span class="badge badge-active">Yes</span></td><td><code>watch file.hwpx</code></td></tr>
+<tr><td>Validate .hwpx</td><td><span class="badge badge-active">Yes</span></td><td><code>validate</code> (9-level check)</td></tr>
+<tr><td>Raw XML</td><td><span class="badge badge-active">Yes</span></td><td><code>raw</code>, <code>raw-set</code></td></tr>
+<tr><td>Watermark (image)</td><td><span class="badge badge-active">Yes</span></td><td><code>add --type watermark --prop src=img.png</code></td></tr>
+<tr><td>Pattern-match editing</td><td><span class="badge badge-fallback">Python L4</span></td><td><code>scripts/hwpx_cli.py open</code> &rarr; pattern edit XML &rarr; <code>save</code></td></tr>
+<tr><td>Visual QA</td><td><span class="badge badge-fallback">Python L3</span></td><td><code>scripts/contact_sheet.py</code> + subagent review</td></tr>
+<tr><td>New form field creation</td><td><span class="badge badge-blocked">Blocked</span></td><td>Source prototype exists; Hancom verification not closed</td></tr>
+<tr><td>Create new .hwp (binary)</td><td><span class="badge badge-experimental">Experimental</span></td><td><code>officecli create file.hwp --json</code></td></tr>
+<tr><td>Read/export .hwp (binary)</td><td><span class="badge badge-experimental">Experimental</span></td><td><code>officecli view file.hwp text --json</code> + svg/png/pdf/markdown</td></tr>
+<tr><td>Edit .hwp text/fields</td><td><span class="badge badge-experimental">Experimental</span></td><td><code>officecli hwp --json</code> recipes</td></tr>
+<tr><td>Export HWPX to .hwp</td><td><span class="badge badge-experimental">Experimental</span></td><td><code>officecli set input.hwpx /save-as-hwp --prop output=out.hwp --json</code></td></tr>
+<tr><td>Convert .hwp to .hwpx</td><td><span class="badge badge-fallback">Fallback</span></td><td><code>scripts/hwp_convert.py IN.hwp OUT.hwpx</code></td></tr>
+</table>
+
+<!-- ─── Usage Examples ─── -->
+<h2>"~&#54644;&#51468;" Usage Examples</h2>
+<p>Natural Korean prompts that trigger this skill. Just describe what you need.</p>
+
+<div class="example-card">
+  <div class="example-label">&#44277;&#47928; &#51089;&#49457;</div>
+  <div class="example-prompt">"&#44277;&#47928; &#50577;&#49885;&#51004;&#47196; &#47928;&#49436; &#47564;&#46308;&#50612;&#51468; &mdash; &#47928;&#49436;&#48264;&#54840;, &#49688;&#49888;, &#51228;&#47785; &#52292;&#50892;&#49436;"</div>
+  <div class="example-desc">Triggers template assembly with <code>--template gonmun</code>, then uses <code>/table/fill</code> to populate label-value fields like &#47928;&#49436;&#48264;&#54840;, &#49688;&#49888;, &#52280;&#51312;, &#51228;&#47785;.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">&#47928;&#49436; &#48516;&#49437;</div>
+  <div class="example-prompt">"&#51060; HWPX &#54028;&#51068; &#48516;&#49437;&#54644;&#51468; &mdash; &#54364; &#44396;&#51312;&#46993; &#50577;&#49885; &#50508;&#47140;&#51468;"</div>
+  <div class="example-desc">Runs <code>view tables</code>, <code>view forms --auto</code>, and <code>view stats</code> to provide a structural breakdown of the document.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">&#54364; &#52292;&#50864;&#44592;</div>
+  <div class="example-prompt">"&#51060; &#49888;&#52397;&#49436;&#50640;&#49436; &#49457;&#47749;=&#54861;&#44600;&#46041;, &#50672;&#46973;&#52376;=010-1234-5678 &#52292;&#50892;&#51468;"</div>
+  <div class="example-desc">Uses label-based fill: <code>officecli set form.hwpx / --prop 'fill:&#49457;&#47749;=&#54861;&#44600;&#46041;' --prop 'fill:&#50672;&#46973;&#52376;=010-1234-5678'</code></div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">&#54924;&#51032;&#47197; &#51089;&#49457;</div>
+  <div class="example-prompt">"&#54924;&#51032;&#47197; &#47564;&#46308;&#50612;&#51468; &mdash; &#51068;&#49884;, &#51109;&#49548;, &#52280;&#49437;&#51088;, &#50504;&#44148; &#54252;&#54632;&#54644;&#49436;"</div>
+  <div class="example-desc">Creates from <code>--template minutes</code>, populates structured fields for date, location, attendees, and agenda items.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-label">HWP &#48320;&#54872;</div>
+  <div class="example-prompt">"&#51060; .hwp &#54028;&#51068; &#51069;&#50612;&#49436; &#45236;&#50857; &#48372;&#50668;&#51468;"</div>
+  <div class="example-desc">Checks <code>officecli hwp doctor --json</code> for native rhwp support. If ready, uses <code>officecli view file.hwp text --json</code>. Otherwise falls back to <code>scripts/hwp_reader.py</code>.</div>
+</div>
+
+<!-- ─── Editing Escalation Ladder ─── -->
+<h2>Editing Escalation Ladder</h2>
+<p>When the primary tool cannot handle the job, the skill escalates through four levels. Lower levels are preferred; higher levels are used only when necessary.</p>
+
+<table>
+<tr><th>Level</th><th>When</th><th>Tool</th></tr>
+<tr><td><span class="level-indicator level-l1">L1</span> OfficeCLI high-level</td><td>Typical add/set/remove, label-fill, view modes</td><td><code>officecli add/set/remove/query/view/merge</code></td></tr>
+<tr><td><span class="level-indicator level-l2">L2</span> OfficeCLI raw/raw-set</td><td>Direct section0.xml / header.xml tweaks</td><td><code>officecli raw FILE /Contents/section0.xml</code></td></tr>
+<tr><td><span class="level-indicator level-l3">L3</span> Python script</td><td>Bulk find/replace, template assembly, pattern-match</td><td><code>python3 scripts/hwpx_cli.py ...</code> or <code>scripts/build_hwpx.py</code></td></tr>
+<tr><td><span class="level-indicator level-l4">L4</span> Unpack &rarr; edit XML &rarr; repack</td><td>KICE exams, regulations, multi-file XML edit</td><td><code>hwpx_cli.py open</code> &rarr; edit <code>work/Contents/*.xml</code> &rarr; strip lineseg &rarr; <code>save</code></td></tr>
+</table>
+
+<h3>Escalation Signals</h3>
+<ul>
+<li>OfficeCLI cannot add custom style &rarr; <strong>L2</strong> (raw-set header.xml) + read <code>reference/header-xml-guide.md</code></li>
+<li>Custom template overlay &rarr; <strong>L3</strong> (<code>scripts/build_hwpx.py</code>) + read <code>reference/style_id_maps.md</code></li>
+<li>HWP binary input &rarr; check <code>officecli hwp doctor --json</code> first; native rhwp when ready, else <strong>L3</strong></li>
+<li>Multi-file pattern match (exams, regulations) &rarr; <strong>L4</strong></li>
+<li>Style ID lookup &rarr; read <code>reference/style_id_maps.md</code> first</li>
+</ul>
+
+<!-- ─── Core Workflows ─── -->
+<h2>Core Workflows</h2>
+
+<h3>Create &amp; Import</h3>
+<pre><code># Empty document
+officecli create doc.hwpx
+
+# From Markdown (JUSTIFY alignment by default)
+officecli create doc.hwpx --from-markdown input.md
+
+# Left-aligned Markdown import
+officecli create doc.hwpx --from-markdown input.md --align left
+
+# Binary HWP via rhwp bridge
+officecli create file.hwp --json
+
+# Template merge with data
+officecli merge template.hwpx out.hwpx --data '{"&#51060;&#47492;":"&#54861;&#44600;&#46041;"}'
+officecli merge template.hwpx out.hwpx --data data.json
+
+# Template assembly (recommended for structured docs)
+python3 scripts/build_hwpx.py --template gonmun --output gonmun.hwpx</code></pre>
+
+<h3>View Modes</h3>
+<pre><code>officecli view doc.hwpx text                    # line-numbered text
+officecli view doc.hwpx annotated               # path + style detail
+officecli view doc.hwpx outline                 # headings only
+officecli view doc.hwpx stats                   # document statistics
+officecli view doc.hwpx html --browser          # A4 HTML preview
+officecli view doc.hwpx markdown                # GFM markdown export
+officecli view doc.hwpx tables                  # table 2D grid + label map
+officecli view doc.hwpx forms --auto            # CLICK_HERE + label-value auto-detect
+officecli view doc.hwpx forms --auto --json     # JSON for AI pipeline
+officecli view doc.hwpx objects                 # picture/field/bookmark/equation list
+officecli view doc.hwpx objects --object-type field  # filter by type
+officecli view doc.hwpx styles                  # charPr/paraPr styles
+officecli view doc.hwpx issues                  # 9-level validation issues</code></pre>
+
+<div class="callout callout-warn"><strong>Common mistake:</strong> <code>officecli view file.hwpx</code> without a mode argument is an error. You must always specify the mode: <code>text</code>, <code>tables</code>, <code>markdown</code>, etc.</div>
+
+<h3>Edit Operations</h3>
+<pre><code># Add paragraph with text and font size
+officecli add doc.hwpx /section[1] --type paragraph --prop text="content" --prop fontsize=11
+
+# Add table
+officecli add doc.hwpx /section[1] --type table --prop rows=3 --prop cols=4
+
+# Set properties (bold, alignment)
+officecli set doc.hwpx '/section[1]/p[1]' --prop bold=true --prop align=CENTER
+
+# Find and replace text
+officecli set doc.hwpx / --prop find="old" --prop replace="new"
+
+# Remove element
+officecli remove doc.hwpx /section[1]/p[3]
+
+# Swap two elements
+officecli swap doc.hwpx '/p[1]' '/p[2]'</code></pre>
+
+<h3>Label Fill (Table Auto-Fill)</h3>
+<pre><code># Fill by label (fill: prefix)
+officecli set doc.hwpx / --prop 'fill:&#45824;&#54364;&#51088;=&#54861;&#44600;&#46041;' --prop 'fill:&#50672;&#46973;&#52376;=010-1234'
+
+# Directional fill: right (default), down, left, up
+officecli set doc.hwpx / --prop 'fill:&#51452;&#49548;&gt;down=&#49436;&#50872;&#49884;'
+
+# Shorthand (fill: prefix optional with /table/fill path)
+officecli set doc.hwpx /table/fill --prop '&#51060;&#47492;=&#44608;&#49436;&#51456;'</code></pre>
+
+<h3>Query (Extended Syntax)</h3>
+<pre><code>officecli query doc.hwpx 'p'                          # all paragraphs
+officecli query doc.hwpx 'tc[text~=&#54861;&#44600;&#46041;]'           # cell text search
+officecli query doc.hwpx 'run[bold=true]'              # bold runs
+officecli query doc.hwpx 'p:has(tbl)'                  # paragraphs containing tables
+officecli query doc.hwpx 'tbl &gt; tr &gt; tc[colSpan!=1]'   # merged cells
+officecli query doc.hwpx 'run[fontsize&gt;=20]'           # 20pt+ font
+officecli query doc.hwpx 'p[heading=1]'                # heading 1</code></pre>
+<p><strong>Operators:</strong> <code>=</code>, <code>!=</code>, <code>~=</code> (contains), <code>&gt;=</code>, <code>&lt;=</code><br>
+<strong>Pseudo-selectors:</strong> <code>:empty</code>, <code>:contains(text)</code>, <code>:has(child)</code>, <code>:first</code>, <code>:last</code><br>
+<strong>Virtual attributes:</strong> <code>text</code>, <code>bold</code>, <code>italic</code>, <code>fontsize</code>, <code>colSpan</code>, <code>rowSpan</code>, <code>heading</code></p>
+
+<h3>Resident Mode (Live Connection)</h3>
+<pre><code>officecli open doc.hwpx          # returns IMMEDIATELY; daemon in bg
+officecli view text               # view without re-opening
+officecli set '/p[1]' --prop bold=true
+officecli close                   # close session</code></pre>
+<div class="callout callout-danger"><strong>Do NOT</strong> run <code>officecli open</code> as a background shell job. It returns immediately and the daemon lives in the background automatically. Running it as a monitored background shell creates zombies and file locks.</div>
+
+<h3>Batch Mode</h3>
+<pre><code>officecli batch doc.hwpx &lt;&lt;'EOF'
+view text
+view stats
+view forms --auto
+EOF</code></pre>
+
+<h3>Compare</h3>
+<pre><code>officecli compare a.hwpx b.hwpx                    # text diff (default)
+officecli compare a.hwpx b.hwpx --mode outline      # heading diff
+officecli compare a.hwpx b.hwpx --mode table --json  # table diff JSON</code></pre>
+<p>Uses LCS DP alignment (fallback greedy for &gt;10M cells). Table similarity: dimension weight 0.3 + content weight 0.7. Page range filtering: <code>--pages "1-3,5"</code>.</p>
+
+<h3>Image &amp; Watermark</h3>
+<pre><code># Inline image
+officecli add doc.hwpx /section[1] --type picture --prop path=/path/to/image.png
+
+# Page-centered floating image
+officecli add doc.hwpx /section[1] --type picture \
+  --prop path=/path/to/image.png \
+  --prop anchor=page --prop halign=center --prop valign=middle
+
+# Watermark (opaque RGB PNG recommended)
+officecli add doc.hwpx /section[1] --type watermark \
+  --prop src=/path/to/watermark.png --prop bright=0 --prop contrast=0</code></pre>
+
+<h3>Watch &amp; HTML Preview</h3>
+<pre><code>officecli watch doc.hwpx           # auto-refresh HTML on file change
+officecli unwatch doc.hwpx         # stop
+officecli view doc.hwpx html --browser  # one-shot A4 preview</code></pre>
+
+<!-- ─── Template Assembly ─── -->
+<h2>Template Assembly System</h2>
+<p>HWP uses a unique <strong>base + overlay template system</strong>. Most HWPX creation for &#44277;&#47928;/&#48372;&#44256;&#49436;/&#54924;&#51032;&#47197;/&#51228;&#50504;&#49436; should use this instead of <code>officecli create</code> blank.</p>
+
+<h3>Available Templates</h3>
+<table>
+<tr><th>Template</th><th>Purpose</th><th>Key Fields</th></tr>
+<tr><td><code>base</code></td><td>Empty HWPX skeleton</td><td>mimetype, META-INF, empty header/section</td></tr>
+<tr><td><code>gonmun</code></td><td>Official letter (&#44277;&#47928;)</td><td>&#47928;&#49436;&#48264;&#54840;, &#49688;&#49888;, &#52280;&#51312;, &#51228;&#47785;, &#48376;&#47928;</td></tr>
+<tr><td><code>minutes</code></td><td>Meeting minutes (&#54924;&#51032;&#47197;)</td><td>&#51068;&#49884;, &#51109;&#49548;, &#52280;&#49437;&#51088;, &#50504;&#44148;, &#44208;&#51221;&#49324;&#54637;</td></tr>
+<tr><td><code>proposal</code></td><td>Proposal (&#51228;&#50504;&#49436;)</td><td>&#51228;&#50504;&#44060;&#50836;, &#48176;&#44221;, &#45236;&#50857;, &#44592;&#45824;&#54952;&#44284;</td></tr>
+<tr><td><code>report</code></td><td>Report (&#48372;&#44256;&#49436;)</td><td>&#50836;&#50557;, &#54788;&#54889;, &#48516;&#49437;, &#51228;&#50616;</td></tr>
+</table>
+
+<h3>Method 1: build_hwpx.py (Recommended)</h3>
+<pre><code>python3 scripts/build_hwpx.py --template report --output Q4Report.hwpx
+
+# Then edit content with officecli
+officecli open Q4Report.hwpx
+officecli set Q4Report.hwpx /table/fill --prop '&#51228;&#47785;=2026 Q4 &#48372;&#44256;'
+# ... continue editing ...
+officecli close Q4Report.hwpx</code></pre>
+
+<h3>Method 2: Manual Overlay (for Customization)</h3>
+<pre><code># 1. Copy base skeleton
+cp -r templates/base/ work/
+
+# 2. Overlay domain-specific styles
+cp -r templates/gonmun/* work/Contents/
+
+# 3. Edit header.xml and section0.xml as needed
+#    Reference: reference/header-xml-guide.md, reference/section0-xml-guide.md
+#    Style IDs: reference/style_id_maps.md
+
+# 4. Repack as HWPX (ZIP with strip + minify)
+python3 scripts/ooxml/pack.py work/ out.hwpx
+
+# 5. Validate
+officecli validate out.hwpx</code></pre>
+
+<!-- ─── Reference-Based Editing ─── -->
+<h2>Reference-Based Editing</h2>
+<p>When the user says "format like X.hwpx", "&#44277;&#47928; &#50577;&#49885;&#52376;&#47100;", "&#44592;&#51316; &#48372;&#44256;&#49436; &#49828;&#53440;&#51068;", or provides a source file &mdash; <strong>start from the source, do not rebuild from scratch</strong>.</p>
+
+<h3>Workflow</h3>
+<ol>
+<li><strong>Copy the source:</strong> <code>cp source.hwpx target.hwpx</code> &mdash; inherits header.xml (styles), section0.xml (structure), META-INF</li>
+<li><strong>Open:</strong> <code>officecli open target.hwpx</code> &mdash; daemon returns immediately (do NOT run as background)</li>
+<li><strong>Remove body paragraphs only</strong> &mdash; keep <code>header.xml</code> (charPr/paraPr/borderFill), META-INF, settings</li>
+<li><strong>Add new content</strong> using existing <code>styleidref</code> values &mdash; they auto-apply</li>
+</ol>
+
+<div class="callout callout-warn"><strong>Why copy first?</strong> HWPX <code>header.xml</code> holds all style definitions (charPr, paraPr, borderFill, listItems). Rebuilding from scratch breaks styleidref cross-references, loses consistent visual conventions, fails validation, and takes 10x longer.</div>
+
+<h3>Template Priority</h3>
+<ol>
+<li><strong>User-provided source file</strong> &mdash; first-class template</li>
+<li><strong><code>tests/fixtures/agentic/*.hwpx</code></strong> &mdash; realistic samples (gonmun, report, minutes with tables)</li>
+<li><strong><code>templates/{base,gonmun,minutes,proposal,report}/</code></strong> &mdash; Template Assembly system</li>
+<li><strong><code>officecli create</code> blank</strong> &mdash; only when nothing else applies</li>
+</ol>
+
+<!-- ─── Form Recognition & Fill ─── -->
+<h2>Form Recognition &amp; Fill</h2>
+
+<h3>4-Strategy Recognition</h3>
+<table>
+<tr><th>#</th><th>Strategy</th><th>Description</th></tr>
+<tr><td>1</td><td>Adjacent cell label-value</td><td>Table label &rarr; value detection (default)</td></tr>
+<tr><td>2</td><td>Header + data rows</td><td>Column-header recognition</td></tr>
+<tr><td>3</td><td>In-cell patterns</td><td><code>&#9744;</code> checkbox, <code>keyword(  )</code> paren-blank, <code>(label:  )</code> annotation</td></tr>
+<tr><td>4</td><td>KV table detection</td><td>16 Korean keywords trigger auto-detection</td></tr>
+</table>
+
+<h3>3-Phase Fill Pipeline</h3>
+<ol>
+<li><strong>In-cell patterns:</strong> checkbox <code>&#9744;</code> &rarr; <code>&#9745;</code>, paren-blank fill, annotation fill</li>
+<li><strong>Table label-value:</strong> exact + prefix 60% matching, 4-directional (<code>right</code>/<code>down</code>/<code>left</code>/<code>up</code>)</li>
+<li><strong>Inline paragraph:</strong> regex lookbehind for <code>"label: value"</code> outside tables</li>
+</ol>
+
+<h3>AI Form Fill Workflow</h3>
+<pre><code># Step 1: Recognize all fields
+officecli view form.hwpx forms --auto --json &gt; fields.json
+
+# Step 2: AI maps label -&gt; value (your logic here)
+
+# Step 3: Fill matched fields
+officecli set form.hwpx /table/fill --prop '&#49457; &#47749;=&#54861;&#44600;&#46041;'</code></pre>
+
+<!-- ─── Binary HWP ─── -->
+<h2>Binary HWP Support (Experimental)</h2>
+<p>Native binary <code>.hwp</code> operations are powered by the <code>rhwp</code> bridge. All operations are <strong>capability-gated</strong> &mdash; always check readiness before assuming support.</p>
+
+<h3>Discovery Commands</h3>
+<pre><code># Always run these first
+officecli hwp doctor --json       # runtime readiness check
+officecli capabilities --json     # full capability matrix
+officecli hwp --json              # current recipes and policies</code></pre>
+
+<h3>Supported Operations (When Ready)</h3>
+<pre><code># Create
+officecli create file.hwp --json
+
+# View / Export
+officecli view file.hwp text --json
+officecli view file.hwp svg --page 1 --json
+officecli view file.hwp png --page 1 --out /tmp/hwp-png --json
+officecli view file.hwp pdf --page 1 --out out.pdf --json
+officecli view file.hwp markdown --json
+officecli view file.hwp thumbnail --out thumb.png --json
+officecli view file.hwp info --json
+officecli view file.hwp tables --section 0 --json
+
+# Edit fields
+officecli set file.hwp /field --prop name=&#54924;&#49324;&#47749; --prop value=&#47532;&#51648; --prop output=out.hwp --json
+
+# Edit text
+officecli set file.hwp /text --prop find=&#47560;&#52992;&#54021; --prop value=&#48652;&#47551;&#51648; --prop output=out.hwp --json
+
+# Insert text
+officecli add file.hwp /text --type paragraph --prop value=&#49352;&#48376;&#47928; --prop output=out.hwp --json
+
+# Edit table cell
+officecli set file.hwp /table/cell --prop section=0 --prop parent-para=3 \
+  --prop control=0 --prop cell=0 --prop value=&#50724;&#54588;&#49828;&#49472; --prop output=out.hwp --json
+
+# Native operations (escape hatch)
+officecli view file.hwp native --op get-style-list --json
+officecli set file.hwp /native-op --prop op=split-paragraph --prop output=out.hwp --json
+
+# HWPX to HWP export
+officecli set input.hwpx /save-as-hwp --prop output=out.hwp --json</code></pre>
+
+<div class="callout callout-warn"><strong>Policy:</strong> Prefer output mode for binary <code>.hwp</code> mutation: <code>--prop output=out.hwp</code>. Use in-place mode only for <code>/text</code> replacement, only when explicitly requested, and only after confirming <code>safeInPlace.ready=true</code>. In-place mode must include <code>--in-place --backup --verify</code>.</div>
+
+<!-- ─── Equation Handling ─── -->
+<h2>Equation Handling (&#49688;&#49885;)</h2>
+<p>HWPX equations use Hancom's <strong>proprietary script language</strong>. This is NOT MathML, NOT LaTeX, NOT OMML.</p>
+
+<table>
+<tr><th>Script</th><th>Result</th></tr>
+<tr><td><code>{1 over 2}</code></td><td>1/2 (fraction)</td></tr>
+<tr><td><code>sqrt{x}</code></td><td>Square root of x</td></tr>
+<tr><td><code>x^2</code>, <code>x_i</code></td><td>Superscript, subscript</td></tr>
+<tr><td><code>int _0 ^1 f(x)dx</code></td><td>Definite integral</td></tr>
+<tr><td><code>sum _{i=1} ^n</code></td><td>Sigma summation</td></tr>
+<tr><td><code>lim _{x-&gt;0}</code></td><td>Limit</td></tr>
+<tr><td><code>matrix{a&amp;b # c&amp;d}</code></td><td>2x2 matrix</td></tr>
+</table>
+
+<pre><code># Create equation
+officecli add doc.hwpx /section --type equation --prop 'script=x^2 + y^2 = r^2'
+
+# View all equations
+officecli view doc.hwpx objects --object-type equation</code></pre>
+
+<div class="callout callout-info">Equation scripts are opaque &mdash; edit only <code>&lt;hp:script&gt;</code> text, not the binary payload. Math exam docs (KICE) require <code>&lt;hp:equation&gt;</code> for every expression. Never use plain text for math.</div>
+
+<!-- ─── Korean Document Design ─── -->
+<h2>Korean Document Design Principles</h2>
+
+<h3>Government Form Aesthetics (&#54620;&#44397; &#44277;&#44277;&#50577;&#49885; &#48120;&#44048;)</h3>
+<ul>
+<li><strong>Tables are the backbone:</strong> Korean forms are table-driven. Every label-value pair lives in a precisely merged cell grid. Preserve the grid structure exactly.</li>
+<li><strong>Heading hierarchy:</strong> &#51228;1&#51312; (Articles) &gt; &#51228;1&#54637; (Clauses) &gt; &#51228;1&#54840; (Items). Use <code>styleidref</code> for outline levels.</li>
+<li><strong>Fixed margins:</strong> Government forms use standard A4 margins (top/bottom ~15mm, left/right ~20mm). Do not alter margins on existing documents.</li>
+<li><strong>Alignment:</strong> Body text is JUSTIFY (&#50577;&#51901; &#51221;&#47148;) by default. Headings may be CENTER. Never use LEFT for body text in formal documents.</li>
+</ul>
+
+<h3>Uniform Spacing Detection (&#44512;&#46321;&#48516;&#54624;)</h3>
+<p>Korean forms often use uniform character spacing for names in cells: <code>"&#54861; &#44600; &#46041;"</code> (spaces between each character). This is a display convention, not data.</p>
+<ul>
+<li><strong>Reading:</strong> strip uniform spaces to get the actual value (<code>"&#54861;&#44600;&#46041;"</code>)</li>
+<li><strong>Writing:</strong> if the template cell uses uniform spacing, insert spaces to match (2-char: <code>"&#51060; &#51456;"</code>, 3-char: <code>"&#54861; &#44600; &#46041;"</code>, 4-char: <code>"&#45224;&#44417;&#48124;&#49688;"</code>)</li>
+<li><strong>Detection regex:</strong> <code>^(\S)\s(\S)\s(\S)$</code> etc. (single-char groups separated by 1 space)</li>
+</ul>
+
+<h3>Document Type Classification</h3>
+<table>
+<tr><th>Type</th><th>Key Signals</th><th>Example</th></tr>
+<tr><td><code>exam</code></td><td>equation 10+, rect objects</td><td>KICE &#49688;&#45733;/&#47784;&#51032;&#44256;&#49324; &#49884;&#54744;&#51648;</td></tr>
+<tr><td><code>form</code></td><td>table 3+, checkboxes (&#9744;/&#9632;)</td><td>&#45824;&#54617; &#49888;&#52397;&#49436;, &#51221;&#48512; &#50577;&#49885;</td></tr>
+<tr><td><code>regulation</code></td><td>&#9675; bullets 10+, &#48324;&#52392;/&#51312;&#54637; refs, table 10+</td><td>&#50868;&#50689;&#51648;&#52840;, &#45236;&#44508;, &#49884;&#54665;&#49464;&#52825;</td></tr>
+<tr><td><code>report</code></td><td>long text, few tables</td><td>&#48372;&#44256;&#49436;, &#45436;&#47928;</td></tr>
+<tr><td><code>mixed</code></td><td>none of above</td><td>&#49324;&#50629;&#44228;&#54925;&#49436;</td></tr>
+</table>
+
+<!-- ─── Validation & QA ─── -->
+<h2>Mandatory Verification</h2>
+<div class="callout callout-danger"><strong>Never skip verification.</strong> After ANY HWPX edit operation, always execute validation and visual checks in order.</div>
+
+<pre><code># 1. Structural validation (MUST pass)
+officecli validate output.hwpx
+
+# 2. PDF visual verification (MUST check)
+soffice --headless --convert-to pdf --outdir /tmp output.hwpx
+# Verify: table positions, guide text removed, checkboxes correct,
+#         merged cell text in correct row, numbers not corrupted
+
+# 3. Visual QA via subagent (use reference/visual_qa_prompt.md)
+python3 scripts/contact_sheet.py /tmp/output.pdf sheet.png
+
+# 4. If Hancom Office available, also open .hwpx directly</code></pre>
+
+<h3>Pre-Delivery Checklist</h3>
+<ul class="checklist">
+<li><code>officecli validate</code> passes (0 errors)</li>
+<li><code>soffice --headless --convert-to pdf</code> &rarr; visual check</li>
+<li>Table cells in correct positions (cellAddr mapping)</li>
+<li>Guide text (&#8251;, &#50696;&#49884;) fully removed</li>
+<li>Checkboxes &#9744;/&#9632; in intended cells only</li>
+<li>Merged cell text in correct row</li>
+<li>If Hancom available, open .hwpx directly</li>
+</ul>
+
+<!-- ─── Security ─── -->
+<h2>Security</h2>
+<table>
+<tr><th>Check</th><th>Limits</th></tr>
+<tr><td>ZIP bomb</td><td>1000 entries, 200 MB, 100:1 ratio</td></tr>
+<tr><td>Path traversal</td><td>null byte, <code>..</code>, absolute path, drive letter, symlink</td></tr>
+<tr><td>XXE</td><td><code>DtdProcessing.Prohibit</code></td></tr>
+<tr><td>Table size</td><td>200 cols x 10,000 rows</td></tr>
+</table>
+
+<!-- ─── Reference Materials ─── -->
+<h2>Reference Materials &amp; Scripts</h2>
+
+<h3>Reference Documents (<code>reference/</code>)</h3>
+<table>
+<tr><th>File</th><th>Read When</th><th>Contains</th></tr>
+<tr><td><code>reference/hwpx-format.md</code></td><td>Before any direct XML edit</td><td>OWPML ZIP structure, namespaces, file layout, mimetype</td></tr>
+<tr><td><code>reference/header-xml-guide.md</code></td><td>Adding/modifying charPr/paraPr/borderFill styles</td><td>How to add new styles to header.xml</td></tr>
+<tr><td><code>reference/section0-xml-guide.md</code></td><td>Paragraph/table/mixed-formatting XML</td><td>XML template for section0.xml bodies</td></tr>
+<tr><td><code>reference/style_id_maps.md</code></td><td>Style ID lookup for template overlay</td><td>Complete style ID index for all templates</td></tr>
+<tr><td><code>reference/dependencies.md</code></td><td>First-time setup / environment check</td><td>Python/system packages needed</td></tr>
+<tr><td><code>reference/visual_qa_prompt.md</code></td><td>Visual QA via subagent</td><td>Ready-to-use prompt for PDF-image inspection</td></tr>
+<tr><td><code>reference/table_templates/*.xml</code></td><td>Inserting pre-built tables</td><td>2x6, 3x3, 4x4, 5x4 grid XML fragments</td></tr>
+</table>
+
+<h3>Python Scripts (<code>scripts/</code>)</h3>
+<table>
+<tr><th>Script</th><th>Purpose</th><th>Command</th></tr>
+<tr><td><code>hwpx_cli.py</code></td><td>Unified Python CLI (14+ commands)</td><td><code>python3 scripts/hwpx_cli.py {command} ...</code></td></tr>
+<tr><td><code>build_hwpx.py</code></td><td>Template-based creation</td><td><code>python3 scripts/build_hwpx.py --template {type}</code></td></tr>
+<tr><td><code>analyze_template.py</code></td><td>Inspect template structure</td><td><code>python3 scripts/analyze_template.py work/</code></td></tr>
+<tr><td><code>create_document.py</code></td><td>Create empty or custom HWPX</td><td><code>python3 scripts/create_document.py OUT.hwpx</code></td></tr>
+<tr><td><code>table_builder.py</code></td><td>Build table XML from Python objects</td><td>Used internally</td></tr>
+<tr><td><code>page_guard.py</code></td><td>Detect paragraph/table/text drift</td><td><code>python3 scripts/page_guard.py -r ref.hwpx -o out.hwpx</code></td></tr>
+<tr><td><code>contact_sheet.py</code></td><td>QA contact sheet (page grid image)</td><td><code>python3 scripts/contact_sheet.py INPUT.pdf sheet.png</code></td></tr>
+<tr><td><code>validate.py</code></td><td>9-level structural validation</td><td><code>python3 scripts/validate.py INPUT.hwpx</code></td></tr>
+<tr><td><code>hwp_reader.py</code></td><td>Read HWP 5.0 binary (read-only)</td><td><code>python3 scripts/hwp_reader.py INPUT.hwp</code></td></tr>
+<tr><td><code>hwp_convert.py</code></td><td>HWP &rarr; HWPX conversion</td><td><code>python3 scripts/hwp_convert.py IN.hwp OUT.hwpx</code></td></tr>
+<tr><td><code>text_extract.py</code></td><td>Extract plain text from HWPX</td><td><code>python3 scripts/text_extract.py INPUT.hwpx</code></td></tr>
+</table>
+
+<!-- ─── Pattern-Match Editing ─── -->
+<h2>Pattern-Match Editing (L4 Fallback)</h2>
+<p>For complex form editing beyond officecli <code>set</code>/<code>find-replace</code> &mdash; KICE exams, multi-section regulations, fragmented text nodes.</p>
+
+<h3>Core Flow</h3>
+<pre><code># Unpack HWPX
+python3 scripts/hwpx_cli.py open input.hwpx
+
+# Edit XML files in work/Contents/
+# (lineseg is stripped automatically by hwpx_cli.py)
+
+# Repack
+python3 scripts/hwpx_cli.py save output.hwpx</code></pre>
+
+<h3>Key Patterns</h3>
+<table>
+<tr><th>Pattern</th><th>Description</th></tr>
+<tr><td>Lineseg strip</td><td>Remove stale <code>&lt;hp:linesegarray&gt;</code> cache on every direct XML write</td></tr>
+<tr><td>Checkbox substitution</td><td><code>&#9744;</code> &rarr; <code>&#9745;</code>, with multi-<code>&lt;t&gt;</code> node handling</td></tr>
+<tr><td>Uniform-space normalization</td><td><code>"&#54861; &#44600; &#46041;"</code> &#8596; <code>"&#54861;&#44600;&#46041;"</code> conversion</td></tr>
+<tr><td>p[0] Monster</td><td>secPr + tbl + question 1 text merged in first paragraph</td></tr>
+<tr><td>Equation interleaving</td><td><code>&lt;t&gt;</code> &#8596; <code>&lt;equation&gt;</code> alternating &mdash; skip equations during text extraction</td></tr>
+</table>
+
+<h3>Lineseg Strip (Critical)</h3>
+<p>When editing HWPX XML directly (NOT via officecli or <code>scripts/hwpx_cli.py</code>), you MUST strip ALL <code>&lt;hp:linesegarray&gt;</code> elements. Stale layout cache causes characters to overlap into a single line.</p>
+<pre><code>import re
+xml = re.sub(r'&lt;(?:hp:)?linesegarray[^&gt;]*&gt;.*?&lt;/(?:hp:)?linesegarray&gt;', '', xml, flags=re.DOTALL)
+xml = re.sub(r'&lt;(?:hp:)?linesegarray[^/]*/&gt;', '', xml)  # self-closing</code></pre>
+<div class="callout callout-info"><code>officecli</code> and <code>scripts/hwpx_cli.py</code> handle lineseg stripping automatically. This rule applies only to raw Python XML editing.</div>
+
+<!-- ─── Common Pitfalls ─── -->
+<h2>Common Pitfalls</h2>
+<table>
+<tr><th>Pitfall</th><th>Correct Approach</th></tr>
+<tr><td><code>--props text=Hello</code></td><td><code>--prop text=Hello</code> &mdash; singular <code>--prop</code> always</td></tr>
+<tr><td><code>/body/p[1]</code> path</td><td>HWPX uses <code>/section[1]/p[1]</code> &mdash; section-based, not body</td></tr>
+<tr><td>Unquoted <code>[N]</code> in shell</td><td><code>"/section[1]/p[1]"</code> &mdash; always quote paths</td></tr>
+<tr><td><code>fontsize</code> omitted</td><td><code>--prop fontsize=11</code> always &mdash; prevents charPr 0 pollution</td></tr>
+<tr><td><code>officecli view file.hwpx</code> (no mode)</td><td>Error. Must specify: <code>text</code>, <code>markdown</code>, <code>tables</code>, etc.</td></tr>
+<tr><td>Manual table mapping</td><td><code>view tables</code> replaces manual inspection</td></tr>
+<tr><td>Recreating header.xml styles from template</td><td><code>cp source.hwpx target.hwpx</code> first. Read <code>reference/style_id_maps.md</code></td></tr>
+<tr><td><code>officecli open</code> as background shell</td><td>Run foreground &mdash; returns immediately, daemon runs in bg automatically</td></tr>
+<tr><td>Direct XML edit without lineseg strip</td><td>Stale cache causes text overlap. Use <code>hwpx_cli.py</code> or strip manually</td></tr>
+<tr><td>Custom style work without reading reference/</td><td><code>reference/header-xml-guide.md</code> + <code>reference/style_id_maps.md</code> are mandatory</td></tr>
+</table>
+
+<!-- ─── Anti-Patterns ─── -->
+<h2>Anti-Patterns (Must Avoid)</h2>
+<ol>
+<li><strong>No equations in math exams = broken output</strong> &mdash; KICE docs require <code>&lt;hp:equation&gt;</code> elements</li>
+<li><strong>No unguarded HWP binary overwrite</strong> &mdash; prefer <code>--prop output=...</code>; only use safe in-place when <code>safeInPlace.ready=true</code></li>
+<li><strong>No fake HWPX fallback when rhwp has a native primitive</strong> &mdash; if OfficeCLI lacks the route, report the gap and stop for approval</li>
+<li><strong>No XML editing without lineseg strip</strong> &mdash; stale cache causes overlapping text</li>
+<li><strong>No visible QA markers in fixed-layout exams</strong> &mdash; use screenshots or sidecar evidence instead</li>
+<li><strong>No cross-format skill loading</strong> &mdash; this skill is <code>.hwp</code>/<code>.hwpx</code> only</li>
+<li><strong>No rebuilding styles that exist in template</strong> &mdash; <code>cp</code> first and read <code>reference/style_id_maps.md</code></li>
+<li><strong>No ignoring reference materials</strong> &mdash; <code>header-xml-guide.md</code>, <code>section0-xml-guide.md</code>, and <code>style_id_maps.md</code> are mandatory for custom XML work</li>
+</ol>
+
+<!-- ─── Dependencies ─── -->
+<h2>Dependencies</h2>
+<table>
+<tr><th>Tool</th><th>Purpose</th><th>Required?</th></tr>
+<tr><td><code>officecli</code> (global)</td><td>Primary HWPX CLI + experimental rhwp-backed HWP bridge</td><td><strong>Required</strong></td></tr>
+<tr><td><code>python3</code></td><td>Fallback scripts (<code>scripts/*.py</code>)</td><td><strong>Required for L3/L4</strong></td></tr>
+<tr><td><code>lxml</code></td><td>XML processing for scripts/*</td><td>Required for L3/L4</td></tr>
+<tr><td><code>pyhwp</code></td><td>Legacy HWP 5.0 binary reading/conversion fallback</td><td>Required for HWP&rarr;HWPX fallback</td></tr>
+<tr><td><code>soffice</code> (LibreOffice)</td><td>PDF conversion + visual verification</td><td>Recommended</td></tr>
+<tr><td>Java (<code>JAVA_HOME</code>)</td><td>H2Orestart HWP conversion engine</td><td>For HWP&rarr;HWPX only</td></tr>
+<tr><td><code>dotnet</code></td><td>Build officecli from source</td><td>For builds only</td></tr>
+</table>
+
+<h3>Prerequisite Check</h3>
+<pre><code># OfficeCLI (required)
+which officecli &gt;/dev/null 2&gt;&amp;1 || echo "WARN: OfficeCLI not installed"
+
+# LibreOffice (recommended, auto-installs when needed)
+which soffice &gt;/dev/null 2&gt;&amp;1 || echo "INFO: LibreOffice not installed"
+
+# Python packages (optional for L3/L4)
+python3 -c "import lxml; import pyhwp" 2&gt;/dev/null || echo "OPTIONAL: pip install lxml pyhwp"
+
+# Java (for HWP conversion only)
+echo "JAVA_HOME=$JAVA_HOME"</code></pre>
+
+<!-- ─── Tool Discovery ─── -->
+<h2>Tool Discovery</h2>
+<p>Always confirm syntax from help before guessing.</p>
+<pre><code>officecli --help
+officecli hwp --json
+officecli hwp doctor --json
+officecli capabilities --json
+officecli view --help
+officecli set --help
+python3 scripts/hwpx_cli.py --help
+python3 scripts/build_hwpx.py --help</code></pre>
+
+<!-- ─── Exam Structure ─── -->
+<h2>Exam XML Structure Patterns</h2>
+<p>KICE-style exam sheets require special handling due to fixed-layout constraints.</p>
+
+<table>
+<tr><th>Pattern</th><th>Description</th><th>Detection</th></tr>
+<tr><td>Page/Column breaks</td><td><code>pageBreak="1"</code> / <code>columnBreak="1"</code></td><td>Page boundary = question group boundary</td></tr>
+<tr><td>p[0] Monster</td><td>secPr + colPr + title tbl + question 1 text merged</td><td>Everything in first paragraph</td></tr>
+<tr><td>Equation interleaving</td><td><code>&lt;t&gt;</code> &#8596; <code>&lt;equation&gt;</code> alternating</td><td>Skip equations during text extraction</td></tr>
+<tr><td>Answer choices</td><td><code>&#9312;</code> + 5 <code>&lt;equation&gt;</code> (5-choice)</td><td>Auto-detect answer paragraphs</td></tr>
+<tr><td>Text fragmentation</td><td>1-2 char <code>&lt;t&gt;</code> splits (HWP conversion)</td><td>Concatenate all text then match</td></tr>
+<tr><td>2-column layout</td><td><code>&lt;hp:colPr type="NEWSPAPER" colCount="2"&gt;</code></td><td>Exam-specific layout</td></tr>
+</table>
+
+<div class="callout callout-danger"><strong>Fixed-layout rule:</strong> Do not insert QA/proof markers into the visible body of exam documents. Strings such as <code>[CU TEMPLATE EDIT ...]</code> or <code>VISUAL QA</code> inside the question body are visual hard failures. Capture before/after screenshots instead.</div>
+
+<!-- ─── HWP to HWPX Conversion ─── -->
+<h2>HWP &rarr; HWPX Conversion</h2>
+
+<h3>Format Detection</h3>
+<pre><code>file doc.hwpx   # "Zip archive" -&gt; HWPX (ZIP + OWPML XML)
+file doc.hwp    # "HWP Document" -&gt; HWP 5.0 binary</code></pre>
+
+<h3>Structural Differences</h3>
+<table>
+<tr><th>Aspect</th><th>Native HWPX</th><th>HWP &rarr; HWPX Converted</th></tr>
+<tr><td>Text unit</td><td>Short <code>&lt;t&gt;</code> per run</td><td>Entire paragraph in one <code>&lt;t&gt;</code></td></tr>
+<tr><td>Title p[0]</td><td>secPr + tbl + content</td><td>Page number fragments <code>&lt;t&gt;20&lt;/t&gt;</code> + <code>&lt;t&gt;1&lt;/t&gt;</code> mixed in</td></tr>
+<tr><td>Editing</td><td>Run-level precise replacement</td><td>Raw string replace or whole-paragraph swap needed</td></tr>
+</table>
+
+<h3>Editing Strategies for Converted Files</h3>
+<ol>
+<li><strong>Title:</strong> run-aware replacement &mdash; <code>set_run_text(p0, 'old', 'new')</code> (skip page-number runs)</li>
+<li><strong>Body:</strong> raw string replace on serialized XML &mdash; <code>sec0.replace(old, new)</code></li>
+<li><strong>Multi-<code>&lt;t&gt;</code> cells:</strong> use <code>ReplaceTextInCell()</code> &mdash; concatenate all <code>&lt;t&gt;</code> &rarr; match &rarr; redistribute</li>
+</ol>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">Productivity Skills</a>
+<a class="next" href="docx.html">DOCX Skill</a>
+</div>
+</main>
+</div>
+</body>
+</html>

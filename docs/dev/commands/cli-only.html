@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLI-Only Commands — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link active" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>CLI-Only Commands</h1>
+<p class="lead">These commands are exclusive to the terminal CLI interface. They are <strong>not available</strong> in the Web UI, Telegram bot, or Discord bot -- they rely on the local terminal process and have no server-side equivalent. If you try to use them from a non-CLI channel, they will be silently ignored or return an error.</p>
+
+<div class="callout-info">
+<strong>Why CLI-only?</strong><br>
+These commands interact directly with the CLI process itself -- reading local files from your machine, controlling the terminal display, printing version metadata, or terminating the process. They don't translate to a request/response API and therefore only make sense in an interactive terminal session.
+</div>
+
+<h2>Command Reference</h2>
+
+<table>
+<tr><th>Command</th><th>Arguments</th><th>Description</th></tr>
+<tr><td><code>/version</code></td><td>none</td><td>Print the current podex version string</td></tr>
+<tr><td><code>/quit</code></td><td>none</td><td>Gracefully exit the podex process</td></tr>
+<tr><td><code>/q</code></td><td>none</td><td>Alias for <code>/quit</code></td></tr>
+<tr><td><code>/file</code></td><td><code>&lt;path&gt; [caption]</code></td><td>Attach a local file to the conversation (hidden from display)</td></tr>
+<tr><td><code>/ide</code></td><td><code>pop | on | off</code></td><td>Control the IDE diff view panel</td></tr>
+</table>
+
+<hr>
+
+<h2 id="version">/version</h2>
+<p>Prints the installed podex version, build hash, and runtime information to the terminal. Useful for bug reports and verifying that an update succeeded.</p>
+
+<h3>Syntax</h3>
+<pre><code>/version</code></pre>
+
+<h3>Arguments</h3>
+<p>None. This command takes no arguments or flags.</p>
+
+<h3>Output</h3>
+<pre><code>podex v2.14.0 (build a3f8c1d)
+node: v22.11.0 | platform: darwin-arm64
+config: ~/.podex/config.yaml</code></pre>
+
+<h3>Example Usage</h3>
+<pre><code># Check your version before reporting an issue
+/version
+
+# Pipe to clipboard (in your shell, not inside a jaw session)
+jaw --version | pbcopy</code></pre>
+
+<div class="callout-info">
+<strong>~해줘 tip</strong><br>
+<code>"버전 확인해줘"</code> -- The assistant will run <code>/version</code> and report the result. You can also say <code>"지금 어떤 버전 쓰고 있어?"</code> for the same effect.
+</div>
+
+<hr>
+
+<h2 id="quit">/quit, /q</h2>
+<p>Gracefully shuts down the podex process. This saves the current conversation to the session log, flushes any pending memory writes, and exits the Node.js process with code 0. <code>/q</code> is a short alias that behaves identically.</p>
+
+<h3>Syntax</h3>
+<pre><code>/quit
+/q</code></pre>
+
+<h3>Arguments</h3>
+<p>None. This command takes no arguments or flags.</p>
+
+<h3>Behavior</h3>
+<ul>
+<li><strong>Session save</strong> -- The current conversation is persisted to <code>~/.podex/sessions/</code> so it can be resumed later with <code>/session load</code>.</li>
+<li><strong>Memory flush</strong> -- Any in-flight memory writes are committed before exit.</li>
+<li><strong>Clean exit</strong> -- The process exits with code <code>0</code>. If something blocks exit for more than 5 seconds, the process force-terminates.</li>
+<li><strong>No confirmation</strong> -- The command exits immediately without prompting "are you sure?"</li>
+</ul>
+
+<h3>Example Usage</h3>
+<pre><code># End the session
+/quit
+
+# Same thing, shorter
+/q</code></pre>
+
+<div class="callout-info">
+<strong>~해줘 tip</strong><br>
+<code>"종료해줘"</code> or <code>"나갈게"</code> -- The assistant recognizes natural-language exit intents and runs <code>/quit</code> on your behalf. You can also simply press <code>Ctrl+C</code> twice for an immediate kill, but that skips the graceful flush.
+</div>
+
+<hr>
+
+<h2 id="file">/file</h2>
+<p>Attaches a local file to the current conversation context. The file is read from disk and injected into the message history as a hidden attachment -- it does not render visually in the terminal output, but the AI model receives its full content. This is useful for feeding documents, images, or data files into the conversation without cluttering the display.</p>
+
+<h3>Syntax</h3>
+<pre><code>/file &lt;path&gt; [caption]</code></pre>
+
+<h3>Arguments</h3>
+<table>
+<tr><th>Argument</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>&lt;path&gt;</code></td><td>Yes</td><td>Absolute or relative path to the file. Supports <code>~</code> expansion. Glob patterns are not supported -- attach one file per command.</td></tr>
+<tr><td><code>[caption]</code></td><td>No</td><td>Optional description appended as context. If omitted, only the file content is sent.</td></tr>
+</table>
+
+<h3>Supported File Types</h3>
+<table>
+<tr><th>Category</th><th>Extensions</th></tr>
+<tr><td>Text / Code</td><td><code>.txt</code>, <code>.md</code>, <code>.py</code>, <code>.js</code>, <code>.ts</code>, <code>.json</code>, <code>.yaml</code>, <code>.toml</code>, <code>.csv</code>, <code>.html</code>, <code>.css</code>, and other plain-text formats</td></tr>
+<tr><td>Images</td><td><code>.png</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.gif</code>, <code>.webp</code>, <code>.svg</code></td></tr>
+<tr><td>Documents</td><td><code>.pdf</code>, <code>.docx</code>, <code>.xlsx</code>, <code>.pptx</code>, <code>.hwpx</code></td></tr>
+<tr><td>Audio</td><td><code>.mp3</code>, <code>.wav</code>, <code>.m4a</code>, <code>.ogg</code></td></tr>
+</table>
+
+<h3>Behavior</h3>
+<ul>
+<li><strong>Hidden attachment</strong> -- The file content is added to the AI context but not printed to the terminal. This keeps the display clean when attaching large files.</li>
+<li><strong>Size limit</strong> -- Files exceeding the model's context window are truncated with a warning. For very large files, consider splitting or summarizing first.</li>
+<li><strong>Relative paths</strong> -- Resolved relative to the current working directory (the directory from which you launched <code>jaw</code>).</li>
+<li><strong>Binary files</strong> -- Images and documents are base64-encoded. Unsupported binary formats produce an error.</li>
+</ul>
+
+<h3>Example Usage</h3>
+<pre><code># Attach a source file for review
+/file src/auth/middleware.ts Review this middleware for security issues
+
+# Attach a screenshot for analysis
+/file ~/Desktop/screenshot.png What error is shown here?
+
+# Attach a CSV for data analysis
+/file ./sales-q4.csv
+
+# Attach a PDF document
+/file ~/Documents/contract.pdf 이 계약서 요약해줘</code></pre>
+
+<div class="callout-info">
+<strong>~해줘 tip</strong><br>
+<code>"이 파일 봐줘 -- ~/report.pdf"</code> -- The assistant will run <code>/file ~/report.pdf</code> and then analyze the content. You can also say <code>"src/index.ts 파일 첨부해서 리뷰해줘"</code> and the assistant will attach and review it in one step.
+</div>
+
+<hr>
+
+<h2 id="ide">/ide</h2>
+<p>Controls the IDE diff view panel. When enabled, code changes proposed by the assistant are displayed in a side-by-side or unified diff format similar to VS Code's diff editor, rather than inline in the chat. This makes it easier to review multi-file changes before accepting them.</p>
+
+<h3>Syntax</h3>
+<pre><code>/ide &lt;mode&gt;</code></pre>
+
+<h3>Arguments</h3>
+<table>
+<tr><th>Argument</th><th>Description</th></tr>
+<tr><td><code>pop</code></td><td>Open the diff view in a new terminal window (pop-out). Requires a supported terminal emulator (iTerm2, Wezterm, or tmux).</td></tr>
+<tr><td><code>on</code></td><td>Enable inline diff view in the current terminal. Diffs appear in a split pane below the chat.</td></tr>
+<tr><td><code>off</code></td><td>Disable the diff view. Code changes return to inline display within the chat output.</td></tr>
+</table>
+
+<h3>Modes Explained</h3>
+<ul>
+<li><strong><code>pop</code></strong> -- Spawns a separate terminal window dedicated to showing diffs. Best for multi-monitor setups where you want the diff always visible alongside the chat. The pop-out window updates in real time as the assistant proposes changes.</li>
+<li><strong><code>on</code></strong> -- Splits the current terminal vertically. The top half shows the conversation; the bottom half shows the active diff. Works in any terminal but reduces available chat space.</li>
+<li><strong><code>off</code></strong> -- Returns to the default behavior where code blocks and diffs are rendered inline in the conversation stream.</li>
+</ul>
+
+<h3>Terminal Requirements</h3>
+<table>
+<tr><th>Mode</th><th>Requirement</th></tr>
+<tr><td><code>pop</code></td><td>iTerm2, Wezterm, or tmux. Falls back to <code>on</code> if no supported emulator is detected.</td></tr>
+<tr><td><code>on</code></td><td>Any terminal with at least 80 columns and 40 rows recommended.</td></tr>
+<tr><td><code>off</code></td><td>No requirements.</td></tr>
+</table>
+
+<h3>Example Usage</h3>
+<pre><code># Open diff view in a separate window
+/ide pop
+
+# Enable inline diff view
+/ide on
+
+# Turn off diff view
+/ide off
+
+# Typical workflow: enable diff, ask for changes, review
+/ide on
+"이 함수 리팩터링해줘 -- async/await으로 바꿔줘"
+# Review the diff in the panel, then accept or reject</code></pre>
+
+<div class="callout-info">
+<strong>~해줘 tip</strong><br>
+<code>"IDE 모드 켜줘"</code> -- Activates <code>/ide on</code>. You can also say <code>"diff 뷰 팝업으로 열어줘"</code> to trigger <code>/ide pop</code>, or <code>"IDE 모드 꺼줘"</code> for <code>/ide off</code>.
+</div>
+
+<hr>
+
+<h2>Platform Availability</h2>
+<p>The table below clarifies where each command works and where it does not:</p>
+<table>
+<tr><th>Command</th><th>CLI</th><th>Web UI</th><th>Telegram</th><th>Discord</th><th>Electron</th></tr>
+<tr><td><code>/version</code></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>Yes*</td></tr>
+<tr><td><code>/quit</code>, <code>/q</code></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>No</td></tr>
+<tr><td><code>/file</code></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>Yes*</td></tr>
+<tr><td><code>/ide</code></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>Yes*</td></tr>
+</table>
+<p><small>* Electron desktop app includes an embedded terminal that supports CLI-only commands. The Web UI served via browser does not.</small></p>
+
+<h2>Troubleshooting</h2>
+
+<h3>/file says "file not found"</h3>
+<p>Check that the path is correct relative to the directory where you launched <code>jaw</code>. Use an absolute path if unsure:</p>
+<pre><code># Instead of relative path
+/file ./data/report.csv
+
+# Use absolute path
+/file /Users/jun/projects/data/report.csv</code></pre>
+
+<h3>/ide pop does nothing</h3>
+<p>The <code>pop</code> mode requires iTerm2, Wezterm, or tmux. If you are using a different terminal emulator (Terminal.app, Alacritty, Hyper), the command silently falls back to <code>on</code> mode. Check your terminal:</p>
+<pre><code>echo $TERM_PROGRAM
+# Should output: iTerm.app, WezTerm, or tmux</code></pre>
+
+<h3>/quit hangs</h3>
+<p>If <code>/quit</code> does not exit within 5 seconds, there may be a pending network request or file write. Press <code>Ctrl+C</code> to force-kill the process. Check <code>~/.podex/sessions/</code> to verify the session was saved.</p>
+
+<div class="page-nav">
+<a class="prev" href="tools.html">Tools</a>
+<a class="next" href="root-cli.html">Root CLI</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

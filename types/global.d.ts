@@ -1,0 +1,66 @@
+﻿// Global type declarations for podex
+
+declare module 'node-fetch' {
+  export default function fetch(url: string, init?: RequestInit): Promise<Response>;
+}
+
+export interface PODEXConfig {
+  port: number;
+  host: string;
+  dataDir: string;
+  logLevel: 'debug' | 'info' | 'warn' | 'error';
+}
+
+export interface Settings {
+  telegram: {
+    token: string;
+    allowedChatIds: string[];
+  };
+  agents: Record<string, AgentConfig>;
+}
+
+export interface AgentConfig {
+  cli: string;
+  model?: string;
+  permissions?: string;
+}
+
+export interface HeartbeatJob {
+  id: string;
+  name: string;
+  enabled: boolean;
+  schedule:
+  | {
+    kind: 'every';
+    minutes: number;
+    timeZone?: string;
+  }
+  | {
+    kind: 'cron';
+    cron: string;
+    timeZone?: string;
+  };
+  prompt: string;
+}
+
+export interface BrowserAction {
+  type: 'navigate' | 'click' | 'type' | 'snapshot' | 'screenshot' | 'press' | 'text';
+  target?: string;
+  value?: string;
+  options?: Record<string, unknown>;
+}
+
+export interface OrchestratorSubtask {
+  agent: string;
+  task: string;
+  priority: number;
+}
+
+export interface AgentEvent {
+  type: string;
+  timestamp: number;
+  sessionId: string;
+  data: unknown;
+}
+
+

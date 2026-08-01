@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Goal 시스템 — podex 문서</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link active" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a class="active" href="../">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Goal 시스템</h1>
+<p class="lead">Goal은 세션 간에 유지되는 영속적인 목표입니다. 에이전트에게 장기적인 방향을 제시하며, 예산 추적과 함께 자동 연속 실행을 트리거할 수 있습니다.</p>
+
+<h2>에이전트 pause gate</h2>
+<p>AI <code>goal pause --agent --audit</code>는 <strong>2단계 감사 게이트</strong>를 사용합니다. 첫 감사 일시정지 시도 후 goal은 <code>active</code>로 유지되지만 status/API에 <code>pauseGate: { armed: true, reason: "pause_gate_pending" }</code>가 노출됩니다. armed 동안 자동 goal continuation이 억제됩니다(<code>goal_pause_gate_pending</code> SSE). 생산적 checkpoint가 게이트를 해제하고, 두 번째 감사 일시정지가 goal을 완전히 pause합니다.</p>
+
+<h2>Goal 생명주기</h2>
+<p>Goal은 다음 상태를 거칩니다: <strong>set</strong>(활성 목표), <strong>paused</strong>, <strong>resumed</strong>, <strong>done</strong>(완료), 또는 <strong>cancelled</strong>. Goal 상태는 영구적으로 저장되며, 서버를 재시작해도 유지됩니다.</p>
+
+<h2>CLI 명령어</h2>
+<pre><code># Set a new goal
+jaw goal set "Migrate the auth module to JWT tokens"
+
+# Check goal status
+jaw goal status
+
+# Pause the current goal
+jaw goal pause
+
+# Resume a paused goal
+jaw goal resume
+
+# Mark goal as done (this is an API call, not a CLI command)
+jaw goal done
+
+# Cancel the goal
+jaw goal cancel
+
+# Reset goal state
+jaw goal reset</code></pre>
+
+<h2>슬래시 명령어</h2>
+<table>
+<tr><th>명령어</th><th>설명</th></tr>
+<tr><td><code>/goal set &lt;objective&gt;</code></td><td>새로운 목표를 설정합니다</td></tr>
+<tr><td><code>/goal status</code></td><td>현재 Goal 상태를 표시합니다</td></tr>
+<tr><td><code>/goal run start</code></td><td>예산 추적이 포함된 제한적 자동 연속 실행을 시작합니다</td></tr>
+<tr><td><code>/goal run stop</code></td><td>현재 Goal 실행을 중지합니다</td></tr>
+<tr><td><code>/goal pause</code></td><td>Goal을 일시 중지합니다</td></tr>
+<tr><td><code>/goal resume</code></td><td>일시 중지된 Goal을 재개합니다</td></tr>
+<tr><td><code>/goal done</code></td><td>Goal을 완료로 표시합니다</td></tr>
+<tr><td><code>/goal cancel</code></td><td>Goal을 취소합니다</td></tr>
+<tr><td><code>/goal clear</code></td><td>Goal 상태를 초기화합니다</td></tr>
+<tr><td><code>/goal reset</code></td><td>전체 초기화</td></tr>
+</table>
+
+<h2>Goal 실행 (자동 연속)</h2>
+<p><code>/goal run start</code> 명령어는 제한적 자동 연속 세션을 시작합니다. 에이전트는 Goal 목표를 향해 작업하며, Goal이 완료로 표시되거나 실행이 중지될 때까지 각 응답 후 자동으로 계속합니다.</p>
+<div class="callout callout-info">예산 적용은 현재 추적 전용입니다. 시스템은 실행 시간과 연속 횟수를 추적하지만, 아직 엄격한 예산 제한을 강제하지는 않습니다.</div>
+
+<h2>API 엔드포인트</h2>
+<table>
+<tr><th>메서드</th><th>경로</th><th>설명</th></tr>
+<tr><td>GET</td><td><code>/api/goal</code></td><td>현재 Goal 상태를 가져옵니다</td></tr>
+<tr><td>GET</td><td><code>/api/goal/history</code></td><td>Goal 히스토리를 가져옵니다</td></tr>
+<tr><td>POST</td><td><code>/api/goal</code></td><td>Goal을 설정, 업데이트, 완료, 취소, 일시 중지 또는 재개합니다</td></tr>
+<tr><td>GET</td><td><code>/api/goal-run</code></td><td>현재 Goal 실행 상태를 가져옵니다</td></tr>
+<tr><td>GET</td><td><code>/api/goal-run/preflight</code></td><td>실행 시작 전 사전 검사를 수행합니다</td></tr>
+<tr><td>POST</td><td><code>/api/goal-run</code></td><td>Goal 실행을 시작, 일시 중지, 재개 또는 중지합니다</td></tr>
+</table>
+
+<h2>실시간 이벤트</h2>
+<p>Goal 생명주기 변경 시 Web UI가 소비하는 SSE-first 이벤트가 발생합니다. 레거시 서버에서는 WebSocket fallback을 사용할 수 있습니다:</p>
+<ul>
+<li><code>goal_done</code> -- Goal 완료</li>
+<li><code>goal_cancel</code> -- Goal 취소</li>
+<li><code>goal_continuation</code> -- 자동 연속 트리거</li>
+<li><code>goal_continuation_failed</code> -- 연속 시도 실패</li>
+<li><code>goal_continuation_limit</code> -- 연속 예산 도달</li>
+</ul>
+
+<h2>Goal + PABCD 통합</h2>
+<p>Goal은 PABCD 오케스트레이션과 함께 작동합니다. Goal을 설정한 후 PABCD 단계를 사용하여 세분화할 수 있습니다. 활성 PABCD 단계 중에도 Goal 연속이 허용되므로, 에이전트는 오케스트레이션 프레임워크 내에서 Goal 기반 작업을 계속 수행할 수 있습니다.</p>
+
+<div class="page-nav">
+<a class="prev" href="pabcd.html">PABCD</a>
+<a class="next" href="skills.html">Skills</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model &amp; CLI Commands — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link active" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Model &amp; CLI Commands</h1>
+<p class="lead">AI 모델 전환, CLI 프로바이더 전환, 폴백 체인 구성, 프로바이더 간 요청 포워딩, Gemini 사고 모드 토글, 모델 할당 초기화를 위한 명령어입니다. 이 명령어들을 사용하면 재시작 없이 세션 도중에 AI 백엔드를 동적으로 재구성할 수 있습니다.</p>
+
+<div class="callout callout-info">이 페이지의 모든 명령어는 채팅 입력창에서 슬래시 명령어로 실행하거나, 한국어 또는 영어로 자연어 입력할 수 있습니다. podex는 "클로드로 바꿔줘"와 같은 문구를 이해하고 자동으로 적절한 명령어에 매핑합니다.</div>
+
+<h2>명령어 요약</h2>
+<table>
+<tr><th>명령어</th><th>인수</th><th>설명</th></tr>
+<tr><td><code>/model</code></td><td><code>[name]</code></td><td>활성 AI 모델 전환</td></tr>
+<tr><td><code>/cli</code></td><td><code>[name]</code></td><td>활성 CLI 프로바이더 전환</td></tr>
+<tr><td><code>/fallback</code></td><td><code>[cli1 cli2 ...|off]</code></td><td>폴백 순서 설정 또는 비활성화</td></tr>
+<tr><td><code>/forward</code></td><td><code>[on|off]</code></td><td>다른 프로바이더로의 요청 포워딩 활성화 또는 비활성화</td></tr>
+<tr><td><code>/thought</code></td><td><code>[on|off]</code></td><td>Gemini 사고(확장 추론) 모드 토글</td></tr>
+<tr><td><code>/flush</code></td><td><code>[cli] [model] | off</code></td><td>모델을 CLI에 고정하거나 고정 해제</td></tr>
+</table>
+
+<!-- ================================================================== -->
+<h2 id="model">/model [name]</h2>
+<p>현재 CLI 프로바이더 내에서 활성 AI 모델을 전환합니다. 모델 이름은 활성 프로바이더가 인식하는 유효한 식별자여야 합니다. 인수 없이 호출하면 현재 활성 모델을 표시합니다.</p>
+
+<h3>인수</h3>
+<table>
+<tr><th>인수</th><th>필수</th><th>설명</th></tr>
+<tr><td><code>name</code></td><td>아니오</td><td>전환할 모델 식별자. 생략하면 현재 모델을 표시합니다.</td></tr>
+</table>
+
+<h3>지원 모델 (예시)</h3>
+<table>
+<tr><th>프로바이더</th><th>모델 식별자</th></tr>
+<tr><td>Claude</td><td><code>claude-opus-5</code>, <code>claude-opus-5[1m]</code>, <code>claude-opus-4-8</code>, <code>claude-opus-4-8[1m]</code>, <code>claude-sonnet-4-6</code>, <code>claude-haiku-4-5</code></td></tr>
+<tr><td>Gemini</td><td><code>gemini-3-flash-preview</code>, <code>gemini-2.5-flash</code>, <code>gemini-2.0-flash</code></td></tr>
+<tr><td>OpenAI</td><td><code>gpt-5.5</code>, <code>gpt-5.4</code>, <code>gpt-5.4-mini</code>, <code>gpt-5.3-codex</code></td></tr>
+<tr><td>Grok</td><td><code>grok-3</code>, <code>grok-3-mini</code></td></tr>
+</table>
+
+<div class="callout callout-info"><strong>구독 안내:</strong> GPT 5.5와 Claude Opus 4.8은 Pro 구독 이상부터 사용할 수 있습니다. 6월부터 구독제에 포함된 Claude 사용량을 쓰려면 <code>claude-e</code>를 선택하세요.</div>
+
+<h3>사용 예시</h3>
+<pre><code># Show current model
+/model
+
+# Switch to Claude Opus 4.8
+/model claude-opus-4-8
+
+# Switch to Sonnet for lighter tasks
+/model claude-sonnet-4-6
+
+# Switch to Gemini 2.5 Pro
+/model gemini-3-flash-preview</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "오퍼스로 바꿔줘" 또는 "소넷으로 전환해줘"라고 말하면 podex가 적절한 <code>/model</code> 호출에 매핑합니다. "더 똑똑한 모델로 바꿔줘"라고 말하면 오케스트레이터가 사용 가능한 가장 강력한 모델을 선택합니다.</div>
+
+<!-- ================================================================== -->
+<h2 id="cli">/cli [name]</h2>
+<p>활성 CLI 프로바이더를 전환합니다. 이 명령어는 전체 백엔드를 변경합니다 &mdash; API 엔드포인트, 인증, 사용 가능한 모델, 도구 기능이 모두 프로바이더와 함께 변경됩니다. 인수 없이 호출하면 현재 CLI를 표시합니다.</p>
+
+<h3>인수</h3>
+<table>
+<tr><th>인수</th><th>필수</th><th>설명</th></tr>
+<tr><td><code>name</code></td><td>아니오</td><td>전환할 CLI 프로바이더. 생략하면 현재 CLI를 표시합니다.</td></tr>
+</table>
+
+<h3>지원 CLI</h3>
+<table>
+<tr><th>CLI 이름</th><th>프로바이더</th><th>기본 모델</th></tr>
+<tr><td><code>claude</code></td><td>Anthropic Claude Code</td><td><code>claude-opus-4-8</code></td></tr>
+<tr><td><code>claude-e</code></td><td>Claude E interactive wrapper</td><td><code>claude-opus-4-8</code></td></tr>
+<tr><td><code>codex</code></td><td>OpenAI Codex CLI</td><td><code>gpt-5.5</code></td></tr>
+<tr><td><code>codex-app</code></td><td>OpenAI Codex app server</td><td><code>gpt-5.5</code></td></tr>
+<tr><td><code>gemini</code></td><td>Google Gemini CLI</td><td><code>gemini-3-flash-preview</code></td></tr>
+<tr><td><code>grok</code></td><td>xAI Grok</td><td><code>grok-3</code></td></tr>
+<tr><td><code>opencode</code></td><td>OpenCode (멀티 프로바이더)</td><td>가변</td></tr>
+<tr><td><code>copilot</code></td><td>GitHub Copilot</td><td>가변</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Show current CLI
+/cli
+
+# Switch to Claude
+/cli claude
+
+# Switch to Gemini
+/cli gemini
+
+# Switch to Codex
+/cli codex
+
+# Switch to Grok
+/cli grok</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "클로드로 바꿔줘"라고 하면 Claude로, "제미나이로 전환해줘"라고 하면 Gemini로, "코덱스 써줘"라고 하면 Codex로 전환됩니다. "다른 AI로 바꿔줘"라고 말하면 오케스트레이터가 어떤 프로바이더를 원하는지 물어봅니다.</div>
+
+<h3>전환 시 동작</h3>
+<p>CLI를 전환하면 podex는 다음을 수행합니다:</p>
+<ul>
+<li>현재 프로바이더와의 연결을 정상적으로 종료합니다</li>
+<li>새 프로바이더를 기본 모델로 초기화합니다 (<code>/flush</code> 고정이 있는 경우 제외)</li>
+<li>지원되는 경우 대화 컨텍스트를 이어받습니다</li>
+<li>상태 바와 대시보드를 새 프로바이더로 업데이트합니다</li>
+</ul>
+
+<!-- ================================================================== -->
+<h2 id="fallback">/fallback [cli1 cli2 ...|off]</h2>
+<p>CLI 프로바이더의 폴백 체인을 구성합니다. 주 CLI가 실패하면(속도 제한, 네트워크 오류, API 장애) podex가 자동으로 체인의 다음 프로바이더를 시도합니다. 이를 통해 단일 프로바이더가 다운되더라도 중단 없는 운영을 보장합니다.</p>
+
+<h3>인수</h3>
+<table>
+<tr><th>인수</th><th>필수</th><th>설명</th></tr>
+<tr><td><code>cli1 cli2 ...</code></td><td>아니오</td><td>우선순위 순서로 공백으로 구분된 CLI 이름 목록</td></tr>
+<tr><td><code>off</code></td><td>아니오</td><td>폴백 체인을 완전히 비활성화</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Set fallback: try Gemini first, then Codex, then Grok
+/fallback gemini codex grok
+
+# Set Claude as the only fallback
+/fallback claude
+
+# Disable fallback (only use the active CLI)
+/fallback off
+
+# Show current fallback chain
+/fallback</code></pre>
+
+<h3>폴백 동작 방식</h3>
+<ol>
+<li><strong>활성 CLI</strong>로 요청이 전송됩니다</li>
+<li>활성 CLI가 오류를 반환하면(속도 제한, 타임아웃, 5xx) <strong>첫 번째 폴백 CLI</strong>로 요청을 재시도합니다</li>
+<li>그것도 실패하면 체인의 <strong>다음 CLI</strong>로 이동합니다</li>
+<li>모든 폴백이 소진되면 사용자에게 오류를 표시합니다</li>
+</ol>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "폴백 설정해줘 제미나이 코덱스"라고 하면 폴백 체인을 설정하고, "폴백 꺼줘"라고 하면 비활성화합니다. "클로드 안 되면 제미나이 써줘"라고 말하면 오케스트레이터가 자동으로 체인을 구성합니다.</div>
+
+<!-- ================================================================== -->
+<h2 id="forward">/forward [on|off]</h2>
+<p>다른 프로바이더로의 요청 포워딩을 활성화하거나 비활성화합니다. 포워딩이 활성화되면 특정 요청을 보조 프로바이더로 라우팅하여 전문적으로 처리할 수 있습니다 &mdash; 예를 들어, Gemini를 대화용 주 프로바이더로 사용하면서 코드 생성 요청은 Claude로 보내거나, 이미지 분석을 비전 지원 모델로 라우팅할 수 있습니다.</p>
+
+<h3>인수</h3>
+<table>
+<tr><th>인수</th><th>필수</th><th>설명</th></tr>
+<tr><td><code>on</code></td><td>아니오</td><td>포워딩 활성화</td></tr>
+<tr><td><code>off</code></td><td>아니오</td><td>포워딩 비활성화</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Enable forwarding
+/forward on
+
+# Disable forwarding
+/forward off
+
+# Show current forwarding status
+/forward</code></pre>
+
+<h3>포워딩 활용 시나리오</h3>
+<table>
+<tr><th>시나리오</th><th>주 CLI</th><th>포워딩 대상</th></tr>
+<tr><td>대화 중 코드 생성</td><td>gemini</td><td>claude</td></tr>
+<tr><td>텍스트 전용 CLI에서 비전 작업</td><td>codex</td><td>gemini</td></tr>
+<tr><td>비용 최적화 (가벼운 작업은 로컬, 무거운 작업은 포워딩)</td><td>grok</td><td>claude</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "포워딩 켜줘"로 활성화하고 "포워딩 꺼줘"로 비활성화합니다. "코드는 클로드한테 보내줘"라고 말하면 오케스트레이터가 적절한 대상으로 포워딩을 활성화합니다.</div>
+
+<!-- ================================================================== -->
+<h2 id="thought">/thought [on|off]</h2>
+<p>Gemini의 사고(확장 추론) 모드를 토글합니다. 활성화하면 Gemini가 응답하기 전에 추가 연산을 사용하여 단계별로 추론합니다. Claude의 확장 사고 기능과 유사합니다. 다단계 수학, 논리 퍼즐, 아키텍처 결정과 같은 복잡한 작업에 유용합니다. Gemini가 활성 CLI일 때만 적용됩니다.</p>
+
+<h3>인수</h3>
+<table>
+<tr><th>인수</th><th>필수</th><th>설명</th></tr>
+<tr><td><code>on</code></td><td>아니오</td><td>사고 모드 활성화</td></tr>
+<tr><td><code>off</code></td><td>아니오</td><td>사고 모드 비활성화</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Enable Gemini thinking
+/thought on
+
+# Disable thinking (faster responses, lower cost)
+/thought off
+
+# Show current thinking status
+/thought</code></pre>
+
+<h3>사고 모드 활용 시점</h3>
+<ul>
+<li><strong>활성화 권장:</strong> 복잡한 추론, 다단계 문제, 아키텍처 결정, 까다로운 이슈 디버깅, 수학/논리</li>
+<li><strong>비활성화 권장:</strong> 간단한 질문, 빠른 편집, 파일 작업, 일상적인 작업 (시간과 토큰 절약)</li>
+</ul>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "생각 모드 켜줘" 또는 "thinking 켜줘"로 활성화합니다. "생각 모드 꺼줘" 또는 "빠르게 답해줘"로 비활성화합니다. Gemini가 활성 CLI일 때만 작동하며 &mdash; 다른 프로바이더에서는 이 명령어가 무시됩니다.</div>
+
+<!-- ================================================================== -->
+<h2 id="flush">/flush [cli] [model] | off</h2>
+<p>특정 모델을 CLI 프로바이더에 고정하거나 기존 고정을 해제합니다. 플러시 고정이 설정되면 해당 CLI로 전환할 때 프로바이더의 기본 모델 대신 고정된 모델이 자동으로 로드됩니다. <code>off</code>를 사용하여 모든 고정을 해제하거나 특정 고정을 해제할 수 있습니다.</p>
+
+<h3>인수</h3>
+<table>
+<tr><th>인수</th><th>필수</th><th>설명</th></tr>
+<tr><td><code>cli</code></td><td>아니오</td><td>모델을 고정할 CLI 프로바이더</td></tr>
+<tr><td><code>model</code></td><td>아니오</td><td>해당 CLI에 고정할 모델</td></tr>
+<tr><td><code>off</code></td><td>아니오</td><td>모든 플러시 고정을 해제하거나, CLI 이름 뒤에 사용하면 해당 CLI의 고정을 해제</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Pin Claude to always use Opus 4.8
+/flush claude claude-opus-4-8
+
+# Pin Gemini to always use 2.5 Pro
+/flush gemini gemini-3-flash-preview
+
+# Clear the Claude pin (reverts to default model on next switch)
+/flush claude off
+
+# Clear all pins
+/flush off
+
+# Show current flush pins
+/flush</code></pre>
+
+<h3>플러시 고정 동작 방식</h3>
+<p>플러시 고정은 세션에 저장되며 명시적으로 해제하거나 세션이 종료될 때까지 유지됩니다. 프로바이더의 기본 모델 선택을 재정의합니다:</p>
+<ol>
+<li><code>/flush claude claude-opus-4-8</code>을 설정합니다</li>
+<li>나중에 <code>/cli gemini</code>으로 Gemini로 전환합니다</li>
+<li><code>/cli claude</code>로 다시 전환하면 자동으로 <code>claude-opus-4-8</code>을 사용합니다</li>
+</ol>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "클로드는 항상 오퍼스 써줘"라고 하면 Claude에 Opus를 고정하고, "플러시 초기화해줘"라고 하면 모든 고정을 해제합니다. "제미나이 모델 고정해줘 프로로"라고 하면 Gemini를 Pro에 고정합니다.</div>
+
+<!-- ================================================================== -->
+<h2>자연어 매핑</h2>
+<p>podex의 명령어 파서는 한국어와 영어 모두 자연어를 이해합니다. 다음은 자주 사용되는 문구와 해당 명령어 매핑입니다:</p>
+
+<table>
+<tr><th>자연어</th><th>매핑되는 명령어</th></tr>
+<tr><td>"클로드로 바꿔줘"</td><td><code>/cli claude</code></td></tr>
+<tr><td>"제미나이로 전환해줘"</td><td><code>/cli gemini</code></td></tr>
+<tr><td>"오퍼스 모델로 바꿔줘"</td><td><code>/model claude-opus-4-8</code></td></tr>
+<tr><td>"소넷으로 내려줘"</td><td><code>/model claude-sonnet-4-6</code></td></tr>
+<tr><td>"더 똑똑한 모델 써줘"</td><td><code>/model</code> (사용 가능한 가장 강력한 모델로 업그레이드)</td></tr>
+<tr><td>"더 빠른 모델로"</td><td><code>/model</code> (사용 가능한 가장 빠른 모델로 다운그레이드)</td></tr>
+<tr><td>"클로드 안 되면 제미나이 써줘"</td><td><code>/fallback gemini</code></td></tr>
+<tr><td>"폴백 꺼줘"</td><td><code>/fallback off</code></td></tr>
+<tr><td>"포워딩 켜줘"</td><td><code>/forward on</code></td></tr>
+<tr><td>"생각 모드 켜줘"</td><td><code>/thought on</code></td></tr>
+<tr><td>"빠르게 답해줘"</td><td><code>/thought off</code></td></tr>
+<tr><td>"클로드는 항상 오퍼스 써줘"</td><td><code>/flush claude claude-opus-4-8</code></td></tr>
+<tr><td>"플러시 초기화해줘"</td><td><code>/flush off</code></td></tr>
+<tr><td>"Switch to Claude"</td><td><code>/cli claude</code></td></tr>
+<tr><td>"Use the smartest model"</td><td><code>/model</code> (가장 강력한 모델로 업그레이드)</td></tr>
+<tr><td>"Set fallback to Gemini then Grok"</td><td><code>/fallback gemini grok</code></td></tr>
+</table>
+
+<!-- ================================================================== -->
+<h2>일반적인 워크플로우</h2>
+
+<h3>비용 최적화 설정</h3>
+<p>일상적인 작업에는 경량 모델을 사용하고, 필요할 때를 위해 강력한 모델을 고정해 둡니다:</p>
+<pre><code># Default to Opus 4.8 for strongest Claude work
+/model claude-opus-4-8
+
+# Pin Opus for when you switch to heavy tasks
+/flush claude claude-opus-4-8
+
+# Set Gemini Flash as fallback for rate limits
+/fallback gemini</code></pre>
+
+<h3>멀티 프로바이더 복원력</h3>
+<p>폴백을 체이닝하여 중단 없는 서비스를 보장합니다:</p>
+<pre><code># Primary: Claude, Fallback: Gemini -> Grok -> Codex
+/cli claude
+/fallback gemini grok codex
+
+# Pin each provider to its best model
+/flush claude claude-opus-4-8
+/flush gemini gemini-3-flash-preview
+/flush grok grok-3</code></pre>
+
+<h3>Gemini 심층 추론 세션</h3>
+<p>복잡한 분석을 위해 사고 모드를 활성화한 상태로 Gemini로 전환합니다:</p>
+<pre><code># Switch to Gemini Pro with thinking
+/cli gemini
+/model gemini-3-flash-preview
+/thought on
+
+# When done, switch back to Claude
+/cli claude
+/thought off</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="workflow.html">Workflow Commands</a>
+<a class="next" href="tools.html">Tool Commands</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

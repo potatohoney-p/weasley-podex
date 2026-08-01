@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link active" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Architecture</h1>
+<p class="lead">podex is a Node.js 22 orchestration runtime with CLI, TUI, Web, Telegram, Discord, Dashboard, and Electron desktop surfaces. The canonical internal map lives in <code>structure/</code>; this page is a public overview.</p>
+
+<h2>System Overview</h2>
+<p>The core server is a small Express glue layer. <code>server.ts</code> is 593 lines and delegates to extracted route modules plus mounted sub-routers. The current surface is 201 handlers including the root page, with 200 API/media endpoints.</p>
+<pre><code>CLI / TUI / Web / Telegram / Discord / Electron
+        │
+        ├─ HTTP commands and REST APIs
+        ├─ SSE events: GET /api/events
+        └─ WebSocket fallback for legacy clients
+        ↓
+server.ts → src/routes/*
+        ├─ src/core/          config, db, auth, event fan-out
+        ├─ src/agent/         CLI process runtime and event adapters
+        ├─ src/orchestrator/  IPABCD, worker registry, dispatch
+        ├─ src/goal/          durable goals and continuation evidence
+        ├─ src/memory/        structured memory, FTS5, task snapshot
+        ├─ src/browser/       CDP, adaptive fetch, web-ai automation
+        ├─ src/messaging/     channel send and transport registry
+        └─ src/jaw-ceo/       OpenAI Realtime CEO channel
+
+jaw dashboard serve → src/manager/ → public/manager/</code></pre>
+
+<h2>Runtime Surfaces</h2>
+<table>
+<tr><th>Surface</th><th>Entry Point</th><th>Notes</th></tr>
+<tr><td>Root CLI</td><td><code>bin/podex.ts</code></td><td>26 root router cases, grouped user-facing surfaces such as <code>chat search</code>, <code>browser web-ai</code>, and dashboard federation.</td></tr>
+<tr><td>Slash commands</td><td><code>src/cli/commands.ts</code></td><td>40 commands; CLI/Web/Telegram/Discord visibility is policy-driven.</td></tr>
+<tr><td>Web UI</td><td><code>public/index.html</code></td><td>Vanilla TypeScript modules, Vite 8, SSE-first event channel.</td></tr>
+<tr><td>Manager dashboard</td><td><code>public/manager/</code></td><td>React 19 dashboard for instances, notes, board, reminders, schedule, diff, memory, and CEO panels.</td></tr>
+<tr><td>Electron desktop</td><td><code>electron/</code></td><td>Packages a Node.js 22 sidecar and prefers bundled <code>server/bin/jaw</code> before global CLI discovery.</td></tr>
+<tr><td>Telegram / Discord</td><td><code>src/telegram/</code>, <code>src/discord/</code></td><td>Both use the shared messaging runtime and canonical <code>/api/channel/send</code>.</td></tr>
+</table>
+
+<h2>Events</h2>
+<p>Current Web delivery is SSE-first. <code>src/core/event-bus.ts</code> stores a replay buffer, <code>src/routes/events.ts</code> exposes <code>GET /api/events</code>, and <code>public/js/event-channel.ts</code> handles Last-Event-ID replay, <code>replay_gap</code>, and fallback. <code>public/js/ws.ts</code> remains the shared dispatcher and legacy WebSocket path.</p>
+
+<h2>Current Counts</h2>
+<table>
+<tr><th>Area</th><th>Current Count</th></tr>
+<tr><td><code>src/routes/</code></td><td>32 TypeScript files, 201 handlers including <code>/</code></td></tr>
+<tr><td><code>src/core/</code></td><td>30 files, 3803 lines</td></tr>
+<tr><td><code>src/agent/</code></td><td>29 root TS files plus spawn/events submodules</td></tr>
+<tr><td><code>src/browser/web-ai/</code></td><td>68 TypeScript files</td></tr>
+<tr><td><code>src/browser/adaptive-fetch/</code></td><td>19 TypeScript files</td></tr>
+<tr><td><code>bin/commands/</code></td><td>30 top-level TypeScript files plus 9 TUI helper files</td></tr>
+<tr><td><code>public/js/</code></td><td>86 TypeScript modules</td></tr>
+<tr><td><code>public/manager/src/</code></td><td>300 source files</td></tr>
+<tr><td><code>electron/src/</code></td><td>27 TypeScript/TSX files</td></tr>
+</table>
+
+<h2>Verification</h2>
+<p>Architecture docs are checked by the structure scripts:</p>
+<pre><code>bash structure/verify-counts.sh
+bash structure/check-doc-drift.sh</code></pre>
+<p><code>verify-counts.sh</code> validates every file-tree <code>(NNNL)</code> entry in <code>structure/str_func.md</code>, plus curated aggregate counts. <code>check-doc-drift.sh</code> validates command counts, route tables, and event inventory.</p>
+
+<div class="callout callout-info">
+<strong>Source of truth:</strong> For implementation-level details, start with <code>structure/INDEX.md</code>, then read <code>structure/str_func.md</code>, <code>structure/server_api.md</code>, <code>structure/commands.md</code>, and <code>structure/stream-events.md</code>.
+</div>
+
+<div class="page-nav">
+<a class="prev" href="../quickstart-first-run.html">First Run</a>
+<a class="next" href="employees.html">Employees</a>
+</div>
+</main>
+</div>
+<script src="../_search.js"></script>
+</body>
+</html>
+

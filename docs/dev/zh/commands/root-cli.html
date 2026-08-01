@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Root CLI Subcommands — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.cmd-section { margin-bottom: 40px; }
+.cmd-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+.cmd-header h3 { margin: 0; }
+.cmd-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.cmd-badge-server { background: rgba(34, 211, 238, 0.15); color: var(--accent); }
+.cmd-badge-setup { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.cmd-badge-orch { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.cmd-badge-auto { background: rgba(168, 85, 247, 0.15); color: #a855f7; }
+.cmd-badge-svc { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+.cmd-desc { font-size: 14px; color: var(--text-dim); margin-bottom: 8px; }
+.tip-kr { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; margin: 8px 0 0; font-size: 13px; color: var(--text-dim); }
+.tip-kr code { font-size: 12px; }
+.toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; margin: 12px 0 24px; font-size: 13px; }
+.toc-grid a { color: var(--text-dim); }
+.toc-grid a:hover { color: var(--accent); }
+.toc-cat { font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 10px; letter-spacing: 1px; margin-top: 8px; grid-column: 1 / -1; }
+@media (max-width: 768px) { .toc-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link active" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="./">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Root CLI 子命令</h1>
+<p class="lead"><code>jaw</code> 可执行文件提供 26 个根路由器分支，以及 chat search、browser web-ai、dashboard memory/chat search、connector board、reminders、project、goal、task、lock 等分组表面。这些命令直接在终端中运行——与其他命令页面中描述的聊天内斜杠命令是分开的。</p>
+
+<div class="callout callout-info">
+  <strong>全局标志：</strong>每个子命令都支持 <code>--help</code> / <code>-h</code> 来查看其帮助文本。在任何子命令前使用 <code>--home &lt;path&gt;</code> 可指定不同的数据目录（默认：<code>~/.podex</code>）。大多数命令通过 <code>--json</code> 支持机器可读的 JSON 输出。
+</div>
+
+<pre><code>jaw &lt;command&gt; [args] [--flags]
+jaw --home &lt;path&gt; &lt;command&gt;
+jaw --version
+jaw --help</code></pre>
+
+<h2>当前根表面</h2>
+<pre><code>jaw serve | init | doctor | status | reset
+jaw chat | chat search | dispatch | dispatch --watch | employee | worker
+jaw orchestrate | goal | task | project | lock | unlock | history
+jaw memory | dashboard memory | dashboard chat search
+jaw browser | browser web-ai | skill | mcp
+jaw connector board | reminders
+jaw launchd | service | clone</code></pre>
+
+<h2>目录</h2>
+<div class="toc-grid">
+  <div class="toc-cat">Server &amp; Dashboard</div>
+  <a href="#serve">jaw serve</a>
+  <a href="#dashboard">jaw dashboard</a>
+  <a href="#status">jaw status</a>
+  <div class="toc-cat">Setup &amp; Diagnostics</div>
+  <a href="#init">jaw init</a>
+  <a href="#doctor">jaw doctor</a>
+  <a href="#reset">jaw reset</a>
+  <div class="toc-cat">Orchestration</div>
+  <a href="#chat">jaw chat</a>
+  <a href="#dispatch">jaw dispatch</a>
+  <a href="#employee">jaw employee</a>
+  <a href="#orchestrate">jaw orchestrate</a>
+  <a href="#goal">jaw goal</a>
+  <div class="toc-cat">Automation &amp; Tools</div>
+  <a href="#memory">jaw memory</a>
+  <a href="#browser">jaw browser</a>
+  <a href="#skill">jaw skill</a>
+  <a href="#mcp">jaw mcp</a>
+  <a href="#connector">jaw connector</a>
+  <a href="#reminders">jaw reminders</a>
+  <a href="#project">jaw project</a>
+  <div class="toc-cat">Service Management</div>
+  <a href="#service">jaw service</a>
+  <a href="#clone">jaw clone</a>
+  <a href="#launchd">jaw launchd</a>
+</div>
+
+<!-- ================================================================== -->
+<h2>服务器与仪表盘</h2>
+<!-- ================================================================== -->
+
+<!-- jaw serve -->
+<div class="cmd-section" id="serve">
+<div class="cmd-header">
+  <h3><code>jaw serve</code></h3>
+  <span class="cmd-badge cmd-badge-server">Server</span>
+</div>
+<p class="cmd-desc">在前台启动 podex 服务器。在 <code>chat</code>、<code>dispatch</code>、<code>browser</code> 及大多数其他命令运行之前，服务器必须处于运行状态。</p>
+<pre><code>jaw serve [--port &lt;N&gt;] [--no-open] [--lan] [--remote]</code></pre>
+<table>
+<tr><th>选项</th><th>默认值</th><th>说明</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>服务器端口（也读取 <code>PORT</code> 环境变量）</td></tr>
+<tr><td><code>--no-open</code></td><td>-</td><td>启动时不自动打开浏览器</td></tr>
+<tr><td><code>--host &lt;addr&gt;</code></td><td>0.0.0.0</td><td>绑定地址</td></tr>
+<tr><td><code>--lan</code></td><td>false</td><td>启用局域网访问模式</td></tr>
+<tr><td><code>--remote</code></td><td>false</td><td>启用远程访问模式（直连）</td></tr>
+<tr><td><code>--trust-proxy</code></td><td>false</td><td>信任代理头信息（用于反向代理）</td></tr>
+<tr><td><code>--trust-forwarded</code></td><td>false</td><td>信任 X-Forwarded-For 头信息</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 使用默认配置启动（端口 3457，自动打开浏览器）
+jaw serve
+
+# 自定义端口，不打开浏览器
+jaw serve --port 3458 --no-open
+
+# 局域网模式，用于本地网络访问
+jaw serve --lan --port 3460
+
+# 使用单独的数据目录
+jaw --home ~/.podex-work serve --port 3458</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "서버 시작해줘" -- 代理无法为你启动 jaw serve（它需要前台进程）。请手动运行，或使用 <code>jaw service install</code> 实现后台自动启动。
+</div>
+</div>
+
+<!-- jaw dashboard -->
+<div class="cmd-section" id="dashboard">
+<div class="cmd-header">
+  <h3><code>jaw dashboard</code></h3>
+  <span class="cmd-badge cmd-badge-server">Server</span>
+</div>
+<p class="cmd-desc">多实例管理器。启动仪表盘服务器、列出/启动/停止实例、管理持久化服务，并执行 L2 跨实例记忆联邦搜索。</p>
+<pre><code>jaw dashboard &lt;command&gt; [options] [--json]</code></pre>
+<table>
+<tr><th>子命令</th><th>说明</th></tr>
+<tr><td><code>serve [--port] [--from] [--count] [--no-open]</code></td><td>启动仪表盘服务器（默认端口 24576，从 3457 开始扫描）</td></tr>
+<tr><td><code>status</code></td><td>仪表盘健康检查</td></tr>
+<tr><td><code>ls</code></td><td>列出所有已发现的实例</td></tr>
+<tr><td><code>start &lt;port&gt; [--home]</code></td><td>在指定端口启动实例</td></tr>
+<tr><td><code>stop &lt;port&gt;</code></td><td>优雅停止实例</td></tr>
+<tr><td><code>restart &lt;port&gt;</code></td><td>重启实例</td></tr>
+<tr><td><code>perm &lt;port&gt; [--home]</code></td><td>将实例注册为持久化服务</td></tr>
+<tr><td><code>unperm &lt;port&gt;</code></td><td>取消持久化服务注册</td></tr>
+<tr><td><code>service [install|status|unset]</code></td><td>仪表盘自动启动管理</td></tr>
+<tr><td><code>memory &lt;search|read|instances&gt;</code></td><td>L2 跨实例记忆联邦（只读）</td></tr>
+</table>
+<table>
+<tr><th>选项</th><th>默认值</th><th>说明</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>24576</td><td>仪表盘端口（也读取 <code>DASHBOARD_PORT</code> 环境变量）</td></tr>
+<tr><td><code>--from &lt;N&gt;</code></td><td>3457</td><td>从此端口开始扫描实例</td></tr>
+<tr><td><code>--count &lt;N&gt;</code></td><td>50</td><td>扫描的端口数量</td></tr>
+<tr><td><code>--no-open</code></td><td>-</td><td>不自动打开浏览器</td></tr>
+<tr><td><code>--json</code></td><td>-</td><td>机器可读的 JSON 输出</td></tr>
+<tr><td><code>--home &lt;path&gt;</code></td><td>-</td><td>start/perm 子命令的数据目录</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 启动仪表盘
+jaw dashboard serve
+
+# 以 JSON 格式列出在线实例
+jaw dashboard ls --json | jq '.[] | select(.status == "online")'
+
+# 在端口 3458 上启动新实例
+jaw dashboard start 3458 --home ~/.jaw-work
+
+# 停止实例
+jaw dashboard stop 3457
+
+# 跨实例记忆搜索
+jaw dashboard memory search "JWT authentication"
+
+# 列出所有记忆实例
+jaw dashboard memory instances
+
+# 注册为持久化自动启动
+jaw dashboard perm 3458 --home ~/.jaw-work</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "대시보드 상태 확인해줘" -- 代理可以为你运行 <code>jaw dashboard status --json</code> 并报告哪些实例在线。
+</div>
+</div>
+
+<!-- jaw status -->
+<div class="cmd-section" id="status">
+<div class="cmd-header">
+  <h3><code>jaw status</code></h3>
+  <span class="cmd-badge cmd-badge-server">Server</span>
+</div>
+<p class="cmd-desc">通过 ping API 检查 jaw 服务器是否正在运行。可选同时检查仪表盘服务器。</p>
+<pre><code>jaw status [--port &lt;N&gt;] [--json] [--dashboard]</code></pre>
+<table>
+<tr><th>选项</th><th>默认值</th><th>说明</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>目标服务器端口</td></tr>
+<tr><td><code>--json</code></td><td>false</td><td>机器可读的 JSON 输出</td></tr>
+<tr><td><code>--dashboard</code></td><td>false</td><td>同时检查仪表盘服务器（端口 24576）</td></tr>
+</table>
+<p>退出码 0 = 服务器正在运行，1 = 服务器未运行或出错。</p>
+<h4>示例</h4>
+<pre><code># 快速健康检查
+jaw status
+
+# 用于脚本的 JSON 输出
+jaw status --json
+# → {"status":"running","port":"3457","cli":"claude"}
+
+# 同时检查服务器和仪表盘
+jaw status --dashboard
+
+# 检查指定端口
+jaw status --port 3458</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "서버 상태 확인해줘" -- 代理运行 <code>jaw status --json</code> 来判断服务器是否健康，并报告 CLI、端口和活跃的心跳任务。
+</div>
+</div>
+
+<!-- ================================================================== -->
+<h2>设置与诊断</h2>
+<!-- ================================================================== -->
+
+<!-- jaw init -->
+<div class="cmd-section" id="init">
+<div class="cmd-header">
+  <h3><code>jaw init</code></h3>
+  <span class="cmd-badge cmd-badge-setup">Setup</span>
+</div>
+<p class="cmd-desc">用于首次配置的交互式设置向导。创建 <code>~/.podex/settings.json</code>，配置默认 CLI 后端、消息通道和技能目录。</p>
+<pre><code>jaw init [options]</code></pre>
+<table>
+<tr><th>选项</th><th>说明</th></tr>
+<tr><td><code>--non-interactive</code></td><td>跳过提示，使用默认值</td></tr>
+<tr><td><code>--safe</code></td><td>在可选安装前询问确认</td></tr>
+<tr><td><code>--dry-run</code></td><td>展示将要执行的操作但不做任何更改</td></tr>
+<tr><td><code>--force</code></td><td>覆盖已有设置</td></tr>
+<tr><td><code>--working-dir &lt;path&gt;</code></td><td>设置工作目录</td></tr>
+<tr><td><code>--cli &lt;name&gt;</code></td><td>默认 CLI 后端（claude、codex、gemini 等）</td></tr>
+<tr><td><code>--channel &lt;ch&gt;</code></td><td>活跃通道（telegram 或 discord）</td></tr>
+<tr><td><code>--telegram-token &lt;t&gt;</code></td><td>Telegram 机器人令牌</td></tr>
+<tr><td><code>--allowed-chat-ids &lt;ids&gt;</code></td><td>逗号分隔的 Telegram 聊天 ID</td></tr>
+<tr><td><code>--discord-token &lt;t&gt;</code></td><td>Discord 机器人令牌</td></tr>
+<tr><td><code>--discord-guild-id &lt;id&gt;</code></td><td>Discord 公会（服务器）ID</td></tr>
+<tr><td><code>--discord-channel-ids &lt;ids&gt;</code></td><td>逗号分隔的 Discord 频道 ID</td></tr>
+<tr><td><code>--skills-dir &lt;path&gt;</code></td><td>自定义技能目录</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 交互式向导（推荐首次运行时使用）
+jaw init
+
+# 使用默认值的非交互模式
+jaw init --non-interactive --cli claude
+
+# 强制重新初始化
+jaw init --force --cli gemini --channel telegram
+
+# 预览将要创建的内容
+jaw init --dry-run</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "초기 설정 해줘" -- 以交互方式运行 <code>jaw init</code>；向导会提问并写入你的设置。对于 CI/CD，使用 <code>--non-interactive</code>。
+</div>
+</div>
+
+<!-- jaw doctor -->
+<div class="cmd-section" id="doctor">
+<div class="cmd-header">
+  <h3><code>jaw doctor</code></h3>
+  <span class="cmd-badge cmd-badge-setup">Setup</span>
+</div>
+<p class="cmd-desc">诊断安装和配置健康状况。检查 Node.js 版本、CLI 二进制文件解析、设置文件有效性、MCP 服务器连接性、员工 CLI 可用性和端口可用性。</p>
+<pre><code>jaw doctor [--json] [--fix] [--tcc] [--prime]</code></pre>
+<table>
+<tr><th>选项</th><th>说明</th></tr>
+<tr><td><code>--json</code></td><td>机器可读的诊断输出</td></tr>
+<tr><td><code>--fix</code></td><td>尝试自动修复检测到的问题</td></tr>
+<tr><td><code>--tcc</code></td><td>检查 macOS TCC（透明度、同意和控制）权限</td></tr>
+<tr><td><code>--prime</code></td><td>预装安装（预热缓存）</td></tr>
+<tr><td><code>--repair-shared-paths</code></td><td>修复被污染的共享 MCP 路径</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 运行诊断
+jaw doctor
+
+# 机器可读输出
+jaw doctor --json
+
+# 自动修复检测到的问题
+jaw doctor --fix
+
+# 检查 macOS 辅助功能权限
+jaw doctor --tcc</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "설치 상태 진단해줘" -- 代理可以运行 <code>jaw doctor --json</code> 并解读结果，标记任何失败的检查项并给出修复建议。
+</div>
+</div>
+
+<!-- jaw reset -->
+<div class="cmd-section" id="reset">
+<div class="cmd-header">
+  <h3><code>jaw reset</code></h3>
+  <span class="cmd-badge cmd-badge-setup">Setup</span>
+</div>
+<p class="cmd-desc">恢复出厂设置：执行 MCP 同步、技能重置、员工重置和会话清除。除非传入 <code>--yes</code>，否则会提示确认。需要服务器正在运行。</p>
+<pre><code>jaw reset [--yes] [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>选项</th><th>默认值</th><th>说明</th></tr>
+<tr><td><code>--yes</code>, <code>-y</code></td><td>false</td><td>跳过确认提示</td></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>目标服务器端口</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 带确认提示的重置
+jaw reset
+
+# 跳过确认（用于脚本）
+jaw reset --yes
+
+# 重置指定实例
+jaw reset --port 3458 --yes</code></pre>
+<div class="callout callout-warn">
+  <strong>警告：</strong>此操作会重置 MCP 服务器、技能（恢复为 25 个默认值）、员工和当前会话。记忆文件会被保留。
+</div>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "전부 초기화해줘" -- 代理在获得授权后可以通过服务器 API 触发 <code>jaw reset --yes</code>。
+</div>
+</div>
+
+<!-- ================================================================== -->
+<h2>编排</h2>
+<!-- ================================================================== -->
+
+<!-- jaw chat -->
+<div class="cmd-section" id="chat">
+<div class="cmd-header">
+  <h3><code>jaw chat</code></h3>
+  <span class="cmd-badge cmd-badge-orch">Orchestration</span>
+</div>
+<p class="cmd-desc">交互式终端 REPL。通过 SSE-first TUI 通道连接正在运行的服务器，旧版服务器使用 legacy WebSocket fallback。支持带有持久底栏的富 TUI 模式、用于 UI 集成的原始 JSON 协议模式，以及最简化的纯 readline 模式。</p>
+<pre><code>jaw chat [--port &lt;N&gt;] [--raw] [--simple]</code></pre>
+<table>
+<tr><th>选项</th><th>默认值</th><th>说明</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>要连接的服务器端口</td></tr>
+<tr><td><code>--raw</code></td><td>false</td><td>JSON 协议模式（用于程序化 UI 集成）</td></tr>
+<tr><td><code>--simple</code></td><td>false</td><td>纯 readline 模式（最简化，无 TUI）</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 默认富 TUI 模式
+jaw chat
+
+# 简单模式（适用于简易终端）
+jaw chat --simple
+
+# 连接到不同的实例
+jaw chat --port 3458
+
+# 用于管道的原始 JSON 模式
+jaw chat --raw</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "채팅 시작해줘" -- <code>jaw chat</code> 是前台终端进程。在其中可以使用斜杠命令，如 <code>/status</code>、<code>/model</code>、<code>/skill</code>。
+</div>
+</div>
+
+<!-- jaw dispatch -->
+<div class="cmd-section" id="dispatch">
+<div class="cmd-header">
+  <h3><code>jaw dispatch</code></h3>
+  <span class="cmd-badge cmd-badge-orch">Orchestration</span>
+</div>
+<p class="cmd-desc">向员工代理发送任务。员工通过服务器 API 异步运行，并通过 stdout 返回结果。兼容管道，便于脚本化工作流。需要 <code>JAW_BOSS_TOKEN</code>（从服务器进程继承）。</p>
+<pre><code>jaw dispatch --agent &lt;name&gt; --task &lt;text&gt; [--json] [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>选项</th><th>说明</th></tr>
+<tr><td><code>--agent &lt;name&gt;</code></td><td>员工名称（区分大小写，必须与 settings.json 中的 employees 匹配）</td></tr>
+<tr><td><code>--task &lt;text&gt;</code></td><td>要发送的任务指令</td></tr>
+<tr><td><code>--json</code></td><td>JSON 输出</td></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>目标服务器端口</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 分派前端任务
+jaw dispatch --agent "Frontend" --task "Fix CSS bug in the header component"
+
+# 分派后端任务
+jaw dispatch --agent "Backend" --task "Add rate limiting to /api/chat endpoint"
+
+# 用于管道的 JSON 输出
+jaw dispatch --agent "Data" --task "Optimize the slow query in reports" --json</code></pre>
+<div class="callout callout-info">
+  <strong>注意：</strong>员工会话不能分派其他员工（嵌套分派被禁止）。只有 boss 会话具有分派权限。
+</div>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "프론트엔드 직원한테 헤더 버그 고치라고 해줘" -- 代理通过 API 进行分派：目标员工在其自己的 CLI 实例中运行并返回结果。
+</div>
+</div>
+
+<!-- jaw employee -->
+<div class="cmd-section" id="employee">
+<div class="cmd-header">
+  <h3><code>jaw employee</code></h3>
+  <span class="cmd-badge cmd-badge-orch">Orchestration</span>
+</div>
+<p class="cmd-desc">员工管理工具。目前支持将员工重置为默认的 5 个配置文件（Frontend、Backend、Data、Docs、QA）。</p>
+<pre><code>jaw employee &lt;subcommand&gt; [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>子命令</th><th>说明</th></tr>
+<tr><td><code>reset</code></td><td>将员工重置为默认的 5 个配置文件</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 将所有员工重置为默认值
+jaw employee reset
+
+# 在指定实例上重置
+jaw employee reset --port 3458</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "직원 초기화해줘" -- 代理在聊天中调用 <code>/employee reset</code> 或通过服务器 API 运行 <code>jaw employee reset</code>。
+</div>
+</div>
+
+<!-- jaw orchestrate -->
+<div class="cmd-section" id="orchestrate">
+<div class="cmd-header">
+  <h3><code>jaw orchestrate</code></h3>
+  <span class="cmd-badge cmd-badge-orch">Orchestration</span>
+</div>
+<p class="cmd-desc">PABCD 状态机转换。驱动工作流经历面谈、规划、审计、构建、检查和完成各阶段。它调用运行中服务器的 API，因此 SSE-first 事件更新会实时发送到已连接的客户端。</p>
+<pre><code>jaw orchestrate &lt;phase&gt; [--force] [--json] [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>阶段</th><th>说明</th></tr>
+<tr><td><code>I</code></td><td>进入面谈阶段（从 IDLE）</td></tr>
+<tr><td><code>P</code></td><td>进入规划阶段（从 IDLE 或 I）</td></tr>
+<tr><td><code>A</code></td><td>进入计划审计阶段（从 P）</td></tr>
+<tr><td><code>B</code></td><td>进入构建阶段（从 A）</td></tr>
+<tr><td><code>C</code></td><td>进入检查阶段（从 B）</td></tr>
+<tr><td><code>D</code></td><td>进入完成阶段（从 C，返回 IDLE）</td></tr>
+<tr><td><code>status</code></td><td>显示当前阶段、范围、审计状态</td></tr>
+<tr><td><code>reset</code></td><td>从任意状态返回 IDLE</td></tr>
+</table>
+<p>有效转换：<code>IDLE &rarr; I &rarr; P &rarr; A &rarr; B &rarr; C &rarr; D &rarr; IDLE</code>。面谈阶段是可选的：<code>IDLE &rarr; P</code> 也是有效的。</p>
+<h4>示例</h4>
+<pre><code># 开始规划阶段
+jaw orchestrate P
+
+# 强制转换（跳过验证）
+jaw orchestrate B --force
+
+# 检查当前状态
+jaw orchestrate status
+
+# 重置为 IDLE
+jaw orchestrate reset
+
+# JSON 输出
+jaw orchestrate status --json</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "PABCD 상태 확인해줘" 或 "빌드 단계로 넘어가줘" -- 代理使用聊天内的 <code>/orchestrate</code> 命令或调用 API 来进行阶段转换。
+</div>
+</div>
+
+<!-- jaw goal -->
+<div class="cmd-section" id="goal">
+<div class="cmd-header">
+  <h3><code>jaw goal</code></h3>
+  <span class="cmd-badge cmd-badge-orch">Orchestration</span>
+</div>
+<p class="cmd-desc">持久化目标生命周期管理。设置目标、通过检查点跟踪进度、管理目标状态（暂停、恢复、取消、完成）。目标在跨会话和服务器重启后依然保留。</p>
+<pre><code>jaw goal &lt;subcommand&gt; [args...] [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>子命令</th><th>说明</th></tr>
+<tr><td><code>set &lt;objective&gt;</code></td><td>设置新目标</td></tr>
+<tr><td><code>status</code></td><td>显示活跃目标（无子命令时的默认行为）</td></tr>
+<tr><td><code>update &lt;summary&gt;</code></td><td>添加进度检查点</td></tr>
+<tr><td><code>done [note]</code></td><td>标记目标完成</td></tr>
+<tr><td><code>cancel [reason]</code></td><td>取消目标</td></tr>
+<tr><td><code>pause</code></td><td>暂停活跃目标</td></tr>
+<tr><td><code>resume</code></td><td>恢复暂停的目标</td></tr>
+<tr><td><code>clear</code></td><td>清除活跃目标</td></tr>
+<tr><td><code>reset</code></td><td>重置整个目标存储</td></tr>
+<tr><td><code>history [limit]</code></td><td>显示目标历史（默认：10）</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 设置新目标
+jaw goal set "Implement keyboard shortcuts for the editor"
+
+# 查看当前目标
+jaw goal status
+
+# 添加进度检查点
+jaw goal update "K0: shortcut registry done, K1: in progress"
+
+# 标记完成
+jaw goal done "All phases complete, PR merged"
+
+# 查看过去的目标
+jaw goal history 5
+
+# 暂停和恢复
+jaw goal pause
+jaw goal resume
+
+# 附带原因取消
+jaw goal cancel "Deprioritized in favor of auth refactor"</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "키보드 단축키 구현 목표 설정해줘" -- 代理调用目标 API 来设置和跟踪目标。使用 "목표 완료해줘" 来标记完成。
+</div>
+</div>
+
+<!-- ================================================================== -->
+<h2>自动化与工具</h2>
+<!-- ================================================================== -->
+
+<!-- jaw memory -->
+<div class="cmd-section" id="memory">
+<div class="cmd-header">
+  <h3><code>jaw memory</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">持久化记忆存储 CLI。搜索、读取、保存和列出记忆文件。记忆以 Markdown 文件形式存储在 <code>~/.podex/memory/</code> 中，并被索引以支持语义搜索。</p>
+<pre><code>jaw memory &lt;subcommand&gt; [args...]</code></pre>
+<table>
+<tr><th>子命令</th><th>说明</th></tr>
+<tr><td><code>search &lt;query&gt;</code></td><td>在所有记忆文件中进行语义搜索</td></tr>
+<tr><td><code>read &lt;file&gt; [--lines N]</code></td><td>读取指定的记忆文件</td></tr>
+<tr><td><code>save &lt;file&gt; &lt;content&gt;</code></td><td>将内容写入记忆文件</td></tr>
+<tr><td><code>list</code></td><td>列出所有记忆文件及其大小和日期</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 搜索记忆
+jaw memory search "JWT authentication patterns"
+
+# 读取指定文件
+jaw memory read structured/profile.md
+
+# 保存新的记忆条目
+jaw memory save structured/profile.md "- User prefers concise Korean summaries"
+
+# 保存事件日志
+jaw memory save structured/episodes/live/2026-05-29.md "## 14:30\n- Completed CLI docs page"
+
+# 列出所有文件
+jaw memory list</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "JWT 관련 메모리 찾아줘" -- 代理通过 API 搜索记忆。"프로필에 한국어 선호 추가해줘" 将保存到 structured/profile.md。
+</div>
+</div>
+
+<!-- jaw browser -->
+<div class="cmd-section" id="browser">
+<div class="cmd-header">
+  <h3><code>jaw browser</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">通过 CDP（Chrome DevTools Protocol）控制 Chrome 浏览器。打开页面、截屏、点击元素、输入文本、管理标签页，并执行 Web AI 驱动的浏览。需要服务器正在运行。</p>
+<pre><code>jaw browser &lt;subcommand&gt; [args...]</code></pre>
+<table>
+<tr><th>子命令</th><th>说明</th></tr>
+<tr><td><code>status</code></td><td>显示浏览器连接状态和活跃标签页</td></tr>
+<tr><td><code>tabs</code></td><td>列出打开的浏览器标签页</td></tr>
+<tr><td><code>open &lt;url&gt;</code></td><td>在浏览器中打开一个 URL</td></tr>
+<tr><td><code>screenshot [--clip]</code></td><td>对当前页面截屏</td></tr>
+<tr><td><code>snapshot</code></td><td>获取无障碍树快照（基于 ref）</td></tr>
+<tr><td><code>click &lt;ref&gt;</code></td><td>通过 ref ID 点击元素</td></tr>
+<tr><td><code>type &lt;ref&gt; &lt;text&gt;</code></td><td>在元素中输入文本</td></tr>
+<tr><td><code>fetch &lt;url&gt;</code></td><td>自适应获取（浏览器或 HTTP，自动选择）</td></tr>
+<tr><td><code>web-ai &lt;subcommand&gt;</code></td><td>Web AI 命令（智能页面解析）</td></tr>
+<tr><td><code>close</code></td><td>关闭浏览器会话</td></tr>
+<tr><td><code>reset</code></td><td>重置浏览器状态和缓存</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 检查浏览器状态
+jaw browser status
+
+# 打开页面并截屏
+jaw browser open https://example.com
+jaw browser screenshot
+
+# 获取页面快照以获取元素 ref
+jaw browser snapshot
+
+# 使用 ref 点击和输入
+jaw browser click ref:42
+jaw browser type ref:15 "search query"
+
+# 自适应获取
+jaw browser fetch https://example.com/api/data</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "브라우저로 구글 열어줘" 或 "스크린샷 찍어줘" -- 代理使用浏览器技能通过 CDP 控制 Chrome。
+</div>
+</div>
+
+<!-- jaw skill -->
+<div class="cmd-section" id="skill">
+<div class="cmd-header">
+  <h3><code>jaw skill</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">技能管理：列出已安装的技能、从参考目录/Codex/GitHub 安装、移除技能和查看技能详情。技能会被注入到代理的系统提示中。</p>
+<pre><code>jaw skill [subcommand] [name...]</code></pre>
+<table>
+<tr><th>子命令</th><th>说明</th></tr>
+<tr><td>（无）/ <code>list</code></td><td>列出所有已安装（活跃）的技能</td></tr>
+<tr><td><code>install &lt;name&gt; [name...]</code></td><td>从参考目录、Codex 或 GitHub 安装技能</td></tr>
+<tr><td><code>remove &lt;name&gt;</code></td><td>移除（停用）技能</td></tr>
+<tr><td><code>info &lt;name&gt;</code></td><td>显示 SKILL.md 内容和元数据</td></tr>
+<tr><td><code>reset</code></td><td>将所有技能重置为 25 个默认值</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 列出已安装的技能
+jaw skill
+
+# 安装技能
+jaw skill install cloudflare
+jaw skill install docker kubernetes terraform
+
+# 移除技能
+jaw skill remove cloudflare
+
+# 查看技能详情
+jaw skill info dev-frontend
+
+# 重置为默认值
+jaw skill reset</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "cloudflare 스킬 설치해줘" 或 "스킬 목록 보여줘" -- 代理通过聊天内的 <code>/skill</code> 命令或 CLI 命令来管理技能。
+</div>
+</div>
+
+<!-- jaw mcp -->
+<div class="cmd-section" id="mcp">
+<div class="cmd-header">
+  <h3><code>jaw mcp</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">MCP（Model Context Protocol）服务器管理。安装 npm/PyPI MCP 包、将配置同步到所有 6 个 CLI 后端、列出已注册的服务器或重置为默认值。</p>
+<pre><code>jaw mcp [subcommand] [package]</code></pre>
+<table>
+<tr><th>子命令</th><th>说明</th></tr>
+<tr><td>（无）/ <code>list</code></td><td>列出已注册的 MCP 服务器</td></tr>
+<tr><td><code>install &lt;pkg&gt;</code></td><td>安装 npm/PyPI 包，添加到 mcp.json，同步</td></tr>
+<tr><td><code>sync</code></td><td>将 mcp.json 同步到所有 6 个 CLI 后端配置</td></tr>
+<tr><td><code>reset [--force]</code></td><td>将 mcp.json 重置为默认值并重新同步</td></tr>
+</table>
+<p>包生态系统会自动检测：<code>@scope/name</code> 为 npm；<code>mcp-server-*</code> 为 PyPI。使用 <code>--pypi</code> 或 <code>--npm</code> 可手动覆盖。</p>
+<h4>示例</h4>
+<pre><code># 列出所有 MCP 服务器
+jaw mcp
+
+# 安装 npm MCP 包
+jaw mcp install @anthropic/mcp-server-fetch
+
+# 安装 PyPI MCP 包
+jaw mcp install mcp-server-git
+
+# 将配置同步到所有 CLI
+jaw mcp sync
+
+# 重置为默认 MCP 服务器
+jaw mcp reset --force</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "MCP 서버 목록 보여줘" 或 "fetch MCP 서버 설치해줘" -- 代理通过聊天内的 <code>/mcp</code> 来管理 MCP 服务器。
+</div>
+</div>
+
+<!-- jaw connector -->
+<div class="cmd-section" id="connector">
+<div class="cmd-header">
+  <h3><code>jaw connector</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">仪表盘连接器 CLI——看板、笔记、提醒和审计日志的统一入口。无需 Web UI 即可直接通过 CLI 访问仪表盘功能。</p>
+<pre><code>jaw connector &lt;surface&gt; &lt;subcommand&gt; [options]</code></pre>
+<table>
+<tr><th>界面</th><th>子命令</th><th>说明</th></tr>
+<tr><td><code>board</code></td><td><code>add</code>、<code>update</code>、<code>list</code></td><td>看板任务（backlog/ready/active/review/done）</td></tr>
+<tr><td><code>notes</code></td><td><code>write</code>、<code>list</code></td><td>仪表盘 Markdown 笔记</td></tr>
+<tr><td><code>reminders</code></td><td><code>add</code>、<code>list</code>、<code>done</code></td><td>基于优先级的提醒</td></tr>
+<tr><td><code>audit</code></td><td>（无）</td><td>连接器审计日志</td></tr>
+</table>
+<table>
+<tr><th>选项</th><th>说明</th></tr>
+<tr><td><code>--json</code></td><td>JSON 输出</td></tr>
+<tr><td><code>--title &lt;text&gt;</code></td><td>任务/提醒标题</td></tr>
+<tr><td><code>--summary &lt;text&gt;</code></td><td>任务摘要</td></tr>
+<tr><td><code>--lane &lt;name&gt;</code></td><td>看板泳道（backlog、ready、active、review、done）</td></tr>
+<tr><td><code>--path &lt;path&gt;</code></td><td>笔记文件路径</td></tr>
+<tr><td><code>--body &lt;text&gt;</code></td><td>笔记内容</td></tr>
+<tr><td><code>--priority &lt;p&gt;</code></td><td>提醒优先级（low、normal、high）</td></tr>
+<tr><td><code>--due &lt;date&gt;</code></td><td>提醒截止日期</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 添加看板任务
+jaw connector board add --title "Implement auth flow" --lane backlog
+
+# 将任务移至完成
+jaw connector board update task-id-123 --lane done
+
+# 列出看板任务
+jaw connector board list --json
+
+# 写笔记
+jaw connector notes write --path "meeting/standup.md" --body "# Standup Notes\n- Auth PR merged"
+
+# 列出笔记
+jaw connector notes list
+
+# 添加提醒
+jaw connector reminders add --title "Review PR #42" --priority high --due 2026-06-01</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "보드에 인증 구현 태스크 추가해줘" 或 "노트에 회의록 저장해줘" -- 代理使用连接器 API 来管理仪表盘界面。
+</div>
+</div>
+
+<!-- jaw reminders -->
+<div class="cmd-section" id="reminders">
+<div class="cmd-header">
+  <h3><code>jaw reminders</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">基于优先级的提醒，采用艾森豪威尔矩阵式分类。是 <code>jaw connector reminders</code> 的快捷方式。</p>
+<pre><code>jaw reminders &lt;subcommand&gt; [options]</code></pre>
+<table>
+<tr><th>子命令</th><th>说明</th></tr>
+<tr><td><code>list</code> / <code>ls</code></td><td>列出所有提醒（默认）</td></tr>
+<tr><td><code>add &lt;title&gt;</code></td><td>添加新提醒</td></tr>
+<tr><td><code>done &lt;id&gt;</code></td><td>标记提醒为已完成</td></tr>
+</table>
+<table>
+<tr><th>选项</th><th>说明</th></tr>
+<tr><td><code>--title &lt;text&gt;</code></td><td>提醒标题（位置参数的替代方式）</td></tr>
+<tr><td><code>--notes &lt;text&gt;</code></td><td>附加备注</td></tr>
+<tr><td><code>--priority &lt;p&gt;</code></td><td>优先级：low、normal、high（默认：normal）</td></tr>
+<tr><td><code>--due &lt;date&gt;</code></td><td>截止日期</td></tr>
+<tr><td><code>--remind &lt;date&gt;</code></td><td>提醒通知时间</td></tr>
+<tr><td><code>--json</code></td><td>JSON 输出</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 列出提醒
+jaw reminders list
+
+# 添加提醒
+jaw reminders add "Review PR #42" --priority high --due 2026-06-01
+
+# 附带备注添加
+jaw reminders add --title "Deploy staging" --notes "After QA sign-off" --priority normal
+
+# 标记完成
+jaw reminders done reminder-id-abc
+
+# JSON 输出
+jaw reminders list --json</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "내일까지 PR 리뷰하라고 리마인더 추가해줘" -- 代理会创建一个带有相应截止日期和优先级的提醒。
+</div>
+</div>
+
+<!-- jaw project -->
+<div class="cmd-section" id="project">
+<div class="cmd-header">
+  <h3><code>jaw project</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">管理项目工作区目录。设置代理应将哪些目录视为活跃项目根目录。更改通过服务器 API 应用，并在跨会话中持久保存。</p>
+<pre><code>jaw project &lt;subcommand&gt; [paths...]</code></pre>
+<table>
+<tr><th>子命令</th><th>说明</th></tr>
+<tr><td><code>set &lt;path&gt;[, &lt;path&gt;...]</code></td><td>设置活跃项目目录（逗号分隔）</td></tr>
+<tr><td><code>reset</code></td><td>清除所有项目目录</td></tr>
+<tr><td><code>clear</code></td><td>reset 的别名</td></tr>
+<tr><td><code>list</code></td><td>显示当前项目目录（默认）</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 设置项目目录
+jaw project set ~/Dev/frontend, ~/Dev/backend
+
+# 设置单个绝对路径
+jaw project set /Users/jun/projects/my-app
+
+# 列出当前目录
+jaw project list
+
+# 清除全部
+jaw project reset</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "프로젝트 디렉토리 설정해줘" 或 "프로젝트 목록 보여줘" -- 代理使用聊天内的 <code>/project</code> 来管理工作区目录。
+</div>
+</div>
+
+<!-- ================================================================== -->
+<h2>服务管理</h2>
+<!-- ================================================================== -->
+
+<!-- jaw service -->
+<div class="cmd-section" id="service">
+<div class="cmd-header">
+  <h3><code>jaw service</code></h3>
+  <span class="cmd-badge cmd-badge-svc">Service</span>
+</div>
+<p class="cmd-desc">跨平台自动启动管理。检测操作系统并将服务器安装为后台守护进程（macOS 上使用 launchd、Linux 上使用 systemd、容器中使用 Docker 入口点）。一步安装并启动。</p>
+<pre><code>jaw service [subcommand] [--port &lt;N&gt;] [--backend &lt;type&gt;]</code></pre>
+<table>
+<tr><th>子命令</th><th>说明</th></tr>
+<tr><td>（无）</td><td>自动检测操作系统，安装并启动（一步完成）</td></tr>
+<tr><td><code>install</code></td><td>安装为系统服务</td></tr>
+<tr><td><code>status</code></td><td>检查服务状态</td></tr>
+<tr><td><code>unset</code></td><td>移除服务</td></tr>
+<tr><td><code>logs</code></td><td>查看服务日志</td></tr>
+</table>
+<table>
+<tr><th>选项</th><th>默认值</th><th>说明</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>要注册的服务器端口</td></tr>
+<tr><td><code>--backend &lt;type&gt;</code></td><td>（自动）</td><td>强制指定后端：launchd、systemd 或 docker</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 一步安装并启动（自动检测操作系统）
+jaw service
+
+# 自定义端口
+jaw service --port 3458
+
+# 检查服务状态
+jaw service status
+
+# 查看日志
+jaw service logs
+
+# 移除服务
+jaw service unset
+
+# 强制指定后端
+jaw service --backend systemd --port 3457</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "서비스로 등록해줘" 或 "백그라운드에서 실행되게 해줘" -- 代理运行 <code>jaw service</code> 来安装持久化守护进程。
+</div>
+</div>
+
+<!-- jaw clone -->
+<div class="cmd-section" id="clone">
+<div class="cmd-header">
+  <h3><code>jaw clone</code></h3>
+  <span class="cmd-badge cmd-badge-svc">Service</span>
+</div>
+<p class="cmd-desc">通过克隆当前配置创建独立的代理实例。复制配置和技能、创建全新数据库并重新生成 AGENTS.md。适用于运行多个隔离的代理。</p>
+<pre><code>jaw clone &lt;target-dir&gt; [--from &lt;source&gt;] [--with-memory] [--link-ref]</code></pre>
+<table>
+<tr><th>选项</th><th>说明</th></tr>
+<tr><td><code>&lt;target-dir&gt;</code></td><td>新实例的目标目录（必填）</td></tr>
+<tr><td><code>--from &lt;source&gt;</code></td><td>克隆的源目录（默认：~/.podex）</td></tr>
+<tr><td><code>--with-memory</code></td><td>从源复制记忆文件</td></tr>
+<tr><td><code>--link-ref</code></td><td>符号链接参考技能而非复制</td></tr>
+</table>
+<h4>示例</h4>
+<pre><code># 克隆到新目录
+jaw clone ~/.podex-work
+
+# 带记忆克隆
+jaw clone ~/.podex-research --with-memory
+
+# 从指定源克隆
+jaw clone ~/.podex-staging --from ~/.podex-prod
+
+# 符号链接参考技能以节省空间
+jaw clone ~/.podex-dev --link-ref</code></pre>
+<div class="callout callout-info">
+  <strong>克隆后：</strong>使用 <code>jaw --home ~/.podex-work serve --port 3458</code> 启动新实例，或通过 <code>jaw dashboard perm 3458 --home ~/.podex-work</code> 注册它。
+</div>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "인스턴스 하나 복제해줘" -- 代理运行 <code>jaw clone</code> 创建独立副本，然后可选择在新端口上启动它。
+</div>
+</div>
+
+<!-- jaw launchd -->
+<div class="cmd-section" id="launchd">
+<div class="cmd-header">
+  <h3><code>jaw launchd</code></h3>
+  <span class="cmd-badge cmd-badge-svc">Service</span>
+</div>
+<p class="cmd-desc">macOS 专用 LaunchAgent 管理（已弃用——请使用 <code>jaw service</code> 代替）。管理 plist 文件以实现登录时自动启动。为向后兼容而保留。</p>
+<pre><code>jaw launchd [subcommand] [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>子命令</th><th>说明</th></tr>
+<tr><td>（无）</td><td>检查 plist，如缺失则创建，启动（一步完成）</td></tr>
+<tr><td><code>status</code></td><td>显示当前 LaunchAgent 状态</td></tr>
+<tr><td><code>unset</code></td><td>移除 plist 并卸载代理</td></tr>
+<tr><td><code>cleanup</code></td><td>移除旧版 plist 文件</td></tr>
+</table>
+<table>
+<tr><th>选项</th><th>默认值</th><th>说明</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>要注册的服务器端口</td></tr>
+</table>
+<div class="callout callout-warn">
+  <strong>已弃用：</strong><code>jaw launchd</code> 已被 <code>jaw service</code> 取代，后者在 macOS 上自动检测 launchd，同时支持 systemd（Linux）和 Docker。新安装请使用 <code>jaw service</code>。
+</div>
+<h4>示例</h4>
+<pre><code># 一步安装并启动
+jaw launchd
+
+# 自定义端口
+jaw launchd --port 3458
+
+# 检查状态
+jaw launchd status
+
+# 移除
+jaw launchd unset
+
+# 清理旧版 plist
+jaw launchd cleanup</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "launchd 상태 확인해줘" -- 请使用 <code>jaw service status</code> 来获取跨平台版本。
+</div>
+</div>
+
+<!-- ================================================================== -->
+<h2>快速参考</h2>
+<!-- ================================================================== -->
+
+<table>
+<thead>
+<tr><th>命令</th><th>类别</th><th>需要服务器</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><code>jaw serve</code></td><td>Server</td><td>-</td><td>启动服务器（前台）</td></tr>
+<tr><td><code>jaw dashboard</code></td><td>Server</td><td>-</td><td>多实例管理器</td></tr>
+<tr><td><code>jaw status</code></td><td>Server</td><td>否</td><td>健康检查</td></tr>
+<tr><td><code>jaw init</code></td><td>Setup</td><td>否</td><td>交互式设置向导</td></tr>
+<tr><td><code>jaw doctor</code></td><td>Setup</td><td>否</td><td>安装诊断</td></tr>
+<tr><td><code>jaw reset</code></td><td>Setup</td><td>是</td><td>恢复出厂设置</td></tr>
+<tr><td><code>jaw chat</code></td><td>Orchestration</td><td>是</td><td>终端 REPL</td></tr>
+<tr><td><code>jaw dispatch</code></td><td>Orchestration</td><td>是</td><td>向员工发送任务</td></tr>
+<tr><td><code>jaw employee</code></td><td>Orchestration</td><td>是</td><td>员工管理</td></tr>
+<tr><td><code>jaw orchestrate</code></td><td>Orchestration</td><td>是</td><td>PABCD 状态机</td></tr>
+<tr><td><code>jaw goal</code></td><td>Orchestration</td><td>是</td><td>持久化目标生命周期</td></tr>
+<tr><td><code>jaw memory</code></td><td>Automation</td><td>是</td><td>持久化记忆存储</td></tr>
+<tr><td><code>jaw browser</code></td><td>Automation</td><td>是</td><td>Chrome 浏览器控制</td></tr>
+<tr><td><code>jaw skill</code></td><td>Automation</td><td>否</td><td>技能管理</td></tr>
+<tr><td><code>jaw mcp</code></td><td>Automation</td><td>否</td><td>MCP 服务器管理</td></tr>
+<tr><td><code>jaw connector</code></td><td>Automation</td><td>部分</td><td>仪表盘连接器（看板/笔记/提醒）</td></tr>
+<tr><td><code>jaw reminders</code></td><td>Automation</td><td>否</td><td>基于优先级的提醒</td></tr>
+<tr><td><code>jaw project</code></td><td>Automation</td><td>是</td><td>工作区目录</td></tr>
+<tr><td><code>jaw service</code></td><td>Service</td><td>否</td><td>跨平台自动启动</td></tr>
+<tr><td><code>jaw clone</code></td><td>Service</td><td>否</td><td>克隆实例</td></tr>
+<tr><td><code>jaw launchd</code></td><td>Service</td><td>否</td><td>macOS LaunchAgent（已弃用）</td></tr>
+</tbody>
+</table>
+
+<h2>环境变量</h2>
+<table>
+<tr><th>变量</th><th>默认值</th><th>说明</th></tr>
+<tr><td><code>podex_HOME</code></td><td><code>~/.podex</code></td><td>覆盖数据目录（与 <code>--home</code> 相同）</td></tr>
+<tr><td><code>PORT</code></td><td>3457</td><td>默认服务器端口</td></tr>
+<tr><td><code>DASHBOARD_PORT</code></td><td>24576</td><td>仪表盘服务器端口</td></tr>
+<tr><td><code>JAW_BOSS_TOKEN</code></td><td>-</td><td>员工分派的认证令牌（从服务器进程继承）</td></tr>
+<tr><td><code>JAW_EMPLOYEE_MODE</code></td><td>-</td><td>在员工会话中设为 <code>1</code>（防止嵌套分派）</td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="cli-only.html">CLI-Only Commands</a>
+<a class="next" href="../changelog.html">Changelog</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

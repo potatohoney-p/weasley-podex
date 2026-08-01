@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PowerPoint — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.trigger-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 16px; }
+.trigger-tag { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 12px; font-family: var(--mono); background: var(--surface2); border: 1px solid var(--border); color: var(--accent); }
+.example-callout { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-callout .example-korean { font-size: 15px; color: var(--text); margin-bottom: 6px; }
+.example-callout .example-desc { font-size: 13px; color: var(--text-dim); }
+.escalation-level { display: inline-block; background: var(--accent-dim); color: var(--accent); font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 3px; margin-right: 4px; }
+.palette-swatch { display: inline-block; width: 16px; height: 16px; border-radius: 3px; vertical-align: middle; margin-right: 4px; border: 1px solid var(--border); }
+.dial-bar { display: inline-block; background: var(--surface2); border-radius: 3px; height: 8px; width: 80px; position: relative; vertical-align: middle; }
+.dial-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; background: var(--accent); }
+.checklist { list-style: none; padding-left: 0; }
+.checklist li { padding: 4px 0; padding-left: 24px; position: relative; }
+.checklist li::before { content: "\2610"; position: absolute; left: 0; color: var(--text-muted); font-size: 14px; }
+.subskill-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin: 8px 0; }
+.subskill-card strong { color: var(--accent); }
+.subskill-card p { margin: 4px 0 0; font-size: 13px; color: var(--text-dim); }
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">快速入门</div>
+      <a class="docs-nav-link" href="../../">概览</a>
+      <a class="docs-nav-link" href="../../quickstart.html">快速开始</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">首次运行</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">概念</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">架构</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">员工</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">目标</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">技能</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">记忆</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">提示词</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">指南</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">计算机操控</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 桌面端</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">参考</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 命令</a>
+      <a class="docs-nav-link" href="../../reference/api.html">服务器 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">配置</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">键盘快捷键</a>
+      <a class="docs-nav-link" href="../../reference/events.html">事件</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">技能</div>
+      <a class="docs-nav-link" href="../index.html">目录</a>
+      <a class="docs-nav-link" href="../orchestration.html">开发</a>
+      <a class="docs-nav-link" href="../automation.html">自动化</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 媒体</a>
+      <a class="docs-nav-link" href="../communication.html">通信</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">云端与部署</a>
+      <a class="docs-nav-link" href="../devtools-security.html">安全与审查</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">开发工作流</a>
+      <a class="docs-nav-link active" href="../productivity.html">生产力</a>
+      <a class="docs-nav-link" href="../smarthome.html">智能家居</a>
+      <a class="docs-nav-link" href="../utility.html">实用工具</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">命令</div>
+      <a class="docs-nav-link" href="../../commands/session.html">会话</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">工作流</a>
+      <a class="docs-nav-link" href="../../commands/model.html">模型与 CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">工具</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">仅 CLI</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">根 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">更新日志</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">한국어</a>
+    <a href="../../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">主页</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>PowerPoint <span class="badge badge-active">默认启用</span></h1>
+<p class="lead">.pptx 创建、编辑、分析 &mdash; 从单页幻灯片修复到包含变体过渡和数据驱动生成的完整投资者演示文稿。</p>
+
+<div class="callout callout-info">此技能<strong>默认启用</strong>，当您的请求中提及 PowerPoint、PPTX、演示文稿、幻灯片或 deck 时会自动触发。无需手动加载。</div>
+
+<h4>触发关键词</h4>
+<div class="trigger-list">
+  <span class="trigger-tag">PowerPoint</span>
+  <span class="trigger-tag">PPTX</span>
+  <span class="trigger-tag">presentation</span>
+  <span class="trigger-tag">slides</span>
+  <span class="trigger-tag">deck</span>
+</div>
+
+<hr>
+
+<h2>快速参考</h2>
+<table>
+<tr><th>任务</th><th>操作</th></tr>
+<tr><td><strong>按照现有 deck 格式化</strong></td><td><code>cp source.pptx target.pptx &amp;&amp; officecli open target.pptx</code> &mdash; 继承主题/布局/母版</td></tr>
+<tr><td>读取/分析内容</td><td><code>officecli view</code> 和 <code>officecli get</code> 命令</td></tr>
+<tr><td>编辑现有演示文稿</td><td>基于参考的编辑工作流（复制 &rarr; 修改）</td></tr>
+<tr><td>从头创建</td><td><code>officecli create</code> &rarr; 添加幻灯片 &rarr; 添加元素</td></tr>
+<tr><td>融资演示文稿（种子轮/A轮）</td><td>子技能：<code>officecli-pitch-deck</code></td></tr>
+<tr><td>变体过渡动画</td><td>子技能：<code>morph-ppt</code></td></tr>
+<tr><td>3D 变体效果</td><td>子技能：<code>morph-ppt-3d</code></td></tr>
+<tr><td>JS 编程回退方案</td><td><code>pptxgenjs</code> 用于 50+ 页数据驱动的幻灯片</td></tr>
+<tr><td>配色方案/排版</td><td>设计系统：20 种调色板，8 种字体组合</td></tr>
+<tr><td>缩略图网格/视觉 QA</td><td><code>python3 scripts/thumbnail.py deck.pptx grid.png</code></td></tr>
+<tr><td>解包/修复</td><td><code>python3 scripts/pptx_cli.py {open|save|validate|repair}</code></td></tr>
+</table>
+
+<div class="callout callout-warn"><strong>执行模型：</strong>每次只运行一个命令。检查退出代码后再继续。非零 = 停下来修复。不要对同一个 <code>.pptx</code> 文件并行运行命令。</div>
+
+<hr>
+
+<h2>"~해줘" 示例</h2>
+<p>激活此技能的自然语言请求。支持韩语、英语或混合使用。</p>
+
+<div class="example-callout">
+  <div class="example-korean">"회사 소개 PPT 만들어줘 &mdash; 10장짜리, 우리 브랜드 컬러(네이비+화이트) 써줘"</div>
+  <div class="example-desc">创建一个使用海军蓝+白色配色方案的 10 页公司介绍 deck。该技能会选择匹配的设计系统调色板，设置幻灯片母版，并生成多种布局的幻灯片（全屏、分栏、网格、图表）。</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"이 PPTX 파일 분석해줘 &mdash; 어떤 내용인지 요약하고 디자인 문제 있으면 알려줘"</div>
+  <div class="example-desc">使用 <code>officecli view text</code> 读取所有幻灯片内容，使用 <code>officecli view issues</code> 检查设计问题，运行验证，并报告摘要及任何问题（溢出、缺少替代文本、对比度低）。</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"기존 템플릿(Brand.pptx) 기반으로 Q4 실적 보고서 만들어줘"</div>
+  <div class="example-desc">复制源文件以继承主题/布局/母版，移除示例幻灯片，然后使用现有品牌布局构建新内容幻灯片。绝不从头重建主题。</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"이 데이터로 차트 슬라이드 추가해줘 &mdash; 월별 매출 바 차트"</div>
+  <div class="example-desc">使用 <code>officecli add</code> 及图表属性添加一个包含柱状图元素的新幻灯片。数据以内联方式传入，图表按照合适的边距定位。</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-korean">"발표자료 만들어줘 &mdash; 모프 전환 효과 넣고, 다크 테마로"</div>
+  <div class="example-desc">激活 <code>morph-ppt</code> 子技能。从 48 种精选样式定义中选择深色风格，在幻灯片之间应用变体过渡，并使用缩略图进行视觉 QA。</div>
+</div>
+
+<hr>
+
+<h2>主要工具：OfficeCLI</h2>
+<p><code>officecli</code> 可处理约 80% 的 PPTX 任务：幻灯片的添加/设置/删除、验证、查询和视觉检查。它是主要接口 &mdash; 在升级到其他工具之前，请始终先尝试 OfficeCLI。</p>
+
+<h3>发现规则</h3>
+<div class="callout callout-info">在编造元素或属性名称之前，请始终先运行 <code>officecli --help</code> 和 <code>officecli help pptx ... --json</code>。CLI 是可用属性和语法的唯一权威来源。</div>
+
+<pre><code>officecli --help
+officecli help pptx
+officecli help pptx add slide --json       # exact property list
+officecli help pptx add shape --json
+officecli help pptx set slide --json
+officecli help pptx set shape --json
+officecli view --help                      # all view modes
+officecli help pptx query</code></pre>
+
+<hr>
+
+<h2>核心工作流</h2>
+
+<h3>读取与分析</h3>
+<pre><code># Text extraction
+officecli view slides.pptx text
+officecli view slides.pptx text --start 1 --end 5
+
+# Structural views
+officecli view slides.pptx outline
+officecli view slides.pptx annotated
+officecli view slides.pptx stats</code></pre>
+
+<h3>元素检查（PATH 语法）</h3>
+<p>路径从 1 开始：<code>/slide[1]</code>、<code>/shape[1]</code>。在 zsh 中始终用引号包裹路径，以防止通配符展开。</p>
+<pre><code>officecli get slides.pptx '/slide[1]' --depth 1
+officecli get slides.pptx '/slide[1]/shape[1]'
+officecli get slides.pptx '/slide[1]/chart[1]'
+officecli get slides.pptx '/slide[1]/table[1]' --depth 3</code></pre>
+
+<h3>类 CSS 查询</h3>
+<pre><code>officecli query slides.pptx 'shape:contains("Revenue")'
+officecli query slides.pptx "picture:no-alt"
+officecli query slides.pptx 'shape[fill=#4472C4]'
+officecli query slides.pptx "shape[width>=10cm]"</code></pre>
+
+<h3>视觉检查</h3>
+<pre><code>officecli view slides.pptx html --browser    # recommended
+officecli view slides.pptx svg --start 1 --end 1 --browser</code></pre>
+
+<h3>常驻模式</h3>
+<p>常驻模式将文件作为后台守护进程保持打开状态，以加快连续编辑速度。<code>open</code> 命令会立即返回 &mdash; <strong>不要</strong>将其作为后台 shell 作业运行。</p>
+<pre><code>officecli open slides.pptx      # returns IMMEDIATELY; daemon in bg
+officecli add slides.pptx ...
+officecli set slides.pptx ...
+officecli close slides.pptx     # always close explicitly</code></pre>
+<div class="callout callout-danger"><strong>警告：</strong>不要将 <code>officecli open</code> 作为后台 shell 作业运行。它会立即返回，守护进程会自动在后台运行。后台 shell 启动会创建僵尸进程和文件锁。</div>
+
+<h3>批处理模式</h3>
+<p>使用 JSON 在单次调用中执行多个操作。使用带单引号分隔符的 heredoc 来防止 shell 语法泄漏到 JSON 中。</p>
+<pre><code>cat &lt;&lt;'EOF' | officecli batch slides.pptx
+[
+  {"command":"add","parent":"/slide[1]","type":"shape","props":{"text":"Title","x":"2cm","y":"2cm","width":"20cm","height":"3cm","size":"36","bold":"true"}},
+  {"command":"add","parent":"/slide[1]","type":"shape","props":{"text":"Body","x":"2cm","y":"6cm","width":"20cm","height":"10cm","size":"16"}}
+]
+EOF</code></pre>
+<p>批处理支持：<code>add</code>、<code>set</code>、<code>get</code>、<code>query</code>、<code>remove</code>、<code>move</code>、<code>swap</code>、<code>view</code>、<code>raw</code>、<code>raw-set</code>、<code>validate</code>。</p>
+
+<hr>
+
+<h2>基于参考的编辑</h2>
+<p>当用户提供源文件或说"按照 X.pptx 的格式" &mdash; <strong>始终从源文件开始</strong>。绝不从头重建主题。</p>
+
+<h3>为什么这很重要</h3>
+<p>幻灯片母版和主题定义（字体、颜色、占位符几何形状）是文档特有的。从头重建会丢失幻灯片间一致的品牌形象，破坏现有占位符位置，并且耗时是修改副本的 5-10 倍。</p>
+
+<h3>工作流</h3>
+<ol>
+  <li><strong>复制源文件：</strong> <code>cp source.pptx target.pptx</code> &mdash; 继承主题、幻灯片母版、布局、字体、颜色</li>
+  <li><strong>打开：</strong> <code>officecli open target.pptx</code> &mdash; 守护进程立即返回</li>
+  <li><strong>删除幻灯片内容</strong>，但保留 <code>/slideMaster</code>、<code>/slideLayout</code>、<code>/theme</code></li>
+  <li><strong>添加新幻灯片</strong>，使用现有布局（<code>--prop layout=Title+Content</code>）&mdash; 它们会自动继承主题</li>
+</ol>
+
+<h3>模板来源（优先级顺序）</h3>
+<table>
+<tr><th>优先级</th><th>来源</th><th>使用场景</th></tr>
+<tr><td>1</td><td>用户提供的源文件</td><td>首选模板 &mdash; 始终优先使用</td></tr>
+<tr><td>2</td><td><code>tests/fixtures/*.pptx</code></td><td>技能附带的预构建示例</td></tr>
+<tr><td>3</td><td><code>officecli-pitch-deck/</code> 模板</td><td>融资/投资者场景</td></tr>
+<tr><td>4</td><td><code>morph-ppt/reference/styles/*</code></td><td>48 种精选样式定义</td></tr>
+<tr><td>5</td><td><code>officecli create</code> 空白文件</td><td>仅在没有其他适用方案时使用</td></tr>
+</table>
+
+<h3>示例 &mdash; 继承现有品牌</h3>
+<pre><code># CORRECT: inherit theme and layouts
+cp CompanyBrand.pptx Q4Report.pptx
+officecli open Q4Report.pptx
+officecli remove Q4Report.pptx "/slide[1]"
+officecli add Q4Report.pptx / --type slide --prop layout=Title
+officecli add Q4Report.pptx '/slide[1]' --type textbox \
+  --prop text="Q4 Report" --prop placeholder=title
+officecli close Q4Report.pptx
+
+# WRONG: recreate theme (loses brand)
+officecli create Q4Report.pptx
+# ... add all fonts, colors, masters from scratch ...</code></pre>
+
+<hr>
+
+<h2>创建工作流</h2>
+<pre><code># 1. Work in /tmp/ with ASCII filenames (Korean filenames cause resident corruption)
+officecli create /tmp/deck_work.pptx --type pptx
+
+# 2. Add slide, set background, add shapes/textboxes/charts
+officecli add /tmp/deck_work.pptx /slide --type slide
+officecli set /tmp/deck_work.pptx '/slide[1]' --prop background=1E2761
+officecli add /tmp/deck_work.pptx '/slide[1]' --type textbox \
+  --prop 'text=Title Here' --prop x=2cm --prop y=3cm --prop w=30cm --prop h=4cm \
+  --prop fontsize=44 --prop bold=true --prop color=FFFFFF --prop fontFamily=Pretendard
+
+# 3. Explicitly close resident after edits
+officecli close /tmp/deck_work.pptx
+
+# 4. Copy to final filename (Korean OK for final output)
+python3 -c "import shutil; shutil.copy2('/tmp/deck_work.pptx', 'final.pptx')"</code></pre>
+
+<hr>
+
+<h2>升级梯度</h2>
+<p>当 OfficeCLI 无法完成任务时，按顺序升级。大多数任务停留在 L1。</p>
+
+<table>
+<tr><th>级别</th><th>适用场景</th><th>工具</th></tr>
+<tr>
+  <td><span class="escalation-level">L1</span> officecli 高级接口</td>
+  <td>常规的幻灯片/形状 添加/设置/删除</td>
+  <td><code>officecli add/set/remove/query/view</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L2</span> officecli raw-set</td>
+  <td>XML 注入 &mdash; 自定义动画、图表 XML、主题调整</td>
+  <td><code>officecli raw-set FILE PATH --xpath X --action A --xml ...</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L3</span> Python 脚本</td>
+  <td>缩略图生成、孤立资源清理、统一 CLI 操作</td>
+  <td><code>python3 scripts/*.py</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L4</span> 解包 &rarr; 编辑 XML &rarr; 重新打包</td>
+  <td>超出 officecli 能力范围的变体过渡、自定义 <code>p:transition</code> XML、宏处理</td>
+  <td><code>scripts/pptx_cli.py open</code> &rarr; 编辑 XML &rarr; <code>save</code></td>
+</tr>
+<tr>
+  <td><span class="escalation-level">L5</span> pptxgenjs</td>
+  <td>从数据集生成 50+ 页幻灯片、可组合工厂、复杂循环逻辑</td>
+  <td><code>npm install pptxgenjs</code> + JS 管道</td>
+</tr>
+</table>
+
+<h3>升级信号</h3>
+<ul>
+  <li>officecli 显示 <strong>"silently ignored"</strong> 或不支持的属性 &rarr; <span class="escalation-level">L2</span></li>
+  <li>需要超出高级接口能力的<strong>变体/自定义过渡</strong> &rarr; <span class="escalation-level">L4</span></li>
+  <li>从数据<strong>批量生成</strong>（50+ 页幻灯片）&rarr; <span class="escalation-level">L5</span> (pptxgenjs)</li>
+  <li>用于清理/重组的<strong>解包工作流</strong> &rarr; <span class="escalation-level">L3</span> (<code>pptx_cli.py clean</code>)</li>
+  <li><strong>设计选择</strong>（颜色、字体、样式）&rarr; 先阅读 <code>references/design-system.md</code> + <code>morph-ppt/reference/styles/INDEX.md</code></li>
+</ul>
+
+<hr>
+
+<h2>元素类型与命令</h2>
+<p>OfficeCLI 支持丰富的元素类型。请积极使用 &mdash; 纯文本幻灯片毫无记忆点。</p>
+
+<h3>形状作为内容容器</h3>
+<pre><code>officecli add deck.pptx '/slide[1]' --type shape --prop geometry=roundRect \
+  --prop fill=1E2761 --prop x=1cm --prop y=4cm --prop w=15cm --prop h=12cm</code></pre>
+
+<h3>表格</h3>
+<pre><code>officecli add deck.pptx '/slide[2]' --type table \
+  --prop rows=4 --prop cols=3 --prop x=1cm --prop y=3cm \
+  --prop width=24cm --prop height=6cm</code></pre>
+
+<h3>图表</h3>
+<pre><code>officecli add deck.pptx '/slide[3]' --type chart \
+  --prop chartType=column --prop title='Revenue' \
+  --prop 'data=Q1:12,Q2:15,Q3:18,Q4:20'</code></pre>
+
+<h3>图片</h3>
+<pre><code>officecli add deck.pptx '/slide[1]' --type picture \
+  --prop path=photo.png --prop x=14cm --prop y=3cm \
+  --prop width=8cm --prop height=5cm --prop alt='Team photo'</code></pre>
+
+<h3>视频/音频</h3>
+<pre><code>officecli add deck.pptx '/slide[4]' --type video --prop path=demo.mp4 \
+  --prop x=2cm --prop y=3cm --prop width=20cm --prop height=12cm --prop autoplay=true</code></pre>
+
+<h3>OLE 嵌入（Excel、Word、PDF）</h3>
+<pre><code>officecli add deck.pptx '/slide[5]' --type ole --prop path=data.xlsx \
+  --prop x=2cm --prop y=3cm --prop width=20cm --prop height=12cm</code></pre>
+
+<h3>连接线/箭头</h3>
+<pre><code>officecli add deck.pptx '/slide[2]' --type connector \
+  --prop startShape=1 --prop endShape=2 --prop lineColor=4472C4 --prop tailEnd=arrow</code></pre>
+
+<h3>演讲者备注</h3>
+<pre><code>officecli add deck.pptx '/slide[1]' --type notes --prop 'text=Key talking point here.'</code></pre>
+
+<h3>动画</h3>
+<pre><code>officecli set deck.pptx '/slide[1]/shape[2]' --prop animation=fadeIn --prop delay=500</code></pre>
+
+<h3>主题颜色</h3>
+<pre><code># Use theme tokens instead of hex for theme-aware decks
+officecli set deck.pptx '/slide[1]/shape[1]' --prop fill=accent1
+# Available: accent1..accent6, dk1, dk2, lt1, lt2, tx1, tx2, bg1, bg2</code></pre>
+
+<h3>其他操作</h3>
+<pre><code># Hyperlinks
+officecli set deck.pptx '/slide[1]/shape[2]' --prop link='https://example.com'
+
+# Flip / rotate
+officecli set deck.pptx '/slide[1]/shape[2]' --prop flipH=true
+officecli set deck.pptx '/slide[1]/shape[2]' --prop rotation=45
+
+# Slide master / layout editing
+officecli set deck.pptx '/slideMaster[1]/shape[2]' --prop text='Company Name'
+officecli set deck.pptx '/slideLayout[2]/shape[1]' --prop fill=1E2761
+
+# Template merge with data
+officecli merge template.pptx output.pptx --data '{"title":"Q4 Report","revenue":"$5.1M"}'
+
+# Watch mode (live preview)
+officecli watch deck.pptx --port 3000
+
+# Slideshow settings
+officecli set deck.pptx / --prop show.loop=true --prop show.narration=false</code></pre>
+
+<hr>
+
+<h2>设计系统</h2>
+
+<h3>设计旋钮</h3>
+<p>创建之前，先确定以下三个参数。如有歧义，请向用户确认。</p>
+<table>
+<tr><th>旋钮</th><th>范围</th><th>默认值</th><th>含义</th></tr>
+<tr><td>DESIGN_VARIANCE</td><td>1&ndash;10</td><td>4</td><td>1 = 对称网格，10 = 非对称艺术指导</td></tr>
+<tr><td>VISUAL_DENSITY</td><td>1&ndash;10</td><td>5</td><td>1 = 画廊留白，10 = 仪表盘密集</td></tr>
+<tr><td>MOTION_INTENSITY</td><td>1&ndash;10</td><td>3</td><td>1 = 静态切换，10 = 电影级变体</td></tr>
+</table>
+
+<h3>按演示文稿类型的预设</h3>
+<table>
+<tr><th>演示文稿类型</th><th>变化度</th><th>密度</th><th>动效</th></tr>
+<tr><td>投资者路演</td><td>6</td><td>3</td><td>4</td></tr>
+<tr><td>内部评审</td><td>3</td><td>7</td><td>1</td></tr>
+<tr><td>大会主题演讲</td><td>8</td><td>2</td><td>7</td></tr>
+<tr><td>工作坊/培训</td><td>4</td><td>6</td><td>2</td></tr>
+<tr><td>产品发布</td><td>7</td><td>4</td><td>6</td></tr>
+</table>
+
+<h3>推荐调色板</h3>
+<p>选择与主题匹配的颜色 &mdash; 不要默认使用通用蓝色。</p>
+<table>
+<tr><th>主题</th><th>主色</th><th>辅色</th><th>强调色</th><th>文本</th><th>次要文本</th></tr>
+<tr><td>午夜商务</td><td><span class="palette-swatch" style="background:#1E2761"></span><code>1E2761</code></td><td><span class="palette-swatch" style="background:#CADCFC"></span><code>CADCFC</code></td><td><span class="palette-swatch" style="background:#FFFFFF"></span><code>FFFFFF</code></td><td><code>333333</code></td><td><code>8899BB</code></td></tr>
+<tr><td>石板专业</td><td><span class="palette-swatch" style="background:#2C3E50"></span><code>2C3E50</code></td><td><span class="palette-swatch" style="background:#ECF0F1"></span><code>ECF0F1</code></td><td><span class="palette-swatch" style="background:#E74C3C"></span><code>E74C3C</code></td><td><code>333333</code></td><td><code>7A8A94</code></td></tr>
+<tr><td>森林与苔藓</td><td><span class="palette-swatch" style="background:#2C5F2D"></span><code>2C5F2D</code></td><td><span class="palette-swatch" style="background:#97BC62"></span><code>97BC62</code></td><td><span class="palette-swatch" style="background:#F5F5F5"></span><code>F5F5F5</code></td><td><code>2D2D2D</code></td><td><code>6B8E6B</code></td></tr>
+<tr><td>珊瑚活力</td><td><span class="palette-swatch" style="background:#F96167"></span><code>F96167</code></td><td><span class="palette-swatch" style="background:#F9E795"></span><code>F9E795</code></td><td><span class="palette-swatch" style="background:#2F3C7E"></span><code>2F3C7E</code></td><td><code>333333</code></td><td><code>8B7E6A</code></td></tr>
+<tr><td>暖赤陶</td><td><span class="palette-swatch" style="background:#B85042"></span><code>B85042</code></td><td><span class="palette-swatch" style="background:#E7E8D1"></span><code>E7E8D1</code></td><td><span class="palette-swatch" style="background:#A7BEAE"></span><code>A7BEAE</code></td><td><code>3D2B2B</code></td><td><code>8C7B75</code></td></tr>
+<tr><td>海洋渐变</td><td><span class="palette-swatch" style="background:#065A82"></span><code>065A82</code></td><td><span class="palette-swatch" style="background:#1C7293"></span><code>1C7293</code></td><td><span class="palette-swatch" style="background:#21295C"></span><code>21295C</code></td><td><code>2B3A4E</code></td><td><code>6B8FAA</code></td></tr>
+<tr><td>炭灰极简</td><td><span class="palette-swatch" style="background:#36454F"></span><code>36454F</code></td><td><span class="palette-swatch" style="background:#F2F2F2"></span><code>F2F2F2</code></td><td><span class="palette-swatch" style="background:#212121"></span><code>212121</code></td><td><code>333333</code></td><td><code>7A8A94</code></td></tr>
+<tr><td>浆果与奶油</td><td><span class="palette-swatch" style="background:#6D2E46"></span><code>6D2E46</code></td><td><span class="palette-swatch" style="background:#A26769"></span><code>A26769</code></td><td><span class="palette-swatch" style="background:#ECE2D0"></span><code>ECE2D0</code></td><td><code>3D2233</code></td><td><code>8C6B7A</code></td></tr>
+</table>
+<p>在浅色背景上使用<strong>文本色</strong>作为正文，<strong>次要文本色</strong>用于说明文字、标签和坐标轴文本。在深色背景（亮度 &lt; 30%）上，所有正文文本必须为白色（<code>FFFFFF</code>）或近白色。非纯黑：使用 <code>0A0A0A</code> 而非 <code>000000</code>。</p>
+<div class="callout callout-warn"><strong>避免：</strong>白底上的紫色渐变（AI 生成痕迹）、彩虹多强调色、<code>FFFFFF</code> 背景 + <code>000000</code> 文本（毫无个性）。</div>
+
+<h3>排版</h3>
+<table>
+<tr><th>标题字体</th><th>正文字体</th><th>最适场景</th></tr>
+<tr><td>Georgia</td><td>Calibri</td><td>正式商务、金融</td></tr>
+<tr><td>Arial Black</td><td>Arial</td><td>大胆营销、产品发布</td></tr>
+<tr><td>Trebuchet MS</td><td>Calibri</td><td>友好科技、初创企业</td></tr>
+<tr><td>Consolas</td><td>Calibri</td><td>开发者工具、工程</td></tr>
+</table>
+<p><strong>韩语：</strong>Pretendard、Noto Sans KR、Wanted Sans。避免将 <code>Malgun Gothic</code> 作为唯一字体 &mdash; 仅可作为 <code>a:ea</code> 字体栈中的 CJK 回退字体。</p>
+
+<table>
+<tr><th>元素</th><th>尺寸</th></tr>
+<tr><td>幻灯片标题</td><td>36&ndash;44pt 粗体</td></tr>
+<tr><td>章节标题</td><td>20&ndash;24pt 粗体</td></tr>
+<tr><td>正文文本</td><td>16&ndash;20pt（最小 16pt）</td></tr>
+<tr><td>说明/来源</td><td>10&ndash;12pt 次要色</td></tr>
+<tr><td>关键指标</td><td>60&ndash;72pt 粗体，强调色</td></tr>
+</table>
+<div class="callout callout-info">正文文本最小 16pt。如果文本溢出，请减少内容或拆分幻灯片 &mdash; 绝不缩小字体。</div>
+
+<h3>幻灯片节奏</h3>
+<p>一个 10 页的演示文稿应至少包含 4 种不同的布局类型：</p>
+<ol>
+  <li><strong>全出血主视觉</strong> &mdash; 标题或关键指标</li>
+  <li><strong>分栏布局</strong> &mdash; 文本 + 视觉元素</li>
+  <li><strong>网格或对比</strong> &mdash; 2&ndash;3 项内容</li>
+  <li><strong>数据可视化</strong> &mdash; 图表、图解或信息图</li>
+</ol>
+
+<h3>内容到布局指南</h3>
+<table>
+<tr><th>内容类型</th><th>推荐布局</th></tr>
+<tr><td>定价/套餐层级</td><td>2&ndash;3 列卡片（对比）</td></tr>
+<tr><td>团队/人物</td><td>图标网格或 2x3 卡片</td></tr>
+<tr><td>时间线/路线图</td><td>带箭头的流程图/编号步骤</td></tr>
+<tr><td>关键指标/KPI</td><td>大字统计展示（3&ndash;4 个大数字）</td></tr>
+<tr><td>用户评价/引言</td><td>全宽引言加署名</td></tr>
+<tr><td>功能对比</td><td>两栏前后对比或表格</td></tr>
+<tr><td>架构/系统</td><td>形状 + 连接线图解</td></tr>
+<tr><td>财务数据</td><td>图表 + 摘要表格并排</td></tr>
+</table>
+
+<hr>
+
+<h2>子技能</h2>
+<p>仅加载与您任务匹配的子技能。不要全部加载。</p>
+
+<div class="subskill-card">
+  <strong>officecli-pitch-deck</strong> &mdash; 融资演示文稿（种子轮/A轮）
+  <p>专为投资者路演设计的模板和结构。处理问题/方案/市场/牵引力/团队/财务的完整流程。</p>
+</div>
+
+<div class="subskill-card">
+  <strong>morph-ppt</strong> &mdash; 变体过渡动画
+  <p>幻灯片之间的电影级变体过渡。包含 48 种精选样式定义、决策规则（金字塔原理、SCQA）、画布规格和质量门控。</p>
+</div>
+
+<div class="subskill-card">
+  <strong>morph-ppt-3d</strong> &mdash; 3D 变体效果
+  <p>将 3D 模型与变体过渡集成，用于高级视觉演示。</p>
+</div>
+
+<div class="subskill-card">
+  <strong>pptxgenjs</strong> &mdash; JavaScript 编程生成
+  <p>PptxGenJS API，用于通过可组合工厂和循环逻辑批量生成 50+ 页数据驱动的幻灯片。</p>
+</div>
+
+<hr>
+
+<h2>参考资料</h2>
+
+<h3>设计参考</h3>
+<table>
+<tr><th>文件</th><th>阅读时机</th><th>包含内容</th></tr>
+<tr><td><code>references/design-system.md</code></td><td>在选择颜色/字体之前</td><td>20 种调色板、8 种字体组合、4 种韩语字体</td></tr>
+<tr><td><code>morph-ppt/reference/styles/INDEX.md</code></td><td>选择独特视觉风格时</td><td>48 种样式定义，含规格与示例</td></tr>
+<tr><td><code>morph-ppt/reference/decision-rules.md</code></td><td>规划内容密集型演示文稿时</td><td>金字塔原理、SCQA、页面类型</td></tr>
+<tr><td><code>morph-ppt/reference/pptx-design.md</code></td><td>画布规格、幽灵位置数学计算</td><td>画布、字体、间距标记</td></tr>
+<tr><td><code>morph-ppt/reference/quality-gates.md</code></td><td>第 4&ndash;5 阶段 QA 门控</td><td>变体演示文稿的 QA 检查清单</td></tr>
+<tr><td><code>recipes.md</code></td><td>快速修复模式</td><td>章节分隔符 z-order、KPI 溢出、时间线间距</td></tr>
+</table>
+
+<h3>Python 脚本（<code>scripts/</code>）</h3>
+<table>
+<tr><th>脚本</th><th>用途</th><th>命令</th></tr>
+<tr><td><code>pptx_cli.py</code></td><td>统一 CLI：解包、保存、验证、修复、缩略图、搜索、目录、添加幻灯片、清理、导出 PDF</td><td><code>python3 scripts/pptx_cli.py {open|save|validate|repair|...}</code></td></tr>
+<tr><td><code>thumbnail.py</code></td><td>幻灯片缩略图网格或单张 PNG，用于视觉 QA</td><td><code>python3 scripts/thumbnail.py IN.pptx grid.png</code></td></tr>
+<tr><td><code>clean.py</code></td><td>查找/删除解包 PPTX 中的孤立媒体</td><td><code>python3 scripts/clean.py work/ [--delete]</code></td></tr>
+<tr><td><code>add_slide.py</code></td><td>在解包目录上添加或复制幻灯片（旧版 OOXML）</td><td><code>python3 scripts/add_slide.py work/ --blank</code></td></tr>
+<tr><td><code>run_tests.py</code></td><td>运行技能回归测试</td><td><code>python3 scripts/run_tests.py</code></td></tr>
+</table>
+
+<hr>
+
+<h2>QA（必需）</h2>
+<div class="callout callout-danger"><strong>假定存在问题。你的任务是找到它们。</strong>你的首次渲染几乎永远不会正确。将 QA 视为漏洞排查，而非确认步骤。如果首次检查发现零问题，说明你检查得不够仔细。</div>
+
+<h3>步骤 1 &mdash; 机器 QA</h3>
+<pre><code>officecli validate output.pptx
+officecli view output.pptx issues
+officecli view output.pptx text | grep -iE 'xxxx|lorem|ipsum|placeholder|TODO|click to'
+officecli view output.pptx stats</code></pre>
+
+<h3>步骤 2 &mdash; 视觉 QA</h3>
+<pre><code>officecli view output.pptx html --browser
+
+# Thumbnail grid for quick scan
+python3 scripts/thumbnail.py output.pptx grid.png</code></pre>
+<p>使用子代理进行视觉检查 &mdash; 即使只有 2&ndash;3 页幻灯片。你会看到你期望的内容，而非实际的内容。新鲜的眼光能发现更多问题。</p>
+
+<h3>视觉 QA 检查清单</h3>
+<ul>
+  <li>元素重叠（文本穿过形状、元素堆叠）</li>
+  <li>文本溢出或在文本框边界处被截断</li>
+  <li>元素间距过小（间隙 &lt; 0.3 英寸）或几乎接触</li>
+  <li>间距不均匀（大面积空白 vs 拥挤区域）</li>
+  <li>距幻灯片边缘留白不足（&lt; 0.5 英寸）</li>
+  <li>列或相似元素未对齐</li>
+  <li>低对比度的文本或图标</li>
+  <li>残留的占位符内容</li>
+  <li>文本框过窄导致过度换行</li>
+</ul>
+
+<h3>步骤 3 &mdash; 修复并重新验证</h3>
+<p>使用 <code>officecli set</code> 修复，重新运行 QA。在至少完成一轮修复-验证循环之前，不要宣布成功。</p>
+
+<hr>
+
+<h2>交付前检查清单</h2>
+<ul class="checklist">
+  <li>所有内容幻灯片都有演讲者备注</li>
+  <li>至少应用了一种过渡样式</li>
+  <li>所有图片都有替代文本：<code>officecli query deck.pptx 'picture:no-alt'</code></li>
+  <li>布局多样性 &ge; 3 种类型</li>
+  <li>无溢出：<code>y + height &le; 19.05cm</code>，<code>x + width &le; 33.87cm</code></li>
+  <li>无残留占位符文本</li>
+  <li>正文文本 &ge; 16pt</li>
+  <li>图表标题包含实际数值（无 TBD、空括号）</li>
+</ul>
+
+<hr>
+
+<h2>常见陷阱</h2>
+<table>
+<tr><th>陷阱</th><th>正确做法</th></tr>
+<tr><td>在 zsh 中未引用 <code>[N]</code></td><td>始终加引号：<code>"/slide[1]"</code> 或 <code>'/slide[1]'</code></td></tr>
+<tr><td><code>--name "foo"</code></td><td>使用 <code>--prop name="foo"</code> &mdash; 所有属性通过 <code>--prop</code> 传递</td></tr>
+<tr><td>猜测属性名</td><td>运行 <code>officecli help pptx set shape --json</code> 获取准确名称</td></tr>
+<tr><td>十六进制颜色带 <code>#</code></td><td>使用 <code>FF0000</code> 而非 <code>#FF0000</code></td></tr>
+<tr><td><code>--prop text=</code> 中的 <code>$</code></td><td>使用单引号：<code>'$15M'</code></td></tr>
+<tr><td><code>view text</code> 遗漏表格</td><td>使用 <code>view annotated</code> 获取完整文本</td></tr>
+<tr><td>创建后添加图表系列</td><td>无法添加 &mdash; 删除并重新创建图表</td></tr>
+<tr><td>韩语文件名 + 常驻模式</td><td>CJK 会导致常驻模式 UTF-8 损坏。使用 ASCII 文件名，最后再复制</td></tr>
+<tr><td>常驻模式僵尸进程</td><td><code>pkill -9 -f "resident-serve"</code>，等待 1 秒，重试</td></tr>
+<tr><td>重建已有的主题/母版</td><td>先执行 <code>cp source.pptx target.pptx</code>。保留母版/布局/主题</td></tr>
+<tr><td>将 <code>officecli open</code> 作为后台 shell 运行</td><td>在前台运行 &mdash; 它会立即返回，守护进程自动在后台运行</td></tr>
+<tr><td>批处理 JSON 解析错误</td><td>Shell 语法泄漏。使用 heredoc：<code>cat &lt;&lt;'EOF' | officecli batch FILE.pptx</code></td></tr>
+<tr><td>盲目选择颜色/字体</td><td>选择之前先阅读 <code>references/design-system.md</code></td></tr>
+</table>
+
+<hr>
+
+<h2>反模式</h2>
+<ul>
+  <li>绝不使用子技能文件中的示例数据（FitPulse、LearnFlow 等）</li>
+  <li>绝不留下占位符文本：<code>lorem</code>、<code>ipsum</code>、<code>XXXX</code>、<code>TODO</code></li>
+  <li>每页幻灯片必须有标题（无障碍要求）</li>
+  <li>所有内容幻灯片都需要演讲者备注</li>
+  <li>每个演示文稿最多 2 种字体族</li>
+  <li><code>Malgun Gothic</code> 作为唯一字体 = 被拒绝</li>
+  <li><code>view issues</code> 中空白布局显示 "(untitled)" 是正常的，不是缺陷</li>
+  <li>标题下方的强调线 &mdash; AI 生成幻灯片的典型特征；应使用留白替代</li>
+  <li>装饰性网页 UI 元素（细侧边线、装饰性圆圈）&mdash; PPT 是投影介质，不是 Web 应用</li>
+  <li>每页使用相同布局 &mdash; 应变换列、卡片、标注</li>
+  <li>正文居中对齐 &mdash; 段落应左对齐；仅标题居中</li>
+  <li>尺寸对比不足 &mdash; 标题 36pt+ vs 正文 16pt</li>
+  <li>纯文本幻灯片 &mdash; 应添加形状、图表、色块、图片</li>
+</ul>
+
+<hr>
+
+<h2>无障碍（WCAG 2.1 AA）</h2>
+<ul>
+  <li>每页幻灯片都有标题：<code>officecli view deck.pptx outline</code></li>
+  <li>图片有替代文本：<code>officecli query deck.pptx 'picture:no-alt'</code></li>
+  <li>阅读顺序 = 形状顺序（标题优先）</li>
+  <li>对比度 &ge; 4.5:1（正常文本），&ge; 3:1（大号文本）</li>
+  <li>信息不仅通过颜色传达</li>
+</ul>
+
+<hr>
+
+<h2>CJK/韩语支持</h2>
+<p>podex 分支会自动检测韩语内容并应用语言标签和默认字体。在常驻模式编辑期间使用 ASCII 文件名以避免 UTF-8 损坏；最后一步再复制为韩语文件名。</p>
+
+<hr>
+
+<h2>前置条件</h2>
+<table>
+<tr><th>工具</th><th>用途</th><th>状态</th></tr>
+<tr><td><code>officecli</code> (PATH)</td><td>主要 PPTX CLI</td><td>必需</td></tr>
+<tr><td><code>python3</code> + <code>python-pptx</code></td><td>L3/L4 操作的脚本</td><td>脚本所需</td></tr>
+<tr><td><code>pptxgenjs</code></td><td>大规模编程生成（L5）</td><td>可选</td></tr>
+<tr><td><code>soffice</code> (LibreOffice)</td><td>PDF 转换、QA 缩略图</td><td>可选（按需自动安装）</td></tr>
+</table>
+
+<pre><code># Check prerequisites
+python3 -c "import pptx" || echo "MISSING: pip install python-pptx"
+which officecli &gt;/dev/null 2&gt;&amp;1 || echo "INFO: OfficeCLI not installed"
+which soffice &gt;/dev/null 2&gt;&amp;1 || echo "INFO: LibreOffice not installed (optional)"</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">生产力技能</a>
+<a class="next" href="hwp.html">HWP（韩语文档）</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

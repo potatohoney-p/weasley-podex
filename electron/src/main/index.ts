@@ -1,0 +1,1296 @@
+import { app, BrowserWindow, dialog, globalShortcut, ipcMain, Menu, screen, session, shell } from 'electron';
+import type { MenuItemConstructorOptions } from 'electron';
+import { fileURLToPath, URL } from 'node:url';
+import { dirname, join } from 'node:path';
+import { createServer } from 'node:net';
+import { randomBytes } from 'node:crypto';
+import type { ChildProcess } from 'node:child_process';
+import { findJawBinary, spawnJawDashboard, gracefulShutdown } from './lib/jaw-spawn.js';
+import { promptInstallCli } from './lib/install-cli.js';
+import {
+  createTray, isKeepRunning, destroyTray,
+  updateServerStatus, notifyServerCrash, setTrayBadge,
+  setTrayClickHandler, popUpTrayMenu, getTrayBoundsSafe,
+} from './lib/tray-manager.js';
+import { createReminderPopover, type ReminderPopover } from './lib/reminder-popover.js';
+import { createReminderBadgePoller, type ReminderBadgePoller } from './lib/reminder-badge.js';
+import { waitForManagerReady, isManagerHealthy, probeOnce } from './lib/health-check.js';
+import {
+  buildManagerCsp,
+  buildPreviewFrameOrigins,
+  externalOpenUrlForNavigation,
+  isManagerNavigation,
+  isPreviewFrameNavigation,
+  normalizeExternalOpenUrl,
+} from './lib/navigation-policy.js';
+import {
+  previewSpawnEnvForManager,
+  resolvePreviewFramePolicyForManager,
+} from './lib/preview-ports.js';
+import {
+  showJawNotFoundDialog,
+  showCrashLoopDialog,
+  showSpawnFailedDialog,
+} from './lib/dialog.js';
+import {
+  extractJawUrlArg,
+  focusWindow,
+  registerJawProtocol,
+  routeJawDeepLink,
+} from './lib/deep-link.js';
+import { RingBuffer } from './lib/ring-buffer.js';
+import { startAppMetricsCollector, type MetricsCollectorHandle } from './lib/app-metrics.js';
+import { registerTerminalIpc, cleanupTerminals } from './lib/terminal/index.js';
+import { registerDiffIpc } from './lib/git/ipc.js';
+import { registerFolderIpc, cleanupFolderWatchers } from './lib/folder/ipc.js';
+import { registerBrowserIpc, markOwnedEmbeddedBrowserWebContents } from './lib/browser/ipc.js';
+import { registerClipboardIpc } from './lib/clipboard/ipc.js';
+import { registerPermissionDiagnosticsIpc } from './lib/permission-diagnostics/ipc.js';
+import { registerWindowIpc } from './lib/window/ipc.js';
+import { isAllowedSender, setAllowedOrigin } from './lib/ipc-origin-guard.js';
+import { primeMacAutomationPermission } from './lib/mac-automation-permission.js';
+import { showQuitProgress } from './lib/quit-progress.js';
+import {
+  recordElectronPermissionDenial,
+  resolveElectronPermissionDecision,
+  type ElectronPermissionSurface,
+} from './lib/electron-permissions.js';
+
+interface CliFlags {
+  port: number;
+  attachOnly: boolean;
+  spawn: boolean;
+  background: boolean;
+  managerUrl: string;
+  managerUrlExplicit: boolean;
+}
+
+const LOOPBACK_HOSTS = new Set(['127.0.0.1', 'localhost', '::1']);
+const ELECTRON_MANAGER_PORT_START = 24577;
+const ELECTRON_MANAGER_PORT_END = 24590;
+const DEFAULT_MANAGER_PORT = ELECTRON_MANAGER_PORT_START;
+
+function assertLoopbackManagerUrl(raw: string): void {
+  let parsed: URL;
+  try {
+    parsed = new URL(raw);
+  } catch (err) {
+    throw new Error(`[jaw-electron] invalid manager URL: ${raw}`);
+  }
+  if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+    throw new Error(
+      `[jaw-electron] manager URL must use http: or https:. Got: ${parsed.protocol}`,
+    );
+  }
+  const host = parsed.hostname.replace(/^\[|\]$/g, '').toLowerCase();
+  if (!LOOPBACK_HOSTS.has(host)) {
+    throw new Error(
+      `[jaw-electron] manager URL must be loopback (127.0.0.1, localhost, ::1). Got: ${parsed.hostname}`,
+    );
+  }
+}
+
+function parseArgs(argv: string[]): CliFlags {
+  let port = Number(process.env.JAW_MANAGER_PORT ?? DEFAULT_MANAGER_PORT);
+  let attachOnly = false;
+  let spawn = false;
+  let background = false;
+  let managerUrl = process.env.JAW_MANAGER_URL ?? '';
+  let managerUrlExplicit = managerUrl.trim().length > 0;
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
+    if (a === '--port') {
+      const v = argv[++i];
+      if (v) port = Number(v);
+    } else if (a?.startsWith('--port=')) {
+      port = Number(a.slice('--port='.length));
+    } else if (a === '--attach-only') {
+      attachOnly = true;
+    } else if (a === '--spawn') {
+      spawn = true;
+    } else if (a === '--manager-url') {
+      const v = argv[++i];
+      if (v) {
+        managerUrl = v;
+        managerUrlExplicit = true;
+      }
+    } else if (a?.startsWith('--manager-url=')) {
+      managerUrl = a.slice('--manager-url='.length);
+      managerUrlExplicit = managerUrl.trim().length > 0;
+    } else if (a === '--background') {
+      background = true;
+    }
+  }
+  if (!Number.isFinite(port) || port <= 0) port = DEFAULT_MANAGER_PORT;
+  if (!managerUrl) managerUrl = `http://127.0.0.1:${port}/`;
+  if (!managerUrl.endsWith('/')) managerUrl = `${managerUrl}/`;
+  assertLoopbackManagerUrl(managerUrl);
+  return { port, attachOnly, spawn, background, managerUrl, managerUrlExplicit };
+}
+
+const FLAGS = parseArgs(process.argv.slice(1));
+let MANAGER_URL = FLAGS.managerUrl;
+let MANAGER_ORIGIN = new URL(MANAGER_URL).origin;
+setAllowedOrigin(MANAGER_ORIGIN);
+let PREVIEW_FRAME_POLICY = resolvePreviewFramePolicyForManager(getManagerUrlPort(MANAGER_URL));
+
+const DEV_TOOLS_ENABLED =
+  process.env.NODE_ENV === 'development' || process.env.JAW_ELECTRON_DEVTOOLS === '1';
+const DEFAULT_WINDOW_WIDTH = 1440;
+const DEFAULT_WINDOW_HEIGHT = 960;
+const WINDOW_WORK_AREA_MARGIN = 80;
+const MIN_VISIBLE_WINDOW_WIDTH = 960;
+const MIN_VISIBLE_WINDOW_HEIGHT = 640;
+const QUIT_WINDOW_HIDE_DELAY_MS = 600;
+const TRAY_REMINDERS_ACCELERATOR = 'CommandOrControl+Shift+M';
+
+type ManagerShortcutAction =
+  | 'toggleBottomPanel'
+  | 'toggleRightPanel'
+  | 'focusTerminal'
+  | 'newTerminalSession'
+  | 'openDiff'
+  | 'openFolderTree'
+  | 'closeFocusedTab'
+  | 'switchTab1'
+  | 'switchTab2'
+  | 'switchTab3'
+  | 'switchTab4'
+  | 'previousTab'
+  | 'nextTab'
+  | 'browserReload'
+  | 'browserHardReload'
+  | 'browserFocusUrl'
+  | 'browserBack'
+  | 'browserForward'
+  | 'terminalClear'
+  | 'terminalNewTab'
+  | 'toggleLeftSidebar';
+
+type DesktopKeyboardInput = {
+  type?: string;
+  key?: string;
+  code?: string;
+  isAutoRepeat?: boolean;
+  isComposing?: boolean;
+  shift?: boolean;
+  control?: boolean;
+  alt?: boolean;
+  meta?: boolean;
+};
+
+const ringBuffer = new RingBuffer(1024 * 1024);
+let managerProcess: ChildProcess | null = null;
+let mainWindow: BrowserWindow | null = null;
+let rendererCrashReloads: number[] = [];
+let pendingDeepLinkUrl: string | null = null;
+let restartTimestamps: number[] = [];
+let crashLoopStopped = false;
+let shuttingDown = false;
+let shutdownComplete = false;
+let forceQuitRequested = false;
+let managerRestarting = false;
+let windowCreating = false;
+let bootstrapPromise: Promise<void> | null = null;
+let managerReadyPromise: Promise<void> | null = null;
+let metricsCollector: MetricsCollectorHandle | null = null;
+let webContentsHardeningRegistered = false;
+let reminderPopover: ReminderPopover | null = null;
+let reminderBadgePoller: ReminderBadgePoller | null = null;
+let trayPopupMenuIpcRegistered = false;
+let trayRemindersShortcutRegistered = false;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const PRELOAD_PATH = join(__dirname, '..', 'preload', 'index.js');
+const DESKTOP_USER_AGENT_TOKEN = 'podex-desktop';
+const EMBEDDED_BROWSER_PARTITION = 'persist:podex-browser';
+const ELECTRON_RENDERER_TOKEN = randomBytes(32).toString('hex');
+
+process.env.podex_ELECTRON_RENDERER_TOKEN = ELECTRON_RENDERER_TOKEN;
+
+// #229: the webview tag sets a clean per-webview UA, but service workers and other
+// background requests in the partition fall back to the session UA, which carries the
+// Electron/podex tokens that search providers flag. Pin the whole session to a plain
+// Chrome UA (same shape the renderer builds) plus real Accept-Language so the embedded
+// browser presents one consistent, ordinary-browser fingerprint.
+function embeddedBrowserUserAgent(): string {
+  const chromeVersion = process.versions.chrome;
+  const osToken = process.platform === 'darwin'
+    ? 'Macintosh; Intel Mac OS X 10_15_7'
+    : process.platform === 'win32'
+      ? 'Windows NT 10.0; Win64; x64'
+      : 'X11; Linux x86_64';
+  return `Mozilla/5.0 (${osToken}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${chromeVersion} Safari/537.36`;
+}
+
+function embeddedBrowserAcceptLanguages(): string {
+  let preferred: string[] = [];
+  try {
+    preferred = app.getPreferredSystemLanguages();
+  } catch {
+    // fall through to defaults
+  }
+  return [...new Set([...preferred, 'en-US', 'en'])].join(',');
+}
+
+function configureEmbeddedBrowserSession(): void {
+  const ses = session.fromPartition(EMBEDDED_BROWSER_PARTITION);
+  const userAgent = embeddedBrowserUserAgent();
+  ses.setUserAgent(userAgent, embeddedBrowserAcceptLanguages());
+  // setUserAgent does NOT cover service-worker-initiated fetches — a runtime probe
+  // showed they fall back to the Electron-flavored app UA (see devlog #229 notes).
+  // Force the header at the network layer for every request in this partition.
+  ses.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders['User-Agent'] = userAgent;
+    callback({ requestHeaders: details.requestHeaders });
+  });
+}
+const AUTOMATION_SETTINGS_URL = 'x-apple.systempreferences:com.apple.preference.security?Privacy_Automation';
+
+const gotLock = app.requestSingleInstanceLock();
+if (!gotLock) {
+  app.quit();
+} else {
+  app.enableSandbox();
+  registerJawProtocol(app);
+
+  app.on('second-instance', (_event, argv) => {
+    const deepLink = extractJawUrlArg(argv);
+    if (deepLink) {
+      void handleDeepLink(deepLink);
+      return;
+    }
+    if (!mainWindow || mainWindow.isDestroyed()) {
+      void createManagerWindow();
+    } else {
+      focusWindow(mainWindow);
+    }
+  });
+
+  app.on('open-url', (event, url) => {
+    event.preventDefault();
+    void handleDeepLink(url);
+  });
+
+  app.whenReady().then(async () => {
+    configureEmbeddedBrowserSession();
+    await bootstrapOnce();
+    promptInstallCli().catch(() => {});
+    if (!metricsCollector) {
+      try {
+        metricsCollector = startAppMetricsCollector();
+      } catch (err) {
+        ringBuffer.append(`[metrics start error] ${(err as Error)?.message ?? err}\n`);
+      }
+    }
+    if (pendingDeepLinkUrl) {
+      const pending = pendingDeepLinkUrl;
+      pendingDeepLinkUrl = null;
+      await handleDeepLink(pending);
+    }
+
+    app.on('activate', () => {
+      if (!mainWindow || mainWindow.isDestroyed()) {
+        void createManagerWindow();
+      }
+    });
+  }).catch((err) => {
+    console.error('[jaw-electron] bootstrap failed', err);
+    dialog.showErrorBox('jaw Electron', String(err?.stack ?? err));
+    app.quit();
+  });
+}
+
+function getInitialWindowBounds(): { width: number; height: number; x: number; y: number } {
+  const { workArea } = screen.getPrimaryDisplay();
+  const maxWidth = Math.max(MIN_VISIBLE_WINDOW_WIDTH, workArea.width - WINDOW_WORK_AREA_MARGIN);
+  const maxHeight = Math.max(MIN_VISIBLE_WINDOW_HEIGHT, workArea.height - WINDOW_WORK_AREA_MARGIN);
+  const width = Math.min(DEFAULT_WINDOW_WIDTH, maxWidth);
+  const height = Math.min(DEFAULT_WINDOW_HEIGHT, maxHeight);
+  return {
+    width,
+    height,
+    x: Math.round(workArea.x + (workArea.width - width) / 2),
+    y: Math.round(workArea.y + (workArea.height - height) / 2),
+  };
+}
+
+app.on('window-all-closed', () => {
+  if (isKeepRunning()) return;
+  if (process.platform !== 'darwin') app.quit();
+});
+
+app.on('before-quit', (event) => {
+  if (shutdownComplete) return;
+  if (isKeepRunning() && !forceQuitRequested) {
+    event.preventDefault();
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.close();
+    return;
+  }
+  event.preventDefault();
+  void requestApplicationQuit('before-quit');
+});
+
+async function requestApplicationQuit(reason: string): Promise<void> {
+  if (shutdownComplete) {
+    app.exit(0);
+    return;
+  }
+  if (shuttingDown) return;
+  shuttingDown = true;
+  destroyTrayReminders();
+  destroyTray();
+  ringBuffer.append(`[quit] requested by ${reason}\n`);
+  showQuitProgress(mainWindow, ringBuffer);
+  setTimeout(() => {
+    if (!mainWindow || mainWindow.isDestroyed() || shutdownComplete) return;
+    mainWindow.hide();
+  }, QUIT_WINDOW_HIDE_DELAY_MS);
+  if (metricsCollector) {
+    try {
+      metricsCollector.stop();
+    } catch {
+      // ignore
+    }
+    metricsCollector = null;
+  }
+  cleanupTerminals();
+  cleanupFolderWatchers();
+  try {
+    // #229: cookies persist via the partition, but an explicit flush protects
+    // fresh logins from being lost when quit follows shortly after sign-in.
+    // Raced against a short timeout so a pathological cookie-store hang can
+    // never delay application quit.
+    await Promise.race([
+      session.fromPartition(EMBEDDED_BROWSER_PARTITION).cookies.flushStore(),
+      new Promise<void>((resolve) => setTimeout(resolve, 1_500)),
+    ]);
+  } catch {
+    // best-effort — quit must not block on cookie flush
+  }
+  const child = managerProcess;
+  managerProcess = null;
+  try {
+    if (child) await gracefulShutdown(child, 5000);
+  } finally {
+    shutdownComplete = true;
+    app.exit(0);
+  }
+}
+
+async function forceQuit(): Promise<void> {
+  forceQuitRequested = true;
+  destroyTrayReminders();
+  destroyTray();
+  void requestApplicationQuit('tray-quit');
+}
+
+function installTrayReminders(): void {
+  reminderPopover?.destroy();
+  reminderBadgePoller?.stop();
+  reminderPopover = createReminderPopover({
+    managerUrl: MANAGER_URL,
+    managerOrigin: MANAGER_ORIGIN,
+    preloadPath: PRELOAD_PATH,
+  });
+  reminderBadgePoller = createReminderBadgePoller({
+    managerUrl: MANAGER_URL,
+    setBadge: setTrayBadgeFromReminderPoller,
+    log: (message) => ringBuffer.append(`${message}\n`),
+  });
+  setTrayClickHandler(toggleTrayRemindersPopover);
+  registerTrayRemindersShortcut();
+  if (!trayPopupMenuIpcRegistered) {
+    trayPopupMenuIpcRegistered = true;
+    ipcMain.on('tray:popup-menu', (event) => {
+      if (!isAllowedSender(event)) return;
+      popUpTrayMenu();
+    });
+    ipcMain.on('tray:open-dashboard', (event) => {
+      if (!isAllowedSender(event)) return;
+      void openTrayRemindersDashboard();
+    });
+  }
+}
+
+function destroyTrayReminders(): void {
+  unregisterTrayRemindersShortcut();
+  reminderBadgePoller?.stop();
+  reminderBadgePoller = null;
+  reminderPopover?.destroy();
+  reminderPopover = null;
+}
+
+function toggleTrayRemindersPopover(): void {
+  reminderPopover?.toggle(getTrayBoundsSafe());
+  refreshTrayReminderBadge();
+}
+
+function registerTrayRemindersShortcut(): void {
+  if (trayRemindersShortcutRegistered) return;
+  const registered = globalShortcut.register(TRAY_REMINDERS_ACCELERATOR, toggleTrayRemindersPopover);
+  if (!registered) {
+    ringBuffer.append('[tray-reminders] shortcut registration failed\n');
+    return;
+  }
+  trayRemindersShortcutRegistered = true;
+}
+
+function unregisterTrayRemindersShortcut(): void {
+  if (!trayRemindersShortcutRegistered) return;
+  globalShortcut.unregister(TRAY_REMINDERS_ACCELERATOR);
+  trayRemindersShortcutRegistered = false;
+}
+
+function setTrayBadgeFromReminderPoller(count: number): void {
+  if (shuttingDown || shutdownComplete || crashLoopStopped) return;
+  setTrayBadge(count);
+}
+
+function refreshTrayReminderBadge(): void {
+  void reminderBadgePoller?.refreshNow();
+}
+
+function trayRemindersDashboardUrl(): string {
+  return new URL('/?sidebar=reminders', MANAGER_URL).toString();
+}
+
+async function openTrayRemindersDashboard(): Promise<void> {
+  await createManagerWindow();
+  if (!mainWindow || mainWindow.isDestroyed()) return;
+  try {
+    await mainWindow.loadURL(trayRemindersDashboardUrl());
+    focusWindow(mainWindow);
+    reminderPopover?.hide();
+  } catch (err) {
+    ringBuffer.append(`[tray-reminders] open dashboard failed: ${(err as Error)?.message ?? err}\n`);
+  }
+}
+
+function startTrayReminderBadgePolling(): void {
+  reminderBadgePoller?.start();
+}
+
+function stopTrayReminderBadgePolling(): void {
+  reminderBadgePoller?.stop();
+}
+
+function markManagerRunning(status = 'Server: Running'): void {
+  updateServerStatus(status);
+  startTrayReminderBadgePolling();
+  refreshTrayReminderBadge();
+}
+
+async function createManagerWindow(): Promise<void> {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.show();
+    mainWindow.focus();
+    return;
+  }
+  if (windowCreating) return;
+  windowCreating = true;
+  try {
+    await createWindow();
+    markManagerRunning();
+    if (!metricsCollector) {
+      try {
+        metricsCollector = startAppMetricsCollector();
+      } catch (err) {
+        ringBuffer.append(`[metrics restart error] ${(err as Error)?.message ?? err}\n`);
+      }
+    }
+  } catch (err) {
+    ringBuffer.append(`[createManagerWindow error] ${(err as Error)?.message ?? err}\n`);
+    updateServerStatus('Server: Unreachable');
+  } finally {
+    windowCreating = false;
+  }
+}
+
+async function restartManagerServer(): Promise<void> {
+  managerRestarting = true;
+  stopTrayReminderBadgePolling();
+  updateServerStatus('Server: Restarting...');
+  const child = managerProcess;
+  managerProcess = null;
+  try {
+    if (child) {
+      child.removeAllListeners('exit');
+      await gracefulShutdown(child, 5000);
+    }
+    await ensureManagerRunning();
+    markManagerRunning();
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      await mainWindow.loadURL(MANAGER_URL);
+    }
+  } catch (err) {
+    ringBuffer.append(`[restart error] ${(err as Error)?.message ?? err}\n`);
+    stopTrayReminderBadgePolling();
+    updateServerStatus('Server: Restart failed');
+    notifyServerCrash();
+  } finally {
+    managerRestarting = false;
+  }
+}
+
+async function bootstrap(): Promise<void> {
+  installManagerApplicationMenu();
+  installSecurityHeaders(MANAGER_ORIGIN);
+  installDefaultSessionPermissionHandlers();
+
+  registerTerminalIpc(() => mainWindow);
+  registerDiffIpc();
+  registerFolderIpc(() => mainWindow);
+  registerBrowserIpc({
+    getManagerWindow: () => mainWindow,
+    normalizeEmbeddedBrowserUrl: normalizeAllowedEmbeddedBrowserUrl,
+    isAllowedEmbeddedBrowserUrl,
+    openExternalNavigation,
+  });
+  registerClipboardIpc();
+  registerPermissionDiagnosticsIpc();
+  registerWindowIpc();
+
+  createTray({
+    onOpenDashboard: () => {
+      void createManagerWindow();
+    },
+    onRestartServer: () => {
+      void restartManagerServer();
+    },
+    onQuit: () => {
+      void forceQuit();
+    },
+    getManagerUrl: () => MANAGER_URL,
+  });
+
+  await ensureManagerRunning();
+  installTrayReminders();
+  markManagerRunning();
+  if (FLAGS.background) {
+    markManagerRunning('Server: Running (background)');
+  } else {
+    await createManagerWindow();
+  }
+  primeMacAutomationPermission({
+    log: ringBuffer,
+    onBlocked: showAutomationPermissionDialog,
+  });
+}
+
+function showAutomationPermissionDialog(reason: string): void {
+  void dialog.showMessageBox({
+    type: 'warning',
+    title: 'podex Automation permission',
+    message: 'macOS Automation permission is not ready.',
+    detail: [
+      'podex tried to request Automation access for Computer Use, but macOS did not complete the prompt.',
+      '',
+      `Reason: ${reason}`,
+      '',
+      'Open System Settings > Privacy & Security > Automation and enable podex for System Events and Google Chrome when it appears.',
+    ].join('\n'),
+    buttons: ['Open Automation Settings', 'OK'],
+    defaultId: 0,
+    cancelId: 1,
+  }).then((result) => {
+    if (result.response !== 0) return;
+    void shell.openExternal(AUTOMATION_SETTINGS_URL);
+  }).catch((err) => {
+    ringBuffer.append(`[automation permission dialog error] ${(err as Error).message}\n`);
+  });
+}
+
+function bootstrapOnce(): Promise<void> {
+  if (shuttingDown || shutdownComplete) return Promise.resolve();
+  if (!bootstrapPromise) {
+    bootstrapPromise = bootstrap().finally(() => {
+      bootstrapPromise = null;
+    });
+  }
+  return bootstrapPromise;
+}
+
+async function handleDeepLink(raw: string): Promise<void> {
+  if (!app.isReady()) {
+    pendingDeepLinkUrl = raw;
+    return;
+  }
+  try {
+    const routed = await routeJawDeepLink(raw, {
+      managerUrl: MANAGER_URL,
+      getWindow: () => mainWindow,
+      ensureReady: bootstrapOnce,
+    });
+    if (!routed) focusWindow(mainWindow);
+  } catch (err) {
+    ringBuffer.append(`[deep-link error] ${(err as Error)?.message ?? err}\n`);
+    focusWindow(mainWindow);
+  }
+}
+
+function installSecurityHeaders(managerOrigin: string): void {
+  const csp = buildManagerCsp(
+    managerOrigin,
+    buildPreviewFrameOrigins(PREVIEW_FRAME_POLICY),
+  );
+
+  const filter = { urls: [`${managerOrigin}/*`] };
+  session.defaultSession.webRequest.onHeadersReceived(filter, (details, callback) => {
+    const headers = { ...(details.responseHeaders ?? {}) };
+    for (const key of Object.keys(headers)) {
+      const lower = key.toLowerCase();
+      if (lower === 'content-security-policy' || lower === 'x-content-type-options') {
+        delete headers[key];
+      }
+    }
+    headers['Content-Security-Policy'] = [csp];
+    headers['X-Content-Type-Options'] = ['nosniff'];
+    callback({ responseHeaders: headers });
+  });
+}
+
+function permissionRequestUrl(contents: Electron.WebContents | null, fallback?: string): string {
+  return fallback || contents?.getURL() || MANAGER_URL;
+}
+
+function permissionSurfaceForUrl(raw: string): ElectronPermissionSurface {
+  return isPreviewFrameNavigation(raw, PREVIEW_FRAME_POLICY) ? 'preview-frame' : 'manager-window';
+}
+
+function permissionMediaType(details: unknown): string | undefined {
+  if (!details || typeof details !== 'object') return undefined;
+  const maybeMediaType = (details as { mediaType?: unknown }).mediaType;
+  if (typeof maybeMediaType === 'string') return maybeMediaType;
+  const maybeMediaTypes = (details as { mediaTypes?: unknown }).mediaTypes;
+  if (Array.isArray(maybeMediaTypes)) {
+    const first = maybeMediaTypes.find((value): value is string => typeof value === 'string');
+    if (first) return first;
+  }
+  return undefined;
+}
+
+function isElectronPermissionAllowed(
+  surface: ElectronPermissionSurface,
+  permission: string,
+  requestingUrl: string,
+  mediaType?: string,
+): boolean {
+  const result = resolveElectronPermissionDecision({
+    permission,
+    requestingUrl,
+    managerOrigin: MANAGER_ORIGIN,
+    previewPolicy: PREVIEW_FRAME_POLICY,
+    surface,
+    ...(mediaType ? { mediaType } : {}),
+  });
+  if (result.decision === 'allow') return true;
+  recordElectronPermissionDenial({
+    surface,
+    permission,
+    requestingUrl,
+    reason: result.reason,
+  });
+  ringBuffer.append(`[permission denied] ${surface} ${permission} ${requestingUrl}: ${result.reason}\n`);
+  return false;
+}
+
+function installDefaultSessionPermissionHandlers(): void {
+  session.defaultSession.setPermissionRequestHandler((contents, permission, callback, details) => {
+    const detailValues = details as { requestingUrl?: string } | undefined;
+    const requestingUrl = permissionRequestUrl(contents, detailValues?.requestingUrl);
+    callback(isElectronPermissionAllowed(
+      permissionSurfaceForUrl(requestingUrl),
+      String(permission),
+      requestingUrl,
+      permissionMediaType(details),
+    ));
+  });
+
+  session.defaultSession.setPermissionCheckHandler((contents, permission, requestingOrigin, details) => {
+    const detailValues = details as { requestingUrl?: string; securityOrigin?: string } | undefined;
+    const requestingUrl = permissionRequestUrl(
+      contents,
+      detailValues?.requestingUrl || detailValues?.securityOrigin || requestingOrigin,
+    );
+    return isElectronPermissionAllowed(
+      permissionSurfaceForUrl(requestingUrl),
+      String(permission),
+      requestingUrl,
+      permissionMediaType(details),
+    );
+  });
+}
+
+function isAllowedFrameNavigation(raw: string): boolean {
+  return isManagerNavigation(raw, MANAGER_ORIGIN)
+    || isPreviewFrameNavigation(raw, PREVIEW_FRAME_POLICY);
+}
+
+function normalizeAllowedEmbeddedBrowserUrl(raw: string): string | null {
+  return normalizeExternalOpenUrl(raw);
+}
+
+function isAllowedEmbeddedBrowserUrl(raw: string): boolean {
+  return normalizeAllowedEmbeddedBrowserUrl(raw) !== null;
+}
+
+function embeddedBrowserDisposition(disposition: string): 'current-tab' | 'new-tab' {
+  return disposition === 'default' ? 'current-tab' : 'new-tab';
+}
+
+function sendEmbeddedBrowserOpenUrl(raw: string, disposition: string, sourceWebContentsId?: number): void {
+  const url = normalizeAllowedEmbeddedBrowserUrl(raw);
+  if (!url || !mainWindow || mainWindow.isDestroyed()) return;
+  mainWindow.webContents.send('browser:open-url', {
+    url,
+    disposition: embeddedBrowserDisposition(disposition),
+    // Which guest requested the popup: lets the owning BrowserPanel handle it
+    // instead of whichever panel currently holds handler priority.
+    ...(typeof sourceWebContentsId === 'number' ? { sourceWebContentsId } : {}),
+  });
+}
+
+function openExternalNavigation(raw: string): boolean {
+  const url = externalOpenUrlForNavigation(raw, {
+    managerOrigin: MANAGER_ORIGIN,
+    ...PREVIEW_FRAME_POLICY,
+  });
+  if (!url) return false;
+  void shell.openExternal(url).catch((err) => {
+    ringBuffer.append(`[external open error] ${url}: ${(err as Error)?.message ?? err}\n`);
+  });
+  return true;
+}
+
+function hardenEmbeddedBrowserWebContents(contents: Electron.WebContents): void {
+  if (contents.getType() !== 'webview') return;
+  installDesktopShortcutForwarder(contents);
+  contents.setWindowOpenHandler(({ url, disposition }) => {
+    sendEmbeddedBrowserOpenUrl(url, disposition, contents.id);
+    return { action: 'deny' };
+  });
+  contents.on('will-navigate', (event, url) => {
+    if (!isAllowedEmbeddedBrowserUrl(url)) event.preventDefault();
+  });
+  contents.on('will-redirect', (event, url) => {
+    if (!isAllowedEmbeddedBrowserUrl(url)) event.preventDefault();
+  });
+  contents.session.setPermissionRequestHandler((wc, permission, cb, details) => {
+    cb(isElectronPermissionAllowed('embedded-browser-webview', String(permission), details.requestingUrl || wc.getURL()));
+  });
+  contents.session.setPermissionCheckHandler((_wc, permission, requestingOrigin, details) => (
+    isElectronPermissionAllowed('embedded-browser-webview', String(permission), details.requestingUrl || details.securityOrigin || requestingOrigin, details.mediaType)
+  ));
+}
+
+function registerGlobalWebContentsHardening(): void {
+  if (webContentsHardeningRegistered) return;
+  webContentsHardeningRegistered = true;
+  app.on('web-contents-created', (_event, contents) => {
+    hardenEmbeddedBrowserWebContents(contents);
+    if (contents.getType() === 'webview') {
+      markOwnedEmbeddedBrowserWebContents(contents);
+    }
+  });
+}
+
+function isCode(input: DesktopKeyboardInput, code: string, fallbackKey: string): boolean {
+  return input.code === code || String(input.key ?? '').toLowerCase() === fallbackKey;
+}
+
+function managerShortcutActionFromInput(input: DesktopKeyboardInput): ManagerShortcutAction | null {
+  if (input.type !== 'keyDown' || input.isAutoRepeat || input.isComposing) return null;
+  const ctrl = input.control === true;
+  const meta = input.meta === true;
+  const shift = input.shift === true;
+  const alt = input.alt === true;
+
+  if (ctrl && shift && !meta && !alt && isCode(input, 'Backquote', '`')) return 'newTerminalSession';
+  if (ctrl && !meta && !shift && !alt && isCode(input, 'Backquote', '`')) return 'focusTerminal';
+  if (meta && !ctrl && !shift && !alt && isCode(input, 'Backquote', '`')) return 'focusTerminal';
+  if (meta && !ctrl && !shift && !alt && isCode(input, 'KeyB', 'b')) return 'toggleRightPanel';
+  if (meta && !ctrl && shift && !alt && isCode(input, 'KeyB', 'b')) return 'toggleLeftSidebar';
+  if (meta && !ctrl && !shift && !alt && isCode(input, 'KeyJ', 'j')) return 'toggleBottomPanel';
+  if (meta && !ctrl && shift && !alt && isCode(input, 'KeyD', 'd')) return 'openDiff';
+  if (meta && !ctrl && shift && !alt && isCode(input, 'KeyE', 'e')) return 'openFolderTree';
+  return null;
+}
+
+function installDesktopShortcutForwarder(contents: Electron.WebContents): void {
+  contents.on('before-input-event', (event, input) => {
+    const action = managerShortcutActionFromInput(input);
+    if (!action) return;
+    event.preventDefault();
+    sendManagerShortcut(action);
+  });
+}
+
+function sendManagerShortcut(action: ManagerShortcutAction): void {
+  mainWindow?.webContents.send('manager:shortcut', action);
+}
+
+function installManagerApplicationMenu(): void {
+  const template: MenuItemConstructorOptions[] = [
+    ...(process.platform === 'darwin' ? [{ role: 'appMenu' } as MenuItemConstructorOptions] : []),
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Close Tab',
+          accelerator: 'CommandOrControl+W',
+          click: () => sendManagerShortcut('closeFocusedTab'),
+        },
+      ],
+    },
+    { role: 'editMenu' },
+    {
+      label: 'View',
+      submenu: [
+        {
+          // Single source of truth for ⌘R: delegate to the renderer's
+          // focus-aware handler (browser tab / preview / app window). The
+          // renderer keydown matcher excludes these actions so only this
+          // accelerator fires — no double reload. App-window reload goes
+          // through the guarded window:reload IPC.
+          label: 'Reload',
+          accelerator: 'CommandOrControl+R',
+          click: () => sendManagerShortcut('browserReload'),
+        },
+        {
+          label: 'Hard Reload',
+          accelerator: 'CommandOrControl+Shift+R',
+          click: () => sendManagerShortcut('browserHardReload'),
+        },
+        ...(DEV_TOOLS_ENABLED ? [{ role: 'toggleDevTools' } as MenuItemConstructorOptions] : []),
+        { type: 'separator' },
+        {
+          label: 'Toggle Right Sidebar',
+          accelerator: 'CommandOrControl+B',
+          click: () => sendManagerShortcut('toggleRightPanel'),
+        },
+        {
+          label: 'Reveal Terminal',
+          accelerator: 'Ctrl+`',
+          click: () => sendManagerShortcut('focusTerminal'),
+        },
+        {
+          label: 'New Terminal',
+          accelerator: 'Ctrl+Shift+`',
+          click: () => sendManagerShortcut('newTerminalSession'),
+        },
+        {
+          label: 'Toggle Bottom Panel',
+          accelerator: 'CommandOrControl+J',
+          click: () => sendManagerShortcut('toggleBottomPanel'),
+        },
+        {
+          label: 'Open Folder Panel',
+          accelerator: 'CommandOrControl+Shift+E',
+          click: () => sendManagerShortcut('openFolderTree'),
+        },
+        {
+          label: 'Open Diff Panel',
+          accelerator: 'CommandOrControl+Shift+D',
+          click: () => sendManagerShortcut('openDiff'),
+        },
+        { type: 'separator' },
+        {
+          label: 'Overview',
+          accelerator: 'CommandOrControl+1',
+          click: () => sendManagerShortcut('switchTab1'),
+        },
+        {
+          label: 'Preview',
+          accelerator: 'CommandOrControl+2',
+          click: () => sendManagerShortcut('switchTab2'),
+        },
+        {
+          label: 'Logs',
+          accelerator: 'CommandOrControl+3',
+          click: () => sendManagerShortcut('switchTab3'),
+        },
+        {
+          label: 'Settings',
+          accelerator: 'CommandOrControl+4',
+          click: () => sendManagerShortcut('switchTab4'),
+        },
+        { type: 'separator' },
+        {
+          label: 'Previous Tab',
+          accelerator: 'CommandOrControl+Shift+[',
+          click: () => sendManagerShortcut('previousTab'),
+        },
+        {
+          label: 'Next Tab',
+          accelerator: 'CommandOrControl+Shift+]',
+          click: () => sendManagerShortcut('nextTab'),
+        },
+        { type: 'separator' },
+        { role: 'resetZoom' },
+        { role: 'zoomIn' },
+        { role: 'zoomOut' },
+        { type: 'separator' },
+        {
+          label: 'Toggle Left Sidebar',
+          accelerator: 'CommandOrControl+Shift+B',
+          click: () => sendManagerShortcut('toggleLeftSidebar'),
+        },
+        { type: 'separator' },
+        { role: 'togglefullscreen' },
+      ],
+    },
+    {
+      label: 'Terminal',
+      submenu: [
+        {
+          label: 'Clear Terminal',
+          click: () => sendManagerShortcut('terminalClear'),
+        },
+        {
+          label: 'New Terminal Tab',
+          accelerator: 'CommandOrControl+T',
+          click: () => sendManagerShortcut('terminalNewTab'),
+        },
+      ],
+    },
+    { role: 'windowMenu' },
+  ];
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
+
+function switchManagerUrl(url: string): void {
+  MANAGER_URL = url;
+  MANAGER_ORIGIN = new URL(url).origin;
+  PREVIEW_FRAME_POLICY = resolvePreviewFramePolicyForManager(getManagerUrlPort(url));
+  setAllowedOrigin(MANAGER_ORIGIN);
+}
+
+function shouldAttachToExistingManager(): boolean {
+  return FLAGS.attachOnly || (FLAGS.managerUrlExplicit && !FLAGS.spawn);
+}
+
+function getManagerUrlPort(url: string): number {
+  const parsed = new URL(url);
+  const port = parsed.port
+    ? Number(parsed.port)
+    : parsed.protocol === 'https:'
+      ? 443
+      : 80;
+  if (!Number.isFinite(port) || port <= 0) {
+    throw new Error(`[jaw-electron] invalid manager URL port: ${url}`);
+  }
+  return port;
+}
+
+function isTcpPortAvailable(port: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    const server = createServer();
+    let done = false;
+    const finish = (available: boolean): void => {
+      if (done) return;
+      done = true;
+      server.removeAllListeners();
+      if (server.listening) {
+        server.close(() => resolve(available));
+        return;
+      }
+      resolve(available);
+    };
+    server.once('error', () => finish(false));
+    server.once('listening', () => finish(true));
+    try {
+      server.listen(port, '127.0.0.1');
+    } catch {
+      finish(false);
+    }
+  });
+}
+
+function normalizeElectronPreferredManagerPort(port: number): number {
+  if (port >= ELECTRON_MANAGER_PORT_START && port <= ELECTRON_MANAGER_PORT_END) return port;
+  return ELECTRON_MANAGER_PORT_START;
+}
+
+async function findAvailableManagerPort(preferredPort: number): Promise<number> {
+  const start = normalizeElectronPreferredManagerPort(preferredPort);
+  for (let candidate = start; candidate <= ELECTRON_MANAGER_PORT_END; candidate += 1) {
+    if (await isTcpPortAvailable(candidate)) return candidate;
+  }
+  throw new Error(
+    `[jaw-electron] no free manager port from ${start} to ${ELECTRON_MANAGER_PORT_END}`,
+  );
+}
+
+async function prepareSpawnManagerUrl(): Promise<void> {
+  if (FLAGS.managerUrlExplicit) return;
+  const port = await findAvailableManagerPort(FLAGS.port);
+  const url = `http://127.0.0.1:${port}/`;
+  if (url === MANAGER_URL) return;
+  ringBuffer.append(`[manager port] ${MANAGER_URL} is busy; spawning dashboard at ${url}\n`);
+  switchManagerUrl(url);
+  installSecurityHeaders(MANAGER_ORIGIN);
+}
+
+async function ensureManagerRunning(): Promise<void> {
+  if (shouldAttachToExistingManager()) {
+    if (await isManagerHealthy(MANAGER_URL)) return;
+    const ok = await waitForManagerReady(MANAGER_URL, { timeoutMs: 60_000 });
+    if (!ok) {
+      await showSpawnFailedDialog(
+        `${MANAGER_URL} 에 연결할 수 없습니다. 명시적 attach 모드이므로 서버를 자동 spawn하지 않습니다.`,
+      );
+      app.quit();
+    }
+    return;
+  }
+
+  if (managerProcess && await isManagerHealthy(MANAGER_URL)) return;
+  if (managerReadyPromise) return managerReadyPromise;
+
+  managerReadyPromise = (async () => {
+    if (managerProcess && await isManagerHealthy(MANAGER_URL)) return;
+    await spawnAndWait();
+  })().finally(() => {
+    managerReadyPromise = null;
+  });
+
+  return managerReadyPromise;
+}
+
+async function spawnAndWait(): Promise<void> {
+  await prepareSpawnManagerUrl();
+  const found = await findJawBinary();
+  if (!found.path) {
+    const choice = await showJawNotFoundDialog(found.searched);
+    if (choice === 'pick') {
+      const picked = await dialog.showOpenDialog({
+        title: 'jaw 실행 파일 선택',
+        properties: ['openFile'],
+      });
+      if (!picked.canceled && picked.filePaths[0]) {
+        process.env.JAW_BIN = picked.filePaths[0];
+        return spawnAndWait();
+      }
+    }
+    app.quit();
+    return;
+  }
+
+  const managerPort = getManagerUrlPort(MANAGER_URL);
+  PREVIEW_FRAME_POLICY = resolvePreviewFramePolicyForManager(managerPort);
+  managerProcess = spawnJawDashboard(found.path, {
+    port: managerPort,
+    ringBuffer,
+    env: {
+      ...previewSpawnEnvForManager(managerPort),
+      podex_ELECTRON_RENDERER_TOKEN: ELECTRON_RENDERER_TOKEN,
+    },
+  });
+
+  managerProcess.on('exit', handleManagerExit);
+  managerProcess.on('error', (err) => {
+    ringBuffer.append(`[spawn error] ${err.message}\n`);
+  });
+
+  const ok = await waitForManagerReady(MANAGER_URL, { timeoutMs: 60_000 });
+  if (!ok) {
+    await showSpawnFailedDialog(
+      `60초 안에 ${MANAGER_URL} 가 응답하지 않았습니다.\n\n최근 로그:\n${ringBuffer.read().slice(-1500)}`,
+    );
+    app.quit();
+  }
+}
+
+const PLANNED_RESTART_CODE = 75;
+
+function handleManagerExit(code: number | null, signal: NodeJS.Signals | null): void {
+  ringBuffer.append(`[manager exit] code=${code} signal=${signal}\n`);
+  if (shuttingDown || crashLoopStopped) return;
+  if (managerRestarting) return;
+  stopTrayReminderBadgePolling();
+
+  if (code === PLANNED_RESTART_CODE) {
+    ringBuffer.append(`[manager exit] planned restart (code ${PLANNED_RESTART_CODE})\n`);
+    void (async () => {
+      try {
+        await ensureManagerRunning();
+        markManagerRunning();
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          try {
+            await mainWindow.loadURL(MANAGER_URL);
+          } catch (err) {
+            ringBuffer.append(`[planned restart reload error] ${(err as Error)?.message ?? err}\n`);
+          }
+        }
+      } catch (err) {
+        ringBuffer.append(`[planned restart error] ${(err as Error)?.message ?? err}\n`);
+      }
+    })();
+    return;
+  }
+
+  void (async () => {
+    if (shouldAttachToExistingManager() && await probeOnce(MANAGER_URL)) {
+      ringBuffer.append(`[manager exit] another instance owns ${MANAGER_URL}; attaching\n`);
+      managerProcess = null;
+      if (mainWindow) {
+        try {
+          await mainWindow.loadURL(MANAGER_URL);
+        } catch (err) {
+          ringBuffer.append(`[attach error] ${(err as Error)?.message ?? err}\n`);
+        }
+      }
+      markManagerRunning();
+      return;
+    }
+    stopTrayReminderBadgePolling();
+    updateServerStatus('Server: Crashed');
+    if (isKeepRunning() && (!mainWindow || mainWindow.isDestroyed())) {
+      notifyServerCrash();
+    }
+    const now = Date.now();
+    restartTimestamps = restartTimestamps.filter((t) => now - t < 60_000);
+    restartTimestamps.push(now);
+    if (restartTimestamps.length > 3) {
+      crashLoopStopped = true;
+      updateServerStatus('Server: Crash loop');
+      notifyServerCrash();
+      void showCrashLoopDialog(ringBuffer.read()).then(() => app.quit());
+      return;
+    }
+    try {
+      await ensureManagerRunning();
+      markManagerRunning();
+      if (await probeOnce(MANAGER_URL)) {
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          try {
+            await mainWindow.loadURL(MANAGER_URL);
+          } catch (err) {
+            ringBuffer.append(`[respawn reload error] ${(err as Error)?.message ?? err}\n`);
+          }
+        }
+      }
+    } catch (err) {
+      ringBuffer.append(`[respawn error] ${(err as Error)?.message ?? err}\n`);
+    }
+  })();
+}
+
+async function createWindow(): Promise<void> {
+  const initialWindowBounds = getInitialWindowBounds();
+  mainWindow = new BrowserWindow({
+    ...initialWindowBounds,
+    minWidth: MIN_VISIBLE_WINDOW_WIDTH,
+    minHeight: MIN_VISIBLE_WINDOW_HEIGHT,
+    show: true,
+    titleBarStyle: 'hiddenInset',
+    trafficLightPosition: { x: 16, y: 16 },
+    icon: app.isPackaged
+      ? join(process.resourcesPath, 'icon.png')
+      : join(__dirname, '..', '..', 'build', 'icon.png'),
+    webPreferences: {
+      contextIsolation: true,
+      sandbox: true,
+      nodeIntegration: false,
+      webSecurity: true,
+      allowRunningInsecureContent: false,
+      webviewTag: true,
+      preload: PRELOAD_PATH,
+      devTools: DEV_TOOLS_ENABLED,
+    },
+  });
+  const userAgent = mainWindow.webContents.getUserAgent();
+  if (!userAgent.includes(DESKTOP_USER_AGENT_TOKEN)) {
+    mainWindow.webContents.setUserAgent(`${userAgent} ${DESKTOP_USER_AGENT_TOKEN}/${app.getVersion()}`);
+  }
+
+  const guardNavigation = (event: Electron.Event, url: string): void => {
+    if (!isManagerNavigation(url, MANAGER_ORIGIN)) {
+      openExternalNavigation(url);
+      event.preventDefault();
+    }
+  };
+
+  mainWindow.webContents.on('will-navigate', guardNavigation);
+  mainWindow.webContents.on('will-redirect', guardNavigation);
+  mainWindow.webContents.on('will-frame-navigate', (event) => {
+    if (event.isMainFrame) return;
+    if (!isAllowedFrameNavigation(event.url)) {
+      openExternalNavigation(event.url);
+      event.preventDefault();
+    }
+  });
+  mainWindow.webContents.on('will-attach-webview', (event, webPreferences, params) => {
+    const src = typeof params.src === 'string' ? params.src : '';
+    if (!isAllowedEmbeddedBrowserUrl(src)) {
+      event.preventDefault();
+      return;
+    }
+    delete webPreferences.preload;
+    webPreferences.nodeIntegration = false;
+    webPreferences.contextIsolation = true;
+    webPreferences.sandbox = true;
+    webPreferences.webSecurity = true;
+    webPreferences.allowRunningInsecureContent = false;
+    webPreferences.plugins = false;
+    webPreferences.partition = EMBEDDED_BROWSER_PARTITION;
+  });
+  registerGlobalWebContentsHardening();
+  installDesktopShortcutForwarder(mainWindow.webContents);
+
+  // The Manager renderer must never die into a permanently blank window
+  // (observed with embedded-browser webview attach in packaged builds).
+  // Log the reason and reload, with a small budget so a hard crash loop
+  // cannot spin forever.
+  mainWindow.webContents.on('render-process-gone', (_event, details) => {
+    ringBuffer.append(`[manager renderer gone] reason=${details.reason} exitCode=${details.exitCode}\n`);
+    if (details.reason === 'clean-exit' || details.reason === 'killed') return;
+    const now = Date.now();
+    rendererCrashReloads = rendererCrashReloads.filter(at => now - at < 60_000);
+    if (rendererCrashReloads.length >= 3) {
+      ringBuffer.append('[manager renderer gone] reload budget exhausted; leaving window for inspection\n');
+      return;
+    }
+    rendererCrashReloads.push(now);
+    const win = mainWindow;
+    if (win && !win.isDestroyed()) {
+      setTimeout(() => {
+        if (win.isDestroyed()) return;
+        win.webContents.reload();
+      }, 250);
+    }
+  });
+
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    openExternalNavigation(url);
+    return { action: 'deny' };
+  });
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+  mainWindow.on('close', (event) => {
+    if (shutdownComplete || shuttingDown) return;
+    if (isKeepRunning()) {
+      if (metricsCollector) {
+        metricsCollector.stop();
+        metricsCollector = null;
+      }
+      cleanupTerminals();
+      cleanupFolderWatchers();
+      markManagerRunning('Server: Running (background)');
+      return;
+    }
+    event.preventDefault();
+    void requestApplicationQuit('window-close');
+  });
+
+  if (DEV_TOOLS_ENABLED) {
+    mainWindow.webContents.openDevTools({ mode: 'detach' });
+  }
+
+  await mainWindow.loadURL(MANAGER_URL);
+}
+

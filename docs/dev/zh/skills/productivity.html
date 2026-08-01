@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Productivity Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link active" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="./">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Productivity Skills</h1>
+<p class="lead">文档创建、知识管理、任务跟踪、笔记和韩语内容写作技能。这 17 项技能将 podex 连接到办公套件、项目管理工具、个人生产力应用和编辑工作流，让您可以完全通过聊天界面创建、阅读、编辑和组织文档、任务与内容。</p>
+
+<h2>概述</h2>
+<p>生产力技能分为五组：<strong>文档格式</strong>（Office 和 HWP 文件读写）、<strong>知识管理</strong>（Notion、Obsidian、Apple Notes）、<strong>任务管理</strong>（Things、Reminders、Trello、Linear）、<strong>协作工具</strong>（协同编辑、HTML 转 PPTX 转换）以及<strong>内容写作</strong>（通过 <code>k-writing</code> 生成韩语推广/编辑内容）。</p>
+
+<table>
+<tr><th>技能</th><th>状态</th><th>类别</th><th>描述</th></tr>
+<tr><td><code>docx</code></td><td>已激活</td><td>文档</td><td>创建、阅读和编辑 Word (.docx) 文件</td></tr>
+<tr><td><code>pptx</code></td><td>已激活</td><td>文档</td><td>创建、阅读和编辑 PowerPoint (.pptx) 演示文稿</td></tr>
+<tr><td><code>xlsx</code></td><td>已激活</td><td>文档</td><td>创建、阅读和编辑 Excel (.xlsx) 电子表格</td></tr>
+<tr><td><code>hwp</code></td><td>已激活</td><td>文档</td><td>创建、阅读和编辑韩文 HWP/HWPX 文档</td></tr>
+<tr><td><code>k-writing</code></td><td>已激活</td><td>内容</td><td>韩语推广/内容写作，包含渠道路由、强制预搜索、3 候选钩子评分以及去 AI 痕迹/拟人化校验</td></tr>
+<tr><td><code>notion</code></td><td>已激活</td><td>知识</td><td>阅读、创建和更新 Notion 页面和数据库</td></tr>
+<tr><td><code>notion-knowledge-capture</code></td><td>计划中</td><td>知识</td><td>自动将对话洞察捕获到 Notion</td></tr>
+<tr><td><code>notion-meeting</code></td><td>计划中</td><td>知识</td><td>含待办事项的会议记录模板，同步到 Notion</td></tr>
+<tr><td><code>notion-research</code></td><td>计划中</td><td>知识</td><td>将研究发现汇总到 Notion 数据库</td></tr>
+<tr><td><code>notion-spec</code></td><td>计划中</td><td>知识</td><td>集成 Notion 的产品规格起草</td></tr>
+<tr><td><code>apple-notes</code></td><td>计划中</td><td>知识</td><td>通过 AppleScript 创建和搜索 Apple Notes</td></tr>
+<tr><td><code>obsidian</code></td><td>计划中</td><td>知识</td><td>读取和写入 Obsidian 知识库的 Markdown 文件</td></tr>
+<tr><td><code>apple-reminders</code></td><td>计划中</td><td>任务</td><td>通过 AppleScript 创建和管理 Apple Reminders</td></tr>
+<tr><td><code>things-mac</code></td><td>计划中</td><td>任务</td><td>在 Mac 版 Things 3 中创建和管理任务</td></tr>
+<tr><td><code>trello</code></td><td>计划中</td><td>任务</td><td>创建卡片、在列表间移动、管理 Trello 看板</td></tr>
+<tr><td><code>linear</code></td><td>计划中</td><td>任务</td><td>创建问题、更新状态、查询 Linear 项目</td></tr>
+<tr><td><code>doc-coauthoring</code></td><td>计划中</td><td>协作</td><td>AI 辅助的实时协作文档编辑</td></tr>
+<tr><td><code>html2pptx</code></td><td>计划中</td><td>协作</td><td>将 HTML 内容转换为 PowerPoint 幻灯片</td></tr>
+</table>
+
+<h2>文档技能</h2>
+<p>四项文档技能（<code>docx</code>、<code>pptx</code>、<code>xlsx</code>、<code>hwp</code>）目前均已激活，并为各自的格式提供完整的读取/写入/编辑功能。</p>
+
+<h3>docx -- Word Documents</h3>
+<p>使用结构化内容块创建和编辑 <code>.docx</code> 文件。支持标题、段落、表格、项目符号列表、图片和自定义样式。</p>
+<pre><code># Create a new Word document
+"프로젝트 보고서를 docx로 만들어줘"
+
+# Read and summarize an existing document
+"이 docx 파일 읽어서 요약해줘"
+
+# Edit specific sections
+"3번째 섹션의 표를 업데이트해줘"</code></pre>
+
+<h3>pptx -- PowerPoint Presentations</h3>
+<p>生成包含布局、文本框、图片、图表和演讲者备注的幻灯片。支持母版幻灯片模板和自定义主题。</p>
+<pre><code># Create a presentation from scratch
+"PPT 만들어줘 -- 10장짜리 프로젝트 발표용"
+
+# Add slides to existing presentation
+"이 PPT에 요약 슬라이드 추가해줘"
+
+# Convert content to slides
+"이 마크다운을 PPT로 변환해줘"</code></pre>
+
+<h3>xlsx -- Excel Spreadsheets</h3>
+<p>创建和操作包含公式、图表、条件格式、数据透视表和多工作表的电子表格。</p>
+<pre><code># Create a budget spreadsheet
+"월별 예산 엑셀 만들어줘"
+
+# Analyze existing data
+"이 엑셀 데이터 분석해서 차트 추가해줘"
+
+# Generate report from data
+"매출 데이터로 분기별 보고서 엑셀 만들어줘"</code></pre>
+
+<h3>hwp -- Korean HWP/HWPX Documents</h3>
+<p>全面支持 Hancom Office 的 HWP 和 HWPX (OWPML) 格式。处理韩文特有的文档布局、表格和格式。可通过关键词如 한글、.hwp、.hwpx、한컴오피스 或 OWPML 触发。</p>
+<pre><code># Read an HWP file
+"한글 문서 읽어줘"
+
+# Create an official Korean document
+"공문서 양식으로 한글 파일 만들어줘"
+
+# Convert between formats
+"이 hwp 파일을 docx로 변환해줘"</code></pre>
+
+<div class="callout-info">
+<strong>提示：</strong> 所有文档技能会自动检测您提示语的语言。韩文提示如 "PPT 만들어줘" 或 "한글 문서 읽어줘" 可以与英文命令自然混用。技能会自动处理编码、字体和地区特定的格式。
+</div>
+
+<h2>知识管理</h2>
+<p>这些技能与笔记和知识库平台集成，用于捕获、组织和检索信息。</p>
+
+<h3>notion</h3>
+<p>核心 Notion 集成技能，目前已激活。连接 Notion API 以读取页面、创建新页面、更新内容和查询数据库。</p>
+<pre><code># Create a page in Notion
+"노션에 정리해줘 -- 오늘 회의 내용"
+
+# Query a database
+"노션 프로젝트 DB에서 진행중인 태스크 보여줘"
+
+# Update an existing page
+"노션 위클리 리포트 페이지 업데이트해줘"</code></pre>
+
+<table>
+<tr><th>子技能</th><th>状态</th><th>用途</th></tr>
+<tr><td><code>notion-knowledge-capture</code></td><td>计划中</td><td>自动将对话中的关键洞察、决策和经验捕获到结构化的 Notion 数据库中</td></tr>
+<tr><td><code>notion-meeting</code></td><td>计划中</td><td>生成包含参会人、议程、讨论要点和待办事项的会议记录页面</td></tr>
+<tr><td><code>notion-research</code></td><td>计划中</td><td>将网络搜索和深度研究的研究发现汇总到 Notion 中，并附带引用</td></tr>
+<tr><td><code>notion-spec</code></td><td>计划中</td><td>起草包含需求、用户故事和验收标准的产品规格</td></tr>
+</table>
+
+<h3>apple-notes（计划中）</h3>
+<p>通过 AppleScript 在 macOS 上与 Apple Notes 集成。将支持跨文件夹创建、搜索、阅读和追加笔记。</p>
+<pre><code># Create a quick note
+"애플 노트에 메모 남겨줘: 내일 미팅 준비사항"
+
+# Search notes
+"애플 노트에서 지난주 메모 검색해줘"</code></pre>
+
+<h3>obsidian（计划中）</h3>
+<p>与 Obsidian 知识库的直接集成。将支持读写 Markdown 文件、管理标签、创建维基链接，并遵循知识库的文件夹结构。</p>
+<pre><code># Create a note in Obsidian
+"옵시디언에 새 노트 만들어줘: 아키텍처 결정 기록"
+
+# Search vault
+"옵시디언 볼트에서 API 관련 노트 찾아줘"</code></pre>
+
+<h2>任务管理</h2>
+<p>任务管理技能将 podex 连接到流行的待办事项和项目跟踪工具。目前均为计划中。</p>
+
+<h3>apple-reminders（计划中）</h3>
+<p>通过 AppleScript 在 Apple Reminders 中创建和管理提醒。支持截止日期、优先级、列表和循环提醒。</p>
+<pre><code># Add a reminder
+"리마인더에 추가해줘: 금요일까지 보고서 제출"
+
+# List today's reminders
+"오늘 리마인더 보여줘"</code></pre>
+
+<h3>things-mac（计划中）</h3>
+<p>通过 URL scheme 和 AppleScript 与 Mac 版 Things 3 集成。将支持创建待办事项、项目、区域和管理标签。</p>
+<pre><code># Create a to-do
+"Things에 할일 추가해줘: 코드 리뷰"
+
+# Create a project with tasks
+"Things에 새 프로젝트 만들어줘 -- 릴리즈 체크리스트"</code></pre>
+
+<h3>trello（计划中）</h3>
+<p>通过 Trello REST API 管理 Trello 看板、列表和卡片。将支持创建卡片、在列表间移动、添加标签、清单和附件。</p>
+<pre><code># Create a card
+"트렐로 보드에 카드 추가해줘: 버그 수정 필요"
+
+# Move a card
+"트렐로에서 이 카드를 Done으로 옮겨줘"</code></pre>
+
+<h3>linear（计划中）</h3>
+<p>与 Linear 项目管理集成。将支持通过 Linear GraphQL API 创建问题、更新状态、查询项目和管理周期。</p>
+<pre><code># Create an issue
+"리니어에 이슈 만들어줘: 로그인 페이지 리디자인"
+
+# Query project status
+"리니어에서 이번 사이클 진행 상황 보여줘"</code></pre>
+
+<h2>协作工具</h2>
+<p>用于文档协作和格式转换工作流的专用技能。</p>
+
+<h3>doc-coauthoring（计划中）</h3>
+<p>启用实时协作文档编辑，AI 协助起草、审阅和完善文档，与人工输入并行工作。将支持版本跟踪、建议模式和评论解决。</p>
+<pre><code># Start co-authoring session
+"이 보고서 같이 작성하자 -- 내가 개요 쓸 테니 본문 채워줘"
+
+# Review and suggest edits
+"이 문서 리뷰하고 수정 제안해줘"</code></pre>
+
+<h3>html2pptx（计划中）</h3>
+<p>将 HTML 内容（网页、渲染后的 Markdown、报告输出）转换为格式化的 PowerPoint 幻灯片。适用于将研究结果或仪表板导出内容转换为可演示的幻灯片。</p>
+<pre><code># Convert HTML report to slides
+"이 HTML 리포트를 PPT로 변환해줘"
+
+# Web page to presentation
+"이 웹페이지 내용을 발표자료로 만들어줘"</code></pre>
+
+<div class="callout-info">
+<strong>自然语言触发：</strong> 您无需记住技能名称。只需用自然语言描述您的需求即可。示例：
+<ul>
+<li>"PPT 만들어줘" 触发 <code>pptx</code> 技能</li>
+<li>"노션에 정리해줘" 触发 <code>notion</code> 技能</li>
+<li>"한글 문서 읽어줘" 触发 <code>hwp</code> 技能</li>
+<li>"엑셀로 정리해줘" 触发 <code>xlsx</code> 技能</li>
+<li>"이거 홍보 쓰레드로 써줘" 触发活跃的 <code>k-writing</code> 技能</li>
+<li>"리마인더에 추가해줘" 将触发 <code>apple-reminders</code></li>
+<li>"트렐로에 카드 만들어줘" 将触发 <code>trello</code></li>
+</ul>
+podex 会自动将您的意图匹配到相应的技能。
+</div>
+
+<h2>配置</h2>
+<p>部分生产力技能需要 API 令牌或特定于应用的设置。请在 podex 设置或环境变量中进行配置。</p>
+
+<table>
+<tr><th>技能</th><th>要求</th><th>配置</th></tr>
+<tr><td><code>notion</code></td><td>Notion API 令牌</td><td>在环境变量或 <code>settings.json</code> 中设置 <code>NOTION_API_KEY</code></td></tr>
+<tr><td><code>trello</code></td><td>Trello API 密钥 + 令牌</td><td><code>TRELLO_API_KEY</code>、<code>TRELLO_TOKEN</code></td></tr>
+<tr><td><code>linear</code></td><td>Linear API 密钥</td><td><code>LINEAR_API_KEY</code></td></tr>
+<tr><td><code>obsidian</code></td><td>知识库路径</td><td>在设置中配置 <code>OBSIDIAN_VAULT_PATH</code></td></tr>
+<tr><td><code>docx</code> / <code>pptx</code> / <code>xlsx</code></td><td>无</td><td>开箱即用</td></tr>
+<tr><td><code>hwp</code></td><td>无</td><td>开箱即用</td></tr>
+<tr><td><code>apple-notes</code> / <code>apple-reminders</code> / <code>things-mac</code></td><td>macOS</td><td>需在系统设置中允许 AppleScript 访问</td></tr>
+</table>
+
+<h2>技能交互</h2>
+<p>生产力技能可以与 podex 的其他功能自然组合：</p>
+<ul>
+<li><strong>deep-research + notion</strong>：研究某个主题并将发现保存到 Notion 数据库</li>
+<li><strong>xlsx + pptx</strong>：分析电子表格数据并生成带图表的演示文稿</li>
+<li><strong>hwp + docx</strong>：在韩文 HWP 和 Word 格式之间转换</li>
+<li><strong>k-writing + search</strong>：结合最新来源检查、钩子评分和去 AI 痕迹审查来生成韩语推广文案</li>
+<li><strong>notion-meeting + telegram</strong>：捕获会议记录并通过 Telegram 发送摘要</li>
+<li><strong>html2pptx + web-ai</strong>：抓取网页并将其转换为幻灯片</li>
+<li><strong>linear + trello</strong>：跨项目管理工具同步问题状态</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="devtools-workflow.html">Dev Workflow</a>
+<a class="next" href="smarthome.html">Smart Home</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

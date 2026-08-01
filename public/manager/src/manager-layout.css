@@ -1,0 +1,304 @@
+.dashboard-shell.manager-shell {
+    height: 100dvh; max-height: 100dvh; overflow: hidden;
+    display: grid; grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: max-content minmax(0, 1fr);
+    grid-template-areas: "command" "workspace";
+    background: var(--bg-base);
+}
+.manager-workspace {
+    grid-area: workspace;
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: var(--sidebar-width, 340px) minmax(0, 1fr) var(--right-panel-width, 0px);
+    grid-template-rows: minmax(0, 1fr) var(--bottom-panel-height, var(--activity-dock-height, 150px));
+    grid-template-areas: "sidebar center right" "sidebar bottom right";
+    overflow: hidden;
+}
+.manager-workspace.is-side-panel-open {
+    --right-panel-width: 50vw;
+}
+.manager-shell.is-sidebar-collapsed .manager-workspace,
+.manager-workspace.is-sidebar-collapsed { --sidebar-width: 56px; }
+.manager-workspace.is-right-panel-closed { --right-panel-width: 0px; }
+.manager-workspace.is-right-panel-closed .right-panel,
+.manager-workspace.is-right-panel-closed .manager-ceo-panel { display: none; }
+.manager-workspace.is-right-panel-open .right-panel {
+    display: flex;
+    flex-direction: row;
+    min-height: 0;
+    overflow: visible;
+}
+.manager-workspace.is-right-panel-open .right-panel-shell {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+.manager-workspace.is-right-panel-open .right-panel-body {
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+.manager-workspace.is-right-panel-open .right-panel-body.is-single-panel {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+}
+.manager-workspace.is-right-panel-open .right-panel-body.is-split-panel {
+    display: grid;
+}
+.manager-workspace.is-right-panel-open .right-panel-body.is-single-panel > .right-sub-panel,
+.manager-workspace.is-right-panel-open .right-sub-content {
+    flex: 1 1 0;
+}
+.manager-workspace.is-right-panel-open .right-sub-panel,
+.manager-workspace.is-right-panel-open .right-sub-content {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+.manager-workspace.is-bottom-panel-closed { --bottom-panel-height: 0px; }
+.manager-workspace.is-bottom-panel-closed .bottom-panel { display: none; }
+.manager-sidebar {
+    grid-area: sidebar;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-subtle);
+    background: var(--canvas-deep);
+}
+.manager-command {
+    grid-area: command;
+    min-width: 0;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--bg-panel);
+}
+.manager-detail { grid-area: center; min-width: 0; min-height: 0; overflow: hidden; background: var(--bg-panel); }
+.manager-ceo-panel { grid-area: right; min-width: 0; min-height: 0; overflow: hidden; border-left: 1px solid var(--border-subtle); background: var(--bg-panel); }
+.workspace-surface-stack {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: grid;
+    grid-template-rows: max-content minmax(0, 1fr);
+}
+.workspace-surface-layer {
+    grid-row: 2;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    position: relative;
+}
+.workspace-surface {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+}
+.workspace-surface[hidden] {
+    display: none;
+}
+/* The surface hosting the persistent preview iframe must never collapse to
+   display:none — the embedded chat keeps rendering while hidden, and 0×0
+   layout poisons its virtual-scroll/diagram measurements until a reload.
+   Keep it laid out at full size, just invisible. */
+.workspace-surface[hidden]:has([data-preview-host="persistent"]) {
+    display: block;
+    position: absolute;
+    inset: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.manager-activity {
+    grid-area: bottom; min-width: 0; min-height: 0; overflow: hidden;
+    border-top: 1px solid var(--border-subtle); background: var(--canvas-mid);
+}
+.manager-mobile-nav { display: none; grid-area: mobile-nav; }
+.sidebar-rail {
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 10px;
+}
+.manager-sidebar-list { flex: 1 1 auto; min-height: 0; overflow: auto; }
+.manager-shell.is-sidebar-collapsed .manager-sidebar-list { display: none; }
+.manager-shell.is-sidebar-collapsed .sidebar-rail { height: 100%; min-height: 0; flex-direction: column; border-bottom: 0; padding: 10px 8px; }
+.manager-shell.is-sidebar-collapsed .rail-spacer { flex: 1; }
+
+@media (min-width: 1440px) {
+    .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .manager-workspace {
+        --sidebar-width: 360px;
+    }
+    .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .manager-workspace.is-side-panel-open {
+        --right-panel-width: 50vw;
+    }
+}
+@media (max-width: 1279px) and (min-width: 1024px) {
+    .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .manager-workspace {
+        --sidebar-width: 300px;
+    }
+    .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .manager-workspace.is-side-panel-open {
+        --right-panel-width: 50vw;
+    }
+    .command-primary { grid-template-columns: minmax(120px, 180px) max-content minmax(max-content, 1fr); }
+    .command-search { width: clamp(260px, 38vw, 620px); }
+    .overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 1023px) {
+    .dashboard-shell.manager-shell .manager-workspace,
+    .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .manager-workspace {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr) 48px;
+        grid-template-areas: "center" "mobile-nav";
+        --right-panel-width: 0px;
+        --bottom-panel-height: 0px;
+    }
+    .dashboard-shell.manager-shell .manager-workspace:not(.is-inspector-collapsed),
+    .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .manager-workspace:not(.is-inspector-collapsed) {
+        grid-template-rows: minmax(0, 1fr) var(--activity-dock-height, 150px) 48px;
+        grid-template-areas: "center" "bottom" "mobile-nav";
+    }
+    .dashboard-shell.manager-shell .manager-workspace.is-bottom-panel-open,
+    .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .manager-workspace.is-bottom-panel-open {
+        grid-template-rows: minmax(0, 1fr) var(--bottom-panel-height, var(--activity-dock-height, 150px)) 48px;
+        grid-template-areas: "center" "bottom" "mobile-nav";
+    }
+    .manager-activity { display: none; }
+    .manager-workspace:not(.is-inspector-collapsed) .manager-activity { display: block; }
+    .manager-sidebar {
+        display: flex; flex-direction: column;
+        position: fixed; inset-block: 0; left: 0; z-index: 21;
+        width: min(88vw, 340px);
+        transform: translateX(-100%);
+        transition: transform .2s ease;
+        border-right: 1px solid var(--border-strong);
+        box-shadow: var(--shadow-panel);
+    }
+    .manager-workspace.is-drawer-open .manager-sidebar { transform: translateX(0); }
+    .manager-workspace > .drawer-backdrop { position: fixed; inset: 0; z-index: 20; background: var(--scrim-overlay); }
+    .drawer-trigger { display: inline-flex; grid-area: drawer; }
+    .manager-mobile-nav { display: block; border-top: 1px solid var(--border-subtle); }
+    .manager-ceo-panel { display: contents; }
+    .manager-workspace.is-right-panel-open .right-panel {
+        position: absolute;
+        grid-area: auto;
+        z-index: 18;
+        top: 0;
+        right: 0;
+        left: auto;
+        bottom: 48px;
+        width: min(86vw, var(--right-panel-width, 360px));
+        max-width: min(86vw, 420px);
+        height: auto;
+        max-height: none;
+        align-self: stretch;
+        justify-self: end;
+        box-shadow: var(--shadow-panel);
+    }
+    .command-primary {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-areas: "drawer title actions" "search search search";
+    }
+    .command-actions { grid-area: actions; justify-self: end; }
+    .command-title { grid-area: title; }
+    .command-search { grid-area: search; }
+    .command-search { width: 100%; }
+    .command-filter-strip .home-input { display: none; }
+    .preview-frame { min-height: 300px; }
+}
+@media (max-width: 767px) {
+    .dashboard-shell.manager-shell .manager-workspace,
+    .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .manager-workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 1fr) 60px;
+        grid-template-areas: "center" "mobile-nav";
+        --right-panel-width: 0px;
+        --bottom-panel-height: 0px;
+    }
+    .dashboard-shell.manager-shell .manager-workspace:not(.is-inspector-collapsed),
+    .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .manager-workspace:not(.is-inspector-collapsed) {
+        grid-template-rows: minmax(0, 1fr) minmax(120px, var(--activity-dock-height, 150px)) 60px;
+        grid-template-areas: "center" "bottom" "mobile-nav";
+    }
+    .dashboard-shell.manager-shell .manager-workspace.is-bottom-panel-open,
+    .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .manager-workspace.is-bottom-panel-open {
+        grid-template-rows: minmax(0, 1fr) minmax(120px, var(--bottom-panel-height, var(--activity-dock-height, 150px))) 60px;
+        grid-template-areas: "center" "bottom" "mobile-nav";
+    }
+    .manager-sidebar { width: min(85vw, 300px); }
+    .manager-activity { display: none; }
+    .manager-workspace:not(.is-inspector-collapsed) .manager-activity { display: block; }
+    .manager-workspace.is-right-panel-open .right-panel {
+        bottom: 60px;
+        width: min(90vw, var(--right-panel-width, 340px));
+        max-width: min(90vw, 360px);
+    }
+    .command-bar {
+        gap: 8px;
+        padding: 9px 10px;
+    }
+    .command-primary { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "drawer search actions"; }
+    .command-title { display: none; }
+    .command-actions { grid-area: actions; }
+    .command-filter-strip {
+        overflow-x: auto;
+        padding-bottom: 2px;
+    }
+    .command-filter-strip select { min-width: 108px; }
+    .scan-range-control { grid-template-columns: 62px 54px; }
+    .detail-header {
+        flex-direction: column;
+        gap: 5px;
+        padding: 8px 10px;
+    }
+    .workbench-header .detail-header {
+        border-bottom: 0;
+        padding: 0;
+    }
+    .workbench-header .detail-header > div:first-child > span {
+        display: none;
+    }
+    .detail-header-actions {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    .detail-header .preview-switch,
+    .detail-header .preview-refresh-button,
+    .detail-header .open-link {
+        min-height: 28px;
+    }
+    .workbench-header {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+        padding: 8px 10px;
+    }
+    .workbench-mode-bar {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 1px;
+    }
+    .workbench-mode-tabs {
+        flex-wrap: nowrap;
+        justify-content: stretch;
+        overflow-x: auto;
+    }
+    .workbench-mode-tabs button { flex: 1 0 auto; }
+    .overview-grid { grid-template-columns: 1fr; }
+    .instance-actions { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
+    .workbench-preview .preview-panel {
+        gap: 8px;
+        padding: 8px 10px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

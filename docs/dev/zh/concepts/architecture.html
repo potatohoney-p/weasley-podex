@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>架构 — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link active" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="../">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>架构</h1>
+<p class="lead">podex 是一个基于 Node.js 22 的多 AI 运行时服务器。根处理器和 200 个 API/媒体端点为 CLI、TUI、Web PWA、Electron 桌面、Telegram、Discord 和 Manager Dashboard 提供同一套会话、记忆和项目上下文。</p>
+
+<h2>系统概览</h2>
+<p>所有运行表面都经过 <code>server.ts</code>。服务器处理认证、安全、SSE 事件和启动引导，然后委托给 <code>src/routes/</code> 与核心子系统。</p>
+<pre><code>CLI/TUI/Electron/Web/Telegram/Discord ──HTTP──→ server.ts
+Web events                             ──SSE──→ GET /api/events
+Dashboard (port 24576)                 ─proxy→ src/manager/
+Agent streams                          ─NDJSON→ provider runtime + traces
+
+server.ts ──→ src/routes/* ──→ src/core/ | src/agent/ | src/orchestrator/
+                         └──→ src/memory/ | src/messaging/ | src/browser/</code></pre>
+
+<h2>运行表面</h2>
+<table>
+<tr><th>表面</th><th>入口</th><th>传输方式</th></tr>
+<tr><td><strong>CLI</strong></td><td><code>bin/podex.ts</code> + <code>bin/commands/*.ts</code></td><td>HTTP 到服务器</td></tr>
+<tr><td><strong>Terminal TUI</strong></td><td><code>src/tui/</code></td><td>终端渲染 + 服务器命令</td></tr>
+<tr><td><strong>Web UI</strong></td><td><code>public/index.html</code></td><td>HTTP + SSE</td></tr>
+<tr><td><strong>Electron Desktop</strong></td><td><code>electron/src/</code></td><td>打包 sidecar 服务器 + WebView</td></tr>
+<tr><td><strong>Telegram</strong></td><td><code>src/telegram/bot.ts</code></td><td>Grammy bot 轮询</td></tr>
+<tr><td><strong>Discord</strong></td><td><code>src/discord/bot.ts</code></td><td>discord.js 网关</td></tr>
+<tr><td><strong>Manager Dashboard</strong></td><td><code>src/manager/</code> + <code>public/manager/</code></td><td>独立端口扫描、代理、实例管理</td></tr>
+</table>
+
+<h2>路由模块</h2>
+<p>服务器合计注册 201 个根处理器和路由处理器。每个模块都是一个独立的注册函数，接收 Express 应用和认证中间件。</p>
+<table>
+<tr><th>模块</th><th>路由数</th><th>职责</th></tr>
+<tr><td><code>server.ts</code>（基础）</td><td>14</td><td>健康检查、会话、消息、认证、命令、停止、清除</td></tr>
+<tr><td><code>settings.ts</code></td><td>18</td><td>设置、提示词、heartbeat-md、MCP、CLI 注册表、配额</td></tr>
+<tr><td><code>browser.ts</code></td><td>43</td><td>浏览器原语、标签页管理、web-ai 自动化和 code-mode 回收</td></tr>
+<tr><td><code>memory.ts</code></td><td>13</td><td>记忆运行时、KV 存储、记忆文件</td></tr>
+<tr><td><code>jaw-memory.ts</code></td><td>11</td><td>Jaw 记忆搜索、读取、保存、soul、刷新、反思</td></tr>
+<tr><td><code>orchestrate.ts</code></td><td>11</td><td>PABCD 状态、工作者、调度、队列管理</td></tr>
+<tr><td><code>goal.ts</code></td><td>3</td><td>持久化目标状态、历史记录</td></tr>
+<tr><td><code>goal-run.ts</code></td><td>3</td><td>有界目标运行生命周期</td></tr>
+<tr><td><code>messaging.ts</code></td><td>6</td><td>上传、文件打开、语音、频道发送</td></tr>
+<tr><td><code>employees.ts</code></td><td>5</td><td>员工 CRUD 和重置</td></tr>
+<tr><td><code>skills.ts</code></td><td>5</td><td>技能列表、启用、禁用、重置</td></tr>
+<tr><td><code>avatar.ts</code></td><td>4</td><td>代理/用户头像管理</td></tr>
+<tr><td><code>traces.ts</code></td><td>3</td><td>公开追踪摘要和事件读取</td></tr>
+<tr><td><code>heartbeat.ts</code></td><td>2</td><td>心跳 GET 和验证 PUT</td></tr>
+<tr><td><code>i18n.ts</code></td><td>2</td><td>语言列表和语言包</td></tr>
+</table>
+
+<h2>文件树概览</h2>
+<pre><code>podex/
+├── bin/                    # CLI entry + 30 command files
+│   ├── podex.ts          # Root CLI router
+│   └── commands/           # serve, init, doctor, chat, browser, ...
+├── server.ts               # Express/SSE bootstrap (593L)
+├── src/
+│   ├── core/               # 30 files — config, DB, bus, i18n, employees
+│   ├── agent/              # 37 files — spawn, events, lifecycle, ACP
+│   ├── orchestrator/       # 10 files — PABCD pipeline, state machine
+│   ├── prompt/             # builder + templates
+│   ├── memory/             # 13 files — runtime, indexing, flush, identity
+│   ├── cli/                # registry, commands, handlers, ACP client
+│   ├── messaging/          # shared Telegram/Discord runtime
+│   ├── telegram/           # Telegram bot transport
+│   ├── discord/            # Discord bot transport
+│   ├── browser/            # CDP control + web-ai automation
+│   ├── routes/             # 32 route registrars
+│   ├── manager/            # Dashboard server
+│   ├── security/           # Path guards, input validation
+│   └── shared/             # Tool-log sanitization
+├── public/                 # Web UI (Vanilla TS + Vite 8)
+│   ├── js/                 # 86 TypeScript modules
+│   ├── css/                # 11 CSS files
+│   ├── manager/            # React 19 dashboard app
+│   └── dist/               # Build output
+├── electron/               # Electron desktop shell + packaged sidecar
+├── native/                 # jaw-claude-i Rust helper
+│   └── jaw-claude-i/       # 15 Rust source files
+└── tests/                  # 447 test files</code></pre>
+
+<h2>核心子系统</h2>
+<table>
+<tr><th>子系统</th><th>位置</th><th>职责</th></tr>
+<tr><td>代理运行时</td><td><code>src/agent/</code></td><td>生成 CLI 进程、流式传输 NDJSON 事件、管理会话、队列、回退、重试</td></tr>
+<tr><td>编排器</td><td><code>src/orchestrator/</code></td><td>PABCD 状态机、员工调度、工作者监控</td></tr>
+<tr><td>记忆</td><td><code>src/memory/</code></td><td>三层记忆（结构化/情景/语义）、FTS5 索引、刷新、反思</td></tr>
+<tr><td>提示词构建器</td><td><code>src/prompt/</code></td><td>9 步提示词管道：A1、A2、记忆、编排、心跳、技能、委派</td></tr>
+<tr><td>浏览器</td><td><code>src/browser/</code></td><td>Chrome CDP 控制、标签页生命周期、Web AI 自动化、provider 适配器</td></tr>
+<tr><td>消息传递</td><td><code>src/messaging/</code></td><td>共享 Telegram/Discord 频道路由、目标追踪</td></tr>
+</table>
+
+<h2>安全模型</h2>
+<ul>
+<li><strong>认证</strong>：所有 71 个变更路由都需要 <code>requireAuth</code>。回环请求绕过令牌；局域网绕过为可选启用。</li>
+<li><strong>速率限制</strong>：基于内存、按 IP、每分钟 120 次请求。</li>
+<li><strong>路径防护</strong>：<code>assertMemoryRelPath()</code>、<code>assertSkillId()</code>、<code>safeResolveUnder()</code> 防止路径遍历攻击。</li>
+<li><strong>令牌引导</strong>：<code>GET /api/auth/token</code> 检查 <code>Sec-Fetch-Site</code> 以防止跨域窃取。</li>
+</ul>
+
+<h2>数据存储</h2>
+<p>podex 使用 <code>better-sqlite3</code> 通过 SQLite 存储会话、消息、记忆、员工、编排状态和排队消息。数据库模式定义在 <code>src/core/db.ts</code> 中。</p>
+<pre><code>session           # active CLI, session ID, model, working directory
+messages          # conversation history with trace and tool log
+memory            # key-value memory store
+employees         # registered employee agents
+employee_sessions # per-employee session tracking
+orc_state         # PABCD orchestration state
+queued_messages   # pending message queue</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="../quickstart-first-run.html">First Run</a>
+<a class="next" href="employees.html">Employees</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

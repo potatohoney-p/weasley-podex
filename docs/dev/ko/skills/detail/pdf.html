@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF &mdash; podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+.badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.badge-category { background: rgba(99, 102, 241, 0.15); color: var(--accent); }
+.quick-ref { margin: 24px 0; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 160px; }
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-ko { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+.dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.dep-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.dep-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.dep-card code { font-size: 13px; }
+.dep-card .dep-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+@media (max-width: 768px) {
+  .dep-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link active" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>PDF</h1>
+<p class="lead">PDF 읽기, 생성, 편집, 검토 + 비전 기반 추출. 이 스킬은 PDF 문서의 전체 수명 주기를 처리합니다 &mdash; <code>reportlab</code>으로 새 파일을 생성하는 것부터 <code>pdfplumber</code>로 텍스트를 추출하고, Poppler로 페이지를 이미지로 렌더링하며, 매 편집 후 시각적 품질 검증을 수행하는 것까지 포함합니다.</p>
+
+<p>
+  <span class="badge badge-ref">Reference</span>
+  <span class="badge badge-category">AI &amp; Media</span>
+</p>
+
+<div class="callout callout-info">
+  <strong>레퍼런스 스킬:</strong> <code>pdf</code>는 기본적으로 활성화되어 있지 않습니다. <code>jaw skill install pdf</code>로 설치하거나 채팅에서 "PDF 스킬 설치해줘"라고 말하세요. 활성화되면 시스템 프롬프트에 주입되어 PDF 작업이 감지될 때마다 에이전트가 자동으로 워크플로우를 따릅니다.
+</div>
+
+<h2>빠른 참조</h2>
+<table class="quick-ref">
+<tr><td>스킬 이름</td><td><code>pdf</code></td></tr>
+<tr><td>카테고리</td><td>AI &amp; Media</td></tr>
+<tr><td>기본 활성화</td><td>아니오 &mdash; <code>jaw skill install pdf</code> 필요</td></tr>
+<tr><td>SKILL.md 경로</td><td><code>~/.podex/skills/pdf/SKILL.md</code> (활성) 또는 <code>~/.podex/skills_ref/pdf/SKILL.md</code> (레퍼런스)</td></tr>
+<tr><td>Python 패키지</td><td><code>reportlab</code>, <code>pdfplumber</code>, <code>pypdf</code></td></tr>
+<tr><td>시스템 도구</td><td><code>pdftoppm</code> (Poppler 포함)</td></tr>
+<tr><td>임시 디렉토리</td><td><code>tmp/pdfs/</code></td></tr>
+<tr><td>출력 디렉토리</td><td><code>output/pdf/</code></td></tr>
+<tr><td>관련 스킬</td><td><code>pdf-vision</code>, <code>docx</code>, <code>pptx</code>, <code>xlsx</code></td></tr>
+</table>
+
+<h2>워크플로우</h2>
+<p><code>pdf</code> 스킬이 활성화되면, 에이전트는 모든 PDF 작업에 대해 엄격한 4단계 워크플로우를 따릅니다:</p>
+
+<table>
+<thead>
+<tr><th>단계</th><th>동작</th><th>사용 도구</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>1. 렌더링</strong></td><td>시각적 검토를 위해 PDF 페이지를 PNG 이미지로 렌더링</td><td><code>pdftoppm</code> (Poppler). Poppler를 사용할 수 없는 경우 사용자에게 요청으로 대체.</td></tr>
+<tr><td><strong>2. 생성</strong></td><td>새 PDF를 생성하거나 기존 PDF를 편집</td><td><code>reportlab</code>으로 생성; <code>pypdf</code>로 병합/분할; <code>nano-pdf</code>로 자연어 페이지 편집</td></tr>
+<tr><td><strong>3. 추출</strong></td><td>PDF 파일에서 텍스트와 데이터를 추출</td><td><code>pdfplumber</code> 또는 <code>pypdf</code>로 텍스트 추출 (참고: 레이아웃 충실도는 불안정할 수 있음)</td></tr>
+<tr><td><strong>4. 검증</strong></td><td>의미 있는 업데이트 후 재렌더링하여 품질을 시각적으로 확인</td><td><code>pdftoppm</code> + 정렬, 간격, 가독성에 대한 시각적 검사</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>편집 후 검증 루프:</strong> 이 스킬은 의미 있는 변경이 있을 때마다 재렌더링을 의무화합니다. 에이전트는 최신 PNG 렌더에서 시각적 결함이 없음을 확인하기 전까지 PDF를 전달하지 않습니다. 이것이 이 스킬에서 가장 중요한 규칙입니다.
+</div>
+
+<h2>의존성</h2>
+<p>이 스킬은 누락된 의존성을 자동으로 감지하고 설치를 시도합니다. 설치가 차단된 경우(권한, 네트워크), 에이전트가 누락된 항목과 수동 설치 방법을 정확히 알려줍니다.</p>
+
+<div class="dep-grid">
+  <div class="dep-card">
+    <strong>reportlab</strong>
+    <code>uv pip install reportlab</code>
+    <div class="dep-desc">PDF 생성: 레이아웃, 텍스트, 표, 이미지 및 벡터 그래픽</div>
+  </div>
+  <div class="dep-card">
+    <strong>pdfplumber</strong>
+    <code>uv pip install pdfplumber</code>
+    <div class="dep-desc">위치 데이터를 포함한 텍스트 추출, 표 감지 및 페이지 기하학</div>
+  </div>
+  <div class="dep-card">
+    <strong>pypdf</strong>
+    <code>uv pip install pypdf</code>
+    <div class="dep-desc">PDF 조작: 병합, 분할, 회전, 암호화 및 메타데이터 편집</div>
+  </div>
+  <div class="dep-card">
+    <strong>Poppler (pdftoppm)</strong>
+    <code>brew install poppler</code>
+    <div class="dep-desc">시각적 검증을 위해 PDF 페이지를 고품질 PNG 이미지로 렌더링</div>
+  </div>
+</div>
+
+<p>이 스킬은 Python 의존성 관리에 <code>uv</code>를 우선 사용합니다. <code>uv</code>를 사용할 수 없는 경우 <code>python3 -m pip install</code>로 대체합니다.</p>
+
+<h3>전체 설치 명령어</h3>
+<pre><code># Python packages (preferred: uv)
+uv pip install reportlab pdfplumber pypdf
+
+# Python packages (fallback: pip)
+python3 -m pip install reportlab pdfplumber pypdf
+
+# System tools: macOS (Homebrew)
+brew install poppler
+
+# System tools: Ubuntu/Debian
+sudo apt-get install -y poppler-utils</code></pre>
+
+<h2>렌더링 명령어</h2>
+<p>핵심 렌더링 명령어는 PDF 페이지를 PNG 이미지로 변환합니다:</p>
+<pre><code>pdftoppm -png $INPUT_PDF $OUTPUT_PREFIX</code></pre>
+<p><code>$OUTPUT_PREFIX-1.png</code>, <code>$OUTPUT_PREFIX-2.png</code> 등의 파일이 생성됩니다 &mdash; 페이지당 하나의 PNG입니다. 에이전트는 최종 PDF를 전달하기 전에 이 이미지들을 읽어 레이아웃 품질을 검증합니다.</p>
+
+<h2>파일 규칙</h2>
+
+<table>
+<thead>
+<tr><th>디렉토리</th><th>용도</th><th>수명 주기</th></tr>
+</thead>
+<tbody>
+<tr><td><code>tmp/pdfs/</code></td><td>중간 렌더, 초안 PDF, PNG 미리보기</td><td>작업 완료 후 삭제</td></tr>
+<tr><td><code>output/pdf/</code></td><td>최종 산출물 PDF 파일</td><td>유지됨; 안정적인 설명형 파일명</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>파일명 안정성:</strong> 이 스킬은 편집 전후로 파일명을 안정적이고 설명적으로 유지합니다. 최종 출력 이름에 임의 접미사나 타임스탬프를 사용하지 마세요. <code>quarterly-report-2026-Q1.pdf</code>나 <code>invoice-0042.pdf</code>처럼 명확한 이름을 사용하세요.
+</div>
+
+<h2>품질 규칙</h2>
+<p>이 스킬은 엄격한 시각적 및 타이포그래피 표준을 적용합니다. 생성되는 모든 PDF는 다음 검사를 통과해야 합니다:</p>
+
+<table>
+<thead>
+<tr><th>규칙</th><th>상세</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>타이포그래피</strong></td><td>문서 전체에 걸쳐 일관된 글꼴, 크기, 굵기. 의도적인 경우가 아니라면 서체를 혼용하지 않음.</td></tr>
+<tr><td><strong>간격 및 여백</strong></td><td>균일한 여백, 줄 간격, 섹션 간격. 내용이 빽빽하거나 넘치지 않도록 함.</td></tr>
+<tr><td><strong>섹션 계층 구조</strong></td><td>제목, 소제목, 본문 텍스트 간의 명확한 시각적 구분.</td></tr>
+<tr><td><strong>렌더링 결함 없음</strong></td><td>잘린 텍스트, 겹치는 요소, 깨진 표, 검은 사각형, 읽을 수 없는 글리프가 없어야 함.</td></tr>
+<tr><td><strong>차트 및 표</strong></td><td>선명한 렌더링, 올바른 정렬, 명확하게 레이블된 축과 헤더.</td></tr>
+<tr><td><strong>이미지</strong></td><td>흐림 없음, 올바른 종횡비, 레이아웃 내 적절한 위치.</td></tr>
+<tr><td><strong>ASCII 하이픈만 사용</strong></td><td>표준 ASCII 하이픈(<code>-</code>)을 사용. 유니코드 대시(예: U+2011 비분리 하이픈)는 일부 PDF 뷰어에서 렌더링 문제를 일으킴.</td></tr>
+<tr><td><strong>인용 및 참조</strong></td><td>사람이 읽을 수 있는 텍스트만 사용. 도구 토큰, 플레이스홀더 마커, 원시 ID를 포함하지 않음.</td></tr>
+</tbody>
+</table>
+
+<h2>최종 전달 체크리스트</h2>
+<p>PDF 작업을 완료로 표시하기 전에 에이전트는 다음 체크리스트를 수행합니다:</p>
+<ol>
+<li><strong>최신 PNG 렌더</strong>에서 시각적 결함이 없는지 확인.</li>
+<li><strong>머리글과 바닥글</strong>이 모든 페이지에 올바르게 표시되는지 확인.</li>
+<li><strong>페이지 번호</strong>가 순차적이고 올바른 위치에 있는지 확인.</li>
+<li><strong>섹션 전환</strong>을 점검 &mdash; 고립된 제목이나 분리된 단락이 없는지 확인.</li>
+<li>사용자 승인 후 <code>tmp/pdfs/</code>의 중간 파일을 <strong>정리</strong>.</li>
+</ol>
+
+<h2>DOCX-PDF 변환</h2>
+<p>이 스킬은 LibreOffice를 사용한 Word 문서의 PDF 변환도 지원합니다:</p>
+<pre><code># Convert DOCX to PDF via soffice (LibreOffice headless)
+soffice --headless --convert-to pdf input.docx --outdir output/pdf/</code></pre>
+<p>원본이 Word 문서이고 최종 산출물이 PDF여야 할 때 유용합니다. 에이전트는 변환된 출력에 대해서도 전체 렌더링 후 검증 루프를 실행합니다.</p>
+
+<h2>기능 요약</h2>
+<table>
+<thead>
+<tr><th>기능</th><th>도구</th><th>비고</th></tr>
+</thead>
+<tbody>
+<tr><td>새 PDF 생성</td><td><code>reportlab</code></td><td>레이아웃, 글꼴, 표, 이미지 및 벡터 그래픽에 대한 완전한 제어</td></tr>
+<tr><td>읽기 / 텍스트 추출</td><td><code>pdfplumber</code>, <code>pypdf</code></td><td>텍스트 추출; 레이아웃 충실도는 근사치이며 픽셀 단위 정확도는 아님</td></tr>
+<tr><td>기존 PDF 편집</td><td><code>nano-pdf</code></td><td>기존 PDF 콘텐츠에 대한 자연어 페이지 편집</td></tr>
+<tr><td>병합 / 분할</td><td><code>pypdf</code></td><td>여러 PDF를 결합하거나 페이지 범위를 추출</td></tr>
+<tr><td>이미지로 렌더링</td><td><code>pdftoppm</code></td><td>시각적 QA를 위한 고품질 PNG 렌더링</td></tr>
+<tr><td>DOCX 변환</td><td><code>soffice</code></td><td>LibreOffice 헤드리스 모드의 Word-PDF 변환</td></tr>
+<tr><td>시각적 QA</td><td>에이전트 비전</td><td>에이전트가 렌더링된 PNG를 읽어 품질을 검증</td></tr>
+</tbody>
+</table>
+
+<h2>"~해줘" 사용 예시</h2>
+<p>자연어로 PDF 작업을 호출하는 실제 사용 예시입니다. 한국어와 영어 모두 사용 가능합니다.</p>
+
+<div class="example-card">
+  <div class="example-ko">"이 보고서 PDF로 만들어줘 &mdash; 표지, 목차, 본문 3장"</div>
+  <div class="example-desc">reportlab을 사용하여 표지, 목차, 본문 3페이지로 구성된 새 PDF 문서를 생성합니다. 에이전트는 전달 전에 각 페이지를 PNG로 렌더링하여 레이아웃을 검증합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"이 PDF에서 텍스트 추출해줘 &mdash; 표 데이터도 포함해서"</div>
+  <div class="example-desc">pdfplumber를 사용하여 주어진 PDF에서 모든 텍스트와 표 데이터를 추출합니다. 표 행이 보존된 구조화된 텍스트를 반환합니다. 해당 문서에서 레이아웃 충실도가 불안정한 경우 경고를 표시합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"이 두 PDF 합쳐줘 &mdash; report-part1.pdf랑 report-part2.pdf"</div>
+  <div class="example-desc">pypdf를 사용하여 두 PDF 파일을 하나의 문서로 병합합니다. 페이지 번호와 북마크를 보존합니다. 출력은 <code>output/pdf/</code>에 저장됩니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"이 계약서 PDF 2페이지 날짜 수정해줘"</div>
+  <div class="example-desc">nano-pdf(자연어 편집)를 사용하여 기존 계약서 PDF의 2페이지를 편집합니다. 편집 후 에이전트가 페이지를 재렌더링하여 날짜 변경이 정확하고 다른 부분이 이동하지 않았는지 시각적으로 검증합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"Word 파일 PDF로 변환해줘 &mdash; proposal.docx"</div>
+  <div class="example-desc">LibreOffice 헤드리스 모드(<code>soffice --headless --convert-to pdf</code>)를 사용하여 DOCX 파일을 PDF로 변환합니다. 이후 에이전트가 출력을 PNG로 렌더링하여 변환 중 발생한 서식 문제가 없는지 확인합니다.</div>
+</div>
+
+<h2>pdf-vision과의 비교</h2>
+<p>podex에는 두 가지 PDF 관련 스킬이 포함되어 있습니다. 이들은 중복이 아닌 상호 보완적입니다:</p>
+
+<table>
+<thead>
+<tr><th></th><th><code>pdf</code></th><th><code>pdf-vision</code></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>초점</strong></td><td>PDF 생성, 편집, 추출 및 병합</td><td>기존 PDF의 비전 기반 분석</td></tr>
+<tr><td><strong>적합한 용도</strong></td><td>보고서 생성, 문서 편집, 텍스트 추출</td><td>스캔 문서의 OCR, 레이아웃 이해, 이미지에서 표 추출</td></tr>
+<tr><td><strong>도구</strong></td><td>reportlab, pdfplumber, pypdf, pdftoppm</td><td>비전 모델, OCR 파이프라인</td></tr>
+<tr><td><strong>둘 다 사용할 때</strong></td><td colspan="2">스캔된 PDF에서 데이터를 추출(<code>pdf-vision</code>)한 후 해당 데이터로 깨끗한 새 PDF를 생성(<code>pdf</code>)해야 할 때.</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>팁:</strong> <code>jaw skill install pdf pdf-vision</code>으로 둘 다 설치하거나 "PDF 스킬이랑 pdf-vision 둘 다 설치해줘"라고 말하세요. 두 스킬이 모두 활성화되면 원활하게 함께 작동합니다.
+</div>
+
+<h2>문제 해결</h2>
+
+<h3>Poppler를 찾을 수 없음</h3>
+<p>에이전트가 <code>pdftoppm</code>을 사용할 수 없다고 보고하면 Poppler를 설치하세요:</p>
+<pre><code># macOS
+brew install poppler
+
+# Ubuntu/Debian
+sudo apt-get install -y poppler-utils
+
+# Verify
+pdftoppm -v</code></pre>
+
+<h3>유니코드 대시 렌더링 문제</h3>
+<p>하이픈과 대시에서 깨진 문자나 누락된 문자가 보이면, 원본 데이터에 유니코드 대시(U+2011, U+2013, U+2014)가 포함되어 있을 수 있습니다. 이 스킬은 뷰어 호환성 문제를 방지하기 위해 ASCII 하이픈(<code>-</code>)을 강제합니다. 에이전트는 생성 중 이러한 문자를 자동으로 대체합니다.</p>
+
+<h3>레이아웃 충실도 경고</h3>
+<p><code>pdfplumber</code>와 <code>pypdf</code>는 시각적 레이아웃이 아닌 문자 위치를 기반으로 텍스트를 추출합니다. 복잡한 다단 레이아웃, 겹치는 텍스트 상자, 회전된 텍스트는 정확하게 추출되지 않을 수 있습니다. 이런 경우 텍스트 스트림 파싱 대신 시각적 분석을 사용하는 <code>pdf-vision</code> 사용을 고려하세요.</p>
+
+<h3>LibreOffice가 설치되어 있지 않음</h3>
+<p>DOCX-PDF 변환에는 LibreOffice가 필요합니다. <code>soffice</code>를 찾을 수 없는 경우:</p>
+<pre><code># macOS
+brew install --cask libreoffice
+
+# Ubuntu/Debian
+sudo apt-get install -y libreoffice</code></pre>
+
+<h2>설치</h2>
+<pre><code># CLI
+jaw skill install pdf
+
+# In-chat (Korean)
+"PDF 스킬 설치해줘"
+
+# In-chat (English)
+"Install the PDF skill"
+
+# Verify installation
+jaw skill info pdf</code></pre>
+
+<pre><code># Expected output of jaw skill info pdf:
+#   Name:     pdf
+#   Status:   active
+#   Category: AI &amp; Media
+#   Path:     ~/.podex/skills/pdf/SKILL.md
+#   Description: PDF creation, reading, editing, merging, and text extraction</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="../ai-media.html">AI Media Skills</a>
+<a class="next" href="pdf-vision.html">PDF Vision</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

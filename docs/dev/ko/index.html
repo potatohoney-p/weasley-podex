@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>podex Docs</title>
+<meta name="description" content="podex developer documentation — multi-agent orchestration platform">
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link active" href="./">Overview</a>
+      <a class="docs-nav-link" href="quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../dev/">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>podex 문서</h1>
+<p class="lead">모든 AI 구독을 하나로. podex는 Claude, ChatGPT, Codex, Gemini, Grok, Kiro를 통합 멀티에이전트 오케스트레이션 플랫폼으로 연결합니다.</p>
+
+<div class="install-box">
+<code>npm install -g podex</code>
+<code>jaw dashboard</code>
+</div>
+
+<h2>podex란?</h2>
+<p>podex는 여러 AI 코딩 에이전트(Claude Code, Codex, Gemini CLI, Kiro, OpenCode, Copilot CLI)를 하나의 대시보드에서 실행할 수 있는 오픈소스 플랫폼입니다. 메인 에이전트가 다른 CLI 에이전트에게 작업을 위임하는 <strong>직원 시스템</strong>, 구조화된 개발을 위한 <strong>PABCD 오케스트레이션</strong> 워크플로우, 영속적인 <strong>메모리와 목표</strong>, 내장 <strong>노트 워크스페이스</strong>, <strong>칸반 보드</strong>, 그리고 <strong>Telegram/Discord</strong> 연동을 제공합니다.</p>
+
+<h2>주요 기능</h2>
+<table>
+<tr><th>기능</th><th>설명</th></tr>
+<tr><td><strong>다중 인스턴스 대시보드</strong></td><td>7개 이상의 에이전트를 동시 실행. 하나의 UI에서 시작, 정지, 관리.</td></tr>
+<tr><td><strong>직원 시스템</strong></td><td>메인 에이전트가 다른 CLI 도구를 "직원"으로 호출하여 작업 위임.</td></tr>
+<tr><td><strong>PABCD 오케스트레이션</strong></td><td>Plan → Audit → Build → Check → Done. 구조화된 개발 워크플로우.</td></tr>
+<tr><td><strong>Jawsidian 노트</strong></td><td>그래프 뷰, 위키링크, 이미지 붙여넣기를 지원하는 내장 마크다운 에디터.</td></tr>
+<tr><td><strong>칸반 보드</strong></td><td>Backlog → Active → Review → Done 레인으로 작업 관리.</td></tr>
+<tr><td><strong>200+ 참조 스킬</strong></td><td>도메인 지식, 자동화, 오피스, 브라우저, 미디어, 배포 스킬. AI가 필요한 런타임 스킬을 활성화.</td></tr>
+<tr><td><strong>Goal 시스템</strong></td><td>세션 간에도 유지되는 영속적 목표 추적.</td></tr>
+<tr><td><strong>Computer Use</strong></td><td>Codex 직원 연동을 통한 데스크톱 자동화.</td></tr>
+<tr><td><strong>Telegram / Discord</strong></td><td>메시징 앱에서 원격으로 AI 에이전트 제어.</td></tr>
+<tr><td><strong>Electron 데스크톱</strong></td><td>터미널, 디프 뷰어, 폴더 패널, 브라우저 탭을 갖춘 네이티브 앱.</td></tr>
+</table>
+
+<h2>아키텍처 개요</h2>
+<p>podex는 루트 핸들러와 200개의 API/미디어 엔드포인트를 포함하는 Node.js 22 서버로 구성됩니다. CLI, 터미널 TUI, Web PWA, Electron 데스크톱, Telegram, Discord, Manager 대시보드가 서버와 공유 SQLite 상태를 통해 연결됩니다. 전체 시스템 설계는 <a href="concepts/architecture.html">아키텍처</a> 페이지에서 확인하세요.</p>
+
+<pre><code>CLI/TUI/Electron/Web/Telegram/Discord ──→ server.ts ──→ src/routes/*
+Web events                              ──→ GET /api/events (SSE) ──→ event-bus
+Dashboard (port 24576)                  ──→ src/manager/ + public/manager/
+Agent streams                           ──→ NDJSON provider events + trace files</code></pre>
+
+<h2>시작하기</h2>
+<p><a href="quickstart.html">빠른 시작</a> 가이드에서 podex를 설치하고 5분 안에 첫 에이전트 세션을 시작하세요.</p>
+
+<div class="page-nav">
+  <span></span>
+  <a class="next" href="quickstart.html">Quickstart</a>
+</div>
+
+</main>
+</div>
+</body>
+</html>
+

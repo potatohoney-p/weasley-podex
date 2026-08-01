@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+.badge-req { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.skill-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 24px; }
+.skill-meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.skill-meta-card dt { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 4px; }
+.skill-meta-card dd { font-size: 14px; color: var(--text); }
+.use-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0 20px; }
+.use-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.use-card h4 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+.use-card.do h4 { color: var(--green); }
+.use-card.dont h4 { color: var(--red); }
+.use-card ul { margin: 0; padding-left: 18px; font-size: 13px; }
+.use-card li { margin: 3px 0; color: var(--text-dim); }
+.example-callout { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 10px 0; }
+.example-callout .example-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 6px; }
+.example-callout .example-kr { font-size: 15px; color: var(--text); margin-bottom: 4px; }
+.example-callout .example-desc { font-size: 13px; color: var(--text-dim); }
+.flow-steps { counter-reset: flow; margin: 12px 0 20px; padding: 0; list-style: none; }
+.flow-steps li { counter-increment: flow; padding: 10px 0 10px 48px; position: relative; border-left: 2px solid var(--border); margin-left: 16px; }
+.flow-steps li::before { content: counter(flow); position: absolute; left: -14px; top: 8px; width: 26px; height: 26px; background: var(--surface2); border: 2px solid var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--accent); }
+.flow-steps li:last-child { border-left-color: transparent; }
+@media (max-width: 768px) {
+  .skill-meta { grid-template-columns: 1fr; }
+  .use-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link active" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">한국어</a>
+    <a href="../../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>GitHub <span class="badge badge-active">Default Active</span></h1>
+<p class="lead">GitHub <code>gh</code> CLI &mdash; issues, PRs, CI, code review, releases</p>
+
+<div class="skill-meta">
+  <div class="skill-meta-card">
+    <dt>Skill Name</dt>
+    <dd><code>github</code></dd>
+  </div>
+  <div class="skill-meta-card">
+    <dt>Category</dt>
+    <dd>Dev Workflow</dd>
+  </div>
+  <div class="skill-meta-card">
+    <dt>Requires</dt>
+    <dd><code>gh</code> CLI <span class="badge badge-req">Binary</span></dd>
+  </div>
+  <div class="skill-meta-card">
+    <dt>Source</dt>
+    <dd><code>~/.podex/skills/github/SKILL.md</code></dd>
+  </div>
+</div>
+
+<div class="callout callout-info">This skill is <strong>active by default</strong> and injected into every session. It covers all GitHub interactions via the <code>gh</code> CLI, including merged capabilities from the former <code>gh-address-comments</code>, <code>gh-fix-ci</code>, <code>gh-issues</code>, and <code>yeet</code> skills.</div>
+
+<!-- ================================================================ -->
+<h2>Quick Reference</h2>
+
+<table>
+<tr><th>Command</th><th>Description</th><th>Example</th></tr>
+<tr><td><code>gh pr list</code></td><td>List pull requests</td><td><code>gh pr list --repo owner/repo</code></td></tr>
+<tr><td><code>gh pr view</code></td><td>View PR details</td><td><code>gh pr view 55 --repo owner/repo</code></td></tr>
+<tr><td><code>gh pr checks</code></td><td>Check CI status on a PR</td><td><code>gh pr checks 55 --repo owner/repo</code></td></tr>
+<tr><td><code>gh pr create</code></td><td>Create a pull request</td><td><code>gh pr create --title "feat: X" --body "..."</code></td></tr>
+<tr><td><code>gh pr merge</code></td><td>Merge a pull request</td><td><code>gh pr merge 55 --squash</code></td></tr>
+<tr><td><code>gh issue list</code></td><td>List issues</td><td><code>gh issue list --state open</code></td></tr>
+<tr><td><code>gh issue create</code></td><td>Create an issue</td><td><code>gh issue create --title "Bug: X"</code></td></tr>
+<tr><td><code>gh issue close</code></td><td>Close an issue</td><td><code>gh issue close 42</code></td></tr>
+<tr><td><code>gh run list</code></td><td>List CI workflow runs</td><td><code>gh run list --limit 10</code></td></tr>
+<tr><td><code>gh run view</code></td><td>View a specific CI run</td><td><code>gh run view &lt;id&gt; --log-failed</code></td></tr>
+<tr><td><code>gh run rerun</code></td><td>Re-run failed jobs</td><td><code>gh run rerun &lt;id&gt; --failed</code></td></tr>
+<tr><td><code>gh api</code></td><td>Query GitHub REST/GraphQL API</td><td><code>gh api repos/o/r/pulls/55 --jq '.title'</code></td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2>When to Use / When Not to Use</h2>
+
+<div class="use-grid">
+  <div class="use-card do">
+    <h4>Use this skill when</h4>
+    <ul>
+      <li>Checking PR status, reviews, or merge readiness</li>
+      <li>Viewing CI/workflow run status and logs</li>
+      <li>Creating, closing, or commenting on issues</li>
+      <li>Creating or merging pull requests</li>
+      <li>Querying GitHub API for repository data</li>
+      <li>Listing repos, releases, or collaborators</li>
+      <li>Addressing PR review comments</li>
+      <li>Debugging and fixing failing CI checks</li>
+      <li>Auto-fixing issues and opening PRs</li>
+      <li>Stage, commit, push, and PR in one flow (yeet)</li>
+    </ul>
+  </div>
+  <div class="use-card dont">
+    <h4>Do NOT use when</h4>
+    <ul>
+      <li>Local git operations (commit, push, pull, branch) &mdash; use <code>git</code> directly</li>
+      <li>Non-GitHub repos (GitLab, Bitbucket, self-hosted) &mdash; different CLIs</li>
+      <li>Cloning repositories &mdash; use <code>git clone</code></li>
+      <li>Reviewing actual code changes &mdash; use <code>coding-agent</code> skill</li>
+      <li>Complex multi-file diffs &mdash; use <code>coding-agent</code> or read files directly</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<h2>Setup &amp; Installation</h2>
+
+<p>The <code>github</code> skill requires the <code>gh</code> CLI binary. podex can auto-install it for you, or you can install manually:</p>
+
+<div class="install-box">
+  <code># macOS (Homebrew)</code>
+  <code>brew install gh</code>
+</div>
+
+<div class="install-box">
+  <code># Linux (apt)</code>
+  <code>sudo apt install gh</code>
+</div>
+
+<p>After installing, authenticate once:</p>
+<pre><code># One-time authentication
+gh auth login
+
+# Verify authentication
+gh auth status</code></pre>
+
+<div class="callout callout-warn"><strong>Token scope:</strong> Make sure your <code>gh</code> token has <code>repo</code>, <code>read:org</code>, and <code>workflow</code> scopes. If CI operations fail, re-authenticate with <code>gh auth login</code> and select the required scopes.</div>
+
+<!-- ================================================================ -->
+<h2>Pull Requests</h2>
+
+<h3>Listing PRs</h3>
+<pre><code># List open PRs in a repo
+gh pr list --repo owner/repo
+
+# Filter by state
+gh pr list --repo owner/repo --state merged --limit 20
+
+# JSON output with jq filtering
+gh pr list --json number,title,state,mergeable \
+  --jq '.[] | select(.mergeable == "MERGEABLE")'</code></pre>
+
+<h3>Viewing PR Details</h3>
+<pre><code># View PR by number
+gh pr view 55 --repo owner/repo
+
+# View by URL directly
+gh pr view https://github.com/owner/repo/pull/55
+
+# Structured JSON output
+gh pr view 55 --repo owner/repo \
+  --json title,body,author,additions,deletions,changedFiles \
+  --jq '"**\(.title)** by @\(.author.login)\n+\(.additions) -\(.deletions) across \(.changedFiles) files"'</code></pre>
+
+<h3>Checking CI Status</h3>
+<pre><code># Check all CI checks on a PR
+gh pr checks 55 --repo owner/repo</code></pre>
+
+<h3>Creating PRs</h3>
+<pre><code># Basic PR creation
+gh pr create --title "feat: add feature" --body "Description"
+
+# With reviewers and labels
+gh pr create --title "fix: resolve timeout" \
+  --body "Fixes #42" \
+  --reviewer alice,bob \
+  --label bug,urgent
+
+# Draft PR
+gh pr create --title "wip: new dashboard" --body "WIP" --draft</code></pre>
+
+<h3>Merging PRs</h3>
+<pre><code># Squash merge
+gh pr merge 55 --squash --repo owner/repo
+
+# Merge commit
+gh pr merge 55 --merge --repo owner/repo
+
+# Rebase merge
+gh pr merge 55 --rebase --repo owner/repo
+
+# Auto-merge when checks pass
+gh pr merge 55 --auto --squash</code></pre>
+
+<!-- ================================================================ -->
+<h2>Issues</h2>
+
+<h3>Listing Issues</h3>
+<pre><code># Open issues
+gh issue list --repo owner/repo --state open
+
+# Filter by label
+gh issue list --repo owner/repo --label bug --limit 10
+
+# JSON with formatting
+gh issue list --repo owner/repo --state open \
+  --json number,title,labels,createdAt \
+  --jq '.[] | "[\(.number)] \(.title) - \([.labels[].name] | join(", ")) (\(.createdAt[:10]))"'</code></pre>
+
+<h3>Creating Issues</h3>
+<pre><code># Basic issue
+gh issue create --title "Bug: something broken" --body "Details..."
+
+# With labels and assignee
+gh issue create --title "Feature: dark mode" \
+  --body "Add dark mode toggle" \
+  --label enhancement \
+  --assignee @me</code></pre>
+
+<h3>Closing Issues</h3>
+<pre><code># Close by number
+gh issue close 42 --repo owner/repo
+
+# Close with comment
+gh issue close 42 --comment "Fixed in PR #55"</code></pre>
+
+<!-- ================================================================ -->
+<h2>CI / Workflow Runs</h2>
+
+<h3>Listing Runs</h3>
+<pre><code># Recent runs
+gh run list --repo owner/repo --limit 10
+
+# Filter by workflow
+gh run list --workflow build.yml --limit 5
+
+# Filter by status
+gh run list --status failure --limit 10</code></pre>
+
+<h3>Viewing Run Details</h3>
+<pre><code># View specific run
+gh run view &lt;run-id&gt; --repo owner/repo
+
+# View ONLY failed step logs (most useful for debugging)
+gh run view &lt;run-id&gt; --repo owner/repo --log-failed</code></pre>
+
+<h3>Re-running Failed Jobs</h3>
+<pre><code># Re-run only the failed jobs
+gh run rerun &lt;run-id&gt; --failed --repo owner/repo
+
+# Re-run all jobs
+gh run rerun &lt;run-id&gt; --repo owner/repo</code></pre>
+
+<!-- ================================================================ -->
+<h2>API Queries</h2>
+
+<p>The <code>gh api</code> command provides direct access to the GitHub REST and GraphQL API. Use <code>--jq</code> to filter JSON results.</p>
+
+<pre><code># Get PR with specific fields
+gh api repos/owner/repo/pulls/55 --jq '.title, .state, .user.login'
+
+# List all labels
+gh api repos/owner/repo/labels --jq '.[].name'
+
+# Get repo stats
+gh api repos/owner/repo --jq '{stars: .stargazers_count, forks: .forks_count}'
+
+# List PR review comments
+gh api repos/{owner}/{repo}/pulls/{pr}/comments \
+  --jq '.[] | "\(.id): \(.body[:80])"'
+
+# Cache repeated queries (1 hour)
+gh api --cache 1h repos/owner/repo</code></pre>
+
+<h3>JSON Output Mode</h3>
+<p>Most <code>gh</code> commands support <code>--json</code> for structured output combined with <code>--jq</code> filtering:</p>
+<pre><code># Issues as formatted list
+gh issue list --repo owner/repo --json number,title \
+  --jq '.[] | "\(.number): \(.title)"'
+
+# PRs that are mergeable
+gh pr list --json number,title,state,mergeable \
+  --jq '.[] | select(.mergeable == "MERGEABLE")'</code></pre>
+
+<!-- ================================================================ -->
+<h2>Integrated Workflows</h2>
+
+<p>The <code>github</code> skill consolidates several formerly-separate skills into unified workflows. These run as multi-step procedures triggered by natural language.</p>
+
+<h3>PR Comment Handling</h3>
+<p>Address review comments and issue comments on the open PR for the current branch.</p>
+
+<ol class="flow-steps">
+  <li>Check authentication: <code>gh auth status</code></li>
+  <li>Find current PR: <code>gh pr view --json number,url</code></li>
+  <li>List review comments: <code>gh api repos/{owner}/{repo}/pulls/{pr}/comments --jq '.[] | "\(.id): \(.body[:80])"'</code></li>
+  <li>Address each comment, implement fixes, and commit changes</li>
+  <li>Push and re-request review from the original reviewers</li>
+</ol>
+
+<h3>Fix Failing CI</h3>
+<p>Debug and fix failing GitHub Actions checks automatically.</p>
+
+<ol class="flow-steps">
+  <li>Find failing checks: <code>gh pr checks &lt;PR&gt; --repo owner/repo</code></li>
+  <li>Get failed run logs: <code>gh run view &lt;run-id&gt; --log-failed</code></li>
+  <li>Summarize failure snippet and identify root cause</li>
+  <li>Draft fix plan, get approval, then implement the fix</li>
+  <li>Push fix and verify CI passes</li>
+</ol>
+
+<h3>Auto-Fix Issues</h3>
+<p>Fetch issues from a repository, implement fixes, and open PRs for each.</p>
+
+<ol class="flow-steps">
+  <li>List target issues: <code>gh issue list --label bug --limit 5</code></li>
+  <li>For each issue: create a branch, implement the fix, open a PR</li>
+  <li>Monitor PR reviews and address comments</li>
+  <li>Uses the GitHub REST API with <code>$GH_TOKEN</code> for automation</li>
+</ol>
+
+<h3>Yeet: Stage, Commit, Push, PR</h3>
+<p>One-shot flow to ship changes from working tree to a PR in a single command.</p>
+
+<ol class="flow-steps">
+  <li>If on <code>main</code>/<code>master</code>, create a new branch: <code>git checkout -b codex/{description}</code></li>
+  <li>Stage all changes: <code>git add -A</code></li>
+  <li>Commit with description: <code>git commit -m "{description}"</code></li>
+  <li>Push to remote: <code>git push -u origin HEAD</code></li>
+  <li>Open PR: <code>gh pr create --title "[codex] {description}" --body "..."</code></li>
+</ol>
+
+<!-- ================================================================ -->
+<h2>Templates</h2>
+
+<h3>PR Review Summary</h3>
+<pre><code>PR=55 REPO=owner/repo
+echo "## PR #$PR Summary"
+gh pr view $PR --repo $REPO \
+  --json title,body,author,additions,deletions,changedFiles \
+  --jq '"**\(.title)** by @\(.author.login)\n\n\(.body)\n\n+\(.additions) -\(.deletions) across \(.changedFiles) files"'
+gh pr checks $PR --repo $REPO</code></pre>
+
+<h3>Issue Triage Report</h3>
+<pre><code>gh issue list --repo owner/repo --state open \
+  --json number,title,labels,createdAt \
+  --jq '.[] | "[\(.number)] \(.title) - \([.labels[].name] | join(", ")) (\(.createdAt[:10]))"'</code></pre>
+
+<!-- ================================================================ -->
+<h2>Rules &amp; Best Practices</h2>
+
+<table>
+<tr><th>Rule</th><th>Details</th></tr>
+<tr><td>Always specify <code>--repo</code></td><td>When not inside a git directory, always pass <code>--repo owner/repo</code> to avoid ambiguity.</td></tr>
+<tr><td>Use URLs directly</td><td><code>gh pr view https://github.com/owner/repo/pull/55</code> works and is unambiguous.</td></tr>
+<tr><td>Cache repeated API calls</td><td>Use <code>gh api --cache 1h</code> for queries you run frequently to avoid rate limits.</td></tr>
+<tr><td>Prefer <code>--log-failed</code></td><td>When debugging CI, use <code>gh run view &lt;id&gt; --log-failed</code> instead of <code>--log</code> to avoid massive output.</td></tr>
+<tr><td>Use <code>--json</code> + <code>--jq</code></td><td>For structured data extraction, always prefer JSON output with jq filtering over parsing text.</td></tr>
+<tr><td>Local git stays local</td><td>Do not use this skill for <code>git commit</code>, <code>git push</code>, <code>git pull</code>, or <code>git branch</code>. Use git directly.</td></tr>
+<tr><td>Rate limits</td><td>GitHub API has rate limits (5,000 req/hr for authenticated). Cache aggressively and batch queries.</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<h2>Usage Examples (~haejwo)</h2>
+
+<p>These examples show how to invoke the <code>github</code> skill using natural language. Both Korean and English work interchangeably.</p>
+
+<div class="example-callout">
+  <div class="example-label">Example 1</div>
+  <div class="example-kr">"PR 55번 상태 확인해줘 -- CI 다 통과했는지 봐줘"</div>
+  <div class="example-desc">Checks CI status on PR #55 using <code>gh pr checks 55</code> and summarizes pass/fail results.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">Example 2</div>
+  <div class="example-kr">"이 변경사항 PR로 올려줘 -- 리뷰어 alice 지정하고 bug 라벨 붙여줘"</div>
+  <div class="example-desc">Runs the yeet flow: stages all changes, commits, pushes, and creates a PR with <code>--reviewer alice --label bug</code>.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">Example 3</div>
+  <div class="example-kr">"CI 실패한 거 고쳐줘 -- 로그 보고 원인 분석해줘"</div>
+  <div class="example-desc">Triggers the Fix Failing CI workflow: finds the failing check, pulls <code>--log-failed</code>, diagnoses the root cause, and proposes a fix.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">Example 4</div>
+  <div class="example-kr">"이 리포에 bug 라벨 이슈 목록 보여주고 정리해줘"</div>
+  <div class="example-desc">Lists open issues with the <code>bug</code> label, formats them as a triage report with creation dates and labels.</div>
+</div>
+
+<div class="example-callout">
+  <div class="example-label">Example 5</div>
+  <div class="example-kr">"PR 리뷰 코멘트 다 처리하고 다시 리뷰 요청해줘"</div>
+  <div class="example-desc">Runs the PR Comment Handling flow: reads all review comments, addresses each one, commits fixes, pushes, and re-requests review.</div>
+</div>
+
+<!-- ================================================================ -->
+<h2>Related Skills</h2>
+
+<table>
+<tr><th>Skill</th><th>Relationship</th></tr>
+<tr><td><code>dev-code-reviewer</code></td><td>Reviews code content; <code>github</code> handles the PR mechanics (create, merge, comment).</td></tr>
+<tr><td><code>dev</code> orchestrator</td><td>May delegate to <code>github</code> when a dev task requires PR creation or CI checking.</td></tr>
+<tr><td><code>code-review</code></td><td>Deep code review skill; pairs with <code>github</code> for <code>--comment</code> to post inline PR feedback.</td></tr>
+<tr><td><code>security-review</code></td><td>Security audit skill; uses <code>github</code> to check dependency alerts and security advisories.</td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="../devtools-workflow.html">Dev Workflow Skills</a>
+<a class="next" href="../index.html">Skill Catalog</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

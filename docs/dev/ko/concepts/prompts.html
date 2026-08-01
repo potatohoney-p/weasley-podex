@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>프롬프트 파이프라인 — podex 문서</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link active" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a class="active" href="../">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>프롬프트 파이프라인</h1>
+<p class="lead">podex는 다층 파이프라인을 통해 시스템 프롬프트를 조립합니다: 정적 템플릿(A1/A2), 동적 주입(메모리, 오케스트레이션, 스킬), 디스크 캐싱(B.md/AGENTS.md), 그리고 CLI별 스폰 어댑터.</p>
+
+<h2>조립 순서</h2>
+<p><code>src/prompt/builder.ts</code>의 <code>getSystemPrompt()</code> 함수는 다음 순서로 프롬프트를 조립합니다:</p>
+<ol>
+<li><strong>A-1.md</strong> -- 시스템 규칙 (브라우저 제어, 메모리, 하트비트, 위임)</li>
+<li><strong>A-2.md</strong> -- 사용자 설정 (아이덴티티, 바이브, 작업 디렉토리)</li>
+<li><strong>메모리 주입</strong> -- 고급(프로필 + 소울 + 태스크 스냅샷) 또는 레거시 폴백</li>
+<li><strong>오케스트레이션 섹션</strong> -- Employee 디스패치 규칙 + PABCD 가이드</li>
+<li><strong>하트비트 작업</strong> -- <code>heartbeat.json</code>의 예약 작업 설명</li>
+<li><strong>스킬 섹션</strong> -- 활성 스킬 인라인 + 사용 가능한 스킬 목록</li>
+<li><strong>Vision-click 힌트</strong> -- 데스크톱 자동화를 위한 Codex 전용 레거시 폴백</li>
+<li><strong>위임 규칙</strong> -- CLI 서브에이전트 vs jaw employee 구분</li>
+</ol>
+
+<h2>정적 템플릿</h2>
+<h3>A-1.md (시스템 규칙)</h3>
+<p>경로: <code>~/.podex/prompts/A-1.md</code>. <code>src/prompt/templates/a1-system.md</code>(305줄)로 폴백합니다. 핵심 시스템 동작을 포함합니다: 브라우저 제어 규칙, 메모리/하트비트 지침, jaw employee vs CLI 서브에이전트 구분, 그리고 채널 전송 규칙.</p>
+<div class="callout callout-info">A-1.md는 해시 기반 마이그레이션을 사용합니다. 커스터마이징하지 않았다면 템플릿 업데이트가 자동 적용됩니다. 커스텀 A-1 파일은 보존됩니다.</div>
+
+<h3>A-2.md (사용자 설정)</h3>
+<p>경로: <code>~/.podex/prompts/A-2.md</code>. 템플릿: <code>a2-default.md</code>(25줄). 아이덴티티, 사용자 환경설정, 바이브, 작업 디렉토리 힌트를 포함합니다. 파일이 없을 때만 생성되며 절대 덮어쓰지 않습니다.</p>
+
+<h2>동적 주입</h2>
+<h3>메모리 주입</h3>
+<p>인덱스 준비 상태에 따라 두 가지 경로가 있습니다:</p>
+<ul>
+<li><strong>고급 경로</strong> (<code>src/memory/injection.ts</code>): 프로필 컨텍스트(800자) + Soul &amp; Identity(1000자) + 태스크 스냅샷(2800자, 최대 4건)</li>
+<li><strong>레거시 폴백</strong>: 세션 메모리(10000자 예산) + <code>MEMORY.md</code>의 Core Memory(1500자)</li>
+</ul>
+<p>주입은 역할에 따라 다릅니다: <code>boss</code>는 전체 스냅샷을 받고, <code>employee</code>/<code>subagent</code>는 축소된 프로필을 받으며, <code>flush</code> 역할은 메모리 주입이 없습니다.</p>
+
+<h3>오케스트레이션</h3>
+<p>하나 이상의 employee가 등록되어 있으면, <code>orchestration.md</code> 템플릿이 <code>podex dispatch</code> 사용 예시와 함께 주입됩니다. <code>skills/dev-pabcd/SKILL.md</code>가 존재하면 PABCD Orchestration Guide가 뒤따릅니다.</p>
+
+<h3>하트비트</h3>
+<p><code>~/.podex/heartbeat.json</code>의 활성 하트비트 작업은 활성화 상태, 사람이 읽을 수 있는 스케줄, 프롬프트 미리보기와 함께 렌더링됩니다.</p>
+
+<h3>스킬</h3>
+<p>활성 스킬(<code>~/.podex/skills/*/SKILL.md</code>)은 인라인으로 렌더링됩니다. 레퍼런스 스킬(<code>~/.podex/skills_ref/registry.json</code>)은 탐색 가능한 목록으로 표시됩니다.</p>
+
+<h2>디스크 캐시 (B.md)</h2>
+<p><code>regenerateB()</code>는 디스크용으로 시스템 프롬프트의 캐시 버전을 생성합니다:</p>
+<table>
+<tr><th>출력</th><th>용도</th></tr>
+<tr><td><code>~/.podex/prompts/B.md</code></td><td>디버그 및 캐시 파일</td></tr>
+<tr><td><code>{workDir}/AGENTS.md</code></td><td>Codex, Copilot, OpenCode가 자동 읽기</td></tr>
+</table>
+<p>콘텐츠 해시를 확인하여 프롬프트가 실제로 변경되었을 때만 파일을 다시 씁니다. 이를 통해 재개 연속성을 유지합니다.</p>
+
+<h2>CLI별 스폰 입력</h2>
+<p>각 CLI 런타임은 프롬프트를 다른 방식으로 전달받습니다:</p>
+<table>
+<tr><th>CLI</th><th>시스템 프롬프트</th><th>사용자 입력</th></tr>
+<tr><td>Claude</td><td><code>buildArgs(..., sysPrompt)</code></td><td>stdin: <code>withHistoryPrompt(prompt, historyBlock)</code></td></tr>
+<tr><td>Codex</td><td><code>AGENTS.md</code> 자동 로드</td><td>stdin: <code>[User Message]</code> 블록</td></tr>
+<tr><td>Gemini</td><td><code>GEMINI_SYSTEM_MD</code> 임시파일</td><td>인자 수준 프롬프트</td></tr>
+<tr><td>AGY</td><td>시스템 프롬프트 플래그 없음; 선택 플래그(예: <code>--model</code>)는 emit 전 capability probe</td><td><code>agy -p &lt;prompt&gt;</code></td></tr>
+<tr><td>Cursor</td><td><code>AGENTS.md</code> / <code>CLAUDE.md</code> 자동 로드</td><td>인자 수준 프롬프트</td></tr>
+<tr><td>Grok</td><td>CWD 인스트럭션 파일</td><td><code>-p &lt;prompt&gt;</code></td></tr>
+<tr><td>Copilot</td><td>ACP + cwd 인스트럭션 파일</td><td><code>session/prompt()</code></td></tr>
+</table>
+
+<h2>히스토리 블록</h2>
+<p>새 세션(재개가 아닌 경우)에서 <code>buildHistoryBlock()</code>은 최근 대화 컨텍스트를 앞에 추가합니다:</p>
+<ul>
+<li>소스: <code>messages</code> DB, <code>workingDir</code> 기준 스코프</li>
+<li>제한: 8000자, 최대 10개 세션</li>
+<li>Compact 마커는 히스토리 스캔을 중지하고 트레이스 요약을 삽입합니다</li>
+</ul>
+<pre><code>[Recent Context]
+assistant: Previous response summary...
+user: Previous question...
+
+---
+[Current Message]
+Your new prompt here</code></pre>
+
+<h2>프롬프트 커스터마이징</h2>
+<p><code>~/.podex/prompts/A-2.md</code>를 편집하여 아이덴티티, 환경설정, 작업 디렉토리를 커스터마이징할 수 있습니다. <code>/prompt</code>를 사용하여 현재 A2 내용을 미리 볼 수 있습니다. Web UI 설정 패널에서도 프롬프트 템플릿 편집기를 제공합니다.</p>
+
+<div class="page-nav">
+<a class="prev" href="memory.html">Memory</a>
+<a class="next" href="../guides/dashboard.html">Dashboard</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

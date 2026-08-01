@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>视频生成 &mdash; podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+.badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+.badge-category { background: rgba(99, 102, 241, 0.15); color: var(--accent); }
+.quick-ref { margin: 24px 0; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 160px; }
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-ko { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+.dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.dep-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.dep-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.dep-card code { font-size: 13px; }
+.dep-card .dep-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+.preset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 12px 0 20px; }
+.preset-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; text-align: center; }
+.preset-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.preset-card .preset-dims { font-size: 22px; font-weight: 700; color: var(--accent); margin: 6px 0; }
+.preset-card .preset-ratio { font-size: 12px; color: var(--text-dim); }
+.preset-card .preset-use { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+.gate-table td:first-child { font-weight: 700; text-align: center; width: 40px; }
+.provider-row td:first-child { font-weight: 600; }
+@media (max-width: 768px) {
+  .dep-grid, .preset-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">快速入门</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+      <a class="docs-nav-link" href="../../">概览</a>
+      <a class="docs-nav-link" href="../../quickstart.html">快速开始</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">首次运行</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">核心概念</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">架构</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">员工</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">目标</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">技能</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">记忆</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">提示词</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">使用指南</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">计算机控制</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 桌面端</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">参考手册</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 命令</a>
+      <a class="docs-nav-link" href="../../reference/api.html">服务器 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">配置</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">键盘快捷键</a>
+      <a class="docs-nav-link" href="../../reference/events.html">事件</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">技能</div>
+      <a class="docs-nav-link" href="../index.html">目录</a>
+      <a class="docs-nav-link" href="../orchestration.html">开发</a>
+      <a class="docs-nav-link" href="../automation.html">自动化</a>
+      <a class="docs-nav-link active" href="../ai-media.html">AI 与媒体</a>
+      <a class="docs-nav-link" href="../communication.html">通信</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">云与部署</a>
+      <a class="docs-nav-link" href="../devtools-security.html">安全与审查</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">开发工作流</a>
+      <a class="docs-nav-link" href="../productivity.html">生产力</a>
+      <a class="docs-nav-link" href="../smarthome.html">智能家居</a>
+      <a class="docs-nav-link" href="../utility.html">实用工具</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">命令</div>
+      <a class="docs-nav-link" href="../../commands/session.html">会话</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">工作流</a>
+      <a class="docs-nav-link" href="../../commands/model.html">模型与 CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">工具</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">仅 CLI</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">更新日志</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">着陆页</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>视频生成</h1>
+<p class="lead">基于 JSON 驱动的视频生成流水线，使用 Remotion 构建。通过结构化 JSON 编写时间线，支持主题系统、TTS 旁白、转场效果和完整的组件库，渲染输出为 MP4 格式 &mdash; 全部通过命令行操作。</p>
+
+<p>
+  <span class="badge badge-active">默认启用：是</span>
+  <span class="badge badge-category">AI 与媒体</span>
+</p>
+
+<div class="callout callout-info">
+  <strong>默认启用：</strong><code>video</code> 技能会自动注入系统提示词中。当智能体检测到 "video"、"Remotion"、"animation"、"mp4"、"render video" 或 "slides to video" 等关键词时自动激活，无需手动加载。
+</div>
+
+<!-- ============================================================ -->
+<h2>快速参考</h2>
+<table class="quick-ref">
+<tr><td>技能名称</td><td><code>video</code></td></tr>
+<tr><td>分类</td><td>AI 与媒体</td></tr>
+<tr><td>默认启用</td><td>是 &mdash; 触发关键词时自动注入</td></tr>
+<tr><td>触发词</td><td><code>video</code>、<code>Remotion</code>、<code>animation</code>、<code>mp4</code>、<code>render video</code>、<code>slides to video</code></td></tr>
+<tr><td>SKILL.md 路径</td><td><code>skills_ref/video/SKILL.md</code></td></tr>
+<tr><td>输出目录</td><td><code>/tmp/remotion-render/</code></td></tr>
+<tr><td>运行环境</td><td>Node.js 22.4+、pnpm、ffmpeg、ffprobe</td></tr>
+<tr><td>引导脚本</td><td><code>node scripts/ensure-remotion.mjs</code></td></tr>
+<tr><td>TTS 提供商</td><td>Gemini（默认）、Supertone、Supertonic</td></tr>
+<tr><td>相关技能</td><td><code>pptx</code>、<code>diagram</code></td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2>CLI 命令</h2>
+<p>所有命令均在 <code>skills_ref/video/</code> 目录下运行。输出默认存放在 <code>/tmp/remotion-render/</code> &mdash; 渲染输出应保持在源代码目录之外。</p>
+
+<table>
+<thead>
+<tr><th>任务</th><th>命令</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>同步渲染</strong></td><td><code>node scripts/pipeline.mjs --timeline &lt;path&gt; [--preset Landscape-1080p]</code></td></tr>
+<tr><td><strong>渲染 + TTS</strong></td><td><code>node scripts/pipeline.mjs --timeline timeline.draft.json</code></td></tr>
+<tr><td><strong>跳过 TTS</strong></td><td><code>node scripts/pipeline.mjs --timeline timeline.draft.json --skip-tts</code></td></tr>
+<tr><td><strong>TTS 批量处理</strong></td><td><code>node scripts/tts.mjs --batch timeline.draft.json [--provider supertone]</code></td></tr>
+<tr><td><strong>TTS 单条处理</strong></td><td><code>node scripts/tts.mjs --text "Hello" --output /tmp/tts-out.m4a [--provider gemini]</code></td></tr>
+<tr><td><strong>列出语音</strong></td><td><code>node scripts/tts.mjs --list-voices [--provider supertone]</code></td></tr>
+<tr><td><strong>异步渲染</strong></td><td><code>node scripts/pipeline.mjs --timeline &lt;path&gt; --async</code></td></tr>
+<tr><td><strong>检查状态</strong></td><td><code>node scripts/pipeline.mjs --status /tmp/remotion-render/render-result.json</code></td></tr>
+<tr><td><strong>预览</strong></td><td><code>cd remotion-project &amp;&amp; pnpm exec remotion studio</code></td></tr>
+<tr><td><strong>验证</strong></td><td><code>node scripts/validate-artifact.mjs /tmp/remotion-render/TimelineVideo.mp4 --preset Landscape-1080p</code></td></tr>
+</tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2>流水线用法</h2>
+
+<pre><code># 同步模式（默认） &mdash; 阻塞直到渲染完成
+node skills_ref/video/scripts/pipeline.mjs \
+  --timeline timeline.json \
+  --output /tmp/remotion-render
+
+# 使用预设覆盖（timeline.meta.preset 是权威来源）
+node skills_ref/video/scripts/pipeline.mjs \
+  --timeline timeline.json \
+  --preset Portrait-1080p
+
+# 异步模式 &mdash; 立即返回，后台渲染
+node skills_ref/video/scripts/pipeline.mjs \
+  --timeline timeline.json \
+  --async
+
+# 检查异步状态
+node skills_ref/video/scripts/pipeline.mjs \
+  --status /tmp/remotion-render/render-result.json</code></pre>
+
+<div class="callout callout-info">
+  <strong>预设权威来源：</strong><code>timeline.meta.preset</code> 是分辨率的权威设置。CLI 的 <code>--preset</code> 标志可以覆盖它，但会发出警告。建议始终在时间线 JSON 中设置预设。
+</div>
+
+<!-- ============================================================ -->
+<h2>时间线编写</h2>
+<p>视频通过 JSON 时间线定义，包含一个 <code>meta</code> 块（标题、预设、帧率、时长）和一个 <code>elements</code> 类型化幻灯片数组。每个元素指定其类型、时间、属性和可选的转场效果。</p>
+
+<h3>最小示例</h3>
+<pre><code>{
+  "meta": {
+    "title": "My Video",
+    "preset": "Landscape-1080p",
+    "fps": 30,
+    "totalDurationSec": 15
+  },
+  "elements": [
+    {
+      "type": "title",
+      "startSec": 0,
+      "durationSec": 5,
+      "props": { "title": "Hello World", "subtitle": "A demo" },
+      "transition": { "type": "fade" }
+    },
+    {
+      "type": "content",
+      "startSec": 5,
+      "durationSec": 5,
+      "props": {
+        "header": "Key Points",
+        "bulletPoints": ["Fast", "Safe", "Beautiful"]
+      },
+      "transition": { "type": "slide", "direction": "from-right" }
+    },
+    {
+      "type": "code",
+      "startSec": 10,
+      "durationSec": 5,
+      "props": {
+        "code": "const x = 42;",
+        "language": "typescript",
+        "title": "Example"
+      },
+      "transition": { "type": "fade" }
+    }
+  ],
+  "audio": []
+}</code></pre>
+
+<!-- ============================================================ -->
+<h2>主题系统</h2>
+<p>每个视频应通过 <code>meta.theme</code> 定义独特的视觉风格。字体通过 <code>@remotion/google-fonts</code> 加载，以确保跨平台渲染一致。默认主题使用 Chakra Petch（展示字体）、Outfit（正文字体）和 JetBrains Mono（代码字体），搭配深蓝色背景和青色强调色。</p>
+
+<pre><code>{
+  "meta": {
+    "theme": {
+      "aesthetic": "brutalist tech",
+      "font": { "display": "Chakra Petch", "body": "Outfit" },
+      "color": { "accent": "#FF6B35", "bg": "#0A0A0A" },
+      "gradient": {
+        "hero": "radial-gradient(circle at 20% 30%, rgba(255,107,53,0.2) 0%, transparent 60%)"
+      }
+    }
+  }
+}</code></pre>
+
+<div class="callout callout-info">
+  <strong>字体禁令：</strong>请勿在 <code>meta.theme</code> 中使用 Inter、Roboto 或 Arial。这些字体暗示内容是通用的或 AI 生成的，违反了独特美学的要求。
+</div>
+
+<!-- ============================================================ -->
+<h2>内容设计规则</h2>
+
+<h3>推荐做法</h3>
+<ul>
+<li>使用简洁的标题，不加表情符号</li>
+<li>要点写成短语形式（最多 8 个词），每张幻灯片 3&ndash;4 条</li>
+<li>变化幻灯片类型：title、content、code、content &mdash; 避免单调</li>
+<li>混合使用转场效果：fade、slide、wipe（避免同一类型连续出现 3 次以上）</li>
+<li>在代码幻灯片上展示真实代码，而非伪代码</li>
+<li>选定一种主题美学风格，并贯穿始终</li>
+</ul>
+
+<h3>应避免的做法</h3>
+<ul>
+<li>在幻灯片标题或头部使用表情符号</li>
+<li>单张幻灯片超过 5 条要点</li>
+<li>使用通用标题，如 "Key Features"、"Getting Started" 或 "Summary"</li>
+<li>在 <code>meta.theme</code> 中使用 Inter、Roboto 或 Arial 字体</li>
+</ul>
+
+<h3>内容密度</h3>
+<p>画布尺寸较大（1920x1080 或 1080x1920）。稀疏的内容会造成空白区域。应添加更多内容块 &mdash; 而非增大字号或增加内边距。每张幻灯片应至少使用画布面积的 70%。</p>
+
+<table>
+<thead>
+<tr><th>幻灯片类型</th><th>横屏</th><th>竖屏</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>内容</strong></td><td>3&ndash;4 条要点</td><td>4&ndash;5 条要点</td></tr>
+<tr><td><strong>代码</strong></td><td>至少 4 行代码 + 注释</td><td>至少 6 行代码 + 注释</td></tr>
+<tr><td><strong>标题</strong></td><td colspan="2">必须包含副标题</td></tr>
+</tbody>
+</table>
+
+<h3>短视频 (Portrait-1080p)</h3>
+<ul>
+<li>60 秒内最多 8&ndash;10 个元素</li>
+<li>首张幻灯片 = 吸引眼球（最多 5 个词）+ 描述性副标题</li>
+<li>末张幻灯片 = 行动号召或令人难忘的结尾 + 标语</li>
+<li>每张内容幻灯片 5&ndash;6 条要点，代码幻灯片 6&ndash;10 行</li>
+<li>每张内容幻灯片都搭配使用 <code>content</code> + <code>bulletPoints</code></li>
+</ul>
+
+<!-- ============================================================ -->
+<h2>分辨率预设</h2>
+
+<div class="preset-grid">
+  <div class="preset-card">
+    <strong>Landscape-720p</strong>
+    <div class="preset-dims">1280 x 720</div>
+    <div class="preset-ratio">16:9</div>
+    <div class="preset-use">草稿 / 预览</div>
+  </div>
+  <div class="preset-card">
+    <strong>Landscape-1080p</strong>
+    <div class="preset-dims">1920 x 1080</div>
+    <div class="preset-ratio">16:9</div>
+    <div class="preset-use">标准交付（默认）</div>
+  </div>
+  <div class="preset-card">
+    <strong>Portrait-1080p</strong>
+    <div class="preset-dims">1080 x 1920</div>
+    <div class="preset-ratio">9:16</div>
+    <div class="preset-use">TikTok / Reels / Shorts</div>
+  </div>
+  <div class="preset-card">
+    <strong>Square-1080p</strong>
+    <div class="preset-dims">1080 x 1080</div>
+    <div class="preset-ratio">1:1</div>
+    <div class="preset-use">Instagram / LinkedIn</div>
+  </div>
+</div>
+
+<p>默认值：<code>Landscape-1080p</code>。智能体会根据关键词自动选择 &mdash; "reels"、"shorts" 或 "TikTok" 触发 <code>Portrait-1080p</code>；"Instagram" 触发 <code>Square-1080p</code>。</p>
+
+<!-- ============================================================ -->
+<h2>组件库</h2>
+<p>Remotion 项目提供 11 个幻灯片组件及辅助功能。每个组件对应时间线 JSON 中的一个 <code>type</code> 值。</p>
+
+<h3>幻灯片组件</h3>
+<table>
+<thead>
+<tr><th>组件</th><th>属性</th><th>用途</th></tr>
+</thead>
+<tbody>
+<tr><td><code>TitleSlide</code></td><td><code>title</code>、<code>subtitle</code>、<code>animation?</code></td><td>开场 / 结尾幻灯片</td></tr>
+<tr><td><code>ContentSlide</code></td><td><code>header</code>、<code>content</code>、<code>bulletPoints</code>、<code>animation?</code></td><td>正文内容</td></tr>
+<tr><td><code>CodeSlide</code></td><td><code>code</code>、<code>language</code>、<code>title</code>、<code>animation?</code></td><td>代码演示</td></tr>
+<tr><td><code>DiagramSlide</code></td><td><code>src</code>、<code>title</code>、<code>caption</code>、<code>fit</code>、<code>animation?</code></td><td>图片 / 图表</td></tr>
+<tr><td><code>StatSlide</code></td><td><code>title</code>、<code>stats[]</code> (value/suffix/label/trend/decimals)</td><td>KPI / 数字动画</td></tr>
+<tr><td><code>QuoteSlide</code></td><td><code>quote</code>、<code>author?</code>、<code>source?</code></td><td>引言</td></tr>
+<tr><td><code>ComparisonSlide</code></td><td><code>title</code>、<code>left{label,items,accent}</code>、<code>right{...}</code></td><td>并排对比</td></tr>
+<tr><td><code>VideoSlide</code></td><td><code>src</code>、<code>title?</code>、<code>startFrom?</code>、<code>playbackRate?</code>、<code>loop?</code></td><td>内嵌视频</td></tr>
+<tr><td><code>GifSlide</code></td><td><code>src</code>、<code>title?</code>、<code>fit?</code></td><td>GIF 动画</td></tr>
+<tr><td><code>LottieSlide</code></td><td><code>src</code>、<code>title?</code></td><td>Lottie 动画</td></tr>
+<tr><td><code>ChartSlide</code></td><td><code>chartType</code>、<code>title</code>、<code>data{labels,datasets}</code></td><td>柱状图 / 饼图 / 折线图</td></tr>
+<tr><td><code>Caption</code></td><td><code>text</code>、<code>position</code>、<code>designTheme?</code></td><td>定时字幕</td></tr>
+</tbody>
+</table>
+
+<h3>功能特性</h3>
+<table>
+<thead>
+<tr><th>功能</th><th>详情</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Surface Card</strong></td><td>内容幻灯片上的毛玻璃效果容器。可通过 <code>meta.theme.card</code> 自定义。</td></tr>
+<tr><td><strong>动画</strong></td><td>每个元素可选配置：<code>{ enter: "scale-in", exit: "fade-out" }</code>。进入效果：scale-in、fade-in、slide-up、none。退出效果：scale-out、slide-down、fade-out、none。</td></tr>
+<tr><td><strong>转场</strong></td><td>fade、slide、wipe、flip、clock-wipe。可选 <code>timing: "spring"</code>。slide/wipe 支持 <code>direction</code> 参数。</td></tr>
+<tr><td><strong>韩文字体</strong></td><td>NotoSansKR 作为正文主字体加载。字体栈：<code>NotoSansKR, Outfit, sans-serif</code>。</td></tr>
+<tr><td><strong>图表</strong></td><td>bar（交错增长）、pie（扫描）、line（绘制）。纯 SVG 实现，无外部库依赖。</td></tr>
+<tr><td><strong>音频</strong></td><td><code>fadeInSec</code> / <code>fadeOutSec</code>、<code>loop</code>、<code>trimStartSec</code>。</td></tr>
+</tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2>TTS 集成</h2>
+<p>提供三个 TTS 提供商。默认使用 Gemini。流水线会自动检测时间线元素中的 <code>narration</code> 字段，并生成对应每个片段的音频文件。</p>
+
+<table>
+<thead>
+<tr><th>提供商</th><th>ID</th><th>默认语音</th><th>优势</th><th>环境变量</th></tr>
+</thead>
+<tbody class="provider-row">
+<tr><td><strong>Gemini</strong></td><td><code>gemini</code></td><td>Kore</td><td>30 种语音，可通过提示词控制语气</td><td><code>GEMINI_API_KEY</code></td></tr>
+<tr><td><strong>Supertone</strong></td><td><code>supertone</code></td><td>Andrew</td><td>6 种情感风格，韩语质量最佳</td><td><code>SUPERTONE_API_KEY</code></td></tr>
+<tr><td><strong>Supertonic</strong></td><td><code>supertonic</code></td><td>M1</td><td>0.22 秒生成，免费，离线可用</td><td>无</td></tr>
+</tbody>
+</table>
+
+<h3>草稿到终稿工作流</h3>
+<ol>
+<li>编写 <code>timeline.draft.json</code>，包含 <code>narration</code> 和可选的 <code>voiceControl</code> 字段。</li>
+<li>流水线自动检测旁白字段，为每个片段生成音频。</li>
+<li>生成 <code>timeline.final.json</code>，包含 <code>audio[]</code> 条目和校正后的 <code>durationSec</code>。</li>
+<li>使用同步音频渲染最终时间线。</li>
+</ol>
+
+<h3>带旁白的草稿时间线</h3>
+<pre><code>{
+  "elements": [
+    {
+      "id": "intro",
+      "type": "title",
+      "durationSec": 11,
+      "narration": "Welcome to the analysis report.",
+      "voiceControl": {
+        "tonePrompt": "Calm, professional news anchor tone"
+      },
+      "props": {
+        "title": "Tech Trends",
+        "subtitle": "2026 Edition"
+      }
+    }
+  ]
+}</code></pre>
+
+<h3>时长估算</h3>
+<ul>
+<li><strong>韩语：</strong>约 6.5 字符/秒 &mdash; <code>Math.ceil(narration.length / 6.5) + 0.5</code></li>
+<li>最终 <code>durationSec</code> 在 TTS 生成后通过 ffprobe 测量自动校正</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2>渲染验证 &mdash; 三级门控</h2>
+<p>所有三级门控必须全部通过，渲染才被视为成功。</p>
+
+<table class="gate-table">
+<thead>
+<tr><th>门控</th><th>检查内容</th><th>角色</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><strong>策略</strong> &mdash; 日志中无禁用引擎</td><td>辅助</td></tr>
+<tr><td>2</td><td><strong>执行</strong> &mdash; <code>remotion render</code> 退出码为 0</td><td>主要</td></tr>
+<tr><td>3</td><td><strong>产物</strong> &mdash; ffprobe 验证时长、编解码器和分辨率</td><td>最终判定</td></tr>
+</tbody>
+</table>
+
+<pre><code>node scripts/validate-artifact.mjs /tmp/remotion-render/TimelineVideo.mp4 --preset Landscape-1080p</code></pre>
+
+<div class="callout callout-info">
+  <strong>门控 3 是最终判定：</strong>即使 <code>remotion render</code> 退出码为 0，产物也必须通过 ffprobe 验证（正确的分辨率、编解码器和时长），渲染才会被接受。
+</div>
+
+<!-- ============================================================ -->
+<h2>FFmpeg 模式</h2>
+<p>FFmpeg 负责 Remotion 之外的确定性剪切、批量处理和预处理操作。以下模式可在视频流水线中使用。</p>
+
+<h3>按时间戳提取片段</h3>
+<pre><code>ffmpeg -i raw.mp4 -ss 00:12:30 -to 00:15:45 -c copy segment_01.mp4</code></pre>
+
+<h3>从编辑决策列表批量剪切</h3>
+<pre><code>#!/bin/bash
+# cuts.txt 格式：start,end,label
+while IFS=, read -r start end label; do
+  ffmpeg -i raw.mp4 -ss "$start" -to "$end" -c copy "segments/${label}.mp4"
+done &lt; cuts.txt</code></pre>
+
+<h3>拼接片段</h3>
+<pre><code>for f in segments/*.mp4; do echo "file '$f'"; done &gt; concat.txt
+ffmpeg -f concat -safe 0 -i concat.txt -c copy assembled.mp4</code></pre>
+
+<h3>创建代理文件以加速编辑</h3>
+<pre><code>ffmpeg -i raw.mp4 -vf "scale=960:-2" -c:v libx264 -preset ultrafast -crf 28 proxy.mp4</code></pre>
+
+<h3>提取音频用于转录</h3>
+<pre><code>ffmpeg -i raw.mp4 -vn -acodec pcm_s16le -ar 16000 audio.wav</code></pre>
+
+<h3>音频响度标准化</h3>
+<pre><code>ffmpeg -i segment.mp4 -af loudnorm=I=-16:TP=-1.5:LRA=11 -c:v copy normalized.mp4</code></pre>
+
+<h3>场景检测</h3>
+<pre><code># 检测场景变化（阈值 0.3 = 中等灵敏度）
+ffmpeg -i input.mp4 -vf "select='gt(scene,0.3)',showinfo" -vsync vfr -f null - 2&gt;&amp;1 | grep showinfo</code></pre>
+
+<h3>社交媒体画面裁切</h3>
+<pre><code># 16:9 转 9:16（居中裁切，适用于 TikTok/Reels）
+ffmpeg -i input.mp4 -vf "crop=ih*9/16:ih,scale=1080:1920" vertical.mp4
+
+# 16:9 转 1:1（居中裁切，适用于 Instagram）
+ffmpeg -i input.mp4 -vf "crop=ih:ih,scale=1080:1080" square.mp4</code></pre>
+
+<!-- ============================================================ -->
+<h2>ElevenLabs 语音（补充）</h2>
+<p>对于 Remotion TTS 流水线之外的专业配音需求，可通过 API 直接使用 ElevenLabs。当需要高保真英语旁白、声音克隆或超出 Gemini/Supertone 能力范围的情感控制时使用。需要设置 <code>ELEVENLABS_API_KEY</code>。</p>
+
+<pre><code>import os, requests
+
+resp = requests.post(
+    f"https://api.elevenlabs.io/v1/text-to-speech/&lt;voice_id&gt;",
+    headers={
+        "xi-api-key": os.environ["ELEVENLABS_API_KEY"],
+        "Content-Type": "application/json"
+    },
+    json={
+        "text": "Your narration text here",
+        "model_id": "eleven_turbo_v2_5",
+        "voice_settings": {"stability": 0.5, "similarity_boost": 0.75}
+    }
+)
+with open("voiceover.mp3", "wb") as f:
+    f.write(resp.content)</code></pre>
+
+<!-- ============================================================ -->
+<h2>最终润色 (Descript / CapCut)</h2>
+<p>对于代码驱动渲染处理不佳的任务，可使用传统编辑器作为最后一步：</p>
+<ul>
+<li><strong>节奏</strong> &mdash; 调整过快或过慢的剪切点</li>
+<li><strong>字幕</strong> &mdash; 自动生成后手动清理</li>
+<li><strong>调色</strong> &mdash; 基础校正和氛围调整</li>
+<li><strong>最终音频混合</strong> &mdash; 平衡语音、音乐和音效电平</li>
+<li><strong>导出</strong> &mdash; 针对不同平台的格式和质量设置</li>
+</ul>
+<div class="callout callout-info">
+  <strong>分工协作：</strong>AI 负责清除重复性工作 &mdash; 时间线编写、渲染、TTS。最终的创意品味由手动润色环节把控。
+</div>
+
+<!-- ============================================================ -->
+<h2>依赖项</h2>
+<p>视频流水线需要 Node.js、pnpm、FFmpeg 和 Chromium 浏览器（由 Remotion 自动安装）。</p>
+
+<div class="dep-grid">
+  <div class="dep-card">
+    <strong>Node.js 22.4+</strong>
+    <code>node --version</code>
+    <div class="dep-desc">流水线脚本和 Remotion 的运行环境</div>
+  </div>
+  <div class="dep-card">
+    <strong>pnpm</strong>
+    <code>npm install -g pnpm</code>
+    <div class="dep-desc">Remotion 项目的包管理器</div>
+  </div>
+  <div class="dep-card">
+    <strong>FFmpeg + ffprobe</strong>
+    <code>brew install ffmpeg</code>
+    <div class="dep-desc">视频/音频处理、产物验证、片段提取</div>
+  </div>
+  <div class="dep-card">
+    <strong>Chromium（自动）</strong>
+    <code>remotion browser ensure</code>
+    <div class="dep-desc">由 <code>ensure-remotion.mjs</code> 引导脚本自动安装</div>
+  </div>
+</div>
+
+<h3>环境变量</h3>
+<table>
+<thead>
+<tr><th>变量</th><th>用途</th><th>是否必需</th></tr>
+</thead>
+<tbody>
+<tr><td><code>GEMINI_API_KEY</code></td><td>Gemini TTS 提供商</td><td>是（如果使用 Gemini TTS，即默认提供商）</td></tr>
+<tr><td><code>SUPERTONE_API_KEY</code></td><td>Supertone TTS 提供商</td><td>仅在使用 Supertone 时需要</td></tr>
+<tr><td><code>ELEVENLABS_API_KEY</code></td><td>ElevenLabs 补充 TTS</td><td>仅在使用 ElevenLabs 时需要</td></tr>
+<tr><td><code>GOOGLE_APPLICATION_CREDENTIALS</code></td><td>Vertex AI 认证</td><td><code>gcloud auth</code> 的替代方案</td></tr>
+</tbody>
+</table>
+
+<h3>引导安装</h3>
+<pre><code># 首次设置：安装包并确保 Chromium 可用
+node scripts/ensure-remotion.mjs
+
+# 验证设置
+cd remotion-project &amp;&amp; pnpm exec remotion studio</code></pre>
+
+<!-- ============================================================ -->
+<h2>项目结构</h2>
+<pre><code>skills_ref/video/
++-- SKILL.md
++-- reference/                     # visual-quality.md, tts-integration.md, components.md
++-- scripts/
+|   +-- pipeline.mjs               # CLI 入口（同步/异步/TTS）
+|   +-- tts.mjs                    # TTS 编排器（多提供商）
+|   +-- tts-providers/             # gemini.mjs, supertone.mjs, supertonic.mjs
+|   +-- ensure-remotion.mjs        # 运行时引导
+|   +-- validate-artifact.mjs      # 门控 3：ffprobe 验证
+|   +-- presets.mjs                # 分辨率预设 (ESM)
++-- remotion-project/
+    +-- public/example-timeline.json
+    +-- src/
+        +-- components/            # 11 个幻灯片组件 + 导出桶
+        +-- timeline/              # JSON 转 React 引擎</code></pre>
+
+<!-- ============================================================ -->
+<h2>"~&#54644;&#51468;" 使用示例</h2>
+<p>以下是通过自然语言调用视频任务的实际示例。韩语和英语均可使用。</p>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; &#48156;&#54364; &#51088;&#47308; &#50689;&#49345;&#51004;&#47196; &#47564;&#46308;&#50612;&#51468; &mdash; 1080p &#44032;&#47196; &#47784;&#46300;, 30&#52488;"</div>
+  <div class="example-desc">根据演示内容创建 Landscape-1080p 时间线。智能体编写包含标题、内容和代码幻灯片的 JSON 时间线，选择合适的主题，并通过同步流水线渲染。输出位于 <code>/tmp/remotion-render/TimelineVideo.mp4</code>。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"TikTok &#49660;&#52768; &#50689;&#49345; &#47564;&#46308;&#50612;&#51468; &mdash; AI &#53944;&#47116;&#46300; &#51452;&#51228;&#47196; 60&#52488;"</div>
+  <div class="example-desc">自动选择 Portrait-1080p (9:16) 预设。生成 8&ndash;10 个元素，以吸引眼球的开场和行动号召的结尾。应用短视频内容规则：密集要点、6 行以上的代码幻灯片以及多样化转场效果。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; &#53440;&#51076;&#46972;&#51064;&#50640; &#45208;&#47112;&#51060;&#49496; &#52628;&#44032;&#54644;&#51468; &mdash; &#52264;&#48516;&#54620; &#53668;&#51004;&#47196;"</div>
+  <div class="example-desc">为草稿时间线中的每个元素添加 <code>narration</code> 和 <code>voiceControl</code> 字段。使用默认的 Gemini 提供商（语音：Kore）运行 TTS 流水线，生成每个片段的音频，并输出包含同步时长的 <code>timeline.final.json</code>。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; &#50689;&#49345; 16:9&#50640;&#49436; 9:16&#51004;&#47196; &#48148;&#44984;&#51468; &mdash; &#53581;&#53665; &#51473;&#50521; &#53356;&#47213;"</div>
+  <div class="example-desc">使用 FFmpeg 社交媒体画面裁切模式将横屏视频居中裁切为竖屏。执行：<code>ffmpeg -i input.mp4 -vf "crop=ih*9/16:ih,scale=1080:1920" vertical.mp4</code>。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#47116;&#45908;&#47553; &#44208;&#44284; &#44160;&#51613;&#54644;&#51468; &mdash; &#54644;&#49345;&#46020;&#47049; &#53076;&#45937; &#47582;&#45716;&#51648; &#54869;&#51064;"</div>
+  <div class="example-desc">对渲染产物执行三级验证门控。运行 <code>validate-artifact.mjs</code>，通过 ffprobe 验证时长、编解码器和分辨率是否与预期预设匹配。</div>
+</div>
+
+<!-- ============================================================ -->
+<h2>故障排除</h2>
+
+<h3>找不到 Remotion Chromium</h3>
+<p>如果 <code>remotion render</code> 报浏览器错误，请确保 Chromium 已安装：</p>
+<pre><code>node scripts/ensure-remotion.mjs
+# 或手动执行：
+cd remotion-project &amp;&amp; pnpm exec remotion browser ensure</code></pre>
+
+<h3>找不到 FFmpeg</h3>
+<p>安装 FFmpeg 和 ffprobe：</p>
+<pre><code># macOS
+brew install ffmpeg
+
+# Ubuntu/Debian
+sudo apt-get install -y ffmpeg
+
+# 验证
+ffmpeg -version &amp;&amp; ffprobe -version</code></pre>
+
+<h3>TTS 认证错误</h3>
+<p>检查所选提供商对应的环境变量是否已设置：</p>
+<pre><code># Gemini（默认）
+echo $GEMINI_API_KEY
+
+# Supertone
+echo $SUPERTONE_API_KEY
+
+# Supertonic 无需密钥（离线运行）</code></pre>
+
+<h3>渲染输出为空或损坏</h3>
+<p>运行产物验证器进行诊断：</p>
+<pre><code>node scripts/validate-artifact.mjs /tmp/remotion-render/TimelineVideo.mp4 --preset Landscape-1080p</code></pre>
+<p>如果门控 3 未通过，请检查 Remotion 日志中的渲染错误。常见原因：缺少字体、无效的时间线 JSON，或大型合成时内存不足。</p>
+
+<h3>TTS 后时长不匹配</h3>
+<p>流水线在 TTS 生成后通过 ffprobe 测量自动校正 <code>durationSec</code>。如果时长仍有偏差，请验证旁白文本长度是否符合估算公式：韩语文本使用 <code>Math.ceil(text.length / 6.5) + 0.5</code>。</p>
+
+<div class="page-nav">
+<a class="prev" href="pdf.html">PDF</a>
+<a class="next" href="../ai-media.html">AI 媒体技能</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

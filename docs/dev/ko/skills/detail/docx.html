@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word 문서 — podex 문서</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="문서 검색..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">시작하기</div>
+      <a class="docs-nav-link" href="../../">개요</a>
+      <a class="docs-nav-link" href="../../quickstart.html">빠른 시작</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">첫 실행</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">개념</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">아키텍처</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">직원</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">목표</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">스킬</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">메모리</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">프롬프트</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">가이드</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">대시보드</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">노트 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">칸반 보드</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">텔레그램</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">디스코드</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">컴퓨터 사용</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 데스크톱</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">레퍼런스</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 명령어</a>
+      <a class="docs-nav-link" href="../../reference/api.html">서버 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">설정</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">키보드 단축키</a>
+      <a class="docs-nav-link" href="../../reference/events.html">이벤트</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">스킬</div>
+      <a class="docs-nav-link" href="../index.html">카탈로그</a>
+      <a class="docs-nav-link" href="../orchestration.html">개발</a>
+      <a class="docs-nav-link" href="../automation.html">자동화</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 미디어</a>
+      <a class="docs-nav-link" href="../communication.html">커뮤니케이션</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">클라우드 &amp; 배포</a>
+      <a class="docs-nav-link" href="../devtools-security.html">보안 &amp; 리뷰</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">개발 워크플로우</a>
+      <a class="docs-nav-link active" href="../productivity.html">생산성</a>
+      <a class="docs-nav-link" href="../smarthome.html">스마트 홈</a>
+      <a class="docs-nav-link" href="../utility.html">유틸리티</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">명령어</div>
+      <a class="docs-nav-link" href="../../commands/session.html">세션</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">워크플로우</a>
+      <a class="docs-nav-link" href="../../commands/model.html">모델 &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">도구</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI 전용</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">루트 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">변경 이력</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#xD55C;&#xAD6D;&#xC5B4;</a>
+    <a href="../../zh/">&#x4E2D;&#x6587;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">랜딩 페이지</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Word 문서</h1>
+<p class="lead">.docx 생성, 편집, 읽기 및 시각적 검증</p>
+
+<div class="callout callout-info"><strong>기본 활성화: 예</strong> &mdash; <code>docx</code> 스킬은 기본적으로 사용 가능하며, Word 문서, <code>.docx</code> 파일, 보고서, 메모, 편지 또는 템플릿을 언급하면 자동으로 트리거됩니다. 수동 로딩이 필요 없습니다.</div>
+
+<h2>개요</h2>
+<p><code>docx</code> 스킬은 Word 문서의 전체 라이프사이클을 처리합니다: 처음부터 생성, 기존 파일 편집, 읽기 및 분석, 템플릿 기반 생성, 변경 내용 추적 관리, 그리고 필수 시각적 QA 검증. 이 스킬은 <code>.docx</code> 파일에만 적용되며 &mdash; PDF, 스프레드시트, HWPX 또는 Google Docs에는 적용되지 않습니다.</p>
+
+<p>주요 도구는 PATH에 있는 CLI인 <strong>officecli</strong>로, 작업의 약 80%를 처리합니다 (add, set, remove, validate, query, track-change accept/reject). officecli가 처리할 수 없는 작업 &mdash; 변경 내용 추적 <em>생성</em>, OMML 수식, 대량 패턴 매칭 &mdash; 의 경우 <code>scripts/</code>에 있는 <strong>Python OOXML 스크립트</strong>로 대체합니다.</p>
+
+<h2>트리거</h2>
+<table>
+<tr><th>패턴</th><th>예시</th></tr>
+<tr><td>파일 확장자</td><td><code>.docx</code>, Word 문서</td></tr>
+<tr><td>문서 유형</td><td>보고서, 메모, 편지, 제안서, 계약서</td></tr>
+<tr><td>키워드</td><td>"Word doc", "template", "tracked changes", "table of contents"</td></tr>
+<tr><td>한국어 트리거</td><td>"워드 문서", "보고서 만들어줘", "문서 작성해줘"</td></tr>
+</table>
+
+<h2>빠른 참조</h2>
+<table>
+<tr><th>작업</th><th>도구</th><th>명령 패턴</th><th>비고</th></tr>
+<tr><td>기존 문서와 동일한 서식 적용</td><td>shell + officecli</td><td><code>cp source.docx target.docx &amp;&amp; officecli open target.docx</code></td><td>스타일/머리글/바닥글 상속</td></tr>
+<tr><td>빈 DOCX 생성</td><td>officecli</td><td><code>officecli create report.docx</code></td><td>실제 Office 파일에서 시작</td></tr>
+<tr><td>단락 추가</td><td>officecli</td><td><code>officecli add FILE /body --type paragraph --prop text="..."</code></td><td>기본 쓰기 경로</td></tr>
+<tr><td>단락/런 편집</td><td>officecli</td><td><code>officecli set FILE /body/p[N] --prop ...</code></td><td>정확한 경로 지정</td></tr>
+<tr><td>텍스트/개요/통계 읽기</td><td>officecli</td><td><code>officecli view FILE text</code></td><td>모드: text, annotated, outline, stats, issues, html</td></tr>
+<tr><td>문서 쿼리</td><td>officecli</td><td><code>officecli query FILE "p[style=Heading1]"</code></td><td>CSS 유사 셀렉터</td></tr>
+<tr><td>템플릿 치환</td><td>officecli</td><td><code>officecli set FILE / --prop find="{{X}}" --prop replace="Y"</code></td><td>템플릿 구조 보존</td></tr>
+<tr><td>유효성 검사 / 이슈 스캔</td><td>officecli</td><td><code>officecli validate FILE</code></td><td><code>view FILE issues</code>와 함께 사용</td></tr>
+<tr><td>변경 내용 추적 수락/거부</td><td>officecli</td><td><code>officecli set FILE / --prop accept-changes=all</code></td><td><code>reject-changes=all</code>도 가능</td></tr>
+<tr><td>변경 내용 추적 생성</td><td>Python (L3/L4)</td><td><code>scripts/docx_cli.py</code> + <code>ooxml/redline_diff.py</code></td><td>officecli는 생성 불가 &mdash; 수락/거부만 가능</td></tr>
+<tr><td>OMML 수식</td><td>Python (L4)</td><td>압축 해제 &rarr; <code>&lt;m:oMath&gt;</code> 삽입 &rarr; 재압축</td><td>officecli는 OMML 생성 불가</td></tr>
+<tr><td>복잡한 앵커 주석</td><td>Python (L3)</td><td><code>python3 scripts/comment.py IN OUT --text "..." --anchor "..."</code></td><td>officecli 범위를 넘어서는 주석용</td></tr>
+<tr><td>PDF 변환 / 시각적 QA</td><td>soffice</td><td><code>soffice --headless --convert-to pdf FILE</code></td><td>스크린샷 기반 QA</td></tr>
+</table>
+
+<h2>"~해줘" 사용 예시</h2>
+
+<div class="callout callout-info">
+<strong>"분기 보고서 만들어줘"</strong><br>
+적절한 제목 계층 구조, 목차, 표, 전문적인 서식을 갖춘 분기 보고서 문서를 처음부터 생성합니다. <code>officecli create</code> &rarr; 구조 추가 &rarr; 유효성 검사 &rarr; PDF 검증 순서로 진행합니다.
+</div>
+
+<div class="callout callout-info">
+<strong>"이 문서 형식에 맞춰서 새로 작성해줘"</strong><br>
+참조 기반 편집: 소스 파일을 복사하여 모든 스타일, 머리글, 바닥글을 상속한 다음, 문서의 시각적 정체성을 유지하면서 본문 내용을 교체합니다. 아래의 참조 기반 편집 워크플로우를 참고하세요.
+</div>
+
+<div class="callout callout-info">
+<strong>"이 워드 문서 내용 요약해줘"</strong><br>
+<code>officecli view FILE text</code>와 <code>view FILE outline</code>을 사용하여 문서를 읽고 분석한 다음, 제목, 주요 내용, 문서 통계에 대한 구조화된 요약을 제공합니다.
+</div>
+
+<div class="callout callout-info">
+<strong>"변경사항 추적해서 수정해줘"</strong><br>
+officecli는 변경 내용 추적을 수락/거부만 할 수 있고 생성은 할 수 없으므로, Python OOXML 스크립트를 통해 변경 내용 추적(레드라인)을 생성합니다. 자동으로 L3/L4로 에스컬레이션됩니다.
+</div>
+
+<div class="callout callout-info">
+<strong>"문서 템플릿에 데이터 채워줘"</strong><br>
+<code>officecli set FILE / --prop find="{{X}}" --prop replace="Y"</code>를 사용한 템플릿 안전 치환으로, 템플릿의 서식과 구조를 보존하면서 플레이스홀더를 채웁니다.
+</div>
+
+<h2>참조 기반 편집</h2>
+<p>사용자가 "X.docx처럼 서식 맞춰줘", "기존 스타일에 맞춰줘", "템플릿 기반으로"라고 하거나 소스 파일을 제공하면 &mdash; <strong>항상 소스 파일에서 시작하세요</strong>. 절대 처음부터 다시 만들지 마세요.</p>
+
+<h3>워크플로우</h3>
+<ol>
+<li><strong>소스 복사:</strong> <code>cp source.docx target.docx</code> &mdash; 모든 스타일, 여백, 번호 매기기, 머리글, 바닥글을 상속합니다</li>
+<li><strong>열기:</strong> <code>officecli open target.docx</code> &mdash; 데몬이 시작되고, 명령이 즉시 반환됩니다</li>
+<li><strong>본문 내용만 제거</strong> &mdash; <code>/styles</code>, <code>/numbering</code>, <code>/header</code>, <code>/footer</code>는 유지합니다</li>
+<li><strong>기존 스타일 이름을 사용하여 새 단락 추가</strong> (예: <code>--prop style=Heading1</code>) &mdash; 자동으로 적용됩니다</li>
+</ol>
+
+<h3>이것이 중요한 이유</h3>
+<p>Pandoc으로 생성된 문서와 Word로 생성된 문서에는 해당 문서에 고유한 특정 스타일 ID(예: <code>Heading1</code>, <code>BodyText</code>, <code>FirstParagraph</code>)가 있습니다. 같은 이름으로 새 스타일을 추가하면 다음과 같은 문제가 발생합니다:</p>
+<ul>
+<li><code>officecli validate</code>에서 중복 스타일 ID 오류 발생</li>
+<li>Word/LibreOffice 렌더링이 기본값으로 대체됨</li>
+<li>작업 시간이 필요 이상으로 10배 길어짐</li>
+</ul>
+
+<h3>템플릿 우선순위</h3>
+<ol>
+<li><strong>사용자 제공 소스 파일</strong> &mdash; 최우선 템플릿</li>
+<li><strong><code>tests/fixtures/*.docx</code></strong> &mdash; 스킬과 함께 제공되는 사전 빌드된 작동 예제</li>
+<li><strong><code>officecli create</code> 빈 문서</strong> &mdash; 다른 것이 적용되지 않을 때만 사용</li>
+</ol>
+
+<pre><code># 올바른 방법: Pandoc 스타일 상속
+cp Assignment1.docx Assignment2.docx
+officecli open Assignment2.docx
+officecli remove Assignment2.docx "/body/p[1]"   # 기존 본문 제거 (스타일/머리글/바닥글은 유지)
+# ... 나머지 단락도 제거 ...
+officecli add Assignment2.docx /body --type paragraph --prop text="New title" --prop style=Heading1
+officecli close Assignment2.docx
+
+# 잘못된 방법: 이미 존재하는 스타일을 재생성 -- validate 실패
+officecli add doc.docx /styles --type style --prop name=Heading1 --prop size=20pt ...</code></pre>
+
+<h2>에스컬레이션 단계</h2>
+<p>officecli로 작업을 수행할 수 없을 때, 다음 순서로 에스컬레이션합니다:</p>
+<table>
+<tr><th>단계</th><th>상황</th><th>도구</th></tr>
+<tr><td><strong>L1</strong> officecli 고수준</td><td>일반적인 add/set/remove 작업</td><td><code>officecli add/set/remove/query/view</code></td></tr>
+<tr><td><strong>L2</strong> officecli raw-set</td><td>XML 삽입 &mdash; PAGE 필드, fldChar, 하이퍼링크 앵커, 사용자 지정 속성</td><td><code>officecli raw-set FILE PATH --xpath X --action A --xml ...</code></td></tr>
+<tr><td><strong>L3</strong> Python 스크립트</td><td>대량 변경 내용 추적 작업, 주석 추가, 런 병합, 레드라인 검증</td><td><code>python3 scripts/*.py</code></td></tr>
+<tr><td><strong>L4</strong> 압축 해제 &rarr; XML 편집 &rarr; 재압축</td><td>OMML 수식, 사용자 지정 스타일 삽입, 패턴 매칭 편집</td><td><code>scripts/docx_cli.py open FILE work/</code> &rarr; XML 편집 &rarr; <code>scripts/docx_cli.py save work/ OUT.docx</code></td></tr>
+</table>
+
+<h3>에스컬레이션 신호</h3>
+<ul>
+<li>officecli가 <strong>"silently ignored"</strong>를 표시하면 &rarr; <strong>L2</strong> (raw-set)</li>
+<li><strong>OMML/MathML 수식</strong>이 필요하면 &rarr; <strong>L4</strong> (<code>&lt;m:oMath&gt;</code> XML 삽입)</li>
+<li>변경 내용 추적을 <strong>생성</strong>해야 하면 (officecli는 수락/거부만 가능) &rarr; <strong>L3</strong> 또는 <strong>L4</strong></li>
+<li>100개 이상의 대상에 대해 <strong>대량 찾기/바꾸기</strong> &rarr; <strong>L3</strong> (<code>docx_cli.py search/replace</code>)</li>
+<li>사용자 지정 스타일 ID가 있는 <strong>Pandoc 생성</strong> 문서 &rarr; 먼저 참조 기반 편집 수행</li>
+<li><strong>L1+L2 이후에도 작업 실패</strong> &rarr; 포기하기 전에 관련 <code>references/*.md</code> 읽기</li>
+</ul>
+
+<h2>핵심 워크플로우</h2>
+
+<h3>실행 모델</h3>
+<p><strong>명령을 한 번에 하나씩 실행하세요.</strong> 모든 명령을 쉘 스크립트에 작성하여 한 블록으로 실행하지 마세요. OfficeCLI는 증분식입니다: 모든 <code>add</code>, <code>set</code>, <code>remove</code>가 즉시 파일을 수정하고 출력을 반환합니다.</p>
+<ol>
+<li><strong>한 번에 하나의 명령을 실행하고 출력을 확인하세요.</strong> 다음 단계로 진행하기 전에 종료 코드를 확인합니다.</li>
+<li><strong>0이 아닌 종료 코드 = 즉시 중지하고 수정하세요.</strong> 깨진 상태 위에 계속 빌드하지 마세요.</li>
+<li><strong>구조적 작업 후에 검증하세요.</strong> 스타일, 표, 차트 또는 섹션을 추가한 후, 그 위에 빌드하기 전에 <code>get</code> 또는 <code>validate</code>를 실행하세요.</li>
+</ol>
+
+<h3>읽기 및 분석</h3>
+<pre><code>officecli view doc.docx text                    # 전체 텍스트 추출
+officecli view doc.docx text --max-lines 200    # 잘린 추출
+officecli view doc.docx text --start 1 --end 50 # 범위 추출
+officecli view doc.docx outline                 # 구조: 통계, 제목, 머리글/바닥글
+officecli view doc.docx annotated               # 런별 스타일/글꼴/크기, 수식은 LaTeX로 표시
+officecli view doc.docx stats                   # 단락 수, 스타일/글꼴 분포</code></pre>
+
+<h3>요소 검사</h3>
+<pre><code>officecli get doc.docx /                        # 문서 루트 (메타데이터, 페이지 설정)
+officecli get doc.docx /body --depth 1           # 본문 하위 요소 목록
+officecli get doc.docx "/body/p[1]"              # 특정 단락
+officecli get doc.docx "/body/p[1]/r[1]"         # 특정 런
+officecli get doc.docx "/body/tbl[1]" --depth 3  # 표 구조
+officecli get doc.docx /styles                   # 스타일 정의
+officecli get doc.docx "/styles/Heading1"        # 특정 스타일
+officecli get doc.docx "/header[1]"              # 머리글/바닥글
+officecli get doc.docx /numbering                # 번호 매기기 정의
+officecli get doc.docx "/body/p[1]" --json       # 스크립팅용 JSON 출력</code></pre>
+
+<h3>CSS 유사 쿼리</h3>
+<pre><code>officecli query doc.docx 'paragraph[style=Heading1]'            # 스타일별
+officecli query doc.docx 'p:contains("quarterly")'              # 텍스트 내용별
+officecli query doc.docx 'p:empty'                              # 빈 단락
+officecli query doc.docx 'image:no-alt'                         # 대체 텍스트 없는 이미지
+officecli query doc.docx 'p[align=center] &gt; r[bold=true]'      # 복합 셀렉터
+officecli query doc.docx 'paragraph[size&gt;=24pt]'                # 크기별
+officecli query doc.docx 'field[fieldType!=page]'               # 유형별 필드</code></pre>
+
+<h3>머리글 및 바닥글</h3>
+<div class="callout callout-info"><strong>알려진 CLI 버그:</strong> <code>add --type footer</code> 명령에서 <code>--prop field=page</code>가 <strong>조용히 무시됩니다</strong>. 바닥글은 정적 텍스트만으로 생성됩니다. 바닥글을 생성한 후 PAGE 필드를 삽입하려면 <strong>반드시</strong> <code>raw-set</code>을 사용해야 합니다.</div>
+
+<pre><code># 1단계. 표지 페이지용 빈 바닥글 (differentFirstPage 자동 활성화)
+officecli add doc.docx / --type footer --prop type=first --prop text=""
+
+# 2단계. 정적 "Page " 텍스트가 있는 기본 바닥글
+officecli add doc.docx / --type footer --prop text="Page " \
+  --prop type=default --prop align=center --prop size=9pt --prop font=Calibri
+
+# 3단계. raw-set으로 PAGE 필드 삽입
+# (첫 페이지 바닥글이 있을 때 footer[2] = 기본 바닥글)
+officecli raw-set doc.docx "/footer[2]" \
+  --xpath "//w:p" \
+  --action append \
+  --xml '&lt;w:r ...&gt;&lt;w:fldChar w:fldCharType="begin"/&gt;&lt;/w:r&gt;
+         &lt;w:r ...&gt;&lt;w:instrText xml:space="preserve"&gt; PAGE &lt;/w:instrText&gt;&lt;/w:r&gt;
+         &lt;w:r ...&gt;&lt;w:fldChar w:fldCharType="end"/&gt;&lt;/w:r&gt;'</code></pre>
+
+<p><strong>바닥글 인덱스 규칙:</strong> 첫 페이지 바닥글과 기본 바닥글이 모두 추가된 경우, 기본 바닥글은 <code>/footer[2]</code>입니다. 첫 페이지 바닥글이 없으면 기본 바닥글은 <code>/footer[1]</code>입니다. 항상 <code>officecli get doc.docx "/footer[2]"</code>로 확인하세요.</p>
+
+<h3>상주 모드 (성능)</h3>
+<p><strong>항상 <code>open</code>/<code>close</code>를 사용하세요 &mdash; 이것이 스마트 기본값입니다.</strong> 모든 명령이 반복적인 파일 I/O 없이 이점을 얻습니다.</p>
+<pre><code>officecli open doc.docx           # 메모리에 한 번 로드 (즉시 반환)
+officecli add doc.docx ...        # 모든 명령이 메모리에서 실행 -- 빠름
+officecli set doc.docx ...
+officecli close doc.docx          # 디스크에 한 번 기록</code></pre>
+
+<div class="callout callout-info"><strong>경고:</strong> <code>officecli open</code>을 백그라운드 쉘 작업으로 실행하지 마세요 (예: <code>run_in_background</code>를 통해). 이 명령은 즉시 반환되고 데몬은 자동으로 백그라운드에서 실행됩니다. 모니터링되는 쉘로 실행하면 좀비 프로세스와 파일 잠금이 발생합니다.</div>
+
+<h3>배치 모드</h3>
+<p>단일 open/save 사이클에서 여러 작업을 실행합니다:</p>
+<pre><code>cat &lt;&lt;'EOF' | officecli batch doc.docx
+[
+  {"command":"add","parent":"/body","type":"paragraph",
+   "props":{"text":"Introduction","style":"Heading1"}},
+  {"command":"add","parent":"/body","type":"paragraph",
+   "props":{"text":"This report covers Q4 results.","font":"Calibri","size":"11pt"}}
+]
+EOF</code></pre>
+<p>배치가 지원하는 명령: <code>add</code>, <code>set</code>, <code>get</code>, <code>query</code>, <code>remove</code>, <code>move</code>, <code>swap</code>, <code>view</code>, <code>raw</code>, <code>raw-set</code>, <code>validate</code>.</p>
+
+<h2>하위 스킬 참조</h2>
+<p>추가 세부 사항은 필요 시 로드되는 동반 파일에 있습니다:</p>
+<table>
+<tr><th>하위 스킬</th><th>사용 시점</th></tr>
+<tr><td><strong>officecli-academic-paper</strong></td><td>학술 논문, 인용, 참고 문헌, 논문용 목차</td></tr>
+<tr><td><strong>creating.md</strong></td><td>상세 생성 레시피 (처음부터 새 문서 생성)</td></tr>
+<tr><td><strong>editing.md</strong></td><td>상세 편집 가이드 (기존 문서 수정)</td></tr>
+</table>
+
+<h3>결정 흐름</h3>
+<pre><code>문서가 학술 논문인가 (학위 논문, 저널, 학회)?
+  예 --&gt; officecli-academic-paper/SKILL.md 읽기
+  아니오 --&gt; 메인 스킬로 계속
+
+사용자가 매칭할 소스 파일을 제공했는가?
+  예 --&gt; 참조 기반 편집 + editing.md
+  아니오 --&gt; creating.md</code></pre>
+
+<h2>Python OOXML 스크립트</h2>
+<p>officecli가 한계에 도달하면, 스킬은 다음 Python 스크립트로 대체합니다:</p>
+<table>
+<tr><th>스크립트</th><th>용도</th><th>명령</th></tr>
+<tr><td><code>scripts/docx_cli.py</code></td><td>통합 Python CLI &mdash; 압축 해제, 저장, 유효성 검사, 복구, 검색, 목차, 청크, 주석, 변경 내용 수락, 런 병합</td><td><code>python3 scripts/docx_cli.py {open|save|validate|repair|text|search|...}</code></td></tr>
+<tr><td><code>scripts/accept_changes.py</code></td><td>모든 변경 내용 추적 수락</td><td><code>python3 scripts/accept_changes.py IN.docx OUT.docx</code></td></tr>
+<tr><td><code>scripts/comment.py</code></td><td>텍스트에 앵커된 W3C 호환 OOXML 주석 추가</td><td><code>python3 scripts/comment.py IN.docx OUT.docx --text "..." --anchor "..."</code></td></tr>
+<tr><td><code>scripts/ooxml/merge_runs.py</code></td><td>동일한 서식을 가진 인접 런 병합</td><td><code>python3 scripts/ooxml/merge_runs.py unpacked/</code></td></tr>
+<tr><td><code>scripts/ooxml/redline_diff.py</code></td><td>원본 대비 변경 내용 추적 정확성 검증</td><td><code>python3 scripts/ooxml/redline_diff.py unpacked/ original.docx</code></td></tr>
+<tr><td><code>scripts/ooxml/simplify_tracked.py</code></td><td>동일 작성자의 인접 변경 내용 추적 간소화</td><td><code>python3 scripts/ooxml/simplify_tracked.py unpacked/</code></td></tr>
+</table>
+
+<h2>참조 자료</h2>
+<table>
+<tr><th>파일</th><th>읽을 시점</th><th>내용</th></tr>
+<tr><td><code>references/cjk-handling.md</code></td><td>한국어 텍스트 / 동아시아 글꼴 / 줄바꿈 이슈</td><td><code>rFonts</code> 동아시아 글꼴, <code>lang</code> 태그, 접근성</td></tr>
+<tr><td><code>references/tracked-changes.md</code></td><td>변경 내용 추적 / 주석 / 레드라인 작업</td><td><code>w:ins</code>, <code>w:del</code>, 주석 XML, 스크립트 사용 예시</td></tr>
+</table>
+
+<h2>비즈니스 문서 디자인 원칙</h2>
+
+<h3>제목 계층 구조</h3>
+<ul>
+<li><strong>H1:</strong> 문서 제목 (문서당 하나)</li>
+<li><strong>H2:</strong> 주요 섹션</li>
+<li><strong>H3:</strong> H2 아래의 하위 섹션</li>
+<li>단계를 건너뛰지 마세요 (H1 &rarr; H3은 유효하지 않음). 목차는 올바른 제목 구조에 의존합니다.</li>
+</ul>
+<pre><code># 제목 계층 구조 확인
+officecli view report.docx outline</code></pre>
+
+<h3>색상 팔레트</h3>
+<table>
+<tr><th>용도</th><th>허용 색상</th><th>16진수 예시</th></tr>
+<tr><td>제목, 강조</td><td>네이비</td><td><code>#003366</code>, <code>#1B2A4A</code></td></tr>
+<tr><td>본문 포인트, 테두리</td><td>차콜</td><td><code>#333333</code>, <code>#4A4A4A</code></td></tr>
+<tr><td>하이라이트, 콜아웃</td><td>포레스트 그린</td><td><code>#2E5E3F</code>, <code>#1A4731</code></td></tr>
+</table>
+<p>단일 문서에서 무지개색, 밝은 원색, 또는 3개 이상의 강조 색상을 <strong>절대</strong> 사용하지 마세요.</p>
+
+<h3>글꼴 선택</h3>
+<table>
+<tr><th>문자 체계</th><th>기본 글꼴</th><th>대체 글꼴</th></tr>
+<tr><td>한국어</td><td>Malgun Gothic</td><td>Pretendard</td></tr>
+<tr><td>영어 / 라틴</td><td>Calibri</td><td>Aptos</td></tr>
+</table>
+
+<h3>타이포그래피</h3>
+<p>본문 텍스트: 11-12pt. 제목은 단계적으로 증가: <strong>H1 = 최소 18pt</strong> (긴 문서의 경우 20pt 권장), <strong>H2 = 14pt 볼드</strong>, <strong>H3 = 12pt 볼드</strong>. 본문 텍스트의 줄 간격은 1.15x-1.5x입니다.</p>
+
+<h3>콘텐츠-요소 매핑</h3>
+<table>
+<tr><th>콘텐츠 유형</th><th>권장 요소</th><th>이유</th></tr>
+<tr><td>순차적 항목</td><td>글머리 기호 목록 (<code>listStyle=bullet</code>)</td><td>인라인 쉼표보다 스캔이 빠름</td></tr>
+<tr><td>단계별 프로세스</td><td>번호 매기기 목록 (<code>listStyle=numbered</code>)</td><td>숫자가 순서를 전달함</td></tr>
+<tr><td>비교 데이터</td><td>헤더 행이 있는 표</td><td>열로 나란히 비교 가능</td></tr>
+<tr><td>추세 데이터</td><td>내장 차트 (<code>chartType=line/column</code>)</td><td>시각적 패턴 인식</td></tr>
+<tr><td>핵심 정의</td><td>내어쓰기 단락</td><td>용어와 정의를 구분</td></tr>
+<tr><td>법적/계약 조항</td><td>북마크가 있는 번호 매기기 목록</td><td>북마크를 통한 상호 참조</td></tr>
+<tr><td>수학적 내용</td><td>수식 요소 (<code>formula=LaTeX</code>)</td><td>적절한 OMML 렌더링</td></tr>
+<tr><td>인용/참조</td><td>각주 또는 미주</td><td>본문 텍스트를 깔끔하게 유지</td></tr>
+<tr><td>인용문 / 콜아웃</td><td>테두리 + 음영이 있는 단락</td><td>본문과의 시각적 구분</td></tr>
+<tr><td>다중 섹션 레이아웃</td><td>열이 있는 섹션 나누기</td><td>섹션별 열 제어</td></tr>
+</table>
+
+<h2>필수 검증</h2>
+<div class="callout callout-info"><strong>검증을 절대 건너뛰지 마세요.</strong> DOCX 생성 또는 편집 후, 아래 두 단계 모두 필수입니다.</div>
+
+<pre><code># 1단계: 구조적 유효성 검사
+officecli validate output.docx
+
+# 2단계: 시각적 PDF 검증
+soffice --headless --convert-to pdf --outdir /tmp output.docx
+# PDF를 열어 확인: 서식, 표, 이미지, 머리글/바닥글</code></pre>
+
+<ul>
+<li>PDF 검증을 건너뛰면 = <strong>검증되지 않은 출력</strong></li>
+<li><code>validate</code>에서 오류가 보고되면, 파일을 전달하기 전에 수정하세요</li>
+</ul>
+
+<h2>QA 체크리스트</h2>
+<p><strong>문제가 있다고 가정하세요. 여러분의 임무는 그것을 찾는 것입니다.</strong></p>
+
+<h3>이슈 감지</h3>
+<pre><code>officecli view doc.docx issues
+officecli view doc.docx issues --type format
+officecli view doc.docx issues --type content
+officecli view doc.docx issues --type structure</code></pre>
+
+<h3>콘텐츠 QA</h3>
+<pre><code>officecli view doc.docx text
+officecli view doc.docx outline
+officecli query doc.docx 'p:empty'
+officecli query doc.docx 'image:no-alt'
+
+# 남은 플레이스홀더 확인
+officecli query doc.docx 'p:contains("lorem")'
+officecli query doc.docx 'p:contains("placeholder")'</code></pre>
+
+<h3>전달 전 체크리스트</h3>
+<ul>
+<li>메타데이터 설정 (제목, 작성자)</li>
+<li><code>raw-set</code>으로 바닥글에 PAGE 필드 삽입됨 &mdash; <code>officecli get doc.docx "/footer[2]" --depth 3</code>으로 확인</li>
+<li>문서에 표지 페이지가 있으면 첫 페이지 바닥글 추가됨</li>
+<li>표지 페이지 내용이 페이지의 최소 60% 이상 채워짐</li>
+<li>문서에 3개 이상의 제목이 있으면 목차 포함</li>
+<li>마지막 페이지 내용이 페이지의 최소 40% 이상 채워짐</li>
+<li>제목 계층 구조가 올바름 (건너뛴 단계 없음)</li>
+<li>간격용으로 빈 단락을 사용하지 않음</li>
+<li>모든 이미지에 대체 텍스트 있음</li>
+<li>표에 헤더 행 있음</li>
+<li><code>officecli validate</code>로 문서 유효성 검사 통과</li>
+<li>남은 플레이스홀더 텍스트 없음</li>
+</ul>
+
+<h3>검증 루프</h3>
+<ol>
+<li>문서 생성</li>
+<li><code>view issues</code> + <code>view outline</code> + <code>view text</code> + <code>validate</code> 실행</li>
+<li>발견된 이슈 목록 작성 (없으면 더 비판적으로 다시 확인)</li>
+<li>이슈 수정</li>
+<li>재검증 &mdash; 하나의 수정이 다른 문제를 만드는 경우가 많음</li>
+<li>전체 패스에서 새로운 이슈가 발견되지 않을 때까지 반복</li>
+</ol>
+<p><strong>최소 한 번의 수정-검증 사이클을 완료할 때까지 성공을 선언하지 마세요.</strong></p>
+
+<h2>일반적인 함정</h2>
+<table>
+<tr><th>함정</th><th>올바른 접근법</th></tr>
+<tr><td><code>--name "foo"</code></td><td><code>--prop name="foo"</code>를 사용 &mdash; 모든 속성은 <code>--prop</code>을 통해 전달</td></tr>
+<tr><td>속성 이름 추측</td><td>정확한 이름을 확인하려면 <code>officecli help docx set paragraph --json</code> 실행</td></tr>
+<tr><td>쉘 문자열의 <code>\n</code></td><td><code>--prop text="line1\\nline2"</code>에서 줄바꿈은 <code>\\n</code> 사용</td></tr>
+<tr><td><code>#</code>이 있는 16진수 색상</td><td><code>#FF0000</code>이 아닌 <code>FF0000</code> 사용 &mdash; 해시 접두사 없음</td></tr>
+<tr><td>경로는 1부터 시작</td><td><code>/body/p[1]</code>, <code>/body/tbl[1]</code> &mdash; XPath 규약</td></tr>
+<tr><td><code>--index</code>는 0부터 시작</td><td><code>--index 0</code> = 첫 번째 위치 &mdash; 배열 규약</td></tr>
+<tr><td>zsh/bash에서 따옴표 없는 <code>[N]</code></td><td>쉘이 <code>/body/p[1]</code>을 글로브 확장함 &mdash; 항상 경로를 따옴표로 감싸기: <code>"/body/p[1]"</code></td></tr>
+<tr><td>빈 단락으로 간격 조절</td><td>단락의 <code>spaceBefore</code>/<code>spaceAfter</code> 속성 사용</td></tr>
+<tr><td><code>--prop text=</code>의 <code>$</code></td><td>작은따옴표 사용: <code>--prop text='$50M'</code></td></tr>
+<tr><td>바닥글의 <code>--prop field=page</code></td><td><strong>조용히 무시됨.</strong> <code>&lt;w:fldChar&gt;</code>를 삽입하려면 <code>raw-set</code>을 사용해야 함</td></tr>
+<tr><td>템플릿의 스타일 재생성</td><td>먼저 <code>cp source.docx target.docx</code> &mdash; 기존 ID로 스타일을 추가하지 마세요</td></tr>
+<tr><td><code>officecli open</code>을 백그라운드 쉘로 실행</td><td>포그라운드에서 실행 &mdash; <code>open</code>은 즉시 반환되고, 데몬은 자동으로 백그라운드에서 실행</td></tr>
+<tr><td>배치 JSON 파싱 오류</td><td>heredoc 사용: <code>cat &lt;&lt;'EOF' | officecli batch FILE.docx</code></td></tr>
+<tr><td>OMML 수식 생성</td><td>officecli는 OMML을 생성할 수 없음 &mdash; L4로 에스컬레이션</td></tr>
+<tr><td><code>listStyle</code>을 런에 적용</td><td><code>listStyle</code>은 단락 속성이며, 런 속성이 아님</td></tr>
+<tr><td>행 수준의 볼드/색상/음영</td><td>행의 <code>set</code>은 <code>height</code>, <code>header</code>, <code>c1/c2/c3</code> 텍스트 단축키만 지원 &mdash; 셀 수준의 <code>set</code> 사용</td></tr>
+<tr><td>섹션 vs 루트 속성 이름</td><td>섹션은 <code>pagewidth</code>/<code>pageheight</code> (소문자) 사용. 문서 루트는 <code>pageWidth</code>/<code>pageHeight</code> (카멜케이스) 사용</td></tr>
+<tr><td>잘못된 테두리 형식</td><td><code>style;size;color;space</code> 형식 사용: <code>single;4;FF0000;1</code></td></tr>
+<tr><td>공백으로 코드 블록 들여쓰기</td><td><code>ind.left</code> 단락 속성 사용 (예: <code>--prop ind.left=720</code>)</td></tr>
+<tr><td>LibreOffice에서 <code>chartType=pie</code>/<code>doughnut</code></td><td>PDF에서 슬라이스가 보이지 않음 &mdash; 대신 <code>column</code> 또는 <code>bar</code> 사용</td></tr>
+</table>
+
+<h2>알려진 이슈</h2>
+<table>
+<tr><th>이슈</th><th>해결 방법</th></tr>
+<tr><td>시각적 미리보기 없음</td><td>pptx (SVG/HTML)와 달리, docx에는 내장 렌더링이 없습니다. 검증에는 <code>view text</code>/<code>outline</code>/<code>annotated</code>/<code>issues</code>를 사용하세요. 시각적 확인은 Word에서 열어 수행하세요.</td></tr>
+<tr><td>변경 내용 추적 생성에 원시 XML 필요</td><td>OfficeCLI는 수락/거부만 가능하고 변경 내용 추적을 생성할 수 없습니다. <code>raw-set</code> 또는 Python 스크립트 (L3)를 사용하세요.</td></tr>
+<tr><td>탭 정지에 원시 XML이 필요할 수 있음</td><td>탭 정지 생성은 고수준 명령에 노출되지 않습니다. <code>raw-set</code>을 사용하세요.</td></tr>
+<tr><td>생성 후 차트 시리즈 추가 불가</td><td><code>set --prop data=</code>는 기존 시리즈만 업데이트할 수 있습니다. 차트를 삭제하고 다시 생성하세요.</td></tr>
+<tr><td>복잡한 번호 매기기 정의</td><td><code>listStyle=bullet/numbered</code>는 간단한 경우를 다룹니다. 다단계 목록의 경우 <code>numId</code>/<code>numLevel</code>을 사용하세요.</td></tr>
+<tr><td>배치 간헐적 실패</td><td>약 15번 중 1번의 배치 작업이 실패할 수 있습니다. 재시도하거나 파일을 close/reopen하세요. 대량 배치는 10-15개 청크로 분할하세요.</td></tr>
+<tr><td>테이블 수준 패딩이 유효하지 않은 XML 생성</td><td><code>set tbl[N] --prop padding=N</code>을 사용하지 마세요. 셀 수준의 <code>padding.top</code>/<code>padding.bottom</code>을 사용하세요.</td></tr>
+<tr><td>내부 하이퍼링크 미지원</td><td><code>hyperlink</code>는 절대 URI만 허용합니다. <code>&lt;w:hyperlink w:anchor="..."&gt;</code>와 함께 <code>raw-set</code>을 사용하세요.</td></tr>
+<tr><td>테이블 <code>--index</code> 위치 지정 불안정</td><td><code>add /body --type table</code>의 <code>--index N</code>이 무시될 수 있습니다. 원하는 순서대로 콘텐츠를 추가하세요.</td></tr>
+<tr><td><code>view text</code>에서 모든 번호 매기기 항목이 "1."으로 표시</td><td>표시 전용 제한 사항입니다. Word/LibreOffice의 렌더링 결과에서는 올바른 번호가 표시됩니다.</td></tr>
+</table>
+
+<h2>안티 패턴 (반드시 피해야 할 것)</h2>
+<ul>
+<li><strong>플레이스홀더 데이터:</strong> 출력에 "Acme Corp", "Alice Chen", "Lorem ipsum"을 절대 남기지 마세요. 사용자가 데이터를 제공하지 않았다면 <strong>물어보세요</strong>.</li>
+<li><strong>바닥글 PAGE 필드:</strong> <code>raw-set</code>으로 페이지 번호를 설정할 때, XML 구조가 정확해야 합니다 (fldChar/instrText/fldChar 순서).</li>
+<li><strong>간격용 빈 단락:</strong> <code>spacing-after</code> 속성을 사용하세요.</li>
+<li><strong>수동 글머리 기호 문자</strong> (-, *): <code>listStyle=bullet</code> 또는 <code>listStyle=number</code>를 사용하세요.</li>
+<li><strong>수동 글꼴 XML 삽입:</strong> 충분한 경우 <code>--prop font=...</code>을 사용하세요.</li>
+<li><strong>참조 자료 무시:</strong> 복잡한 작업이 officecli로 실패하면, 포기하기 전에 <code>references/*.md</code>를 읽고 <code>scripts/*.py</code>를 확인하세요.</li>
+<li><strong>기존 스타일 재생성:</strong> 사용자가 소스 파일을 제공하면, 복사하고 수정하세요 &mdash; 스타일을 처음부터 다시 만들지 마세요.</li>
+</ul>
+
+<h2>도구 검색</h2>
+<p>추측하기 전에 항상 도움말에서 구문을 확인하세요:</p>
+<pre><code>officecli --help
+officecli help docx
+officecli help docx add
+officecli help docx set
+officecli help docx query
+officecli help docx add paragraph --json
+officecli help docx set run --json</code></pre>
+
+<h2>의존성</h2>
+<table>
+<tr><th>도구</th><th>용도</th><th>상태</th></tr>
+<tr><td><code>officecli</code> (PATH)</td><td>주요 DOCX CLI &mdash; 글로벌 설치에 CJK 포크 포함</td><td>필수</td></tr>
+<tr><td><code>dotnet</code></td><td>officecli의 런타임/빌드</td><td>포크 빌드 시 필수</td></tr>
+<tr><td><code>python3</code></td><td>대체 스크립트 (<code>scripts/*.py</code>)</td><td>L3/L4 시 필수</td></tr>
+<tr><td><code>lxml</code></td><td><code>scripts/ooxml/*</code>용 Python XML 처리</td><td>L3/L4 시 필수</td></tr>
+<tr><td><code>soffice</code></td><td>PDF 변환 / .doc 마이그레이션 / 매크로 워크플로우</td><td>선택적 대체</td></tr>
+<tr><td><code>pdftoppm</code></td><td>PDF 렌더링 후 이미지 기반 QA</td><td>선택적 대체</td></tr>
+</table>
+
+<h3>사전 요구 사항 확인</h3>
+<pre><code># 필수
+python3 -c "import docx, lxml" || echo "MISSING: pip install python-docx lxml"
+
+# 필요 시: LibreOffice
+which soffice &gt;/dev/null 2&gt;&amp;1 || echo "INFO: LibreOffice not installed"
+
+# 필요 시: OfficeCLI
+which officecli &gt;/dev/null 2&gt;&amp;1 || echo "INFO: OfficeCLI not installed"</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">생산성 스킬</a>
+<a class="next" href="hwp.html">HWP 문서</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

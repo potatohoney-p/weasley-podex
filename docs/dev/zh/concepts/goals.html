@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>目标系统 — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link active" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a class="active" href="../">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>目标系统</h1>
+<p class="lead">目标是跨会话持久存在的任务目标。它们为代理提供长期方向，并可以触发带有预算跟踪的自动续行运行。</p>
+
+<h2>代理 pause gate</h2>
+<p>AI <code>goal pause --agent --audit</code> 使用<strong>两步审计 gate</strong>。首次审计暂停后，goal 仍为 <code>active</code>，但 status/API 暴露 <code>pauseGate: { armed: true, reason: "pause_gate_pending" }</code>。armed 期间自动 goal continuation 被抑制（<code>goal_pause_gate_pending</code> SSE）。有成效的 checkpoint 清除 gate；第二次审计暂停才会真正 pause goal。</p>
+
+<h2>目标生命周期</h2>
+<p>目标在以下状态之间流转：<strong>set</strong>（活跃目标）、<strong>paused</strong>（已暂停）、<strong>resumed</strong>（已恢复）、<strong>done</strong>（已完成）或 <strong>cancelled</strong>（已取消）。目标状态是持久化的——重启服务器不会丢失状态。</p>
+
+<h2>CLI 命令</h2>
+<pre><code># Set a new goal
+jaw goal set "Migrate the auth module to JWT tokens"
+
+# Check goal status
+jaw goal status
+
+# Pause the current goal
+jaw goal pause
+
+# Resume a paused goal
+jaw goal resume
+
+# Mark goal as done (this is an API call, not a CLI command)
+jaw goal done
+
+# Cancel the goal
+jaw goal cancel
+
+# Reset goal state
+jaw goal reset</code></pre>
+
+<h2>斜杠命令</h2>
+<table>
+<tr><th>命令</th><th>说明</th></tr>
+<tr><td><code>/goal set &lt;objective&gt;</code></td><td>设置新的目标</td></tr>
+<tr><td><code>/goal status</code></td><td>显示当前目标状态</td></tr>
+<tr><td><code>/goal run start</code></td><td>启动带预算跟踪的有界自动续行运行</td></tr>
+<tr><td><code>/goal run stop</code></td><td>停止当前目标运行</td></tr>
+<tr><td><code>/goal pause</code></td><td>暂停目标</td></tr>
+<tr><td><code>/goal resume</code></td><td>恢复已暂停的目标</td></tr>
+<tr><td><code>/goal done</code></td><td>将目标标记为已完成</td></tr>
+<tr><td><code>/goal cancel</code></td><td>取消目标</td></tr>
+<tr><td><code>/goal clear</code></td><td>清除目标状态</td></tr>
+<tr><td><code>/goal reset</code></td><td>完全重置</td></tr>
+</table>
+
+<h2>目标运行（自动续行）</h2>
+<p><code>/goal run start</code> 命令启动一个有界的自动续行会话。代理朝着目标方向工作，每次响应后自动继续，直到目标被标记为完成或运行被停止。</p>
+<div class="callout callout-info">预算限制目前仅用于跟踪。系统会跟踪运行时长和续行次数，但尚未强制执行硬性预算限制。</div>
+
+<h2>API 端点</h2>
+<table>
+<tr><th>方法</th><th>路径</th><th>说明</th></tr>
+<tr><td>GET</td><td><code>/api/goal</code></td><td>获取当前目标状态</td></tr>
+<tr><td>GET</td><td><code>/api/goal/history</code></td><td>获取目标历史记录</td></tr>
+<tr><td>POST</td><td><code>/api/goal</code></td><td>设置、更新、完成、取消、暂停或恢复目标</td></tr>
+<tr><td>GET</td><td><code>/api/goal-run</code></td><td>获取当前目标运行状态</td></tr>
+<tr><td>GET</td><td><code>/api/goal-run/preflight</code></td><td>启动运行前的预检查</td></tr>
+<tr><td>POST</td><td><code>/api/goal-run</code></td><td>启动、暂停、恢复或停止目标运行</td></tr>
+</table>
+
+<h2>实时事件</h2>
+<p>目标生命周期变更会发出 SSE-first 事件供 Web UI 消费。旧版服务器可使用 WebSocket fallback：</p>
+<ul>
+<li><code>goal_done</code> -- 目标已完成</li>
+<li><code>goal_cancel</code> -- 目标已取消</li>
+<li><code>goal_continuation</code> -- 触发了自动续行</li>
+<li><code>goal_continuation_failed</code> -- 续行尝试失败</li>
+<li><code>goal_continuation_limit</code> -- 达到续行预算上限</li>
+</ul>
+
+<h2>目标与 PABCD 集成</h2>
+<p>目标与 PABCD 编排协同工作。您可以设置一个目标，然后使用 PABCD 阶段将其分解。在活跃的 PABCD 阶段中允许目标续行，因此代理可以在编排框架内继续处理目标驱动的任务。</p>
+
+<div class="page-nav">
+<a class="prev" href="pabcd.html">PABCD</a>
+<a class="next" href="skills.html">Skills</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

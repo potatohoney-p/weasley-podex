@@ -1,0 +1,123 @@
+// Multi-Instance Phase 2.1-2.2: JAW_HOME dynamic 검증
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { execSync } from 'node:child_process';
+import { mkdirSync, rmSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { expandHomePath } from '../../src/core/path-expand.ts';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const projectRoot = join(__dirname, '..', '..');
+
+test('P2-001: JAW_HOME respects podex_HOME env var', () => {
+    const result = execSync(
+        'node -e "const c = await import(\'./dist/src/core/config.js\'); console.log(c.JAW_HOME)"',
+        { cwd: projectRoot, encoding: 'utf8', env: { ...process.env, podex_HOME: '/tmp/test-jaw' } }
+    );
+    assert.equal(result.trim(), '/tmp/test-jaw');
+});
+
+test('P2-002: JAW_HOME defaults to ~/.podex without env var', () => {
+    const result = execSync(
+        'node -e "const c = await import(\'./dist/src/core/config.js\'); console.log(c.JAW_HOME)"',
+        { cwd: projectRoot, encoding: 'utf8', env: { ...process.env, podex_HOME: '' } }
+    );
+    assert.ok(result.trim().endsWith('.podex'));
+});
+
+test('P2-003: --home flag sets JAW_HOME for doctor subcommand', () => {
+    const tmpHome = '/tmp/test-jaw-p2-003';
+    mkdirSync(tmpHome, { recursive: true });
+    try {
+        const result = execSync(
+            `node dist/bin/podex.js --home ${tmpHome} doctor --json`,
+            { cwd: projectRoot, encoding: 'utf8' }
+        );
+        const json = JSON.parse(result);
+        const homeCheck = json.checks.find((c: any) => c.name === 'Home directory');
+        assert.ok(homeCheck, 'Home directory check should exist');
+        assert.equal(homeCheck.detail, tmpHome);
+    } finally {
+        rmSync(tmpHome, { recursive: true, force: true });
+    }
+});
+
+test('P2-004: --home=/path equals syntax works', () => {
+    const tmpHome = '/tmp/test-jaw-p2-004';
+    mkdirSync(tmpHome, { recursive: true });
+    try {
+        const result = execSync(
+            `node dist/bin/podex.js --home=${tmpHome} doctor --json`,
+            { cwd: projectRoot, encoding: 'utf8' }
+        );
+        const json = JSON.parse(result);
+        const homeCheck = json.checks.find((c: any) => c.name === 'Home directory');
+        assert.equal(homeCheck.detail, tmpHome);
+    } finally {
+        rmSync(tmpHome, { recursive: true, force: true });
+    }
+});
+
+test('P2-005: tilde expansion resolves correctly', () => {
+    assert.equal(expandHomePath('~/test-tilde', '/home/jaw'), '/home/jaw/test-tilde');
+    assert.equal(expandHomePath('~\\test-tilde', 'C:\\Users\\jaw'), 'C:\\Users\\jaw\\test-tilde');
+});
+
+test('P23-001: postinstall legacy rename guard — custom home must not move ~/.podex', () => {
+    const src = readFileSync(join(projectRoot, 'bin/postinstall.ts'), 'utf8');
+    const migrationBlock = src.slice(src.indexOf('const legacyHome'), src.indexOf('// 1. Ensure ~/.podex/ home directory'));
+    assert.ok(
+        src.includes('podex_MIGRATE_LEGACY_HOME') && src.includes('npm_config_jaw_migrate_legacy_home'),
+        'postinstall legacy migration must expose env and npm-config opt-ins',
+    );
+    assert.ok(
+        migrationBlock.includes('shouldMigrateLegacyHome()'),
+        'postinstall legacy migration branch must check opt-in',
+    );
+    assert.ok(
+        migrationBlock.indexOf('shouldMigrateLegacyHome()') < migrationBlock.indexOf('fs.renameSync'),
+        'postinstall must check opt-in before renaming legacy home',
+    );
+    assert.ok(
+        migrationBlock.includes('not migrating') && migrationBlock.includes('to opt in'),
+        'postinstall default must log non-migration and opt-in hint',
+    );
+});
+
+test('P23-002: init.ts workingDir default uses JAW_HOME, not hardcoded path', () => {
+    const src = readFileSync(join(projectRoot, 'bin/commands/init.ts'), 'utf8');
+    // Should NOT contain os.homedir() in the workingDir default line
+    const workingDirLine = src.split('\n').find(l => l.includes('Working directory'));
+    assert.ok(workingDirLine, 'Working directory prompt line should exist');
+    assert.ok(workingDirLine.includes('JAW_HOME'), 'Default should reference JAW_HOME');
+    assert.ok(!workingDirLine.includes('os.homedir()'), 'Default should NOT use os.homedir()');
+});
+
+test('P23-003: mcp.ts fallback uses JAW_HOME, not homedir()', () => {
+    const src = readFileSync(join(projectRoot, 'bin/commands/mcp.ts'), 'utf8');
+    // getWorkingDir was inlined into the reset case — verify the inlined fallback uses JAW_HOME
+    assert.ok(!src.includes('function getWorkingDir'), 'getWorkingDir should be removed (inlined)');
+    assert.ok(src.includes('catch { workingDir = JAW_HOME; }'), 'inlined fallback should use JAW_HOME');
+});
+
+test('P23-004: --home with subcommand as value produces error', () => {
+    assert.throws(
+        () => execSync(
+            `node dist/bin/podex.js --home clone`,
+            { cwd: projectRoot, encoding: 'utf8', stdio: 'pipe' }
+        ),
+        { status: 1 },
+    );
+});
+
+test('P23-005: --home without any value produces error', () => {
+    assert.throws(
+        () => execSync(
+            `node dist/bin/podex.js --home`,
+            { cwd: projectRoot, encoding: 'utf8', stdio: 'pipe' }
+        ),
+        { status: 1 },
+    );
+});
+

@@ -1,0 +1,210 @@
+﻿import test from 'node:test';
+import assert from 'node:assert/strict';
+import { appendPreviewTheme, buildPreviewState, normalizePreviewUrlForCurrentHost } from '../../public/manager/src/preview.js';
+import type { DashboardInstance, DashboardScanResult } from '../../public/manager/src/types.js';
+
+const online: DashboardInstance = {
+    port: 3457,
+    url: 'http://localhost:3457',
+    status: 'online',
+    ok: true,
+    version: null,
+    uptime: null,
+    instanceId: 'default',
+    homeDisplay: '/Users/jun/.podex',
+    workingDir: '/Users/jun/.podex',
+    currentCli: 'codex',
+    currentModel: null,
+    serviceMode: 'unknown',
+    lastCheckedAt: '2026-04-26T00:00:00.000Z',
+    healthReason: null,
+};
+
+const data: DashboardScanResult = {
+    manager: {
+        port: 24576,
+        rangeFrom: 3457,
+        rangeTo: 3506,
+        checkedAt: '2026-04-26T00:00:00.000Z',
+        proxy: {
+            enabled: true,
+            basePath: '/i',
+            allowedFrom: 3457,
+            allowedTo: 3506,
+        },
+    },
+    instances: [online],
+};
+
+test('preview helper builds proxy preview url', () => {
+    assert.deepEqual(buildPreviewState(online, data, 'proxy'), {
+        canPreview: true,
+        src: '/i/3457/',
+        reason: null,
+        transport: 'legacy-path',
+        warning: 'legacy proxy fallback',
+    });
+});
+
+test('preview helper appends theme to proxy preview url', () => {
+    const state = buildPreviewState(online, data, 'dark');
+
+    assert.equal(state.src, '/i/3457/?jawTheme=dark');
+    assert.equal(state.transport, 'legacy-path');
+});
+
+test('preview helper preserves query and hash when appending theme', () => {
+    assert.equal(appendPreviewTheme('/i/3457/?existing=1#top', 'light'), '/i/3457/?existing=1&jawTheme=light#top');
+});
+
+test('preview helper prefers origin-port preview url', () => {
+    assert.deepEqual(buildPreviewState(online, {
+        ...data,
+        manager: {
+            ...data.manager,
+            proxy: {
+                ...data.manager.proxy,
+                preview: {
+                    enabled: true,
+                    kind: 'origin-port',
+                    previewFrom: 24602,
+                    previewTo: 24651,
+                    instances: {
+                        '3457': {
+                            targetPort: 3457,
+                            previewPort: 24602,
+                            url: 'http://127.0.0.1:24602/',
+                            status: 'ready',
+                            reason: null,
+                        },
+                    },
+                },
+            },
+        },
+    }), {
+        canPreview: true,
+        src: 'http://127.0.0.1:24602/',
+        reason: null,
+        transport: 'origin-port',
+        warning: 'origin proxy ready',
+    });
+});
+
+test('preview helper appends theme to origin-port preview url', () => {
+    const state = buildPreviewState(online, {
+        ...data,
+        manager: {
+            ...data.manager,
+            proxy: {
+                ...data.manager.proxy,
+                preview: {
+                    enabled: true,
+                    kind: 'origin-port',
+                    previewFrom: 24602,
+                    previewTo: 24651,
+                    instances: {
+                        '3457': {
+                            targetPort: 3457,
+                            previewPort: 24602,
+                            url: 'http://127.0.0.1:24602/?x=1#frame',
+                            status: 'ready',
+                            reason: null,
+                        },
+                    },
+                },
+            },
+        },
+    }, 'light');
+
+    assert.equal(state.src, 'http://127.0.0.1:24602/?x=1&jawTheme=light#frame');
+    assert.equal(state.transport, 'origin-port');
+});
+
+test('preview helper can force same-origin proxy as an explicit fallback', () => {
+    const state = buildPreviewState(online, {
+        ...data,
+        manager: {
+            ...data.manager,
+            proxy: {
+                ...data.manager.proxy,
+                preview: {
+                    enabled: true,
+                    kind: 'origin-port',
+                    previewFrom: 24602,
+                    previewTo: 24651,
+                    instances: {
+                        '3457': {
+                            targetPort: 3457,
+                            previewPort: 24602,
+                            url: 'http://127.0.0.1:24602/',
+                            status: 'ready',
+                            reason: null,
+                        },
+                    },
+                },
+            },
+        },
+    }, { theme: 'light', transport: 'legacy-path' });
+
+    assert.equal(state.src, '/i/3457/?jawTheme=light');
+    assert.equal(state.transport, 'legacy-path');
+});
+
+test('preview helper rewrites loopback origin preview host to current dashboard host', () => {
+    assert.equal(
+        normalizePreviewUrlForCurrentHost('http://127.0.0.1:24602/?x=1', 'http://localhost:24576/'),
+        'http://localhost:24602/?x=1',
+    );
+    assert.equal(
+        normalizePreviewUrlForCurrentHost('http://127.0.0.1:24602/', 'http://example.com:24576/'),
+        'http://127.0.0.1:24602/',
+    );
+});
+
+test('preview helper falls back when origin-port preview is unavailable', () => {
+    const state = buildPreviewState(online, {
+        ...data,
+        manager: {
+            ...data.manager,
+            proxy: {
+                ...data.manager.proxy,
+                preview: {
+                    enabled: true,
+                    kind: 'origin-port',
+                    previewFrom: 24602,
+                    previewTo: 24651,
+                    instances: {
+                        '3457': {
+                            targetPort: 3457,
+                            previewPort: 24602,
+                            url: 'http://127.0.0.1:24602/',
+                            status: 'unavailable',
+                            reason: 'EADDRINUSE',
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    assert.equal(state.src, '/i/3457/');
+    assert.equal(state.transport, 'legacy-path');
+});
+
+test('preview helper ignores legacy direct mode argument and keeps proxy path', () => {
+    const state = buildPreviewState(online, data, 'direct' as any);
+
+    assert.equal(state.src, '/i/3457/');
+    assert.equal(state.transport, 'legacy-path');
+    assert.equal(state.warning, 'legacy proxy fallback');
+});
+
+test('preview helper rejects offline instances', () => {
+    const offline: DashboardInstance = { ...online, ok: false, status: 'offline' };
+    const state = buildPreviewState(offline, data, 'proxy');
+
+    assert.equal(state.canPreview, false);
+    assert.match(state.reason || '', /online/);
+    assert.equal(state.transport, 'none');
+});
+

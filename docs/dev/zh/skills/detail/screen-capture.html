@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screen Capture &mdash; podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+.badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+.badge-category { background: rgba(99, 102, 241, 0.15); color: var(--accent); }
+.quick-ref { margin: 24px 0; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 160px; }
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-ko { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+.dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.dep-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.dep-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.dep-card code { font-size: 13px; }
+.dep-card .dep-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+.flag-table td:first-child { font-family: var(--font-mono, monospace); white-space: nowrap; }
+@media (max-width: 768px) {
+  .dep-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">快速入门</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+      <a class="docs-nav-link" href="../../">概览</a>
+      <a class="docs-nav-link" href="../../quickstart.html">快速开始</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">首次运行</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">核心概念</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">架构</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">员工</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">目标</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">技能</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">记忆</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">提示词</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">使用指南</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">计算机控制</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 桌面端</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">参考文档</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 命令</a>
+      <a class="docs-nav-link" href="../../reference/api.html">服务器 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">配置</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">键盘快捷键</a>
+      <a class="docs-nav-link" href="../../reference/events.html">事件</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">技能</div>
+      <a class="docs-nav-link" href="../index.html">技能目录</a>
+      <a class="docs-nav-link" href="../orchestration.html">开发</a>
+      <a class="docs-nav-link" href="../automation.html">自动化</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 媒体</a>
+      <a class="docs-nav-link" href="../communication.html">通讯</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">云服务与部署</a>
+      <a class="docs-nav-link" href="../devtools-security.html">安全与审查</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">开发工作流</a>
+      <a class="docs-nav-link" href="../productivity.html">生产力</a>
+      <a class="docs-nav-link" href="../smarthome.html">智能家居</a>
+      <a class="docs-nav-link active" href="../utility.html">实用工具</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">命令</div>
+      <a class="docs-nav-link" href="../../commands/session.html">会话</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">工作流</a>
+      <a class="docs-nav-link" href="../../commands/model.html">模型与 CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">工具</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">仅 CLI</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">更新日志</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">主页</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Screen Capture</h1>
+<p class="lead">macOS 屏幕截图、摄像头和屏幕录制 &mdash; 支持全屏、区域、窗口、剪贴板、多显示器、视频和摄像头捕获，使用 macOS 原生工具。</p>
+
+<p>
+  <span class="badge badge-active">默认启用</span>
+  <span class="badge badge-category">实用工具</span>
+</p>
+
+<div class="callout callout-info">
+  <strong>内置技能：</strong> <code>screen-capture</code> 在每个 podex 会话中默认启用，无需安装。它使用 macOS 原生的 <code>screencapture</code> 进行屏幕截图和视频录制，以及可选的 <code>imagesnap</code> 进行摄像头捕获。如果需要浏览器专用截图，建议使用通过 CDP 捕获的 <code>podex browser screenshot</code>。
+</div>
+
+<h2>快速参考</h2>
+<table class="quick-ref">
+<tr><td>技能名称</td><td><code>screen-capture</code></td></tr>
+<tr><td>分类</td><td>实用工具</td></tr>
+<tr><td>默认启用</td><td>是 &mdash; 内置，始终可用</td></tr>
+<tr><td>SKILL.md 路径</td><td><code>~/.podex/skills/screen-capture/SKILL.md</code></td></tr>
+<tr><td>主要工具</td><td><code>screencapture</code>（macOS 内置）</td></tr>
+<tr><td>摄像头工具</td><td><code>imagesnap</code>（可选，通过 Homebrew 安装）</td></tr>
+<tr><td>平台</td><td>仅限 macOS</td></tr>
+<tr><td>输出格式</td><td>PNG（默认）、JPEG、PDF、TIFF、MOV（视频）</td></tr>
+<tr><td>所需权限</td><td>系统设置 &gt; 隐私 &gt; 屏幕录制</td></tr>
+<tr><td>相关技能</td><td><code>vision-click</code>、<code>browser</code>、<code>desktop-control</code></td></tr>
+</table>
+
+<h2>快速开始</h2>
+<p>三条命令即可立即上手：</p>
+<pre><code># 全屏捕获（静音，无快门声）
+screencapture -x ~/screenshot.png
+
+# 交互式区域选择
+screencapture -i ~/selection.png
+
+# 直接捕获到剪贴板
+screencapture -c</code></pre>
+
+<h2>命令</h2>
+
+<h3>全屏</h3>
+<p>捕获整个显示器画面。使用 <code>-x</code> 进入静音模式（抑制快门声），使用 <code>-T</code> 设置倒计时延迟。</p>
+<pre><code># 静音全屏
+screencapture -x ~/screenshot.png
+
+# 全屏（带快门声）
+screencapture ~/screenshot.png
+
+# 3 秒延迟后捕获
+screencapture -T 3 ~/screenshot.png</code></pre>
+
+<h3>区域和窗口</h3>
+<p>通过交互方式或精确坐标选择特定区域。</p>
+<pre><code># 交互：拖动选择区域
+screencapture -i ~/region.png
+
+# 交互：点击选择窗口
+screencapture -iW ~/window.png
+
+# 指定坐标（x, y, 宽, 高）
+screencapture -R 0,0,1280,720 ~/region.png</code></pre>
+
+<h3>指定应用窗口</h3>
+<p>通过 AppleScript 解析窗口 ID 来捕获指定应用的窗口。这在自动化流水线中非常有用，可以在无需用户交互的情况下捕获特定应用。</p>
+<pre><code># 捕获 Google Chrome 窗口
+screencapture -l$(osascript -e 'tell app "Google Chrome" to id of window 1') ~/chrome.png
+
+# 捕获 Safari 窗口
+screencapture -l$(osascript -e 'tell app "Safari" to id of window 1') ~/safari.png
+
+# 捕获当前活跃应用的最前窗口
+screencapture -l$(osascript -e 'tell app "System Events" to id of first window of (first process whose frontmost is true)') ~/front.png</code></pre>
+
+<div class="callout callout-info">
+  <strong>窗口 ID 解析：</strong> <code>-l</code> 标志接受一个 CGWindowID。AppleScript 表达式 <code>tell app "AppName" to id of window 1</code> 会返回正确的 ID。如果应用有多个窗口，将 <code>window 1</code> 改为 <code>window 2</code> 等。
+</div>
+
+<h3>剪贴板</h3>
+<p>捕获到系统剪贴板而非文件。适用于快速粘贴到聊天窗口或其他应用的工作流。</p>
+<pre><code># 全屏捕获到剪贴板
+screencapture -c
+
+# 区域选择捕获到剪贴板
+screencapture -ic</code></pre>
+
+<h3>多显示器</h3>
+<p>通过指定显示器编号或一次性捕获所有显示器来处理多显示器设置。</p>
+<pre><code># 每个显示器一个文件（自动创建 screen1.png、screen2.png 等）
+screencapture ~/screen1.png ~/screen2.png
+
+# 仅主显示器
+screencapture -D 1 ~/main.png
+
+# 副显示器
+screencapture -D 2 ~/secondary.png</code></pre>
+
+<h3>视频录制</h3>
+<p>将屏幕录制为 MOV 视频。使用 <code>-V</code> 加时长（秒）进行定时录制，或使用 <code>-v</code> 进行手动停止录制。</p>
+<pre><code># 录制屏幕视频（按 Ctrl+C 停止）
+screencapture -v ~/recording.mov
+
+# 录制恰好 10 秒
+screencapture -V 10 ~/recording.mov</code></pre>
+
+<h2>摄像头捕获</h2>
+<p>摄像头捕获需要 <code>imagesnap</code>，这是一个可选的 Homebrew 依赖。它可以从 FaceTime 摄像头或任何已连接的 USB 摄像头捕获静态图像。</p>
+
+<pre><code># 安装 imagesnap
+brew install imagesnap
+
+# 从默认摄像头拍摄照片
+imagesnap ~/camera.png
+
+# 2 秒预热以获得更好的图像质量（推荐）
+imagesnap -w 2 ~/camera.png
+
+# 通过名称指定摄像头
+imagesnap -d "FaceTime HD Camera" ~/camera.png
+
+# 列出所有可用摄像头
+imagesnap -l</code></pre>
+
+<div class="callout callout-info">
+  <strong>预热提示：</strong> 摄像头需要短暂的预热时间来调整曝光和白平衡。在生产环境中，务必使用 <code>-w 2</code>（或更高值）。不经过预热，第一帧通常会偏暗或色偏。
+</div>
+
+<h2>输出格式</h2>
+<p>使用 <code>-t</code> 标志指定图像格式。默认为 PNG。</p>
+<pre><code># PNG（默认，无损）
+screencapture -t png ~/screenshot.png
+
+# JPEG（文件更小，有损）
+screencapture -t jpg ~/screenshot.jpg
+
+# PDF（矢量友好，适用于文档）
+screencapture -t pdf ~/screenshot.pdf
+
+# TIFF（高质量，文件较大）
+screencapture -t tiff ~/screenshot.tiff</code></pre>
+
+<h2>标志参考</h2>
+<p>本技能所使用的所有 <code>screencapture</code> 标志的完整参考。</p>
+<table class="flag-table">
+<thead>
+<tr><th>标志</th><th>描述</th><th>示例</th></tr>
+</thead>
+<tbody>
+<tr><td><code>-x</code></td><td>静音模式（无快门声）</td><td><code>screencapture -x out.png</code></td></tr>
+<tr><td><code>-i</code></td><td>交互选择模式（拖动选区或按空格键选择窗口）</td><td><code>screencapture -i out.png</code></td></tr>
+<tr><td><code>-c</code></td><td>将截图复制到剪贴板而非文件</td><td><code>screencapture -c</code></td></tr>
+<tr><td><code>-R x,y,w,h</code></td><td>通过坐标捕获指定矩形区域</td><td><code>screencapture -R 0,0,1280,720 out.png</code></td></tr>
+<tr><td><code>-T seconds</code></td><td>捕获前延迟 N 秒</td><td><code>screencapture -T 3 out.png</code></td></tr>
+<tr><td><code>-t format</code></td><td>输出格式：png、jpg、pdf 或 tiff</td><td><code>screencapture -t jpg out.jpg</code></td></tr>
+<tr><td><code>-l windowID</code></td><td>通过 CGWindowID 捕获指定窗口</td><td><code>screencapture -l12345 out.png</code></td></tr>
+<tr><td><code>-D displayNum</code></td><td>捕获指定显示器（1 = 主显示器）</td><td><code>screencapture -D 2 out.png</code></td></tr>
+<tr><td><code>-v</code></td><td>录制屏幕视频（MOV）</td><td><code>screencapture -v out.mov</code></td></tr>
+<tr><td><code>-V seconds</code></td><td>录制恰好 N 秒的视频</td><td><code>screencapture -V 10 out.mov</code></td></tr>
+<tr><td><code>-W</code></td><td>以窗口选择模式启动（与 <code>-i</code> 组合使用）</td><td><code>screencapture -iW out.png</code></td></tr>
+</tbody>
+</table>
+
+<h2>常见工作流</h2>
+
+<h3>捕获特定应用状态</h3>
+<p>通过 AppleScript 将应用切换到前台，等待其渲染完成，然后进行捕获。</p>
+<pre><code># 激活 Finder，等待，然后捕获
+osascript -e 'tell app "Finder" to activate'
+sleep 0.5
+screencapture -x ~/finder.png</code></pre>
+
+<h3>捕获并分析</h3>
+<p>截取屏幕截图并立即传递给代理的视觉模型进行分析。这是 <code>vision-click</code> 和 <code>desktop-control</code> 所使用的模式。</p>
+<pre><code># 在 podex 会话中，只需说：
+"화면 캡처해서 뭐가 보이는지 설명해줘"
+
+# 代理运行：
+screencapture -x /tmp/screen.png
+# 然后读取图像并描述其内容</code></pre>
+
+<h3>定时捕获 UI 状态</h3>
+<p>使用延迟标志为设置特定 UI 状态（例如打开下拉菜单、悬停在工具提示上）留出时间，然后再触发捕获。</p>
+<pre><code># 5 秒延迟：足够打开一个菜单
+screencapture -T 5 -x ~/menu-state.png</code></pre>
+
+<h3>多显示器文档</h3>
+<p>一次性捕获所有显示器，用于工作区文档记录或 Bug 报告。</p>
+<pre><code># 每个已连接的显示器捕获一个 PNG
+screencapture ~/display-main.png ~/display-secondary.png</code></pre>
+
+<h2>依赖</h2>
+<p>核心的 <code>screencapture</code> 命令是 macOS 内置的 &mdash; 无需安装。摄像头捕获需要一个可选的 Homebrew 包。</p>
+
+<div class="dep-grid">
+  <div class="dep-card">
+    <strong>screencapture</strong>
+    <code>内置（macOS）</code>
+    <div class="dep-desc">全屏、区域、窗口、剪贴板、多显示器和视频捕获。无需安装。</div>
+  </div>
+  <div class="dep-card">
+    <strong>imagesnap</strong>
+    <code>brew install imagesnap</code>
+    <div class="dep-desc">可选。从 FaceTime 或 USB 摄像头捕获静态图像。仅在需要摄像头相关任务时才需安装。</div>
+  </div>
+</div>
+
+<h3>安装命令</h3>
+<pre><code># 摄像头捕获（可选）
+brew install imagesnap
+
+# 验证安装
+imagesnap -l    # 列出可用摄像头
+which screencapture    # 应输出 /usr/sbin/screencapture</code></pre>
+
+<h2>规则和行为</h2>
+<p>当 <code>screen-capture</code> 技能处于活跃状态时，代理遵循以下规则：</p>
+
+<table>
+<thead>
+<tr><th>规则</th><th>详情</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>默认捕获方式</strong></td><td>当工具专用捕获（Figma、Playwright、CDP）不可用时，使用 <code>screencapture</code> 作为默认方式。</td></tr>
+<tr><td><strong>浏览器截图</strong></td><td>对于网页，建议使用 <code>podex browser screenshot</code>（通过 Chrome DevTools Protocol 捕获，像素级精确）。</td></tr>
+<tr><td><strong>静音模式</strong></td><td>在编程式捕获中始终使用 <code>-x</code> 标志以抑制快门声。</td></tr>
+<tr><td><strong>摄像头预热</strong></td><td>使用 <code>imagesnap</code> 时始终使用 <code>-w 2</code> 或更高值以获得更好的图像质量。</td></tr>
+<tr><td><strong>隐私权限</strong></td><td>需要屏幕录制权限（系统设置 &gt; 隐私 &gt; 屏幕录制）。如果权限缺失，代理会发出警告。</td></tr>
+<tr><td><strong>临时文件清理</strong></td><td>用于分析（非显式保存）的截图应在使用后清理。</td></tr>
+</tbody>
+</table>
+
+<h2>"~&#54644;&#51468;" 使用示例</h2>
+<p>自然语言触发屏幕捕获任务的实际示例。韩语和英语均可使用。</p>
+
+<div class="example-card">
+  <div class="example-ko">"&#51648;&#44552; &#54868;&#47732; &#49828;&#53356;&#47536;&#49399; &#52237;&#50612;&#51468;"</div>
+  <div class="example-desc">使用 <code>screencapture -x</code> 静音捕获全屏并保存。代理会读取生成的图像以确认捕获成功。这是最简单也最常见的用法。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#53356;&#47212; &#52285; &#52896;&#52376;&#54644;&#49436; &#47196;&#44536;&#51064; &#54168;&#51060;&#51648; &#51228;&#45824;&#47196; &#45208;&#50724;&#45716;&#51648; &#54869;&#51064;&#54644;&#51468;"</div>
+  <div class="example-desc">通过 AppleScript 解析 Chrome 的窗口 ID，使用 <code>screencapture -l</code> 捕获该窗口，然后利用视觉模型分析图像以验证登录页面是否正确渲染。结合了捕获与视觉 QA。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#50937;&#52896; &#49324;&#51652; &#52237;&#50612;&#51468; &mdash; &#50620;&#44404; &#51064;&#49885;&#50857;"</div>
+  <div class="example-desc">使用 <code>imagesnap -w 2</code> 拍摄带有适当预热时间的摄像头照片。生成的图像可以传递给其他技能（如视觉分析）用于人脸检测或身份验证工作流。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#54868;&#47732; &#47197;&#54868; 10&#52488;&#47564; &#54644;&#51468; &mdash; &#48260;&#44536; &#51116;&#54788; &#44284;&#51221; &#44592;&#47197;&#50857;"</div>
+  <div class="example-desc">使用 <code>screencapture -V 10 ~/recording.mov</code> 录制 10 秒屏幕视频。适用于记录 Bug 复现步骤、UI 动画审查或创建快速演示片段。</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#46160;&#48264;&#51704; &#47784;&#45768;&#53552; &#49828;&#53356;&#47536;&#49399; &#52237;&#50612;&#49436; &#53364;&#47549;&#48372;&#46300;&#50640; &#48373;&#49324;&#54644;&#51468;"</div>
+  <div class="example-desc">使用 <code>screencapture -D 2 -c</code> 捕获副显示器，将截图直接发送到剪贴板，以便立即粘贴到聊天窗口、文档或图像编辑器中。</div>
+</div>
+
+<h2>与相关技能的比较</h2>
+<p>podex 有多个涉及视觉捕获的技能。请根据需求选择合适的工具：</p>
+
+<table>
+<thead>
+<tr><th></th><th><code>screen-capture</code></th><th><code>browser</code></th><th><code>desktop-control</code></th><th><code>vision-click</code></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>侧重点</strong></td><td>macOS 原生截图和录屏</td><td>基于 CDP 的浏览器自动化</td><td>完整的桌面 + 浏览器自动化</td><td>视觉引导的点击定位</td></tr>
+<tr><td><strong>最适合</strong></td><td>快速截图、多显示器、视频、摄像头</td><td>网页截图、DOM 交互</td><td>跨应用工作流、混合目标</td><td>通过视觉识别点击 UI 元素</td></tr>
+<tr><td><strong>捕获方式</strong></td><td><code>screencapture</code> CLI</td><td>Chrome DevTools Protocol</td><td>CDP + Computer Use</td><td>截图 + 坐标映射</td></tr>
+<tr><td><strong>需要浏览器</strong></td><td>否</td><td>是（podex 服务器）</td><td>取决于目标</td><td>否</td></tr>
+<tr><td><strong>何时优先使用</strong></td><td>无需浏览器、系统级捕获、视频、摄像头</td><td>网页（像素级精确）</td><td>复杂的多应用自动化</td><td>点击屏幕上的元素</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>经验法则：</strong> 对于浏览器之外的任何内容或需要视频/摄像头时，使用 <code>screen-capture</code>。对于网页，使用 <code>browser screenshot</code>。当需要同时捕获和操控桌面应用时，使用 <code>desktop-control</code>。
+</div>
+
+<h2>故障排除</h2>
+
+<h3>屏幕录制权限被拒绝</h3>
+<p>如果 <code>screencapture</code> 生成了空白或全黑的图像，则终端应用（Terminal.app、iTerm2 或 podex Electron 应用）可能缺少屏幕录制权限。</p>
+<pre><code># 修复：在系统设置中授予权限
+# 系统设置 > 隐私与安全性 > 屏幕录制
+# 启用您的终端应用
+# 授予权限后重启终端</code></pre>
+
+<h3>找不到 imagesnap</h3>
+<p>如果未安装 <code>imagesnap</code>，摄像头捕获命令将会失败。它是一个可选依赖。</p>
+<pre><code># 通过 Homebrew 安装
+brew install imagesnap
+
+# 验证
+imagesnap -l
+# 预期输出：列出可用摄像头（例如 "FaceTime HD Camera"）</code></pre>
+
+<h3>摄像头图像偏暗或模糊</h3>
+<p>摄像头传感器需要时间来调整。务必添加预热延迟：</p>
+<pre><code># 不推荐：无预热，可能偏暗/模糊
+imagesnap ~/photo.png
+
+# 推荐：2 秒预热以获得正确曝光
+imagesnap -w 2 ~/photo.png
+
+# 更佳：低光环境下 3 秒预热
+imagesnap -w 3 ~/photo.png</code></pre>
+
+<h3>多显示器捕获只保存了一个文件</h3>
+<p>捕获多个显示器时，必须为每个显示器提供一个输出文件名：</p>
+<pre><code># 错误：只捕获主显示器
+screencapture ~/screenshot.png
+
+# 正确：每个已连接的显示器一个文件名
+screencapture ~/display1.png ~/display2.png</code></pre>
+
+<h3>视频录制不停止</h3>
+<p>使用 <code>screencapture -v</code>（无时长限制）时，录制会一直持续直到被中断。使用 <code>-V seconds</code> 进行定时录制，或按 Ctrl+C 停止手动录制。</p>
+
+<h2>功能总结</h2>
+<table>
+<thead>
+<tr><th>功能</th><th>工具</th><th>备注</th></tr>
+</thead>
+<tbody>
+<tr><td>全屏捕获</td><td><code>screencapture</code></td><td>使用 <code>-x</code> 静音，使用 <code>-T</code> 延迟</td></tr>
+<tr><td>区域选择</td><td><code>screencapture -i</code></td><td>交互拖选或使用 <code>-R</code> 指定坐标</td></tr>
+<tr><td>窗口捕获</td><td><code>screencapture -l</code></td><td>通过 AppleScript 获取 CGWindowID</td></tr>
+<tr><td>剪贴板捕获</td><td><code>screencapture -c</code></td><td>与 <code>-i</code> 组合实现区域到剪贴板</td></tr>
+<tr><td>多显示器</td><td><code>screencapture -D</code></td><td>指定特定显示器或捕获全部</td></tr>
+<tr><td>视频录制</td><td><code>screencapture -v/-V</code></td><td>MOV 格式，定时或手动停止</td></tr>
+<tr><td>摄像头拍照</td><td><code>imagesnap</code></td><td>可选依赖，使用 <code>-w 2</code> 预热</td></tr>
+<tr><td>格式控制</td><td><code>screencapture -t</code></td><td>PNG（默认）、JPEG、PDF、TIFF</td></tr>
+</tbody>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="pdf.html">PDF</a>
+<a class="next" href="memory.html">Memory</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

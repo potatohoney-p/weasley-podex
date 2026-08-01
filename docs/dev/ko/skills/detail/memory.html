@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-scope { background: rgba(34, 211, 238, 0.15); color: var(--accent); }
+.badge-readonly { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+
+.skill-meta { display: flex; gap: 12px; align-items: center; margin: -4px 0 24px; flex-wrap: wrap; }
+.skill-meta .badge { font-size: 12px; padding: 3px 10px; }
+
+.quick-ref { margin: 20px 0 28px; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 140px; color: var(--text-dim); }
+
+.cmd-block { margin: 16px 0; }
+.cmd-block h4 { margin: 16px 0 4px; }
+
+.workflow-step { display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
+.workflow-step .step-num {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent-dim); border: 1px solid var(--accent);
+  color: var(--accent); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 2px;
+}
+.workflow-step .step-text { flex: 1; font-size: 14px; }
+
+.example-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px; margin: 12px 0;
+}
+.example-card .example-prompt {
+  font-size: 15px; font-weight: 500; color: var(--accent); margin-bottom: 6px;
+}
+.example-card .example-desc {
+  font-size: 13px; color: var(--text-dim); line-height: 1.5;
+}
+.example-card code { font-size: 12px; }
+
+.storage-layout pre { margin: 8px 0 16px; }
+.scope-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+.scope-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px;
+}
+.scope-card h4 { margin: 0 0 8px; font-size: 15px; text-transform: none; letter-spacing: 0; }
+.scope-card ul { margin: 4px 0 0; padding-left: 18px; font-size: 13px; }
+.scope-card li { margin: 3px 0; color: var(--text-dim); }
+
+@media (max-width: 768px) {
+  .scope-compare { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link active" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Memory</h1>
+<p class="lead">세션 간 장기 기억 &mdash; 검색, 읽기, 저장. Memory 스킬은 podex에 사용자 선호도, 프로젝트 결정 사항, 그리고 단일 대화를 넘어 유지되는 지속적 지식에 대한 영구적 기억력을 부여합니다.</p>
+
+<div class="skill-meta">
+  <span class="badge badge-active">기본 활성: 예</span>
+  <span class="badge badge-scope">카테고리: 생산성</span>
+  <span class="badge badge-scope">L1 + L2 범위</span>
+</div>
+
+<h2>빠른 참조</h2>
+<table class="quick-ref">
+<tr><td>스킬 이름</td><td><code>memory</code></td></tr>
+<tr><td>상태</td><td>활성 (모든 세션에 자동 주입)</td></tr>
+<tr><td>카테고리</td><td>생산성</td></tr>
+<tr><td>SKILL.md 경로</td><td><code>~/.podex/skills/memory/SKILL.md</code></td></tr>
+<tr><td>데이터 디렉토리</td><td><code>~/.podex/memory/structured/</code></td></tr>
+<tr><td>필수 요건</td><td>없음 (외부 종속성 없음)</td></tr>
+<tr><td>설치</td><td>사전 설치됨 (podex에 기본 포함)</td></tr>
+<tr><td>범위</td><td>L1 인스턴스 로컬 (읽기/쓰기) + L2 대시보드 (읽기 전용)</td></tr>
+<tr><td>임베딩 검색</td><td>선택 사항, 기본 OFF</td></tr>
+</table>
+
+<h2>개요</h2>
+<p><code>memory</code> 스킬은 podex의 영구 지식 계층입니다. 대화 컨텍스트에만 의존하지 않고 AI가 세션 간에 사실, 선호도, 결정 사항을 기억할 수 있게 합니다. 모든 세션에 memory 스킬이 자동으로 주입되므로 수동으로 로드할 필요가 없습니다.</p>
+
+<p>Memory는 두 가지 범위에서 작동합니다:</p>
+
+<div class="scope-compare">
+  <div class="scope-card">
+    <h4><span class="badge badge-active" style="margin-right:6px">L1</span> 인스턴스 로컬 메모리</h4>
+    <ul>
+      <li>명령어: <code>podex memory search/read/save</code></li>
+      <li>모든 작업의 기본 경로</li>
+      <li>현재 인스턴스만 해당</li>
+      <li><strong>읽기 + 쓰기</strong></li>
+      <li>모든 저장 작업에 사용</li>
+    </ul>
+  </div>
+  <div class="scope-card">
+    <h4><span class="badge badge-readonly" style="margin-right:6px">L2</span> 대시보드 메모리</h4>
+    <ul>
+      <li>명령어: <code>podex dashboard memory search/read/instances</code></li>
+      <li>인스턴스 간 연합 검색</li>
+      <li>여러 인스턴스 / 홈</li>
+      <li><strong>읽기 전용</strong></li>
+      <li>사용자가 인스턴스 간 데이터를 명시적으로 요청할 때만 사용</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-info">L2 대시보드 메모리는 사용자가 대시보드 메모리, 모든 인스턴스, 다른 인스턴스/홈, 또는 인스턴스 간 컨텍스트를 요청할 때<strong>만</strong> 사용하세요. 그 외에는 L1을 기본으로 사용합니다.</div>
+
+<h2>규칙</h2>
+<p>Memory 스킬은 메모리의 사용 시점과 방법을 규정하는 7가지 엄격한 규칙을 따릅니다:</p>
+
+<table>
+<thead>
+<tr><th>#</th><th>규칙</th><th>상세</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><strong>응답 전에 검색</strong></td><td>과거 작업, 결정, 선호도에 대해 질문받으면 응답하기 전에 항상 <code>podex memory search &lt;keywords&gt;</code>를 먼저 실행하세요.</td></tr>
+<tr><td>2</td><td><strong>지속적 사실은 즉시 저장</strong></td><td>사용자 선호도, 주요 결정, 안정적인 프로젝트 사실은 확인 즉시 저장해야 합니다.</td></tr>
+<tr><td>3</td><td><strong>구조화된 경로 사용</strong></td><td>임의의 경로보다 <code>structured/profile.md</code>, <code>structured/semantic/...</code>, 또는 <code>structured/episodes/...</code>를 우선 사용하세요.</td></tr>
+<tr><td>4</td><td><strong>부족한 부분은 인정</strong></td><td>검색 결과가 없으면 "해당 기록이 없습니다."라고 말하세요. 기억을 지어내지 마세요.</td></tr>
+<tr><td>5</td><td><strong>안정적 사실만 저장</strong></td><td>일시적인 TODO, 단계 로그, 임시 체크리스트는 저장하지 마세요. 지속적인 지식만 메모리에 보관합니다.</td></tr>
+<tr><td>6</td><td><strong>폭넓게 검색</strong></td><td>검색 쿼리를 구성할 때 한국어/영어 변형, 에러 코드, 기호, 파일명을 고려하세요.</td></tr>
+<tr><td>7</td><td><strong>주입된 컨텍스트 활용</strong></td><td>작업 스냅샷이 이미 프롬프트에 있을 수 있지만, 정확도가 중요하거나 정확한 문구가 필요할 때는 여전히 검색하세요.</td></tr>
+</tbody>
+</table>
+
+<h2>명령어</h2>
+
+<h3>검색</h3>
+<p>메모리 인덱스에서 키워드를 검색합니다. 일치하는 항목과 원본 파일 경로를 반환합니다.</p>
+<pre><code># Basic keyword search
+podex memory search "keyword"
+
+# Search for user preferences
+podex memory search "user preference"
+
+# Search with error codes or technical terms
+podex memory search "auth login 401"
+
+# Search with system/service terms
+podex memory search "launchd plist service"
+
+# Cross-instance search (L2 dashboard, read-only)
+podex dashboard memory search "cross-instance topic"</code></pre>
+
+<div class="callout callout-info"><strong>팁:</strong> 폭넓게 검색하세요. 첫 번째 쿼리에서 결과가 없으면 한국어/영어 변형을 시도하세요. 예를 들어, 이중 언어 항목을 찾기 위해 "인증"과 "auth"를 모두 검색하세요.</div>
+
+<h3>읽기</h3>
+<p>특정 메모리 파일의 전체 내용을 읽거나 파일 내 특정 줄 범위를 읽습니다.</p>
+<pre><code># Read the user profile
+podex memory read structured/profile.md
+
+# Read a semantic knowledge file
+podex memory read structured/semantic/podex.md
+
+# Read an episodic entry
+podex memory read structured/episodes/live/2026-03-07.md
+
+# Read only specific lines (useful for large files)
+podex memory read structured/profile.md --lines 1-30</code></pre>
+
+<h3>저장</h3>
+<p>지속적 사실을 메모리 파일에 추가합니다. 내용은 덮어쓰지 않고 추가됩니다.</p>
+<pre><code># Save a user preference to the profile
+podex memory save structured/profile.md "- User prefers Korean UI and English code"
+
+# Save a technical fact to a semantic file
+podex memory save structured/semantic/podex.md "- Memory runtime uses task snapshots before response generation"
+
+# Save a time-bound episode
+podex memory save structured/episodes/live/2026-03-07.md "## 16:30\n- Decided to remove query-provider setup from memory UX"</code></pre>
+
+<div class="callout callout-warn"><strong>중요:</strong> 안정적이고 지속적인 사실만 저장하세요. "현재 작업 진행 상황"이나 "임시 디버그 메모"와 같은 일시적 데이터는 메모리에 저장하지 마세요. 확신이 없다면 이 사실이 다음 주에도 여전히 관련이 있을지 자문해 보세요.</div>
+
+<h3>목록 &amp; 초기화</h3>
+<p>메모리 디렉토리를 검사하고 초기화하기 위한 유틸리티 명령어입니다.</p>
+<pre><code># List all memory files and their sizes
+podex memory list
+
+# Initialize the memory directory structure (first-time setup)
+podex memory init</code></pre>
+
+<h2>저장소 구조</h2>
+<p>메모리는 <code>~/.podex/memory/</code> 아래의 구조화된 디렉토리 계층으로 구성됩니다. 각 하위 디렉토리는 고유한 목적을 가집니다:</p>
+
+<table>
+<thead>
+<tr><th>경로</th><th>용도</th><th>사용 시점</th></tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>structured/profile.md</code></td>
+  <td>안정적 프로필, 선호도, 장기 프로젝트 컨텍스트</td>
+  <td>사용자 선호도, 도구 설정, 기본 동작</td>
+</tr>
+<tr>
+  <td><code>structured/episodes/</code></td>
+  <td>시간 순서 에피소드 기억</td>
+  <td>세션 결과, 날짜가 포함된 결정, 시간 기반 이벤트</td>
+</tr>
+<tr>
+  <td><code>structured/semantic/</code></td>
+  <td>지속적 사실 및 추출된 지식</td>
+  <td>기술 지식, 프로젝트 아키텍처 노트, API 패턴</td>
+</tr>
+<tr>
+  <td><code>structured/procedures/</code></td>
+  <td>재사용 가능한 워크플로우 및 규칙</td>
+  <td>단계별 가이드, 배포 절차, 표준 프로세스</td>
+</tr>
+<tr>
+  <td><code>structured/sessions/</code></td>
+  <td>선택적 세션 파생 기억</td>
+  <td>완료된 세션에서 자동 추출된 인사이트</td>
+</tr>
+<tr>
+  <td><code>structured/index.sqlite</code></td>
+  <td>검색 인덱스</td>
+  <td>자동 관리됨; <code>memory search</code>를 구동</td>
+</tr>
+</tbody>
+</table>
+
+<div class="storage-layout">
+<pre><code>~/.podex/memory/
+  structured/
+    profile.md                          # User preferences and identity
+    index.sqlite                        # Full-text search index
+    episodes/
+      live/
+        2026-03-07.md                   # Daily episodic entries
+        2026-05-29.md
+    semantic/
+      podex.md                        # podex-specific knowledge
+      deployment.md                     # Deployment procedures
+      project-architecture.md           # Architecture decisions
+    procedures/
+      release-checklist.md              # Reusable workflows
+      code-review-process.md
+    sessions/
+      session-2026-05-29-abc123.md      # Auto-extracted session notes</code></pre>
+</div>
+
+<h2>워크플로우</h2>
+<p>Memory 스킬은 대화 중 메모리가 어떻게 사용되는지를 규정하는 4가지 표준 워크플로우를 정의합니다.</p>
+
+<h3>새 대화</h3>
+<p>새 세션이 시작될 때:</p>
+<div class="workflow-step"><span class="step-num">1</span><span class="step-text">주입된 메모리 컨텍스트가 있으면 사용 (시스템이 관련 기억을 미리 로드할 수 있음)</span></div>
+<div class="workflow-step"><span class="step-num">2</span><span class="step-text">작업이 이전 결정이나 선호도에 의존하면 메모리를 검색</span></div>
+<div class="workflow-step"><span class="step-num">3</span><span class="step-text">정확한 문구나 세부 사항이 중요할 때 관련 파일을 읽기</span></div>
+
+<h3>사용자가 선호도를 언급할 때</h3>
+<p>사용자가 선호도를 밝힐 때 (예: "탭이 스페이스보다 좋아"):</p>
+<div class="workflow-step"><span class="step-num">1</span><span class="step-text">간단히 확인 ("알겠습니다, 기록했습니다.")</span></div>
+<div class="workflow-step"><span class="step-num">2</span><span class="step-text"><code>structured/profile.md</code>에 저장</span></div>
+<div class="workflow-step"><span class="step-num">3</span><span class="step-text">프로젝트별 사항이면 적절한 semantic 파일에도 저장</span></div>
+
+<h3>사용자가 "기억해...?"라고 물을 때</h3>
+<p>사용자가 이전에 논의된 내용을 기억하는지 물을 때:</p>
+<div class="workflow-step"><span class="step-num">1</span><span class="step-text"><code>podex memory search "&lt;keywords&gt;"</code> 실행</span></div>
+<div class="workflow-step"><span class="step-num">2</span><span class="step-text">찾으면 기억된 사실과 출처 파일을 인용하여 응답</span></div>
+<div class="workflow-step"><span class="step-num">3</span><span class="step-text">찾지 못하면 저장된 기록이 없다고 말하고 저장을 제안</span></div>
+
+<h3>중요한 세션 종료 시</h3>
+<p>세션에서 중요한 결정이나 결과가 나왔을 때:</p>
+<div class="workflow-step"><span class="step-num">1</span><span class="step-text">지속적 결정 또는 사실을 저장</span></div>
+<div class="workflow-step"><span class="step-num">2</span><span class="step-text">시간 기반 결과에는 에피소드 파일(<code>episodes/</code>) 사용</span></div>
+<div class="workflow-step"><span class="step-num">3</span><span class="step-text">장기 지식에는 semantic 또는 profile 파일 사용</span></div>
+
+<h2>사용 예시 (~해줘)</h2>
+<p>다음은 podex가 이해하는 자연스러운 한국어 스타일의 실제 사용 패턴입니다.</p>
+
+<div class="example-card">
+  <div class="example-prompt">"내가 저번에 Tailwind 쓴다고 했던 거 기억해?"</div>
+  <div class="example-desc">"기억해...?" 워크플로우를 실행합니다. 에이전트가 <code>podex memory search "Tailwind"</code>를 실행하고, <code>structured/profile.md</code>에서 저장된 선호도를 찾아 정확한 항목과 출처 파일을 응답합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"앞으로 코드는 영어, UI 텍스트는 한국어로 해줘"</div>
+  <div class="example-desc">"사용자가 선호도를 언급할 때" 워크플로우를 실행합니다. 에이전트가 확인한 후, <code>- Code language: English, UI text: Korean</code>을 <code>structured/profile.md</code>에 저장하여 이후 모든 세션에서 이 선호도를 반영합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"지난번 배포 때 DB 마이그레이션 어떻게 했더라?"</div>
+  <div class="example-desc">"응답 전에 검색" 규칙을 실행합니다. 에이전트가 메모리에서 "DB migration deploy"와 "배포 마이그레이션"을 검색한 후, 관련 에피소드 항목을 읽어 사용된 정확한 마이그레이션 단계를 확인합니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"이 프로젝트에서 API 에러 핸들링은 항상 ErrorResponse 타입 쓰기로 결정했어. 기억해줘."</div>
+  <div class="example-desc">즉시 저장을 실행합니다. 에이전트가 <code>- API error handling: always use ErrorResponse type</code>을 <code>structured/semantic/project-architecture.md</code>에 저장하여 이 아키텍처 결정을 지속시킵니다.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"다른 인스턴스에서 이 프로젝트 어떻게 설정했는지 찾아봐"</div>
+  <div class="example-desc">L2 대시보드 메모리를 실행합니다. 에이전트가 "다른 인스턴스"를 인식하고 <code>podex dashboard memory search "project setup"</code>을 실행하여 인스턴스 간 연합 검색을 수행하고, 대시보드에서 읽기 전용 결과를 반환합니다.</div>
+</div>
+
+<h2>저장할 것 vs. 건너뛸 것</h2>
+
+<table>
+<thead>
+<tr><th>저장 (지속적)</th><th>건너뛰기 (일시적)</th></tr>
+</thead>
+<tbody>
+<tr><td>사용자가 모든 UI에서 다크 모드를 선호함</td><td>현재 작업: "로그인 버그 수정"</td></tr>
+<tr><td>프로젝트에서 npm이 아닌 pnpm 사용</td><td>단계 로그: "2단계 오후 3시에 시작"</td></tr>
+<tr><td>API 응답 형식 결정</td><td>임시 디버그 체크리스트</td></tr>
+<tr><td>프로덕션 배포 절차</td><td>"내일 이것 확인하라고 알려줘"</td></tr>
+<tr><td>아키텍처: 이벤트 버스 기반 마이크로서비스</td><td>진행 중인 TODO 목록</td></tr>
+<tr><td>팀에서 Conventional Commits 사용</td><td>세션별 변수 값</td></tr>
+</tbody>
+</table>
+
+<h2>올바른 저장 경로 선택</h2>
+<p>사실을 저장할 때 정보의 성격에 따라 저장 경로를 선택하세요:</p>
+
+<table>
+<thead>
+<tr><th>정보 유형</th><th>저장 경로</th><th>예시</th></tr>
+</thead>
+<tbody>
+<tr><td>개인 선호도</td><td><code>structured/profile.md</code></td><td>"사용자가 한국어 UI, 영어 코드를 선호함"</td></tr>
+<tr><td>프로젝트 아키텍처 사실</td><td><code>structured/semantic/&lt;project&gt;.md</code></td><td>"podex는 메모리 인덱스에 SQLite 사용"</td></tr>
+<tr><td>날짜가 있는 결정</td><td><code>structured/episodes/live/&lt;date&gt;.md</code></td><td>"2026-05-29: Prisma 대신 Drizzle ORM 선택"</td></tr>
+<tr><td>재사용 가능한 워크플로우</td><td><code>structured/procedures/&lt;name&gt;.md</code></td><td>"릴리스 체크리스트: lint, test, tag, deploy"</td></tr>
+<tr><td>도메인 지식</td><td><code>structured/semantic/&lt;domain&gt;.md</code></td><td>"Cloudflare D1은 데이터베이스당 10GB 제한"</td></tr>
+</tbody>
+</table>
+
+<h2>검색 팁</h2>
+<p>메모리 검색 인덱스는 전문 키워드 매칭을 지원합니다. 최상의 결과를 얻으려면:</p>
+
+<ul>
+  <li><strong>양쪽 언어 모두 사용</strong> &mdash; 사용자가 이중 언어로 작업하면 "auth"와 "인증"을 모두 검색하세요</li>
+  <li><strong>에러 코드 포함</strong> &mdash; 인증 관련 기억을 찾으려면 "401 unauthorized"를 검색하세요</li>
+  <li><strong>파일명 시도</strong> &mdash; 시스템 서비스 기억을 찾으려면 "launchd"나 "plist"를 검색하세요</li>
+  <li><strong>구체적으로 시작하고 넓게 확장</strong> &mdash; "Cloudflare D1 migration"으로 시작하고 "database migration"으로 폴백하세요</li>
+  <li><strong>기호 검색</strong> &mdash; "ECONNREFUSED" 같은 에러 코드나 "JAW_HOME" 같은 설정 키도 인덱싱됩니다</li>
+</ul>
+
+<div class="callout callout-info"><strong>임베딩 검색</strong>은 선택 사항이며 기본 OFF입니다. 이 스킬은 벡터/시맨틱 검색이 사용 가능하다고 가정하지 않습니다. 모든 검색 작업은 기본적으로 SQLite 전문 검색 인덱스를 사용합니다.</div>
+
+<h2>참고 사항</h2>
+<ul>
+  <li>장황한 로그보다 간결하고 지속적인 항목을 선호하세요</li>
+  <li>메모리는 관례적으로 추가 전용입니다 &mdash; save 명령은 덮어쓰지 않고 추가합니다</li>
+  <li>검색 인덱스(<code>index.sqlite</code>)는 파일이 저장될 때 자동으로 관리됩니다</li>
+  <li>인스턴스 간(L2) 메모리는 항상 읽기 전용입니다; 다른 인스턴스에 저장할 수 없습니다</li>
+  <li>인스턴스에서 임베딩 검색이 활성화된 경우 키워드 검색을 보완하지만 대체하지는 않습니다</li>
+</ul>
+
+<h2>관련 문서</h2>
+<ul>
+  <li><a href="../../concepts/memory.html">개념: Memory</a> &mdash; 메모리 시스템 아키텍처의 상위 수준 개요</li>
+  <li><a href="../../reference/cli.html">CLI 명령어</a> &mdash; <code>podex memory</code> 명령어 전체 참조</li>
+  <li><a href="../../guides/dashboard.html">대시보드 가이드</a> &mdash; L2 대시보드 메모리 및 인스턴스 간 연합</li>
+  <li><a href="../index.html">스킬 카탈로그</a> &mdash; 대표 스킬 카탈로그 탐색</li>
+  <li><a href="../productivity.html">생산성 스킬</a> &mdash; 메모리 및 관련 스킬 카테고리 페이지</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">생산성 스킬</a>
+<a class="next" href="../index.html">스킬 카탈로그</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

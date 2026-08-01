@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Telegram Send &#8212; podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
+.badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+.badge-category { background: rgba(99, 102, 241, 0.15); color: var(--accent); }
+.quick-ref { margin: 24px 0; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 160px; }
+.example-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+.example-card .example-ko { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+.example-card .example-desc { font-size: 13px; color: var(--text-dim); }
+.dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.dep-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.dep-card strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.dep-card code { font-size: 13px; }
+.dep-card .dep-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+.flow-table td:first-child { font-weight: 600; white-space: nowrap; width: 100px; }
+.api-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 16px 0; }
+.api-box h4 { margin: 0 0 8px; font-size: 14px; }
+.api-box p { margin: 4px 0; font-size: 13px; color: var(--text-dim); }
+@media (max-width: 768px) {
+  .dep-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link active" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Telegram Send</h1>
+<p class="lead">Send voice, photo, and document files via Telegram bot &mdash; with a Bot-API-first delivery policy, automatic chat ID resolution, and a local endpoint fallback for text notices and retries.</p>
+
+<p>
+  <span class="badge badge-active">Default Active</span>
+  <span class="badge badge-category">Communication</span>
+</p>
+
+<div class="callout callout-info">
+  <strong>Active by default:</strong> <code>telegram-send</code> is injected into every session automatically. No manual loading required. When you say "send via Telegram" or "&#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48372;&#45236;&#51468;", the skill activates and the agent follows the delivery policy described on this page.
+</div>
+
+<h2>Quick Reference</h2>
+<table class="quick-ref">
+<tr><td>Skill name</td><td><code>telegram-send</code></td></tr>
+<tr><td>Category</td><td>Communication</td></tr>
+<tr><td>Default active</td><td>Yes &mdash; injected at session start</td></tr>
+<tr><td>SKILL.md path</td><td><code>~/.podex/skills/telegram-send/SKILL.md</code></td></tr>
+<tr><td>System tools</td><td><code>curl</code>, <code>jq</code></td></tr>
+<tr><td>Config source</td><td><code>~/.podex/settings.json</code> (<code>telegram.token</code>, <code>telegram.allowedChatIds</code>)</td></tr>
+<tr><td>Primary API</td><td>Telegram Bot API (<code>https://api.telegram.org/bot&lt;TOKEN&gt;/...</code>)</td></tr>
+<tr><td>Fallback API</td><td>Local endpoint (<code>http://localhost:3457/api/telegram/send</code>)</td></tr>
+<tr><td>Supported types</td><td><code>photo</code>, <code>voice</code>, <code>document</code>, <code>text</code></td></tr>
+<tr><td>Related skills</td><td><code>email-draft-polish</code>, <code>whatsapp</code>, <code>xurl</code></td></tr>
+<tr><td>Related guide</td><td><a href="../../guides/telegram.html">Telegram Guide</a></td></tr>
+</table>
+
+<h2>Delivery Policy (Bot-First)</h2>
+<p>The skill follows a strict two-tier delivery strategy. The Telegram Bot API is always tried first. The local podex endpoint serves as a convenience layer for text and as a fallback when the Bot API fails.</p>
+
+<table>
+<thead>
+<tr><th>Message Type</th><th>Primary Method</th><th>Fallback</th></tr>
+</thead>
+<tbody>
+<tr><td><code>photo</code></td><td>Telegram Bot API (<code>sendPhoto</code>)</td><td>Local endpoint (one retry)</td></tr>
+<tr><td><code>voice</code></td><td>Telegram Bot API (<code>sendVoice</code>)</td><td>Local endpoint (one retry)</td></tr>
+<tr><td><code>document</code></td><td>Telegram Bot API (<code>sendDocument</code>)</td><td>Local endpoint (one retry)</td></tr>
+<tr><td><code>text</code></td><td>Local endpoint (convenience)</td><td>Telegram Bot API (<code>sendMessage</code>)</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>Key rule:</strong> For <code>photo</code>, <code>voice</code>, and <code>document</code> types, the agent always attempts the direct Bot API first. The local endpoint is only used as a single-retry fallback if the Bot API call fails. For <code>text</code> status notices, the local endpoint is used first for convenience.
+</div>
+
+<h2>Required Inputs</h2>
+
+<table>
+<thead>
+<tr><th>Input</th><th>Source</th><th>Required For</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Bot token</strong></td><td><code>~/.podex/settings.json</code> &rarr; <code>telegram.token</code></td><td>All Bot API calls</td></tr>
+<tr><td><strong>Chat ID</strong></td><td><code>~/.podex/settings.json</code> &rarr; <code>telegram.allowedChatIds[-1]</code></td><td>All Bot API calls</td></tr>
+<tr><td><strong>File path</strong></td><td>Provided by user or generated by previous task</td><td><code>photo</code>, <code>voice</code>, <code>document</code></td></tr>
+<tr><td><strong>Caption / text</strong></td><td>Provided by user (optional for media)</td><td><code>text</code>; optional caption for media</td></tr>
+</tbody>
+</table>
+
+<h2>Step-by-Step Workflow</h2>
+
+<h3>Step 1: Read Token and Chat ID</h3>
+<p>The agent reads credentials from the podex settings file. Tokens are kept in shell variables only &mdash; never printed to stdout or logs.</p>
+
+<pre><code>TOKEN=$(jq -r '.telegram.token' ~/.podex/settings.json)
+CHAT_ID=$(jq -r '.telegram.allowedChatIds[-1]' ~/.podex/settings.json)</code></pre>
+
+<p>If <code>CHAT_ID</code> resolves to <code>null</code> (no previous Telegram message on record), the agent recovers by pinging the local endpoint:</p>
+
+<pre><code>CHAT_ID=$(curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"text","text":"chat_id check"}' | jq -r '.chat_id')</code></pre>
+
+<div class="callout callout-info">
+  <strong>Security:</strong> The bot token is never printed, echoed, or included in agent text responses. It exists only in shell variables for the duration of the command. This prevents credential leakage to logs and chat history.
+</div>
+
+<h3>Step 2: Send via Bot API (Primary)</h3>
+<p>The agent constructs a <code>curl</code> multipart form POST to the appropriate Telegram Bot API endpoint based on the message type.</p>
+
+<h4>Send a photo</h4>
+<pre><code>curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendPhoto" \
+  -F "chat_id=${CHAT_ID}" \
+  -F "photo=@/tmp/chart.png" \
+  -F "caption=Analysis chart"</code></pre>
+
+<h4>Send a voice message</h4>
+<pre><code>curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendVoice" \
+  -F "chat_id=${CHAT_ID}" \
+  -F "voice=@/tmp/reply.ogg" \
+  -F "caption=Voice response"</code></pre>
+
+<h4>Send a document</h4>
+<pre><code>curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendDocument" \
+  -F "chat_id=${CHAT_ID}" \
+  -F "document=@/tmp/report.pdf" \
+  -F "caption=Weekly report"</code></pre>
+
+<h3>Step 3: Local Endpoint (Secondary / Fallback)</h3>
+<p>The local podex server exposes a Telegram send endpoint at:</p>
+
+<div class="api-box">
+  <h4>POST http://localhost:3457/api/telegram/send</h4>
+  <p>Content-Type: <code>application/json</code></p>
+  <p>Accepts: <code>type</code>, <code>text</code>, <code>file_path</code>, <code>caption</code></p>
+</div>
+
+<h4>Text message (primary use of local endpoint)</h4>
+<pre><code>curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"text","text":"Deployment complete!"}'</code></pre>
+
+<h4>Media fallback via local endpoint</h4>
+<pre><code>curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"photo","file_path":"/tmp/chart.png","caption":"Analysis chart"}'</code></pre>
+
+<h3>Step 4: Verify Delivery</h3>
+<p>A successful send returns a JSON response with <code>"ok": true</code>:</p>
+<pre><code>{"ok":true,"chat_id":8231528245,"type":"text"}</code></pre>
+<p>The agent checks this response before reporting success to the user. If the response indicates failure, and the primary method was Bot API, one retry is attempted via the local endpoint.</p>
+
+<h2>Supported Message Types</h2>
+
+<table>
+<thead>
+<tr><th>Type</th><th>Bot API Method</th><th>Required Fields</th><th>Optional Fields</th></tr>
+</thead>
+<tbody>
+<tr><td><code>photo</code></td><td><code>sendPhoto</code></td><td><code>chat_id</code>, <code>photo</code> (file)</td><td><code>caption</code>, <code>parse_mode</code></td></tr>
+<tr><td><code>voice</code></td><td><code>sendVoice</code></td><td><code>chat_id</code>, <code>voice</code> (file, OGG format)</td><td><code>caption</code>, <code>duration</code></td></tr>
+<tr><td><code>document</code></td><td><code>sendDocument</code></td><td><code>chat_id</code>, <code>document</code> (file)</td><td><code>caption</code>, <code>parse_mode</code></td></tr>
+<tr><td><code>text</code></td><td><code>sendMessage</code> / local endpoint</td><td><code>chat_id</code>, <code>text</code></td><td><code>parse_mode</code>, <code>disable_notification</code></td></tr>
+</tbody>
+</table>
+
+<h2>Configuration</h2>
+<p>The skill reads all configuration from <code>~/.podex/settings.json</code>. No separate config file is needed.</p>
+
+<pre><code>// ~/.podex/settings.json (relevant keys)
+{
+  "telegram": {
+    "token": "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
+    "allowedChatIds": [8231528245]
+  }
+}</code></pre>
+
+<table>
+<thead>
+<tr><th>Key</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>telegram.token</code></td><td>string</td><td>Telegram Bot API token from <a href="https://t.me/BotFather">@BotFather</a></td></tr>
+<tr><td><code>telegram.allowedChatIds</code></td><td>number[]</td><td>Array of allowed chat IDs. The skill uses the last entry by default.</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-info">
+  <strong>Getting your Chat ID:</strong> If you have not sent a message to the bot yet, <code>allowedChatIds</code> may be empty. The skill will auto-discover your chat ID by sending a probe message via the local endpoint and reading the <code>chat_id</code> field from the response.
+</div>
+
+<h2>Dependencies</h2>
+<p>This skill requires only standard Unix tools that are pre-installed on macOS and most Linux distributions.</p>
+
+<div class="dep-grid">
+  <div class="dep-card">
+    <strong>curl</strong>
+    <code>Pre-installed on macOS and Linux</code>
+    <div class="dep-desc">HTTP client used for all Bot API and local endpoint requests</div>
+  </div>
+  <div class="dep-card">
+    <strong>jq</strong>
+    <code>brew install jq</code>
+    <div class="dep-desc">JSON processor used to read settings and parse API responses</div>
+  </div>
+</div>
+
+<h3>Verify dependencies</h3>
+<pre><code># Check curl
+curl --version
+
+# Check jq
+jq --version
+
+# Install jq if missing (macOS)
+brew install jq
+
+# Install jq if missing (Ubuntu/Debian)
+sudo apt-get install -y jq</code></pre>
+
+<h2>Safety Rules</h2>
+<p>The skill enforces strict security practices around token handling:</p>
+
+<table>
+<thead>
+<tr><th>Rule</th><th>Detail</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>No token printing</strong></td><td>The bot token is never echoed, printed, or included in agent text output. It exists only in shell variables.</td></tr>
+<tr><td><strong>Shell-only storage</strong></td><td>Tokens are read into <code>$TOKEN</code> and used inline. They are not written to temp files or exported to the environment.</td></tr>
+<tr><td><strong>No log leakage</strong></td><td>Commands use <code>-sS</code> flags to suppress progress bars while still showing errors, avoiding accidental token exposure in verbose logs.</td></tr>
+<tr><td><strong>Single retry limit</strong></td><td>If Bot API fails, only one fallback attempt via local endpoint is permitted. No infinite retry loops.</td></tr>
+<tr><td><strong>Allowed chat IDs</strong></td><td>The skill only sends to chat IDs listed in <code>telegram.allowedChatIds</code>, preventing accidental messages to unauthorized chats.</td></tr>
+</tbody>
+</table>
+
+<h2>Quick Verification</h2>
+<p>To test that the Telegram integration is working, run this ping command:</p>
+
+<pre><code>curl -sS -X POST http://localhost:3457/api/telegram/send \
+  -H "Content-Type: application/json" \
+  -d '{"type":"text","text":"ping"}'</code></pre>
+
+<p>Expected response:</p>
+<pre><code>{"ok":true,"chat_id":8231528245,"type":"text"}</code></pre>
+
+<p>If you receive an error, check that:</p>
+<ol>
+<li>The podex server is running (<code>jaw server status</code>)</li>
+<li>The bot token is configured in <code>~/.podex/settings.json</code></li>
+<li>You have sent at least one message to the bot on Telegram (to establish the chat)</li>
+</ol>
+
+<h2>"~&#54644;&#51468;" Usage Examples</h2>
+<p>Real-world examples showing how to trigger the telegram-send skill in natural language. Korean and English both work.</p>
+
+<div class="example-card">
+  <div class="example-ko">"&#51060; &#52264;&#53944; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48372;&#45236;&#51468;"</div>
+  <div class="example-desc">Sends the most recently generated chart image (PNG) as a photo via the Bot API <code>sendPhoto</code> endpoint. The agent locates the chart file from the current task context and attaches it automatically.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#48516;&#49437; &#44208;&#44284; &#51020;&#49457; &#47700;&#49884;&#51648;&#47196; &#53588;&#47112;&#44536;&#47016;&#50640; &#48372;&#45236;&#51468;"</div>
+  <div class="example-desc">Converts the analysis summary to a voice message (OGG format) and sends it via <code>sendVoice</code>. If TTS generation is available, the agent produces the audio first, then delivers it.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#51452;&#44036; &#48372;&#44256;&#49436; PDF &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48372;&#45236;&#51468;"</div>
+  <div class="example-desc">Sends the weekly report PDF as a document via <code>sendDocument</code>. The caption is set to a brief description of the file. The agent checks for the file at <code>output/pdf/</code> or the path specified by the user.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#48176;&#54252; &#50756;&#47308;&#46104;&#47732; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#50508;&#47140;&#51468;"</div>
+  <div class="example-desc">After a deployment task finishes, sends a text notification like "Deployment complete" to Telegram via the local endpoint. This is a status notice, so the local endpoint is used as primary.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-ko">"&#49828;&#53356;&#47536;&#49399; &#52237;&#50612;&#49436; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48148;&#47196; &#48372;&#45236;&#51468;"</div>
+  <div class="example-desc">Captures a screenshot of the current screen or browser, saves it as a PNG, and immediately sends it as a photo via the Bot API. Combines the <code>screen-capture</code> skill output with <code>telegram-send</code>.</div>
+</div>
+
+<h2>Integration with Other Skills</h2>
+<p>The <code>telegram-send</code> skill is often the final step in a multi-skill workflow. It pairs naturally with any skill that produces output files or status updates.</p>
+
+<table>
+<thead>
+<tr><th>Workflow</th><th>Skills Involved</th><th>Example</th></tr>
+</thead>
+<tbody>
+<tr><td>Report generation + delivery</td><td><code>pdf</code> + <code>telegram-send</code></td><td>"&#48372;&#44256;&#49436; PDF &#47564;&#46308;&#50612;&#49436; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48372;&#45236;&#51468;"</td></tr>
+<tr><td>Chart + notification</td><td><code>dev-data</code> + <code>telegram-send</code></td><td>"&#47588;&#52636; &#52264;&#53944; &#47564;&#46308;&#50612;&#49436; &#53588;&#47112;&#44536;&#47016;&#50640; &#44277;&#50976;&#54644;&#51468;"</td></tr>
+<tr><td>Screenshot capture + send</td><td><code>screen-capture</code> + <code>telegram-send</code></td><td>"&#54868;&#47732; &#52237;&#50612;&#49436; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48148;&#47196; &#48372;&#45236;&#51468;"</td></tr>
+<tr><td>Voice reply</td><td><code>video</code> (TTS) + <code>telegram-send</code></td><td>"&#51060; &#45236;&#50857; &#51020;&#49457;&#51004;&#47196; &#48320;&#54872;&#54644;&#49436; &#53588;&#47112;&#44536;&#47016;&#50640; &#48372;&#45236;&#51468;"</td></tr>
+<tr><td>Multi-channel broadcast</td><td><code>telegram-send</code> + <code>whatsapp</code> + <code>xurl</code></td><td>"&#51060; &#44277;&#51648;&#49324;&#54637; &#53588;&#47112;&#44536;&#47016;, &#50772;&#52768;&#50545;, X &#51204;&#48512; &#48372;&#45236;&#51468;"</td></tr>
+<tr><td>Deploy notification</td><td><code>cloudflare</code> + <code>telegram-send</code></td><td>"Workers &#48176;&#54252;&#54616;&#44256; &#44208;&#44284; &#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#50508;&#47140;&#51468;"</td></tr>
+</tbody>
+</table>
+
+<h2>API Reference</h2>
+
+<h3>Bot API Endpoints Used</h3>
+<table>
+<thead>
+<tr><th>Endpoint</th><th>Method</th><th>Purpose</th></tr>
+</thead>
+<tbody>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendPhoto</code></td><td>POST (multipart/form-data)</td><td>Send an image file</td></tr>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendVoice</code></td><td>POST (multipart/form-data)</td><td>Send an OGG voice message</td></tr>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendDocument</code></td><td>POST (multipart/form-data)</td><td>Send any file as a document</td></tr>
+<tr><td><code>/bot&lt;TOKEN&gt;/sendMessage</code></td><td>POST (application/json)</td><td>Send a text message (fallback for text type)</td></tr>
+</tbody>
+</table>
+
+<h3>Local Endpoint</h3>
+<table>
+<thead>
+<tr><th>Endpoint</th><th>Method</th><th>Body</th></tr>
+</thead>
+<tbody>
+<tr><td><code>http://localhost:3457/api/telegram/send</code></td><td>POST</td><td><code>{"type": "photo|voice|document|text", "text": "...", "file_path": "...", "caption": "..."}</code></td></tr>
+</tbody>
+</table>
+
+<h3>Response Format</h3>
+<pre><code>// Success
+{"ok": true, "chat_id": 8231528245, "type": "text"}
+
+// Failure (example)
+{"ok": false, "error": "Bot token not configured"}</code></pre>
+
+<h2>Troubleshooting</h2>
+
+<h3>Chat ID is null</h3>
+<p>If <code>jq -r '.telegram.allowedChatIds[-1]'</code> returns <code>null</code>, the bot has not received any messages from you yet. Send any message to the bot on Telegram first, then the chat ID will be recorded in settings. Alternatively, the agent will auto-recover by probing the local endpoint.</p>
+
+<h3>Bot API returns 401 Unauthorized</h3>
+<p>The bot token is invalid or expired. Generate a new token from <a href="https://t.me/BotFather">@BotFather</a> and update <code>~/.podex/settings.json</code>.</p>
+
+<h3>Bot API returns 400 Bad Request</h3>
+<p>Common causes:</p>
+<ul>
+<li><strong>Invalid chat_id:</strong> The chat ID does not correspond to an active conversation with the bot.</li>
+<li><strong>File too large:</strong> Telegram Bot API limits files to 50 MB for uploads. For larger files, use the local endpoint which may handle chunked uploads.</li>
+<li><strong>Wrong file format for voice:</strong> Voice messages must be in OGG format with OPUS encoding. Other audio formats should be sent as <code>document</code> instead.</li>
+</ul>
+
+<h3>Local endpoint connection refused</h3>
+<p>The podex server is not running. Start it with:</p>
+<pre><code>jaw server start
+
+# Or check status
+jaw server status</code></pre>
+
+<h3>jq not found</h3>
+<p>Install jq to parse the settings file:</p>
+<pre><code># macOS
+brew install jq
+
+# Ubuntu/Debian
+sudo apt-get install -y jq
+
+# Verify
+jq --version</code></pre>
+
+<h2>Comparison with Telegram Guide</h2>
+<p>podex documentation covers Telegram in two places. They serve different purposes:</p>
+
+<table>
+<thead>
+<tr><th></th><th>This page (Skill Reference)</th><th><a href="../../guides/telegram.html">Telegram Guide</a></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Focus</strong></td><td>Technical details of the <code>telegram-send</code> skill &mdash; API commands, delivery policy, safety rules</td><td>End-to-end setup guide for connecting Telegram to podex</td></tr>
+<tr><td><strong>Audience</strong></td><td>Users who want to understand exactly what the agent does when sending to Telegram</td><td>New users setting up Telegram integration for the first time</td></tr>
+<tr><td><strong>Covers</strong></td><td>SKILL.md internals, Bot API calls, fallback logic, troubleshooting</td><td>Bot creation, token setup, initial message pairing, dashboard config</td></tr>
+</tbody>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="../communication.html">Communication Skills</a>
+<a class="next" href="memory.html">Memory</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

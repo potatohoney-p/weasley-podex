@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security & Review Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link active" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Security & Review Skills</h1>
+<p class="lead">podex는 취약점 탐지, 모범 사례 적용, 위협 모델링, 피어 리뷰 간소화 등을 자연어 명령만으로 수행할 수 있는 보안 분석 및 코드 리뷰 스킬 모음을 제공합니다.</p>
+
+<h2>스킬 개요</h2>
+<table>
+<tr><th>스킬</th><th>설명</th><th>트리거 예시</th></tr>
+<tr><td><code>static-analysis</code></td><td>코드를 실행하지 않고 코드베이스 전반에 걸쳐 정적 분석을 수행하여 버그, 안티패턴, 잠재적 취약점을 탐지합니다</td><td>"정적 분석 돌려줘"</td></tr>
+<tr><td><code>insecure-defaults</code></td><td>설정 파일, 환경 변수, 코드에서 안전하지 않은 기본값(개방된 CORS, 프로덕션 디버그 모드, 취약한 암호화 설정)을 스캔합니다</td><td>"보안 기본값 점검해줘"</td></tr>
+<tr><td><code>security-best-practices</code></td><td>프로젝트를 OWASP Top 10 및 언어별 보안 가이드라인에 따라 감사하여 컴플라이언스 체크리스트를 생성합니다</td><td>"보안 베스트 프랙티스 검사해줘"</td></tr>
+<tr><td><code>security-ownership-map</code></td><td>git 히스토리와 CODEOWNERS를 기반으로 보안에 중요한 경로(인증, 결제, 암호화, PII 처리)의 소유자 맵을 생성합니다</td><td>"보안 소유권 맵 만들어줘"</td></tr>
+<tr><td><code>security-threat-model</code></td><td>현재 프로젝트에 대해 STRIDE 기반 위협 모델을 구축하여 신뢰 경계, 데이터 흐름, 공격 표면을 식별합니다</td><td>"위협 모델링 해줘"</td></tr>
+<tr><td><code>differential-review</code></td><td>PR이나 diff에서 변경된 라인만 리뷰하여 보안 퇴행 및 새로 도입된 위험에 집중합니다</td><td>"변경된 부분만 보안 리뷰해줘"</td></tr>
+<tr><td><code>receiving-code-review</code></td><td>수신된 코드 리뷰 코멘트를 처리하고, 심각도를 분류하며, 각 발견 사항에 대한 수정안을 제안합니다</td><td>"코드 리뷰 피드백 정리해줘"</td></tr>
+<tr><td><code>requesting-code-review</code></td><td>현재 변경 사항에 대해 컨텍스트, 위험 영역, 리뷰어 체크리스트가 포함된 구조화된 코드 리뷰 요청을 준비합니다</td><td>"이 코드 리뷰 요청해줘"</td></tr>
+</table>
+
+<h2>정적 분석</h2>
+<p><code>static-analysis</code> 스킬은 AST 수준의 검사와 패턴 매칭을 결합하여 다중 언어 정적 분석을 수행합니다. SQL 인젝션 벡터, XSS 싱크, 경로 탐색 패턴, 안전하지 않은 역직렬화 등을 탐지합니다.</p>
+
+<pre><code># Run static analysis on the entire project
+보안 취약점 검사해줘
+
+# Target a specific directory
+src/api 디렉토리만 정적 분석해줘
+
+# Focus on a specific vulnerability class
+SQL 인젝션 취약점만 찾아줘</code></pre>
+
+<p>결과는 심각도(Critical, High, Medium, Low)별로 그룹화되며, 파일 위치, 라인 번호, 개선 제안이 함께 제공됩니다.</p>
+
+<div class="callout-info">
+<strong>팁:</strong> "보안 취약점 검사해줘"를 입력하면 전체 정적 분석이 실행됩니다. 경로나 취약점 유형을 추가하면 스캔 범위를 좁혀 더 빠른 결과를 얻을 수 있습니다.
+</div>
+
+<h2>안전하지 않은 기본값</h2>
+<p><code>insecure-defaults</code> 스킬은 프로젝트에서 눈에 띄지 않게 프로덕션에 배포되는 위험한 기본 설정을 점검합니다.</p>
+
+<table>
+<tr><th>점검 항목</th><th>탐지 예시</th></tr>
+<tr><td>인증</td><td>기본 비밀번호, 비활성화된 인증 미들웨어, 허용적인 세션 설정</td></tr>
+<tr><td>CORS</td><td><code>Access-Control-Allow-Origin: *</code>, 지나치게 광범위한 허용 메서드</td></tr>
+<tr><td>디버그 모드</td><td>프로덕션 설정의 <code>DEBUG=true</code>, 노출된 상세 오류 페이지</td></tr>
+<tr><td>암호화</td><td>비밀번호 해싱에 MD5/SHA1 사용, 하드코딩된 키, 취약한 JWT 시크릿</td></tr>
+<tr><td>네트워크</td><td>HTTPS 대신 HTTP, 제한 없이 <code>0.0.0.0</code>에 바인딩, 열린 포트</td></tr>
+<tr><td>의존성</td><td>알려진 취약점이 있는 패키지 버전, 고정되지 않은 의존성</td></tr>
+</table>
+
+<pre><code># Scan for insecure defaults
+기본값 보안 점검해줘
+
+# Check only environment and config files
+설정 파일 보안 검사해줘</code></pre>
+
+<h2>보안 모범 사례</h2>
+<p><code>security-best-practices</code> 스킬은 프로젝트를 확립된 보안 표준에 따라 감사하고 구조화된 컴플라이언스 보고서를 생성합니다.</p>
+
+<pre><code># Full OWASP Top 10 audit
+OWASP 기준으로 보안 점검해줘
+
+# Language-specific best practices
+Python 보안 베스트 프랙티스 체크해줘
+
+# Generate a compliance report
+보안 컴플라이언스 리포트 만들어줘</code></pre>
+
+<p>감사 항목은 다음을 포함합니다:</p>
+<ul>
+<li><strong>입력 검증</strong> -- 인젝션 방지, 파라미터화된 쿼리, 입력 새니타이징</li>
+<li><strong>인증 및 세션 관리</strong> -- 안전한 토큰 저장, 세션 만료, MFA 지원</li>
+<li><strong>접근 제어</strong> -- 역할 기반 검사, 권한 상승 벡터</li>
+<li><strong>데이터 보호</strong> -- 저장 및 전송 시 암호화, PII 처리, 로깅 위생</li>
+<li><strong>오류 처리</strong> -- 오류 메시지를 통한 정보 유출, 스택 트레이스 노출</li>
+<li><strong>의존성 관리</strong> -- 오래된 패키지, 알려진 CVE, 공급망 위험</li>
+</ul>
+
+<div class="callout-info">
+<strong>팁:</strong> "OWASP 기준으로 보안 점검해줘"를 입력하면 각 OWASP 카테고리에 매핑된 체크리스트가 생성되며, 모든 항목에 통과/실패/경고 상태가 표시됩니다.
+</div>
+
+<h2>보안 소유권 맵</h2>
+<p><code>security-ownership-map</code> 스킬은 git 히스토리와 프로젝트 구조를 분석하여 보안에 중요한 코드의 소유권을 시각적으로 매핑합니다.</p>
+
+<pre><code># Generate ownership map for security-critical paths
+보안 소유권 맵 만들어줘
+
+# Focus on authentication code ownership
+인증 관련 코드 소유자 확인해줘</code></pre>
+
+<p>맵에서 식별하는 항목:</p>
+<ul>
+<li><strong>인증 모듈</strong> -- 로그인 흐름, 토큰 생성, OAuth 통합</li>
+<li><strong>결제 처리</strong> -- 빌링 로직, 결제 게이트웨이 통합</li>
+<li><strong>암호화 코드</strong> -- 키 관리, 암호화/복호화 루틴</li>
+<li><strong>PII 처리</strong> -- 사용자 데이터 저장, 내보내기, 삭제 경로</li>
+<li><strong>인프라 설정</strong> -- Dockerfile, CI/CD 파이프라인, 배포 스크립트</li>
+</ul>
+
+<p>각 경로에는 주요 소유자(가장 최근 및 가장 빈번한 커미터), 리뷰 커버리지 백분율, 마지막 보안 중심 리뷰 이후 경과 시간이 주석으로 표시됩니다.</p>
+
+<h2>위협 모델링</h2>
+<p><code>security-threat-model</code> 스킬은 프로젝트의 아키텍처, 데이터 흐름, 외부 통합을 분석하여 STRIDE 기반 위협 모델을 구축합니다.</p>
+
+<pre><code># Generate a full threat model
+위협 모델링 해줘
+
+# Threat model for a specific feature
+결제 기능 위협 모델 만들어줘
+
+# Update an existing threat model after changes
+위협 모델 업데이트해줘</code></pre>
+
+<table>
+<tr><th>STRIDE 카테고리</th><th>탐지 대상</th></tr>
+<tr><td><strong>Spoofing</strong></td><td>취약한 인증, 누락된 신원 확인, 토큰 위조 벡터</td></tr>
+<tr><td><strong>Tampering</strong></td><td>전송 중 서명되지 않은 데이터, 누락된 무결성 검사, 변경 가능한 공유 상태</td></tr>
+<tr><td><strong>Repudiation</strong></td><td>누락된 감사 로그, 서명되지 않은 트랜잭션, 부인 방지 통제 부재</td></tr>
+<tr><td><strong>Information Disclosure</strong></td><td>상세한 오류 메시지, 로그 유출, 안전하지 않은 저장소, 디버그 엔드포인트</td></tr>
+<tr><td><strong>Denial of Service</strong></td><td>누락된 요청 제한, 무한 쿼리, 자원 고갈 벡터</td></tr>
+<tr><td><strong>Elevation of Privilege</strong></td><td>누락된 인가 검사, IDOR, 권한 상승 경로</td></tr>
+</table>
+
+<div class="callout-info">
+<strong>팁:</strong> "위협 모델링 해줘"를 입력하면 신뢰 경계, 데이터 흐름 다이어그램(텍스트 형식), STRIDE 카테고리별 식별된 위협, 위험도에 따라 순위가 매겨진 권장 완화 조치가 포함된 구조화된 문서가 생성됩니다.
+</div>
+
+<h2>차분 리뷰</h2>
+<p><code>differential-review</code> 스킬은 PR이나 워킹 트리 diff에서 변경된 라인만 대상으로 보안 중심 리뷰를 수행하여, 병합 전에 퇴행을 포착합니다.</p>
+
+<pre><code># Review the current diff for security issues
+변경된 부분만 보안 리뷰해줘
+
+# Review a specific PR
+PR #42 보안 리뷰해줘
+
+# Review staged changes before committing
+커밋 전에 보안 검사해줘</code></pre>
+
+<p>차분 리뷰가 집중하는 항목:</p>
+<ul>
+<li><strong>새로운 취약점 도입</strong> -- 안전하지 않은 함수 추가, 검증 제거</li>
+<li><strong>보안 퇴행</strong> -- 이전에 강화된 코드가 변경으로 인해 약화</li>
+<li><strong>민감한 데이터 노출</strong> -- diff에 포함된 API 키, 토큰, 자격 증명</li>
+<li><strong>권한 변경</strong> -- 수정된 접근 제어 로직, 인증 없는 새 엔드포인트</li>
+<li><strong>의존성 변경</strong> -- 알려진 취약점이 있는 새 패키지</li>
+</ul>
+
+<h2>코드 리뷰 워크플로</h2>
+<p>podex는 코드 리뷰 과정의 양쪽 모두를 전용 스킬로 지원합니다.</p>
+
+<h3>코드 리뷰 수신</h3>
+<p><code>receiving-code-review</code> 스킬은 수신된 리뷰 코멘트를 처리하고, 심각도별로 분류하며, 실행 가능한 수정 제안을 생성합니다.</p>
+
+<pre><code># Process review feedback on the current PR
+코드 리뷰 피드백 정리해줘
+
+# Triage and prioritize review comments
+리뷰 코멘트 심각도별로 정리해줘
+
+# Auto-generate fixes for review findings
+리뷰 피드백 기반으로 수정 코드 생성해줘</code></pre>
+
+<h3>코드 리뷰 요청</h3>
+<p><code>requesting-code-review</code> 스킬은 컨텍스트, 위험 주석, 리뷰어 체크리스트가 포함된 구조화된 리뷰 요청을 준비합니다.</p>
+
+<pre><code># Create a review request for the current changes
+이 코드 리뷰 요청해줘
+
+# Generate a review request with security focus
+보안 관점에서 리뷰 요청 만들어줘
+
+# Add a reviewer checklist to an existing PR
+PR에 리뷰 체크리스트 추가해줘</code></pre>
+
+<p>생성된 리뷰 요청에는 다음이 포함됩니다:</p>
+<ul>
+<li><strong>변경 요약</strong> -- 무엇이 왜 변경되었는지, 비즈니스 컨텍스트 포함</li>
+<li><strong>위험 영역</strong> -- 신중한 리뷰가 필요하다고 표시된 파일 및 함수</li>
+<li><strong>테스트 커버리지</strong> -- 변경 사항을 커버하는 테스트, 식별된 공백</li>
+<li><strong>리뷰어 체크리스트</strong> -- 리뷰어가 확인해야 할 구체적인 항목</li>
+<li><strong>관련 이슈</strong> -- 관련 티켓이나 이전 논의 링크</li>
+</ul>
+
+<div class="callout-info">
+<strong>팁:</strong> "이 코드 리뷰해줘"를 입력하면 복합 분석이 실행됩니다 -- 정적 분석과 차분 리뷰를 모두 수행한 후, 결과를 수정 제안이 포함된 인라인 PR 코멘트로 포맷합니다.
+</div>
+
+<h2>스킬 조합</h2>
+<p>보안 스킬은 종합적인 분석을 위해 체이닝할 수 있습니다. podex는 여러 스킬이 적용될 때 이를 자동으로 감지하고 오케스트레이션합니다.</p>
+
+<pre><code># Full security audit (combines multiple skills)
+전체 보안 감사 해줘
+
+# Pre-release security check
+릴리즈 전 보안 점검해줘
+
+# Onboarding security review for a new project
+이 프로젝트 보안 상태 전체적으로 파악해줘</code></pre>
+
+<table>
+<tr><th>결합 워크플로</th><th>호출되는 스킬</th></tr>
+<tr><td>전체 보안 감사</td><td><code>static-analysis</code> + <code>insecure-defaults</code> + <code>security-best-practices</code></td></tr>
+<tr><td>릴리즈 전 점검</td><td><code>static-analysis</code> + <code>insecure-defaults</code> + <code>differential-review</code></td></tr>
+<tr><td>위협 평가</td><td><code>security-threat-model</code> + <code>security-ownership-map</code></td></tr>
+<tr><td>리뷰 준비</td><td><code>differential-review</code> + <code>requesting-code-review</code></td></tr>
+</table>
+
+<h2>설정</h2>
+<p>보안 스킬은 <code>.jaw/security.yaml</code>의 프로젝트 수준 설정을 따릅니다:</p>
+
+<pre><code># .jaw/security.yaml
+severity_threshold: medium    # Minimum severity to report (low|medium|high|critical)
+ignore_paths:
+  - "vendor/**"
+  - "node_modules/**"
+  - "**/*.test.ts"
+owasp_profile: web            # web | api | mobile | desktop
+custom_rules:
+  - id: no-eval
+    pattern: "eval("
+    severity: critical
+    message: "eval() is forbidden; use a safe parser instead"</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="devtools-cloud.html">Cloud & Deploy</a>
+<a class="next" href="devtools-workflow.html">Dev Workflow</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

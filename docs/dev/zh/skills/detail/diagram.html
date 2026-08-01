@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图表 — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-version { background: rgba(34, 211, 238, 0.12); color: var(--accent); }
+.meta-table { margin: 20px 0 32px; }
+.meta-table td:first-child { font-weight: 600; color: var(--text-dim); width: 160px; white-space: nowrap; }
+.example-block { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 12px 0 16px; }
+.example-block .example-label { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.example-block code { display: block; background: none; padding: 2px 0; color: var(--text); font-size: 14px; line-height: 1.7; }
+.example-block code .comment { color: var(--text-muted); }
+.forbidden-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 20px; }
+.forbidden-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.forbidden-card .card-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.forbidden-card .card-title.do-not { color: var(--red); }
+.forbidden-card .card-title.do { color: var(--green); }
+.forbidden-card p { font-size: 13px; color: var(--text-dim); margin: 0; }
+.forbidden-card code { font-size: 12px; }
+.color-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: middle; margin-right: 6px; }
+@media (max-width: 768px) {
+  .forbidden-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">快速入门</div>
+      <a class="docs-nav-link" href="../../">概览</a>
+      <a class="docs-nav-link" href="../../quickstart.html">快速开始</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">首次运行</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">核心概念</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">架构</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">员工</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">目标</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">技能</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">记忆</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">提示词</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">使用指南</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">计算机控制</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 桌面端</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">参考文档</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 命令</a>
+      <a class="docs-nav-link" href="../../reference/api.html">服务器 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">配置</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">键盘快捷键</a>
+      <a class="docs-nav-link" href="../../reference/events.html">事件</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">技能</div>
+      <a class="docs-nav-link" href="../index.html">技能目录</a>
+      <a class="docs-nav-link" href="../orchestration.html">开发</a>
+      <a class="docs-nav-link" href="../automation.html">自动化</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 媒体</a>
+      <a class="docs-nav-link" href="../communication.html">通信</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">云与部署</a>
+      <a class="docs-nav-link" href="../devtools-security.html">安全与审查</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">开发工作流</a>
+      <a class="docs-nav-link active" href="../productivity.html">生产力</a>
+      <a class="docs-nav-link" href="../smarthome.html">智能家居</a>
+      <a class="docs-nav-link" href="../utility.html">实用工具</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">命令</div>
+      <a class="docs-nav-link" href="../../commands/session.html">会话</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">工作流</a>
+      <a class="docs-nav-link" href="../../commands/model.html">模型与 CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">工具</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">仅 CLI</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">根 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">更新日志</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">着陆页</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>图表 <span class="badge badge-active">默认启用</span> <span class="badge badge-version">v1.1.0</span></h1>
+<p class="lead">SVG 图表、Mermaid 图表和交互式可视化 &mdash; 在聊天界面中内联渲染。从架构概览到交互式数据仪表盘，此技能可将任何可视化请求转化为直接在对话中渲染的输出。</p>
+
+<table class="meta-table">
+<tr><td>技能名称</td><td><code>diagram</code></td></tr>
+<tr><td>版本</td><td>1.1.0</td></tr>
+<tr><td>默认启用</td><td>是 &mdash; 始终注入，无需 <code>/skill load</code></td></tr>
+<tr><td>输出格式</td><td>内联 SVG、Mermaid 代码块、<code>diagram-html</code> 组件</td></tr>
+<tr><td>触发条件</td><td>任何需要可视化说明的请求：流程图、对比图、时间线、图表、地图、模拟、原型</td></tr>
+<tr><td>参考模块</td><td>svg-components、color-palette、module-chart、module-widget、module-interactive、module-map、module-mockup、module-art</td></tr>
+</table>
+
+<h2>设计原则</h2>
+<p>此技能生成的每个图表都遵循四个核心原则：</p>
+<ul>
+<li><strong>扁平化</strong> &mdash; 无渐变、阴影、模糊、光晕或装饰效果。仅使用干净的扁平表面。</li>
+<li><strong>紧凑</strong> &mdash; 内联展示关键信息。其余内容在回复文本中说明。</li>
+<li><strong>适配主题</strong> &mdash; 每种颜色在浅色和深色模式下都能正常显示。SVG 使用 CSS 类，canvas/JS 使用 <code>window.__jawTokens</code>。</li>
+<li><strong>文本在回复中，视觉在工具中</strong> &mdash; 所有解释性文字放在图表外部。切勿在 SVG 或组件 HTML 中放置大段说明文字。</li>
+</ul>
+
+<h2>复杂度预算</h2>
+<p>对每个图表强制执行的硬性限制，以防止视觉噪音：</p>
+<table>
+<tr><th>约束</th><th>限制</th><th>溢出策略</th></tr>
+<tr><td>方框副标题</td><td>最多 5 个单词</td><td>将详细信息移至 <code>sendPrompt()</code> 或文字说明</td></tr>
+<tr><td>每个图表的颜色渐变</td><td>最多 2 组</td><td>合并类别</td></tr>
+<tr><td>水平行（680px）</td><td>最多 4 个方框</td><td>缩小或换行为 2 行</td></tr>
+<tr><td>每个图表的节点数</td><td>最多 6 个</td><td>拆分为概览图 + 详细图</td></tr>
+<tr><td>连续可视化块</td><td>禁止</td><td>SVG/组件块之间始终添加文字说明</td></tr>
+</table>
+
+<h2>图表类型选择</h2>
+<p>此技能根据<strong>动词</strong>而非名词进行路由。同一主题可以根据用户的请求生成不同类型的图表。当某种类型可以直接映射到原生 Mermaid 语法时，优先使用 Mermaid 而非手动编写 SVG。</p>
+
+<h3>SVG 类型</h3>
+<table>
+<tr><th>用户意图</th><th>类型</th><th>输出</th></tr>
+<tr><td>"X 是如何工作的"</td><td>图解式 SVG</td><td>空间隐喻、剖面图、物理布局</td></tr>
+<tr><td>"X 的架构"（系统上下文）</td><td>结构式 SVG</td><td>容器、区域、嵌套</td></tr>
+<tr><td>"X 的步骤"（通用流程）</td><td>流程图 SVG 或 Mermaid <code>flowchart</code></td><td>自上而下的方框 + 箭头</td></tr>
+<tr><td>"比较 A 和 B"</td><td>对比式 SVG</td><td>并排列</td></tr>
+</table>
+
+<h3>Mermaid 类型</h3>
+<table>
+<tr><th>用户意图</th><th>Mermaid 语法</th><th>状态</th></tr>
+<tr><td>数据库模式 / 实体关系</td><td><code>erDiagram</code></td><td>稳定</td></tr>
+<tr><td>类图 / 面向对象结构</td><td><code>classDiagram</code></td><td>稳定</td></tr>
+<tr><td>状态机 / 生命周期</td><td><code>stateDiagram-v2</code></td><td>稳定</td></tr>
+<tr><td>时序 / 调用顺序 / API 流程</td><td><code>sequenceDiagram</code></td><td>稳定</td></tr>
+<tr><td>时间线 / 路线图 / 历史</td><td><code>timeline</code></td><td>稳定</td></tr>
+<tr><td>思维导图 / 头脑风暴</td><td><code>mindmap</code></td><td>稳定</td></tr>
+<tr><td>Git 分支 / 发布历史</td><td><code>gitGraph</code></td><td>稳定</td></tr>
+<tr><td>优先级象限 / 2x2 矩阵</td><td><code>quadrantChart</code></td><td>稳定</td></tr>
+<tr><td>甘特图 / 项目进度</td><td><code>gantt</code></td><td>稳定</td></tr>
+<tr><td>用户旅程图</td><td><code>journey</code></td><td>稳定</td></tr>
+<tr><td>饼图分解</td><td><code>pie</code></td><td>稳定</td></tr>
+<tr><td>雷达图 / 蛛网图 / 技能概况</td><td><code>radar-beta</code></td><td>测试版 (v11.6+)</td></tr>
+<tr><td>看板</td><td><code>kanban</code></td><td>测试版 (v11.12+)</td></tr>
+<tr><td>云 / 基础设施架构</td><td><code>architecture-beta</code></td><td>测试版</td></tr>
+<tr><td>层级结构 / 比例大小</td><td><code>treemap-beta</code></td><td>测试版</td></tr>
+<tr><td>自由块布局</td><td><code>block-beta</code></td><td>测试版</td></tr>
+</table>
+
+<h3>交互式 HTML 组件类型</h3>
+<table>
+<tr><th>用户意图</th><th>输出</th><th>库</th></tr>
+<tr><td>"展示数据 / 图表"</td><td><code>diagram-html</code> 组件</td><td>Chart.js、D3、ECharts</td></tr>
+<tr><td>"模拟 / 交互"</td><td><code>diagram-html</code> 组件</td><td>Matter.js、Canvas、滑块</td></tr>
+<tr><td>"交互式地图"</td><td><code>diagram-html</code> 组件</td><td>Leaflet + OpenStreetMap</td></tr>
+<tr><td>"静态分级统计图"</td><td><code>diagram-html</code> 组件</td><td>D3 + TopoJSON</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>默认行为：</strong>"X 是如何工作的？"默认生成<strong>图解式 SVG</strong>，而非流程图。当图表类型在上述 Mermaid 表中时，使用 Mermaid &mdash; 当 <code>classDiagram</code>/<code>sequenceDiagram</code>/<code>stateDiagram</code> 已存在时，此技能不会手动编写 SVG。</div>
+
+<h2>Mermaid 注意事项</h2>
+<p>使用 Mermaid 图表类型时的重要注意事项：</p>
+
+<div class="callout callout-danger"><strong>请勿使用 C4 图表</strong>（<code>C4Context</code>、<code>C4Container</code> 等）&mdash; 深色模式下主题令牌未被应用，导致文字不可读。请使用下面的替代表。</div>
+
+<table>
+<tr><th>C4 类型</th><th>替代方案</th></tr>
+<tr><td>C4 System Context</td><td>结构式 SVG（自定义）或 Mermaid <code>flowchart</code> 配合 subgraphs</td></tr>
+<tr><td>C4 Container</td><td>Mermaid <code>architecture-beta</code></td></tr>
+<tr><td>C4 Component</td><td>Mermaid <code>flowchart</code> 配合 <code>subgraph</code> 分组</td></tr>
+<tr><td>C4 Dynamic</td><td>Mermaid <code>sequenceDiagram</code></td></tr>
+<tr><td>C4 Deployment</td><td>Mermaid <code>architecture-beta</code></td></tr>
+</table>
+
+<p>其他注意事项：</p>
+<ul>
+<li><code>sankey-beta</code> / <code>xychart-beta</code> 在窄聊天宽度下会出问题。建议使用 <code>diagram-html</code> + ECharts sankey 或 Chart.js 来绘制 XY 图表。</li>
+<li><code>radar-beta</code> 需要 <code>-beta</code> 后缀（Mermaid v11.6+）。其他测试版类型：<code>treemap-beta</code>、<code>block-beta</code>、<code>architecture-beta</code>、<code>packet-beta</code>、<code>kanban</code>。</li>
+<li>所有稳定版 Mermaid 类型会自动继承宿主的深色/浅色主题。请勿在 <code>%%{init: ...}%%</code> 中设置显式颜色，除非出于语义原因需要覆盖。</li>
+</ul>
+
+<h2>输出格式</h2>
+
+<h3>1. 内联 SVG（静态图表）</h3>
+<p>直接在回复中输出原始 <code>&lt;svg&gt;</code> 标记。聊天界面会内联渲染。</p>
+<pre><code>&lt;svg viewBox="0 0 680 {height}" xmlns="http://www.w3.org/2000/svg"
+  role="img" aria-labelledby="title-id desc-id"&gt;
+  &lt;title id="title-id"&gt;Diagram Title&lt;/title&gt;
+  &lt;desc id="desc-id"&gt;Brief description for screen readers&lt;/desc&gt;
+  &lt;!-- shapes, text, paths --&gt;
+&lt;/svg&gt;</code></pre>
+
+<h4>内联 SVG 规则</h4>
+<ul>
+<li>viewBox 宽度必须为 <strong>680</strong>（匹配容器宽度 &mdash; 切勿更改）</li>
+<li>高度根据内容变化：最后一个元素底部 + 40px 内边距</li>
+<li>每个 SVG 必须包含 <code>role="img"</code> + <code>&lt;title&gt;</code> + <code>&lt;desc&gt;</code></li>
+<li>使用设计系统中的 CSS 类（<code>.node</code>、<code>.connector</code>、<code>.label</code>、<code>.label-start</code>）</li>
+<li><code>.label</code> 强制 <code>text-anchor: middle</code>（仅居中）；左对齐文本请使用 <code>.label-start</code></li>
+<li>颜色：使用 CSS 类，而非内联 <code>fill</code>/<code>stroke</code></li>
+<li>字体族继承自宿主 &mdash; 请勿设置显式字体</li>
+</ul>
+
+<h3>2. Mermaid（结构化图表）</h3>
+<p>标准 <code>```mermaid</code> 代码块。现有渲染器会自动处理。</p>
+<pre><code>```mermaid
+sequenceDiagram
+    participant A as Client
+    participant B as Server
+    A->>B: GET /api/data
+    B-->>A: 200 OK (JSON)
+```</code></pre>
+
+<h3>3. 交互式 HTML 组件（图表、控件、模拟）</h3>
+<p>封装在 <code>```diagram-html</code> 代码块中。在宿主创建的沙盒 iframe 内渲染。</p>
+<pre><code>```diagram-html
+&lt;div id="chart-wrapper" style="position: relative; width: 100%; height: 300px;"&gt;
+  &lt;canvas id="myChart" role="img" aria-label="Chart description"&gt;
+    Fallback text
+  &lt;/canvas&gt;
+&lt;/div&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"
+  onerror="document.body.innerHTML='&lt;p&gt;Chart library failed to load.&lt;/p&gt;'"&gt;
+&lt;/script&gt;
+&lt;script&gt;
+  const isDark = window.__jawTheme?.isDark ?? true;
+  // ... Chart.js code
+&lt;/script&gt;
+```</code></pre>
+
+<div class="callout callout-info"><strong>样式优先，脚本最后：</strong>对于 <code>diagram-html</code> 组件，始终将 <code>&lt;style&gt;</code> 和 <code>&lt;link&gt;</code> 标签放在前面，然后是 HTML 结构，最后是 <code>&lt;script&gt;</code> 标签。这确保在流式传输期间视觉内容先于脚本执行呈现。</div>
+
+<h2>交付机制</h2>
+<p>所有三种格式 &mdash; 内联 SVG、<code>```mermaid</code>、<code>```diagram-html</code> &mdash; 都在聊天回复中内联渲染。jaw 前端解析回复文本并自动挂载它们。<code>diagram-html</code> 会被放入宿主创建的沙盒 <code>&lt;iframe&gt;</code> 中；此技能<strong>不会</strong>创建 iframe。</p>
+
+<div class="forbidden-grid">
+<div class="forbidden-card">
+<div class="card-title do-not">禁止</div>
+<p>保存为 <code>.svg</code> / <code>.html</code> / <code>.png</code> 文件（Write 工具、<code>cat &gt;</code>、fs.writeFile）</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">应该</div>
+<p>将原始代码块直接粘贴到回复文本中</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do-not">禁止</div>
+<p>将 <code>diagram-html</code> 包裹在 <code>&lt;iframe&gt;</code> / <code>&lt;html&gt;</code> / <code>&lt;body&gt;</code> / <code>&lt;head&gt;</code> 中</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">应该</div>
+<p>从 <code>&lt;div&gt;</code> / <code>&lt;canvas&gt;</code> / <code>&lt;style&gt;</code> 开始 &mdash; 宿主注入外壳</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do-not">禁止</div>
+<p>通过 <code>/api/channel/send</code> 或 Telegram/Discord 发送（不是附件）</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">应该</div>
+<p>让渲染器处理；图表就是回复文本</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do-not">禁止</div>
+<p>引用外部图片 URL 并称之为图表</p>
+</div>
+<div class="forbidden-card">
+<div class="card-title do">应该</div>
+<p>输出 SVG/组件代码本身</p>
+</div>
+</div>
+
+<div class="callout callout-warn"><strong>文件保存：</strong>如果用户说"保存这个图表"或"下载它"，仍然先内联输出以便他们能看到渲染效果。只有当他们明确要求文件时才将文件写入磁盘 &mdash; 即使如此，内联版本仍是规范的交付方式。</div>
+
+<h2>SVG 设计系统</h2>
+
+<h3>设计禁止列表</h3>
+<p>对所有 SVG 输出强制执行的质量规则（与下面的安全限制分开）：</p>
+<ul>
+<li>无渐变、投影、模糊、光晕或霓虹效果</li>
+<li>无表情符号 &mdash; 使用 CSS 形状或 SVG 路径</li>
+<li>无装饰性步骤编号或超大标题</li>
+<li>流程图方框内无图标或插图 &mdash; 仅限文字</li>
+<li>无旋转文字</li>
+<li>外部容器无深色/彩色背景（仅限透明 &mdash; 宿主提供背景）</li>
+<li>描边宽度：边框和边缘为 <strong>0.5px</strong>（不是 1px 或 2px）</li>
+<li>字重：仅 <strong>400</strong>（常规）和 <strong>500</strong>（粗体）&mdash; 绝不使用 600 或 700</li>
+<li>字号：仅 <strong>14px</strong>（节点标签）和 <strong>12px</strong>（副标题/箭头标签）</li>
+<li><strong>句首大写</strong> 始终如此 &mdash; 绝不使用首字母大写或全大写</li>
+</ul>
+
+<h3>安全限制（内联 SVG）</h3>
+<p>以下元素和属性会被 DOMPurify 剥离。切勿在内联 <code>&lt;svg&gt;</code> 中使用：</p>
+<table>
+<tr><th>禁止的元素/属性</th><th>原因</th><th>替代方案</th></tr>
+<tr><td><code>&lt;foreignObject&gt;</code></td><td>在 SVG 中嵌入 HTML（XSS 攻击向量）</td><td>使用原生 SVG 元素</td></tr>
+<tr><td><code>&lt;animate&gt;</code>、<code>&lt;set&gt;</code>、<code>&lt;animateTransform&gt;</code>、<code>&lt;animateMotion&gt;</code></td><td>动画 XSS 攻击向量</td><td>仅限静态 SVG</td></tr>
+<tr><td>嵌套 <code>&lt;svg&gt;</code></td><td>解析问题</td><td>使用 <code>&lt;g&gt;</code> 分组</td></tr>
+<tr><td><code>xlink:href</code></td><td>外部 URL 注入</td><td>仅在 <code>&lt;use&gt;</code> 上使用 <code>href="#fragment"</code></td></tr>
+<tr><td>所有 <code>on*</code> 事件处理器</td><td>被 DOMPurify 剥离</td><td>内联 SVG 中不可用</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>注意：</strong><code>diagram-html</code> 内容在沙盒 iframe 内运行，其中<strong>允许</strong>使用 <code>&lt;script&gt;</code>、<code>on*</code> 处理器和 CDN 导入。上述限制仅适用于在主文档中渲染的内联 SVG。</div>
+
+<h3>颜色渐变组（9 种语义颜色）</h3>
+<p>每组渐变有 3 种色调：填充（背景）、描边（边框）和文字（标签）。始终使用 CSS 类名，而非内联颜色。</p>
+<table>
+<tr><th>渐变组</th><th>CSS 前缀</th><th>推荐用途</th></tr>
+<tr><td><span class="color-swatch" style="background:#22d3ee;"></span> 青色</td><td><code>.c-cyan</code></td><td>通用类别（中性信息的首选）</td></tr>
+<tr><td><span class="color-swatch" style="background:#f472b6;"></span> 粉色</td><td><code>.c-pink</code></td><td>通用类别、高亮</td></tr>
+<tr><td><span class="color-swatch" style="background:#a78bfa;"></span> 紫色</td><td><code>.c-purple</code></td><td>通用类别、分组</td></tr>
+<tr><td><span class="color-swatch" style="background:#fb923c;"></span> 橙色</td><td><code>.c-orange</code></td><td>通用类别、强调</td></tr>
+<tr><td><span class="color-swatch" style="background:#94a3b8;"></span> 石板灰</td><td><code>.c-slate</code></td><td>中性、禁用、结构性（开始/结束节点）</td></tr>
+<tr><td><span class="color-swatch" style="background:#60a5fa;"></span> 蓝色</td><td><code>.c-blue</code></td><td>信息性（语义性 &mdash; 仅用于"信息"）</td></tr>
+<tr><td><span class="color-swatch" style="background:#4ade80;"></span> 绿色</td><td><code>.c-green</code></td><td>成功、正面（语义性）</td></tr>
+<tr><td><span class="color-swatch" style="background:#fbbf24;"></span> 琥珀色</td><td><code>.c-amber</code></td><td>警告、注意（语义性）</td></tr>
+<tr><td><span class="color-swatch" style="background:#f87171;"></span> 红色</td><td><code>.c-red</code></td><td>错误、负面（语义性）</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>颜色分配规则：</strong>颜色编码<strong>含义</strong>，而非顺序。不要像彩虹一样循环使用颜色。按类别分组 &mdash; 同一类型的所有节点共享一种颜色。通用类别优先使用青色/粉色/紫色/橙色。蓝色/绿色/琥珀色/红色保留给真正的语义概念。</div>
+
+<h3>布局模式</h3>
+<table>
+<tr><th>模式</th><th>布局</th><th>尺寸</th></tr>
+<tr><td>流程图</td><td>自上而下</td><td>680 x auto</td></tr>
+<tr><td>对比图</td><td>并排列</td><td>680 x auto</td></tr>
+<tr><td>时间线</td><td>带标记的水平排列</td><td>680 x auto</td></tr>
+<tr><td>组织架构图</td><td>层级树</td><td>680 x auto</td></tr>
+</table>
+
+<h2>主题集成</h2>
+
+<h3>CSS 变量映射</h3>
+<p>podex 宿主为图表主题化公开以下 CSS 变量：</p>
+<table>
+<tr><th>变量</th><th>用途</th></tr>
+<tr><td><code>--bg</code></td><td>页面背景</td></tr>
+<tr><td><code>--surface</code></td><td>卡片/表面背景</td></tr>
+<tr><td><code>--text</code></td><td>主要文本</td></tr>
+<tr><td><code>--text-dim</code></td><td>弱化/次要文本</td></tr>
+<tr><td><code>--border</code></td><td>默认边框</td></tr>
+<tr><td><code>--accent</code></td><td>强调色</td></tr>
+<tr><td><code>--font-ui</code></td><td>UI 字体族</td></tr>
+<tr><td><code>--font-mono</code></td><td>代码字体族</td></tr>
+<tr><td><code>--radius-md</code></td><td>8px 圆角半径</td></tr>
+<tr><td><code>--radius-lg</code></td><td>12px 圆角半径</td></tr>
+</table>
+
+<h3>按格式检测主题</h3>
+<table>
+<tr><th>格式</th><th>主题方法</th></tr>
+<tr><td>内联 SVG</td><td>CSS 类自动适配宿主主题</td></tr>
+<tr><td><code>diagram-html</code> iframe (JS)</td><td><code>window.__jawTheme.isDark</code>（布尔值）</td></tr>
+<tr><td><code>diagram-html</code> iframe (CSS 值)</td><td><code>window.__jawTokens['--bg']</code>、<code>['--text']</code> 等</td></tr>
+<tr><td>Mermaid</td><td>通过 podex <code>themeVariables</code> 自动适配</td></tr>
+</table>
+
+<div class="callout callout-danger"><strong>切勿</strong>在图表中使用 <code>matchMedia('prefers-color-scheme')</code>。主题由宿主控制，而非操作系统设置。</div>
+
+<h2>参考模块</h2>
+<p>图表技能会为特定图表类型加载额外的参考文件。这些文件提供详细的模式、库集成指南和模板：</p>
+<table>
+<tr><th>模块</th><th>文件</th><th>覆盖范围</th></tr>
+<tr><td>SVG 组件</td><td><code>reference/svg-components.md</code></td><td>SVG 基础元素、viewBox 检查清单、布局模板</td></tr>
+<tr><td>颜色调色板</td><td><code>reference/color-palette.md</code></td><td>完整颜色值（浅色 + 深色）、分配规则</td></tr>
+<tr><td>图表</td><td><code>reference/module-chart.md</code></td><td>Chart.js + D3 + ECharts 6 &mdash; 条形图、折线图、饼图、分级统计图、热力图、桑基图、雷达图、树状图、仪表盘、漏斗图、K线图、弦图</td></tr>
+<tr><td>组件</td><td><code>reference/module-widget.md</code></td><td>物理引擎 (Matter.js)、数学图形 (Math.js)、3D (Three.js)、创意编程 (p5.js)、音频 (Tone.js)、小游戏</td></tr>
+<tr><td>交互</td><td><code>reference/module-interactive.md</code></td><td>滑块、选择器、分段按钮、开关、播放/暂停/重置、防抖、sendPrompt、键盘无障碍</td></tr>
+<tr><td>地图</td><td><code>reference/module-map.md</code></td><td>Leaflet 交互式地图 &mdash; OpenStreetMap 瓦片、标记、弹窗、深色模式</td></tr>
+<tr><td>UI 原型</td><td><code>reference/module-mockup.md</code></td><td>UI 原型模式</td></tr>
+<tr><td>艺术</td><td><code>reference/module-art.md</code></td><td>装饰性 SVG 图案</td></tr>
+</table>
+
+<h2>使用示例</h2>
+
+<div class="example-block">
+<div class="example-label">示例 1 &mdash; 架构图</div>
+<code>"마이크로서비스 아키텍처 그려줘" <span class="comment"># 触发：结构式 SVG &mdash; 容器、区域、嵌套</span></code>
+<code><span class="comment"># 此技能生成包含服务方框、箭头和分组区域的内联 SVG。</span></code>
+<code><span class="comment"># 不使用 Mermaid C4（深色模式问题）&mdash; 改用自定义结构式 SVG。</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">示例 2 &mdash; 数据库 ER 图</div>
+<code>"이 DB 스키마 ER 다이어그램으로 보여줘" <span class="comment"># 触发：Mermaid erDiagram</span></code>
+<code><span class="comment"># 输出包含 erDiagram 语法的 ```mermaid 代码块。</span></code>
+<code><span class="comment"># 主题自动适配 &mdash; 无需手动颜色配置。</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">示例 3 &mdash; 交互式数据图表</div>
+<code>"월별 매출 데이터 차트로 그려줘" <span class="comment"># 触发：diagram-html + Chart.js</span></code>
+<code><span class="comment"># 生成包含 Chart.js 条形/折线图的 ```diagram-html 代码块。</span></code>
+<code><span class="comment"># 使用 window.__jawTheme.isDark 适配深色模式颜色。</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">示例 4 &mdash; API 时序流程</div>
+<code>"로그인 API 흐름 시퀀스 다이어그램으로 그려줘" <span class="comment"># 触发：Mermaid sequenceDiagram</span></code>
+<code><span class="comment"># 客户端 &rarr; 认证服务器 &rarr; API &rarr; 数据库 &mdash; 完整的请求/响应流程。</span></code>
+<code><span class="comment"># 选择 Mermaid 而非 SVG，因为 sequenceDiagram 原生支持此类图表。</span></code>
+</div>
+
+<div class="example-block">
+<div class="example-label">示例 5 &mdash; 对比图</div>
+<code>"React vs Vue vs Svelte 비교해줘" <span class="comment"># 触发：对比式 SVG（并排列）</span></code>
+<code><span class="comment"># 生成包含 3 列的内联 SVG，以可视化方式对比关键属性。</span></code>
+<code><span class="comment"># 最多 2 组颜色渐变 &mdash; 一组用于类别标题，一组用于高亮。</span></code>
+</div>
+
+<h2>快速参考</h2>
+<p>选择正确输出格式的决策树：</p>
+<table>
+<tr><th>问题</th><th>答案</th><th>格式</th></tr>
+<tr><td>Mermaid 是否有此图表的原生语法？</td><td>是</td><td>使用 <code>```mermaid</code></td></tr>
+<tr><td>是否为静态布局/架构/对比？</td><td>是</td><td>使用内联 <code>&lt;svg&gt;</code></td></tr>
+<tr><td>是否需要交互性、数据可视化或 JS 库？</td><td>是</td><td>使用 <code>```diagram-html</code></td></tr>
+<tr><td>是否为 C4 图表？</td><td>是</td><td>按上面的 C4 映射表替代</td></tr>
+<tr><td>是否为"X 是如何工作的"问题？</td><td>是</td><td>图解式 SVG（非流程图）</td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">生产力技能</a>
+<a class="next" href="../utility.html">实用工具技能</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

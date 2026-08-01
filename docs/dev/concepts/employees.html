@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee System — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link active" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Overview</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI &amp; Media</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">DevTools: Cloud</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">DevTools: Security</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">DevTools: Workflow</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Orchestration</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utility</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI Only</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model</a>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Employee System</h1>
+<p class="lead">The boss agent dispatches tasks to CLI employees -- other AI runtimes that execute work in parallel. podex supports 12 runtimes and manages employee sessions, isolation, and result collection.</p>
+
+<h2>How It Works</h2>
+<p>Your main agent (the "boss") can delegate specific tasks to employee agents using the <code>jaw dispatch</code> command. Each employee runs in an isolated temporary working directory with injected context files.</p>
+<pre><code>jaw dispatch --agent "Frontend" --task "Implement the login page"</code></pre>
+<p>The boss prompt includes delegation rules that guide the agent to use <code>podex dispatch</code> for employee work, while CLI-native sub-agents (Task/Agent tools) are allowed for internal parallelization.</p>
+
+<h2>12 CLI Runtimes</h2>
+<p>podex's registry (<code>src/cli/registry.ts</code>) defines 11 top-level runtimes. Each employee can be assigned any runtime.</p>
+<table>
+<tr><th>Runtime</th><th>Binary</th><th>Default Model</th><th>Default Effort</th></tr>
+<tr><td>agy</td><td><code>agy</code></td><td>gemini-3.5-flash</td><td>-</td></tr>
+<tr><td>ai-e</td><td><code>ai-e</code></td><td>claude-opus-4-8</td><td>medium</td></tr>
+<tr><td>claude</td><td><code>claude</code></td><td>claude-opus-4-8</td><td>medium</td></tr>
+<tr><td>claude-e</td><td><code>claude-e</code></td><td>claude-opus-4-8</td><td>medium</td></tr>
+<tr><td>codex</td><td><code>codex</code></td><td>gpt-5.5</td><td>medium</td></tr>
+<tr><td>codex-app</td><td><code>codex</code></td><td>gpt-5.5</td><td>medium</td></tr>
+<tr><td>cursor</td><td><code>cursor-agent</code></td><td>composer-2.5</td><td>medium-fast</td></tr>
+<tr><td>gemini</td><td><code>gemini</code></td><td>gemini-3-flash-preview</td><td>-</td></tr>
+<tr><td>grok</td><td><code>grok</code></td><td>grok-build</td><td>-</td></tr>
+<tr><td>opencode</td><td><code>opencode</code></td><td>opencode-go/kimi-k2.6</td><td>-</td></tr>
+<tr><td>copilot</td><td><code>copilot</code></td><td>claude-sonnet-4.6</td><td>high</td></tr>
+</table>
+
+<h2>Employee vs Sub-Agent</h2>
+<div class="callout callout-warn">Employees and CLI sub-agents serve different purposes. Do not confuse them.</div>
+<table>
+<tr><th></th><th>Employee (jaw dispatch)</th><th>CLI Sub-Agent (Task/Agent tool)</th></tr>
+<tr><td><strong>Scope</strong></td><td>Cross-CLI delegation</td><td>Internal parallelization within the same CLI</td></tr>
+<tr><td><strong>Isolation</strong></td><td>Separate tmp directory, injected AGENTS.md</td><td>Same process/session</td></tr>
+<tr><td><strong>Auth</strong></td><td>Boss token required (employees cannot re-dispatch)</td><td>No extra auth needed</td></tr>
+<tr><td><strong>Depth</strong></td><td>1 level only (employees cannot dispatch to other employees)</td><td>Employees can freely use sub-agents</td></tr>
+</table>
+
+<h2>Dispatch Command</h2>
+<pre><code># From the boss prompt:
+podex dispatch --agent "Backend" --task "Add rate limiting to /api/upload"
+
+# From the CLI:
+jaw dispatch --agent "Frontend" --task "Fix responsive layout" --port 3457</code></pre>
+<p>The dispatch endpoint (<code>POST /api/orchestrate/dispatch</code>) requires a boss-scoped <code>x-jaw-boss-token</code>. This token is stripped from employee spawn environments, preventing employees from dispatching further.</p>
+
+<h2>Employee Prompt</h2>
+<p>Employee prompts are built by <code>getEmployeePromptV2()</code> and include:</p>
+<ol>
+<li>Base <code>employee.md</code> template</li>
+<li>Static system patch and declared skill injection</li>
+<li>Common <code>dev/SKILL.md</code></li>
+<li>Role-specific skills (e.g., <code>dev-frontend</code>, <code>dev-backend</code>)</li>
+<li>Phase-specific skills (e.g., <code>dev-code-reviewer</code> for Audit, <code>dev-testing</code> for Check)</li>
+<li>Worker context with phase-specific rules</li>
+<li>Delegation rules (no re-dispatch, sub-agents allowed)</li>
+</ol>
+
+<h2>Managing Employees</h2>
+<pre><code># List employees
+jaw employee help
+
+# Reset to defaults
+jaw employee reset
+
+# Via slash command
+/employee reset</code></pre>
+<p>The Web UI provides full CRUD for employees under the sidebar settings panel. You can set each employee's name, CLI runtime, model, and role.</p>
+
+<h2>Default Employees</h2>
+<p>On first run, podex seeds a default set of employees (Frontend, Backend, Documentation, etc.). The <code>/employee reset</code> command re-seeds these defaults.</p>
+
+<div class="callout callout-info">
+<strong>Try it:</strong>
+<ul>
+<li>프론트 직원한테 CSS 고치라고 해줘</li>
+<li>백엔드 직원한테 API 만들라고 해줘</li>
+<li>직원 목록 보여줘</li>
+</ul>
+</div>
+
+<div class="page-nav">
+<a class="prev" href="architecture.html">Architecture</a>
+<a class="next" href="pabcd.html">PABCD</a>
+</div>
+</main>
+</div>
+<script src="../_search.js"></script>
+</body>
+</html>
+

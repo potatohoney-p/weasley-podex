@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workflow Commands — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link active" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Workflow Commands</h1>
+<p class="lead">Slash commands for planning, deliberation, auditing, goal management, and parallel team orchestration. These commands drive the structured workflow lifecycle in podex -- from initial idea through execution and completion.</p>
+
+<h2>Overview</h2>
+<p>Workflow commands are invoked with a leading <code>/</code> in the chat interface. They trigger specialized planning and orchestration routines that go beyond what a single conversational turn can accomplish. Each command activates a dedicated workflow with its own context, prompts, and output structure.</p>
+
+<div class="callout callout-info">You do not need to memorize exact syntax. Natural language works too -- say <code>"이 기능 계획 세워줘"</code> and podex will route to <code>/plan</code> automatically. The slash command form gives you precise control when you want it.</div>
+
+<table>
+<tr><th>Command</th><th>Purpose</th><th>Quick Example</th></tr>
+<tr><td><code>/plan</code></td><td>Generate an implementation plan</td><td><code>/plan add OAuth2 login</code></td></tr>
+<tr><td><code>/interview</code></td><td>Clarify requirements with targeted questions</td><td><code>/interview build a notification system</code></td></tr>
+<tr><td><code>/deliberate</code></td><td>Multi-persona deliberation (planner + architect + critic)</td><td><code>/deliberate database migration strategy</code></td></tr>
+<tr><td><code>/planaudit</code></td><td>Read-only audit of an existing plan</td><td><code>/planaudit</code></td></tr>
+<tr><td><code>/goal</code></td><td>Persistent goal lifecycle management</td><td><code>/goal set Implement auth module</code></td></tr>
+<tr><td><code>/team</code></td><td>Parallel multi-agent team orchestration</td><td><code>/team plan Refactor API layer</code></td></tr>
+<tr><td><code>/gd</code></td><td>Force-complete active goal (shorthand for <code>/goal done --force</code>)</td><td><code>/gd shipped with evidence on disk</code></td></tr>
+</table>
+
+<h2 id="plan">/plan [request]</h2>
+<p>Generates a structured implementation plan from a natural language request. The plan includes phases, file-level tasks, acceptance criteria, risks, and estimated effort. Output is formatted as markdown and can be piped directly into a <code>/goal</code>.</p>
+
+<h3>Arguments</h3>
+<table>
+<tr><th>Argument</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>[request]</code></td><td>Optional</td><td>Free-form description of what to plan. If omitted, podex uses the current conversation context.</td></tr>
+</table>
+
+<h3>What it produces</h3>
+<ul>
+<li><strong>Problem statement</strong> -- What problem are we solving and why</li>
+<li><strong>Scope and non-goals</strong> -- Explicit boundaries to prevent scope creep</li>
+<li><strong>Implementation phases</strong> -- Ordered steps with dependencies</li>
+<li><strong>File plan</strong> -- Per-file create/modify/delete annotations</li>
+<li><strong>Acceptance criteria</strong> -- Testable conditions that define "done"</li>
+<li><strong>Risks and mitigations</strong> -- Known unknowns and fallback strategies</li>
+<li><strong>Effort estimate</strong> -- Rough time/complexity rating</li>
+</ul>
+
+<h3>Example usage</h3>
+<pre><code># Plan a new feature
+/plan add SSE-first real-time notifications
+
+# Plan a refactor
+/plan refactor the authentication middleware to support multiple providers
+
+# Plan from conversation context (no argument)
+/plan
+
+# Plan with constraints
+/plan migrate from REST to GraphQL, keep backward compatibility for 2 releases</code></pre>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"이 기능 계획 세워줘"</code>, <code>"플랜 만들어줘"</code>, <code>"구현 계획 짜줘"</code> -- all route to <code>/plan</code>. You can mix Korean and English freely: <code>"OAuth 로그인 plan 세워줘"</code>.</div>
+
+<h2 id="interview">/interview &lt;request&gt;</h2>
+<p>Before jumping into implementation, <code>/interview</code> asks 1--3 targeted clarifying questions to nail down ambiguous requirements. This prevents wasted effort from misunderstood specifications and produces a refined requirement document that downstream commands (<code>/plan</code>, <code>/goal</code>) can consume.</p>
+
+<h3>Arguments</h3>
+<table>
+<tr><th>Argument</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>&lt;request&gt;</code></td><td>Required</td><td>The feature or task description to clarify. Can be vague -- that is the point.</td></tr>
+</table>
+
+<h3>How it works</h3>
+<ol>
+<li><strong>Analyze</strong> -- Parses the request to identify ambiguous areas, unstated assumptions, and missing constraints</li>
+<li><strong>Ask</strong> -- Generates 1--3 focused questions ranked by impact on implementation decisions</li>
+<li><strong>Refine</strong> -- Incorporates your answers into a refined requirement summary</li>
+<li><strong>Hand off</strong> -- The refined requirement is ready for <code>/plan</code> or <code>/goal set</code></li>
+</ol>
+
+<h3>Example usage</h3>
+<pre><code># Clarify a vague request
+/interview build a notification system
+
+# Clarify with some context already provided
+/interview add user roles -- we need admin and viewer at minimum
+
+# Clarify a complex migration
+/interview migrate the monolith to microservices</code></pre>
+
+<p>Typical questions the interview might produce:</p>
+<pre><code>1. Should notifications be real-time (WebSocket/SSE) or polling-based?
+   This affects architecture, infrastructure, and client complexity.
+
+2. What notification channels are in scope -- in-app only, or also
+   email/push/SMS?
+
+3. Do notifications need to persist (read/unread state, history) or
+   are they ephemeral?</code></pre>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"요구사항 정리해줘"</code>, <code>"질문 좀 해줘"</code>, <code>"뭐가 필요한지 인터뷰해줘"</code> -- all route to <code>/interview</code>. Great for when you have a rough idea but have not thought through the details yet.</div>
+
+<h2 id="deliberate">/deliberate &lt;topic&gt;</h2>
+<p>Runs a structured multi-persona deliberation on a topic. Three internal personas -- <strong>Planner</strong>, <strong>Architect</strong>, and <strong>Critic</strong> -- debate the topic from different angles, producing a balanced analysis with trade-offs, recommendations, and dissenting opinions.</p>
+
+<h3>Arguments</h3>
+<table>
+<tr><th>Argument</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>&lt;topic&gt;</code></td><td>Required</td><td>The design decision, architecture choice, or technical trade-off to deliberate.</td></tr>
+</table>
+
+<h3>The three personas</h3>
+<table>
+<tr><th>Persona</th><th>Role</th><th>Focus</th></tr>
+<tr><td><strong>Planner</strong></td><td>Project lead</td><td>Feasibility, timeline, resource allocation, phasing, risk management</td></tr>
+<tr><td><strong>Architect</strong></td><td>System designer</td><td>Technical soundness, scalability, maintainability, patterns, data flow</td></tr>
+<tr><td><strong>Critic</strong></td><td>Devil's advocate</td><td>Edge cases, failure modes, hidden costs, over-engineering, missing alternatives</td></tr>
+</table>
+
+<h3>Output structure</h3>
+<ul>
+<li><strong>Summary</strong> -- One-paragraph consensus (or lack thereof)</li>
+<li><strong>Planner's view</strong> -- Execution feasibility and phasing recommendation</li>
+<li><strong>Architect's view</strong> -- Technical analysis with diagrams if applicable</li>
+<li><strong>Critic's view</strong> -- Counter-arguments, risks, and alternative approaches</li>
+<li><strong>Recommendation</strong> -- Final recommendation with confidence level and caveats</li>
+</ul>
+
+<h3>Example usage</h3>
+<pre><code># Deliberate an architecture decision
+/deliberate should we use event sourcing or CRUD for the order service?
+
+# Deliberate a technology choice
+/deliberate database migration strategy: PostgreSQL vs CockroachDB for multi-region
+
+# Deliberate a process decision
+/deliberate monorepo vs polyrepo for our 5-service backend
+
+# Deliberate with constraints
+/deliberate real-time sync approach -- must work offline, team of 2, 3-week deadline</code></pre>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"이것 좀 토론해줘"</code>, <code>"장단점 분석해줘"</code>, <code>"설계 논의해줘"</code>, <code>"아키텍처 deliberate 해줘"</code> -- all route to <code>/deliberate</code>. Use this when you need more than a quick opinion -- when the decision has lasting consequences.</div>
+
+<h2 id="planaudit">/planaudit [plan]</h2>
+<p>Performs a read-only audit of an existing plan. Unlike <code>/plan</code> which generates plans, <code>/planaudit</code> reviews them -- checking for gaps, unrealistic estimates, missing edge cases, dependency issues, and scope risks. It does not modify the plan; it produces an audit report.</p>
+
+<h3>Arguments</h3>
+<table>
+<tr><th>Argument</th><th>Required</th><th>Description</th></tr>
+<tr><td><code>[plan]</code></td><td>Optional</td><td>The plan text to audit. If omitted, audits the most recently generated plan in the current conversation.</td></tr>
+</table>
+
+<h3>Audit dimensions</h3>
+<table>
+<tr><th>Dimension</th><th>What it checks</th></tr>
+<tr><td><strong>Completeness</strong></td><td>Are all requirements addressed? Are there missing phases or tasks?</td></tr>
+<tr><td><strong>Feasibility</strong></td><td>Are time estimates realistic? Are dependencies available?</td></tr>
+<tr><td><strong>Correctness</strong></td><td>Are the proposed approaches technically sound?</td></tr>
+<tr><td><strong>Edge cases</strong></td><td>Does the plan account for error handling, concurrency, and failure modes?</td></tr>
+<tr><td><strong>Scope risk</strong></td><td>Is there scope creep? Are non-goals clearly defined?</td></tr>
+<tr><td><strong>Testability</strong></td><td>Are acceptance criteria measurable and verifiable?</td></tr>
+</table>
+
+<h3>Example usage</h3>
+<pre><code># Audit the current plan in conversation
+/planaudit
+
+# Audit a specific plan
+/planaudit The plan is: Phase 1 - Set up database schema ...
+
+# Audit after generating a plan
+/plan add user authentication
+/planaudit</code></pre>
+
+<p>Sample audit output:</p>
+<pre><code>Plan Audit Report
+=================
+Overall score: 7/10
+
+[PASS] Completeness -- All stated requirements have corresponding tasks
+[WARN] Feasibility  -- Phase 2 estimates 2 days for OAuth integration;
+                       typical implementations take 3-5 days
+[FAIL] Edge cases   -- No error handling for token refresh failures
+[PASS] Scope risk   -- Non-goals clearly stated
+[WARN] Testability  -- "Works correctly" is not a measurable criterion;
+                       suggest specific test scenarios</code></pre>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"플랜 검토해줘"</code>, <code>"계획 감사해줘"</code>, <code>"이 플랜 괜찮은지 봐줘"</code> -- all route to <code>/planaudit</code>. Run this before committing to a plan to catch blind spots early.</div>
+
+<h2 id="goal">/goal set|status|done|cancel|update|history</h2>
+<p>Manages persistent goals that survive across conversation sessions. Goals track progress, accumulate context, and provide a structured lifecycle from creation through completion. Goal state is persisted to disk and synced across instances via the dashboard.</p>
+
+<h3>Subcommands</h3>
+<table>
+<tr><th>Subcommand</th><th>Arguments</th><th>Description</th></tr>
+<tr><td><code>/goal set &lt;description&gt;</code></td><td>Goal description (free text)</td><td>Create a new goal with the given description. Returns a goal ID.</td></tr>
+<tr><td><code>/goal status</code></td><td>None</td><td>Display all active goals with their current progress, phase, and last activity.</td></tr>
+<tr><td><code>/goal done [id]</code></td><td>Optional goal ID</td><td>Mark a goal as completed. Triggers an API call to finalize the goal record. If no ID is given, completes the most recent active goal.</td></tr>
+<tr><td><code>/goal cancel [id]</code></td><td>Optional goal ID</td><td>Cancel a goal. The goal is archived but not deleted, preserving its history.</td></tr>
+<tr><td><code>/goal update &lt;message&gt;</code></td><td>Progress update text</td><td>Append a progress update to the active goal. Updates are timestamped and appear in the goal timeline.</td></tr>
+<tr><td><code>/goal history</code></td><td>None</td><td>Show the full history of all goals -- active, completed, and cancelled -- with timestamps and progress entries.</td></tr>
+</table>
+
+<h3>Goal lifecycle</h3>
+<pre><code>  set ──> active ──> done
+             │
+             ├──> update (repeatable, appends progress)
+             │
+             └──> cancel (archived)</code></pre>
+
+<h3>Example usage</h3>
+<pre><code># Create a goal
+/goal set Implement SSE-first notification system with read/unread tracking
+
+# Check progress
+/goal status
+
+# Record incremental progress
+/goal update Phase 1 complete -- schema and migrations are in place
+/goal update Phase 2 in progress -- SSE event publisher done, client pending
+
+# Complete the goal
+/goal done
+
+# Cancel a goal that is no longer relevant
+/goal cancel 3
+
+# Review all past goals
+/goal history</code></pre>
+
+<div class="callout callout-warn"><code>/goal done</code> is an API call, not a CLI command. It triggers a server-side finalization that archives the goal, saves the final context snapshot, and updates the dashboard. Make sure the server is running.</div>
+
+<h3>Integration with other commands</h3>
+<p>Goals compose naturally with other workflow commands:</p>
+<pre><code># Interview, plan, then set a goal from the refined output
+/interview build user authentication
+# (answer the clarifying questions)
+/plan
+/goal set Implement user authentication per refined requirements
+
+# The goal tracks progress as you work
+/goal update Auth middleware scaffolded, starting JWT integration
+/goal update JWT working, adding refresh token rotation
+/goal done</code></pre>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"목표 설정해줘"</code> routes to <code>/goal set</code>. <code>"지금 상태 알려줘"</code> routes to <code>/goal status</code>. <code>"이거 다 했어"</code> routes to <code>/goal done</code>. <code>"목표 취소해줘"</code> routes to <code>/goal cancel</code>. <code>"진행 상황 업데이트해줘"</code> routes to <code>/goal update</code>. <code>"지금까지 한 거 보여줘"</code> routes to <code>/goal history</code>.</div>
+
+<h2 id="team">/team plan|audit|status|collect|stop</h2>
+<p>Orchestrates a parallel multi-agent team for large-scale tasks. The <code>/team</code> command spawns multiple sub-agents, assigns them independent work streams, monitors their progress, and collects their results into a unified output.</p>
+
+<h3>Subcommands</h3>
+<table>
+<tr><th>Subcommand</th><th>Arguments</th><th>Description</th></tr>
+<tr><td><code>/team plan &lt;request&gt;</code></td><td>Task description</td><td>Decompose the request into parallel work streams, assign agents, and start execution. Returns a team session ID.</td></tr>
+<tr><td><code>/team audit</code></td><td>None</td><td>Run a cross-agent audit -- check for conflicts, duplicated work, inconsistent assumptions, and integration gaps across all active agents.</td></tr>
+<tr><td><code>/team status</code></td><td>None</td><td>Display the status of all agents in the current team session: assigned task, progress, and any blockers.</td></tr>
+<tr><td><code>/team collect</code></td><td>None</td><td>Gather results from all completed agents, merge outputs, resolve conflicts, and produce a unified deliverable.</td></tr>
+<tr><td><code>/team stop</code></td><td>None</td><td>Gracefully stop all agents in the current team session. In-progress work is saved but not finalized.</td></tr>
+</table>
+
+<h3>How it works</h3>
+<ol>
+<li><strong>Decomposition</strong> -- <code>/team plan</code> analyzes the request and identifies independent work streams that can run in parallel</li>
+<li><strong>Assignment</strong> -- Each work stream is assigned to a sub-agent with its own context and instructions</li>
+<li><strong>Execution</strong> -- Agents run in parallel. Each agent has filesystem access but not shared conversation context</li>
+<li><strong>Monitoring</strong> -- <code>/team status</code> polls all agents for progress updates</li>
+<li><strong>Auditing</strong> -- <code>/team audit</code> checks for cross-agent conflicts before merging</li>
+<li><strong>Collection</strong> -- <code>/team collect</code> merges all agent outputs into a single coherent result</li>
+</ol>
+
+<h3>Example usage</h3>
+<pre><code># Refactor 4 API modules in parallel
+/team plan Refactor user, order, product, and payment modules to use new BaseService class
+
+# Check how agents are doing
+/team status
+
+# Run an audit to catch conflicts
+/team audit
+
+# Collect all results when agents finish
+/team collect
+
+# Emergency stop
+/team stop</code></pre>
+
+<h3>Practical workflow</h3>
+<pre><code># Full team workflow for a large migration
+/interview migrate from Express to Hono
+# (answer clarifying questions)
+/plan
+/planaudit
+/goal set Migrate Express to Hono
+
+# Execute in parallel
+/team plan Migrate Express to Hono -- routes, middleware, tests, docs
+
+# Monitor and audit
+/team status
+/team audit
+
+# Collect and finalize
+/team collect
+/goal update Migration complete, all tests passing
+/goal done</code></pre>
+
+<div class="callout callout-warn">Parallel agents share the filesystem but not conversation context. Avoid assigning agents tasks that modify the same files -- this can cause merge conflicts. Use <code>/team audit</code> before <code>/team collect</code> to detect such issues.</div>
+
+<div class="callout callout-info"><strong>~해줘 tip:</strong> <code>"팀으로 나눠서 작업해줘"</code> routes to <code>/team plan</code>. <code>"팀 상태 확인해줘"</code> routes to <code>/team status</code>. <code>"결과 모아줘"</code> routes to <code>/team collect</code>. <code>"팀 작업 중지해줘"</code> routes to <code>/team stop</code>. <code>"팀 감사해줘"</code> routes to <code>/team audit</code>.</div>
+
+<h2>Command Chaining</h2>
+<p>Workflow commands are designed to compose. A typical feature development lifecycle chains several commands in sequence:</p>
+
+<pre><code># 1. Clarify requirements
+/interview 실시간 알림 시스템 만들어야 돼
+
+# 2. Generate a plan from the refined requirements
+/plan
+
+# 3. Audit the plan for gaps
+/planaudit
+
+# 4. Deliberate on key design decisions
+/deliberate SSE event channel vs polling for our notification delivery
+
+# 5. Set a persistent goal
+/goal set Implement real-time notification system (SSE-first)
+
+# 6. Execute with a parallel team (for large tasks)
+/team plan Implement notification system -- server, client, tests, docs
+
+# 7. Monitor and collect
+/team status
+/team collect
+
+# 8. Finalize
+/goal update All modules integrated and tested
+/goal done</code></pre>
+
+<h2>Quick Reference</h2>
+<table>
+<tr><th>What you want to do</th><th>Command</th><th>Korean shortcut</th></tr>
+<tr><td>Generate a plan</td><td><code>/plan [request]</code></td><td><code>"계획 세워줘"</code></td></tr>
+<tr><td>Clarify requirements</td><td><code>/interview &lt;request&gt;</code></td><td><code>"요구사항 정리해줘"</code></td></tr>
+<tr><td>Multi-persona deliberation</td><td><code>/deliberate &lt;topic&gt;</code></td><td><code>"장단점 분석해줘"</code></td></tr>
+<tr><td>Audit a plan</td><td><code>/planaudit</code></td><td><code>"플랜 검토해줘"</code></td></tr>
+<tr><td>Create a goal</td><td><code>/goal set &lt;desc&gt;</code></td><td><code>"목표 설정해줘"</code></td></tr>
+<tr><td>Check goal progress</td><td><code>/goal status</code></td><td><code>"상태 알려줘"</code></td></tr>
+<tr><td>Complete a goal</td><td><code>/goal done</code></td><td><code>"다 했어"</code></td></tr>
+<tr><td>Cancel a goal</td><td><code>/goal cancel</code></td><td><code>"목표 취소"</code></td></tr>
+<tr><td>Update goal progress</td><td><code>/goal update &lt;msg&gt;</code></td><td><code>"진행 상황 업데이트"</code></td></tr>
+<tr><td>View goal history</td><td><code>/goal history</code></td><td><code>"목표 히스토리"</code></td></tr>
+<tr><td>Start parallel team</td><td><code>/team plan &lt;request&gt;</code></td><td><code>"팀으로 나눠서 해줘"</code></td></tr>
+<tr><td>Check team status</td><td><code>/team status</code></td><td><code>"팀 상태 확인"</code></td></tr>
+<tr><td>Audit team work</td><td><code>/team audit</code></td><td><code>"팀 감사"</code></td></tr>
+<tr><td>Collect team results</td><td><code>/team collect</code></td><td><code>"결과 모아줘"</code></td></tr>
+<tr><td>Stop all agents</td><td><code>/team stop</code></td><td><code>"팀 중지"</code></td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="session.html">Session</a>
+<a class="next" href="model.html">Model &amp; CLI</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

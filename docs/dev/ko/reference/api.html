@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서버 API — podex 문서</title><link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png"></head><body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar"><div class="docs-logo"><a href="../../">podex</a></div><div class="docs-nav"><div class="docs-nav-section"><div class="docs-nav-title">Getting Started</div><a class="docs-nav-link" href="../">Overview</a><a class="docs-nav-link" href="../quickstart.html">Quickstart</a><a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a></div><div class="docs-nav-section"><div class="docs-nav-title">Concepts</div><a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a><a class="docs-nav-link" href="../concepts/employees.html">Employees</a><a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a><a class="docs-nav-link" href="../concepts/goals.html">Goals</a><a class="docs-nav-link" href="../concepts/skills.html">Skills</a><a class="docs-nav-link" href="../concepts/memory.html">Memory</a><a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a></div><div class="docs-nav-section"><div class="docs-nav-title">Guides</div><a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a><a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a><a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a><a class="docs-nav-link" href="../guides/telegram.html">Telegram</a><a class="docs-nav-link" href="../guides/discord.html">Discord</a><a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a><a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a><a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a></div><div class="docs-nav-section"><div class="docs-nav-title">Reference</div><a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a><a class="docs-nav-link active" href="../reference/api.html">Server API</a><a class="docs-nav-link" href="../reference/config.html">Configuration</a><a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a><a class="docs-nav-link" href="../reference/events.html">Events</a></div><div class="docs-nav-section"><a class="docs-nav-link" href="../changelog.html">Changelog</a></div></div><div class="docs-lang"><a href="../../">EN</a><a class="active" href="../">한국어</a><a href="../zh/">中文</a></div><div class="docs-nav-footer"><a href="https://github.com/potatohoney-p/podex">GitHub</a><a href="../../../">Landing Page</a></div></nav>
+<main class="docs-main">
+<h1>서버 API</h1>
+<p class="lead">podex는 루트 페이지를 포함해 201개의 route handler를 노출합니다. 이 중 200개는 추출된 route module과 mounted sub-router에 걸친 API/미디어 엔드포인트입니다.</p>
+<h2>기본 URL</h2>
+<pre><code>http://localhost:3457    # Core server (jaw serve)
+http://localhost:24576   # Manager dashboard (jaw dashboard serve)</code></pre>
+<h2>인증</h2>
+<p>로컬 루프백 요청은 Bearer 토큰 없이 허용됩니다. 원격/private-network 요청은 신뢰된 LAN 우회가 명시적으로 켜져 있지 않으면 Bearer 토큰이 필요합니다. 같은 origin 또는 CLI 컨텍스트에서 <code>GET /api/auth/token</code>으로 토큰을 부트스트랩합니다.</p>
+<h2>Route Groups</h2>
+<table><tr><th>그룹</th><th>대표 엔드포인트</th></tr>
+<tr><td>Core/system</td><td><code>GET /api/health</code>, <code>GET /api/session</code>, <code>GET /api/runtime</code>, <code>GET /api/auth/token</code></td></tr>
+<tr><td>Messages/sessions</td><td><code>GET /api/messages</code>, <code>GET /api/messages/count</code>, <code>GET /api/messages/search</code>, <code>GET|POST /api/chat-sessions</code>, <code>POST /api/chat-sessions/:id/switch</code></td></tr>
+<tr><td>Events</td><td><code>GET /api/events</code> SSE channel with replay cursor support</td></tr>
+<tr><td>Commands</td><td><code>POST /api/command</code>, <code>GET /api/commands</code>, <code>POST /api/message</code></td></tr>
+<tr><td>Orchestration</td><td><code>GET /api/orchestrate/state</code>, <code>PUT /api/orchestrate/state</code>, <code>POST /api/orchestrate/dispatch</code>, <code>POST /api/orchestrate/dispatch/batch</code>, <code>GET /api/orchestrate/worker-progress</code></td></tr>
+<tr><td>Goals/tasks</td><td><code>GET /api/goal</code>, <code>GET /api/goal/history</code>, <code>POST /api/goal</code>, <code>GET|POST /api/task</code></td></tr>
+<tr><td>Settings/runtime</td><td><code>GET|PUT /api/settings</code>, <code>GET /api/cli-registry</code>, <code>GET /api/cli-status</code>, <code>GET /api/quota</code></td></tr>
+<tr><td>MCP/skills</td><td><code>GET|PUT /api/mcp</code>, <code>POST /api/mcp/sync</code>, <code>POST /api/mcp/install</code>, <code>GET /api/skills</code>, <code>POST /api/skills/enable</code></td></tr>
+<tr><td>Memory</td><td><code>GET /api/jaw-memory/search</code>, <code>GET /api/jaw-memory/context</code>, <code>POST /api/jaw-memory/save</code>, <code>GET /api/memory/status</code></td></tr>
+<tr><td>Browser/CDP</td><td><code>POST /api/browser/start</code>, <code>GET /api/browser/status</code>, <code>GET /api/browser/snapshot</code>, <code>POST /api/browser/act</code>, <code>POST /api/browser/web-ai/code</code>, <code>POST /api/browser/web-ai/code-extract</code>, 기타 <code>/api/browser/web-ai/*</code></td></tr>
+<tr><td>Messaging/media</td><td><code>POST /api/upload</code>, <code>POST /api/voice</code>, <code>POST /api/channel/send</code>, <code>GET /media/:filename</code></td></tr>
+<tr><td>Dashboard sub-routes</td><td><code>/api/dashboard/board/*</code>, <code>/api/dashboard/schedule/*</code>, dashboard memory/chat/git/connector routes on the manager server</td></tr></table>
+<h2>정확한 기준</h2>
+<p>정확한 route count, mutation guard, WebSocket/SSE event 이름은 <code>structure/server_api.md</code>를 기준으로 확인하세요. <code>bash structure/check-doc-drift.sh</code> 게이트가 이 source-of-truth 표를 로컬 소스와 비교 검증합니다.</p>
+<div class="page-nav"><a class="prev" href="cli.html">CLI Commands</a><a class="next" href="config.html">Configuration</a></div>
+</main></div></body></html>
+

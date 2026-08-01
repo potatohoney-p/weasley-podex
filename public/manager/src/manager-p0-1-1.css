@@ -1,0 +1,400 @@
+﻿.command-bar {
+    gap: 4px;
+    padding: 6px 10px;
+}
+.command-center.command-bar.is-electron-titlebar,
+:root[data-podex-desktop="true"] .command-center.command-bar {
+    --electron-titlebar-left-reserve: 132px;
+    padding: 6px 10px 6px var(--electron-titlebar-left-reserve);
+}
+:root[data-podex-desktop="true"] .command-center.command-bar {
+    -webkit-app-region: drag;
+}
+:root[data-podex-desktop="true"] .command-center.command-bar button,
+:root[data-podex-desktop="true"] .command-center.command-bar input,
+:root[data-podex-desktop="true"] .command-center.command-bar select,
+:root[data-podex-desktop="true"] .command-center.command-bar a,
+:root[data-podex-desktop="true"] .command-center.command-bar .command-actions,
+:root[data-podex-desktop="true"] .command-center.command-bar .command-search {
+    -webkit-app-region: no-drag;
+}
+
+.command-primary {
+    gap: 8px;
+    grid-template-columns: minmax(112px, 148px) max-content minmax(max-content, 1fr);
+}
+
+.command-title {
+    --manager-brand-cyan: #21e6f3;
+    position: relative;
+    display: flex;
+    gap: 0;
+    align-content: center;
+    align-items: center;
+    min-width: 0;
+    padding-left: 0;
+}
+
+.command-title h1,
+.command-title .manager-brand-heading {
+    max-width: 136px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--manager-brand-cyan);
+    font-family: "Satoshi", "Geist Mono", "IBM Plex Mono", monospace;
+    font-size: 14px;
+    font-weight: 850;
+    letter-spacing: 0;
+    line-height: 0.95;
+    text-shadow: 0 0 16px color-mix(in srgb, var(--manager-brand-cyan) 28%, transparent);
+}
+
+.manager-brand-heading {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0;
+    min-width: 0;
+}
+
+.manager-brand-wordmark {
+    flex: 0 0 auto;
+}
+
+.manager-brand-dash {
+    flex: 0 1 auto;
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0;
+}
+
+.command-filter-strip {
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
+.command-filter-strip select {
+    max-width: 118px;
+}
+
+.command-filter-strip .launch-home-control input.home-input {
+    width: 150px;
+}
+
+.command-panel-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.command-panel-toggle {
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    min-height: 30px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border-subtle));
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+    color: var(--text-primary);
+    padding: 0;
+}
+
+.command-panel-toggle:hover,
+.command-panel-toggle:focus-visible {
+    border-color: color-mix(in srgb, var(--accent) 54%, var(--border-strong));
+    background: color-mix(in srgb, var(--accent) 14%, var(--bg-raised));
+}
+
+.command-panel-toggle.is-active {
+    border-color: color-mix(in srgb, var(--accent) 70%, var(--border-strong));
+    background: color-mix(in srgb, var(--accent) 18%, var(--bg-raised));
+}
+
+.workbench-preview .workbench-header {
+    padding: 4px 8px;
+}
+
+.workbench-preview .workbench-mode-tabs button {
+    min-height: 24px;
+    padding: 3px 8px;
+}
+
+.workbench-preview .preview-panel {
+    gap: 3px;
+    padding: 3px 4px 4px;
+}
+
+.workbench-preview .preview-frame {
+    border-radius: 4px;
+}
+
+.manager-shell.is-sidebar-collapsed .manager-workspace,
+.manager-workspace.is-sidebar-collapsed {
+    --sidebar-width: 44px;
+}
+
+.manager-shell.is-sidebar-collapsed .sidebar-rail {
+    padding: 6px 4px;
+}
+
+.manager-shell.is-sidebar-collapsed .rail-button {
+    width: 32px;
+    min-width: 32px;
+    min-height: 32px;
+}
+
+.dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .sidebar-rail {
+    min-height: 54px;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    column-gap: 6px;
+    row-gap: 4px;
+    overflow: visible;
+    padding: 6px 8px;
+}
+
+:root[data-podex-desktop="true"] .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .sidebar-rail {
+    min-height: 54px;
+    flex-wrap: nowrap;
+    column-gap: 4px;
+}
+
+.dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .rail-button {
+    width: 30px;
+    min-width: 30px;
+    min-height: 30px;
+}
+
+.dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .rail-spacer {
+    flex: 1 1 auto;
+    min-width: 4px;
+    height: 0;
+}
+
+:root[data-podex-desktop="true"] .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .rail-button {
+    width: 26px;
+    min-width: 26px;
+    min-height: 28px;
+}
+
+:root[data-podex-desktop="true"] .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .rail-collapse-button {
+    margin-right: 2px;
+}
+
+:root[data-podex-desktop="true"] .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .rail-spacer {
+    flex: 1 1 auto;
+    min-width: 4px;
+    height: 0;
+}
+
+.dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .rail-status-dot {
+    flex: 0 0 auto;
+    margin-inline: 4px;
+}
+
+:root[data-podex-desktop="true"] .dashboard-shell.manager-shell:not(.is-sidebar-collapsed) .rail-status-dot {
+    margin-inline: 2px;
+}
+
+.rail-panel-toggle {
+    border-color: color-mix(in srgb, var(--accent) 28%, var(--border-subtle));
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+    color: var(--text-primary);
+}
+
+.rail-panel-toggle:hover:not(:disabled),
+.rail-panel-toggle:focus-visible {
+    border-color: color-mix(in srgb, var(--accent) 54%, var(--border-strong));
+    background: color-mix(in srgb, var(--accent) 14%, var(--bg-raised));
+}
+
+.rail-panel-toggle.is-active {
+    border-color: color-mix(in srgb, var(--accent) 70%, var(--border-strong));
+    background: color-mix(in srgb, var(--accent) 18%, var(--bg-raised));
+}
+
+.manager-sidebar .instance-groups {
+    padding: 5px 6px;
+}
+
+.manager-sidebar .profile-instance-groups.is-profile-merged {
+    gap: 4px;
+}
+
+.profile-instance-groups.is-profile-merged .instance-row-main {
+    align-items: start;
+    width: 100%;
+}
+
+.manager-sidebar .profile-instance-groups.is-profile-merged .instance-row-main .instance-status {
+    margin-top: 7px;
+}
+
+.profile-instance-groups.is-profile-merged .instance-row-title {
+    justify-items: start;
+    text-align: left;
+}
+
+.manager-sidebar .instance-group {
+    margin-bottom: 6px;
+}
+
+.manager-sidebar .instance-group-header {
+    padding: 5px 3px 3px;
+}
+
+.manager-sidebar .instance-row {
+    gap: 4px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+    padding: 7px 8px;
+}
+
+.manager-sidebar .instance-row.density-compact {
+    gap: 4px;
+    padding: 7px 8px;
+}
+
+.manager-sidebar .instance-row-select {
+    gap: 3px;
+}
+
+.profile-instance-groups.is-profile-merged .instance-row-select {
+    justify-self: stretch;
+    width: 100%;
+}
+
+.manager-sidebar .instance-row-title {
+    gap: 1px;
+}
+
+.manager-sidebar .instance-row-title strong {
+    font-size: 12px;
+}
+
+.manager-sidebar .instance-row-title span {
+    display: none;
+}
+
+.manager-sidebar .instance-row-activity-title {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.manager-sidebar .instance-label-edit-button {
+    top: 6px;
+    right: 6px;
+    opacity: 0;
+}
+
+.manager-sidebar .instance-row:hover .instance-label-edit-button,
+.manager-sidebar .instance-row:focus-within .instance-label-edit-button {
+    opacity: 1;
+}
+
+.manager-sidebar .instance-label-edit-form {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 4px;
+}
+
+.manager-sidebar .instance-label-input {
+    height: 24px;
+}
+
+.manager-sidebar .instance-label-save,
+.manager-sidebar .instance-label-cancel {
+    min-height: 24px;
+    padding-inline: 6px;
+}
+
+.manager-sidebar .instance-row-title .instance-unread-badge {
+    display: inline;
+}
+
+.manager-sidebar .profile-instance-groups.is-profile-merged .instance-row-title span {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--text-dim);
+    font-size: 10px;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.manager-sidebar .profile-instance-groups.is-profile-merged .instance-row-title .instance-unread-badge {
+    display: inline;
+    color: var(--status-error);
+    font-size: 12px;
+    line-height: inherit;
+}
+
+.manager-sidebar .port {
+    padding: 2px 5px;
+}
+
+.manager-sidebar .instance-row-meta {
+    gap: 0;
+}
+
+.manager-sidebar .instance-row-version,
+.manager-sidebar .instance-row-reason {
+    display: none;
+}
+
+.manager-sidebar .instance-actions {
+    display: none;
+}
+
+.manager-sidebar .instance-row.priority-active .instance-actions,
+.manager-sidebar .instance-row:not(.priority-active):hover .instance-actions,
+.manager-sidebar .instance-row:not(.priority-active):focus-within .instance-actions {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 4px;
+}
+
+.manager-sidebar .instance-row:not(.priority-active):hover .instance-row-meta,
+.manager-sidebar .instance-row:not(.priority-active):focus-within .instance-row-meta {
+    display: none;
+}
+
+.manager-sidebar .instance-actions button,
+.manager-sidebar .instance-actions .open-link {
+    min-height: 24px;
+    padding-inline: 5px;
+    font-size: 10.5px;
+}
+
+.manager-sidebar .profile-instance-groups.is-profile-merged .profile-empty {
+    display: grid;
+    gap: 2px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: var(--canvas-soft);
+    padding: 7px 8px;
+}
+
+.manager-sidebar .profile-instance-groups.is-profile-merged .profile-empty strong {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.manager-sidebar .profile-instance-groups.is-profile-merged .profile-empty span {
+    color: var(--text-dim);
+    font-size: 10px;
+}
+

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메모리 — podex 문서</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link active" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../../">EN</a>
+    <a class="active" href="../">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>메모리</h1>
+<p class="lead">podex는 3계층 메모리 시스템을 갖추고 있습니다: 구조화된 파일 저장소, 에피소드 기반 대화 요약, 그리고 FTS5 인덱싱을 활용한 시맨틱 검색. 메모리는 세션 간에 유지되며 에이전트의 시스템 프롬프트에 주입됩니다.</p>
+
+<h2>3개의 계층</h2>
+<table>
+<tr><th>계층</th><th>용도</th><th>저장 위치</th></tr>
+<tr><td><strong>구조화</strong></td><td>프로필, 선호 설정, 결정 사항, 소울/정체성</td><td><code>~/.podex/memory/structured/</code></td></tr>
+<tr><td><strong>에피소드</strong></td><td>메모리 플러시로 생성된 대화 요약</td><td><code>~/.podex/memory/structured/episodes/live/</code></td></tr>
+<tr><td><strong>시맨틱</strong></td><td>가져오기 및 분류된 지식</td><td><code>~/.podex/memory/structured/semantic/</code></td></tr>
+</table>
+
+<h2>메모리 디렉토리 구조</h2>
+<pre><code>~/.podex/memory/structured/
+├── profile.md          # User profile and preferences
+├── shared/
+│   ├── preferences.md  # Reflected preferences
+│   ├── decisions.md    # Key decisions
+│   ├── projects.md     # Project context
+│   └── soul.md         # Soul and identity
+├── episodes/
+│   ├── live/           # Daily conversation summaries
+│   └── imported/       # Imported from legacy memory
+├── semantic/           # Categorized knowledge
+├── procedures/         # Runbooks and procedures
+├── sessions/           # (not indexed)
+└── index.sqlite        # FTS5 search index</code></pre>
+
+<h2>메모리 작동 방식</h2>
+<h3>1. 히스토리 블록 (대화 컨텍스트)</h3>
+<p>새 세션이 시작되면 가장 최근의 대화 기록(최대 8000자, 10개 세션)이 사용자 프롬프트 앞에 <code>[Recent Context]</code>로 추가됩니다. 이는 현재 <code>workingDir</code> 범위로 한정됩니다.</p>
+
+<h3>2. 메모리 플러시 (대화에서 저장소로)</h3>
+<p>어시스턴트가 N회 응답할 때마다(기본값: 10, <code>settings.memory.flushEvery</code>로 설정 가능), 별도의 에이전트가 핵심 정보를 추출하여 일일 에피소드 파일에 추가합니다.</p>
+<pre><code>## 15:30
+User discussed refactoring the auth module. Decided to use JWT tokens.
+Prefers ES Module only, no CommonJS.</code></pre>
+
+<h3>3. 고급 프롬프트 주입</h3>
+<p>FTS5 인덱스가 준비되면 시스템 프롬프트에 다음이 포함됩니다:</p>
+<ul>
+<li><strong>프로필 컨텍스트</strong> -- <code>profile.md</code>에서 가져옴 (800자)</li>
+<li><strong>소울 및 정체성</strong> -- <code>shared/soul.md</code>에서 가져옴 (1000자)</li>
+<li><strong>태스크 스냅샷</strong> -- 현재 프롬프트와 관련된 FTS5 검색 결과 (최대 4건, 2800자)</li>
+</ul>
+
+<h2>CLI 명령어</h2>
+<pre><code># Search memory
+jaw memory search "JWT authentication"
+
+# Read a memory file
+jaw memory read shared/decisions.md
+
+# Save to memory
+jaw memory save shared/notes.md "New note content"
+
+# List memory files
+jaw memory list
+
+# Initialize memory
+jaw memory init
+
+# Reflect recent episodes into structured memory
+jaw memory reflect
+
+# Trigger memory flush
+jaw memory flush
+
+# Cleanup old entries
+jaw memory cleanup --days 30</code></pre>
+
+<h2>슬래시 명령어</h2>
+<table>
+<tr><th>명령어</th><th>설명</th></tr>
+<tr><td><code>/memory</code> 또는 <code>/memory list</code></td><td>메모리 파일 목록 보기</td></tr>
+<tr><td><code>/memory &lt;query&gt;</code></td><td>메모리 검색</td></tr>
+<tr><td><code>/memory status</code></td><td>런타임 상태 표시</td></tr>
+<tr><td><code>/memory bootstrap</code></td><td>레거시 메모리 소스 가져오기</td></tr>
+<tr><td><code>/memory reindex</code></td><td>FTS5 인덱스 재구축</td></tr>
+<tr><td><code>/memory flush</code></td><td>즉시 플러시 실행</td></tr>
+<tr><td><code>/memory embed status</code></td><td>임베딩 상태 표시</td></tr>
+<tr><td><code>/memory embed estimate</code></td><td>임베딩 비용 추정</td></tr>
+</table>
+
+<h2>L1 / L2 메모리 경계</h2>
+<table>
+<tr><th>레이어</th><th>명령어</th><th>범위</th><th>접근 권한</th></tr>
+<tr><td><strong>L1 (인스턴스 로컬)</strong></td><td><code>jaw memory</code></td><td>현재 <code>JAW_HOME</code></td><td>읽기/쓰기</td></tr>
+<tr><td><strong>L2 (대시보드 연합)</strong></td><td><code>jaw dashboard memory</code></td><td>모든 <code>~/.podex*</code> 인스턴스</td><td>읽기 전용</td></tr>
+</table>
+<div class="callout callout-info">일반 작업에는 L1(<code>jaw memory</code>)을 사용하세요. L2(<code>jaw dashboard memory</code>)는 다른 인스턴스의 컨텍스트가 필요할 때 명시적으로 크로스 인스턴스 검색을 수행하기 위한 것입니다.</div>
+
+<h2>대시보드 임베딩 (선택 사항)</h2>
+<p>대시보드는 FTS5 검색 위에 선택적 벡터 임베딩을 지원합니다. 이는 <strong>기본적으로 비활성화</strong>된 추가 레이어입니다. 지원 프로바이더: OpenAI, Gemini, Voyage, Vertex, Local (Ollama).</p>
+<pre><code># Configure via dashboard settings or CLI:
+jaw dashboard memory config set --provider openai --api-key sk-...
+jaw dashboard memory reindex --embedding</code></pre>
+
+<h2>메모리 설정</h2>
+<pre><code>{
+  "memory": {
+    "enabled": true,
+    "flushEvery": 10,
+    "cli": "claude",
+    "model": "haiku"
+  }
+}</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="skills.html">Skills</a>
+<a class="next" href="prompts.html">Prompts</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automation Skills — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link active" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud & Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security & Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model & CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Automation Skills</h1>
+<p class="lead">브라우저 자동화, 스크린샷 기반 상호작용, 요청 라우팅 기능을 제공하는 스킬입니다. 이 스킬들은 podex가 CDP를 통해 Chrome을 제어하고, 스크린샷에서 UI 요소를 클릭하며, 웹 요청을 프로그래밍 방식으로 라우팅할 수 있게 합니다.</p>
+
+<!-- ================================================================== -->
+<!-- browser -->
+<!-- ================================================================== -->
+
+<h2 id="browser">browser</h2>
+<p>Chrome DevTools Protocol(CDP)을 통한 Chrome 브라우저 제어 스킬입니다. 페이지 열기, 탐색, 참조 스냅샷 촬영, 요소 클릭, 텍스트 입력, 콘텐츠 추출, 스크린샷 캡처 기능을 제공합니다. <code>podex</code> 브라우저 서버가 실행 중이어야 합니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>browser</code></td></tr>
+<tr><td><strong>카테고리</strong></td><td>Automation</td></tr>
+<tr><td><strong>프로토콜</strong></td><td>CDP (Chrome DevTools Protocol)</td></tr>
+<tr><td><strong>사전 요구사항</strong></td><td><code>podex</code> 브라우저 서버 실행 중</td></tr>
+<tr><td><strong>트리거</strong></td><td>페이지 열기, 스크린샷, 클릭, 입력, 스크래핑, 탐색</td></tr>
+</table>
+
+<h3>기능</h3>
+<table>
+<tr><th>동작</th><th>설명</th></tr>
+<tr><td><strong>Open page</strong></td><td>제어되는 Chrome 인스턴스에서 URL로 이동</td></tr>
+<tr><td><strong>Screenshot</strong></td><td>전체 페이지 또는 뷰포트 스크린샷을 PNG로 캡처</td></tr>
+<tr><td><strong>Click</strong></td><td>CSS 선택자 또는 XPath로 DOM 요소 클릭</td></tr>
+<tr><td><strong>Type</strong></td><td>입력 필드 및 텍스트 영역에 텍스트 입력</td></tr>
+<tr><td><strong>Extract</strong></td><td>요소에서 텍스트 콘텐츠, 속성 또는 innerHTML 읽기</td></tr>
+<tr><td><strong>Evaluate</strong></td><td>페이지 컨텍스트에서 임의의 JavaScript 실행</td></tr>
+<tr><td><strong>Wait</strong></td><td>선택자, 내비게이션 또는 네트워크 유휴 상태 대기</td></tr>
+<tr><td><strong>Ref snapshot</strong></td><td>비교를 위해 현재 DOM 상태의 참조 스냅샷 촬영</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Open a page and take a screenshot
+/browser open https://example.com
+/browser screenshot
+
+# Click a button by selector
+/browser click "#submit-btn"
+
+# Type into an input field
+/browser type "#search-input" "podex documentation"
+
+# Extract text content from an element
+/browser extract ".main-content" text
+
+# Execute JavaScript in the page
+/browser eval "document.title"</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"https://example.com 열어줘" -- 브라우저에서 URL을 열기<br>
+"이 페이지 스크래핑해줘" -- 현재 페이지의 콘텐츠를 스크래핑하여 추출<br>
+"스크린샷 찍어줘" -- 현재 뷰포트의 스크린샷 캡처<br>
+"로그인 페이지에서 이메일 입력해줘" -- 로그인 페이지의 이메일 필드에 입력
+</div>
+
+<h3>CDP 연결</h3>
+<p>browser 스킬은 CDP WebSocket 연결을 관리하는 <code>podex</code> 브라우저 서버를 통해 Chrome에 연결됩니다. 브라우저 명령을 사용하기 전에 서버를 먼저 시작해야 합니다.</p>
+<pre><code># Start the browser server (runs on a dedicated port)
+jaw browser serve
+
+# The skill auto-connects when invoked
+# Connection is reused across commands in the same session</code></pre>
+
+<div class="callout callout-warn">
+<strong>참고:</strong> 브라우저 서버는 단일 Chrome 인스턴스를 관리합니다. CDP 타겟(탭)을 통한 동시 페이지 조작은 지원되지만, 한 번에 하나의 브라우저 인스턴스만 활성화됩니다.
+</div>
+
+<!-- ================================================================== -->
+<!-- vision-click -->
+<!-- ================================================================== -->
+
+<h2 id="vision-click">vision-click</h2>
+<p>비전 모델을 사용한 스크린샷 기반 UI 상호작용 스킬입니다. DOM 선택자에 의존하는 대신, 스크린샷을 촬영하고 UI 요소를 시각적으로 식별한 후 정확한 좌표를 클릭합니다. 브라우저에 한정되지 않고 화면에 보이는 모든 애플리케이션에서 작동합니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>vision-click</code></td></tr>
+<tr><td><strong>카테고리</strong></td><td>Automation</td></tr>
+<tr><td><strong>방식</strong></td><td>스크린샷 분석 + 좌표 매핑</td></tr>
+<tr><td><strong>모델</strong></td><td>비전 지원 LLM (Claude, GPT-4V)</td></tr>
+<tr><td><strong>범위</strong></td><td>화면에 보이는 모든 UI (브라우저, 데스크톱 앱, 터미널)</td></tr>
+</table>
+
+<h3>작동 방식</h3>
+<ol>
+<li><strong>캡처</strong> -- 현재 화면 또는 지정된 영역의 스크린샷 촬영</li>
+<li><strong>분석</strong> -- 비전 모델에 스크린샷을 전송하여 대상 요소 식별</li>
+<li><strong>위치 파악</strong> -- 모델이 클릭할 요소의 픽셀 좌표를 반환</li>
+<li><strong>실행</strong> -- 식별된 좌표에서 클릭(또는 기타 동작) 수행</li>
+</ol>
+
+<table>
+<tr><th>동작</th><th>설명</th></tr>
+<tr><td><strong>Click</strong></td><td>시각적으로 식별된 UI 요소 클릭</td></tr>
+<tr><td><strong>Double-click</strong></td><td>대상 요소 더블 클릭</td></tr>
+<tr><td><strong>Right-click</strong></td><td>대상 요소 우클릭(컨텍스트 클릭)</td></tr>
+<tr><td><strong>Hover</strong></td><td>클릭 없이 커서를 대상 요소로 이동</td></tr>
+<tr><td><strong>Describe</strong></td><td>현재 화면에 보이는 내용의 설명 반환</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Click a button described by its visual label
+/vision-click "the blue Submit button"
+
+# Click on a specific icon
+/vision-click "the gear icon in the top-right corner"
+
+# Right-click on a file in Finder
+/vision-click --right "the README.md file"
+
+# Describe what is currently visible
+/vision-click --describe</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"이 버튼 클릭해줘" -- 비전을 사용하여 설명된 버튼 클릭<br>
+"화면에서 저장 버튼 찾아서 눌러줘" -- 화면에서 저장 버튼을 찾아 클릭<br>
+"지금 화면에 뭐가 보여?" -- 현재 화면 내용 설명<br>
+"오른쪽 위에 있는 설정 아이콘 클릭해줘" -- 오른쪽 상단의 설정 아이콘 클릭
+</div>
+
+<h3>vision-click과 browser 선택 기준</h3>
+<table>
+<tr><th>시나리오</th><th>권장 스킬</th><th>이유</th></tr>
+<tr><td>알려진 DOM 요소 클릭</td><td><code>browser</code></td><td>CSS 선택자를 사용하면 더 빠르고 안정적</td></tr>
+<tr><td>canvas 또는 iframe 내부 클릭</td><td><code>vision-click</code></td><td>DOM 선택자로는 canvas 렌더링 콘텐츠에 접근 불가</td></tr>
+<tr><td>데스크톱 앱 상호작용</td><td><code>vision-click</code></td><td>브라우저 외부에서는 DOM을 사용할 수 없으므로 유일한 방법</td></tr>
+<tr><td>선택자가 불안정한 동적 UI</td><td><code>vision-click</code></td><td>시각적 식별이 취약한 선택자보다 더 견고함</td></tr>
+<tr><td>빠른 반복 작업</td><td><code>browser</code></td><td>CDP 명령이 스크린샷 왕복보다 더 빠름</td></tr>
+</table>
+
+<div class="callout callout-warn">
+<strong>참고:</strong> vision-click은 비전 지원 모델이 필요하며, 스크린샷 캡처와 모델 추론으로 인해 동작당 추가 지연이 발생합니다. 속도가 중요한 경우 DOM에 접근 가능한 요소에는 <code>browser</code> 스킬을 사용하세요.
+</div>
+
+<!-- ================================================================== -->
+<!-- web-routing -->
+<!-- ================================================================== -->
+
+<h2 id="web-routing">web-routing</h2>
+<p>프로그래밍 방식의 HTTP 요청 라우팅 및 인터셉션 스킬입니다. 웹 트래픽을 리디렉션, 재작성, 차단 또는 변환할 수 있는 요청 핸들러를 구성합니다. 로컬 개발 프록시, API 모킹, 트래픽 셰이핑에 유용합니다.</p>
+
+<table>
+<tr><th>속성</th><th>값</th></tr>
+<tr><td><strong>Skill ID</strong></td><td><code>web-routing</code></td></tr>
+<tr><td><strong>카테고리</strong></td><td>Automation</td></tr>
+<tr><td><strong>계층</strong></td><td>HTTP 요청/응답 인터셉션</td></tr>
+<tr><td><strong>범위</strong></td><td>URL 패턴 매칭, 헤더 조작, 본문 변환</td></tr>
+</table>
+
+<h3>라우팅 규칙</h3>
+<table>
+<tr><th>규칙 유형</th><th>설명</th><th>예시</th></tr>
+<tr><td><strong>Redirect</strong></td><td>매칭되는 요청을 다른 URL로 전송</td><td><code>/api/* -> http://localhost:8080/api/*</code></td></tr>
+<tr><td><strong>Rewrite</strong></td><td>리디렉션 없이 요청 경로를 수정</td><td><code>/v2/* -> /v1/*</code></td></tr>
+<tr><td><strong>Block</strong></td><td>매칭되는 요청에 오류 반환</td><td>모든 <code>*.tracking.com</code> 요청 차단</td></tr>
+<tr><td><strong>Mock</strong></td><td>정적 또는 동적 응답 반환</td><td><code>GET /api/users</code>에 JSON 픽스처 반환</td></tr>
+<tr><td><strong>Transform</strong></td><td>요청 또는 응답의 헤더/본문 수정</td><td>모든 API 호출에 <code>Authorization</code> 헤더 추가</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Redirect API calls to local dev server
+/web-routing add /api/* -> http://localhost:8080/api/*
+
+# Mock a specific endpoint with a JSON response
+/web-routing mock GET /api/users '[{"id":1,"name":"Test"}]'
+
+# Block tracking requests
+/web-routing block *.analytics.com
+
+# Add auth header to all outgoing API requests
+/web-routing transform /api/* --header "Authorization: Bearer $TOKEN"
+
+# List active routing rules
+/web-routing list
+
+# Remove a routing rule
+/web-routing remove /api/*</code></pre>
+
+<div class="callout callout-info">
+<strong>자연어 트리거:</strong><br>
+"API 요청을 로컬 서버로 돌려줘" -- API 요청을 localhost로 리디렉션<br>
+"이 엔드포인트 목업 데이터로 응답해줘" -- 엔드포인트를 픽스처 데이터로 모킹<br>
+"트래킹 스크립트 차단해줘" -- 트래킹 도메인 요청 차단<br>
+"모든 API 요청에 인증 헤더 추가해줘" -- API 트래픽에 인증 헤더 추가
+</div>
+
+<h3>패턴 매칭</h3>
+<p>라우트 패턴은 글로브 구문을 지원하며 경로, 호스트, 메서드, 헤더를 기준으로 매칭할 수 있습니다.</p>
+<pre><code># Glob patterns
+/api/*                    # matches /api/users, /api/posts/1, etc.
+/api/users/:id            # named parameter capture
+*.example.com             # subdomain wildcard
+
+# Method-specific routes
+GET /api/users            # only match GET requests
+POST /api/users           # only match POST requests
+
+# Header-based matching
+/api/* [Content-Type: application/json]   # match by header</code></pre>
+
+<div class="callout callout-warn">
+<strong>참고:</strong> 라우팅 규칙은 구체성 순서대로 평가됩니다. 더 구체적인 패턴이 와일드카드보다 우선합니다. 규칙은 명시적으로 제거하지 않는 한 세션이 지속되는 동안 유지됩니다.
+</div>
+
+<!-- ================================================================== -->
+<!-- Skill Comparison -->
+<!-- ================================================================== -->
+
+<h2 id="comparison">스킬 비교</h2>
+<p>작업에 적합한 자동화 스킬을 선택하세요.</p>
+<table>
+<tr><th>기능</th><th>browser</th><th>vision-click</th><th>web-routing</th></tr>
+<tr><td>대상</td><td>Chrome DOM</td><td>화면에 보이는 모든 UI</td><td>HTTP 트래픽</td></tr>
+<tr><td>프로토콜</td><td>CDP</td><td>스크린샷 + 비전</td><td>HTTP 인터셉션</td></tr>
+<tr><td>속도</td><td>빠름</td><td>느림 (모델 추론)</td><td>빠름</td></tr>
+<tr><td>선택자 유형</td><td>CSS / XPath</td><td>시각적 설명</td><td>URL 패턴</td></tr>
+<tr><td>범위</td><td>브라우저 전용</td><td>브라우저 + 데스크톱 앱</td><td>네트워크 계층</td></tr>
+<tr><td>사전 요구사항</td><td>브라우저 서버 실행 중</td><td>비전 모델 접근 가능</td><td>없음</td></tr>
+</table>
+
+<!-- ================================================================== -->
+<!-- Common Patterns -->
+<!-- ================================================================== -->
+
+<h2 id="patterns">일반적인 패턴</h2>
+
+<h3>스크래핑 및 추출</h3>
+<p><code>browser</code> 스킬과 콘텐츠 추출을 결합하여 웹 페이지에서 구조화된 데이터를 가져옵니다.</p>
+<pre><code># Open the target page
+/browser open https://news.example.com
+
+# Extract all article titles
+/browser eval "Array.from(document.querySelectorAll('h2.title')).map(el => el.textContent)"
+
+# Take a screenshot for reference
+/browser screenshot</code></pre>
+
+<h3>폼 자동화</h3>
+<p>입력 및 클릭 명령을 연결하여 폼을 작성하고 제출합니다.</p>
+<pre><code># Navigate to login page
+/browser open https://app.example.com/login
+
+# Fill in credentials
+/browser type "#email" "user@example.com"
+/browser type "#password" "secretpassword"
+
+# Submit the form
+/browser click "#login-btn"
+
+# Wait for navigation and verify
+/browser wait "nav.dashboard"
+/browser screenshot</code></pre>
+
+<h3>데스크톱 앱 + 브라우저 조합</h3>
+<p>하이브리드 워크플로우에서 데스크톱 앱 요소에는 <code>vision-click</code>을, 웹 콘텐츠에는 <code>browser</code>를 사용합니다.</p>
+<pre><code># Click "Open in Browser" in a desktop app
+/vision-click "the Open in Browser button"
+
+# Switch to browser skill for DOM-level control
+/browser wait ".main-content"
+/browser extract ".main-content" text</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="orchestration.html">Development</a>
+<a class="next" href="ai-media.html">AI Media</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

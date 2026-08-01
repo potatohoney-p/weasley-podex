@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+<style>
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.badge-scope { background: rgba(34, 211, 238, 0.15); color: var(--accent); }
+.badge-readonly { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+
+.skill-meta { display: flex; gap: 12px; align-items: center; margin: -4px 0 24px; flex-wrap: wrap; }
+.skill-meta .badge { font-size: 12px; padding: 3px 10px; }
+
+.quick-ref { margin: 20px 0 28px; }
+.quick-ref td:first-child { font-weight: 600; white-space: nowrap; width: 140px; color: var(--text-dim); }
+
+.cmd-block { margin: 16px 0; }
+.cmd-block h4 { margin: 16px 0 4px; }
+
+.workflow-step { display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
+.workflow-step .step-num {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent-dim); border: 1px solid var(--accent);
+  color: var(--accent); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 2px;
+}
+.workflow-step .step-text { flex: 1; font-size: 14px; }
+
+.example-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px; margin: 12px 0;
+}
+.example-card .example-prompt {
+  font-size: 15px; font-weight: 500; color: var(--accent); margin-bottom: 6px;
+}
+.example-card .example-desc {
+  font-size: 13px; color: var(--text-dim); line-height: 1.5;
+}
+.example-card code { font-size: 12px; }
+
+.storage-layout pre { margin: 8px 0 16px; }
+.scope-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+.scope-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 16px 20px;
+}
+.scope-card h4 { margin: 0 0 8px; font-size: 15px; text-transform: none; letter-spacing: 0; }
+.scope-card ul { margin: 4px 0 0; padding-left: 18px; font-size: 13px; }
+.scope-card li { margin: 3px 0; color: var(--text-dim); }
+
+@media (max-width: 768px) {
+  .scope-compare { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link active" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#54620;&#44397;&#50612;</a>
+    <a href="../../zh/">&#20013;&#25991;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Memory</h1>
+<p class="lead">Long-term memory across sessions &mdash; search, read, save. The memory skill gives podex persistent recall of user preferences, project decisions, and durable knowledge that survives beyond a single conversation.</p>
+
+<div class="skill-meta">
+  <span class="badge badge-active">Default Active: Yes</span>
+  <span class="badge badge-scope">Category: Productivity</span>
+  <span class="badge badge-scope">L1 + L2 Scope</span>
+</div>
+
+<h2>Quick Reference</h2>
+<table class="quick-ref">
+<tr><td>Skill name</td><td><code>memory</code></td></tr>
+<tr><td>Status</td><td>Active (auto-injected into every session)</td></tr>
+<tr><td>Category</td><td>Productivity</td></tr>
+<tr><td>SKILL.md path</td><td><code>~/.podex/skills/memory/SKILL.md</code></td></tr>
+<tr><td>Data directory</td><td><code>~/.podex/memory/structured/</code></td></tr>
+<tr><td>Requires</td><td>None (no external dependencies)</td></tr>
+<tr><td>Install</td><td>Pre-installed (ships with podex)</td></tr>
+<tr><td>Scope</td><td>L1 instance-local (read/write) + L2 dashboard (read-only)</td></tr>
+<tr><td>Embedding search</td><td>Optional, default OFF</td></tr>
+</table>
+
+<h2>Overview</h2>
+<p>The <code>memory</code> skill is the persistent knowledge layer for podex. It enables the AI to remember facts, preferences, and decisions across sessions without relying solely on conversation context. Every session has the memory skill injected automatically &mdash; there is no need to load it manually.</p>
+
+<p>Memory operates at two scopes:</p>
+
+<div class="scope-compare">
+  <div class="scope-card">
+    <h4><span class="badge badge-active" style="margin-right:6px">L1</span> Instance-Local Memory</h4>
+    <ul>
+      <li>Commands: <code>podex memory search/read/save</code></li>
+      <li>Default path for all operations</li>
+      <li>Current instance only</li>
+      <li><strong>Read + Write</strong></li>
+      <li>Used for all save operations</li>
+    </ul>
+  </div>
+  <div class="scope-card">
+    <h4><span class="badge badge-readonly" style="margin-right:6px">L2</span> Dashboard Memory</h4>
+    <ul>
+      <li>Commands: <code>podex dashboard memory search/read/instances</code></li>
+      <li>Cross-instance federation</li>
+      <li>Multiple instances / homes</li>
+      <li><strong>Read-Only</strong></li>
+      <li>Used only when user explicitly asks for cross-instance data</li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout callout-info">Use L2 dashboard memory <strong>only</strong> when the user asks for dashboard memory, all instances, another instance/home, or cross-instance context. Default to L1 for everything else.</div>
+
+<h2>Rules</h2>
+<p>The memory skill follows seven strict rules that govern when and how memory is used:</p>
+
+<table>
+<thead>
+<tr><th>#</th><th>Rule</th><th>Details</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><strong>Search before answering</strong></td><td>When asked about past work, decisions, or preferences, always run <code>podex memory search &lt;keywords&gt;</code> first before responding.</td></tr>
+<tr><td>2</td><td><strong>Save durable facts immediately</strong></td><td>User preferences, key decisions, and stable project facts should be saved as soon as they are identified.</td></tr>
+<tr><td>3</td><td><strong>Use structured destinations</strong></td><td>Prefer <code>structured/profile.md</code>, <code>structured/semantic/...</code>, or <code>structured/episodes/...</code> over ad-hoc paths.</td></tr>
+<tr><td>4</td><td><strong>Admit gaps</strong></td><td>If search returns nothing, say "I don't have a record of that." Do not fabricate memories.</td></tr>
+<tr><td>5</td><td><strong>Save stable facts only</strong></td><td>Do not save transient TODOs, phase logs, or temporary checklists. Only durable knowledge belongs in memory.</td></tr>
+<tr><td>6</td><td><strong>Search broadly</strong></td><td>Consider Korean/English variants, error codes, symbols, and filenames when constructing search queries.</td></tr>
+<tr><td>7</td><td><strong>Use injected context</strong></td><td>A task snapshot may already be in the prompt; still search when precision matters or exact wording is needed.</td></tr>
+</tbody>
+</table>
+
+<h2>Commands</h2>
+
+<h3>Search</h3>
+<p>Search the memory index for keywords. Returns matching entries with their source file paths.</p>
+<pre><code># Basic keyword search
+podex memory search "keyword"
+
+# Search for user preferences
+podex memory search "user preference"
+
+# Search with error codes or technical terms
+podex memory search "auth login 401"
+
+# Search with system/service terms
+podex memory search "launchd plist service"
+
+# Cross-instance search (L2 dashboard, read-only)
+podex dashboard memory search "cross-instance topic"</code></pre>
+
+<div class="callout callout-info"><strong>Tip:</strong> Search broadly. If your first query returns nothing, try Korean/English variants. For example, search both "인증" and "auth" to catch bilingual entries.</div>
+
+<h3>Read</h3>
+<p>Read the full contents of a specific memory file, or a line range within it.</p>
+<pre><code># Read the user profile
+podex memory read structured/profile.md
+
+# Read a semantic knowledge file
+podex memory read structured/semantic/podex.md
+
+# Read an episodic entry
+podex memory read structured/episodes/live/2026-03-07.md
+
+# Read only specific lines (useful for large files)
+podex memory read structured/profile.md --lines 1-30</code></pre>
+
+<h3>Save</h3>
+<p>Append durable facts to a memory file. Content is appended, not overwritten.</p>
+<pre><code># Save a user preference to the profile
+podex memory save structured/profile.md "- User prefers Korean UI and English code"
+
+# Save a technical fact to a semantic file
+podex memory save structured/semantic/podex.md "- Memory runtime uses task snapshots before response generation"
+
+# Save a time-bound episode
+podex memory save structured/episodes/live/2026-03-07.md "## 16:30\n- Decided to remove query-provider setup from memory UX"</code></pre>
+
+<div class="callout callout-warn"><strong>Important:</strong> Only save stable, durable facts. Transient data like "current task progress" or "temporary debug notes" should not go into memory. If in doubt, ask whether this fact will still be relevant next week.</div>
+
+<h3>List &amp; Init</h3>
+<p>Utility commands for inspecting and initializing the memory directory.</p>
+<pre><code># List all memory files and their sizes
+podex memory list
+
+# Initialize the memory directory structure (first-time setup)
+podex memory init</code></pre>
+
+<h2>Storage Layout</h2>
+<p>Memory is organized into a structured directory hierarchy under <code>~/.podex/memory/</code>. Each subdirectory serves a distinct purpose:</p>
+
+<table>
+<thead>
+<tr><th>Path</th><th>Purpose</th><th>When to Use</th></tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>structured/profile.md</code></td>
+  <td>Stable profile, preferences, long-lived project context</td>
+  <td>User preferences, tool settings, default behaviors</td>
+</tr>
+<tr>
+  <td><code>structured/episodes/</code></td>
+  <td>Time-ordered episodic memory</td>
+  <td>Session outcomes, decisions with dates, time-bound events</td>
+</tr>
+<tr>
+  <td><code>structured/semantic/</code></td>
+  <td>Durable facts and extracted knowledge</td>
+  <td>Technical knowledge, project architecture notes, API patterns</td>
+</tr>
+<tr>
+  <td><code>structured/procedures/</code></td>
+  <td>Reusable workflows and rules</td>
+  <td>Step-by-step guides, deployment procedures, standard processes</td>
+</tr>
+<tr>
+  <td><code>structured/sessions/</code></td>
+  <td>Optional session-derived memory</td>
+  <td>Auto-extracted insights from completed sessions</td>
+</tr>
+<tr>
+  <td><code>structured/index.sqlite</code></td>
+  <td>Search index</td>
+  <td>Automatically maintained; powers <code>memory search</code></td>
+</tr>
+</tbody>
+</table>
+
+<div class="storage-layout">
+<pre><code>~/.podex/memory/
+  structured/
+    profile.md                          # User preferences and identity
+    index.sqlite                        # Full-text search index
+    episodes/
+      live/
+        2026-03-07.md                   # Daily episodic entries
+        2026-05-29.md
+    semantic/
+      podex.md                        # podex-specific knowledge
+      deployment.md                     # Deployment procedures
+      project-architecture.md           # Architecture decisions
+    procedures/
+      release-checklist.md              # Reusable workflows
+      code-review-process.md
+    sessions/
+      session-2026-05-29-abc123.md      # Auto-extracted session notes</code></pre>
+</div>
+
+<h2>Workflows</h2>
+<p>The memory skill defines four standard workflows that govern how memory is used during a conversation.</p>
+
+<h3>New Conversation</h3>
+<p>When a new session begins:</p>
+<div class="workflow-step"><span class="step-num">1</span><span class="step-text">Use injected memory context if present (the system may pre-load relevant memories)</span></div>
+<div class="workflow-step"><span class="step-num">2</span><span class="step-text">Search memory if the task depends on prior decisions or preferences</span></div>
+<div class="workflow-step"><span class="step-num">3</span><span class="step-text">Read the relevant file when exact wording or details matter</span></div>
+
+<h3>User Mentions a Preference</h3>
+<p>When the user states a preference (e.g., "I prefer tabs over spaces"):</p>
+<div class="workflow-step"><span class="step-num">1</span><span class="step-text">Acknowledge briefly ("Got it, noted.")</span></div>
+<div class="workflow-step"><span class="step-num">2</span><span class="step-text">Save to <code>structured/profile.md</code></span></div>
+<div class="workflow-step"><span class="step-num">3</span><span class="step-text">If project-specific, also save to an appropriate semantic file</span></div>
+
+<h3>User Asks "Do you remember...?"</h3>
+<p>When the user asks whether something was previously discussed:</p>
+<div class="workflow-step"><span class="step-num">1</span><span class="step-text">Run <code>podex memory search "&lt;keywords&gt;"</code></span></div>
+<div class="workflow-step"><span class="step-num">2</span><span class="step-text">If found, answer with the remembered fact and cite the source file</span></div>
+<div class="workflow-step"><span class="step-num">3</span><span class="step-text">If not found, say there is no saved record and offer to save it</span></div>
+
+<h3>End of Important Session</h3>
+<p>When a session yields a significant decision or outcome:</p>
+<div class="workflow-step"><span class="step-num">1</span><span class="step-text">Save the durable decision or fact</span></div>
+<div class="workflow-step"><span class="step-num">2</span><span class="step-text">Use episodic files (<code>episodes/</code>) for time-bound outcomes</span></div>
+<div class="workflow-step"><span class="step-num">3</span><span class="step-text">Use semantic or profile files for long-lived knowledge</span></div>
+
+<h2>Usage Examples (~&#54644;&#51468;)</h2>
+<p>Here are real-world usage patterns in the natural Korean style that podex understands.</p>
+
+<div class="example-card">
+  <div class="example-prompt">"&#45236;&#44032; &#51200;&#48264;&#50640; Tailwind &#50416;&#45796;&#44256; &#54664;&#45912; &#44144; &#44592;&#50613;&#54644;?"</div>
+  <div class="example-desc">Triggers the "Do you remember?" workflow. The agent runs <code>podex memory search "Tailwind"</code>, finds the saved preference in <code>structured/profile.md</code>, and responds with the exact entry and its source file.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#50526;&#51004;&#47196; &#53076;&#46300;&#45716; &#50689;&#50612;, UI &#53581;&#49828;&#53944;&#45716; &#54620;&#44397;&#50612;&#47196; &#54644;&#51468;"</div>
+  <div class="example-desc">Triggers the "User Mentions a Preference" workflow. The agent acknowledges, then saves <code>- Code language: English, UI text: Korean</code> to <code>structured/profile.md</code> so all future sessions respect this preference.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#51648;&#45212;&#48264; &#48176;&#54252; &#46412; DB &#47560;&#51060;&#44536;&#47112;&#51060;&#49496; &#50612;&#46523;&#44172; &#54664;&#45908;&#46972;?"</div>
+  <div class="example-desc">Triggers the "Search before answering" rule. The agent searches for "DB migration deploy" and "&#48176;&#54252; &#47560;&#51060;&#44536;&#47112;&#51060;&#49496;" across memory, then reads the relevant episodic entry to recall the exact migration steps used.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#51060; &#54532;&#47196;&#51229;&#53944;&#50640;&#49436; API &#50640;&#47084; &#54644;&#46308;&#47553;&#51008; &#54637;&#49345; ErrorResponse &#53440;&#51077; &#50416;&#44592;&#47196; &#44208;&#51221;&#54664;&#50612;. &#44592;&#50613;&#54644;&#51468;."</div>
+  <div class="example-desc">Triggers an immediate save. The agent saves <code>- API error handling: always use ErrorResponse type</code> to <code>structured/semantic/project-architecture.md</code> so this architectural decision persists.</div>
+</div>
+
+<div class="example-card">
+  <div class="example-prompt">"&#45796;&#47480; &#51064;&#49828;&#53556;&#49828;&#50640;&#49436; &#51060; &#54532;&#47196;&#51229;&#53944; &#50612;&#46523;&#44172; &#49444;&#51221;&#54664;&#45716;&#51648; &#52286;&#50500;&#48464;"</div>
+  <div class="example-desc">Triggers L2 dashboard memory. The agent recognizes "other instance" and runs <code>podex dashboard memory search "project setup"</code> to federate across instances, returning read-only results from the dashboard.</div>
+</div>
+
+<h2>What to Save vs. What to Skip</h2>
+
+<table>
+<thead>
+<tr><th>Save (Durable)</th><th>Skip (Transient)</th></tr>
+</thead>
+<tbody>
+<tr><td>User prefers dark mode in all UIs</td><td>Current task: "fix the login bug"</td></tr>
+<tr><td>Project uses pnpm, not npm</td><td>Phase log: "Phase 2 started at 3pm"</td></tr>
+<tr><td>API response format decision</td><td>Temporary debug checklist</td></tr>
+<tr><td>Deployment procedure for production</td><td>"Remind me to check this tomorrow"</td></tr>
+<tr><td>Architecture: microservices with event bus</td><td>In-progress TODO list</td></tr>
+<tr><td>Team uses Conventional Commits</td><td>Session-specific variable values</td></tr>
+</tbody>
+</table>
+
+<h2>Choosing the Right Destination</h2>
+<p>When saving a fact, select the destination based on the nature of the information:</p>
+
+<table>
+<thead>
+<tr><th>Information Type</th><th>Destination</th><th>Example</th></tr>
+</thead>
+<tbody>
+<tr><td>Personal preference</td><td><code>structured/profile.md</code></td><td>"User prefers Korean UI, English code"</td></tr>
+<tr><td>Project architecture fact</td><td><code>structured/semantic/&lt;project&gt;.md</code></td><td>"podex uses SQLite for memory index"</td></tr>
+<tr><td>Decision with a date</td><td><code>structured/episodes/live/&lt;date&gt;.md</code></td><td>"2026-05-29: Chose Drizzle ORM over Prisma"</td></tr>
+<tr><td>Reusable workflow</td><td><code>structured/procedures/&lt;name&gt;.md</code></td><td>"Release checklist: lint, test, tag, deploy"</td></tr>
+<tr><td>Domain knowledge</td><td><code>structured/semantic/&lt;domain&gt;.md</code></td><td>"Cloudflare D1 has 10GB limit per database"</td></tr>
+</tbody>
+</table>
+
+<h2>Search Tips</h2>
+<p>The memory search index supports full-text keyword matching. To get the best results:</p>
+
+<ul>
+  <li><strong>Use both languages</strong> &mdash; search "auth" and "&#51064;&#51613;" if the user works bilingually</li>
+  <li><strong>Include error codes</strong> &mdash; search "401 unauthorized" to find auth-related memories</li>
+  <li><strong>Try file names</strong> &mdash; search "launchd" or "plist" for system service memories</li>
+  <li><strong>Be specific then broad</strong> &mdash; start with "Cloudflare D1 migration" then fall back to "database migration"</li>
+  <li><strong>Search symbols</strong> &mdash; error codes like "ECONNREFUSED" or config keys like "JAW_HOME" are indexed</li>
+</ul>
+
+<div class="callout callout-info"><strong>Embedding search</strong> is optional and default OFF. The skill does not assume vector/semantic search is available. All search operations use the SQLite full-text index by default.</div>
+
+<h2>Notes</h2>
+<ul>
+  <li>Prefer concise, durable entries over verbose logs</li>
+  <li>Memory is append-only by convention &mdash; save commands append, they do not overwrite</li>
+  <li>The search index (<code>index.sqlite</code>) is automatically maintained when files are saved</li>
+  <li>Cross-instance (L2) memory is always read-only; you cannot save to another instance</li>
+  <li>If embedding search is enabled in your instance, it supplements but does not replace keyword search</li>
+</ul>
+
+<h2>Related</h2>
+<ul>
+  <li><a href="../../concepts/memory.html">Concepts: Memory</a> &mdash; high-level overview of the memory system architecture</li>
+  <li><a href="../../reference/cli.html">CLI Commands</a> &mdash; full <code>podex memory</code> command reference</li>
+  <li><a href="../../guides/dashboard.html">Dashboard Guide</a> &mdash; L2 dashboard memory and cross-instance federation</li>
+  <li><a href="../index.html">Skill Catalog</a> &mdash; browse all 118 skills</li>
+  <li><a href="../productivity.html">Productivity Skills</a> &mdash; category page for memory and related skills</li>
+</ul>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">Productivity Skills</a>
+<a class="next" href="../index.html">Skill Catalog</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Documents — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../../">Overview</a>
+      <a class="docs-nav-link" href="../../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../index.html">Catalog</a>
+      <a class="docs-nav-link" href="../orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../automation.html">Automation</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../communication.html">Communication</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link active" href="../productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#xD55C;&#xAD6D;&#xC5B4;</a>
+    <a href="../../zh/">&#x4E2D;&#x6587;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Word Documents</h1>
+<p class="lead">.docx create, edit, read, and visual verification</p>
+
+<div class="callout callout-info"><strong>Default Active: Yes</strong> &mdash; The <code>docx</code> skill is available by default and triggers automatically when you mention Word documents, <code>.docx</code> files, reports, memos, letters, or templates. No manual loading required.</div>
+
+<h2>Overview</h2>
+<p>The <code>docx</code> skill handles the full lifecycle of Word documents: creation from scratch, editing existing files, reading and analysis, template-based generation, tracked-change management, and mandatory visual QA verification. It is scoped exclusively to <code>.docx</code> files &mdash; not PDFs, spreadsheets, HWPX, or Google Docs.</p>
+
+<p>The primary tool is <strong>officecli</strong>, a CLI on PATH that covers ~80% of tasks (add, set, remove, validate, query, track-change accept/reject). For tasks officecli cannot handle &mdash; tracked-change <em>creation</em>, OMML equations, bulk pattern matching &mdash; the skill falls back to <strong>Python OOXML scripts</strong> in <code>scripts/</code>.</p>
+
+<h2>Triggers</h2>
+<table>
+<tr><th>Pattern</th><th>Examples</th></tr>
+<tr><td>File extension</td><td><code>.docx</code>, Word document</td></tr>
+<tr><td>Document types</td><td>Reports, memos, letters, proposals, contracts</td></tr>
+<tr><td>Keywords</td><td>"Word doc", "template", "tracked changes", "table of contents"</td></tr>
+<tr><td>Korean triggers</td><td>"워드 문서", "보고서 만들어줘", "문서 작성해줘"</td></tr>
+</table>
+
+<h2>Quick Reference</h2>
+<table>
+<tr><th>Task</th><th>Tool</th><th>Command Pattern</th><th>Notes</th></tr>
+<tr><td>Format like existing doc</td><td>shell + officecli</td><td><code>cp source.docx target.docx &amp;&amp; officecli open target.docx</code></td><td>Inherit styles/headers/footers</td></tr>
+<tr><td>Create blank DOCX</td><td>officecli</td><td><code>officecli create report.docx</code></td><td>Start from real Office file</td></tr>
+<tr><td>Add paragraph</td><td>officecli</td><td><code>officecli add FILE /body --type paragraph --prop text="..."</code></td><td>Primary write path</td></tr>
+<tr><td>Edit paragraph/run</td><td>officecli</td><td><code>officecli set FILE /body/p[N] --prop ...</code></td><td>Exact path targeting</td></tr>
+<tr><td>Read text/outline/stats</td><td>officecli</td><td><code>officecli view FILE text</code></td><td>Modes: text, annotated, outline, stats, issues, html</td></tr>
+<tr><td>Query document</td><td>officecli</td><td><code>officecli query FILE "p[style=Heading1]"</code></td><td>CSS-like selectors</td></tr>
+<tr><td>Template replacement</td><td>officecli</td><td><code>officecli set FILE / --prop find="{{X}}" --prop replace="Y"</code></td><td>Preserves template structure</td></tr>
+<tr><td>Validation / issue scan</td><td>officecli</td><td><code>officecli validate FILE</code></td><td>Pair with <code>view FILE issues</code></td></tr>
+<tr><td>Accept/reject tracked changes</td><td>officecli</td><td><code>officecli set FILE / --prop accept-changes=all</code></td><td>Also <code>reject-changes=all</code></td></tr>
+<tr><td>Create tracked changes</td><td>Python (L3/L4)</td><td><code>scripts/docx_cli.py</code> + <code>ooxml/redline_diff.py</code></td><td>officecli cannot create &mdash; only accept/reject</td></tr>
+<tr><td>OMML equations</td><td>Python (L4)</td><td>Unpack &rarr; inject <code>&lt;m:oMath&gt;</code> &rarr; repack</td><td>officecli cannot generate OMML</td></tr>
+<tr><td>Complex anchored comments</td><td>Python (L3)</td><td><code>python3 scripts/comment.py IN OUT --text "..." --anchor "..."</code></td><td>For comments beyond officecli</td></tr>
+<tr><td>PDF conversion / visual QA</td><td>soffice</td><td><code>soffice --headless --convert-to pdf FILE</code></td><td>Screenshot-based QA</td></tr>
+</table>
+
+<h2>"~&#xD574;&#xC918;" Usage Examples</h2>
+
+<div class="callout callout-info">
+<strong>"&#xBD84;&#xAE30; &#xBCF4;&#xACE0;&#xC11C; &#xB9CC;&#xB4E4;&#xC5B4;&#xC918;"</strong><br>
+Creates a quarterly report document from scratch with proper heading hierarchy, table of contents, tables, and professional formatting. Uses <code>officecli create</code> &rarr; add structure &rarr; validate &rarr; PDF verification.
+</div>
+
+<div class="callout callout-info">
+<strong>"&#xC774; &#xBB38;&#xC11C; &#xD615;&#xC2DD;&#xC5D0; &#xB9DE;&#xCDB0;&#xC11C; &#xC0C8;&#xB85C; &#xC791;&#xC131;&#xD574;&#xC918;"</strong><br>
+Reference-based editing: copies the source file to inherit all styles, headers, and footers, then replaces body content while preserving the document's visual identity. See the Reference-Based Editing workflow below.
+</div>
+
+<div class="callout callout-info">
+<strong>"&#xC774; &#xC6CC;&#xB4DC; &#xBB38;&#xC11C; &#xB0B4;&#xC6A9; &#xC694;&#xC57D;&#xD574;&#xC918;"</strong><br>
+Reads and analyzes the document using <code>officecli view FILE text</code> and <code>view FILE outline</code>, then provides a structured summary of headings, key content, and document statistics.
+</div>
+
+<div class="callout callout-info">
+<strong>"&#xBCC0;&#xACBD;&#xC0AC;&#xD56D; &#xCD94;&#xC801;&#xD574;&#xC11C; &#xC218;&#xC815;&#xD574;&#xC918;"</strong><br>
+Creates tracked changes (redlines) via the Python OOXML scripts, since officecli can only accept/reject &mdash; not create &mdash; tracked changes. Escalates to L3/L4 automatically.
+</div>
+
+<div class="callout callout-info">
+<strong>"&#xBB38;&#xC11C; &#xD15C;&#xD50C;&#xB9BF;&#xC5D0; &#xB370;&#xC774;&#xD130; &#xCC44;&#xC6CC;&#xC918;"</strong><br>
+Template-safe replacement using <code>officecli set FILE / --prop find="{{X}}" --prop replace="Y"</code> to fill placeholders while preserving the template's formatting and structure.
+</div>
+
+<h2>Reference-Based Editing</h2>
+<p>When a user says "format like X.docx", "match existing style", "based on template", or provides a source file &mdash; <strong>always start from the source file</strong>. Never rebuild from scratch.</p>
+
+<h3>Workflow</h3>
+<ol>
+<li><strong>Copy the source:</strong> <code>cp source.docx target.docx</code> &mdash; inherits all styles, margins, numbering, headers, footers</li>
+<li><strong>Open:</strong> <code>officecli open target.docx</code> &mdash; daemon starts; command returns immediately</li>
+<li><strong>Remove body content only</strong> &mdash; keep <code>/styles</code>, <code>/numbering</code>, <code>/header</code>, <code>/footer</code></li>
+<li><strong>Add new paragraphs</strong> using existing style names (e.g. <code>--prop style=Heading1</code>) &mdash; they auto-apply</li>
+</ol>
+
+<h3>Why This Matters</h3>
+<p>Pandoc-generated and Word-generated documents have specific style IDs (e.g. <code>Heading1</code>, <code>BodyText</code>, <code>FirstParagraph</code>) unique to that document. Adding a new style with the same name causes:</p>
+<ul>
+<li><code>officecli validate</code> errors about duplicate style IDs</li>
+<li>Word/LibreOffice rendering falls back to defaults</li>
+<li>The task takes 10x longer than necessary</li>
+</ul>
+
+<h3>Template Priority</h3>
+<ol>
+<li><strong>User-provided source file</strong> &mdash; first-class template</li>
+<li><strong><code>tests/fixtures/*.docx</code></strong> &mdash; pre-built working examples shipped with the skill</li>
+<li><strong><code>officecli create</code> blank</strong> &mdash; only when nothing else applies</li>
+</ol>
+
+<pre><code># CORRECT: inherit Pandoc styles
+cp Assignment1.docx Assignment2.docx
+officecli open Assignment2.docx
+officecli remove Assignment2.docx "/body/p[1]"   # remove old body (keep styles/headers/footers)
+# ... remove more paragraphs ...
+officecli add Assignment2.docx /body --type paragraph --prop text="New title" --prop style=Heading1
+officecli close Assignment2.docx
+
+# WRONG: recreate styles that already exist -- validate fails
+officecli add doc.docx /styles --type style --prop name=Heading1 --prop size=20pt ...</code></pre>
+
+<h2>Escalation Ladder</h2>
+<p>When officecli cannot do the job, escalate in this order:</p>
+<table>
+<tr><th>Level</th><th>When</th><th>Tool</th></tr>
+<tr><td><strong>L1</strong> officecli high-level</td><td>Typical add/set/remove operations</td><td><code>officecli add/set/remove/query/view</code></td></tr>
+<tr><td><strong>L2</strong> officecli raw-set</td><td>XML injection &mdash; PAGE field, fldChar, hyperlink anchor, custom attributes</td><td><code>officecli raw-set FILE PATH --xpath X --action A --xml ...</code></td></tr>
+<tr><td><strong>L3</strong> Python script</td><td>Bulk tracked-change ops, comment add, merge runs, redline validation</td><td><code>python3 scripts/*.py</code></td></tr>
+<tr><td><strong>L4</strong> Unpack &rarr; edit XML &rarr; repack</td><td>OMML equations, custom style injection, pattern-match editing</td><td><code>scripts/docx_cli.py open FILE work/</code> &rarr; edit XML &rarr; <code>scripts/docx_cli.py save work/ OUT.docx</code></td></tr>
+</table>
+
+<h3>Escalation Signals</h3>
+<ul>
+<li>officecli shows <strong>"silently ignored"</strong> &rarr; <strong>L2</strong> (raw-set)</li>
+<li>Need <strong>OMML/MathML equations</strong> &rarr; <strong>L4</strong> (inject <code>&lt;m:oMath&gt;</code> XML)</li>
+<li>Need to <strong>CREATE</strong> tracked changes (officecli only accepts/rejects) &rarr; <strong>L3</strong> or <strong>L4</strong></li>
+<li><strong>Bulk find/replace</strong> across 100+ targets &rarr; <strong>L3</strong> (<code>docx_cli.py search/replace</code>)</li>
+<li><strong>Pandoc-generated</strong> doc with custom style IDs &rarr; Reference-Based Editing first</li>
+<li>Task <strong>still fails after L1+L2</strong> &rarr; Read relevant <code>references/*.md</code> before giving up</li>
+</ul>
+
+<h2>Core Workflows</h2>
+
+<h3>Execution Model</h3>
+<p><strong>Run commands one at a time.</strong> Do not write all commands into a shell script and execute as a single block. OfficeCLI is incremental: every <code>add</code>, <code>set</code>, and <code>remove</code> immediately modifies the file and returns output.</p>
+<ol>
+<li><strong>One command at a time, then read the output.</strong> Check the exit code before proceeding.</li>
+<li><strong>Non-zero exit = stop and fix immediately.</strong> Do not continue building on a broken state.</li>
+<li><strong>Verify after structural operations.</strong> After adding a style, table, chart, or section, run <code>get</code> or <code>validate</code> before building on top of it.</li>
+</ol>
+
+<h3>Reading and Analyzing</h3>
+<pre><code>officecli view doc.docx text                    # Full text extraction
+officecli view doc.docx text --max-lines 200    # Truncated extraction
+officecli view doc.docx text --start 1 --end 50 # Range extraction
+officecli view doc.docx outline                 # Structure: stats, headings, headers/footers
+officecli view doc.docx annotated               # Style/font/size per run, equations as LaTeX
+officecli view doc.docx stats                   # Paragraph count, style/font distribution</code></pre>
+
+<h3>Element Inspection</h3>
+<pre><code>officecli get doc.docx /                        # Document root (metadata, page setup)
+officecli get doc.docx /body --depth 1           # List body children
+officecli get doc.docx "/body/p[1]"              # Specific paragraph
+officecli get doc.docx "/body/p[1]/r[1]"         # Specific run
+officecli get doc.docx "/body/tbl[1]" --depth 3  # Table structure
+officecli get doc.docx /styles                   # Style definitions
+officecli get doc.docx "/styles/Heading1"        # Specific style
+officecli get doc.docx "/header[1]"              # Header/footer
+officecli get doc.docx /numbering                # Numbering definitions
+officecli get doc.docx "/body/p[1]" --json       # JSON output for scripting</code></pre>
+
+<h3>CSS-like Queries</h3>
+<pre><code>officecli query doc.docx 'paragraph[style=Heading1]'            # By style
+officecli query doc.docx 'p:contains("quarterly")'              # By text content
+officecli query doc.docx 'p:empty'                              # Empty paragraphs
+officecli query doc.docx 'image:no-alt'                         # Images without alt text
+officecli query doc.docx 'p[align=center] &gt; r[bold=true]'      # Compound selectors
+officecli query doc.docx 'paragraph[size&gt;=24pt]'                # By size
+officecli query doc.docx 'field[fieldType!=page]'               # Fields by type</code></pre>
+
+<h3>Headers and Footers</h3>
+<div class="callout callout-info"><strong>Known CLI bug:</strong> <code>--prop field=page</code> is <strong>silently ignored</strong> in <code>add --type footer</code> commands. The footer is created with static text only. You <strong>must</strong> use <code>raw-set</code> to inject the PAGE field after creating the footer.</div>
+
+<pre><code># Step 1. Empty footer for cover page (auto-enables differentFirstPage)
+officecli add doc.docx / --type footer --prop type=first --prop text=""
+
+# Step 2. Default footer with static "Page " text
+officecli add doc.docx / --type footer --prop text="Page " \
+  --prop type=default --prop align=center --prop size=9pt --prop font=Calibri
+
+# Step 3. Inject PAGE field via raw-set
+# (footer[2] = default when first-page footer also exists)
+officecli raw-set doc.docx "/footer[2]" \
+  --xpath "//w:p" \
+  --action append \
+  --xml '&lt;w:r ...&gt;&lt;w:fldChar w:fldCharType="begin"/&gt;&lt;/w:r&gt;
+         &lt;w:r ...&gt;&lt;w:instrText xml:space="preserve"&gt; PAGE &lt;/w:instrText&gt;&lt;/w:r&gt;
+         &lt;w:r ...&gt;&lt;w:fldChar w:fldCharType="end"/&gt;&lt;/w:r&gt;'</code></pre>
+
+<p><strong>Footer index rule:</strong> When both a first-page footer and a default footer are added, the default footer is <code>/footer[2]</code>. If there is no first-page footer, the default footer is <code>/footer[1]</code>. Always verify with <code>officecli get doc.docx "/footer[2]"</code>.</p>
+
+<h3>Resident Mode (Performance)</h3>
+<p><strong>Always use <code>open</code>/<code>close</code> &mdash; it is the smart default.</strong> Every command benefits from no repeated file I/O.</p>
+<pre><code>officecli open doc.docx           # Load once into memory (returns IMMEDIATELY)
+officecli add doc.docx ...        # All commands run in memory -- fast
+officecli set doc.docx ...
+officecli close doc.docx          # Write once to disk</code></pre>
+
+<div class="callout callout-info"><strong>Warning:</strong> Do NOT run <code>officecli open</code> as a background shell job (e.g. via <code>run_in_background</code>). It returns immediately and the daemon lives in the background automatically. Running it as a monitored shell creates zombies and file locks.</div>
+
+<h3>Batch Mode</h3>
+<p>Execute multiple operations in a single open/save cycle:</p>
+<pre><code>cat &lt;&lt;'EOF' | officecli batch doc.docx
+[
+  {"command":"add","parent":"/body","type":"paragraph",
+   "props":{"text":"Introduction","style":"Heading1"}},
+  {"command":"add","parent":"/body","type":"paragraph",
+   "props":{"text":"This report covers Q4 results.","font":"Calibri","size":"11pt"}}
+]
+EOF</code></pre>
+<p>Batch supports: <code>add</code>, <code>set</code>, <code>get</code>, <code>query</code>, <code>remove</code>, <code>move</code>, <code>swap</code>, <code>view</code>, <code>raw</code>, <code>raw-set</code>, <code>validate</code>.</p>
+
+<h2>Subskill References</h2>
+<p>Additional detail lives in companion files loaded on demand:</p>
+<table>
+<tr><th>Subskill</th><th>When to Use</th></tr>
+<tr><td><strong>officecli-academic-paper</strong></td><td>Academic papers, citations, bibliography, TOC for papers</td></tr>
+<tr><td><strong>creating.md</strong></td><td>Detailed creation recipes (new documents from scratch)</td></tr>
+<tr><td><strong>editing.md</strong></td><td>Detailed editing guides (modify existing documents)</td></tr>
+</table>
+
+<h3>Decision Flow</h3>
+<pre><code>Is the document an academic paper (thesis, journal, conference)?
+  YES --&gt; read officecli-academic-paper/SKILL.md
+  NO  --&gt; continue with main skill
+
+User provided a source file to match?
+  YES --&gt; Reference-Based Editing + editing.md
+  NO  --&gt; creating.md</code></pre>
+
+<h2>Python OOXML Scripts</h2>
+<p>When officecli reaches its limits, the skill falls back to these Python scripts:</p>
+<table>
+<tr><th>Script</th><th>Purpose</th><th>Command</th></tr>
+<tr><td><code>scripts/docx_cli.py</code></td><td>Unified Python CLI &mdash; unpack, save, validate, repair, search, TOC, chunk, comment, accept-changes, merge-runs</td><td><code>python3 scripts/docx_cli.py {open|save|validate|repair|text|search|...}</code></td></tr>
+<tr><td><code>scripts/accept_changes.py</code></td><td>Accept all tracked changes</td><td><code>python3 scripts/accept_changes.py IN.docx OUT.docx</code></td></tr>
+<tr><td><code>scripts/comment.py</code></td><td>Add W3C-compliant OOXML comments anchored to text</td><td><code>python3 scripts/comment.py IN.docx OUT.docx --text "..." --anchor "..."</code></td></tr>
+<tr><td><code>scripts/ooxml/merge_runs.py</code></td><td>Merge adjacent runs with identical formatting</td><td><code>python3 scripts/ooxml/merge_runs.py unpacked/</code></td></tr>
+<tr><td><code>scripts/ooxml/redline_diff.py</code></td><td>Validate tracked-change correctness vs original</td><td><code>python3 scripts/ooxml/redline_diff.py unpacked/ original.docx</code></td></tr>
+<tr><td><code>scripts/ooxml/simplify_tracked.py</code></td><td>Simplify same-author adjacent tracked changes</td><td><code>python3 scripts/ooxml/simplify_tracked.py unpacked/</code></td></tr>
+</table>
+
+<h2>Reference Materials</h2>
+<table>
+<tr><th>File</th><th>Read When</th><th>Contains</th></tr>
+<tr><td><code>references/cjk-handling.md</code></td><td>Korean text / East Asian font / wrapping issues</td><td><code>rFonts</code> East Asian fonts, <code>lang</code> tags, accessibility</td></tr>
+<tr><td><code>references/tracked-changes.md</code></td><td>Track changes / comments / redline work</td><td><code>w:ins</code>, <code>w:del</code>, comments XML, script usage examples</td></tr>
+</table>
+
+<h2>Design Principles for Business Documents</h2>
+
+<h3>Heading Hierarchy</h3>
+<ul>
+<li><strong>H1:</strong> Document title (one per document)</li>
+<li><strong>H2:</strong> Major sections</li>
+<li><strong>H3:</strong> Subsections under H2</li>
+<li>Never skip levels (H1 &rarr; H3 is invalid). Table of Contents depends on correct heading structure.</li>
+</ul>
+<pre><code># Verify heading hierarchy
+officecli view report.docx outline</code></pre>
+
+<h3>Color Palette</h3>
+<table>
+<tr><th>Purpose</th><th>Allowed Colors</th><th>Hex Examples</th></tr>
+<tr><td>Headings, emphasis</td><td>Navy</td><td><code>#003366</code>, <code>#1B2A4A</code></td></tr>
+<tr><td>Body accents, borders</td><td>Charcoal</td><td><code>#333333</code>, <code>#4A4A4A</code></td></tr>
+<tr><td>Highlights, callouts</td><td>Forest green</td><td><code>#2E5E3F</code>, <code>#1A4731</code></td></tr>
+</table>
+<p><strong>Never</strong> use rainbow colors, bright primary colors, or more than 3 accent colors in a single document.</p>
+
+<h3>Font Selection</h3>
+<table>
+<tr><th>Script</th><th>Primary Font</th><th>Fallback</th></tr>
+<tr><td>Korean</td><td>Malgun Gothic</td><td>Pretendard</td></tr>
+<tr><td>English / Latin</td><td>Calibri</td><td>Aptos</td></tr>
+</table>
+
+<h3>Typography</h3>
+<p>Body text: 11-12pt. Headings step up: <strong>H1 = 18pt minimum</strong> (20pt preferred for long documents), <strong>H2 = 14pt bold</strong>, <strong>H3 = 12pt bold</strong>. Line spacing of 1.15x-1.5x for body text.</p>
+
+<h3>Content-to-Element Mapping</h3>
+<table>
+<tr><th>Content Type</th><th>Recommended Element</th><th>Why</th></tr>
+<tr><td>Sequential items</td><td>Bulleted list (<code>listStyle=bullet</code>)</td><td>Scanning is faster than inline commas</td></tr>
+<tr><td>Step-by-step process</td><td>Numbered list (<code>listStyle=numbered</code>)</td><td>Numbers communicate order</td></tr>
+<tr><td>Comparative data</td><td>Table with header row</td><td>Columns enable side-by-side comparison</td></tr>
+<tr><td>Trend data</td><td>Embedded chart (<code>chartType=line/column</code>)</td><td>Visual pattern recognition</td></tr>
+<tr><td>Key definition</td><td>Hanging indent paragraph</td><td>Offset term from definition</td></tr>
+<tr><td>Legal/contract clause</td><td>Numbered list with bookmarks</td><td>Cross-referencing via bookmarks</td></tr>
+<tr><td>Mathematical content</td><td>Equation element (<code>formula=LaTeX</code>)</td><td>Proper OMML rendering</td></tr>
+<tr><td>Citation/reference</td><td>Footnote or endnote</td><td>Keeps body text clean</td></tr>
+<tr><td>Pull quote / callout</td><td>Paragraph with border + shading</td><td>Visual distinction from body</td></tr>
+<tr><td>Multi-section layout</td><td>Section breaks with columns</td><td>Column control per section</td></tr>
+</table>
+
+<h2>Mandatory Verification</h2>
+<div class="callout callout-info"><strong>Never skip verification.</strong> After ANY DOCX creation or edit, both steps below are mandatory.</div>
+
+<pre><code># Step 1: Structural validation
+officecli validate output.docx
+
+# Step 2: Visual PDF verification
+soffice --headless --convert-to pdf --outdir /tmp output.docx
+# Open/inspect PDF to confirm: formatting, tables, images, headers/footers</code></pre>
+
+<ul>
+<li>Skipping PDF verification = <strong>unverified output</strong></li>
+<li>If <code>validate</code> reports errors, fix them before delivering the file</li>
+</ul>
+
+<h2>QA Checklist</h2>
+<p><strong>Assume there are problems. Your job is to find them.</strong></p>
+
+<h3>Issue Detection</h3>
+<pre><code>officecli view doc.docx issues
+officecli view doc.docx issues --type format
+officecli view doc.docx issues --type content
+officecli view doc.docx issues --type structure</code></pre>
+
+<h3>Content QA</h3>
+<pre><code>officecli view doc.docx text
+officecli view doc.docx outline
+officecli query doc.docx 'p:empty'
+officecli query doc.docx 'image:no-alt'
+
+# Check for leftover placeholders
+officecli query doc.docx 'p:contains("lorem")'
+officecli query doc.docx 'p:contains("placeholder")'</code></pre>
+
+<h3>Pre-Delivery Checklist</h3>
+<ul>
+<li>Metadata set (title, author)</li>
+<li>PAGE field injected in footer via <code>raw-set</code> &mdash; verify with <code>officecli get doc.docx "/footer[2]" --depth 3</code></li>
+<li>First-page footer added if document has a cover page</li>
+<li>Cover page content fills at least 60% of the page</li>
+<li>TOC present when document has 3+ headings</li>
+<li>Last page content fills at least 40% of the page</li>
+<li>Heading hierarchy correct (no skipped levels)</li>
+<li>No empty paragraphs used as spacing</li>
+<li>All images have alt text</li>
+<li>Tables have header rows</li>
+<li>Document validates with <code>officecli validate</code></li>
+<li>No placeholder text remaining</li>
+</ul>
+
+<h3>Verification Loop</h3>
+<ol>
+<li>Generate document</li>
+<li>Run <code>view issues</code> + <code>view outline</code> + <code>view text</code> + <code>validate</code></li>
+<li>List issues found (if none, look again more critically)</li>
+<li>Fix issues</li>
+<li>Re-verify &mdash; one fix often creates another problem</li>
+<li>Repeat until a full pass reveals no new issues</li>
+</ol>
+<p><strong>Do not declare success until you have completed at least one fix-and-verify cycle.</strong></p>
+
+<h2>Common Pitfalls</h2>
+<table>
+<tr><th>Pitfall</th><th>Correct Approach</th></tr>
+<tr><td><code>--name "foo"</code></td><td>Use <code>--prop name="foo"</code> &mdash; all attributes go through <code>--prop</code></td></tr>
+<tr><td>Guessing property names</td><td>Run <code>officecli help docx set paragraph --json</code> for exact names</td></tr>
+<tr><td><code>\n</code> in shell strings</td><td>Use <code>\\n</code> for newlines in <code>--prop text="line1\\nline2"</code></td></tr>
+<tr><td>Hex colors with <code>#</code></td><td>Use <code>FF0000</code> not <code>#FF0000</code> &mdash; no hash prefix</td></tr>
+<tr><td>Paths are 1-based</td><td><code>/body/p[1]</code>, <code>/body/tbl[1]</code> &mdash; XPath convention</td></tr>
+<tr><td><code>--index</code> is 0-based</td><td><code>--index 0</code> = first position &mdash; array convention</td></tr>
+<tr><td>Unquoted <code>[N]</code> in zsh/bash</td><td>Shell glob-expands <code>/body/p[1]</code> &mdash; always quote paths: <code>"/body/p[1]"</code></td></tr>
+<tr><td>Spacing via empty paragraphs</td><td>Use <code>spaceBefore</code>/<code>spaceAfter</code> properties on paragraphs</td></tr>
+<tr><td><code>$</code> in <code>--prop text=</code></td><td>Use single quotes: <code>--prop text='$50M'</code></td></tr>
+<tr><td><code>--prop field=page</code> in footer</td><td><strong>Silently ignored.</strong> Must use <code>raw-set</code> to inject <code>&lt;w:fldChar&gt;</code></td></tr>
+<tr><td>Recreating styles from template</td><td><code>cp source.docx target.docx</code> first &mdash; do not add styles with existing IDs</td></tr>
+<tr><td><code>officecli open</code> as background shell</td><td>Run foreground &mdash; <code>open</code> returns immediately, daemon runs in bg automatically</td></tr>
+<tr><td>Batch JSON parse error</td><td>Use heredoc: <code>cat &lt;&lt;'EOF' | officecli batch FILE.docx</code></td></tr>
+<tr><td>OMML equation creation</td><td>officecli cannot generate OMML &mdash; escalate to L4</td></tr>
+<tr><td><code>listStyle</code> on run</td><td><code>listStyle</code> is a paragraph property, not a run property</td></tr>
+<tr><td>Row-level bold/color/shd</td><td>Row <code>set</code> only supports <code>height</code>, <code>header</code>, and <code>c1/c2/c3</code> text shortcuts &mdash; use cell-level <code>set</code></td></tr>
+<tr><td>Section vs root property names</td><td>Section uses <code>pagewidth</code>/<code>pageheight</code> (lowercase). Document root uses <code>pageWidth</code>/<code>pageHeight</code> (camelCase)</td></tr>
+<tr><td>Wrong border format</td><td>Use <code>style;size;color;space</code> format: <code>single;4;FF0000;1</code></td></tr>
+<tr><td>Code block indentation via spaces</td><td>Use <code>ind.left</code> paragraph property (e.g. <code>--prop ind.left=720</code>)</td></tr>
+<tr><td><code>chartType=pie</code>/<code>doughnut</code> in LibreOffice</td><td>Slices are invisible in PDF &mdash; use <code>column</code> or <code>bar</code> instead</td></tr>
+</table>
+
+<h2>Known Issues</h2>
+<table>
+<tr><th>Issue</th><th>Workaround</th></tr>
+<tr><td>No visual preview</td><td>Unlike pptx (SVG/HTML), docx has no built-in rendering. Use <code>view text</code>/<code>outline</code>/<code>annotated</code>/<code>issues</code> for verification. Open in Word for visual check.</td></tr>
+<tr><td>Track changes creation requires raw XML</td><td>OfficeCLI can accept/reject but cannot create tracked changes. Use <code>raw-set</code> or Python scripts (L3).</td></tr>
+<tr><td>Tab stops may require raw XML</td><td>Tab stop creation is not exposed in high-level commands. Use <code>raw-set</code>.</td></tr>
+<tr><td>Chart series cannot be added after creation</td><td><code>set --prop data=</code> can only update existing series. Delete and recreate the chart.</td></tr>
+<tr><td>Complex numbering definitions</td><td><code>listStyle=bullet/numbered</code> covers simple cases. For multi-level lists, use <code>numId</code>/<code>numLevel</code>.</td></tr>
+<tr><td>Batch intermittent failure</td><td>~1-in-15 batch operations may fail. Retry or close/reopen file. Split large batches into 10-15 chunks.</td></tr>
+<tr><td>Table-level padding produces invalid XML</td><td>Do not use <code>set tbl[N] --prop padding=N</code>. Use cell-level <code>padding.top</code>/<code>padding.bottom</code>.</td></tr>
+<tr><td>Internal hyperlinks not supported</td><td><code>hyperlink</code> only accepts absolute URIs. Use <code>raw-set</code> with <code>&lt;w:hyperlink w:anchor="..."&gt;</code>.</td></tr>
+<tr><td>Table <code>--index</code> positioning unreliable</td><td><code>--index N</code> on <code>add /body --type table</code> may be ignored. Add content in desired order.</td></tr>
+<tr><td><code>view text</code> shows "1." for all numbered items</td><td>Display-only limitation. Rendered output in Word/LibreOffice shows correct numbers.</td></tr>
+</table>
+
+<h2>Anti-Patterns (Must Avoid)</h2>
+<ul>
+<li><strong>Placeholder data:</strong> Never leave "Acme Corp", "Alice Chen", "Lorem ipsum" in output. If the user has not provided data, <strong>ask</strong>.</li>
+<li><strong>Footer PAGE fields:</strong> When setting page numbers via <code>raw-set</code>, the XML structure must be exact (fldChar/instrText/fldChar sequence).</li>
+<li><strong>Empty paragraphs for spacing:</strong> Use <code>spacing-after</code> properties.</li>
+<li><strong>Manual bullet characters</strong> (-, *): Use <code>listStyle=bullet</code> or <code>listStyle=number</code>.</li>
+<li><strong>Manual font XML injection:</strong> Use <code>--prop font=...</code> when it suffices.</li>
+<li><strong>Ignoring reference materials:</strong> If a complex task fails with officecli, read <code>references/*.md</code> and check <code>scripts/*.py</code> before giving up.</li>
+<li><strong>Recreating existing styles:</strong> When user provides a source file, copy it and modify &mdash; do not rebuild styles from scratch.</li>
+</ul>
+
+<h2>Tool Discovery</h2>
+<p>Always confirm syntax from help before guessing:</p>
+<pre><code>officecli --help
+officecli help docx
+officecli help docx add
+officecli help docx set
+officecli help docx query
+officecli help docx add paragraph --json
+officecli help docx set run --json</code></pre>
+
+<h2>Dependencies</h2>
+<table>
+<tr><th>Tool</th><th>Purpose</th><th>Status</th></tr>
+<tr><td><code>officecli</code> (PATH)</td><td>Primary DOCX CLI &mdash; global install includes CJK fork</td><td>Required</td></tr>
+<tr><td><code>dotnet</code></td><td>Runtime/build for officecli</td><td>Required for fork builds</td></tr>
+<tr><td><code>python3</code></td><td>Fallback scripts (<code>scripts/*.py</code>)</td><td>Required for L3/L4</td></tr>
+<tr><td><code>lxml</code></td><td>Python XML processing for <code>scripts/ooxml/*</code></td><td>Required for L3/L4</td></tr>
+<tr><td><code>soffice</code></td><td>PDF conversion / .doc migration / macro workflows</td><td>Optional fallback</td></tr>
+<tr><td><code>pdftoppm</code></td><td>Image-based QA after PDF render</td><td>Optional fallback</td></tr>
+</table>
+
+<h3>Prerequisite Check</h3>
+<pre><code># Required
+python3 -c "import docx, lxml" || echo "MISSING: pip install python-docx lxml"
+
+# On-demand: LibreOffice
+which soffice &gt;/dev/null 2&gt;&amp;1 || echo "INFO: LibreOffice not installed"
+
+# On-demand: OfficeCLI
+which officecli &gt;/dev/null 2&gt;&amp;1 || echo "INFO: OfficeCLI not installed"</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">Productivity Skills</a>
+<a class="next" href="hwp.html">HWP Documents</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

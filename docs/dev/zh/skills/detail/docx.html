@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word 文档 — podex 文档</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">快速入门</div>
+      <a class="docs-nav-link" href="../../">概述</a>
+      <a class="docs-nav-link" href="../../quickstart.html">快速开始</a>
+      <a class="docs-nav-link" href="../../quickstart-first-run.html">首次运行</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">核心概念</div>
+      <a class="docs-nav-link" href="../../concepts/architecture.html">架构</a>
+      <a class="docs-nav-link" href="../../concepts/employees.html">员工</a>
+      <a class="docs-nav-link" href="../../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../../concepts/goals.html">目标</a>
+      <a class="docs-nav-link" href="../../concepts/skills.html">技能</a>
+      <a class="docs-nav-link" href="../../concepts/memory.html">记忆</a>
+      <a class="docs-nav-link" href="../../concepts/prompts.html">提示词</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">使用指南</div>
+      <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
+      <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../../guides/computer-use.html">计算机操控</a>
+      <a class="docs-nav-link" href="../../guides/electron.html">Electron 桌面端</a>
+      <a class="docs-nav-link" href="../../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">参考手册</div>
+      <a class="docs-nav-link" href="../../reference/cli.html">CLI 命令</a>
+      <a class="docs-nav-link" href="../../reference/api.html">服务器 API</a>
+      <a class="docs-nav-link" href="../../reference/config.html">配置</a>
+      <a class="docs-nav-link" href="../../reference/keyboard.html">键盘快捷键</a>
+      <a class="docs-nav-link" href="../../reference/events.html">事件</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">技能</div>
+      <a class="docs-nav-link" href="../index.html">技能目录</a>
+      <a class="docs-nav-link" href="../orchestration.html">开发</a>
+      <a class="docs-nav-link" href="../automation.html">自动化</a>
+      <a class="docs-nav-link" href="../ai-media.html">AI 媒体</a>
+      <a class="docs-nav-link" href="../communication.html">通信</a>
+      <a class="docs-nav-link" href="../devtools-cloud.html">云与部署</a>
+      <a class="docs-nav-link" href="../devtools-security.html">安全与审查</a>
+      <a class="docs-nav-link" href="../devtools-workflow.html">开发工作流</a>
+      <a class="docs-nav-link active" href="../productivity.html">生产力</a>
+      <a class="docs-nav-link" href="../smarthome.html">智能家居</a>
+      <a class="docs-nav-link" href="../utility.html">实用工具</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">命令</div>
+      <a class="docs-nav-link" href="../../commands/session.html">会话</a>
+      <a class="docs-nav-link" href="../../commands/workflow.html">工作流</a>
+      <a class="docs-nav-link" href="../../commands/model.html">模型与 CLI</a>
+      <a class="docs-nav-link" href="../../commands/tools.html">工具</a>
+      <a class="docs-nav-link" href="../../commands/cli-only.html">仅 CLI</a>
+      <a class="docs-nav-link" href="../../commands/root-cli.html">根 CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../../changelog.html">更新日志</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../../">EN</a>
+    <a href="../../ko/">&#xD55C;&#xAD6D;&#xC5B4;</a>
+    <a href="../../zh/">&#x4E2D;&#x6587;</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../../">落地页</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Word 文档</h1>
+<p class="lead">.docx 创建、编辑、读取及视觉验证</p>
+
+<div class="callout callout-info"><strong>默认启用：是</strong> &mdash; <code>docx</code> 技能默认可用，当您提到 Word 文档、<code>.docx</code> 文件、报告、备忘录、信函或模板时会自动触发。无需手动加载。</div>
+
+<h2>概述</h2>
+<p><code>docx</code> 技能涵盖 Word 文档的完整生命周期：从零创建、编辑现有文件、读取与分析、基于模板生成、修订管理，以及强制性视觉 QA 验证。该技能仅适用于 <code>.docx</code> 文件 &mdash; 不包括 PDF、电子表格、HWPX 或 Google Docs。</p>
+
+<p>主要工具是 <strong>officecli</strong>，一个位于 PATH 上的命令行工具，可处理约 80% 的任务（add、set、remove、validate、query、track-change accept/reject）。对于 officecli 无法处理的任务 &mdash; 修订的<em>创建</em>、OMML 公式、批量模式匹配 &mdash; 该技能会回退到 <code>scripts/</code> 中的 <strong>Python OOXML 脚本</strong>。</p>
+
+<h2>触发条件</h2>
+<table>
+<tr><th>模式</th><th>示例</th></tr>
+<tr><td>文件扩展名</td><td><code>.docx</code>、Word 文档</td></tr>
+<tr><td>文档类型</td><td>报告、备忘录、信函、提案、合同</td></tr>
+<tr><td>关键词</td><td>"Word doc"、"template"、"tracked changes"、"table of contents"</td></tr>
+<tr><td>韩语触发词</td><td>"워드 문서"、"보고서 만들어줘"、"문서 작성해줘"</td></tr>
+</table>
+
+<h2>快速参考</h2>
+<table>
+<tr><th>任务</th><th>工具</th><th>命令模式</th><th>备注</th></tr>
+<tr><td>按现有文档格式化</td><td>shell + officecli</td><td><code>cp source.docx target.docx &amp;&amp; officecli open target.docx</code></td><td>继承样式/页眉/页脚</td></tr>
+<tr><td>创建空白 DOCX</td><td>officecli</td><td><code>officecli create report.docx</code></td><td>从真实 Office 文件开始</td></tr>
+<tr><td>添加段落</td><td>officecli</td><td><code>officecli add FILE /body --type paragraph --prop text="..."</code></td><td>主要写入路径</td></tr>
+<tr><td>编辑段落/运行</td><td>officecli</td><td><code>officecli set FILE /body/p[N] --prop ...</code></td><td>精确路径定位</td></tr>
+<tr><td>读取文本/大纲/统计</td><td>officecli</td><td><code>officecli view FILE text</code></td><td>模式：text、annotated、outline、stats、issues、html</td></tr>
+<tr><td>查询文档</td><td>officecli</td><td><code>officecli query FILE "p[style=Heading1]"</code></td><td>类 CSS 选择器</td></tr>
+<tr><td>模板替换</td><td>officecli</td><td><code>officecli set FILE / --prop find="{{X}}" --prop replace="Y"</code></td><td>保留模板结构</td></tr>
+<tr><td>验证/问题扫描</td><td>officecli</td><td><code>officecli validate FILE</code></td><td>配合 <code>view FILE issues</code> 使用</td></tr>
+<tr><td>接受/拒绝修订</td><td>officecli</td><td><code>officecli set FILE / --prop accept-changes=all</code></td><td>也支持 <code>reject-changes=all</code></td></tr>
+<tr><td>创建修订</td><td>Python (L3/L4)</td><td><code>scripts/docx_cli.py</code> + <code>ooxml/redline_diff.py</code></td><td>officecli 无法创建 &mdash; 只能接受/拒绝</td></tr>
+<tr><td>OMML 公式</td><td>Python (L4)</td><td>解压 &rarr; 注入 <code>&lt;m:oMath&gt;</code> &rarr; 重新打包</td><td>officecli 无法生成 OMML</td></tr>
+<tr><td>复杂锚定批注</td><td>Python (L3)</td><td><code>python3 scripts/comment.py IN OUT --text "..." --anchor "..."</code></td><td>用于超出 officecli 能力的批注</td></tr>
+<tr><td>PDF 转换/视觉 QA</td><td>soffice</td><td><code>soffice --headless --convert-to pdf FILE</code></td><td>基于截图的 QA</td></tr>
+</table>
+
+<h2>"~해줘" 用法示例</h2>
+
+<div class="callout callout-info">
+<strong>"분기 보고서 만들어줘"</strong><br>
+从零创建季度报告文档，包含正确的标题层级、目录、表格和专业排版。使用 <code>officecli create</code> &rarr; 添加结构 &rarr; 验证 &rarr; PDF 确认。
+</div>
+
+<div class="callout callout-info">
+<strong>"이 문서 형식에 맞춰서 새로 작성해줘"</strong><br>
+基于参考文件编辑：复制源文件以继承所有样式、页眉和页脚，然后替换正文内容同时保留文档的视觉标识。请参阅下方的"基于参考文件编辑"工作流。
+</div>
+
+<div class="callout callout-info">
+<strong>"이 워드 문서 내용 요약해줘"</strong><br>
+使用 <code>officecli view FILE text</code> 和 <code>view FILE outline</code> 读取并分析文档，然后提供标题、关键内容和文档统计信息的结构化摘要。
+</div>
+
+<div class="callout callout-info">
+<strong>"변경사항 추적해서 수정해줘"</strong><br>
+通过 Python OOXML 脚本创建修订（红线标记），因为 officecli 只能接受/拒绝修订而无法创建修订。会自动升级到 L3/L4。
+</div>
+
+<div class="callout callout-info">
+<strong>"문서 템플릿에 데이터 채워줘"</strong><br>
+使用 <code>officecli set FILE / --prop find="{{X}}" --prop replace="Y"</code> 进行模板安全替换，在保留模板格式和结构的同时填充占位符。
+</div>
+
+<h2>基于参考文件编辑</h2>
+<p>当用户说"按照 X.docx 的格式"、"匹配现有样式"、"基于模板"，或提供源文件时 &mdash; <strong>始终从源文件开始</strong>。切勿从零重建。</p>
+
+<h3>工作流</h3>
+<ol>
+<li><strong>复制源文件：</strong> <code>cp source.docx target.docx</code> &mdash; 继承所有样式、边距、编号、页眉、页脚</li>
+<li><strong>打开：</strong> <code>officecli open target.docx</code> &mdash; 守护进程启动；命令立即返回</li>
+<li><strong>仅删除正文内容</strong> &mdash; 保留 <code>/styles</code>、<code>/numbering</code>、<code>/header</code>、<code>/footer</code></li>
+<li><strong>使用现有样式名称添加新段落</strong>（例如 <code>--prop style=Heading1</code>）&mdash; 样式会自动应用</li>
+</ol>
+
+<h3>为什么这很重要</h3>
+<p>Pandoc 生成的和 Word 生成的文档具有特定的样式 ID（例如 <code>Heading1</code>、<code>BodyText</code>、<code>FirstParagraph</code>），这些 ID 对该文档来说是唯一的。添加同名的新样式会导致：</p>
+<ul>
+<li><code>officecli validate</code> 报告重复样式 ID 错误</li>
+<li>Word/LibreOffice 渲染回退到默认设置</li>
+<li>任务耗时增加 10 倍</li>
+</ul>
+
+<h3>模板优先级</h3>
+<ol>
+<li><strong>用户提供的源文件</strong> &mdash; 一等模板</li>
+<li><strong><code>tests/fixtures/*.docx</code></strong> &mdash; 技能自带的预构建工作示例</li>
+<li><strong><code>officecli create</code> 空白文件</strong> &mdash; 仅在无其他选择时使用</li>
+</ol>
+
+<pre><code># 正确做法：继承 Pandoc 样式
+cp Assignment1.docx Assignment2.docx
+officecli open Assignment2.docx
+officecli remove Assignment2.docx "/body/p[1]"   # 删除旧正文（保留样式/页眉/页脚）
+# ... 删除更多段落 ...
+officecli add Assignment2.docx /body --type paragraph --prop text="New title" --prop style=Heading1
+officecli close Assignment2.docx
+
+# 错误做法：重新创建已存在的样式 -- validate 会失败
+officecli add doc.docx /styles --type style --prop name=Heading1 --prop size=20pt ...</code></pre>
+
+<h2>升级阶梯</h2>
+<p>当 officecli 无法完成任务时，按以下顺序升级：</p>
+<table>
+<tr><th>级别</th><th>何时使用</th><th>工具</th></tr>
+<tr><td><strong>L1</strong> officecli 高层级</td><td>典型的 add/set/remove 操作</td><td><code>officecli add/set/remove/query/view</code></td></tr>
+<tr><td><strong>L2</strong> officecli raw-set</td><td>XML 注入 &mdash; PAGE 字段、fldChar、超链接锚点、自定义属性</td><td><code>officecli raw-set FILE PATH --xpath X --action A --xml ...</code></td></tr>
+<tr><td><strong>L3</strong> Python 脚本</td><td>批量修订操作、添加批注、合并 run、红线验证</td><td><code>python3 scripts/*.py</code></td></tr>
+<tr><td><strong>L4</strong> 解压 &rarr; 编辑 XML &rarr; 重新打包</td><td>OMML 公式、自定义样式注入、模式匹配编辑</td><td><code>scripts/docx_cli.py open FILE work/</code> &rarr; 编辑 XML &rarr; <code>scripts/docx_cli.py save work/ OUT.docx</code></td></tr>
+</table>
+
+<h3>升级信号</h3>
+<ul>
+<li>officecli 显示 <strong>"silently ignored"</strong> &rarr; <strong>L2</strong> (raw-set)</li>
+<li>需要 <strong>OMML/MathML 公式</strong> &rarr; <strong>L4</strong>（注入 <code>&lt;m:oMath&gt;</code> XML）</li>
+<li>需要<strong>创建</strong>修订（officecli 只能接受/拒绝）&rarr; <strong>L3</strong> 或 <strong>L4</strong></li>
+<li><strong>批量查找/替换</strong>超过 100 个目标 &rarr; <strong>L3</strong>（<code>docx_cli.py search/replace</code>）</li>
+<li><strong>Pandoc 生成的</strong>文档包含自定义样式 ID &rarr; 先使用"基于参考文件编辑"</li>
+<li>任务在 <strong>L1+L2 后仍然失败</strong> &rarr; 在放弃之前阅读相关的 <code>references/*.md</code></li>
+</ul>
+
+<h2>核心工作流</h2>
+
+<h3>执行模型</h3>
+<p><strong>逐条执行命令。</strong>不要将所有命令写入 shell 脚本并作为单个块执行。OfficeCLI 是增量式的：每个 <code>add</code>、<code>set</code> 和 <code>remove</code> 都会立即修改文件并返回输出。</p>
+<ol>
+<li><strong>逐条执行命令，然后查看输出。</strong>在继续之前检查退出码。</li>
+<li><strong>非零退出码 = 立即停止并修复。</strong>不要在损坏状态上继续构建。</li>
+<li><strong>在结构性操作后进行验证。</strong>添加样式、表格、图表或节之后，先运行 <code>get</code> 或 <code>validate</code> 再在其上继续构建。</li>
+</ol>
+
+<h3>读取与分析</h3>
+<pre><code>officecli view doc.docx text                    # 完整文本提取
+officecli view doc.docx text --max-lines 200    # 截断提取
+officecli view doc.docx text --start 1 --end 50 # 范围提取
+officecli view doc.docx outline                 # 结构：统计、标题、页眉/页脚
+officecli view doc.docx annotated               # 每个 run 的样式/字体/大小，公式显示为 LaTeX
+officecli view doc.docx stats                   # 段落数、样式/字体分布</code></pre>
+
+<h3>元素检查</h3>
+<pre><code>officecli get doc.docx /                        # 文档根节点（元数据、页面设置）
+officecli get doc.docx /body --depth 1           # 列出正文子元素
+officecli get doc.docx "/body/p[1]"              # 指定段落
+officecli get doc.docx "/body/p[1]/r[1]"         # 指定 run
+officecli get doc.docx "/body/tbl[1]" --depth 3  # 表格结构
+officecli get doc.docx /styles                   # 样式定义
+officecli get doc.docx "/styles/Heading1"        # 指定样式
+officecli get doc.docx "/header[1]"              # 页眉/页脚
+officecli get doc.docx /numbering                # 编号定义
+officecli get doc.docx "/body/p[1]" --json       # 用于脚本的 JSON 输出</code></pre>
+
+<h3>类 CSS 查询</h3>
+<pre><code>officecli query doc.docx 'paragraph[style=Heading1]'            # 按样式
+officecli query doc.docx 'p:contains("quarterly")'              # 按文本内容
+officecli query doc.docx 'p:empty'                              # 空段落
+officecli query doc.docx 'image:no-alt'                         # 无替代文本的图片
+officecli query doc.docx 'p[align=center] &gt; r[bold=true]'      # 复合选择器
+officecli query doc.docx 'paragraph[size&gt;=24pt]'                # 按大小
+officecli query doc.docx 'field[fieldType!=page]'               # 按类型筛选字段</code></pre>
+
+<h3>页眉与页脚</h3>
+<div class="callout callout-info"><strong>已知 CLI 缺陷：</strong> 在 <code>add --type footer</code> 命令中 <code>--prop field=page</code> 会被<strong>静默忽略</strong>。页脚只会创建静态文本。您<strong>必须</strong>在创建页脚后使用 <code>raw-set</code> 注入 PAGE 字段。</div>
+
+<pre><code># 步骤 1：为封面页创建空页脚（自动启用 differentFirstPage）
+officecli add doc.docx / --type footer --prop type=first --prop text=""
+
+# 步骤 2：带有静态 "Page " 文本的默认页脚
+officecli add doc.docx / --type footer --prop text="Page " \
+  --prop type=default --prop align=center --prop size=9pt --prop font=Calibri
+
+# 步骤 3：通过 raw-set 注入 PAGE 字段
+# （footer[2] = 当首页页脚也存在时的默认页脚）
+officecli raw-set doc.docx "/footer[2]" \
+  --xpath "//w:p" \
+  --action append \
+  --xml '&lt;w:r ...&gt;&lt;w:fldChar w:fldCharType="begin"/&gt;&lt;/w:r&gt;
+         &lt;w:r ...&gt;&lt;w:instrText xml:space="preserve"&gt; PAGE &lt;/w:instrText&gt;&lt;/w:r&gt;
+         &lt;w:r ...&gt;&lt;w:fldChar w:fldCharType="end"/&gt;&lt;/w:r&gt;'</code></pre>
+
+<p><strong>页脚索引规则：</strong>当同时添加了首页页脚和默认页脚时，默认页脚是 <code>/footer[2]</code>。如果没有首页页脚，默认页脚是 <code>/footer[1]</code>。始终使用 <code>officecli get doc.docx "/footer[2]"</code> 进行验证。</p>
+
+<h3>驻留模式（性能优化）</h3>
+<p><strong>始终使用 <code>open</code>/<code>close</code> &mdash; 这是明智的默认做法。</strong>每条命令都无需重复文件 I/O。</p>
+<pre><code>officecli open doc.docx           # 一次性加载到内存（立即返回）
+officecli add doc.docx ...        # 所有命令在内存中运行 -- 速度快
+officecli set doc.docx ...
+officecli close doc.docx          # 一次性写入磁盘</code></pre>
+
+<div class="callout callout-info"><strong>警告：</strong>不要将 <code>officecli open</code> 作为后台 shell 任务运行（例如通过 <code>run_in_background</code>）。它会立即返回，守护进程自动在后台运行。将其作为受监控的 shell 运行会产生僵尸进程和文件锁。</div>
+
+<h3>批处理模式</h3>
+<p>在单个 open/save 周期内执行多个操作：</p>
+<pre><code>cat &lt;&lt;'EOF' | officecli batch doc.docx
+[
+  {"command":"add","parent":"/body","type":"paragraph",
+   "props":{"text":"Introduction","style":"Heading1"}},
+  {"command":"add","parent":"/body","type":"paragraph",
+   "props":{"text":"This report covers Q4 results.","font":"Calibri","size":"11pt"}}
+]
+EOF</code></pre>
+<p>批处理支持：<code>add</code>、<code>set</code>、<code>get</code>、<code>query</code>、<code>remove</code>、<code>move</code>、<code>swap</code>、<code>view</code>、<code>raw</code>、<code>raw-set</code>、<code>validate</code>。</p>
+
+<h2>子技能参考</h2>
+<p>更多细节存放在按需加载的伴随文件中：</p>
+<table>
+<tr><th>子技能</th><th>使用场景</th></tr>
+<tr><td><strong>officecli-academic-paper</strong></td><td>学术论文、引用、参考文献、论文目录</td></tr>
+<tr><td><strong>creating.md</strong></td><td>详细的创建方法（从零创建新文档）</td></tr>
+<tr><td><strong>editing.md</strong></td><td>详细的编辑指南（修改现有文档）</td></tr>
+</table>
+
+<h3>决策流程</h3>
+<pre><code>文档是否为学术论文（毕业论文、期刊、会议论文）？
+  是 --&gt; 阅读 officecli-academic-paper/SKILL.md
+  否 --&gt; 继续使用主技能
+
+用户是否提供了要匹配的源文件？
+  是 --&gt; 基于参考文件编辑 + editing.md
+  否 --&gt; creating.md</code></pre>
+
+<h2>Python OOXML 脚本</h2>
+<p>当 officecli 达到其极限时，该技能会回退到以下 Python 脚本：</p>
+<table>
+<tr><th>脚本</th><th>用途</th><th>命令</th></tr>
+<tr><td><code>scripts/docx_cli.py</code></td><td>统一 Python CLI &mdash; 解压、保存、验证、修复、搜索、目录、分块、批注、接受修订、合并 run</td><td><code>python3 scripts/docx_cli.py {open|save|validate|repair|text|search|...}</code></td></tr>
+<tr><td><code>scripts/accept_changes.py</code></td><td>接受所有修订</td><td><code>python3 scripts/accept_changes.py IN.docx OUT.docx</code></td></tr>
+<tr><td><code>scripts/comment.py</code></td><td>添加符合 W3C 规范的 OOXML 批注并锚定到文本</td><td><code>python3 scripts/comment.py IN.docx OUT.docx --text "..." --anchor "..."</code></td></tr>
+<tr><td><code>scripts/ooxml/merge_runs.py</code></td><td>合并格式相同的相邻 run</td><td><code>python3 scripts/ooxml/merge_runs.py unpacked/</code></td></tr>
+<tr><td><code>scripts/ooxml/redline_diff.py</code></td><td>验证修订与原始文档的正确性</td><td><code>python3 scripts/ooxml/redline_diff.py unpacked/ original.docx</code></td></tr>
+<tr><td><code>scripts/ooxml/simplify_tracked.py</code></td><td>简化同一作者的相邻修订</td><td><code>python3 scripts/ooxml/simplify_tracked.py unpacked/</code></td></tr>
+</table>
+
+<h2>参考材料</h2>
+<table>
+<tr><th>文件</th><th>何时阅读</th><th>包含内容</th></tr>
+<tr><td><code>references/cjk-handling.md</code></td><td>韩文文本/东亚字体/换行问题</td><td><code>rFonts</code> 东亚字体、<code>lang</code> 标签、无障碍性</td></tr>
+<tr><td><code>references/tracked-changes.md</code></td><td>修订/批注/红线标记工作</td><td><code>w:ins</code>、<code>w:del</code>、批注 XML、脚本使用示例</td></tr>
+</table>
+
+<h2>商务文档设计原则</h2>
+
+<h3>标题层级</h3>
+<ul>
+<li><strong>H1：</strong>文档标题（每篇文档一个）</li>
+<li><strong>H2：</strong>主要章节</li>
+<li><strong>H3：</strong>H2 下的子章节</li>
+<li>切勿跳级（H1 &rarr; H3 无效）。目录依赖正确的标题结构。</li>
+</ul>
+<pre><code># 验证标题层级
+officecli view report.docx outline</code></pre>
+
+<h3>配色方案</h3>
+<table>
+<tr><th>用途</th><th>允许的颜色</th><th>十六进制示例</th></tr>
+<tr><td>标题、强调</td><td>海军蓝</td><td><code>#003366</code>、<code>#1B2A4A</code></td></tr>
+<tr><td>正文装饰、边框</td><td>炭灰色</td><td><code>#333333</code>、<code>#4A4A4A</code></td></tr>
+<tr><td>高亮、标注</td><td>森林绿</td><td><code>#2E5E3F</code>、<code>#1A4731</code></td></tr>
+</table>
+<p><strong>切勿</strong>在单个文档中使用彩虹色、亮原色或超过 3 种强调色。</p>
+
+<h3>字体选择</h3>
+<table>
+<tr><th>文字类型</th><th>主要字体</th><th>备用字体</th></tr>
+<tr><td>韩文</td><td>Malgun Gothic</td><td>Pretendard</td></tr>
+<tr><td>英文/拉丁文</td><td>Calibri</td><td>Aptos</td></tr>
+</table>
+
+<h3>排版规范</h3>
+<p>正文：11-12pt。标题递增：<strong>H1 = 最小 18pt</strong>（长文档推荐 20pt），<strong>H2 = 14pt 加粗</strong>，<strong>H3 = 12pt 加粗</strong>。正文行距 1.15x-1.5x。</p>
+
+<h3>内容到元素的映射</h3>
+<table>
+<tr><th>内容类型</th><th>推荐元素</th><th>原因</th></tr>
+<tr><td>顺序项目</td><td>无序列表（<code>listStyle=bullet</code>）</td><td>比行内逗号分隔更易浏览</td></tr>
+<tr><td>逐步流程</td><td>有序列表（<code>listStyle=numbered</code>）</td><td>数字传达顺序</td></tr>
+<tr><td>对比数据</td><td>带表头行的表格</td><td>列式布局便于并排比较</td></tr>
+<tr><td>趋势数据</td><td>嵌入图表（<code>chartType=line/column</code>）</td><td>视觉化模式识别</td></tr>
+<tr><td>关键定义</td><td>悬挂缩进段落</td><td>将术语与定义分离</td></tr>
+<tr><td>法律/合同条款</td><td>带书签的有序列表</td><td>通过书签进行交叉引用</td></tr>
+<tr><td>数学内容</td><td>公式元素（<code>formula=LaTeX</code>）</td><td>正确的 OMML 渲染</td></tr>
+<tr><td>引用/参考</td><td>脚注或尾注</td><td>保持正文简洁</td></tr>
+<tr><td>引述/标注</td><td>带边框和底纹的段落</td><td>与正文形成视觉区分</td></tr>
+<tr><td>多节布局</td><td>分节符与分栏</td><td>按节控制分栏</td></tr>
+</table>
+
+<h2>强制性验证</h2>
+<div class="callout callout-info"><strong>切勿跳过验证。</strong>在任何 DOCX 创建或编辑之后，以下两个步骤都是强制性的。</div>
+
+<pre><code># 步骤 1：结构验证
+officecli validate output.docx
+
+# 步骤 2：视觉 PDF 验证
+soffice --headless --convert-to pdf --outdir /tmp output.docx
+# 打开/检查 PDF 以确认：格式、表格、图片、页眉/页脚</code></pre>
+
+<ul>
+<li>跳过 PDF 验证 = <strong>未经验证的输出</strong></li>
+<li>如果 <code>validate</code> 报告错误，在交付文件之前修复它们</li>
+</ul>
+
+<h2>QA 检查清单</h2>
+<p><strong>假设存在问题。你的工作就是找到它们。</strong></p>
+
+<h3>问题检测</h3>
+<pre><code>officecli view doc.docx issues
+officecli view doc.docx issues --type format
+officecli view doc.docx issues --type content
+officecli view doc.docx issues --type structure</code></pre>
+
+<h3>内容 QA</h3>
+<pre><code>officecli view doc.docx text
+officecli view doc.docx outline
+officecli query doc.docx 'p:empty'
+officecli query doc.docx 'image:no-alt'
+
+# 检查残留占位符
+officecli query doc.docx 'p:contains("lorem")'
+officecli query doc.docx 'p:contains("placeholder")'</code></pre>
+
+<h3>交付前检查清单</h3>
+<ul>
+<li>已设置元数据（标题、作者）</li>
+<li>通过 <code>raw-set</code> 在页脚中注入了 PAGE 字段 &mdash; 使用 <code>officecli get doc.docx "/footer[2]" --depth 3</code> 验证</li>
+<li>如果文档有封面页，已添加首页页脚</li>
+<li>封面页内容至少填满页面的 60%</li>
+<li>当文档有 3 个以上标题时包含目录</li>
+<li>最后一页内容至少填满页面的 40%</li>
+<li>标题层级正确（无跳级）</li>
+<li>未使用空段落作为间距</li>
+<li>所有图片都有替代文本</li>
+<li>表格有表头行</li>
+<li>文档通过 <code>officecli validate</code> 验证</li>
+<li>无残留占位符文本</li>
+</ul>
+
+<h3>验证循环</h3>
+<ol>
+<li>生成文档</li>
+<li>运行 <code>view issues</code> + <code>view outline</code> + <code>view text</code> + <code>validate</code></li>
+<li>列出发现的问题（如果没有，更严格地再查一遍）</li>
+<li>修复问题</li>
+<li>重新验证 &mdash; 一个修复往往会产生另一个问题</li>
+<li>重复直到完整的一轮检查没有发现新问题</li>
+</ol>
+<p><strong>在至少完成一个"修复-验证"循环之前，不要宣布成功。</strong></p>
+
+<h2>常见陷阱</h2>
+<table>
+<tr><th>陷阱</th><th>正确做法</th></tr>
+<tr><td><code>--name "foo"</code></td><td>使用 <code>--prop name="foo"</code> &mdash; 所有属性都通过 <code>--prop</code> 传递</td></tr>
+<tr><td>猜测属性名称</td><td>运行 <code>officecli help docx set paragraph --json</code> 获取准确名称</td></tr>
+<tr><td>shell 字符串中的 <code>\n</code></td><td>在 <code>--prop text="line1\\nline2"</code> 中使用 <code>\\n</code> 表示换行</td></tr>
+<tr><td>带 <code>#</code> 的十六进制颜色</td><td>使用 <code>FF0000</code> 而非 <code>#FF0000</code> &mdash; 无井号前缀</td></tr>
+<tr><td>路径从 1 开始</td><td><code>/body/p[1]</code>、<code>/body/tbl[1]</code> &mdash; XPath 惯例</td></tr>
+<tr><td><code>--index</code> 从 0 开始</td><td><code>--index 0</code> = 第一个位置 &mdash; 数组惯例</td></tr>
+<tr><td>zsh/bash 中未加引号的 <code>[N]</code></td><td>Shell 会对 <code>/body/p[1]</code> 进行通配符展开 &mdash; 始终给路径加引号：<code>"/body/p[1]"</code></td></tr>
+<tr><td>用空段落做间距</td><td>在段落上使用 <code>spaceBefore</code>/<code>spaceAfter</code> 属性</td></tr>
+<tr><td><code>--prop text=</code> 中的 <code>$</code></td><td>使用单引号：<code>--prop text='$50M'</code></td></tr>
+<tr><td>页脚中的 <code>--prop field=page</code></td><td><strong>被静默忽略。</strong>必须使用 <code>raw-set</code> 注入 <code>&lt;w:fldChar&gt;</code></td></tr>
+<tr><td>从模板重建样式</td><td>先 <code>cp source.docx target.docx</code> &mdash; 不要添加已有 ID 的样式</td></tr>
+<tr><td>将 <code>officecli open</code> 作为后台 shell</td><td>在前台运行 &mdash; <code>open</code> 立即返回，守护进程自动在后台运行</td></tr>
+<tr><td>批处理 JSON 解析错误</td><td>使用 heredoc：<code>cat &lt;&lt;'EOF' | officecli batch FILE.docx</code></td></tr>
+<tr><td>创建 OMML 公式</td><td>officecli 无法生成 OMML &mdash; 升级到 L4</td></tr>
+<tr><td>在 run 上使用 <code>listStyle</code></td><td><code>listStyle</code> 是段落属性，不是 run 属性</td></tr>
+<tr><td>行级 bold/color/shd</td><td>行的 <code>set</code> 仅支持 <code>height</code>、<code>header</code> 和 <code>c1/c2/c3</code> 文本快捷方式 &mdash; 使用单元格级 <code>set</code></td></tr>
+<tr><td>节与根属性名称混淆</td><td>节使用 <code>pagewidth</code>/<code>pageheight</code>（小写）。文档根使用 <code>pageWidth</code>/<code>pageHeight</code>（驼峰式）</td></tr>
+<tr><td>错误的边框格式</td><td>使用 <code>style;size;color;space</code> 格式：<code>single;4;FF0000;1</code></td></tr>
+<tr><td>通过空格缩进代码块</td><td>使用 <code>ind.left</code> 段落属性（例如 <code>--prop ind.left=720</code>）</td></tr>
+<tr><td>LibreOffice 中的 <code>chartType=pie</code>/<code>doughnut</code></td><td>扇区在 PDF 中不可见 &mdash; 改用 <code>column</code> 或 <code>bar</code></td></tr>
+</table>
+
+<h2>已知问题</h2>
+<table>
+<tr><th>问题</th><th>解决方法</th></tr>
+<tr><td>无视觉预览</td><td>与 pptx（SVG/HTML）不同，docx 没有内置渲染。使用 <code>view text</code>/<code>outline</code>/<code>annotated</code>/<code>issues</code> 进行验证。在 Word 中打开进行视觉检查。</td></tr>
+<tr><td>创建修订需要原始 XML</td><td>OfficeCLI 可以接受/拒绝但无法创建修订。使用 <code>raw-set</code> 或 Python 脚本 (L3)。</td></tr>
+<tr><td>制表位可能需要原始 XML</td><td>制表位创建未在高级命令中暴露。使用 <code>raw-set</code>。</td></tr>
+<tr><td>创建后无法添加图表系列</td><td><code>set --prop data=</code> 只能更新现有系列。删除并重建图表。</td></tr>
+<tr><td>复杂编号定义</td><td><code>listStyle=bullet/numbered</code> 涵盖简单情况。多级列表请使用 <code>numId</code>/<code>numLevel</code>。</td></tr>
+<tr><td>批处理间歇性失败</td><td>约每 15 次批处理操作中有 1 次可能失败。重试或 close/reopen 文件。将大批量拆分为 10-15 个块。</td></tr>
+<tr><td>表格级 padding 产生无效 XML</td><td>不要使用 <code>set tbl[N] --prop padding=N</code>。使用单元格级 <code>padding.top</code>/<code>padding.bottom</code>。</td></tr>
+<tr><td>不支持内部超链接</td><td><code>hyperlink</code> 只接受绝对 URI。使用 <code>raw-set</code> 配合 <code>&lt;w:hyperlink w:anchor="..."&gt;</code>。</td></tr>
+<tr><td>表格 <code>--index</code> 定位不可靠</td><td>在 <code>add /body --type table</code> 上的 <code>--index N</code> 可能被忽略。按所需顺序添加内容。</td></tr>
+<tr><td><code>view text</code> 所有编号项都显示 "1."</td><td>仅为显示限制。Word/LibreOffice 中渲染的输出显示正确编号。</td></tr>
+</table>
+
+<h2>反模式（必须避免）</h2>
+<ul>
+<li><strong>占位数据：</strong>输出中切勿留下 "Acme Corp"、"Alice Chen"、"Lorem ipsum"。如果用户未提供数据，<strong>询问用户</strong>。</li>
+<li><strong>页脚 PAGE 字段：</strong>通过 <code>raw-set</code> 设置页码时，XML 结构必须准确（fldChar/instrText/fldChar 序列）。</li>
+<li><strong>用空段落做间距：</strong>使用 <code>spacing-after</code> 属性。</li>
+<li><strong>手动项目符号字符</strong>（-、*）：使用 <code>listStyle=bullet</code> 或 <code>listStyle=number</code>。</li>
+<li><strong>手动字体 XML 注入：</strong>当 <code>--prop font=...</code> 足够时使用它。</li>
+<li><strong>忽略参考材料：</strong>如果 officecli 无法完成复杂任务，在放弃之前阅读 <code>references/*.md</code> 并检查 <code>scripts/*.py</code>。</li>
+<li><strong>重建现有样式：</strong>当用户提供源文件时，复制并修改 &mdash; 不要从零重建样式。</li>
+</ul>
+
+<h2>工具发现</h2>
+<p>在猜测之前始终从帮助中确认语法：</p>
+<pre><code>officecli --help
+officecli help docx
+officecli help docx add
+officecli help docx set
+officecli help docx query
+officecli help docx add paragraph --json
+officecli help docx set run --json</code></pre>
+
+<h2>依赖项</h2>
+<table>
+<tr><th>工具</th><th>用途</th><th>状态</th></tr>
+<tr><td><code>officecli</code> (PATH)</td><td>主要 DOCX CLI &mdash; 全局安装包含 CJK 分支</td><td>必需</td></tr>
+<tr><td><code>dotnet</code></td><td>officecli 的运行时/构建</td><td>分支构建时必需</td></tr>
+<tr><td><code>python3</code></td><td>回退脚本（<code>scripts/*.py</code>）</td><td>L3/L4 时必需</td></tr>
+<tr><td><code>lxml</code></td><td><code>scripts/ooxml/*</code> 的 Python XML 处理</td><td>L3/L4 时必需</td></tr>
+<tr><td><code>soffice</code></td><td>PDF 转换/.doc 迁移/宏工作流</td><td>可选回退</td></tr>
+<tr><td><code>pdftoppm</code></td><td>PDF 渲染后的基于图像的 QA</td><td>可选回退</td></tr>
+</table>
+
+<h3>前置条件检查</h3>
+<pre><code># 必需
+python3 -c "import docx, lxml" || echo "MISSING: pip install python-docx lxml"
+
+# 按需：LibreOffice
+which soffice &gt;/dev/null 2&gt;&amp;1 || echo "INFO: LibreOffice not installed"
+
+# 按需：OfficeCLI
+which officecli &gt;/dev/null 2&gt;&amp;1 || echo "INFO: OfficeCLI not installed"</code></pre>
+
+<div class="page-nav">
+<a class="prev" href="../productivity.html">生产力技能</a>
+<a class="next" href="hwp.html">HWP 文档</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

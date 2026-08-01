@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Root CLI Subcommands — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+<style>
+.cmd-section { margin-bottom: 40px; }
+.cmd-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+.cmd-header h3 { margin: 0; }
+.cmd-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.cmd-badge-server { background: rgba(34, 211, 238, 0.15); color: var(--accent); }
+.cmd-badge-setup { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+.cmd-badge-orch { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+.cmd-badge-auto { background: rgba(168, 85, 247, 0.15); color: #a855f7; }
+.cmd-badge-svc { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+.cmd-desc { font-size: 14px; color: var(--text-dim); margin-bottom: 8px; }
+.tip-kr { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; margin: 8px 0 0; font-size: 13px; color: var(--text-dim); }
+.tip-kr code { font-size: 12px; }
+.toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; margin: 12px 0 24px; font-size: 13px; }
+.toc-grid a { color: var(--text-dim); }
+.toc-grid a:hover { color: var(--accent); }
+.toc-cat { font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 10px; letter-spacing: 1px; margin-top: 8px; grid-column: 1 / -1; }
+@media (max-width: 768px) { .toc-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link active" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Root CLI Subcommands</h1>
+<p class="lead">The <code>jaw</code> binary exposes 26 root router cases plus grouped surfaces such as chat search, browser web-ai, dashboard memory/chat search, connector board, reminders, project, goal, task, and lock commands. These run directly from the terminal -- separate from the in-chat slash commands described in other command pages.</p>
+
+<div class="callout callout-info">
+  <strong>Global flags:</strong> Every subcommand accepts <code>--help</code> / <code>-h</code> for its own help text. Use <code>--home &lt;path&gt;</code> before any subcommand to target a different data directory (default: <code>~/.podex</code>). Machine-readable JSON output is available on most commands via <code>--json</code>.
+</div>
+
+<pre><code>jaw &lt;command&gt; [args] [--flags]
+jaw --home &lt;path&gt; &lt;command&gt;
+jaw --version
+jaw --help</code></pre>
+
+<h2>Current Root Surfaces</h2>
+<pre><code>jaw serve | init | doctor | status | reset
+jaw chat | chat search | dispatch | dispatch --watch | employee | worker
+jaw orchestrate | goal | task | project | lock | unlock | history
+jaw memory | dashboard memory | dashboard chat search
+jaw browser | browser web-ai | skill | mcp
+jaw connector board | reminders
+jaw launchd | service | clone</code></pre>
+
+<h2>Table of Contents</h2>
+<div class="toc-grid">
+  <div class="toc-cat">Server &amp; Dashboard</div>
+  <a href="#serve">jaw serve</a>
+  <a href="#dashboard">jaw dashboard</a>
+  <a href="#status">jaw status</a>
+  <div class="toc-cat">Setup &amp; Diagnostics</div>
+  <a href="#init">jaw init</a>
+  <a href="#doctor">jaw doctor</a>
+  <a href="#reset">jaw reset</a>
+  <div class="toc-cat">Orchestration</div>
+  <a href="#chat">jaw chat</a>
+  <a href="#dispatch">jaw dispatch</a>
+  <a href="#employee">jaw employee</a>
+  <a href="#orchestrate">jaw orchestrate</a>
+  <a href="#goal">jaw goal</a>
+  <div class="toc-cat">Automation &amp; Tools</div>
+  <a href="#memory">jaw memory</a>
+  <a href="#browser">jaw browser</a>
+  <a href="#skill">jaw skill</a>
+  <a href="#mcp">jaw mcp</a>
+  <a href="#connector">jaw connector</a>
+  <a href="#reminders">jaw reminders</a>
+  <a href="#project">jaw project</a>
+  <div class="toc-cat">Service Management</div>
+  <a href="#service">jaw service</a>
+  <a href="#clone">jaw clone</a>
+  <a href="#launchd">jaw launchd</a>
+</div>
+
+<!-- ================================================================== -->
+<h2>Server &amp; Dashboard</h2>
+<!-- ================================================================== -->
+
+<!-- jaw serve -->
+<div class="cmd-section" id="serve">
+<div class="cmd-header">
+  <h3><code>jaw serve</code></h3>
+  <span class="cmd-badge cmd-badge-server">Server</span>
+</div>
+<p class="cmd-desc">Start the podex server in the foreground. The server must be running before <code>chat</code>, <code>dispatch</code>, <code>browser</code>, and most other commands can operate.</p>
+<pre><code>jaw serve [--port &lt;N&gt;] [--no-open] [--lan] [--remote]</code></pre>
+<table>
+<tr><th>Option</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>Server port (also reads <code>PORT</code> env)</td></tr>
+<tr><td><code>--no-open</code></td><td>-</td><td>Do not auto-open browser on start</td></tr>
+<tr><td><code>--host &lt;addr&gt;</code></td><td>0.0.0.0</td><td>Bind address</td></tr>
+<tr><td><code>--lan</code></td><td>false</td><td>Enable LAN access mode</td></tr>
+<tr><td><code>--remote</code></td><td>false</td><td>Enable remote access mode (direct)</td></tr>
+<tr><td><code>--trust-proxy</code></td><td>false</td><td>Trust proxy headers (for reverse proxies)</td></tr>
+<tr><td><code>--trust-forwarded</code></td><td>false</td><td>Trust X-Forwarded-For header</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Start with defaults (port 3457, auto-opens browser)
+jaw serve
+
+# Custom port, no browser
+jaw serve --port 3458 --no-open
+
+# LAN mode for local network access
+jaw serve --lan --port 3460
+
+# Use a separate data directory
+jaw --home ~/.podex-work serve --port 3458</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "서버 시작해줘" -- the agent cannot start jaw serve for you (it requires a foreground process). Run it manually or use <code>jaw service install</code> for background auto-start.
+</div>
+</div>
+
+<!-- jaw dashboard -->
+<div class="cmd-section" id="dashboard">
+<div class="cmd-header">
+  <h3><code>jaw dashboard</code></h3>
+  <span class="cmd-badge cmd-badge-server">Server</span>
+</div>
+<p class="cmd-desc">Multi-instance manager. Start the dashboard server, list/start/stop instances, manage persistent services, and perform L2 cross-instance memory federation searches.</p>
+<pre><code>jaw dashboard &lt;command&gt; [options] [--json]</code></pre>
+<table>
+<tr><th>Subcommand</th><th>Description</th></tr>
+<tr><td><code>serve [--port] [--from] [--count] [--no-open]</code></td><td>Start dashboard server (default port 24576, scans from 3457)</td></tr>
+<tr><td><code>status</code></td><td>Dashboard health check</td></tr>
+<tr><td><code>ls</code></td><td>List all discovered instances</td></tr>
+<tr><td><code>start &lt;port&gt; [--home]</code></td><td>Start an instance on the given port</td></tr>
+<tr><td><code>stop &lt;port&gt;</code></td><td>Gracefully stop an instance</td></tr>
+<tr><td><code>restart &lt;port&gt;</code></td><td>Restart an instance</td></tr>
+<tr><td><code>perm &lt;port&gt; [--home]</code></td><td>Register instance as persistent service</td></tr>
+<tr><td><code>unperm &lt;port&gt;</code></td><td>Unregister persistent service</td></tr>
+<tr><td><code>service [install|status|unset]</code></td><td>Dashboard auto-start management</td></tr>
+<tr><td><code>memory &lt;search|read|instances&gt;</code></td><td>L2 cross-instance memory federation (read-only)</td></tr>
+</table>
+<table>
+<tr><th>Option</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>24576</td><td>Dashboard port (also reads <code>DASHBOARD_PORT</code> env)</td></tr>
+<tr><td><code>--from &lt;N&gt;</code></td><td>3457</td><td>Start scanning instances from this port</td></tr>
+<tr><td><code>--count &lt;N&gt;</code></td><td>50</td><td>Number of ports to scan</td></tr>
+<tr><td><code>--no-open</code></td><td>-</td><td>Do not auto-open browser</td></tr>
+<tr><td><code>--json</code></td><td>-</td><td>Machine-readable JSON output</td></tr>
+<tr><td><code>--home &lt;path&gt;</code></td><td>-</td><td>Data directory for start/perm subcommands</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Start the dashboard
+jaw dashboard serve
+
+# List online instances as JSON
+jaw dashboard ls --json | jq '.[] | select(.status == "online")'
+
+# Start a new instance on port 3458
+jaw dashboard start 3458 --home ~/.jaw-work
+
+# Stop an instance
+jaw dashboard stop 3457
+
+# Cross-instance memory search
+jaw dashboard memory search "JWT authentication"
+
+# List all memory instances
+jaw dashboard memory instances
+
+# Register for persistent auto-start
+jaw dashboard perm 3458 --home ~/.jaw-work</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "대시보드 상태 확인해줘" -- the agent can run <code>jaw dashboard status --json</code> for you and report which instances are online.
+</div>
+</div>
+
+<!-- jaw status -->
+<div class="cmd-section" id="status">
+<div class="cmd-header">
+  <h3><code>jaw status</code></h3>
+  <span class="cmd-badge cmd-badge-server">Server</span>
+</div>
+<p class="cmd-desc">Check if the jaw server is running by pinging the API. Optionally check the dashboard server too.</p>
+<pre><code>jaw status [--port &lt;N&gt;] [--json] [--dashboard]</code></pre>
+<table>
+<tr><th>Option</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>Target server port</td></tr>
+<tr><td><code>--json</code></td><td>false</td><td>Machine-readable JSON output</td></tr>
+<tr><td><code>--dashboard</code></td><td>false</td><td>Also check dashboard server (port 24576)</td></tr>
+</table>
+<p>Exit code 0 = server running, 1 = server not running or error.</p>
+<h4>Examples</h4>
+<pre><code># Quick health check
+jaw status
+
+# JSON output for scripting
+jaw status --json
+# → {"status":"running","port":"3457","cli":"claude"}
+
+# Check both server and dashboard
+jaw status --dashboard
+
+# Check a specific port
+jaw status --port 3458</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "서버 상태 확인해줘" -- the agent runs <code>jaw status --json</code> to determine if the server is healthy and reports the CLI, port, and active heartbeat jobs.
+</div>
+</div>
+
+<!-- ================================================================== -->
+<h2>Setup &amp; Diagnostics</h2>
+<!-- ================================================================== -->
+
+<!-- jaw init -->
+<div class="cmd-section" id="init">
+<div class="cmd-header">
+  <h3><code>jaw init</code></h3>
+  <span class="cmd-badge cmd-badge-setup">Setup</span>
+</div>
+<p class="cmd-desc">Interactive setup wizard for first-time configuration. Creates <code>~/.podex/settings.json</code>, configures the default CLI backend, messaging channels, and skills directory.</p>
+<pre><code>jaw init [options]</code></pre>
+<table>
+<tr><th>Option</th><th>Description</th></tr>
+<tr><td><code>--non-interactive</code></td><td>Skip prompts, use defaults</td></tr>
+<tr><td><code>--safe</code></td><td>Ask before optional installs</td></tr>
+<tr><td><code>--dry-run</code></td><td>Show what would be done without changes</td></tr>
+<tr><td><code>--force</code></td><td>Overwrite existing settings</td></tr>
+<tr><td><code>--working-dir &lt;path&gt;</code></td><td>Set working directory</td></tr>
+<tr><td><code>--cli &lt;name&gt;</code></td><td>Default CLI backend (claude, codex, gemini, etc.)</td></tr>
+<tr><td><code>--channel &lt;ch&gt;</code></td><td>Active channel (telegram or discord)</td></tr>
+<tr><td><code>--telegram-token &lt;t&gt;</code></td><td>Telegram bot token</td></tr>
+<tr><td><code>--allowed-chat-ids &lt;ids&gt;</code></td><td>Comma-separated Telegram chat IDs</td></tr>
+<tr><td><code>--discord-token &lt;t&gt;</code></td><td>Discord bot token</td></tr>
+<tr><td><code>--discord-guild-id &lt;id&gt;</code></td><td>Discord guild (server) ID</td></tr>
+<tr><td><code>--discord-channel-ids &lt;ids&gt;</code></td><td>Comma-separated Discord channel IDs</td></tr>
+<tr><td><code>--skills-dir &lt;path&gt;</code></td><td>Custom skills directory</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Interactive wizard (recommended for first run)
+jaw init
+
+# Non-interactive with defaults
+jaw init --non-interactive --cli claude
+
+# Re-initialize with force
+jaw init --force --cli gemini --channel telegram
+
+# Dry run to see what would be created
+jaw init --dry-run</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "초기 설정 해줘" -- run <code>jaw init</code> interactively; the wizard asks questions and writes your settings. For CI/CD, use <code>--non-interactive</code>.
+</div>
+</div>
+
+<!-- jaw doctor -->
+<div class="cmd-section" id="doctor">
+<div class="cmd-header">
+  <h3><code>jaw doctor</code></h3>
+  <span class="cmd-badge cmd-badge-setup">Setup</span>
+</div>
+<p class="cmd-desc">Diagnose installation and configuration health. Checks Node.js version, CLI binary resolution, settings file validity, MCP server connectivity, employee CLI availability, and port availability.</p>
+<pre><code>jaw doctor [--json] [--fix] [--tcc] [--prime]</code></pre>
+<table>
+<tr><th>Option</th><th>Description</th></tr>
+<tr><td><code>--json</code></td><td>Machine-readable diagnostic output</td></tr>
+<tr><td><code>--fix</code></td><td>Attempt automatic fixes for detected issues</td></tr>
+<tr><td><code>--tcc</code></td><td>Check macOS TCC (Transparency, Consent, Control) permissions</td></tr>
+<tr><td><code>--prime</code></td><td>Prime installation (pre-warm caches)</td></tr>
+<tr><td><code>--repair-shared-paths</code></td><td>Repair contaminated shared MCP paths</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Run diagnostics
+jaw doctor
+
+# Machine-readable output
+jaw doctor --json
+
+# Auto-fix detected issues
+jaw doctor --fix
+
+# Check macOS accessibility permissions
+jaw doctor --tcc</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "설치 상태 진단해줘" -- the agent can run <code>jaw doctor --json</code> and interpret the results, flagging any failing checks with recommended fixes.
+</div>
+</div>
+
+<!-- jaw reset -->
+<div class="cmd-section" id="reset">
+<div class="cmd-header">
+  <h3><code>jaw reset</code></h3>
+  <span class="cmd-badge cmd-badge-setup">Setup</span>
+</div>
+<p class="cmd-desc">Factory reset: performs MCP sync, skill reset, employee reset, and session clear. Prompts for confirmation unless <code>--yes</code> is passed. Requires a running server.</p>
+<pre><code>jaw reset [--yes] [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>Option</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--yes</code>, <code>-y</code></td><td>false</td><td>Skip confirmation prompt</td></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>Target server port</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Reset with confirmation prompt
+jaw reset
+
+# Skip confirmation (scripting)
+jaw reset --yes
+
+# Reset a specific instance
+jaw reset --port 3458 --yes</code></pre>
+<div class="callout callout-warn">
+  <strong>Warning:</strong> This resets MCP servers, skills (back to 25 defaults), employees, and the current session. Memory files are preserved.
+</div>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "전부 초기화해줘" -- the agent can trigger <code>jaw reset --yes</code> via the server API when authorized.
+</div>
+</div>
+
+<!-- ================================================================== -->
+<h2>Orchestration</h2>
+<!-- ================================================================== -->
+
+<!-- jaw chat -->
+<div class="cmd-section" id="chat">
+<div class="cmd-header">
+  <h3><code>jaw chat</code></h3>
+  <span class="cmd-badge cmd-badge-orch">Orchestration</span>
+</div>
+<p class="cmd-desc">Interactive terminal REPL. Connects to the running server through the SSE-first TUI channel, with legacy WebSocket fallback for older servers. Supports a rich TUI mode with persistent footer, a raw JSON protocol mode for UI integration, and a minimal plain readline mode.</p>
+<pre><code>jaw chat [--port &lt;N&gt;] [--raw] [--simple]</code></pre>
+<table>
+<tr><th>Option</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>Server port to connect to</td></tr>
+<tr><td><code>--raw</code></td><td>false</td><td>JSON protocol mode (for programmatic UI integration)</td></tr>
+<tr><td><code>--simple</code></td><td>false</td><td>Plain readline mode (minimal, no TUI)</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Default rich TUI
+jaw chat
+
+# Simple mode (works in dumb terminals)
+jaw chat --simple
+
+# Connect to a different instance
+jaw chat --port 3458
+
+# Raw JSON mode for piping
+jaw chat --raw</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "채팅 시작해줘" -- <code>jaw chat</code> is a foreground terminal process. Inside it, use slash commands like <code>/status</code>, <code>/model</code>, <code>/skill</code>.
+</div>
+</div>
+
+<!-- jaw dispatch -->
+<div class="cmd-section" id="dispatch">
+<div class="cmd-header">
+  <h3><code>jaw dispatch</code></h3>
+  <span class="cmd-badge cmd-badge-orch">Orchestration</span>
+</div>
+<p class="cmd-desc">Send a task to an employee agent. The employee runs asynchronously via the server API and returns results via stdout. Pipe-compatible for scripting workflows. Requires <code>JAW_BOSS_TOKEN</code> (inherited from the server process).</p>
+<pre><code>jaw dispatch --agent &lt;name&gt; --task &lt;text&gt; [--json] [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>Option</th><th>Description</th></tr>
+<tr><td><code>--agent &lt;name&gt;</code></td><td>Employee name (case-sensitive, must match settings.json employees)</td></tr>
+<tr><td><code>--task &lt;text&gt;</code></td><td>Task instruction to send</td></tr>
+<tr><td><code>--json</code></td><td>JSON output</td></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>Target server port</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Dispatch a frontend task
+jaw dispatch --agent "Frontend" --task "Fix CSS bug in the header component"
+
+# Dispatch a backend task
+jaw dispatch --agent "Backend" --task "Add rate limiting to /api/chat endpoint"
+
+# JSON output for piping
+jaw dispatch --agent "Data" --task "Optimize the slow query in reports" --json</code></pre>
+<div class="callout callout-info">
+  <strong>Note:</strong> Employee sessions cannot dispatch other employees (nested dispatch is blocked). Only the boss session has dispatch authority.
+</div>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "프론트엔드 직원한테 헤더 버그 고치라고 해줘" -- the agent dispatches via the API: the target employee runs in its own CLI instance and returns results.
+</div>
+</div>
+
+<!-- jaw employee -->
+<div class="cmd-section" id="employee">
+<div class="cmd-header">
+  <h3><code>jaw employee</code></h3>
+  <span class="cmd-badge cmd-badge-orch">Orchestration</span>
+</div>
+<p class="cmd-desc">Employee management utilities. Currently supports resetting employees to the default 5 profiles (Frontend, Backend, Data, Docs, QA).</p>
+<pre><code>jaw employee &lt;subcommand&gt; [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>Subcommand</th><th>Description</th></tr>
+<tr><td><code>reset</code></td><td>Reset employees to default 5 profiles</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Reset all employees to defaults
+jaw employee reset
+
+# Reset on a specific instance
+jaw employee reset --port 3458</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "직원 초기화해줘" -- the agent calls <code>/employee reset</code> in-chat or runs <code>jaw employee reset</code> via the server API.
+</div>
+</div>
+
+<!-- jaw orchestrate -->
+<div class="cmd-section" id="orchestrate">
+<div class="cmd-header">
+  <h3><code>jaw orchestrate</code></h3>
+  <span class="cmd-badge cmd-badge-orch">Orchestration</span>
+</div>
+<p class="cmd-desc">PABCD state machine transitions. Drives the workflow through Interview, Planning, Audit, Build, Check, and Done phases. Calls the running server's API so SSE-first event updates reach connected clients in real time.</p>
+<pre><code>jaw orchestrate &lt;phase&gt; [--force] [--json] [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>Phase</th><th>Description</th></tr>
+<tr><td><code>I</code></td><td>Enter Interview (from IDLE)</td></tr>
+<tr><td><code>P</code></td><td>Enter Planning (from IDLE or I)</td></tr>
+<tr><td><code>A</code></td><td>Enter Plan Audit (from P)</td></tr>
+<tr><td><code>B</code></td><td>Enter Build (from A)</td></tr>
+<tr><td><code>C</code></td><td>Enter Check (from B)</td></tr>
+<tr><td><code>D</code></td><td>Enter Done (from C, returns to IDLE)</td></tr>
+<tr><td><code>status</code></td><td>Show current phase, scope, audit status</td></tr>
+<tr><td><code>reset</code></td><td>Return to IDLE from any state</td></tr>
+</table>
+<p>Valid transitions: <code>IDLE &rarr; I &rarr; P &rarr; A &rarr; B &rarr; C &rarr; D &rarr; IDLE</code>. Interview is optional: <code>IDLE &rarr; P</code> is also valid.</p>
+<h4>Examples</h4>
+<pre><code># Start planning phase
+jaw orchestrate P
+
+# Force transition (skip validation)
+jaw orchestrate B --force
+
+# Check current state
+jaw orchestrate status
+
+# Reset to IDLE
+jaw orchestrate reset
+
+# JSON output
+jaw orchestrate status --json</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "PABCD 상태 확인해줘" or "빌드 단계로 넘어가줘" -- the agent uses the in-chat <code>/orchestrate</code> command or calls the API to transition phases.
+</div>
+</div>
+
+<!-- jaw goal -->
+<div class="cmd-section" id="goal">
+<div class="cmd-header">
+  <h3><code>jaw goal</code></h3>
+  <span class="cmd-badge cmd-badge-orch">Orchestration</span>
+</div>
+<p class="cmd-desc">Persistent goal lifecycle management. Set objectives, track progress with checkpoints, and manage goal state (pause, resume, cancel, complete). Goals survive across sessions and server restarts.</p>
+<pre><code>jaw goal &lt;subcommand&gt; [args...] [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>Subcommand</th><th>Description</th></tr>
+<tr><td><code>set &lt;objective&gt;</code></td><td>Set a new goal</td></tr>
+<tr><td><code>status</code></td><td>Show active goal (default when no subcommand)</td></tr>
+<tr><td><code>update &lt;summary&gt;</code></td><td>Add a progress checkpoint</td></tr>
+<tr><td><code>done [note]</code></td><td>Mark goal complete</td></tr>
+<tr><td><code>cancel [reason]</code></td><td>Cancel goal</td></tr>
+<tr><td><code>pause</code></td><td>Pause active goal</td></tr>
+<tr><td><code>resume</code></td><td>Resume paused goal</td></tr>
+<tr><td><code>clear</code></td><td>Clear active goal</td></tr>
+<tr><td><code>reset</code></td><td>Reset entire goal store</td></tr>
+<tr><td><code>history [limit]</code></td><td>Show goal history (default: 10)</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Set a new goal
+jaw goal set "Implement keyboard shortcuts for the editor"
+
+# Check current goal
+jaw goal status
+
+# Add a progress checkpoint
+jaw goal update "K0: shortcut registry done, K1: in progress"
+
+# Mark complete
+jaw goal done "All phases complete, PR merged"
+
+# View past goals
+jaw goal history 5
+
+# Pause and resume
+jaw goal pause
+jaw goal resume
+
+# Cancel with reason
+jaw goal cancel "Deprioritized in favor of auth refactor"</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "키보드 단축키 구현 목표 설정해줘" -- the agent calls the goal API to set and track the objective. Use "목표 완료해줘" to mark it done.
+</div>
+</div>
+
+<!-- ================================================================== -->
+<h2>Automation &amp; Tools</h2>
+<!-- ================================================================== -->
+
+<!-- jaw memory -->
+<div class="cmd-section" id="memory">
+<div class="cmd-header">
+  <h3><code>jaw memory</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">Persistent memory store CLI. Search, read, save, and list memory files. Memory is stored as markdown files in <code>~/.podex/memory/</code> and indexed for semantic search.</p>
+<pre><code>jaw memory &lt;subcommand&gt; [args...]</code></pre>
+<table>
+<tr><th>Subcommand</th><th>Description</th></tr>
+<tr><td><code>search &lt;query&gt;</code></td><td>Semantic search across all memory files</td></tr>
+<tr><td><code>read &lt;file&gt; [--lines N]</code></td><td>Read a specific memory file</td></tr>
+<tr><td><code>save &lt;file&gt; &lt;content&gt;</code></td><td>Write content to a memory file</td></tr>
+<tr><td><code>list</code></td><td>List all memory files with sizes and dates</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Search memory
+jaw memory search "JWT authentication patterns"
+
+# Read a specific file
+jaw memory read structured/profile.md
+
+# Save a new memory entry
+jaw memory save structured/profile.md "- User prefers concise Korean summaries"
+
+# Save an episode log
+jaw memory save structured/episodes/live/2026-05-29.md "## 14:30\n- Completed CLI docs page"
+
+# List all files
+jaw memory list</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "JWT 관련 메모리 찾아줘" -- the agent searches memory via the API. "프로필에 한국어 선호 추가해줘" saves to structured/profile.md.
+</div>
+</div>
+
+<!-- jaw browser -->
+<div class="cmd-section" id="browser">
+<div class="cmd-header">
+  <h3><code>jaw browser</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">Chrome browser control via CDP (Chrome DevTools Protocol). Open pages, take screenshots, click elements, type text, manage tabs, and perform web AI-powered browsing. Requires the server to be running.</p>
+<pre><code>jaw browser &lt;subcommand&gt; [args...]</code></pre>
+<table>
+<tr><th>Subcommand</th><th>Description</th></tr>
+<tr><td><code>status</code></td><td>Show browser connection status and active tabs</td></tr>
+<tr><td><code>tabs</code></td><td>List open browser tabs</td></tr>
+<tr><td><code>open &lt;url&gt;</code></td><td>Open a URL in the browser</td></tr>
+<tr><td><code>screenshot [--clip]</code></td><td>Take a screenshot of the current page</td></tr>
+<tr><td><code>snapshot</code></td><td>Get accessibility tree snapshot (ref-based)</td></tr>
+<tr><td><code>click &lt;ref&gt;</code></td><td>Click an element by ref ID</td></tr>
+<tr><td><code>type &lt;ref&gt; &lt;text&gt;</code></td><td>Type text into an element</td></tr>
+<tr><td><code>fetch &lt;url&gt;</code></td><td>Adaptive fetch (browser or HTTP, auto-selected)</td></tr>
+<tr><td><code>web-ai &lt;subcommand&gt;</code></td><td>Web AI commands (intelligent page parsing)</td></tr>
+<tr><td><code>close</code></td><td>Close browser session</td></tr>
+<tr><td><code>reset</code></td><td>Reset browser state and cache</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Check browser status
+jaw browser status
+
+# Open a page and take a screenshot
+jaw browser open https://example.com
+jaw browser screenshot
+
+# Get page snapshot for element refs
+jaw browser snapshot
+
+# Click and type using refs
+jaw browser click ref:42
+jaw browser type ref:15 "search query"
+
+# Adaptive fetch
+jaw browser fetch https://example.com/api/data</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "브라우저로 구글 열어줘" or "스크린샷 찍어줘" -- the agent uses the browser skill to control Chrome via CDP.
+</div>
+</div>
+
+<!-- jaw skill -->
+<div class="cmd-section" id="skill">
+<div class="cmd-header">
+  <h3><code>jaw skill</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">Skill management: list installed skills, install from reference/Codex/GitHub, remove skills, and view skill details. Skills are injected into the agent's system prompt.</p>
+<pre><code>jaw skill [subcommand] [name...]</code></pre>
+<table>
+<tr><th>Subcommand</th><th>Description</th></tr>
+<tr><td>(none) / <code>list</code></td><td>List all installed (active) skills</td></tr>
+<tr><td><code>install &lt;name&gt; [name...]</code></td><td>Install skill from reference dir, Codex, or GitHub</td></tr>
+<tr><td><code>remove &lt;name&gt;</code></td><td>Remove (deactivate) a skill</td></tr>
+<tr><td><code>info &lt;name&gt;</code></td><td>Show SKILL.md content and metadata</td></tr>
+<tr><td><code>reset</code></td><td>Reset all skills to the 25 defaults</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># List installed skills
+jaw skill
+
+# Install a skill
+jaw skill install cloudflare
+jaw skill install docker kubernetes terraform
+
+# Remove a skill
+jaw skill remove cloudflare
+
+# View skill details
+jaw skill info dev-frontend
+
+# Reset to defaults
+jaw skill reset</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "cloudflare 스킬 설치해줘" or "스킬 목록 보여줘" -- the agent manages skills via <code>/skill</code> in-chat or the CLI command.
+</div>
+</div>
+
+<!-- jaw mcp -->
+<div class="cmd-section" id="mcp">
+<div class="cmd-header">
+  <h3><code>jaw mcp</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">MCP (Model Context Protocol) server management. Install npm/PyPI MCP packages, sync configuration to all 6 CLI backends, list registered servers, or reset to defaults.</p>
+<pre><code>jaw mcp [subcommand] [package]</code></pre>
+<table>
+<tr><th>Subcommand</th><th>Description</th></tr>
+<tr><td>(none) / <code>list</code></td><td>List registered MCP servers</td></tr>
+<tr><td><code>install &lt;pkg&gt;</code></td><td>Install npm/PyPI package, add to mcp.json, sync</td></tr>
+<tr><td><code>sync</code></td><td>Sync mcp.json to all 6 CLI backend configs</td></tr>
+<tr><td><code>reset [--force]</code></td><td>Reset mcp.json to defaults and re-sync</td></tr>
+</table>
+<p>Package ecosystem is auto-detected: <code>@scope/name</code> is npm; <code>mcp-server-*</code> is PyPI. Use <code>--pypi</code> or <code>--npm</code> to override.</p>
+<h4>Examples</h4>
+<pre><code># List all MCP servers
+jaw mcp
+
+# Install an npm MCP package
+jaw mcp install @anthropic/mcp-server-fetch
+
+# Install a PyPI MCP package
+jaw mcp install mcp-server-git
+
+# Sync configuration to all CLIs
+jaw mcp sync
+
+# Reset to default MCP servers
+jaw mcp reset --force</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "MCP 서버 목록 보여줘" or "fetch MCP 서버 설치해줘" -- the agent manages MCP servers via <code>/mcp</code> in-chat.
+</div>
+</div>
+
+<!-- jaw connector -->
+<div class="cmd-section" id="connector">
+<div class="cmd-header">
+  <h3><code>jaw connector</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">Dashboard connector CLI -- a unified entry point for the kanban board, notes, reminders, and audit log. Provides direct CLI access to dashboard features without the web UI.</p>
+<pre><code>jaw connector &lt;surface&gt; &lt;subcommand&gt; [options]</code></pre>
+<table>
+<tr><th>Surface</th><th>Subcommands</th><th>Description</th></tr>
+<tr><td><code>board</code></td><td><code>add</code>, <code>update</code>, <code>list</code></td><td>Kanban board tasks (backlog/ready/active/review/done)</td></tr>
+<tr><td><code>notes</code></td><td><code>write</code>, <code>list</code></td><td>Dashboard markdown notes</td></tr>
+<tr><td><code>reminders</code></td><td><code>add</code>, <code>list</code>, <code>done</code></td><td>Priority-based reminders</td></tr>
+<tr><td><code>audit</code></td><td>(none)</td><td>Connector audit log</td></tr>
+</table>
+<table>
+<tr><th>Option</th><th>Description</th></tr>
+<tr><td><code>--json</code></td><td>JSON output</td></tr>
+<tr><td><code>--title &lt;text&gt;</code></td><td>Task/reminder title</td></tr>
+<tr><td><code>--summary &lt;text&gt;</code></td><td>Task summary</td></tr>
+<tr><td><code>--lane &lt;name&gt;</code></td><td>Kanban lane (backlog, ready, active, review, done)</td></tr>
+<tr><td><code>--path &lt;path&gt;</code></td><td>Note file path</td></tr>
+<tr><td><code>--body &lt;text&gt;</code></td><td>Note content</td></tr>
+<tr><td><code>--priority &lt;p&gt;</code></td><td>Reminder priority (low, normal, high)</td></tr>
+<tr><td><code>--due &lt;date&gt;</code></td><td>Due date for reminders</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Add a kanban task
+jaw connector board add --title "Implement auth flow" --lane backlog
+
+# Move task to done
+jaw connector board update task-id-123 --lane done
+
+# List board tasks
+jaw connector board list --json
+
+# Write a note
+jaw connector notes write --path "meeting/standup.md" --body "# Standup Notes\n- Auth PR merged"
+
+# List notes
+jaw connector notes list
+
+# Add a reminder
+jaw connector reminders add --title "Review PR #42" --priority high --due 2026-06-01</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "보드에 인증 구현 태스크 추가해줘" or "노트에 회의록 저장해줘" -- the agent uses the connector API to manage dashboard surfaces.
+</div>
+</div>
+
+<!-- jaw reminders -->
+<div class="cmd-section" id="reminders">
+<div class="cmd-header">
+  <h3><code>jaw reminders</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">Priority-based reminders with Eisenhower-style categorization. Shortcut for <code>jaw connector reminders</code>.</p>
+<pre><code>jaw reminders &lt;subcommand&gt; [options]</code></pre>
+<table>
+<tr><th>Subcommand</th><th>Description</th></tr>
+<tr><td><code>list</code> / <code>ls</code></td><td>List all reminders (default)</td></tr>
+<tr><td><code>add &lt;title&gt;</code></td><td>Add a new reminder</td></tr>
+<tr><td><code>done &lt;id&gt;</code></td><td>Mark a reminder as done</td></tr>
+</table>
+<table>
+<tr><th>Option</th><th>Description</th></tr>
+<tr><td><code>--title &lt;text&gt;</code></td><td>Reminder title (alternative to positional arg)</td></tr>
+<tr><td><code>--notes &lt;text&gt;</code></td><td>Additional notes</td></tr>
+<tr><td><code>--priority &lt;p&gt;</code></td><td>Priority: low, normal, high (default: normal)</td></tr>
+<tr><td><code>--due &lt;date&gt;</code></td><td>Due date</td></tr>
+<tr><td><code>--remind &lt;date&gt;</code></td><td>Reminder notification time</td></tr>
+<tr><td><code>--json</code></td><td>JSON output</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># List reminders
+jaw reminders list
+
+# Add a reminder
+jaw reminders add "Review PR #42" --priority high --due 2026-06-01
+
+# Add with notes
+jaw reminders add --title "Deploy staging" --notes "After QA sign-off" --priority normal
+
+# Mark done
+jaw reminders done reminder-id-abc
+
+# JSON output
+jaw reminders list --json</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "내일까지 PR 리뷰하라고 리마인더 추가해줘" -- the agent creates a reminder with the appropriate due date and priority.
+</div>
+</div>
+
+<!-- jaw project -->
+<div class="cmd-section" id="project">
+<div class="cmd-header">
+  <h3><code>jaw project</code></h3>
+  <span class="cmd-badge cmd-badge-auto">Automation</span>
+</div>
+<p class="cmd-desc">Manage project workspace directories. Set which directories the agent should consider as active project roots. Changes are applied via the server API and persist across sessions.</p>
+<pre><code>jaw project &lt;subcommand&gt; [paths...]</code></pre>
+<table>
+<tr><th>Subcommand</th><th>Description</th></tr>
+<tr><td><code>set &lt;path&gt;[, &lt;path&gt;...]</code></td><td>Set active project directories (comma-separated)</td></tr>
+<tr><td><code>reset</code></td><td>Clear all project directories</td></tr>
+<tr><td><code>clear</code></td><td>Alias for reset</td></tr>
+<tr><td><code>list</code></td><td>Show current project directories (default)</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Set project directories
+jaw project set ~/Dev/frontend, ~/Dev/backend
+
+# Set a single absolute path
+jaw project set /Users/jun/projects/my-app
+
+# List current directories
+jaw project list
+
+# Clear all
+jaw project reset</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "프로젝트 디렉토리 설정해줘" or "프로젝트 목록 보여줘" -- the agent uses <code>/project</code> in-chat to manage workspace directories.
+</div>
+</div>
+
+<!-- ================================================================== -->
+<h2>Service Management</h2>
+<!-- ================================================================== -->
+
+<!-- jaw service -->
+<div class="cmd-section" id="service">
+<div class="cmd-header">
+  <h3><code>jaw service</code></h3>
+  <span class="cmd-badge cmd-badge-svc">Service</span>
+</div>
+<p class="cmd-desc">Cross-platform auto-start management. Detects the OS and installs the server as a background daemon (launchd on macOS, systemd on Linux, Docker entrypoint in containers). One-step install + start.</p>
+<pre><code>jaw service [subcommand] [--port &lt;N&gt;] [--backend &lt;type&gt;]</code></pre>
+<table>
+<tr><th>Subcommand</th><th>Description</th></tr>
+<tr><td>(none)</td><td>Auto-detect OS, install + start (one-step)</td></tr>
+<tr><td><code>install</code></td><td>Install as system service</td></tr>
+<tr><td><code>status</code></td><td>Check service status</td></tr>
+<tr><td><code>unset</code></td><td>Remove the service</td></tr>
+<tr><td><code>logs</code></td><td>View service logs</td></tr>
+</table>
+<table>
+<tr><th>Option</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>Server port to register</td></tr>
+<tr><td><code>--backend &lt;type&gt;</code></td><td>(auto)</td><td>Force backend: launchd, systemd, or docker</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># One-step install + start (auto-detects OS)
+jaw service
+
+# Custom port
+jaw service --port 3458
+
+# Check service status
+jaw service status
+
+# View logs
+jaw service logs
+
+# Remove service
+jaw service unset
+
+# Force a specific backend
+jaw service --backend systemd --port 3457</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "서비스로 등록해줘" or "백그라운드에서 실행되게 해줘" -- the agent runs <code>jaw service</code> to install a persistent daemon.
+</div>
+</div>
+
+<!-- jaw clone -->
+<div class="cmd-section" id="clone">
+<div class="cmd-header">
+  <h3><code>jaw clone</code></h3>
+  <span class="cmd-badge cmd-badge-svc">Service</span>
+</div>
+<p class="cmd-desc">Create an independent agent instance by cloning the current configuration. Copies config and skills, creates a fresh database, and regenerates AGENTS.md. Useful for running multiple isolated agents.</p>
+<pre><code>jaw clone &lt;target-dir&gt; [--from &lt;source&gt;] [--with-memory] [--link-ref]</code></pre>
+<table>
+<tr><th>Option</th><th>Description</th></tr>
+<tr><td><code>&lt;target-dir&gt;</code></td><td>Destination directory for the new instance (required)</td></tr>
+<tr><td><code>--from &lt;source&gt;</code></td><td>Source directory to clone from (default: ~/.podex)</td></tr>
+<tr><td><code>--with-memory</code></td><td>Copy memory files from source</td></tr>
+<tr><td><code>--link-ref</code></td><td>Symlink reference skills instead of copying</td></tr>
+</table>
+<h4>Examples</h4>
+<pre><code># Clone to a new directory
+jaw clone ~/.podex-work
+
+# Clone with memory
+jaw clone ~/.podex-research --with-memory
+
+# Clone from a specific source
+jaw clone ~/.podex-staging --from ~/.podex-prod
+
+# Symlink reference skills to save space
+jaw clone ~/.podex-dev --link-ref</code></pre>
+<div class="callout callout-info">
+  <strong>After cloning:</strong> Start the new instance with <code>jaw --home ~/.podex-work serve --port 3458</code> or register it via <code>jaw dashboard perm 3458 --home ~/.podex-work</code>.
+</div>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "인스턴스 하나 복제해줘" -- the agent runs <code>jaw clone</code> to create an independent copy, then optionally starts it on a new port.
+</div>
+</div>
+
+<!-- jaw launchd -->
+<div class="cmd-section" id="launchd">
+<div class="cmd-header">
+  <h3><code>jaw launchd</code></h3>
+  <span class="cmd-badge cmd-badge-svc">Service</span>
+</div>
+<p class="cmd-desc">macOS-specific LaunchAgent management (deprecated -- use <code>jaw service</code> instead). Manages plist files for auto-start on login. Retained for backward compatibility.</p>
+<pre><code>jaw launchd [subcommand] [--port &lt;N&gt;]</code></pre>
+<table>
+<tr><th>Subcommand</th><th>Description</th></tr>
+<tr><td>(none)</td><td>Check plist, create if missing, start (one-step)</td></tr>
+<tr><td><code>status</code></td><td>Show current LaunchAgent status</td></tr>
+<tr><td><code>unset</code></td><td>Remove plist and unload agent</td></tr>
+<tr><td><code>cleanup</code></td><td>Remove legacy plist files</td></tr>
+</table>
+<table>
+<tr><th>Option</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>Server port to register</td></tr>
+</table>
+<div class="callout callout-warn">
+  <strong>Deprecated:</strong> <code>jaw launchd</code> is superseded by <code>jaw service</code>, which auto-detects launchd on macOS and also supports systemd (Linux) and Docker. Use <code>jaw service</code> for new installations.
+</div>
+<h4>Examples</h4>
+<pre><code># One-step install + start
+jaw launchd
+
+# Custom port
+jaw launchd --port 3458
+
+# Check status
+jaw launchd status
+
+# Remove
+jaw launchd unset
+
+# Cleanup legacy plists
+jaw launchd cleanup</code></pre>
+<div class="tip-kr">
+  <strong>~해줘 Tip:</strong> "launchd 상태 확인해줘" -- use <code>jaw service status</code> instead for the cross-platform version.
+</div>
+</div>
+
+<!-- ================================================================== -->
+<h2>Quick Reference</h2>
+<!-- ================================================================== -->
+
+<table>
+<thead>
+<tr><th>Command</th><th>Category</th><th>Server Required</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>jaw serve</code></td><td>Server</td><td>-</td><td>Start server (foreground)</td></tr>
+<tr><td><code>jaw dashboard</code></td><td>Server</td><td>-</td><td>Multi-instance manager</td></tr>
+<tr><td><code>jaw status</code></td><td>Server</td><td>No</td><td>Health check</td></tr>
+<tr><td><code>jaw init</code></td><td>Setup</td><td>No</td><td>Interactive setup wizard</td></tr>
+<tr><td><code>jaw doctor</code></td><td>Setup</td><td>No</td><td>Installation diagnostics</td></tr>
+<tr><td><code>jaw reset</code></td><td>Setup</td><td>Yes</td><td>Factory reset</td></tr>
+<tr><td><code>jaw chat</code></td><td>Orchestration</td><td>Yes</td><td>Terminal REPL</td></tr>
+<tr><td><code>jaw dispatch</code></td><td>Orchestration</td><td>Yes</td><td>Send task to employee</td></tr>
+<tr><td><code>jaw employee</code></td><td>Orchestration</td><td>Yes</td><td>Employee management</td></tr>
+<tr><td><code>jaw orchestrate</code></td><td>Orchestration</td><td>Yes</td><td>PABCD state machine</td></tr>
+<tr><td><code>jaw goal</code></td><td>Orchestration</td><td>Yes</td><td>Persistent goal lifecycle</td></tr>
+<tr><td><code>jaw memory</code></td><td>Automation</td><td>Yes</td><td>Persistent memory store</td></tr>
+<tr><td><code>jaw browser</code></td><td>Automation</td><td>Yes</td><td>Chrome browser control</td></tr>
+<tr><td><code>jaw skill</code></td><td>Automation</td><td>No</td><td>Skill management</td></tr>
+<tr><td><code>jaw mcp</code></td><td>Automation</td><td>No</td><td>MCP server management</td></tr>
+<tr><td><code>jaw connector</code></td><td>Automation</td><td>Partial</td><td>Dashboard connector (board/notes/reminders)</td></tr>
+<tr><td><code>jaw reminders</code></td><td>Automation</td><td>No</td><td>Priority-based reminders</td></tr>
+<tr><td><code>jaw project</code></td><td>Automation</td><td>Yes</td><td>Workspace directories</td></tr>
+<tr><td><code>jaw service</code></td><td>Service</td><td>No</td><td>Cross-platform auto-start</td></tr>
+<tr><td><code>jaw clone</code></td><td>Service</td><td>No</td><td>Clone instance</td></tr>
+<tr><td><code>jaw launchd</code></td><td>Service</td><td>No</td><td>macOS LaunchAgent (deprecated)</td></tr>
+</tbody>
+</table>
+
+<h2>Environment Variables</h2>
+<table>
+<tr><th>Variable</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>podex_HOME</code></td><td><code>~/.podex</code></td><td>Override data directory (same as <code>--home</code>)</td></tr>
+<tr><td><code>PORT</code></td><td>3457</td><td>Default server port</td></tr>
+<tr><td><code>DASHBOARD_PORT</code></td><td>24576</td><td>Dashboard server port</td></tr>
+<tr><td><code>JAW_BOSS_TOKEN</code></td><td>-</td><td>Auth token for employee dispatch (inherited from server)</td></tr>
+<tr><td><code>JAW_EMPLOYEE_MODE</code></td><td>-</td><td>Set to <code>1</code> in employee sessions (prevents nested dispatch)</td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="cli-only.html">CLI-Only Commands</a>
+<a class="next" href="../changelog.html">Changelog</a>
+</div>
+</main>
+</div>
+<script src="../_search.js"></script>
+</body>
+</html>
+

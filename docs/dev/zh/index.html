@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>podex Docs</title>
+<meta name="description" content="podex developer documentation — multi-agent orchestration platform">
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link active" href="./">Overview</a>
+      <a class="docs-nav-link" href="quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../dev/">EN</a>
+    <a href="ko/">한국어</a>
+    <a class="active" href="./">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>podex 文档</h1>
+<p class="lead">所有 AI 订阅，一个助手。podex 将 Claude、ChatGPT、Codex、Gemini、Grok 和 Kiro 通过统一的多智能体编排平台连接起来。</p>
+
+<div class="install-box">
+<code>npm install -g podex</code>
+<code>jaw dashboard</code>
+</div>
+
+<h2>什么是 podex？</h2>
+<p>podex 是一个开源平台，让你从一个仪表板运行多个 AI 编码代理（Claude Code、Codex、Gemini CLI、Kiro、OpenCode、Copilot CLI）。它提供了<strong>员工系统</strong>——主代理可以将任务分派给其他 CLI 代理、用于结构化开发的 <strong>PABCD 编排</strong>工作流、持久化的<strong>记忆和目标</strong>、内置<strong>笔记工作区</strong>、<strong>看板</strong>，以及 <strong>Telegram 和 Discord</strong> 集成。</p>
+
+<h2>核心功能</h2>
+<table>
+<tr><th>功能</th><th>说明</th></tr>
+<tr><td><strong>多实例仪表板</strong></td><td>同时运行 7+ 个代理实例。在一个界面中启动、停止和管理。</td></tr>
+<tr><td><strong>员工系统</strong></td><td>主代理将任务分派给其他 CLI 工具作为"员工"。</td></tr>
+<tr><td><strong>PABCD 编排</strong></td><td>Plan → Audit → Build → Check → Done。结构化开发工作流。</td></tr>
+<tr><td><strong>Jawsidian 笔记</strong></td><td>内置 Markdown 编辑器，支持图谱视图、Wiki 链接和图片粘贴。</td></tr>
+<tr><td><strong>看板</strong></td><td>通过 Backlog → Active → Review → Done 泳道管理任务。</td></tr>
+<tr><td><strong>200+ 参考技能</strong></td><td>领域知识、自动化、Office、浏览器、媒体和部署技能。AI 按需激活相关运行时技能。</td></tr>
+<tr><td><strong>目标系统</strong></td><td>跨会话持久化的目标追踪。</td></tr>
+<tr><td><strong>Computer Use</strong></td><td>通过 Codex 员工集成实现桌面自动化。</td></tr>
+<tr><td><strong>Telegram / Discord</strong></td><td>从消息应用远程控制 AI 代理。</td></tr>
+<tr><td><strong>Electron 桌面应用</strong></td><td>原生应用，集成终端、差异查看器、文件夹面板、浏览器标签。</td></tr>
+</table>
+
+<h2>架构概览</h2>
+<p>podex 由一个 Node.js 22 服务器组成，包含根处理器和 200 个 API/媒体端点。CLI、终端 TUI、Web PWA、Electron 桌面、Telegram、Discord 和 Manager Dashboard 都通过服务器与共享 SQLite 状态连接。完整系统设计请参阅<a href="concepts/architecture.html">架构</a>页面。</p>
+
+<pre><code>CLI/TUI/Electron/Web/Telegram/Discord ──→ server.ts ──→ src/routes/*
+Web events                              ──→ GET /api/events (SSE) ──→ event-bus
+Dashboard (port 24576)                  ──→ src/manager/ + public/manager/
+Agent streams                           ──→ NDJSON provider events + trace files</code></pre>
+
+<h2>开始使用</h2>
+<p>前往<a href="quickstart.html">快速开始</a>指南，安装 podex 并在 5 分钟内启动你的第一个代理会话。</p>
+
+<div class="page-nav">
+  <span></span>
+  <a class="next" href="quickstart.html">Quickstart</a>
+</div>
+
+</main>
+</div>
+</body>
+</html>
+

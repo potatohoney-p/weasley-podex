@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Commands — podex Docs</title>
+<link rel="stylesheet" href="../../_shell.css">
+<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Catalog</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Development</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI Media</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">Cloud &amp; Deploy</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">Security &amp; Review</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">Dev Workflow</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utilities</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model &amp; CLI</a>
+      <a class="docs-nav-link active" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI-Only</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a href="../">EN</a>
+    <a class="active" href="./">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Tool Commands</h1>
+<p class="lead">Tool 명령어는 podex의 내부 하위 시스템 &mdash; 스킬, 직원, MCP 서버, 메모리, 브라우저, 오케스트레이션, 프로젝트 디렉토리를 관리합니다. 이 슬래시 명령어들은 모든 podex 세션 내에서 사용할 수 있습니다.</p>
+
+<div class="callout callout-info">모든 tool 명령어는 <code>/</code>로 시작하며, 자연어로도 실행할 수 있습니다. 한국어 "~해줘" 패턴은 자동으로 매핑됩니다 &mdash; 각 명령어 아래의 팁 박스를 참고하세요.</div>
+
+<h2>명령어 개요</h2>
+<table>
+<tr><th>명령어</th><th>용도</th><th>한국어 단축 표현</th></tr>
+<tr><td><code>/skill</code></td><td>스킬 관리 (목록, 초기화)</td><td>"스킬 목록 보여줘"</td></tr>
+<tr><td><code>/employee</code></td><td>직원 초기화</td><td>"직원 리셋해줘"</td></tr>
+<tr><td><code>/mcp</code></td><td>MCP 서버 관리</td><td>"MCP 서버 동기화해줘"</td></tr>
+<tr><td><code>/memory</code></td><td>메모리 검색</td><td>"메모리 검색해줘"</td></tr>
+<tr><td><code>/browser</code></td><td>브라우저 제어</td><td>"브라우저 상태 보여줘"</td></tr>
+<tr><td><code>/orchestrate</code></td><td>PABCD 오케스트레이션</td><td>"PABCD 시작해줘"</td></tr>
+<tr><td><code>/project</code></td><td>프로젝트 디렉토리 관리</td><td>"프로젝트 설정해줘"</td></tr>
+</table>
+
+<!-- ───────────────────────────── /skill ───────────────────────────── -->
+<h2 id="skill">/skill</h2>
+<p>스킬 카탈로그를 관리합니다. 모든 사용 가능한 스킬의 활성화 상태를 조회하거나, 스킬 시스템을 기본값으로 초기화할 수 있습니다.</p>
+
+<h3>하위 명령어</h3>
+<table>
+<tr><th>하위 명령어</th><th>인자</th><th>설명</th></tr>
+<tr><td><code>/skill list</code></td><td>&mdash;</td><td>등록된 모든 스킬의 상태(활성, 로드됨, 사용 가능)를 표시합니다. 자동 활성화 스킬은 배지로 표시됩니다.</td></tr>
+<tr><td><code>/skill reset</code></td><td>&mdash;</td><td>모든 스킬을 기본 상태로 초기화합니다. 수동으로 로드한 스킬을 해제하고 자동 활성화 스킬을 복원합니다.</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># List all skills and their activation status
+/skill list
+
+# Reset skills after experimenting with manual loads
+/skill reset</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "스킬 목록 보여줘" &rarr; <code>/skill list</code> &nbsp;|&nbsp; "스킬 초기화해줘" &rarr; <code>/skill reset</code></div>
+
+<!-- ───────────────────────────── /employee ───────────────────────────── -->
+<h2 id="employee">/employee</h2>
+<p>직원 시스템을 초기화합니다. 직원은 위임된 작업을 처리하는 전문 서브 에이전트입니다. 직원이 멈추거나 상태가 오래되었을 때 초기화하세요.</p>
+
+<h3>하위 명령어</h3>
+<table>
+<tr><th>하위 명령어</th><th>인자</th><th>설명</th></tr>
+<tr><td><code>/employee reset</code></td><td>&mdash;</td><td>모든 직원을 초기 상태로 초기화합니다. 대기 중인 작업을 지우고, 내부 카운터를 리셋하며, 직원 풀을 다시 초기화합니다.</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Reset all employees when tasks are stuck
+/employee reset
+
+# Useful after changing project context
+/employee reset</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "직원 리셋해줘" &rarr; <code>/employee reset</code> &nbsp;|&nbsp; "employee 초기화" &rarr; <code>/employee reset</code></div>
+
+<!-- ───────────────────────────── /mcp ───────────────────────────── -->
+<h2 id="mcp">/mcp</h2>
+<p>MCP(Model Context Protocol) 서버를 관리합니다. MCP 서버는 추가 도구, 리소스, 컨텍스트를 제공하여 podex의 기능을 확장합니다. sync는 사용 가능한 서버를 탐색하고, install은 새 서버를 추가합니다.</p>
+
+<h3>하위 명령어</h3>
+<table>
+<tr><th>하위 명령어</th><th>인자</th><th>설명</th></tr>
+<tr><td><code>/mcp sync</code></td><td>&mdash;</td><td>구성된 모든 MCP 서버와 동기화합니다. 사용 가능한 도구를 재탐색하고, 서버 상태를 갱신하며, 도구 레지스트리를 업데이트합니다.</td></tr>
+<tr><td><code>/mcp install</code></td><td>&mdash;</td><td>구성된 서버 목록에서 새 MCP 서버를 설치 또는 등록합니다. 서버 매니페스트를 가져와 해당 도구를 등록합니다.</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Refresh all MCP server connections
+/mcp sync
+
+# Install a new MCP server after adding it to config
+/mcp install
+
+# Typical workflow: add server to config, then install + sync
+/mcp install
+/mcp sync</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "MCP 서버 동기화해줘" &rarr; <code>/mcp sync</code> &nbsp;|&nbsp; "MCP 설치해줘" &rarr; <code>/mcp install</code></div>
+
+<!-- ───────────────────────────── /memory ───────────────────────────── -->
+<h2 id="memory">/memory</h2>
+<p>podex의 영속 메모리 시스템을 검색합니다. 메모리는 세션 간에 결정 사항, 컨텍스트, 사실을 저장합니다. 이전 컨텍스트를 불러오거나 시스템이 기억하는 내용을 확인할 때 이 명령어를 사용하세요.</p>
+
+<h3>구문</h3>
+<table>
+<tr><th>형식</th><th>인자</th><th>설명</th></tr>
+<tr><td><code>/memory</code></td><td>&mdash;</td><td>쿼리 없이 메모리 검색을 엽니다 (최근 항목을 나열합니다).</td></tr>
+<tr><td><code>/memory [query]</code></td><td><code>query</code> &mdash; 자유 텍스트 검색 문자열</td><td>쿼리와 일치하는 메모리 항목을 검색합니다. 모든 메모리 레이어(L0 세션, L1 프로젝트, L2 연합)에 걸쳐 시맨틱 검색을 수행합니다.</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Search for JWT-related decisions
+/memory JWT authentication
+
+# Find previous architecture discussions
+/memory architecture decisions
+
+# Broad search across all memory
+/memory deployment strategy
+
+# No query — see recent memory entries
+/memory</code></pre>
+
+<h3>메모리 레이어</h3>
+<table>
+<tr><th>레이어</th><th>범위</th><th>설명</th></tr>
+<tr><td>L0</td><td>세션</td><td>현재 대화 컨텍스트, 휘발성</td></tr>
+<tr><td>L1</td><td>프로젝트</td><td>SQLite에 프로젝트별로 영속 저장되는 메모리</td></tr>
+<tr><td>L2</td><td>연합</td><td>대시보드 메모리 연합을 통한 인스턴스 간 검색</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "메모리 검색해줘" &rarr; <code>/memory</code> &nbsp;|&nbsp; "JWT 관련 기억 찾아줘" &rarr; <code>/memory JWT</code> &nbsp;|&nbsp; "이전에 뭐라고 했는지 찾아줘" &rarr; <code>/memory [키워드]</code></div>
+
+<!-- ───────────────────────────── /browser ───────────────────────────── -->
+<h2 id="browser">/browser</h2>
+<p>podex가 관리하는 헤드리스 Chrome 브라우저 인스턴스를 제어합니다. 브라우저 상태를 확인하고, 열린 탭을 나열하며, 웹 자동화 및 스크린샷에 사용되는 브라우저 세션을 관리합니다.</p>
+
+<h3>하위 명령어</h3>
+<table>
+<tr><th>하위 명령어</th><th>인자</th><th>설명</th></tr>
+<tr><td><code>/browser status</code></td><td>&mdash;</td><td>현재 브라우저 상태를 표시합니다: podex 브라우저 서버 실행 여부, Chrome DevTools Protocol(CDP) 연결 상태, 뷰포트 크기, 활성 페이지 URL을 보여줍니다.</td></tr>
+<tr><td><code>/browser tabs</code></td><td>&mdash;</td><td>열려 있는 모든 브라우저 탭의 제목, URL, 활성/비활성 상태를 나열합니다. 다중 탭 자동화 워크플로우를 디버깅할 때 유용합니다.</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Check if the browser is connected and healthy
+/browser status
+
+# See all open tabs in the managed browser
+/browser tabs
+
+# Typical workflow: check status, then use browser skill
+/browser status
+"이 페이지 스크린샷 찍어줘"</code></pre>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "브라우저 상태 보여줘" &rarr; <code>/browser status</code> &nbsp;|&nbsp; "열린 탭 보여줘" &rarr; <code>/browser tabs</code></div>
+
+<!-- ───────────────────────────── /orchestrate ───────────────────────────── -->
+<h2 id="orchestrate">/orchestrate</h2>
+<p>PABCD 오케스트레이션 프레임워크를 실행합니다. PABCD는 복잡한 작업을 다섯 단계로 구조화합니다: <strong>I</strong>ntake(접수), <strong>P</strong>ersona(페르소나), <strong>A</strong>udience(대상), <strong>B</strong>ehavior(행동), <strong>C</strong>ontext(맥락), <strong>D</strong>eliverable(산출물). 이 명령어로 구조화된 워크플로우를 시작하거나, 단계를 진행하거나, 진행 상황을 확인할 수 있습니다.</p>
+
+<h3>하위 명령어</h3>
+<table>
+<tr><th>하위 명령어</th><th>인자</th><th>설명</th></tr>
+<tr><td><code>/orchestrate I</code></td><td>&mdash;</td><td><strong>Intake(접수)</strong> &mdash; 오케스트레이션 프로세스를 시작합니다. 원시 작업 설명을 수집하고 구조화하기 전에 요구 사항을 명확히 합니다.</td></tr>
+<tr><td><code>/orchestrate P</code></td><td>&mdash;</td><td><strong>Persona(페르소나)</strong> &mdash; 작업을 수행할 주체를 정의합니다 (예: "시니어 백엔드 엔지니어", "UX 리서처"). 목소리와 전문성 수준을 설정합니다.</td></tr>
+<tr><td><code>/orchestrate A</code></td><td>&mdash;</td><td><strong>Audience(대상)</strong> &mdash; 결과물을 소비할 대상을 정의합니다 (예: "주니어 개발자", "프로덕트 매니저", "CI 파이프라인").</td></tr>
+<tr><td><code>/orchestrate B</code></td><td>&mdash;</td><td><strong>Behavior(행동)</strong> &mdash; 수행할 행동을 지정합니다 (예: "작성", "리뷰", "리팩토링", "분석", "마이그레이션").</td></tr>
+<tr><td><code>/orchestrate C</code></td><td>&mdash;</td><td><strong>Context(맥락)</strong> &mdash; 배경 제약 조건을 제공합니다 (예: "TypeScript 모노레포, Node 20, Cloudflare Workers").</td></tr>
+<tr><td><code>/orchestrate D</code></td><td>&mdash;</td><td><strong>Deliverable(산출물)</strong> &mdash; 기대하는 출력 형식을 정의합니다 (예: "테스트를 포함한 PR-ready 코드", "아키텍처 다이어그램", "마이그레이션 계획").</td></tr>
+<tr><td><code>/orchestrate status</code></td><td>&mdash;</td><td>현재 오케스트레이션 진행 상황을 표시합니다. 어떤 PABCD 단계가 완료, 대기, 진행 중인지 보여줍니다.</td></tr>
+<tr><td><code>/orchestrate reset</code></td><td>&mdash;</td><td>오케스트레이션 상태를 초기화합니다. 모든 PABCD 단계를 지우고 빈 상태로 돌아갑니다.</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Start a full PABCD orchestration from intake
+/orchestrate I
+
+# Jump directly to defining the Persona phase
+/orchestrate P
+
+# Run through the full workflow step by step
+/orchestrate I    # Intake: describe the task
+/orchestrate P    # Persona: who does it
+/orchestrate A    # Audience: who reads it
+/orchestrate B    # Behavior: what actions
+/orchestrate C    # Context: constraints
+/orchestrate D    # Deliverable: output format
+
+# Check progress mid-workflow
+/orchestrate status
+
+# Start over if the framing is wrong
+/orchestrate reset</code></pre>
+
+<h3>PABCD 단계 흐름</h3>
+<table>
+<tr><th>단계</th><th>답하는 질문</th><th>예시</th></tr>
+<tr><td><strong>I</strong> &mdash; Intake</td><td>원시 작업은 무엇인가?</td><td>"JWT를 사용한 사용자 인증 시스템 구축"</td></tr>
+<tr><td><strong>P</strong> &mdash; Persona</td><td>누가 수행하는가?</td><td>보안 전문성을 갖춘 시니어 백엔드 엔지니어</td></tr>
+<tr><td><strong>A</strong> &mdash; Audience</td><td>누가 결과물을 소비하는가?</td><td>팀에 합류하는 주니어 개발자</td></tr>
+<tr><td><strong>B</strong> &mdash; Behavior</td><td>어떤 행동을 취하는가?</td><td>설계, 구현, 테스트 작성, 문서화</td></tr>
+<tr><td><strong>C</strong> &mdash; Context</td><td>제약 조건은 무엇인가?</td><td>Express + TypeScript, PostgreSQL, Cloudflare에 배포</td></tr>
+<tr><td><strong>D</strong> &mdash; Deliverable</td><td>출력 형식은 무엇인가?</td><td>유닛 테스트와 API 문서를 포함한 PR-ready 코드</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "PABCD 시작해줘" &rarr; <code>/orchestrate I</code> &nbsp;|&nbsp; "오케스트레이션 상태 보여줘" &rarr; <code>/orchestrate status</code> &nbsp;|&nbsp; "PABCD 리셋해줘" &rarr; <code>/orchestrate reset</code></div>
+
+<!-- ───────────────────────────── /project ───────────────────────────── -->
+<h2 id="project">/project</h2>
+<p>프로젝트 디렉토리를 관리합니다. podex는 어떤 디렉토리가 등록된 프로젝트인지 추적하며, 이 컨텍스트를 메모리 범위 지정, 스킬 선택, 파일 작업에 활용합니다. 프로젝트 간 전환하거나 새 프로젝트를 등록할 수 있습니다.</p>
+
+<h3>하위 명령어</h3>
+<table>
+<tr><th>하위 명령어</th><th>인자</th><th>설명</th></tr>
+<tr><td><code>/project set</code></td><td><code>[path]</code> &mdash; 선택적 디렉토리 경로</td><td>활성 프로젝트 디렉토리를 설정합니다. 경로를 지정하지 않으면 현재 작업 디렉토리를 사용합니다. 메모리 범위, 스킬 컨텍스트, 파일 해석 경로가 업데이트됩니다.</td></tr>
+<tr><td><code>/project reset</code></td><td>&mdash;</td><td>활성 프로젝트를 해제합니다. 프로젝트 컨텍스트가 없는 상태로 초기화되며, 메모리는 전역 범위로 돌아가고 스킬은 프로젝트별 힌트를 잃습니다.</td></tr>
+<tr><td><code>/project list</code></td><td>&mdash;</td><td>등록된 모든 프로젝트 디렉토리의 이름, 경로, 마지막 활성 시간을 나열합니다.</td></tr>
+</table>
+
+<h3>사용 예시</h3>
+<pre><code># Set the current directory as the active project
+/project set
+
+# Set a specific project path
+/project set ~/Developer/my-app
+
+# List all known projects
+/project list
+
+# Clear the project context
+/project reset
+
+# Typical workflow: switch project before starting work
+/project set ~/Developer/podex
+"이 프로젝트의 TODO 보여줘"</code></pre>
+
+<h3>프로젝트를 설정하면 달라지는 것들</h3>
+<table>
+<tr><th>시스템</th><th>효과</th></tr>
+<tr><td>Memory</td><td>L1 프로젝트 메모리가 설정된 디렉토리 범위로 지정됩니다</td></tr>
+<tr><td>Skills</td><td>새 프로젝트에 대해 스택 감지가 다시 실행됩니다 (예: TypeScript, Python 감지)</td></tr>
+<tr><td>Files</td><td>상대 경로가 프로젝트 루트 기준으로 해석됩니다</td></tr>
+<tr><td>Goals</td><td>목표 추적이 활성 프로젝트 범위로 지정됩니다</td></tr>
+</table>
+
+<div class="callout callout-info"><strong>"~해줘" 팁:</strong> "프로젝트 설정해줘" &rarr; <code>/project set</code> &nbsp;|&nbsp; "프로젝트 목록 보여줘" &rarr; <code>/project list</code> &nbsp;|&nbsp; "프로젝트 초기화해줘" &rarr; <code>/project reset</code></div>
+
+<!-- ───────────────────────────── Quick Reference ───────────────────────────── -->
+<h2>빠른 참조</h2>
+<p>모든 tool 명령어를 관리 대상별로 분류하여 한눈에 볼 수 있습니다.</p>
+
+<table>
+<tr><th>카테고리</th><th>명령어</th><th>기능</th></tr>
+<tr><td rowspan="2">스킬 관리</td><td><code>/skill list</code></td><td>모든 스킬과 상태 나열</td></tr>
+<tr><td><code>/skill reset</code></td><td>스킬을 기본값으로 초기화</td></tr>
+<tr><td>직원 관리</td><td><code>/employee reset</code></td><td>모든 직원 초기화</td></tr>
+<tr><td rowspan="2">MCP 서버</td><td><code>/mcp sync</code></td><td>MCP 서버 연결 갱신</td></tr>
+<tr><td><code>/mcp install</code></td><td>새 MCP 서버 설치</td></tr>
+<tr><td>메모리</td><td><code>/memory [query]</code></td><td>영속 메모리 검색</td></tr>
+<tr><td rowspan="2">브라우저</td><td><code>/browser status</code></td><td>브라우저 상태 확인</td></tr>
+<tr><td><code>/browser tabs</code></td><td>열린 탭 나열</td></tr>
+<tr><td rowspan="8">오케스트레이션</td><td><code>/orchestrate I</code></td><td>접수 단계 시작</td></tr>
+<tr><td><code>/orchestrate P</code></td><td>페르소나 정의</td></tr>
+<tr><td><code>/orchestrate A</code></td><td>대상 정의</td></tr>
+<tr><td><code>/orchestrate B</code></td><td>행동 지정</td></tr>
+<tr><td><code>/orchestrate C</code></td><td>맥락 제공</td></tr>
+<tr><td><code>/orchestrate D</code></td><td>산출물 정의</td></tr>
+<tr><td><code>/orchestrate status</code></td><td>오케스트레이션 진행 상황 표시</td></tr>
+<tr><td><code>/orchestrate reset</code></td><td>오케스트레이션 상태 초기화</td></tr>
+<tr><td rowspan="3">프로젝트</td><td><code>/project set [path]</code></td><td>활성 프로젝트 디렉토리 설정</td></tr>
+<tr><td><code>/project reset</code></td><td>프로젝트 컨텍스트 해제</td></tr>
+<tr><td><code>/project list</code></td><td>등록된 프로젝트 나열</td></tr>
+</table>
+
+<h2>자연어 매핑</h2>
+<p>슬래시 명령어를 외울 필요가 없습니다. podex는 자연스러운 한국어와 영어 표현을 적절한 tool 명령어로 매핑합니다.</p>
+
+<table>
+<tr><th>사용자 발화</th><th>podex 실행 결과</th></tr>
+<tr><td>"메모리 검색해줘"</td><td><code>/memory</code></td></tr>
+<tr><td>"JWT 관련 메모리 찾아줘"</td><td><code>/memory JWT</code></td></tr>
+<tr><td>"PABCD 시작해줘"</td><td><code>/orchestrate P</code></td></tr>
+<tr><td>"오케스트레이션 상태 확인해줘"</td><td><code>/orchestrate status</code></td></tr>
+<tr><td>"스킬 목록 보여줘"</td><td><code>/skill list</code></td></tr>
+<tr><td>"스킬 리셋해줘"</td><td><code>/skill reset</code></td></tr>
+<tr><td>"직원 리셋해줘"</td><td><code>/employee reset</code></td></tr>
+<tr><td>"MCP 서버 동기화해줘"</td><td><code>/mcp sync</code></td></tr>
+<tr><td>"MCP 설치해줘"</td><td><code>/mcp install</code></td></tr>
+<tr><td>"브라우저 상태 보여줘"</td><td><code>/browser status</code></td></tr>
+<tr><td>"열린 탭 보여줘"</td><td><code>/browser tabs</code></td></tr>
+<tr><td>"프로젝트 설정해줘"</td><td><code>/project set</code></td></tr>
+<tr><td>"프로젝트 목록 보여줘"</td><td><code>/project list</code></td></tr>
+<tr><td>"프로젝트 초기화해줘"</td><td><code>/project reset</code></td></tr>
+</table>
+
+<div class="page-nav">
+<a class="prev" href="model.html">Model &amp; CLI</a>
+<a class="next" href="cli-only.html">CLI-Only</a>
+</div>
+</main>
+</div>
+</body>
+</html>
+

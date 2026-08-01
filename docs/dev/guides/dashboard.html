@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — podex Docs</title>
+<link rel="stylesheet" href="../_shell.css">
+<link rel="icon" type="image/png" href="../../assets/app-icon.png">
+</head>
+<body>
+<button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+<div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
+<div class="docs-layout">
+<nav class="docs-sidebar">
+  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
+  <div class="docs-nav">
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Getting Started</div>
+      <a class="docs-nav-link" href="../">Overview</a>
+      <a class="docs-nav-link" href="../quickstart.html">Quickstart</a>
+      <a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Concepts</div>
+      <a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a>
+      <a class="docs-nav-link" href="../concepts/employees.html">Employees</a>
+      <a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a>
+      <a class="docs-nav-link" href="../concepts/goals.html">Goals</a>
+      <a class="docs-nav-link" href="../concepts/skills.html">Skills</a>
+      <a class="docs-nav-link" href="../concepts/memory.html">Memory</a>
+      <a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Guides</div>
+      <a class="docs-nav-link active" href="../guides/dashboard.html">Dashboard</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
+      <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
+      <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
+      <a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a>
+      <a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a>
+      <a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Reference</div>
+      <a class="docs-nav-link" href="../reference/cli.html">CLI Commands</a>
+      <a class="docs-nav-link" href="../reference/api.html">Server API</a>
+      <a class="docs-nav-link" href="../reference/config.html">Configuration</a>
+      <a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a>
+      <a class="docs-nav-link" href="../reference/events.html">Events</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Skills</div>
+      <a class="docs-nav-link" href="../skills/index.html">Overview</a>
+      <a class="docs-nav-link" href="../skills/ai-media.html">AI &amp; Media</a>
+      <a class="docs-nav-link" href="../skills/automation.html">Automation</a>
+      <a class="docs-nav-link" href="../skills/communication.html">Communication</a>
+      <a class="docs-nav-link" href="../skills/devtools-cloud.html">DevTools — Cloud</a>
+      <a class="docs-nav-link" href="../skills/devtools-security.html">DevTools — Security</a>
+      <a class="docs-nav-link" href="../skills/devtools-workflow.html">DevTools — Workflow</a>
+      <a class="docs-nav-link" href="../skills/orchestration.html">Orchestration</a>
+      <a class="docs-nav-link" href="../skills/productivity.html">Productivity</a>
+      <a class="docs-nav-link" href="../skills/smarthome.html">Smart Home</a>
+      <a class="docs-nav-link" href="../skills/utility.html">Utility</a>
+    </div>
+    <div class="docs-nav-section">
+      <div class="docs-nav-title">Commands</div>
+      <a class="docs-nav-link" href="../commands/cli-only.html">CLI Only</a>
+      <a class="docs-nav-link" href="../commands/model.html">Model</a>
+      <a class="docs-nav-link" href="../commands/root-cli.html">Root CLI</a>
+      <a class="docs-nav-link" href="../commands/session.html">Session</a>
+      <a class="docs-nav-link" href="../commands/tools.html">Tools</a>
+      <a class="docs-nav-link" href="../commands/workflow.html">Workflow</a>
+    </div>
+    <div class="docs-nav-section">
+      <a class="docs-nav-link" href="../changelog.html">Changelog</a>
+    </div>
+  </div>
+  <div class="docs-lang">
+    <a class="active" href="../">EN</a>
+    <a href="../ko/">한국어</a>
+    <a href="../zh/">中文</a>
+  </div>
+  <div class="docs-nav-footer">
+    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="../../">Landing Page</a>
+  </div>
+</nav>
+<main class="docs-main">
+
+<h1>Dashboard</h1>
+<p class="lead">The multi-instance dashboard lets you run 7+ podex instances simultaneously and manage them from a single React-based UI. It includes notes, kanban board, schedule, reminders, settings, and memory federation.</p>
+
+<h2>Starting the Dashboard</h2>
+<pre><code>jaw dashboard serve</code></pre>
+<p>This starts the manager server on port 24576 (default) and scans for podex instances starting from port 3457.</p>
+<table>
+<tr><th>Option</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>--port</code></td><td>24576</td><td>Dashboard server port</td></tr>
+<tr><td><code>--from</code></td><td>3457</td><td>Start scanning from this port</td></tr>
+<tr><td><code>--count</code></td><td>50</td><td>Number of ports to scan</td></tr>
+<tr><td><code>--no-open</code></td><td>-</td><td>Do not auto-open browser</td></tr>
+</table>
+
+<h2>Instance Management</h2>
+<p>The dashboard scans for running instances and displays them in a list. Each instance shows its port, status, active CLI, model, and working directory.</p>
+<ul>
+<li><strong>Start</strong>: Launch a new podex instance on an available port</li>
+<li><strong>Stop</strong>: Gracefully shut down an instance</li>
+<li><strong>Preview</strong>: Embed the instance's Web UI in the dashboard via iframe</li>
+<li><strong>Permissions</strong>: Manage instance-level settings</li>
+</ul>
+
+<h2>Dashboard Tabs</h2>
+<table>
+<tr><th>Tab</th><th>Description</th></tr>
+<tr><td><strong>Instances</strong></td><td>Instance list with start/stop/preview controls</td></tr>
+<tr><td><strong>Notes</strong></td><td>Jawsidian markdown notes with WYSIWYG editing</td></tr>
+<tr><td><strong>Board</strong></td><td>Kanban task board with workflow lanes</td></tr>
+<tr><td><strong>Schedule</strong></td><td>Heartbeat job scheduling</td></tr>
+<tr><td><strong>Reminders</strong></td><td>Eisenhower-style priority matrix with drag/drop</td></tr>
+<tr><td><strong>Settings</strong></td><td>Dashboard-level configuration including developer tools</td></tr>
+</table>
+
+<h2>Search and Filters</h2>
+<p>The instance list supports filtering by status, CLI type, and text search across instance metadata.</p>
+
+<h2>Memory Federation</h2>
+<p>The dashboard provides L2 cross-instance memory search. This fans out queries to all <code>~/.podex-*</code> instance SQLite indexes.</p>
+<pre><code># Search across all instances
+jaw dashboard memory search "JWT authentication"
+
+# List discovered instances
+jaw dashboard memory instances
+
+# Read from a specific instance
+jaw dashboard memory read 3457:shared/decisions.md</code></pre>
+
+<h2>Desktop Integration</h2>
+<p>In the Electron desktop app, the dashboard gains additional panels:</p>
+<ul>
+<li><strong>Browser panel</strong> -- Webview-based browser with tab management</li>
+<li><strong>Diff panel</strong> -- Git diff viewer backed by server API</li>
+</ul>
+
+<div class="callout callout-info">
+<strong>Try it:</strong>
+<ul>
+<li>이 인스턴스 영구적으로 켜놔줘</li>
+<li>인스턴스 상태 보여줘</li>
+</ul>
+</div>
+
+<div class="page-nav">
+<a class="prev" href="../concepts/prompts.html">Prompts</a>
+<a class="next" href="notes.html">Notes (Jawsidian)</a>
+</div>
+</main>
+</div>
+<script src="../_search.js"></script>
+</body>
+</html>
+
