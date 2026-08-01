@@ -14,7 +14,7 @@ import { runQueueCommand } from './queue-command.js';
 
 export async function runSimpleMode(ctx: TuiContext): Promise<void> {
     const { ws } = ctx;
-    console.log(`\n  podex v${APP_VERSION} \u00B7 ${ctx.label} \u00B7 :${ctx.values.port}\n`);
+    console.log(`\n  Weasley Podex v${APP_VERSION} \u00B7 ${ctx.label} \u00B7 :${ctx.values.port}\n`);
     const rl = createInterface({ input: process.stdin, output: process.stdout, prompt: `${ctx.label} > ` });
     let streaming = false;
 

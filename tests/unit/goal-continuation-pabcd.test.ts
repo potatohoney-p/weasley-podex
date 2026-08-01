@@ -64,24 +64,24 @@ test('a genuinely running worker still blocks continuation during PABCD', () => 
     }
 });
 
-test('goal continuation prompt uses podex goal pause instead of inducing done', () => {
+test('goal continuation prompt uses weasley-podex goal pause instead of inducing done', () => {
     cleanup();
     try {
         setGoal('contract: pause instead of done');
         const res = buildGoalContinuation();
         assert.equal(res.shouldContinue, true);
         assert.match(res.prompt ?? '', /built-in\/runtime goal feature/);
-        assert.match(res.prompt ?? '', /Use only `podex goal \.\.\.`/);
-        assert.match(res.prompt ?? '', /podex goal pause --agent --audit/);
+        assert.match(res.prompt ?? '', /Use only `weasley-podex goal \.\.\.`/);
+        assert.match(res.prompt ?? '', /weasley-podex goal pause --agent --audit/);
         assert.match(res.prompt ?? '', /independent objective reviewer/);
-        assert.match(res.prompt ?? '', /Plain `podex goal pause` is for manual user commands only/);
+        assert.match(res.prompt ?? '', /Plain `weasley-podex goal pause` is for manual user commands only/);
         assert.match(res.prompt ?? '', /explicit user-requested final completion/);
         assert.match(res.prompt ?? '', /--- Stop\/Pause Audit ---/);
         assert.doesNotMatch(res.prompt ?? '', /METACOGNITIVE COMPLETION CHECK/);
         assert.doesNotMatch(res.prompt ?? '', /--- Completion Audit/);
         assert.doesNotMatch(res.prompt ?? '', /run `\/goal done`/);
         assert.doesNotMatch(res.prompt ?? '', /\/goal done/);
-        assert.doesNotMatch(res.prompt ?? '', /podex goal done/);
+        assert.doesNotMatch(res.prompt ?? '', /weasley-podex goal done/);
     } finally {
         cleanup();
     }
@@ -95,8 +95,8 @@ test('goal continuation prompt requires executing PABCD transition commands thro
         const res = buildGoalContinuation();
         assert.equal(res.shouldContinue, true);
         assert.match(res.prompt ?? '', /Phase-transition commands are mandatory actions/);
-        assert.match(res.prompt ?? '', /Run the exact `podex orchestrate \.\.\.` command/);
-        assert.match(res.prompt ?? '', /C passed → `podex orchestrate D --attest/);
+        assert.match(res.prompt ?? '', /Run the exact `weasley-podex orchestrate \.\.\.` command/);
+        assert.match(res.prompt ?? '', /C passed → `weasley-podex orchestrate D --attest/);
         assert.match(res.prompt ?? '', /do NOT only say "run D"/);
         // Phase 60: goal-mode override must instruct the evidence gate, else self-advance 409s.
         assert.match(res.prompt ?? '', /EVIDENCE GATE/);
@@ -181,7 +181,7 @@ test('goal continuation prompt enforces per-work-phase full PABCD loop and anti-
         const p = res.prompt ?? '';
         assert.match(p, /ONE WORK-PHASE = ONE FULL PABCD CYCLE/);
         assert.match(p, /WORK-PHASE BOUNDARY/);
-        assert.match(p, /podex orchestrate P` to start the next work-phase/);
+        assert.match(p, /weasley-podex orchestrate P` to start the next work-phase/);
         assert.match(p, /FAITHFUL EXECUTION \(anti-skip\)/);
         assert.match(p, /never rubber-stamp a phase to move on/);
     } finally {

@@ -8,8 +8,8 @@ export type JawCeoDocsEditPolicy = {
     allowedDirectories: string[];
 };
 
-export const JAW_CEO_MAX_PATCH_BYTES = 20 * 1024;
-export const JAW_CEO_MAX_TARGET_BYTES = 1024 * 1024;
+export const WEASLEY_PODEX_CEO_MAX_PATCH_BYTES = 20 * 1024;
+export const WEASLEY_PODEX_CEO_MAX_TARGET_BYTES = 1024 * 1024;
 
 export function buildJawCeoDocsEditPolicy(args: {
     repoRoot: string;
@@ -93,7 +93,7 @@ export async function resolveJawCeoDocsEditTarget(args: {
     const directFileAllowed = canonicalPolicy.allowedFiles.some(file => file === canonicalPath);
     const directoryAllowed = canonicalPolicy.allowedDirectories.some(directory => isInside(directory, canonicalPath));
     if (!directFileAllowed && !directoryAllowed) {
-        throw Object.assign(new Error('path is outside the Jaw CEO docs-edit allowlist'), { code: 'docs_edit_root_denied' });
+        throw Object.assign(new Error('path is outside the Weasley Podex CEO docs-edit allowlist'), { code: 'docs_edit_root_denied' });
     }
     const notesRoot = canonicalPolicy.allowedDirectories[canonicalPolicy.allowedDirectories.length - 1] || '';
     if (hasHiddenSegmentOutsideNotes(canonicalPath, notesRoot)) {
@@ -124,7 +124,7 @@ export async function applyJawCeoDocsEdit(args: {
     policy: JawCeoDocsEditPolicy;
 }): Promise<{ path: string; bytes: number; operation: string }> {
     const contentBytes = Buffer.byteLength(args.content, 'utf8');
-    if (contentBytes > JAW_CEO_MAX_PATCH_BYTES) {
+    if (contentBytes > WEASLEY_PODEX_CEO_MAX_PATCH_BYTES) {
         throw Object.assign(new Error('docs edit content exceeds 20 KB'), { code: 'docs_edit_patch_too_large' });
     }
     const { canonicalPath } = await resolveJawCeoDocsEditTarget({ targetPath: args.targetPath, policy: args.policy });
@@ -132,7 +132,7 @@ export async function applyJawCeoDocsEdit(args: {
     try {
         await access(canonicalPath, fsConstants.F_OK);
         const info = await stat(canonicalPath);
-        if (info.size > JAW_CEO_MAX_TARGET_BYTES) {
+        if (info.size > WEASLEY_PODEX_CEO_MAX_TARGET_BYTES) {
             throw Object.assign(new Error('target file exceeds 1 MB'), { code: 'docs_edit_target_too_large' });
         }
         const buffer = await readFile(canonicalPath);

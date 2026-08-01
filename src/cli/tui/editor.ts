@@ -17,7 +17,7 @@ function editorCommand(): string {
 
 /** Open the system editor on `initial`, return the edited buffer (or initial on failure). */
 export function openExternalEditor(initial: string): string {
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-tui-edit-'));
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'weasley-podex-tui-edit-'));
     const tmpFile = path.join(tmpDir, 'compose.txt');
     try {
         fs.writeFileSync(tmpFile, initial, 'utf8');

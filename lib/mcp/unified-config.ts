@@ -1,13 +1,13 @@
 ﻿/**
  * lib/mcp/unified-config.ts
  * Load, save, import, and initialize unified MCP config.
- * Source of truth: ~/.podex/mcp.json
+ * Source of truth: ~/.weasley/podex/mcp.json
  */
 import fs from 'fs';
 import { join } from 'path';
-import { JAW_HOME } from './skills-utils.js';
+import { WEASLEY_PODEX_HOME } from './skills-utils.js';
 
-const MCP_PATH = join(JAW_HOME, 'mcp.json');
+const MCP_PATH = join(WEASLEY_PODEX_HOME, 'mcp.json');
 
 type McpServerConfig = {
     type?: string;
@@ -42,7 +42,7 @@ export function loadUnifiedMcp() {
 }
 
 export function saveUnifiedMcp(config: UnifiedMcpConfig) {
-    fs.mkdirSync(JAW_HOME, { recursive: true });
+    fs.mkdirSync(WEASLEY_PODEX_HOME, { recursive: true });
     fs.writeFileSync(MCP_PATH, JSON.stringify(config, null, 4) + '\n');
 }
 

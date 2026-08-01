@@ -17,6 +17,7 @@ import { join } from 'node:path';
 const root = process.cwd();
 const bridgeSource = readFileSync(join(root, 'public/manager/src/panels/desktop-bridge.ts'), 'utf-8');
 const preloadSource = readFileSync(join(root, 'electron/src/preload/index.ts'), 'utf-8');
+const metricsPreloadSource = readFileSync(join(root, 'electron/src/preload/metrics.ts'), 'utf-8');
 const panelSource = readFileSync(join(root, 'public/manager/src/browser-panel/BrowserPanel.tsx'), 'utf-8');
 const panelCssSource = readFileSync(join(root, 'public/manager/src/browser-panel/browser-panel.css'), 'utf-8');
 const routerSource = readFileSync(join(root, 'public/manager/src/SidebarRailRouter.tsx'), 'utf-8');
@@ -54,7 +55,9 @@ test('preload invokes the browser:* webview IPC channels', () => {
     ]) {
         assert.ok(preloadSource.includes(channel), `preload wires ${channel}`);
     }
-    assert.ok(preloadSource.includes('podex_ELECTRON_RENDERER_TOKEN'), 'renderer-only HTTP routes must use the per-launch Electron token');
+    assert.ok(preloadSource.includes("getWeasleyPodexEnv('ELECTRON_RENDERER_TOKEN')"), 'renderer-only HTTP routes must use the per-launch Electron token');
+    assert.ok(preloadSource.includes("header: 'X-Weasley-Podex-Electron'"), 'preload must use the branded desktop identity header expected by Manager routes');
+    assert.ok(metricsPreloadSource.includes("const HEADER = 'X-Weasley-Podex-Electron'"), 'metrics preload must use the same branded desktop identity header');
     assert.ok(preloadSource.includes('headers.set(DESKTOP_IDENTITY.header, DESKTOP_IDENTITY.token)'), 'preload must send the token value, not only a spoofable marker');
 });
 

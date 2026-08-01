@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 import type { DashboardLifecycleResult } from './types.js';
 
 export type DashboardShutdownMode = 'full' | 'locked-skip';
@@ -34,7 +35,7 @@ function warnLifecycleFailures(
 ): void {
     for (const result of results) {
         if (result.ok) continue;
-        log.warn(`[dashboard] failed to stop managed Jaw on port ${result.port}: ${result.message}`);
+        log.warn(`[dashboard] failed to stop managed Weasley Podex instance on port ${result.port}: ${result.message}`);
     }
 }
 
@@ -48,14 +49,14 @@ export function createDashboardShutdown(options: DashboardShutdownOptions): (mod
 
         shutdownPromise = (async () => {
             try {
-                if (process.env['podex_TEST_MODE'] === '1') {
+                if (getWeasleyPodexEnv('TEST_MODE') === '1') {
                     log.warn('[dashboard] test mode: skipping stopAll() to protect running instances');
                 } else {
                     const lifecycleResults = await options.lifecycle.stopAll(mode ?? 'locked-skip');
                     warnLifecycleFailures(lifecycleResults, log);
                 }
             } catch (error) {
-                log.error(`[dashboard] failed to stop managed Jaw instances: ${(error as Error).message}`);
+                log.error(`[dashboard] failed to stop managed Weasley Podex instances: ${(error as Error).message}`);
             }
 
             try {

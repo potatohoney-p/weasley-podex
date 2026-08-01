@@ -32,20 +32,22 @@ test('dashboard command declares approved defaults and implements service', () =
     assert.ok(dashboard.includes('dashboard-service'), 'dashboard service must delegate to dashboard-service module');
 });
 
-test('dashboard command pins managed instance starts to the launching CLI binary', () => {
+test('dashboard command pins managed instance starts to the launching Weasley Podex binary', () => {
     const dashboard = read('bin/commands/dashboard.ts');
     const instance = read('src/core/instance.ts');
 
-    assert.ok(dashboard.includes('podex_BIN'), 'dashboard command must pass podex_BIN to manager server');
+    assert.ok(dashboard.includes('WEASLEY_PODEX_BIN'), 'dashboard command must pass the primary CLI path to manager server');
     assert.ok(
-        dashboard.includes('process.env.podex_BIN || process.argv[1]'),
-        'dashboard command must prefer an existing podex_BIN and otherwise use the launching CLI path'
+        dashboard.includes("WEASLEY_PODEX_BIN: getWeasleyPodexEnv('BIN') || process.argv[1] || ''"),
+        'dashboard command must resolve the CLI override through the compatibility boundary before using the launching path'
     );
-    assert.ok(instance.includes('process.env.podex_BIN'), 'getJawPath must honor podex_BIN before PATH lookup');
+    assert.ok(instance.includes("const configuredBin = getWeasleyPodexEnv('BIN')"), 'getJawPath must honor the primary CLI env through the compatibility boundary');
     assert.ok(
-        instance.indexOf('process.env.podex_BIN') < instance.indexOf("whichWithServicePath('jaw')"),
-        'podex_BIN must be checked before PATH-based jaw discovery'
+        instance.indexOf("getWeasleyPodexEnv('BIN')") < instance.indexOf("whichWithServicePath('weasley-podex')"),
+        'the primary CLI env must be checked before PATH discovery'
     );
+    assert.equal(instance.includes("whichWithServicePath('podex')"), false, 'PATH discovery must not expose a retired public alias');
+    assert.equal(instance.includes("whichWithServicePath('jaw')"), false, 'PATH discovery must not expose a retired public alias');
 });
 
 test('dashboard implementation does not mount into existing serve path', () => {
@@ -93,13 +95,18 @@ test('dashboard noisy browser probe routes are handled before SPA fallback', () 
     assert.ok(proxyIndex < fallbackIndex, 'dashboard proxy must be before SPA fallback');
 });
 
-test('dashboard serves manager favicon from packaged icons', () => {
+test('dashboard serves manager favicon from the generated Weasley Podex mark', () => {
     const managerServer = read('src/manager/server.ts');
     const html = read('public/manager/index.html');
 
-    assert.ok(managerServer.includes("app.use('/icons', express.static(join(sourceRoot, 'icons')))"), 'manager server must expose packaged icons');
-    assert.ok(managerServer.includes("res.sendFile('icon-192.png'"), 'favicon route must serve the packaged icon');
+    assert.ok(managerServer.includes("app.use('/assets', express.static(join(distRoot, 'assets')))"), 'manager server must expose built public assets');
+    assert.ok(managerServer.includes("res.sendFile('weasley-podex-mark.png'"), 'favicon route must serve the generated Weasley Podex mark');
+    assert.ok(managerServer.includes("root: join(sourceRoot, 'assets')"), 'favicon route must resolve the generated mark from public assets');
+    assert.equal(managerServer.includes("app.use('/icons'"), false, 'manager server must not expose the deleted legacy icon directory');
+    assert.equal(managerServer.includes("res.sendFile('icon-192.png'"), false, 'favicon route must not serve the legacy 192 icon');
     assert.ok(html.includes('rel="icon"'), 'manager HTML must declare a favicon');
-    assert.ok(html.includes('/icons/icon-192.png'), 'manager HTML favicon must use the packaged icon route');
+    assert.ok(html.includes('/assets/weasley-podex-mark.png'), 'manager HTML favicon must use the generated mark asset route');
+    assert.equal(html.includes('/icons/icon-'), false, 'manager HTML must not reference deleted legacy icons');
+    assert.equal(/shark/i.test(html), false, 'manager HTML must not reference legacy shark assets');
 });
 

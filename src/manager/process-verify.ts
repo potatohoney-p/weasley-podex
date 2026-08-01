@@ -1,11 +1,11 @@
 import { execFile } from 'node:child_process';
 import { Socket } from 'node:net';
 import { MANAGED_INSTANCE_HOST } from './constants.js';
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 
 const LSOF_TIMEOUT_MS = 750;
 const PORT_PROBE_TIMEOUT_MS = 300;
 const PORT_FREE_POLL_INTERVAL_MS = 100;
-const LSOF_BIN_ENV = 'podex_LSOF_BIN';
 
 export type ProcessVerifyImpl = {
     isPidAlive: (pid: number) => boolean;
@@ -65,7 +65,7 @@ async function resolveListeningPidWin32(port: number): Promise<number | null> {
 
 async function resolveListeningPidLsof(port: number): Promise<number | null> {
     return await new Promise<number | null>((resolve) => {
-        const override = process.env[LSOF_BIN_ENV];
+        const override = getWeasleyPodexEnv('LSOF_BIN');
         const args = ['-nP', '-a', `-iTCP:${port}`, '-sTCP:LISTEN', '-Fp'];
         execFile(
             override ? '/bin/sh' : 'lsof',

@@ -1,7 +1,7 @@
 /**
  * Inline frame buffer + differential rendering (no alt-screen).
  * Renders on the main screen buffer. Launch deliberately clears visible and
- * saved pre-existing terminal lines so `jaw chat` starts like a fresh terminal
+ * saved pre-existing terminal lines so `weasley-podex chat` starts like a fresh terminal
  * — EXCEPT in a foreign multiplexer (tmux/GNU screen), whose pane scrollback
  * belongs to the user and is never 3J'd (260703 F1/F2; cmux is first-party and
  * keeps the fresh-terminal contract). Multiplexer-aware preservation applies

@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 export interface SearchWorkflowPromptOptions {
     query: string;
     jawHome?: string;
@@ -5,7 +6,7 @@ export interface SearchWorkflowPromptOptions {
 
 export function buildSearchSteerPrompt(options: SearchWorkflowPromptOptions): string {
     const query = options.query.trim();
-    const home = options.jawHome || process.env['podex_HOME'] || '~/.podex';
+    const home = options.jawHome || getWeasleyPodexEnv('HOME') || '~/.weasley/podex';
     return [
         '[System] User invoked /search.',
         '',
@@ -15,7 +16,7 @@ export function buildSearchSteerPrompt(options: SearchWorkflowPromptOptions): st
         `- Search routing + evidence policy: ${home}/skills/search/SKILL.md`,
         `- Adaptive-fetch ladder (23 resolvers, TLS, Jina, Camoufox): ${home}/skills/browser/SKILL.md §Known URL Reader`,
         '',
-        'Follow the search skill workflow. On fetch failure, use `podex browser fetch <url>` — the adaptive-fetch ladder handles escalation automatically.',
+        'Follow the search skill workflow. On fetch failure, use `weasley-podex browser fetch <url>` — the adaptive-fetch ladder handles escalation automatically.',
         '',
         'Report format (defined in search skill §/search report format):',
         'focused_queries | search_route_used | candidate_urls | original_pages_opened_or_fetched',

@@ -13,12 +13,12 @@ type EmptyNavigatorProps = {
 export function EmptyNavigator(props: EmptyNavigatorProps) {
     return (
         <div className="empty-navigator" role="status" aria-live="polite">
-            <p className="empty-navigator-headline">No Jaw instances detected on the scanned range.</p>
+            <p className="empty-navigator-headline">No Weasley Podex instances detected on the scanned range.</p>
             <p className="empty-navigator-subline">
-                Currently scanning ports {props.rangeFrom}–{props.rangeTo}. Try widening the range, or start a Jaw with the command below.
+                Currently scanning ports {props.rangeFrom}–{props.rangeTo}. Try widening the range, or start a Weasley Podex instance with the command below.
             </p>
             <code className="empty-navigator-code" aria-label="Suggested command">
-                jaw serve --port {props.rangeFrom}
+                weasley-podex serve --port {props.rangeFrom}
             </code>
         </div>
     );

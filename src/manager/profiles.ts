@@ -1,5 +1,5 @@
 ﻿import { createHash } from 'node:crypto';
-import { basename } from 'node:path';
+import { basename, join } from 'node:path';
 import { homedir } from 'node:os';
 import { resolveHomePath } from '../core/path-expand.js';
 import type {
@@ -25,7 +25,7 @@ function slugPart(value: string): string {
 export function deriveProfileId(homePath: string): DashboardProfileId {
     const normalized = normalizeHomePath(homePath);
     const base = basename(normalized);
-    if (base === '.podex') return 'default';
+    if (normalized === join(homedir(), '.weasley', 'podex') || normalized === join(homedir(), '.podex')) return 'default';
     const hash = createHash('md5').update(normalized).digest('hex').slice(0, 8);
     return `${slugPart(base)}-${hash}`;
 }

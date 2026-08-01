@@ -1,11 +1,10 @@
 import type { Express } from 'express';
 import type { AuthMiddleware } from './types.js';
 import fs from 'fs';
-import os from 'os';
 import { join } from 'path';
 import { ok } from '../http/response.js';
 import { asyncHandler } from '../http/async-handler.js';
-import { settings, JAW_HOME, detectAllCli } from '../core/config.js';
+import { settings, WEASLEY_PODEX_HOME, detectAllCli } from '../core/config.js';
 import { readCodexContextWindow } from '../core/codex-config.js';
 import { regenerateB, A2_PATH, HEARTBEAT_PATH } from '../prompt/builder.js';
 import { clearTemplateCache, getTemplateDir } from '../prompt/template-loader.js';
@@ -279,7 +278,7 @@ export function registerSettingsRoutes(
 
     app.post('/api/mcp/reset', requireAuth, (_req, res) => {
         try {
-            const mcpPath = join(JAW_HOME, 'mcp.json');
+            const mcpPath = join(WEASLEY_PODEX_HOME, 'mcp.json');
             if (fs.existsSync(mcpPath)) fs.unlinkSync(mcpPath);
             const config = initMcpConfig(settings["workingDir"]);
             const results = syncToAll(config);
@@ -297,17 +296,8 @@ export function registerSettingsRoutes(
 
     app.get('/api/mcp/registry', async (_, res) => {
         try {
-            const { fetchMcpRegistry, fetchMcpRegistryLocal } = await import('../../lib/mcp/mcp-registry.js');
-            const localCandidates = [
-                join(JAW_HOME, 'mcp-ref', 'registry.json'),
-                join(os.homedir(), 'Developer', 'new', '700_projects', 'mcp-ref', 'registry.json'),
-            ];
-            let result: Awaited<ReturnType<typeof fetchMcpRegistry>> = { entries: [], builtins: [] };
-            for (const p of localCandidates) {
-                result = fetchMcpRegistryLocal(p);
-                if (result.entries.length) break;
-            }
-            if (!result.entries.length) result = await fetchMcpRegistry();
+            const { fetchMcpRegistry } = await import('../../lib/mcp/mcp-registry.js');
+            const result = await fetchMcpRegistry();
             res.json({ ok: true, ...result });
         } catch (e: unknown) {
             res.status(500).json({ ok: false, error: (e as Error).message, entries: [], builtins: [] });

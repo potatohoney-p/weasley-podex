@@ -1,4 +1,4 @@
-﻿import { buildPlanCompatArtifact, formatPlanCompatText } from '../workflows/plan.js';
+import { buildPlanCompatArtifact, formatPlanCompatText } from '../workflows/plan.js';
 import { buildDeliberateArtifact, formatDeliberateText } from '../workflows/deliberate.js';
 import { buildPlanAuditArtifact, formatPlanAuditText } from '../workflows/planaudit.js';
 import { parseReviewFlags, parseReviewFocus, buildReviewArtifact, buildReviewSteerPrompt, buildReviewTargetContext, formatReviewText } from '../workflows/review.js';
@@ -152,13 +152,13 @@ function buildGoalPlanSteerPrompt(goal: GoalState): string {
         '',
         'Analyze the following sources to determine the right goal:',
         '1. **Conversation history**: What has the user been working on or discussing?',
-        '2. **Memory**: Search podex memory for recent decisions, preferences, and project context',
+        '2. **Memory**: Search weasley-podex memory for recent decisions, preferences, and project context',
         '3. **Project state**: Check git status, recent commits, file structure, and open issues',
         '',
         'Based on your analysis, formulate a specific, actionable, long-term goal.',
         'Then immediately:',
-        '1. Set the goal objective via `podex goal refine "<specific objective>"` (or `/api/goal` action `refine-objective`) with the goal you chose',
-        '2. Enter PABCD orchestration with `podex orchestrate P`',
+        '1. Set the goal objective via `weasley-podex goal refine "<specific objective>"` (or `/api/goal` action `refine-objective`) with the goal you chose',
+        '2. Enter PABCD orchestration with `weasley-podex orchestrate P`',
         '3. Execute the full goal autonomously',
         '',
         'Do NOT ask the user what goal to set. Do NOT wait for confirmation. YOU decide and execute.',
@@ -313,7 +313,7 @@ export async function goalWorkflowHandler(args: string[], ctx: CliCommandContext
         const auditEvidence = auditIdx >= 0 ? pauseArgs.slice(auditIdx + 1).join(' ').trim() : '';
         const reason = (auditIdx >= 0 ? pauseArgs.slice(0, auditIdx) : pauseArgs).join(' ').trim() || undefined;
         if (args.includes('--agent') && !auditEvidence) {
-            return blocked('Agent-initiated goal pause requires independent audit evidence. Run an independent reviewer first, then retry with `podex goal pause --agent --audit "<review summary>"`.');
+            return blocked('Agent-initiated goal pause requires independent audit evidence. Run an independent reviewer first, then retry with `weasley-podex goal pause --agent --audit "<review summary>"`.');
         }
         if (args.includes('--agent')) {
             const { getAgentPauseCount, incrementAgentPauseCount } = await import('../goal/store.js');
@@ -330,9 +330,9 @@ export async function goalWorkflowHandler(args: string[], ctx: CliCommandContext
                     '3. Mark each as PROVEN / UNPROVEN / CONTRADICTED. Any non-PROVEN item means work remains.\n' +
                     '4. Dev skill compliance: §3 verification gate, §5 safety rules, §7.2 static analysis.\n' +
                     '5. Documentation evidence: devlog entry, implementation paths, fresh verification output.\n' +
-                    '6. Dispatch an independent reviewer (CLI sub-agent or jaw employee) to challenge whether viable work remains.\n\n' +
+                    '6. Dispatch an independent reviewer (CLI sub-agent or weasley-podex employee) to challenge whether viable work remains.\n\n' +
                     'If you find productive work and log a checkpoint, the pending pause gate is cleared.\n' +
-                    'If no viable path remains and the reviewer confirms PASS, call `podex goal pause --agent --audit "<evidence>"` again; the second audited call pauses the goal.'
+                    'If no viable path remains and the reviewer confirms PASS, call `weasley-podex goal pause --agent --audit "<evidence>"` again; the second audited call pauses the goal.'
                 );
             }
         }
@@ -461,7 +461,7 @@ export async function teamWorkflowHandler(args: string[], ctx: CliCommandContext
             ...tasks.map(t => `  - ${t.lane.role}: dispatch prepared`),
             '',
             'Note: /team is a preview task-builder. Tasks are not auto-dispatched yet.',
-            'Use `podex dispatch --agent "Name" --task "..."` to dispatch manually.',
+            'Use `weasley-podex dispatch --agent "Name" --task "..."` to dispatch manually.',
         ];
         return info(lines.join('\n'));
     }

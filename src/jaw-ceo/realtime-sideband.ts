@@ -1,8 +1,9 @@
-﻿import WebSocket from 'ws';
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
+import WebSocket from 'ws';
 import type { JawCeoCoordinator } from './coordinator.js';
 
-export const JAW_CEO_REALTIME_MODEL = process.env["JAW_CEO_REALTIME_MODEL"] || 'gpt-realtime-2';
-export const JAW_CEO_REALTIME_VOICE = process.env["JAW_CEO_REALTIME_VOICE"] || 'marin';
+export const WEASLEY_PODEX_CEO_REALTIME_MODEL = getWeasleyPodexEnv('CEO_REALTIME_MODEL') || 'gpt-realtime-2';
+export const WEASLEY_PODEX_CEO_REALTIME_VOICE = getWeasleyPodexEnv('CEO_REALTIME_VOICE') || 'marin';
 
 export type RealtimeToolSchema = {
     type: 'function';
@@ -21,9 +22,9 @@ export type JawCeoRealtimeSideband = {
     close(): void;
 };
 
-const JAW_CEO_REALTIME_INSTRUCTIONS = [
+const WEASLEY_PODEX_CEO_REALTIME_INSTRUCTIONS = [
     '# Role',
-    'You are Jaw CEO, the voice coordinator for the podex dashboard.',
+    'You are Weasley Podex CEO, the voice coordinator for the weasley-podex dashboard.',
     '',
     '# Operating Rules',
     '- Speak Korean by default unless the user clearly asks for another language.',
@@ -73,7 +74,7 @@ function voiceToolSchemas(): RealtimeToolSchema[] {
         {
             type: 'function',
             name: toRealtimeToolName('dashboard.list_instances'),
-            description: 'List dashboard worker instances. Jaw CEO is excluded.',
+            description: 'List dashboard worker instances. Weasley Podex CEO is excluded.',
             parameters: {
                 type: 'object',
                 properties: { includeHidden: { type: 'boolean' } },
@@ -108,7 +109,7 @@ function voiceToolSchemas(): RealtimeToolSchema[] {
         {
             type: 'function',
             name: toRealtimeToolName('instance.send_message'),
-            description: 'Send a Jaw CEO task to a worker instance and optionally watch completion.',
+            description: 'Send a Weasley Podex CEO task to a worker instance and optionally watch completion.',
             parameters: {
                 type: 'object',
                 properties: {
@@ -125,7 +126,7 @@ function voiceToolSchemas(): RealtimeToolSchema[] {
         {
             type: 'function',
             name: toRealtimeToolName('instance.watch_completion'),
-            description: 'Register a Jaw CEO watch for a worker completion.',
+            description: 'Register a Weasley Podex CEO watch for a worker completion.',
             parameters: {
                 type: 'object',
                 properties: {
@@ -150,7 +151,7 @@ function voiceToolSchemas(): RealtimeToolSchema[] {
         {
             type: 'function',
             name: toRealtimeToolName('ceo.get_pending_completions'),
-            description: 'Return pending Jaw CEO completion references.',
+            description: 'Return pending Weasley Podex CEO completion references.',
             parameters: {
                 type: 'object',
                 properties: { limit: { type: 'number' } },
@@ -177,7 +178,7 @@ function queryToolSchemas(): RealtimeToolSchema[] {
         {
             type: 'function',
             name: toRealtimeToolName('ceo.query'),
-            description: 'Run a read-only Jaw CEO query over dashboard, readonly CLI, web, or GitHub read sources.',
+            description: 'Run a read-only Weasley Podex CEO query over dashboard, readonly CLI, web, or GitHub read sources.',
             parameters: {
                 type: 'object',
                 properties: {
@@ -192,7 +193,7 @@ function queryToolSchemas(): RealtimeToolSchema[] {
         {
             type: 'function',
             name: toRealtimeToolName('ceo.edit_docs'),
-            description: 'Perform a small markdown-only edit inside the fixed Jaw CEO docs allowlist.',
+            description: 'Perform a small markdown-only edit inside the fixed Weasley Podex CEO docs allowlist.',
             parameters: {
                 type: 'object',
                 properties: {
@@ -270,7 +271,7 @@ export function buildJawCeoRealtimeToolSchemas(phase: 'voice' | 'query' | 'manag
 export function buildJawCeoRealtimeSessionConfig(phase: 'voice' | 'query' | 'manage' = 'manage'): Record<string, unknown> {
     return {
         type: 'realtime',
-        model: JAW_CEO_REALTIME_MODEL,
+        model: WEASLEY_PODEX_CEO_REALTIME_MODEL,
         output_modalities: ['audio'],
         audio: {
             input: {
@@ -283,11 +284,11 @@ export function buildJawCeoRealtimeSessionConfig(phase: 'voice' | 'query' | 'man
                     interrupt_response: true,
                 },
             },
-            output: { voice: JAW_CEO_REALTIME_VOICE },
+            output: { voice: WEASLEY_PODEX_CEO_REALTIME_VOICE },
         },
         tool_choice: 'auto',
         tools: buildJawCeoRealtimeToolSchemas(phase),
-        instructions: JAW_CEO_REALTIME_INSTRUCTIONS,
+        instructions: WEASLEY_PODEX_CEO_REALTIME_INSTRUCTIONS,
     };
 }
 

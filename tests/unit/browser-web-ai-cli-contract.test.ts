@@ -10,6 +10,8 @@ const cliSrc = readSource(join(root, 'bin/commands/browser.ts'), 'utf8');
 const cliWebAiSrc = readSource(join(root, 'bin/commands/browser-web-ai.ts'), 'utf8');
 const routeSrc = readSource(join(root, 'src/routes/browser.ts'), 'utf8');
 const indexSrc = readSource(join(root, 'src/browser/index.ts'), 'utf8');
+const webAiSkillPath = join(root, 'skills_ref/web-ai/SKILL.md');
+const hasWebAiSkill = fs.existsSync(webAiSkillPath);
 
 test('BWCLI-001: CLI exposes closed web-ai command surface', () => {
     assert.match(cliWebAiSrc, /const WEB_AI_COMMANDS = new Set\(\['render', 'status', 'send', 'poll', 'query', 'watch', 'watchers', 'sessions', 'sessions-prune', 'resume', 'reattach', 'notifications', 'capabilities', 'stop', 'diagnose', 'doctor', 'context-dry-run', 'context-render', 'code', 'code-extract'\]\)/);
@@ -37,7 +39,7 @@ test('BWCLI-002: send and query gating + flag rejection (32.7B live)', () => {
     assert.match(cliWebAiSrc, /requires PLAN\.md\s+or 00_plan\.md/);
     assert.match(cliWebAiSrc, /WEB_AI_CODE_USAGE/);
     assert.match(cliWebAiSrc, /subcommand, not a --code flag/);
-    assert.match(cliWebAiSrc, /podex browser web-ai code --vendor chatgpt --model thinking --effort standard/);
+    assert.match(cliWebAiSrc, /weasley-podex browser web-ai code --vendor chatgpt --model thinking --effort standard/);
     assert.match(cliWebAiSrc, /visible turn_plan\.update_turn_plan checklist is best-effort/);
     assert.match(cliWebAiSrc, /usageForCommand\(command\)/);
     assert.match(cliWebAiSrc, /code-extract\s+Re-retrieve existing ChatGPT code-mode zip artifacts/);
@@ -117,12 +119,14 @@ test('BWCLI-004: browser index exports webAi namespace', () => {
     assert.match(indexSrc, /export type \* from '\.\/web-ai\/index\.js'/);
 });
 
-test('BWCLI-009: podex skill documents native code artifact generation and extraction', () => {
-    const skillSrc = readSource(join(root, 'skills_ref/web-ai/SKILL.md'), 'utf8');
+test('BWCLI-009: weasley-podex skill documents native code artifact generation and extraction', {
+    skip: !hasWebAiSkill && 'skills_ref submodule not checked out',
+}, () => {
+    const skillSrc = readSource(webAiSkillPath, 'utf8');
     assert.match(skillSrc, /ChatGPT Code Artifact Extraction/);
-    assert.match(skillSrc, /podex browser web-ai code/);
+    assert.match(skillSrc, /weasley-podex browser web-ai code/);
     assert.match(skillSrc, /gpt-dev-agent-context\.zip/);
     assert.match(skillSrc, /PLAN\.md|00_plan\.md/);
-    assert.match(skillSrc, /podex browser web-ai code-extract/);
+    assert.match(skillSrc, /weasley-podex browser web-ai code-extract/);
 });
 

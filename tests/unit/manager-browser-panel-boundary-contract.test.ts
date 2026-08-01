@@ -50,7 +50,7 @@ test('web-ai long work is observed through background tasks, not BrowserPanel st
     assert.match(bgtaskRoutes, /body\['preset'\] === 'web-ai'/, 'bgtask route owns durable web-ai preset registration');
 
     assert.doesNotMatch(backgroundPanel, /import .*BrowserPanel|<BrowserPanel|browser-webview|onOpenUrl/, 'background monitor must not embed BrowserPanel');
-    assert.doesNotMatch(backgroundClient, /\/api\/code\b|selectedInstance|3465/, 'background monitor client must not depend on Code APIs or child Jaw instances');
+    assert.doesNotMatch(backgroundClient, /\/api\/code\b|selectedInstance|3465/, 'background monitor client must not depend on Code APIs or child Weasley Podex instances');
     assert.doesNotMatch(bgtaskPreset, /BrowserPanel|browser-webview|\/api\/code\b/, 'web-ai preset must not couple to BrowserPanel or Code routes');
 });
 

@@ -47,7 +47,7 @@ if (unknown.length > 0) {
 const serverRoot = resolve(parseArg('--server-root') || 'electron/sidecar/server');
 
 checkFile(findNodeBin(serverRoot), 'bundled Node');
-checkFile(shimPath(serverRoot, 'jaw'), 'jaw shim');
+checkFile(shimPath(serverRoot, 'weasley-podex'), 'weasley-podex shim');
 checkAbsent(shimPath(serverRoot, 'jwc'), 'jwc shim');
 checkAbsent(join(serverRoot, 'node_modules', 'jawcode'), 'jawcode package');
 checkAbsent(join(serverRoot, 'node_modules', '@jawcode-dev'), '@jawcode-dev scope');

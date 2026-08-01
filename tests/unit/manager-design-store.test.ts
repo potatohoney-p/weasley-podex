@@ -15,7 +15,7 @@ import { mkdtempSync, mkdirSync, readFileSync, symlinkSync, writeFileSync, exist
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-process.env['podex_DASHBOARD_HOME'] = mkdtempSync(join(tmpdir(), 'jaw-design-store-'));
+process.env['WEASLEY_PODEX_DASHBOARD_HOME'] = mkdtempSync(join(tmpdir(), 'jaw-design-store-'));
 
 const {
     createDesignPage,

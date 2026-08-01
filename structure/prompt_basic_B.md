@@ -1,7 +1,7 @@
 ---
 created: 2026-03-28
-tags: [podex, prompt, cache, system-prompt]
-aliases: [B prompt cache, podex B prompt, regenerated prompt]
+tags: [weasley-podex, prompt, cache, system-prompt]
+aliases: [B prompt cache, Weasley Podex B prompt, regenerated prompt]
 ---
 
 > 📚 [INDEX](INDEX.md) · [프롬프트 흐름 ↗](prompt_flow.md) · [A1](prompt_basic_A1.md) · [A2](prompt_basic_A2.md) · **B 조립 결과**
@@ -9,7 +9,7 @@ aliases: [B prompt cache, podex B prompt, regenerated prompt]
 # prompt_basic_B — 조립 결과 + 스킬/MCP/하트비트 기본값
 
 > B.md = `getSystemPrompt({ forDisk: true })` 결과 캐시
-> 경로: `~/.podex/prompts/B.md` + `{workDir}/AGENTS.md`
+> 경로: `~/.weasley/podex/prompts/B.md` + `{workDir}/AGENTS.md`
 > 구현: `src/prompt/builder.ts` → `getSystemPrompt()` + `regenerateB()`
 > 관련 템플릿: `a1-system.md` (388L), `a2-default.md` (25L), `orchestration.md` (120L), `heartbeat-jobs.md` (4L), `heartbeat-default.md` (4L), `skills.md` (24L), `employee.md` (73L), `worker-context.md` (11L), `control-system.md` (56L), `vision-click.md` (3L)
 
@@ -21,7 +21,7 @@ aliases: [B prompt cache, podex B prompt, regenerated prompt]
 
 | 출력 대상 | 역할 |
 |---|---|
-| `~/.podex/prompts/B.md` | 디스크 캐시 |
+| `~/.weasley/podex/prompts/B.md` | 디스크 캐시 |
 | `{workDir}/AGENTS.md` | 현재 워크스페이스용 지침 파일 |
 
 `AGENTS.md`는 Codex, Copilot, OpenCode가 직접 읽는 런타임 지침이라서, B.md와 같은 본문을 공유한다.
@@ -63,8 +63,8 @@ aliases: [B prompt cache, podex B prompt, regenerated prompt]
 - 직원이 1명 이상이면 `orchestration.md`가 렌더된다
 - 그 뒤에 `dev-pabcd/SKILL.md`가 있으면 `PABCD Orchestration Guide`가 추가된다
 - `Completion Protocol`은 orchestration 템플릿 내부에 포함된 현재 규칙이다
-- PABCD A/B dispatch 예시는 task body 첫 줄에 `Project root: <absolute path>`를 넣도록 안내한다. 직원은 repo-relative path를 이 root 기준으로 해석하고, `~/.podex*`/JAW_HOME/employee temp cwd를 repo root로 추론하면 안 된다.
-- orchestration prompt는 직원 stdout 밖의 조회 경로도 짧게 안내한다. Boss는 `podex worker status [agent] --port <port>` 또는 `podex worker watch [agent] --port <port>`로 current/previous safe-summary progress를 확인할 수 있고, `snapshot.workers`는 running-only다.
+- PABCD A/B dispatch 예시는 task body 첫 줄에 `Project root: <absolute path>`를 넣도록 안내한다. 직원은 repo-relative path를 이 root 기준으로 해석하고, `~/.weasley/podex*`/WEASLEY_PODEX_HOME/employee temp cwd를 repo root로 추론하면 안 된다.
+- orchestration prompt는 직원 stdout 밖의 조회 경로도 짧게 안내한다. Boss는 `weasley-podex worker status [agent] --port <port>` 또는 `weasley-podex worker watch [agent] --port <port>`로 current/previous safe-summary progress를 확인할 수 있고, `snapshot.workers`는 running-only다.
 
 ### Heartbeat
 
@@ -74,10 +74,10 @@ aliases: [B prompt cache, podex B prompt, regenerated prompt]
 
 ### Skills
 
-- active skills는 `{{JAW_HOME}}/skills/`
-- reference skills는 `{{JAW_HOME}}/skills_ref/registry.json`
+- active skills는 `{{WEASLEY_PODEX_HOME}}/skills/`
+- reference skills는 `{{WEASLEY_PODEX_HOME}}/skills_ref/registry.json`
 - 둘 중 하나만 있어도 `Skills System` 섹션이 생성된다
-- `skills_ref`는 public/reference skill surface다. private local runtime skills such as `k-writing` (Korean promotional/content writing; retired label: `k-thread-gen`) and `lecture-stt` can be deployed under active `{{JAW_HOME}}/skills/` without being registered in `skills_ref/registry.json`. Korean promotional/content writing routes through active `k-writing`, not free-form prose or the retired label.
+- `skills_ref/registry.json`은 번들된 8개 public/reference skill의 단일 진실 원천이다. 추가 스킬은 설치된 Codex 환경 또는 사용자가 명시한 신뢰 저장소에서 opt-in으로 가져오며, 번들 또는 필수 기능으로 문서화하지 않는다.
 - The active `search` skill is the default search backend. Korean/source-sensitive search guidance rewrites the request into focused queries, treats search results as URL candidates, verifies original pages with fetch/open, and uses `agbrowse research plan` only as optional query-planning help.
 - dev skill은 TS-first strict-compatible 기본값과 devlog convention discovery/source-of-truth proposal 규칙을 포함한다.
 - dev skill은 기존 `structure/`, `devlog/`, `docs/`, `plans/` 같은 SOT/log가 있으면 broad change 전에 먼저 읽도록 지시한다.
@@ -87,11 +87,11 @@ aliases: [B prompt cache, podex B prompt, regenerated prompt]
 
 - active CLI가 `codex`일 때만 `vision-click.md`가 추가된다
 - 이는 `snapshot`에 ref가 없을 때만 쓰는 fallback 힌트를 제공한다
-- 현재 의미는 범용 브라우저 제어가 아니라 Codex provider(`codex exec -i`) 기반 legacy fallback이다. 일반 DOM/Web UI 작업은 빠른 `podex browser` 경로를 우선하고, desktop/non-DOM 작업은 Codex/Control의 Computer Use 경로를 우선한다.
+- 현재 의미는 범용 브라우저 제어가 아니라 Codex provider(`codex exec -i`) 기반 legacy fallback이다. 일반 DOM/Web UI 작업은 빠른 `weasley-podex browser` 경로를 우선하고, desktop/non-DOM 작업은 Codex/Control의 Computer Use 경로를 우선한다.
 
 ### Delegation Rules
 
-- Boss는 `podex dispatch`로 jaw employees를 보낸다
+- Boss는 `weasley-podex dispatch`로 Weasley Podex employees를 보낸다
 - CLI sub-agents는 내부 병렬 작업용이다
 - 둘은 서로 다른 시스템이며, 서로를 대체하지 않는다
 - 이 규칙 블록은 orchestration 템플릿이 없어도 항상 B 프롬프트 끝에 붙는다
@@ -109,7 +109,7 @@ aliases: [B prompt cache, podex B prompt, regenerated prompt]
 - phase 2일 때 `dev-code-reviewer`
 - phase 4일 때 `dev-testing`
 - `worker-context.md`에서 phase별 worker context 추출 (Phase 1~4)
-- 실행 규칙 + delegation 규칙: `podex dispatch`와 subtask JSON은 금지지만, CLI 자체 sub-agent(Task/Agent tool)는 내부 병렬 작업용으로 명시적으로 허용
+- 실행 규칙 + delegation 규칙: `weasley-podex dispatch`와 subtask JSON은 금지지만, CLI 자체 sub-agent(Task/Agent tool)는 내부 병렬 작업용으로 명시적으로 허용
 - PABCD A/B/C 중 Approved Plan이 주입될 때 `Project root`와 path guard가 함께 들어가므로, 직원은 `Workspace Context`와 Approved Plan의 root를 기준으로 파일을 읽고 검증한다.
 
 이 구조 때문에 B.md는 단순한 "완성본"이 아니라, 현재 시스템 프롬프트가 어떻게 합성되는지 보여주는 캐시 스냅샷이다. forDisk 경로가 advanced `## Memory Runtime` 블록 대신 legacy fallback + 축약 profile/snapshot 보강을 사용한다는 점은 같이 봐야 한다.

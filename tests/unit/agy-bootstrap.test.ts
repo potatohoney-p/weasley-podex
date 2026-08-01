@@ -54,7 +54,7 @@ test('AGY-BS-002: AGY envelope orders bootstrap, current task, operational conte
         sessionId: null,
     });
     const bootstrapIdx = envelope.prompt.indexOf('[podex AGY BOOTSTRAP]');
-    const taskIdx = envelope.prompt.indexOf('[Current podex task]');
+    const taskIdx = envelope.prompt.indexOf('[Current weasley-podex task]');
     const operationalIdx = envelope.prompt.indexOf('[Operational Context — podex Integration]');
     const historyIdx = envelope.prompt.indexOf('[Recent context / history]');
 
@@ -76,7 +76,7 @@ test('AGY-BS-002b: context-first keeps bootstrap first and current task last', (
     const bootstrapIdx = envelope.prompt.indexOf('[podex AGY BOOTSTRAP]');
     const operationalIdx = envelope.prompt.indexOf('[Operational Context — podex Integration]');
     const historyIdx = envelope.prompt.indexOf('[Recent context / history]');
-    const taskIdx = envelope.prompt.indexOf('[Current podex task]');
+    const taskIdx = envelope.prompt.indexOf('[Current weasley-podex task]');
 
     assert.ok(bootstrapIdx >= 0);
     assert.ok(operationalIdx > bootstrapIdx);
@@ -122,7 +122,7 @@ test('AGY-BS-003c: huge history spills before current task', () => {
         maxChars: 900,
     });
     assert.match(envelope.prompt, new RegExp(currentTask));
-    assert.match(envelope.prompt, /podex_BOOTSTRAP_SHA=/);
+    assert.match(envelope.prompt, /WEASLEY_PODEX_BOOTSTRAP_SHA=/);
     assert.ok(envelope.spill.truncated.includes('history') || envelope.spill.omitted.includes('history'));
     assert.ok(!envelope.spill.truncated.includes('current-task'));
     assert.ok(!envelope.spill.omitted.includes('current-task'));
@@ -139,7 +139,7 @@ test('AGY-BS-003d: operational context can spill but required segments stay whol
         maxChars: 700,
     });
     assert.match(envelope.prompt, new RegExp(currentTask));
-    assert.match(envelope.prompt, /podex_BOOTSTRAP_SHA=/);
+    assert.match(envelope.prompt, /WEASLEY_PODEX_BOOTSTRAP_SHA=/);
     assert.ok(envelope.spill.omitted.includes('history') || envelope.spill.truncated.includes('history'));
     assert.ok(envelope.spill.omitted.includes('operational-context') || envelope.spill.truncated.includes('operational-context'));
 });
@@ -155,7 +155,7 @@ test('AGY-BS-003e: required segments may exceed maxChars without losing current 
         maxChars: 100,
     });
     assert.match(envelope.prompt, /VERY_LONG_CURRENT_TASK/);
-    assert.match(envelope.prompt, /podex_BOOTSTRAP_SHA=/);
+    assert.match(envelope.prompt, /WEASLEY_PODEX_BOOTSTRAP_SHA=/);
     assert.ok(envelope.spill.totalChars > 100);
     assert.ok(!envelope.spill.omitted.includes('current-task'));
     assert.ok(!envelope.spill.truncated.includes('current-task'));

@@ -48,11 +48,11 @@ test('SSP-002: search skill keeps four-tier escalation order', { skip: !hasSearc
     const searchSkill = fs.readFileSync(searchSkillPath, 'utf8');
 
     assert.match(searchSkill, /Tier 1 — Built-in CLI Web Search/);
-    assert.match(searchSkill, /Tier 2 — podex browser/);
+    assert.match(searchSkill, /Tier 2 — weasley-podex browser/);
     assert.match(searchSkill, /Tier 3 — progrok/);
     assert.match(searchSkill, /Tier 4 — web-ai/);
     assert.ok(
-        searchSkill.indexOf('Tier 2 — podex browser') < searchSkill.indexOf('Tier 3 — progrok'),
+        searchSkill.indexOf('Tier 2 — weasley-podex browser') < searchSkill.indexOf('Tier 3 — progrok'),
         'browser verification should come before progrok'
     );
     assert.match(searchSkill, /Order is mandatory/);
@@ -74,17 +74,17 @@ test('SSP-003: Korean search policy treats snippets as discovery and requires or
 test('SSP-004: browser gate starts browser before skipping Tier 2', { skip: !hasSearchSkill && 'skills_ref/search missing' }, () => {
     const searchSkill = fs.readFileSync(searchSkillPath, 'utf8');
 
-    assert.match(searchSkill, /run `podex browser start --agent` and retry\s+status\/fetch once/);
+    assert.match(searchSkill, /run `weasley-podex browser start --agent` and retry\s+status\/fetch once/);
     assert.match(searchSkill, /Skip Tier 2 only if browser start, status, or fetch still\s+fails/);
     assert.doesNotMatch(searchSkill, /browser not connected\), skip that tier/);
 });
 
-test('SSP-005: search skill does not hardcode a specific Jaw home', { skip: !hasSearchSkill && 'skills_ref/search missing' }, () => {
+test('SSP-005: search skill does not hardcode a specific runtime home', { skip: !hasSearchSkill && 'skills_ref/search missing' }, () => {
     const searchSkill = fs.readFileSync(searchSkillPath, 'utf8');
 
     assert.doesNotMatch(searchSkill, /\/Users\/jun\/\.podex-\d+/);
-    assert.match(searchSkill, /active `browser` skill from the current Jaw home/);
-    assert.match(searchSkill, /active `web-ai` skill from the current Jaw home/);
+    assert.match(searchSkill, /active `browser` skill from the current Weasley Podex home/);
+    assert.match(searchSkill, /active `web-ai` skill from the current Weasley Podex home/);
 });
 
 test('SSP-006: agbrowse remains an optional planner, not a provider runner', { skip: !hasSearchSkill && 'skills_ref/search missing' }, () => {

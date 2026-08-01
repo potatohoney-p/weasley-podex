@@ -75,35 +75,36 @@ async function captureConsole(fn: () => void | Promise<void>): Promise<string> {
     return logs.join('\n');
 }
 
-// ── SAF-001: safe guard with JAW_SAFE ──
+// ── SAF-001: safe guard with the primary environment variable ──
 
-test('SAF-001: postinstall has JAW_SAFE safe mode guard', () => {
-    assert.ok(postinstallSrc.includes("JAW_SAFE === '1'"), 'checks JAW_SAFE');
-    assert.ok(postinstallSrc.includes("JAW_SAFE === 'true'"), 'checks JAW_SAFE=true');
+test('SAF-001: postinstall has WEASLEY_PODEX_SAFE safe mode guard', () => {
+    assert.ok(postinstallSrc.includes("getWeasleyPodexEnv('SAFE'"), 'checks the primary safe-mode variable through the compatibility boundary');
+    assert.ok(postinstallSrc.includes('truthyEnv'), 'accepts supported truthy values consistently');
 });
 
-// ── SAF-002: safe guard with npm_config_jaw_safe ──
+// ── SAF-002: safe guard with primary environment/config names ──
 
-test('SAF-002: postinstall has npm_config_jaw_safe guard', () => {
-    assert.ok(postinstallSrc.includes("npm_config_jaw_safe === '1'"), 'checks npm_config_jaw_safe=1');
-    assert.ok(postinstallSrc.includes("npm_config_jaw_safe === 'true'"), 'checks npm_config_jaw_safe=true');
+test('SAF-002: postinstall has Weasley Podex safe-mode guard', () => {
+    assert.ok(postinstallSrc.includes("getWeasleyPodexEnv('SAFE'"), 'checks the primary safe-mode variable through the compatibility boundary');
+    assert.ok(postinstallSrc.includes('npm_config_weasley_podex_safe'), 'checks the primary npm config variable');
+    assert.equal(postinstallSrc.includes('npm_config_jaw_safe'), false, 'does not read a retired npm config name directly');
 });
 
 test('SAF-002b: README documents safe install/update before normal install', () => {
-    const safePos = readmeSrc.indexOf('JAW_SAFE=1 npm install -g podex');
-    const normalPos = readmeSrc.indexOf('npm install -g podex');
-    assert.ok(safePos >= 0, 'README should document macOS/Linux JAW_SAFE install');
-    assert.equal(readmeSrc.includes('$env:JAW_SAFE="1"; npm install -g podex'), false, 'README must not present native PowerShell as a supported install path');
+    const safePos = readmeSrc.indexOf('WEASLEY_PODEX_SAFE=1 npm install -g weasley-podex');
+    const normalPos = readmeSrc.indexOf('npm install -g weasley-podex');
+    assert.ok(safePos >= 0, 'README should document macOS/Linux safe install');
+    assert.equal(readmeSrc.includes('$env:WEASLEY_PODEX_SAFE="1"; npm install -g weasley-podex'), false, 'README must not present native PowerShell as a supported install path');
     assert.ok(readmeSrc.includes('Windows users should use the WSL install path below'), 'README should scope Windows installs to WSL');
     assert.ok(readmeSrc.includes('skips optional tool/runtime setup'), 'README should explain safe install boundary');
     assert.ok(safePos <= normalPos, 'safe install should appear before normal install example');
 });
 
 test('SAF-002c: README default install claim matches postinstall CLI-tool gating', () => {
-    assert.ok(readmeSrc.includes('The default npm install initializes podex and attempts native Claude setup'));
-    assert.ok(readmeSrc.includes('podex_INSTALL_CLI_TOOLS=1 npm install -g podex'));
+    assert.ok(readmeSrc.includes('The default npm install initializes Weasley Podex and attempts native Claude setup'));
+    assert.ok(readmeSrc.includes('WEASLEY_PODEX_INSTALL_CLI_TOOLS=1 npm install -g weasley-podex'));
     assert.ok(readmeSrc.includes('On Windows, use the WSL install path below'));
-    assert.equal(readmeSrc.includes('$env:podex_INSTALL_CLI_TOOLS="1"; npm install -g podex'), false, 'README must not advertise native PowerShell optional CLI install');
+    assert.equal(readmeSrc.includes('$env:WEASLEY_PODEX_INSTALL_CLI_TOOLS="1"; npm install -g weasley-podex'), false, 'README must not advertise native PowerShell optional CLI install');
     assert.equal(
         readmeSrc.includes('automatically sets up Claude, Codex, Gemini, Copilot, and OpenCode CLIs for you'),
         false,
@@ -126,7 +127,7 @@ test('SAF-003b: postinstall guard safe mode exits before build fallback', () => 
         encoding: 'utf8',
         env: {
             ...process.env,
-            JAW_SAFE: '1',
+            WEASLEY_PODEX_SAFE: '1',
         },
     });
     const output = `${result.stdout}\n${result.stderr}`;
@@ -184,14 +185,14 @@ test('SAF-004a2: generated CLAUDE.md mirror is removed but custom file is kept',
 
 test('SAF-004b: postinstall skips CLI tool install/update by default', () => {
     assert.equal(shouldInstallCliToolsDuringPostinstall({}), false);
-    assert.equal(shouldInstallCliToolsDuringPostinstall({ podex_INSTALL_CLI_TOOLS: '1' }), true);
-    assert.equal(shouldInstallCliToolsDuringPostinstall({ npm_config_jaw_install_cli_tools: 'true' }), true);
+    assert.equal(shouldInstallCliToolsDuringPostinstall({ WEASLEY_PODEX_INSTALL_CLI_TOOLS: '1' }), true);
+    assert.equal(shouldInstallCliToolsDuringPostinstall({ npm_config_weasley_podex_install_cli_tools: 'true' }), true);
     assert.equal(shouldInstallClaudeDuringPostinstall({}), true);
-    assert.equal(shouldInstallClaudeDuringPostinstall({ podex_SKIP_CLAUDE: '1' }), false);
-    assert.equal(shouldInstallClaudeDuringPostinstall({ npm_config_jaw_skip_claude: 'true' }), false);
+    assert.equal(shouldInstallClaudeDuringPostinstall({ WEASLEY_PODEX_SKIP_CLAUDE: '1' }), false);
+    assert.equal(shouldInstallClaudeDuringPostinstall({ npm_config_weasley_podex_skip_claude: 'true' }), false);
     assert.equal(shouldForceClaudeDuringPostinstall({}), false);
-    assert.equal(shouldForceClaudeDuringPostinstall({ podex_FORCE_CLAUDE: '1' }), true);
-    assert.equal(shouldForceClaudeDuringPostinstall({ npm_config_jaw_force_claude: 'true' }), true);
+    assert.equal(shouldForceClaudeDuringPostinstall({ WEASLEY_PODEX_FORCE_CLAUDE: '1' }), true);
+    assert.equal(shouldForceClaudeDuringPostinstall({ npm_config_weasley_podex_force_claude: 'true' }), true);
 
     const runBlock = postinstallSrc.slice(postinstallSrc.indexOf('export async function runPostinstall'));
     assert.ok(runBlock.includes('shouldInstallCliToolsDuringPostinstall()'), 'runPostinstall must gate installCliTools');
@@ -201,15 +202,15 @@ test('SAF-004b: postinstall skips CLI tool install/update by default', () => {
 
 test('SAF-004c: duplicate CLI uninstall is opt-in', () => {
     assert.equal(shouldDedupeCliTools({}), false);
-    assert.equal(shouldDedupeCliTools({ podex_DEDUPE_CLI_TOOLS: '1' }), true);
-    assert.equal(shouldDedupeCliTools({ npm_config_jaw_dedupe_cli_tools: 'true' }), true);
+    assert.equal(shouldDedupeCliTools({ WEASLEY_PODEX_DEDUPE_CLI_TOOLS: '1' }), true);
+    assert.equal(shouldDedupeCliTools({ npm_config_weasley_podex_dedupe_cli_tools: 'true' }), true);
 
     const dedupeBlock = postinstallSrc.slice(postinstallSrc.indexOf('function deduplicateCliTool'));
     assert.ok(dedupeBlock.includes('shouldDedupeCliTools()'), 'dedupe must be opt-in before uninstall');
     assert.ok(dedupeBlock.includes('not removing automatically'), 'dedupe default must avoid uninstalling user tools');
 });
 
-test('SAF-004c2: npm duplicate cleanup only runs after podex installs npm', () => {
+test('SAF-004c2: npm duplicate cleanup only runs after Weasley Podex installs npm', () => {
     const dedupeBlock = postinstallSrc.slice(postinstallSrc.indexOf('function deduplicateCliTool'));
     assert.ok(dedupeBlock.includes('preferredActive?: PkgMgr'), 'dedupe should accept the manager postinstall intentionally used');
     assert.ok(dedupeBlock.includes('isInstalledVia(preferredActive'), 'dedupe should verify the preferred manager was actually installed');
@@ -296,7 +297,8 @@ test('SAF-004e1b: Claude runnable check is explicit for Windows and Unix', () =>
     );
     assert.ok(checkBlock.includes("process.platform === 'win32'"), 'Windows must use its own version-check branch');
     assert.ok(checkBlock.includes("execFileSync('powershell'"), 'Windows check should use PowerShell for .cmd/.exe paths');
-    assert.ok(checkBlock.includes("'& $args[0] --version'"), 'PowerShell should invoke the detected Claude path safely');
+    assert.ok(checkBlock.includes("WEASLEY_PODEX_CLI_PROBE_PATH: binaryPath"), 'Windows should bind the candidate path as child-process data');
+    assert.ok(checkBlock.includes("'& $env:WEASLEY_PODEX_CLI_PROBE_PATH --version'"), 'PowerShell should invoke the bound path without interpolating it into source text');
     assert.ok(checkBlock.includes("execFileSync(binaryPath, ['--version']"), 'macOS/Linux should run the detected binary directly');
 });
 
@@ -333,7 +335,7 @@ test('SAF-004f: bundled non-Claude CLI tools preserve runnable installs before u
     assert.ok(installBlock.includes('${bin} already works'), 'runnable existing CLIs should be skipped');
     assert.ok(installBlock.includes("buildInstallCmd('npm', pkg, brew)"), 'missing or broken CLIs should install via npm');
     assert.ok(postinstallSrc.includes('https://x.ai/cli/install.sh'), 'Grok should install through the official xAI installer');
-    assert.ok(postinstallSrc.includes('native PowerShell podex install is unsupported'), 'Grok native installer should not expand podex support to native PowerShell');
+    assert.ok(postinstallSrc.includes('native PowerShell Weasley Podex install is unsupported'), 'Grok native installer should not expand Weasley Podex support to native PowerShell');
     assert.ok(!installBlock.includes('detectDefaultPkgMgr'), 'Bun presence should not redirect fresh installs to Bun');
 });
 
@@ -365,8 +367,8 @@ test('SAF-004f1: runnable lookup skips a broken first PATH candidate', () => {
     const systemPath = process.platform === 'win32'
         ? (previousTitlePath || previousPath || '')
         : ['/usr/bin', '/bin'].join(delimiter);
-    process.env["PATH"] = [brokenDir, workingDir, systemPath].filter(Boolean).join(delimiter);
     delete process.env["Path"];
+    process.env["PATH"] = [brokenDir, workingDir, systemPath].filter(Boolean).join(delimiter);
 
     try {
         assert.equal(findRunnableCliBinary(commandName), working);
@@ -403,13 +405,13 @@ test('SAF-004f2: non-Claude all-tools dry-run skips repair when later PATH candi
     );
     const previousPath = process.env["PATH"];
     const previousTitlePath = process.env["Path"];
-    const previousSkip = process.env["podex_SKIP_CLAUDE"];
+    const previousSkip = process.env["WEASLEY_PODEX_SKIP_CLAUDE"];
     const systemPath = process.platform === 'win32'
         ? (previousTitlePath || previousPath || '')
         : ['/usr/bin', '/bin'].join(delimiter);
-    process.env["PATH"] = [brokenDir, workingDir, systemPath].filter(Boolean).join(delimiter);
     delete process.env["Path"];
-    process.env["podex_SKIP_CLAUDE"] = '1';
+    process.env["PATH"] = [brokenDir, workingDir, systemPath].filter(Boolean).join(delimiter);
+    process.env["WEASLEY_PODEX_SKIP_CLAUDE"] = '1';
 
     try {
         const logs = await captureConsole(() => installCliTools({ dryRun: true }));
@@ -419,24 +421,24 @@ test('SAF-004f2: non-Claude all-tools dry-run skips repair when later PATH candi
     } finally {
         restoreEnv('PATH', previousPath);
         restoreEnv('Path', previousTitlePath);
-        restoreEnv('podex_SKIP_CLAUDE', previousSkip);
+        restoreEnv('WEASLEY_PODEX_SKIP_CLAUDE', previousSkip);
         fs.rmSync(root, { recursive: true, force: true });
     }
 });
 
-test('SAF-004f3: podex_SKIP_CLAUDE wins over all-tools dry-run', async () => {
-    const previousInstall = process.env["podex_INSTALL_CLI_TOOLS"];
-    const previousSkip = process.env["podex_SKIP_CLAUDE"];
-    process.env["podex_INSTALL_CLI_TOOLS"] = '1';
-    process.env["podex_SKIP_CLAUDE"] = '1';
+test('SAF-004f3: WEASLEY_PODEX_SKIP_CLAUDE wins over all-tools dry-run', async () => {
+    const previousInstall = process.env["WEASLEY_PODEX_INSTALL_CLI_TOOLS"];
+    const previousSkip = process.env["WEASLEY_PODEX_SKIP_CLAUDE"];
+    process.env["WEASLEY_PODEX_INSTALL_CLI_TOOLS"] = '1';
+    process.env["WEASLEY_PODEX_SKIP_CLAUDE"] = '1';
 
     try {
         const logs = await captureConsole(() => installCliTools({ dryRun: true }));
-        assert.match(logs, /claude install skipped \(podex_SKIP_CLAUDE\)/);
+        assert.match(logs, /claude install skipped \(WEASLEY_PODEX_SKIP_CLAUDE\)/);
         assert.doesNotMatch(logs, /claude.*native installer/);
     } finally {
-        restoreEnv('podex_INSTALL_CLI_TOOLS', previousInstall);
-        restoreEnv('podex_SKIP_CLAUDE', previousSkip);
+        restoreEnv('WEASLEY_PODEX_INSTALL_CLI_TOOLS', previousInstall);
+        restoreEnv('WEASLEY_PODEX_SKIP_CLAUDE', previousSkip);
     }
 });
 
@@ -458,13 +460,13 @@ test('SAF-004g: postinstall child processes use service-safe PATH consistently',
 
 test('SAF-004h: README scopes Windows installation support to WSL', () => {
     assert.ok(readmeSrc.includes('wsl --install'), 'README should document Windows setup through WSL');
-    assert.ok(readmeSrc.includes('wsl.exe -d Ubuntu -- bash -lc "jaw dashboard"'), 'README should document PowerShell-to-WSL login-shell invocation');
+    assert.ok(readmeSrc.includes('wsl.exe -d Ubuntu -- bash -lc "weasley-podex dashboard"'), 'README should document PowerShell-to-WSL login-shell invocation');
     assert.ok(readmeSrc.includes('macOS / Linux / WSL with Node.js 22+ already installed'), 'README default npm install block should be OS-scoped');
-    assert.equal(readmeSrc.includes('Get-Command jaw'), false, 'README must not troubleshoot native PowerShell jaw resolution as a supported path');
-    assert.equal(localizedReadmeSrc.includes('$env:JAW_SAFE="1"; npm install -g podex'), false, 'localized READMEs must not advertise native PowerShell safe install');
+    assert.equal(readmeSrc.includes('Get-Command weasley-podex'), false, 'README must not troubleshoot native PowerShell resolution as a supported path');
+    assert.equal(localizedReadmeSrc.includes('$env:WEASLEY_PODEX_SAFE="1"; npm install -g weasley-podex'), false, 'localized READMEs must not advertise native PowerShell safe install');
     assert.equal(localizedReadmeSrc.includes('# Windows PowerShell'), false, 'localized READMEs must not present native PowerShell install snippets');
     assert.equal(localizedReadmeSrc.includes('npm bin -g'), false, 'localized README troubleshooting should use npm prefix -g, not removed npm bin -g');
-    assert.ok(localizedReadmeSrc.includes('wsl.exe -d Ubuntu -- bash -lc "jaw dashboard"'), 'localized READMEs should document PowerShell-to-WSL login-shell invocation');
+    assert.ok(localizedReadmeSrc.includes('wsl.exe -d Ubuntu -- bash -lc "weasley-podex dashboard"'), 'localized READMEs should document PowerShell-to-WSL login-shell invocation');
 });
 
 test('SAF-004i: install risk gate covers fresh-machine installer regressions', () => {
@@ -500,10 +502,11 @@ test('SAF-004j: packaged fresh-install verifiers check new-shell readiness', () 
     assert.ok(shellVerifier.includes('should_check_zsh'), 'fresh verifier should only enforce zsh when it is a supported shell surface');
     assert.ok(shellVerifier.includes('zsh -ic'), 'macOS verifier should check interactive zsh resolution');
     assert.ok(shellVerifier.includes('zsh -lc'), 'macOS verifier should check login zsh resolution');
-    assert.ok(shellVerifier.includes('run_version podex'), 'fresh verifier should check the podex alias directly');
-    assert.ok(shellVerifier.includes('command -v podex'), 'new-shell probes should resolve podex as well as jaw');
+    assert.ok(shellVerifier.includes('run_version weasley-podex'), 'fresh verifier should check the primary CLI directly');
+    assert.equal(shellVerifier.includes('run_version podex'), false, 'fresh verifier should not check retired public aliases');
+    assert.equal(shellVerifier.includes('command -v podex'), false, 'new-shell probes should expose only weasley-podex');
     assert.ok(shellVerifier.includes('not executable'), 'fresh verifier should diagnose non-executable bin targets explicitly');
-    assert.ok(shellVerifier.includes('jaw doctor'), 'macOS verifier should run jaw doctor');
+    assert.ok(shellVerifier.includes('weasley-podex doctor'), 'macOS verifier should run the primary doctor command');
     assert.ok(shellVerifier.includes('--skip-doctor'), 'macOS verifier should support CI smoke without doctor');
     assert.ok(readmeSrc.includes('verify-fresh-install.sh'), 'README should document macOS/WSL verifier');
     assert.ok(readmeSrc.includes('source "${ZDOTDIR:-$HOME}/.zshrc"'), 'README should refresh zsh/nvm PATH before running npm-root verifier after curl|bash');
@@ -540,7 +543,7 @@ test('SAF-004j2: fresh-machine evidence collector documents supported release ev
     assert.ok(freshInstallEvidenceSrc.includes('21-verifier-script.sh'), 'collector should archive the verifier script before executing it');
     assert.ok(freshInstallEvidenceSrc.includes('sha256='), 'collector should record archived script hashes');
     assert.ok(freshInstallEvidenceSrc.includes('release audit will require'), 'collector should warn when it is run from stdin and cannot archive itself');
-    assert.ok(freshInstallEvidenceSrc.includes('Native Windows/Git Bash is not a supported podex install target'), 'collector should reject native Windows shells');
+    assert.ok(freshInstallEvidenceSrc.includes('Native Windows/Git Bash is not a supported Weasley Podex install target'), 'collector should reject native Windows shells');
     assert.ok(freshInstallEvidenceSrc.includes('run_optional_shell_logged "bash login-shell probe (non-default on macOS)"'), 'collector should not fail macOS evidence solely because bash login shell is not configured');
     assert.ok(freshInstallEvidenceSrc.includes('zsh login-shell probe (non-default outside macOS)'), 'collector should not fail WSL/Linux evidence solely because non-default zsh is unconfigured');
     assert.ok(freshInstallEvidenceSrc.includes('wsl.exe -d'), 'collector should record the PowerShell-to-WSL invocation');
@@ -553,7 +556,7 @@ test('SAF-004j2: fresh-machine evidence collector documents supported release ev
     assert.ok(readmeSrc.includes('audit-fresh-install-evidence.mjs'), 'README should show evidence directory auditing');
     assert.ok(readmeSrc.includes('node scripts/audit-fresh-install-evidence.mjs "$EVIDENCE_DIR" --target macos'), 'README should show local checkout auditor usage');
     assert.ok(readmeSrc.includes('node scripts/verify-release-evidence.mjs --macos /path/to/macos-evidence --wsl /path/to/wsl-evidence'), 'README should show local checkout release gate usage');
-    assert.ok(readmeSrc.includes('curl -fsSL https://raw.githubusercontent.com/potatohoney-p/podex/main/scripts/collect-fresh-install-evidence.sh -o "$COLLECTOR"'), 'README should download the collector to a file before executing it');
+    assert.equal(readmeSrc.includes('potatohoney-p/podex'), false, 'README must not reference the retired repository path');
     assert.ok(readmeSrc.includes('33-powershell-to-wsl-probe.log'), 'README should document host-side PowerShell-to-WSL probe evidence when the collector cannot run it from WSL');
     assert.ok(freshInstallEvidenceAuditSrc.includes('--allow-skip-install'), 'auditor should distinguish release evidence from local smoke evidence');
     assert.ok(freshInstallEvidenceAuditSrc.includes("requireArchivedScript('collector', '00-collector-script.sh')"), 'auditor should require archived collector source for release evidence');
@@ -574,8 +577,8 @@ test('SAF-004j2: fresh-machine evidence collector documents supported release ev
     assert.equal(releaseEvidenceGateSrc.includes('--allow-preexisting-node'), false, 'release gate must not allow non-fresh machines');
     assert.ok(requireReleaseEvidenceSrc.includes('installerSensitivePaths'), 'publish-time evidence guard should define installer-sensitive paths');
     assert.ok(requireReleaseEvidenceSrc.includes('scripts/verify-release-evidence.mjs'), 'publish-time evidence guard should delegate to the strict matrix gate');
-    assert.ok(requireReleaseEvidenceSrc.includes('podex_MACOS_EVIDENCE_DIR'), 'publish-time evidence guard should require macOS evidence');
-    assert.ok(requireReleaseEvidenceSrc.includes('podex_WSL_EVIDENCE_DIR'), 'publish-time evidence guard should require WSL evidence');
+    assert.ok(requireReleaseEvidenceSrc.includes('WEASLEY_PODEX_MACOS_EVIDENCE_DIR'), 'publish-time evidence guard should require macOS evidence');
+    assert.ok(requireReleaseEvidenceSrc.includes('WEASLEY_PODEX_WSL_EVIDENCE_DIR'), 'publish-time evidence guard should require WSL evidence');
     assert.ok(requireReleaseEvidenceSrc.includes("relativePath === 'package.json'"), 'publish-time evidence guard should treat package metadata carefully');
     assert.ok(requireReleaseEvidenceSrc.includes('delete parsed.version'), 'publish-time evidence guard should ignore pure version bumps');
     assert.ok(requireReleaseEvidenceSrc.includes('currentPackageVersionTag'), 'publish-time evidence guard should not use the just-created version tag as the comparison base');
@@ -592,7 +595,7 @@ test('SAF-004j3: publish scripts enforce fresh-machine evidence before push or p
     assert.ok(requireReleaseEvidenceSrc.includes('scripts/require-release-evidence.mjs'), 'release evidence trigger paths should include this publish guard');
     assert.ok(requireReleaseEvidenceSrc.includes('scripts/release.sh'), 'release evidence trigger paths should include stable release script changes');
     assert.ok(requireReleaseEvidenceSrc.includes('scripts/release-preview.sh'), 'release evidence trigger paths should include preview release script changes');
-    assert.ok(readmeSrc.includes('podex_MACOS_EVIDENCE_DIR=/path/to/macos-evidence'), 'README should document release-script evidence env');
+    assert.ok(readmeSrc.includes('WEASLEY_PODEX_MACOS_EVIDENCE_DIR=/path/to/macos-evidence'), 'README should document release-script evidence env');
     assert.ok(readmeSrc.includes('bash scripts/release.sh patch'), 'README should show release script with evidence directories');
 
     const releaseGatePos = releaseScriptSrc.indexOf('npm run gate:all');
@@ -655,21 +658,20 @@ test('SAF-004k: postinstall platform workflow runs installer risk gate on macOS 
 test('SAF-004l: fresh install smoke exercises packed global install without safe mode', () => {
     assert.equal(packageJson.scripts?.['test:fresh-install'], 'tsx scripts/fresh-install-smoke.ts');
     assert.ok(freshInstallSmokeSrc.includes("--postinstall"), 'fresh install smoke should have a postinstall mode');
-    assert.ok(freshInstallSmokeSrc.includes('podex_SKIP_CLAUDE'), 'postinstall smoke should skip external Claude installer');
-    assert.ok(freshInstallSmokeSrc.includes('podex_SKIP_MCP_SERVERS'), 'postinstall smoke should skip external MCP network installs');
-    assert.ok(freshInstallSmokeSrc.includes('podex_SKIP_SKILL_DEPS'), 'postinstall smoke should skip external skill dependency network installs');
+    assert.ok(freshInstallSmokeSrc.includes('WEASLEY_PODEX_SKIP_CLAUDE'), 'postinstall smoke should skip external Claude installer');
+    assert.ok(freshInstallSmokeSrc.includes('WEASLEY_PODEX_SKIP_MCP_SERVERS'), 'postinstall smoke should skip external MCP network installs');
+    assert.ok(freshInstallSmokeSrc.includes('WEASLEY_PODEX_SKIP_SKILL_DEPS'), 'postinstall smoke should skip external skill dependency network installs');
     assert.ok(freshInstallSmokeSrc.includes('verify-fresh-install.sh'), 'postinstall smoke should run packaged Unix verifier');
     assert.equal(freshInstallSmokeSrc.includes('verify-fresh-install.ps1'), false, 'postinstall smoke should not imply native PowerShell support');
     assert.ok(freshInstallSmokeSrc.includes('fresh-install-smoke targets macOS/Linux/WSL'), 'fresh install smoke should reject native Windows execution');
     assert.ok(freshInstallSmokeSrc.includes('npm_config_prefix'), 'fresh install smoke should isolate npm global prefix');
-    assert.ok(freshInstallSmokeSrc.includes('jawCmd'), 'fresh install smoke should execute the installed global jaw shim');
-    assert.ok(freshInstallSmokeSrc.includes('PODEXCmd'), 'fresh install smoke should execute the installed global podex shim');
-    assert.ok(freshInstallSmokeSrc.includes('podex version mismatch'), 'fresh install smoke should compare jaw and podex versions');
+    assert.equal(freshInstallSmokeSrc.includes("const jawCmd = 'jaw'"), false, 'fresh install smoke should not execute a retired jaw shim');
+    assert.equal(freshInstallSmokeSrc.includes("const PODEXCmd = 'podex'"), false, 'fresh install smoke should not execute a retired podex shim');
 });
 
 test('SAF-004m: postinstall has opt-out gates for network-heavy optional installers', () => {
-    assert.ok(postinstallSrc.includes('podex_SKIP_MCP_SERVERS'), 'postinstall should allow CI/fresh smoke to skip MCP network installs');
-    assert.ok(postinstallSrc.includes('podex_SKIP_SKILL_DEPS'), 'postinstall should allow CI/fresh smoke to skip skill dependency network installs');
+    assert.ok(postinstallSrc.includes('WEASLEY_PODEX_SKIP_MCP_SERVERS'), 'postinstall should allow CI/fresh smoke to skip MCP network installs');
+    assert.ok(postinstallSrc.includes('WEASLEY_PODEX_SKIP_SKILL_DEPS'), 'postinstall should allow CI/fresh smoke to skip skill dependency network installs');
     assert.ok(postinstallSrc.includes('MCP server install skipped'), 'MCP skip should be visible in logs');
     assert.ok(postinstallSrc.includes('skill dependency install skipped'), 'skill dependency skip should be visible in logs');
 });

@@ -2,8 +2,8 @@ import type { Request, Response, Router } from 'express';
 import { Router as createRouter } from 'express';
 import { APP_VERSION } from '../../core/config.js';
 
-export const podex_ELECTRON_HEADER = 'x-podex-electron';
-export const podex_DESKTOP_DOWNLOAD_URL = 'https://github.com/potatohoney-p/podex/releases/latest';
+export const WEASLEY_PODEX_ELECTRON_HEADER = 'x-weasley-podex-electron';
+export const WEASLEY_PODEX_DESKTOP_DOWNLOAD_URL = 'https://github.com/potatohoney-p/weasley-podex/releases/latest';
 
 export type DesktopStatusResponse = {
     inDesktop: boolean;
@@ -13,9 +13,9 @@ export type DesktopStatusResponse = {
 
 export function readDesktopStatus(req: Request): DesktopStatusResponse {
     return {
-        inDesktop: req.header(podex_ELECTRON_HEADER) === '1',
+        inDesktop: req.header(WEASLEY_PODEX_ELECTRON_HEADER) === '1',
         version: APP_VERSION,
-        downloadUrl: podex_DESKTOP_DOWNLOAD_URL,
+        downloadUrl: WEASLEY_PODEX_DESKTOP_DOWNLOAD_URL,
     };
 }
 

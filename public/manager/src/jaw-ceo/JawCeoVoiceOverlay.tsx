@@ -25,7 +25,7 @@ export function JawCeoVoiceOverlay(props: {
                     <span>{props.status === 'silent' ? 'No speech detected. Session is still open.' : target}</span>
                     {props.lastTranscript ? <small>{props.lastTranscript}</small> : props.lastEventType ? <small>{props.lastEventType}</small> : null}
                 </div>
-                <button type="button" className="jaw-ceo-voice-stop" aria-label="Stop Jaw CEO voice" onClick={props.onStop}>
+                <button type="button" className="jaw-ceo-voice-stop" aria-label="Stop Weasley Podex CEO voice" onClick={props.onStop}>
                     Stop
                 </button>
             </div>

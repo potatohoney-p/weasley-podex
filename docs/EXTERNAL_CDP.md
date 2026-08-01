@@ -2,7 +2,7 @@
 created: 2026-05-05
 phase: 22
 status: deferred
-tags: [podex, external-cdp, deferred, experimental, agbrowse-mirror]
+tags: [weasley-podex, external-cdp, deferred, experimental, agbrowse-mirror]
 ---
 
 # External / Remote CDP Adapter — Deferred (Experimental)
@@ -11,11 +11,11 @@ tags: [podex, external-cdp, deferred, experimental, agbrowse-mirror]
 
 **Deferred. Not for production use.**
 
-`podex` does not own the external/remote CDP path. The local-CDP runtime
-(via `agbrowse` and `podex`'s native browser cleanup surface) is the only
+Weasley Podex does not own the external/remote CDP path. The local-CDP runtime
+(via `agbrowse` and Weasley Podex's native browser cleanup surface) is the only
 supported browser execution mode.
 
-This document mirrors `agbrowse/docs/EXTERNAL_CDP.md` so that `podex`
+This document mirrors `agbrowse/docs/EXTERNAL_CDP.md` so that Weasley Podex
 release notes, README, and dashboard never accidentally claim hosted/cloud
 or remote-CDP support before that contract exists.
 
@@ -26,12 +26,12 @@ must be met to lift the deferral, and the rules for marking experimental
 code (`// EXPERIMENTAL: not for production use`, opt-in flag,
 truth-table sync, no README readiness claim).
 
-## podex-specific rules
+## Weasley Podex-specific rules
 
-- `podex` MUST NOT introduce its own external/remote CDP adapter ahead of
+- Weasley Podex MUST NOT introduce its own external/remote CDP adapter ahead of
   agbrowse. Any production claim must originate from agbrowse.
 - The `gate:no-experimental-in-readme-ready-section` release gate enforces
-  that "ready" sections of podex `README*.md` and the truth table do not
+  that "ready" sections of Weasley Podex `README*.md` and the truth table do not
   mention external CDP, remote CDP, hosted browser, or unimplemented MCP
   tools as ready capabilities.
 - `structure/CAPABILITY_TRUTH_TABLE.md` keeps External CDP in
@@ -42,6 +42,6 @@ truth-table sync, no README readiness claim).
 ## Lifting the deferral
 
 Mirror the agbrowse process: only after agbrowse publishes a non-deferred
-External CDP contract may podex consider exposing or claiming a mirrored
+External CDP contract may Weasley Podex consider exposing or claiming a mirrored
 surface, and only with matching tests and truth-table updates.
 

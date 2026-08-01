@@ -83,19 +83,46 @@ test('AGY-CAP-006: spawn wires AGY capability probe into arg options', () => {
 });
 
 test('AGY-CAP-007: detection parses help emitted on stderr', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'jaw-agy-cap-'));
-    const bin = join(dir, 'agy');
-    writeFileSync(bin, [
-        '#!/bin/sh',
-        'if [ "$1" = "--version" ]; then echo "1.0.12"; exit 0; fi',
-        'if [ "$1" = "--help" ]; then',
-        '  printf "%s\\n" "Usage of agy:" "  --conversation" "  --model" "  --log-file" "  -p" "  --print-timeout" "  --add-dir" "  --dangerously-skip-permissions" "  --sandbox" 1>&2',
-        '  exit 0',
-        'fi',
-        'exit 1',
-        '',
-    ].join('\n'));
-    chmodSync(bin, 0o755);
+    const dir = mkdtempSync(join(tmpdir(), 'weasley-podex-agy-cap-'));
+    const windows = process.platform === 'win32';
+    const bin = join(dir, windows ? 'agy.cmd' : 'agy');
+    const helpLines = [
+        'Usage of agy:',
+        '  --conversation',
+        '  --model',
+        '  --log-file',
+        '  -p',
+        '  --print-timeout',
+        '  --add-dir',
+        '  --dangerously-skip-permissions',
+        '  --sandbox',
+    ];
+    const script = windows
+        ? [
+            '@echo off',
+            'if "%~1"=="--version" goto version',
+            'if "%~1"=="--help" goto help',
+            'exit /b 1',
+            ':version',
+            'echo 1.0.12',
+            'exit /b 0',
+            ':help',
+            ...helpLines.map(line => `1>&2 echo ${line}`),
+            'exit /b 0',
+            '',
+        ]
+        : [
+            '#!/bin/sh',
+            'if [ "$1" = "--version" ]; then echo "1.0.12"; exit 0; fi',
+            'if [ "$1" = "--help" ]; then',
+            `  printf "%s\\n" ${helpLines.map(line => JSON.stringify(line)).join(' ')} 1>&2`,
+            '  exit 0',
+            'fi',
+            'exit 1',
+            '',
+        ];
+    writeFileSync(bin, script.join('\n'));
+    if (!windows) chmodSync(bin, 0o755);
     try {
         const caps = detectAgyCapabilities(bin);
         assert.equal(caps.version, '1.0.12');

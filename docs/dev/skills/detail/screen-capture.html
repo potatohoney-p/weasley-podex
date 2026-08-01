@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Screen Capture &mdash; podex Docs</title>
+<title>Screen Capture &mdash; Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
 .badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
@@ -31,7 +30,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -54,7 +53,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -103,7 +102,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
@@ -113,20 +112,20 @@
 <p class="lead">macOS screenshot, webcam, and screen recording &mdash; full screen, region, window, clipboard, multi-display, video, and webcam capture using native macOS tools.</p>
 
 <p>
-  <span class="badge badge-active">Default Active</span>
+  <span class="badge badge-planned">Optional import</span>
   <span class="badge badge-category">Utility</span>
 </p>
 
 <div class="callout callout-info">
-  <strong>Built-in skill:</strong> <code>screen-capture</code> is active by default in every podex session. No installation required. It uses macOS native <code>screencapture</code> for screenshots and video, plus the optional <code>imagesnap</code> for webcam capture. For browser-specific screenshots, prefer <code>podex browser screenshot</code> which captures via CDP.
+  <strong>Built-in skill:</strong> <code>screen-capture</code> is active by default in every Weasley Podex session. No installation required. It uses macOS native <code>screencapture</code> for screenshots and video, plus the optional <code>imagesnap</code> for webcam capture. For browser-specific screenshots, prefer <code>weasley-podex browser screenshot</code> which captures via CDP.
 </div>
 
 <h2>Quick Reference</h2>
 <table class="quick-ref">
 <tr><td>Skill name</td><td><code>screen-capture</code></td></tr>
 <tr><td>Category</td><td>Utility</td></tr>
-<tr><td>Default active</td><td>Yes &mdash; built-in, always available</td></tr>
-<tr><td>SKILL.md path</td><td><code>~/.podex/skills/screen-capture/SKILL.md</code></td></tr>
+<tr><td>Bundled</td><td>No &mdash; import a reviewed skill; browser screenshots remain available through the core CLI</td></tr>
+<tr><td>SKILL.md path</td><td><code>~/.weasley/podex/skills/screen-capture/SKILL.md</code></td></tr>
 <tr><td>Primary tool</td><td><code>screencapture</code> (macOS built-in)</td></tr>
 <tr><td>Webcam tool</td><td><code>imagesnap</code> (optional, via Homebrew)</td></tr>
 <tr><td>Platform</td><td>macOS only</td></tr>
@@ -280,7 +279,7 @@ screencapture -x ~/finder.png</code></pre>
 
 <h3>Capture and Analyze</h3>
 <p>Take a screenshot and immediately pass it to the agent's vision model for analysis. This is the pattern used by <code>vision-click</code> and <code>desktop-control</code>.</p>
-<pre><code># In a podex session, just say:
+<pre><code># In a weasley-podex session, just say:
 "화면 캡처해서 뭐가 보이는지 설명해줘"
 
 # The agent runs:
@@ -330,7 +329,7 @@ which screencapture    # Should print /usr/sbin/screencapture</code></pre>
 </thead>
 <tbody>
 <tr><td><strong>Default capture method</strong></td><td>Use <code>screencapture</code> as the default when tool-specific capture (Figma, Playwright, CDP) is unavailable.</td></tr>
-<tr><td><strong>Browser screenshots</strong></td><td>Prefer <code>podex browser screenshot</code> for web pages (captures via Chrome DevTools Protocol for pixel-perfect fidelity).</td></tr>
+<tr><td><strong>Browser screenshots</strong></td><td>Prefer <code>weasley-podex browser screenshot</code> for web pages (captures via Chrome DevTools Protocol for pixel-perfect fidelity).</td></tr>
 <tr><td><strong>Silent mode</strong></td><td>Always use <code>-x</code> flag for programmatic captures to suppress the shutter sound.</td></tr>
 <tr><td><strong>Webcam warmup</strong></td><td>Always use <code>-w 2</code> or higher with <code>imagesnap</code> for better image quality.</td></tr>
 <tr><td><strong>Privacy permission</strong></td><td>Screen Recording permission is required (System Settings &gt; Privacy &gt; Screen Recording). The agent will warn if permission is missing.</td></tr>
@@ -367,7 +366,7 @@ which screencapture    # Should print /usr/sbin/screencapture</code></pre>
 </div>
 
 <h2>Comparison with Related Skills</h2>
-<p>podex has several skills that involve visual capture. Choose the right tool for the job:</p>
+<p>Weasley Podex has several skills that involve visual capture. Choose the right tool for the job:</p>
 
 <table>
 <thead>
@@ -377,7 +376,7 @@ which screencapture    # Should print /usr/sbin/screencapture</code></pre>
 <tr><td><strong>Focus</strong></td><td>Native macOS screenshots and recordings</td><td>CDP-based browser automation</td><td>Full desktop + browser automation</td><td>Vision-guided click targeting</td></tr>
 <tr><td><strong>Best for</strong></td><td>Quick captures, multi-display, video, webcam</td><td>Web page screenshots, DOM interaction</td><td>Cross-app workflows, hybrid targets</td><td>Clicking UI elements by visual recognition</td></tr>
 <tr><td><strong>Capture method</strong></td><td><code>screencapture</code> CLI</td><td>Chrome DevTools Protocol</td><td>CDP + Computer Use</td><td>Screenshot + coordinate mapping</td></tr>
-<tr><td><strong>Requires browser</strong></td><td>No</td><td>Yes (podex server)</td><td>Depends on target</td><td>No</td></tr>
+<tr><td><strong>Requires browser</strong></td><td>No</td><td>Yes (Weasley Podex server)</td><td>Depends on target</td><td>No</td></tr>
 <tr><td><strong>When to prefer</strong></td><td>No browser needed, system-level capture, video, webcam</td><td>Web pages (pixel-perfect)</td><td>Complex multi-app automation</td><td>Clicking on-screen elements</td></tr>
 </tbody>
 </table>
@@ -389,7 +388,7 @@ which screencapture    # Should print /usr/sbin/screencapture</code></pre>
 <h2>Troubleshooting</h2>
 
 <h3>Screen Recording permission denied</h3>
-<p>If <code>screencapture</code> produces a blank or all-black image, the terminal app (Terminal.app, iTerm2, or the podex Electron app) likely lacks Screen Recording permission.</p>
+<p>If <code>screencapture</code> produces a blank or all-black image, the terminal app (Terminal.app, iTerm2, or the Weasley Podex Electron app) likely lacks Screen Recording permission.</p>
 <pre><code># Fix: Grant permission in System Settings
 # System Settings > Privacy & Security > Screen Recording
 # Enable your terminal application

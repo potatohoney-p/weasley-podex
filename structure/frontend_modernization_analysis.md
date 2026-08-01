@@ -1,7 +1,7 @@
 ﻿---
 created: 2026-03-28
-tags: [podex, frontend, modernization, audit]
-aliases: [Frontend Modernization Audit, podex frontend analysis, modernization analysis]
+tags: [weasley-podex, frontend, modernization, audit]
+aliases: [Frontend Modernization Audit, Weasley Podex frontend analysis, modernization analysis]
 ---
 
 > 📚 [INDEX](INDEX.md) · [프론트엔드 ↗](frontend.md) · **현대화 제안 분석**
@@ -42,7 +42,7 @@ aliases: [Frontend Modernization Audit, podex frontend analysis, modernization a
 - 기존 문서 관례대로 `public/dist/*`만 제외하면 `public/public/dist/*`가 남아서 총 236개로 잡힌다.
 - `public/js/`는 root가 15개, `js/diagram/`이 3개, `js/features/`가 31개다.
 - `public/manager/`는 28개 파일의 React Manager 대시보드 source다.
-- `public/css/`는 9개, `public/locales/`는 2개, `public/assets/providers/`는 14개, `public/assets/fonts/`는 2개, `public/icons/`는 3개다.
+- provider/social SVG 자산은 0개다. 기존 로고 파일 세트는 제거되었고 `public/js/provider-icons.ts`가 브랜드 중립 glyph를 코드로 렌더링한다.
 - 핵심 runtime 크기(2026-07-06 재측정): `main.ts 628L`, `ui.ts 561L`, `render.ts 18L`(façade로 축소, 실제 렌더링은 `render/` 모듈로 분해됨), `ws.ts 1144L`, `virtual-scroll.ts 646L`, `state.ts 105L`, `features/process-block.ts 740L`, `features/settings-core.ts 648L`, `manager/src/App.tsx 499L`.
 
 ### 이미 현대화된 영역

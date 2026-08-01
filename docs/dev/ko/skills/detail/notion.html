@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notion — podex Docs</title>
+<title>Notion — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -73,7 +72,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -96,7 +95,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">가이드</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">대시보드</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">노트 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">노트 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">칸반 보드</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -145,17 +144,17 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">랜딩 페이지</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Notion</h1>
-<p class="lead">Notion API를 통한 페이지 및 데이터베이스 CRUD &mdash; podex에서 Notion API를 사용하여 Notion 페이지, 데이터 소스(데이터베이스), 블록을 직접 생성, 조회, 수정, 쿼리할 수 있습니다.</p>
+<p class="lead">Notion API를 통한 페이지 및 데이터베이스 CRUD &mdash; Weasley Podex에서 Notion API를 사용하여 Notion 페이지, 데이터 소스(데이터베이스), 블록을 직접 생성, 조회, 수정, 쿼리할 수 있습니다.</p>
 
 <div class="skill-meta">
-  <span class="badge badge-active">기본 활성: 예</span>
+  <span class="badge badge-planned">선택적 가져오기</span>
   <span class="badge badge-scope">카테고리: 생산성</span>
   <span class="badge badge-env">필수: NOTION_API_KEY</span>
 </div>
@@ -165,18 +164,18 @@
 <tr><td>스킬 이름</td><td><code>notion</code></td></tr>
 <tr><td>상태</td><td>활성 (모든 세션에 자동 주입)</td></tr>
 <tr><td>카테고리</td><td>생산성</td></tr>
-<tr><td>SKILL.md 경로</td><td><code>~/.podex/skills/notion/SKILL.md</code></td></tr>
+<tr><td>SKILL.md 경로</td><td><code>~/.weasley/podex/skills/notion/SKILL.md</code></td></tr>
 <tr><td>홈페이지</td><td><a href="https://developers.notion.com">developers.notion.com</a></td></tr>
 <tr><td>API 버전</td><td><code>2025-09-03</code> (최신)</td></tr>
 <tr><td>필수 조건</td><td><code>NOTION_API_KEY</code> 환경 변수 (<code>ntn_</code> 접두사 키)</td></tr>
 <tr><td>키 저장 위치</td><td><code>~/.config/notion/api_key</code></td></tr>
 <tr><td>OAuth 설정</td><td><code>~/.config/notion/oauth.env</code></td></tr>
 <tr><td>요청 제한</td><td>~3 요청/초 (배치 작업 시 <code>time.sleep(0.35)</code> 사용)</td></tr>
-<tr><td>설치</td><td>사전 설치됨 (podex에 포함)</td></tr>
+<tr><td>설치</td><td>사전 설치됨 (Weasley Podex에 포함)</td></tr>
 </table>
 
 <h2>개요</h2>
-<p><code>notion</code> 스킬은 Notion API를 통해 Notion 워크스페이스에 대한 전체 CRUD 접근을 제공합니다. podex에서 터미널을 벗어나지 않고 페이지 검색, 콘텐츠 생성 및 수정, 데이터베이스(데이터 소스) 쿼리, 블록 관리, 시각적 디자인 패턴 적용 등을 수행할 수 있습니다.</p>
+<p><code>notion</code> 스킬은 Notion API를 통해 Notion 워크스페이스에 대한 전체 CRUD 접근을 제공합니다. Weasley Podex에서 터미널을 벗어나지 않고 페이지 검색, 콘텐츠 생성 및 수정, 데이터베이스(데이터 소스) 쿼리, 블록 관리, 시각적 디자인 패턴 적용 등을 수행할 수 있습니다.</p>
 
 <p>주요 기능:</p>
 <ul>
@@ -211,7 +210,7 @@ chmod 600 ~/.config/notion/api_key</code></pre>
 <div class="callout callout-warn"><strong>중요:</strong> 대상 페이지와 데이터베이스는 Notion에서 통합과 명시적으로 공유해야 합니다. 공유되지 않은 페이지는 API 키가 유효하더라도 404 오류를 반환합니다.</div>
 
 <h2>API 헬퍼 함수</h2>
-<p>이 스킬은 모든 작업의 기반이 되는 재사용 가능한 셸 헬퍼를 정의합니다. podex는 Notion 명령을 실행할 때 내부적으로 이 함수를 사용합니다:</p>
+<p>이 스킬은 모든 작업의 기반이 되는 재사용 가능한 셸 헬퍼를 정의합니다. Weasley Podex는 Notion 명령을 실행할 때 내부적으로 이 함수를 사용합니다:</p>
 
 <pre><code>NOTION_KEY=$(cat ~/.config/notion/api_key)
 
@@ -370,7 +369,7 @@ notion_api POST /data_sources '{
 <div class="callout callout-info"><strong>이중 ID 패턴:</strong> 데이터베이스 작업 시 <code>database_id</code>는 <code>POST /pages</code>(항목 생성)에, <code>data_source_id</code>는 <code>POST /data_sources/{id}/query</code>(항목 쿼리)에 사용하세요. 잘못 사용하면 404 오류가 발생합니다.</div>
 
 <h2>시각적 디자인 규칙</h2>
-<p>이 스킬에는 podex가 생성하는 Notion 페이지가 깔끔하고 Notion 네이티브 패턴을 따르도록 보장하는 시각적 디자인 규칙 세트("미학 가이드"라고 함)가 포함되어 있습니다.</p>
+<p>이 스킬에는 Weasley Podex가 생성하는 Notion 페이지가 깔끔하고 Notion 네이티브 패턴을 따르도록 보장하는 시각적 디자인 규칙 세트("미학 가이드"라고 함)가 포함되어 있습니다.</p>
 
 <div class="design-rule">
   <h4>1. 페이지 참조에 멘션 링크 사용</h4>
@@ -456,7 +455,7 @@ bulleted_list_item (멘션 &rarr; 설명)
 notion_api POST /search '{"query": "page name"}'</code></pre>
 
 <h2>사용 예시 (~해줘)</h2>
-<p>podex가 이해하는 자연스러운 한국어 스타일의 실제 사용 패턴입니다.</p>
+<p>Weasley Podex가 이해하는 자연스러운 한국어 스타일의 실제 사용 패턴입니다.</p>
 
 <div class="example-card">
   <div class="example-prompt">"노션에 새 페이지 만들어줘 &mdash; 제목 '주간 회의록', 상태는 '진행 중'으로"</div>
@@ -500,7 +499,7 @@ notion_api POST /search '{"query": "page name"}'</code></pre>
   <li><a href="../productivity.html">생산성 스킬</a> &mdash; Notion 및 관련 생산성 스킬 카테고리 페이지</li>
   <li><a href="memory.html">Memory</a> &mdash; 세션 간 영구 지식 저장소</li>
   <li><a href="../index.html">스킬 카탈로그</a> &mdash; 모든 스킬 탐색</li>
-  <li><a href="../../reference/cli.html">CLI 명령어</a> &mdash; 전체 podex 명령어 레퍼런스</li>
+  <li><a href="../../reference/cli.html">CLI 명령어</a> &mdash; 전체 Weasley Podex 명령어 레퍼런스</li>
 </ul>
 
 <div class="page-nav">

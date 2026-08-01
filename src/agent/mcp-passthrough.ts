@@ -1,8 +1,5 @@
 import { loadUnifiedMcp } from '../../lib/mcp-sync.js';
-import { fetchMcpRegistryLocal, type McpRegistryResult } from '../../lib/mcp/mcp-registry.js';
-import { join } from 'path';
-import { JAW_HOME } from '../../lib/mcp/skills-utils.js';
-import os from 'os';
+import { fetchMcpRegistryBundled } from '../../lib/mcp/mcp-registry.js';
 
 export interface AcpMcpServer {
     name: string;
@@ -35,15 +32,7 @@ export function getEmployeeMcpToolSummary(): string {
         const serverNames = Object.keys(config?.servers || {});
         if (serverNames.length === 0) return '';
 
-        const registryPaths = [
-            join(JAW_HOME, 'mcp-ref', 'registry.json'),
-            join(os.homedir(), 'Developer', 'new', '700_projects', 'mcp-ref', 'registry.json'),
-        ];
-        let registry: McpRegistryResult = { entries: [], builtins: [] };
-        for (const p of registryPaths) {
-            const r = fetchMcpRegistryLocal(p);
-            if (r.entries.length > 0) { registry = r; break; }
-        }
+        const registry = fetchMcpRegistryBundled();
         const registryMap = new Map(registry.entries.map(e => [e.id, e]));
 
         const lines = [

@@ -118,7 +118,7 @@ finalizeStreamingAssistants(ctx.store.transcript);
 upsertLiveToolItem(ctx.store.transcript, {
     icon: '🔧',
     label: 'Bash',
-    detail: 'npm test -- --filter tui-frame-resize-stress with a long running detail path /Users/jun/Developer/new/700_projects/podex',
+    detail: 'npm test -- --filter tui-frame-resize-stress with a long running detail path /Users/example/src/weasley-podex',
     status: 'running',
     stepRef: 'live-bash',
 });
@@ -127,12 +127,12 @@ assertFrame(ctx, viewport, sizes[0][0], sizes[0][1], [/Starting resize stress/, 
 appendToolItem(ctx.store.transcript, 'Bash', {
     stepRef: 'bash-1',
     status: 'done',
-    detail: 'first output line\nsecond output line\n/Users/jun/Developer/new/700_projects/podex/src/cli/tui/transcript.ts',
+    detail: 'first output line\nsecond output line\n/Users/example/src/weasley-podex/src/cli/tui/transcript.ts',
 });
 appendToolItem(ctx.store.transcript, 'Read File', {
     stepRef: 'read-1',
     status: 'done',
-    detail: '/Users/jun/Developer/new/700_projects/podex/bin/commands/tui/fullscreen-mode.ts',
+    detail: '/Users/example/src/weasley-podex/bin/commands/tui/fullscreen-mode.ts',
 });
 appendAssistantTurnText(ctx.store.transcript, 'Final answer survives after tools.', 'main');
 finalizeStreamingAssistants(ctx.store.transcript);

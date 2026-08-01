@@ -5,7 +5,7 @@ import fs from 'fs';
 import { join } from 'path';
 import { ok, fail } from '../http/response.js';
 import { getMemory, upsertMemory, deleteMemory } from '../core/db.js';
-import { settings, saveSettings, JAW_HOME } from '../core/config.js';
+import { settings, saveSettings, WEASLEY_PODEX_HOME } from '../core/config.js';
 import * as memoryModule from '../memory/memory.js';
 import { bootstrapMemory, getMemoryStatus, getLastReflectedAt, hasSoulFile, loadSoulSummary, listMemoryFiles, reindexMemory, syncKvShadowImport } from '../memory/runtime.js';
 import { getFlushStatus } from '../agent/memory-flush-controller.js';
@@ -27,7 +27,7 @@ export function registerMemoryRoutes(app: Express, requireAuth: AuthMiddleware):
         let coreSourceHash = '';
         const staleWarnings: string[] = [];
         try {
-            const corePath = join(JAW_HOME, 'memory', 'MEMORY.md');
+            const corePath = join(WEASLEY_PODEX_HOME, 'memory', 'MEMORY.md');
             if (fs.existsSync(corePath)) {
                 coreSourceHash = hashText(safeReadFile(corePath));
                 const profilePath = join(base.storageRoot, 'profile.md');

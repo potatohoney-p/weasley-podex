@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>计算机控制 — podex 文档</title>
+<title>计算机控制 — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,14 +58,14 @@
     <a class="active" href="../">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>计算机控制</h1>
-<p class="lead">podex 通过浏览器 CDP 集成和基于 Codex 的视觉点击管线支持桌面自动化。代理可以截取屏幕截图、点击元素、输入文本和导航——既支持浏览器，也支持桌面。</p>
+<p class="lead">Weasley Podex 通过浏览器 CDP 集成和基于 Codex 的视觉点击管线支持桌面自动化。代理可以截取屏幕截图、点击元素、输入文本和导航——既支持浏览器，也支持桌面。</p>
 
 <h2>两种方式</h2>
 <table>
@@ -76,38 +75,38 @@
 </table>
 
 <h2>CDP 浏览器自动化</h2>
-<p>podex 通过 CDP 启动并控制 Chrome：</p>
+<p>Weasley Podex 通过 CDP 启动并控制 Chrome：</p>
 <pre><code># Start browser
-jaw browser start
+weasley-podex browser start
 
 # Take a screenshot
-jaw browser screenshot
+weasley-podex browser screenshot
 
 # Take a DOM snapshot with ref attributes
-jaw browser snapshot
+weasley-podex browser snapshot
 
 # Click an element by ref
-jaw browser click ref123
+weasley-podex browser click ref123
 
 # Type text into an element
-jaw browser type ref456 "Hello World" --submit
+weasley-podex browser type ref456 "Hello World" --submit
 
 # Navigate to a URL
-jaw browser navigate https://example.com
+weasley-podex browser navigate https://example.com
 
 # Get page text
-jaw browser text</code></pre>
+weasley-podex browser text</code></pre>
 
 <h2>视觉点击管线</h2>
 <p>当 DOM ref 属性和直接坐标都不适用时，视觉点击管线使用 AI 视觉来定位并点击 UI 元素：</p>
-<pre><code>jaw browser vision-click "Submit button" --provider codex</code></pre>
+<pre><code>weasley-podex browser vision-click "Submit button" --provider codex</code></pre>
 <p>管线流程：截图 → AI 视觉提取坐标 → DPR 校正 → 点击 → 验证。</p>
 <div class="callout callout-info">提示中的 <code>$computer-use</code> 令牌会触发 Codex employee 执行桌面级自动化任务。</div>
 
 <h2>macOS TCC 权限</h2>
-<p>在 macOS 上，桌面自动化需要屏幕录制和辅助功能权限。podex 内置了 TCC 权限检查器：</p>
+<p>在 macOS 上，桌面自动化需要屏幕录制和辅助功能权限。Weasley Podex 内置了 TCC 权限检查器：</p>
 <pre><code># Check TCC permissions
-jaw doctor --tcc</code></pre>
+weasley-podex doctor --tcc</code></pre>
 <p>您可能需要在"系统偏好设置" > "隐私与安全性" > "屏幕录制"和"辅助功能"中授予权限。</p>
 
 <h2>Safari 提示</h2>
@@ -128,7 +127,7 @@ jaw doctor --tcc</code></pre>
 
 <h2>运行时诊断</h2>
 <pre><code># Check browser runtime health
-jaw browser status
+weasley-podex browser status
 
 # Doctor check for orphan processes
 GET /api/browser/doctor

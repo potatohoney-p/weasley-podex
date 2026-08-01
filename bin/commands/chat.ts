@@ -1,5 +1,5 @@
-﻿/**
- * podex chat — Phase 9.5
+/**
+ * weasley-podex chat — Phase 9.5
  * Three modes: default (raw stdin, persistent footer), --raw (JSON in UI), --simple (plain readline)
  */
 import { parseArgs } from 'node:util';
@@ -9,6 +9,7 @@ import { resolve as resolvePath, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
 import { loadLocales } from '../../src/core/i18n.js';
+import { setWeasleyPodexEnv } from '../../src/core/weasley-podex-env.js';
 import { consumePasteProtocol, getComposerDisplayText, setBracketedPaste } from '../../src/cli/tui/composer.js';
 import { cleanupScrollRegion, resolveShellLayout, setupScrollRegion } from '../../src/cli/tui/shell.js';
 import { createTuiStore } from '../../src/cli/tui/store.js';
@@ -17,12 +18,12 @@ import { isGitRepo, detectIde } from '../../src/ide/diff.js';
 import { shouldShowHelp, printAndExit } from '../helpers/help.js';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw chat — interactive terminal REPL
+  weasley-podex chat — interactive terminal REPL
 
-  Usage: jaw chat [--port <3457>] [--<port>] [--raw] [--simple]
+  Usage: weasley-podex chat [--port <3457>] [--<port>] [--raw] [--simple]
 
-  Connects to the running jaw server for interactive chat.
-  Server must be running first (jaw serve).
+  Connects to the running Weasley Podex server for interactive chat.
+  Server must be running first (weasley-podex serve).
 
   Modes:
     (default)    Rich TUI with persistent footer
@@ -68,7 +69,7 @@ function findPackageRoot(start: string): string {
 }
 loadLocales(join(findPackageRoot(__dirname), 'public', 'locales'));
 
-// --NNNN shorthand → --port NNNN (e.g. jaw chat --3458)
+// --NNNN shorthand → --port NNNN (e.g. weasley-podex chat --3458)
 const rawArgs = process.argv.slice(3);
 const args: string[] = [];
 for (const arg of rawArgs) {
@@ -100,14 +101,14 @@ try {
     ws = await connectChannel(values.port as string);
 } catch {
     console.error(`\n  ${c.red}x${c.reset} Cannot connect to ${apiUrl}/api/events or ${wsUrl}`);
-    console.error(`  Run ${c.cyan}podex serve${c.reset} first\n`);
+    console.error(`  Run ${c.cyan}weasley-podex serve${c.reset} first\n`);
     process.exit(1);
 }
 
 // ─── Fetch info ──────────────────────────────
 let info = { cli: 'codex', workingDir: '~', model: '' };
 let runtimeLocale = 'ko';
-let tuiConfig = { pasteCollapseLines: 2, pasteCollapseChars: 160, keymapPreset: 'default', diffStyle: 'summary', themeSeed: 'jaw-default' };
+let tuiConfig = { pasteCollapseLines: 2, pasteCollapseChars: 160, keymapPreset: 'default', diffStyle: 'summary', themeSeed: 'weasley-podex-default' };
 let settingsSnapshot: Record<string, unknown> = {};
 try {
     const r = await fetch(`${apiUrl}/api/settings`, { signal: AbortSignal.timeout(2000) });
@@ -154,7 +155,7 @@ const themeFromSettings = typeof (tuiConfig as Record<string, unknown>)['theme']
 const themeArg = typeof values.theme === 'string' ? values.theme : undefined;
 const resolvedTheme = themeArg || themeFromSettings || 'dark';
 if (resolvedTheme === 'light' || resolvedTheme === 'dark') {
-    process.env['JAW_TUI_THEME'] = resolvedTheme;
+    setWeasleyPodexEnv('TUI_THEME', resolvedTheme);
 }
 
 const displayMode = resolveTuiDisplayMode({

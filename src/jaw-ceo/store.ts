@@ -1,6 +1,7 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 import { randomUUID } from 'node:crypto';
 import {
-    JAW_CEO_ID,
+    WEASLEY_PODEX_CEO_ID,
     type JawCeoAuditKind,
     type JawCeoAuditRecord,
     type JawCeoCompletion,
@@ -31,7 +32,7 @@ function iso(now: () => Date): string {
 function createDefaultSession(now: () => Date): JawCeoSessionContext {
     const at = iso(now);
     return {
-        sessionId: `${JAW_CEO_ID}-${randomUUID()}`,
+        sessionId: `${WEASLEY_PODEX_CEO_ID}-${randomUUID()}`,
         inputMode: 'text',
         responseMode: 'text',
         selectedPort: null,
@@ -47,8 +48,8 @@ function createDefaultVoiceState(): JawCeoVoiceRuntimeState {
     return {
         status: process.env["OPENAI_API_KEY"] ? 'idle' : 'disabled',
         sessionId: null,
-        model: process.env["JAW_CEO_REALTIME_MODEL"] || 'gpt-realtime-2',
-        voice: process.env["JAW_CEO_REALTIME_VOICE"] || 'marin',
+        model: getWeasleyPodexEnv('CEO_REALTIME_MODEL') || 'gpt-realtime-2',
+        voice: getWeasleyPodexEnv('CEO_REALTIME_VOICE') || 'marin',
         error: null,
     };
 }
@@ -203,7 +204,7 @@ export function createJawCeoStore(options: JawCeoStoreOptions = {}) {
             try {
                 options.onTranscriptAppend?.({ ...entry });
             } catch (error) {
-                console.warn('[jaw-ceo:transcript-persist]', error instanceof Error ? error.message : String(error));
+                console.warn('[weasley-podex-ceo:transcript-persist]', error instanceof Error ? error.message : String(error));
             }
             return { ...entry };
         },

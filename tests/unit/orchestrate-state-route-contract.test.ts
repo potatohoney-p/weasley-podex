@@ -41,7 +41,8 @@ test('ORC-STATE-004: state route returns diagnostics on failed transition', () =
 });
 
 test('ORC-STATE-010: route distinguishes agent (boss-token) from human actor', () => {
-    assert.ok(routeSrc.includes("req.headers['x-jaw-boss-token']"), 'route should read the boss-token header');
+    assert.ok(routeSrc.includes("req.headers['x-weasley-podex-boss-token']"), 'route should read the branded boss-token header');
+    assert.equal(routeSrc.includes("req.headers['x-jaw-boss-token']"), false, 'route should not expose the retired header alias');
     assert.ok(routeSrc.includes('verifyBossToken(bossTokenHeader)'), 'route should verify the boss token');
     assert.ok(routeSrc.includes("actor: isAgent ? 'agent' : 'human'"), 'route should pass actor to canTransition');
 });

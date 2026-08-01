@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CLI-Only Commands — podex Docs</title>
+<title>CLI-Only Commands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,7 +81,7 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
@@ -100,8 +99,8 @@
 
 <table>
 <tr><th>명령어</th><th>인자</th><th>설명</th></tr>
-<tr><td><code>/version</code></td><td>없음</td><td>현재 podex 버전 문자열을 출력합니다</td></tr>
-<tr><td><code>/quit</code></td><td>없음</td><td>podex 프로세스를 정상적으로 종료합니다</td></tr>
+<tr><td><code>/version</code></td><td>없음</td><td>현재 Weasley Podex 버전 문자열을 출력합니다</td></tr>
+<tr><td><code>/quit</code></td><td>없음</td><td>Weasley Podex 프로세스를 정상적으로 종료합니다</td></tr>
 <tr><td><code>/q</code></td><td>없음</td><td><code>/quit</code>의 단축 명령어</td></tr>
 <tr><td><code>/file</code></td><td><code>&lt;path&gt; [caption]</code></td><td>로컬 파일을 대화에 첨부합니다 (화면에 표시되지 않음)</td></tr>
 <tr><td><code>/ide</code></td><td><code>pop | on | off</code></td><td>IDE diff 뷰 패널을 제어합니다</td></tr>
@@ -110,7 +109,7 @@
 <hr>
 
 <h2 id="version">/version</h2>
-<p>설치된 podex 버전, 빌드 해시, 런타임 정보를 터미널에 출력합니다. 버그 리포트를 작성하거나 업데이트가 정상적으로 적용되었는지 확인할 때 유용합니다.</p>
+<p>설치된 Weasley Podex 버전, 빌드 해시, 런타임 정보를 터미널에 출력합니다. 버그 리포트를 작성하거나 업데이트가 정상적으로 적용되었는지 확인할 때 유용합니다.</p>
 
 <h3>구문</h3>
 <pre><code>/version</code></pre>
@@ -119,16 +118,16 @@
 <p>없음. 이 명령어는 인자나 플래그를 받지 않습니다.</p>
 
 <h3>출력</h3>
-<pre><code>podex v2.14.0 (build a3f8c1d)
+<pre><code>weasley-podex v2.14.0 (build a3f8c1d)
 node: v22.11.0 | platform: darwin-arm64
-config: ~/.podex/config.yaml</code></pre>
+config: ~/.weasley/podex/config.yaml</code></pre>
 
 <h3>사용 예시</h3>
 <pre><code># 이슈 리포트 전 버전 확인
 /version
 
-# 클립보드에 복사 (jaw 세션 내부가 아닌 쉘에서 실행)
-jaw --version | pbcopy</code></pre>
+# 클립보드에 복사 (weasley-podex 세션 내부가 아닌 쉘에서 실행)
+weasley-podex --version | pbcopy</code></pre>
 
 <div class="callout-info">
 <strong>~해줘 tip</strong><br>
@@ -138,7 +137,7 @@ jaw --version | pbcopy</code></pre>
 <hr>
 
 <h2 id="quit">/quit, /q</h2>
-<p>podex 프로세스를 정상적으로 종료합니다. 현재 대화를 세션 로그에 저장하고, 대기 중인 메모리 쓰기를 모두 처리한 뒤, 종료 코드 0으로 Node.js 프로세스를 종료합니다. <code>/q</code>는 동일하게 동작하는 단축 명령어입니다.</p>
+<p>Weasley Podex 프로세스를 정상적으로 종료합니다. 현재 대화를 세션 로그에 저장하고, 대기 중인 메모리 쓰기를 모두 처리한 뒤, 종료 코드 0으로 Node.js 프로세스를 종료합니다. <code>/q</code>는 동일하게 동작하는 단축 명령어입니다.</p>
 
 <h3>구문</h3>
 <pre><code>/quit
@@ -149,7 +148,7 @@ jaw --version | pbcopy</code></pre>
 
 <h3>동작</h3>
 <ul>
-<li><strong>세션 저장</strong> -- 현재 대화가 <code>~/.podex/sessions/</code>에 저장되어 나중에 <code>/session load</code>로 다시 불러올 수 있습니다.</li>
+<li><strong>세션 저장</strong> -- 현재 대화가 <code>~/.weasley/podex/sessions/</code>에 저장되어 나중에 <code>/session load</code>로 다시 불러올 수 있습니다.</li>
 <li><strong>메모리 플러시</strong> -- 처리 중인 모든 메모리 쓰기가 종료 전에 커밋됩니다.</li>
 <li><strong>정상 종료</strong> -- 프로세스가 종료 코드 <code>0</code>으로 종료됩니다. 5초 이상 종료가 지연되면 프로세스가 강제 종료됩니다.</li>
 <li><strong>확인 없음</strong> -- "정말 종료하시겠습니까?"와 같은 확인 없이 즉시 종료됩니다.</li>
@@ -195,7 +194,7 @@ jaw --version | pbcopy</code></pre>
 <ul>
 <li><strong>숨겨진 첨부</strong> -- 파일 내용이 AI 컨텍스트에 추가되지만 터미널에는 출력되지 않습니다. 대용량 파일을 첨부할 때 화면을 깔끔하게 유지할 수 있습니다.</li>
 <li><strong>크기 제한</strong> -- 모델의 컨텍스트 윈도우를 초과하는 파일은 경고와 함께 잘립니다. 매우 큰 파일의 경우 먼저 분할하거나 요약하는 것이 좋습니다.</li>
-<li><strong>상대 경로</strong> -- 현재 작업 디렉토리(<code>jaw</code>를 실행한 디렉토리) 기준으로 해석됩니다.</li>
+<li><strong>상대 경로</strong> -- 현재 작업 디렉토리(<code>weasley-podex</code>를 실행한 디렉토리) 기준으로 해석됩니다.</li>
 <li><strong>바이너리 파일</strong> -- 이미지와 문서는 base64로 인코딩됩니다. 지원되지 않는 바이너리 형식은 오류가 발생합니다.</li>
 </ul>
 
@@ -284,12 +283,12 @@ jaw --version | pbcopy</code></pre>
 <h2>문제 해결</h2>
 
 <h3>/file에서 "file not found"가 표시되는 경우</h3>
-<p><code>jaw</code>를 실행한 디렉토리 기준으로 경로가 올바른지 확인하세요. 확실하지 않다면 절대 경로를 사용하세요:</p>
+<p><code>weasley-podex</code>를 실행한 디렉토리 기준으로 경로가 올바른지 확인하세요. 확실하지 않다면 절대 경로를 사용하세요:</p>
 <pre><code># 상대 경로 대신
 /file ./data/report.csv
 
 # 절대 경로 사용
-/file /Users/jun/projects/data/report.csv</code></pre>
+/file /Users/example/projects/data/report.csv</code></pre>
 
 <h3>/ide pop이 아무 반응이 없는 경우</h3>
 <p><code>pop</code> 모드는 iTerm2, Wezterm, 또는 tmux가 필요합니다. 다른 터미널 에뮬레이터(Terminal.app, Alacritty, Hyper)를 사용 중이라면 명령어가 자동으로 <code>on</code> 모드로 폴백됩니다. 터미널을 확인하세요:</p>
@@ -297,7 +296,7 @@ jaw --version | pbcopy</code></pre>
 # iTerm.app, WezTerm, 또는 tmux가 출력되어야 합니다</code></pre>
 
 <h3>/quit이 멈추는 경우</h3>
-<p><code>/quit</code>이 5초 이내에 종료되지 않으면 대기 중인 네트워크 요청이나 파일 쓰기가 있을 수 있습니다. <code>Ctrl+C</code>를 눌러 프로세스를 강제 종료하세요. <code>~/.podex/sessions/</code>를 확인하여 세션이 저장되었는지 검증하세요.</p>
+<p><code>/quit</code>이 5초 이내에 종료되지 않으면 대기 중인 네트워크 요청이나 파일 쓰기가 있을 수 있습니다. <code>Ctrl+C</code>를 눌러 프로세스를 강제 종료하세요. <code>~/.weasley/podex/sessions/</code>를 확인하여 세션이 저장되었는지 검증하세요.</p>
 
 <div class="page-nav">
 <a class="prev" href="tools.html">Tools</a>

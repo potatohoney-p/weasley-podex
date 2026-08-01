@@ -10,9 +10,9 @@ function execReturning(stdout: string, error: (Error & { code?: number | string 
 
 test('FPK-001: darwin picker uses osascript choose folder and returns the path', async () => {
     let captured: { cmd: string; args: string[] } | null = null;
-    const exec: ExecImpl = (cmd, args, cb) => { captured = { cmd, args }; cb(null, '/Users/jun/repo\n', ''); };
+    const exec: ExecImpl = (cmd, args, cb) => { captured = { cmd, args }; cb(null, '/Users/example/repo\n', ''); };
     const result = await pickFolderNative({ platform: 'darwin', execImpl: exec });
-    assert.deepEqual(result, { status: 'picked', path: '/Users/jun/repo' });
+    assert.deepEqual(result, { status: 'picked', path: '/Users/example/repo' });
     assert.equal(captured!.cmd, 'osascript');
     assert.ok(captured!.args.join(' ').includes('choose folder'), 'must open the Finder folder chooser');
 });

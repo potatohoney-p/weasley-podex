@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ═══════════════════════════════════════════════════════════════
-#  🦈 podex — One-Click Installer (macOS / Linux)
-#  Usage:  curl -fsSL https://raw.githubusercontent.com/potatohoney-p/podex/main/scripts/install.sh | bash
+#  Weasley Podex — One-Click Installer (macOS / Linux)
+#  Usage:  curl -fsSL https://raw.githubusercontent.com/potatohoney-p/weasley-podex/main/scripts/install.sh | bash
 # ═══════════════════════════════════════════════════════════════
 set -euo pipefail
 
@@ -22,12 +22,7 @@ fail()  { echo -e "${RED}✖${NC} $*"; exit 1; }
 print_banner() {
   echo ""
   echo -e "${CYAN}${BOLD}"
-  echo "   ██████╗██╗     ██╗      ██╗ █████╗ ██╗    ██╗"
-  echo "  ██╔════╝██║     ██║      ██║██╔══██╗██║    ██║"
-  echo "  ██║     ██║     ██║█████╗██║███████║██║ █╗ ██║"
-  echo "  ██║     ██║     ██║╚════╝██║██╔══██║██║███╗██║"
-  echo "  ╚██████╗███████╗██║      ██║██║  ██║╚███╔███╔╝"
-  echo "   ╚═════╝╚══════╝╚═╝      ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝"
+  echo "  WEASLEY PODEX"
   echo -e "${NC}"
   echo -e "${DIM}  One-Click Installer${NC}"
   echo ""
@@ -66,9 +61,9 @@ list_path_cmd_candidates() {
   done
 }
 
-get_installed_jaw_binary() {
+get_installed_weasley_podex_binary() {
   local name candidate
-  for name in jaw podex; do
+  for name in weasley-podex; do
     while IFS= read -r candidate; do
       if [ -z "$candidate" ]; then
         continue
@@ -92,7 +87,7 @@ get_binary_version() {
 }
 
 get_latest_podex_version() {
-  extract_semver "$(npm view podex version 2>/dev/null || true)"
+  extract_semver "$(npm view weasley-podex version 2>/dev/null || true)"
 }
 
 ensure_macos_developer_tools() {
@@ -407,7 +402,7 @@ ensure_node() {
 # ═══════════════════════════════════════
 install_podex() {
   local installed_bin installed_version latest_version missing_cli_tools
-  installed_bin="$(get_installed_jaw_binary || true)"
+  installed_bin="$(get_installed_weasley_podex_binary || true)"
   installed_version="$(get_binary_version "$installed_bin")"
   latest_version="$(get_latest_podex_version)"
   missing_cli_tools="$(unavailable_required_cli_tools)"
@@ -416,7 +411,7 @@ install_podex() {
   if [ -z "$latest_version" ] && [ -n "$installed_bin" ] && [ -n "$installed_version" ]; then
     if [ -z "$missing_cli_tools" ]; then
       warn "Could not fetch latest version (network issue?) — keeping existing ${installed_version}"
-      ok "podex ${installed_version} at ${installed_bin} — skipping update"
+      ok "Weasley Podex ${installed_version} at ${installed_bin} — skipping update"
       return 0
     fi
     warn "Could not fetch latest version, but bundled CLI tools are missing: ${missing_cli_tools}"
@@ -425,19 +420,19 @@ install_podex() {
 
   if [ -n "$installed_bin" ] && [ -n "$installed_version" ] && [ -n "$latest_version" ] && [ "$installed_version" = "$latest_version" ]; then
     if [ -z "$missing_cli_tools" ]; then
-      ok "podex ${installed_version} already installed at ${installed_bin} — skipping npm install"
+      ok "Weasley Podex ${installed_version} already installed at ${installed_bin} — skipping npm install"
       return 0
     fi
-    warn "podex ${installed_version} already installed, but bundled CLI tools are missing: ${missing_cli_tools}"
+    warn "Weasley Podex ${installed_version} already installed, but bundled CLI tools are missing: ${missing_cli_tools}"
     warn "Re-running npm install to repair the partial install"
   fi
 
   # Detect package manager from existing install path to avoid shared-path contamination
-  local pkg_cmd="npm install -g podex"
+  local pkg_cmd="npm install -g weasley-podex"
   if [ -n "$installed_bin" ]; then
     case "$installed_bin" in
       *"/.bun/bin/"*)
-        pkg_cmd="bun add -g podex"
+        pkg_cmd="bun add -g weasley-podex"
         info "Detected bun-managed install — using bun"
         ;;
       *)
@@ -447,21 +442,20 @@ install_podex() {
   fi
 
   if [ -n "$installed_bin" ] && [ -n "$installed_version" ]; then
-    info "Updating podex ${installed_version} → ${latest_version:-latest}"
+    info "Updating Weasley Podex ${installed_version} → ${latest_version:-latest}"
   else
-    info "Installing podex..."
+    info "Installing Weasley Podex..."
   fi
-  export podex_INSTALL_CLI_TOOLS=1
-  if [ "${podex_STRICT_ONE_CLICK:-0}" = "1" ] \
-    || [ "${podex_STRICT_ONE_CLICK:-}" = "true" ] \
-    || [ "${podex_REQUIRE_CLI_TOOLS:-0}" = "1" ] \
-    || [ "${podex_REQUIRE_CLI_TOOLS:-}" = "true" ] \
-    || [ "${npm_config_jaw_require_cli_tools:-0}" = "1" ] \
-    || [ "${npm_config_jaw_require_cli_tools:-}" = "true" ]; then
-    export podex_REQUIRE_CLI_TOOLS=1
+  export WEASLEY_PODEX_INSTALL_CLI_TOOLS=1
+  if [ "${WEASLEY_PODEX_STRICT_ONE_CLICK:-0}" = "1" ] \
+    || [ "${WEASLEY_PODEX_STRICT_ONE_CLICK:-}" = "true" ] \
+    || [ "${WEASLEY_PODEX_REQUIRE_CLI_TOOLS:-0}" = "1" ] \
+    || [ "${WEASLEY_PODEX_REQUIRE_CLI_TOOLS:-}" = "true" ] \
+    || [ "${npm_config_weasley_podex_require_cli_tools:-0}" = "1" ] \
+    || [ "${npm_config_weasley_podex_require_cli_tools:-}" = "true" ]; then
+    export WEASLEY_PODEX_REQUIRE_CLI_TOOLS=1
   else
-    unset podex_REQUIRE_CLI_TOOLS 2>/dev/null || true
-    unset npm_config_jaw_require_cli_tools 2>/dev/null || true
+    unset WEASLEY_PODEX_REQUIRE_CLI_TOOLS 2>/dev/null || true
   fi
   if ! command -v cargo &>/dev/null; then
     export CLAUDE_E_SKIP_BUILD="${CLAUDE_E_SKIP_BUILD:-1}"
@@ -474,17 +468,17 @@ install_podex() {
 
   # Post-install verification: re-resolve and check version
   local new_bin new_ver
-  new_bin="$(get_installed_jaw_binary || true)"
+  new_bin="$(get_installed_weasley_podex_binary || true)"
   new_ver="$(get_binary_version "$new_bin")"
   if [ -n "$new_bin" ] && [ -n "$new_ver" ]; then
-    ok "podex ${new_ver} installed at ${new_bin}"
+    ok "Weasley Podex ${new_ver} installed at ${new_bin}"
   else
-    warn "podex install completed but binary not responding — check your PATH"
+    warn "Weasley Podex install completed but binary not responding — check your PATH"
   fi
 
-  # Verify jaw actually runs
-  if command -v jaw &>/dev/null; then
-    jaw --version >/dev/null 2>&1 || warn "jaw is on PATH but failed to run"
+  # Verify the primary CLI actually runs.
+  if command -v weasley-podex &>/dev/null; then
+    weasley-podex --version >/dev/null 2>&1 || warn "weasley-podex is on PATH but failed to run"
   fi
 }
 
@@ -575,10 +569,10 @@ install_browser_deps() {
 # ═══════════════════════════════════════
 run_doctor() {
   info "Running diagnostics..."
-  if command -v jaw &>/dev/null; then
-    jaw doctor || true
+  if command -v weasley-podex &>/dev/null; then
+    weasley-podex doctor || true
   else
-    warn "jaw not found on PATH — skipping diagnostics"
+    warn "weasley-podex not found on PATH — skipping diagnostics"
   fi
 }
 
@@ -597,11 +591,11 @@ main() {
 
   echo ""
   echo -e "${GREEN}${BOLD}═══════════════════════════════════════${NC}"
-  echo -e "${GREEN}${BOLD}  🦈 podex is ready!${NC}"
+  echo -e "${GREEN}${BOLD}  Weasley Podex is ready!${NC}"
   echo -e "${GREEN}${BOLD}═══════════════════════════════════════${NC}"
   echo ""
-  echo -e "  Run:  ${CYAN}jaw dashboard${NC}"
-  echo -e "  Also: ${CYAN}jaw serve${NC}  ${DIM}# classic server mode${NC}"
+  echo -e "  Run:  ${CYAN}weasley-podex dashboard${NC}"
+  echo -e "  Also: ${CYAN}weasley-podex serve${NC}  ${DIM}# classic server mode${NC}"
   echo ""
   echo -e "${DIM}  Tip: Authenticate at least one AI engine:${NC}"
   echo -e "${DIM}    gh auth login        # GitHub Copilot (free)${NC}"
@@ -610,7 +604,6 @@ main() {
   echo ""
 }
 
-if [ "${podex_SOURCE_ONLY:-0}" != "1" ]; then
+if [ "${WEASLEY_PODEX_SOURCE_ONLY:-0}" != "1" ]; then
   main "$@"
 fi
-

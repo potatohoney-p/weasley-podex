@@ -1,7 +1,12 @@
 ﻿import test from 'node:test';
 import assert from 'node:assert/strict';
+import { homedir } from 'node:os';
+import { join } from 'node:path';
 import { scanDashboardInstances } from '../../src/manager/scan.js';
 import type { FetchLike } from '../../src/manager/types.js';
+
+const DEFAULT_HOME = join(homedir(), '.weasley', 'podex');
+const PROJECT_DIR = join(homedir(), 'Developer', 'projects', 'weasley-podex');
 
 function response(body: unknown, ok = true, status = 200): Response {
     return {
@@ -74,8 +79,8 @@ test('manager scan derives instance metadata from settings response', async () =
             return response({
                 ok: true,
                 data: {
-                    home: '/Users/jun/.podex',
-                    workingDir: '/Users/jun/Developer/new/700_projects/podex',
+                    home: DEFAULT_HOME,
+                    workingDir: PROJECT_DIR,
                     cli: 'codex',
                     model: 'gpt-5.5',
                 },
@@ -89,8 +94,8 @@ test('manager scan derives instance metadata from settings response', async () =
     const row = result.instances[0]!;
 
     assert.equal(row.instanceId, 'default');
-    assert.equal(row.homeDisplay, '/Users/jun/.podex');
-    assert.equal(row.workingDir, '/Users/jun/Developer/new/700_projects/podex');
+    assert.equal(row.homeDisplay, DEFAULT_HOME);
+    assert.equal(row.workingDir, PROJECT_DIR);
     assert.equal(row.currentCli, 'codex');
     assert.equal(row.currentModel, 'gpt-5.5');
     assert.equal(row.profileId, 'default');
@@ -104,7 +109,7 @@ test('manager scan falls back to workingDir for instance id when home is absent'
             return response({
                 ok: true,
                 data: {
-                    workingDir: '/Users/jun/.podex',
+                    workingDir: DEFAULT_HOME,
                     cli: 'opencode',
                 },
             });
@@ -117,7 +122,7 @@ test('manager scan falls back to workingDir for instance id when home is absent'
     const row = result.instances[0]!;
 
     assert.equal(row.instanceId, 'default');
-    assert.equal(row.homeDisplay, '/Users/jun/.podex');
+    assert.equal(row.homeDisplay, DEFAULT_HOME);
 });
 
 test('manager scan maps failed ports without failing whole scan', async () => {

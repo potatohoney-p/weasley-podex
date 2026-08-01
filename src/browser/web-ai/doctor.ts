@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { JAW_HOME } from '../../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../core/config.js';
 import { domHashAround, selectorMatchSummary, type PageWithLocator } from './dom-hash.js';
 import { listSessions } from './session.js';
 import { CHATGPT_COPY_SELECTORS, GEMINI_COPY_SELECTORS, GROK_COPY_SELECTORS } from './copy-markdown.js';
@@ -192,7 +192,7 @@ export async function runDoctor(deps: DoctorDeps, options: DoctorOptions = {}): 
     };
 
     if (options.cacheMetrics) {
-        const metrics = reportCacheMetricsFromEvents(JAW_HOME);
+        const metrics = reportCacheMetricsFromEvents(WEASLEY_PODEX_HOME);
         report.cacheMetrics = metrics;
     }
 

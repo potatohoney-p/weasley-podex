@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, realpathSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { isAbsolute, join } from 'node:path';
 import { readSource } from './source-normalize.js';
 import {
     buildResolvedPathHints,
@@ -50,8 +50,8 @@ test('resolved path hints map repo-relative paths to absolute project paths', ()
 });
 
 test('resolveWorkspaceRoot falls back to process cwd when workingDir is empty', () => {
-    assert.equal(resolveWorkspaceRoot('').startsWith('/'), true);
-    assert.equal(resolveWorkspaceRoot(null).startsWith('/'), true);
+    assert.equal(isAbsolute(resolveWorkspaceRoot('')), true);
+    assert.equal(isAbsolute(resolveWorkspaceRoot(null)), true);
 });
 
 test('runSingleAgent injects workspace context before task instruction and env', () => {
@@ -65,6 +65,6 @@ test('runSingleAgent injects workspace context before task instruction and env',
     assert.ok(distributeSrc.indexOf('const taskPrompt = `${workspaceBlock}') <
         distributeSrc.indexOf('## Task Instruction [${phaseLabel}]'));
     assert.ok(distributeSrc.includes('workspaceContext: workspaceBlock'));
-    assert.ok(distributeSrc.includes('JAW_WORKSPACE_ROOT: effectiveDirs?.[0] || settings.workingDir ||'));
-    assert.ok(distributeSrc.includes('JAW_WORKLOG_PATH: worklogPath ||'));
+    assert.ok(distributeSrc.includes('WEASLEY_PODEX_WORKSPACE_ROOT: effectiveDirs?.[0] || settings.workingDir ||'));
+    assert.ok(distributeSrc.includes('WEASLEY_PODEX_WORKLOG_PATH: worklogPath ||'));
 });

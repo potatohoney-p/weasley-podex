@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -9,10 +9,59 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..', '..');
 const installerPath = join(root, 'scripts', 'install.sh');
+const bashExecutable = process.platform === 'win32'
+    ? join(process.env["SystemRoot"] || 'C:\\Windows', 'System32', 'wsl.exe')
+    : 'bash';
+
+function bashArgs(script: string): string[] {
+    return process.platform === 'win32'
+        ? ['-e', '/bin/bash', '-lc', script]
+        : ['-lc', script];
+}
+
+function toBashPath(hostPath: string): string {
+    if (process.platform !== 'win32') return hostPath;
+    const uncMatch = /^\\\\wsl(?:\.localhost|\$)\\[^\\]+\\(.*)$/.exec(hostPath);
+    if (uncMatch) return `/${uncMatch[1]!.replace(/\\/g, '/')}`;
+    const normalized = hostPath.replace(/\\/g, '/');
+    const match = /^([A-Za-z]):\/(.*)$/.exec(normalized);
+    assert.ok(match, `expected an absolute Windows path: ${hostPath}`);
+    return `/mnt/${match[1]!.toLowerCase()}/${match[2]}`;
+}
+
+function quoteBash(value: string): string {
+    return "'" + value.replace(/'/g, "'\\''") + "'";
+}
+
+function createHarnessHome(): { home: string; bashHome: string } {
+    if (process.platform !== 'win32') {
+        const home = mkdtempSync(join(tmpdir(), 'weasley-podex-install-sh-'));
+        return { home, bashHome: home };
+    }
+
+    const distroResult = spawnSync(bashExecutable, bashArgs('printenv WSL_DISTRO_NAME'), { encoding: 'utf8' });
+    assert.equal(distroResult.status, 0, distroResult.stderr || 'unable to resolve WSL distribution');
+    const distro = distroResult.stdout.trim();
+    assert.ok(distro, 'WSL_DISTRO_NAME must be available');
+
+    const tempResult = spawnSync(bashExecutable, bashArgs('mktemp -d /tmp/weasley-podex-install-sh-XXXXXX'), { encoding: 'utf8' });
+    assert.equal(tempResult.status, 0, tempResult.stderr || 'unable to create WSL-native temp directory');
+    const bashHome = tempResult.stdout.trim();
+    assert.match(bashHome, /^\/tmp\/weasley-podex-install-sh-[A-Za-z0-9]+$/);
+
+    const home = join(`\\\\wsl.localhost\\${distro}`, ...bashHome.split('/').filter(Boolean));
+    assert.equal(existsSync(home), true, `WSL temp directory is not reachable from Windows: ${home}`);
+    return { home, bashHome };
+}
 
 function writeExecutable(path: string, content: string): void {
     writeFileSync(path, content);
-    chmodSync(path, 0o755);
+    if (process.platform !== 'win32') {
+        chmodSync(path, 0o755);
+        return;
+    }
+    const result = spawnSync(bashExecutable, bashArgs(`chmod 755 ${quoteBash(toBashPath(path))}`), { encoding: 'utf8' });
+    assert.equal(result.status, 0, result.stderr || `unable to make fixture executable: ${path}`);
 }
 
 function runInstallerSnippet(
@@ -20,26 +69,27 @@ function runInstallerSnippet(
     setup?: (home: string, bin: string) => void,
     extraEnv: NodeJS.ProcessEnv = {},
 ): { status: number | null; output: string; home: string; bin: string } {
-    const home = mkdtempSync(join(tmpdir(), 'jaw-install-sh-'));
+    const { home, bashHome } = createHarnessHome();
     const bin = join(home, 'fake-bin');
     mkdirSync(bin, { recursive: true });
     setup?.(home, bin);
+    const bashBin = `${bashHome}/fake-bin`;
     const script = `
 set -euo pipefail
-export HOME=${JSON.stringify(home)}
-export PATH=${JSON.stringify(bin)}:$PATH
-export podex_SOURCE_ONLY=1
-source ${JSON.stringify(installerPath)}
+export HOME=${quoteBash(bashHome)}
+export PATH=${quoteBash(`${bashBin}:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin`)}
+export WEASLEY_PODEX_SOURCE_ONLY=1
+source ${quoteBash(toBashPath(installerPath))}
 ${snippet}
 `;
-    const result = spawnSync('bash', ['-lc', script], {
+    const result = spawnSync(bashExecutable, bashArgs(script), {
         encoding: 'utf8',
         env: {
             ...process.env,
             ...extraEnv,
-            HOME: home,
-            PATH: `${bin}:${process.env["PATH"] || ''}`,
-            podex_SOURCE_ONLY: '1',
+            HOME: bashHome,
+            PATH: `${bashBin}:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin`,
+            WEASLEY_PODEX_SOURCE_ONLY: '1',
         },
     });
     return {
@@ -124,31 +174,33 @@ exit 0
     rmSync(result.home, { recursive: true, force: true });
 });
 
-test('macOS installer scans PATH for a runnable jaw when an earlier shim is broken', () => {
-    const result = runInstallerSnippet('export PATH="$HOME/broken:$HOME/working:$PATH"\nget_installed_jaw_binary', (home) => {
+test('macOS installer scans PATH for a runnable weasley-podex when an earlier shim is broken', () => {
+    const result = runInstallerSnippet('export PATH="$HOME/broken:$HOME/working:$PATH"\nget_installed_weasley_podex_binary', (home) => {
         const broken = join(home, 'broken');
         const working = join(home, 'working');
         mkdirSync(broken, { recursive: true });
         mkdirSync(working, { recursive: true });
-        writeExecutable(join(broken, 'jaw'), '#!/usr/bin/env bash\nexit 7\n');
-        writeExecutable(join(working, 'jaw'), '#!/usr/bin/env bash\nif [ "$1" = "--version" ]; then echo "podex 9.9.9"; exit 0; fi\n');
+        writeExecutable(join(broken, 'weasley-podex'), '#!/usr/bin/env bash\nexit 7\n');
+        writeExecutable(join(working, 'weasley-podex'), '#!/usr/bin/env bash\nif [ "$1" = "--version" ]; then echo "weasley-podex 9.9.9"; exit 0; fi\n');
     });
     assert.equal(result.status, 0, result.output);
-    assert.match(result.output, /working\/jaw/);
+    assert.match(result.output, /working\/weasley-podex/);
     rmSync(result.home, { recursive: true, force: true });
 });
 
 test('macOS one-click installs optional tools best-effort unless strict mode is explicit', () => {
     const result = runInstallerSnippet('install_podex', (_home, bin) => {
+        const requireEnvPath = quoteBash(toBashPath(join(bin, 'require-env.txt')));
+        const executablePath = quoteBash(toBashPath(join(bin, 'weasley-podex')));
         writeExecutable(join(bin, 'npm'), `#!/usr/bin/env bash
 if [ "$1" = "view" ]; then echo "9.9.9"; exit 0; fi
 if [ "$1" = "install" ]; then
-  printf '%s' "\${podex_REQUIRE_CLI_TOOLS-}" > ${JSON.stringify(join(bin, 'require-env.txt'))}
-  cat > ${JSON.stringify(join(bin, 'jaw'))} <<'EOF'
+  printf '%s' "\${WEASLEY_PODEX_REQUIRE_CLI_TOOLS-}" > ${requireEnvPath}
+  cat > ${executablePath} <<'EOF'
 #!/usr/bin/env bash
-if [ "$1" = "--version" ]; then echo "podex 9.9.9"; exit 0; fi
+if [ "$1" = "--version" ]; then echo "weasley-podex 9.9.9"; exit 0; fi
 EOF
-  chmod +x ${JSON.stringify(join(bin, 'jaw'))}
+  chmod +x ${executablePath}
   exit 0
 fi
 exit 0

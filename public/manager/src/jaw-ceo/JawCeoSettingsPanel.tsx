@@ -61,7 +61,7 @@ export function JawCeoSettingsPanel() {
     }
 
     return (
-        <section className="jaw-ceo-settings-panel" aria-label="Jaw CEO settings">
+        <section className="jaw-ceo-settings-panel" aria-label="Weasley Podex CEO settings">
             <form className="jaw-ceo-settings-form" onSubmit={(event) => { event.preventDefault(); void saveKey(); }}>
                 <div className="jaw-ceo-settings-status">
                     <strong>Realtime voice</strong>

@@ -129,7 +129,7 @@ export function buildWorkspaceContextBlock(input: WorkspaceContextInput): string
         '- Treat Project root as the source of truth.',
         '- Resolve all relative repository paths against Project root.',
         '- Use absolute paths when reading or editing files.',
-        '- Do not infer repository paths from process.cwd(), ~/.podex, or the employee temp directory.',
+        '- Do not infer repository paths from process.cwd(), ~/.weasley/podex, legacy ~/.podex, or the employee temp directory.',
         '- If a requested path is missing under Project root, stop and report it instead of guessing.',
         hints ? `\n${hints}` : '',
     ].filter(Boolean).join('\n');

@@ -8,9 +8,9 @@ import type { DashboardRegistry } from '../types.js';
 import type { InstanceMemoryRef, ScanItemForFederation } from './types.js';
 
 const BLACKLIST_PATTERNS: RegExp[] = [
-    /^\.podex-manager-/,
-    /^\.podex-dashboard$/,
-    /^\.podex-smoke-/,
+    /^(?:\.podex|podex)-manager-/,
+    /^(?:\.podex|podex)-dashboard$/,
+    /^(?:\.podex|podex)-smoke-/,
     /\.bak\./,
 ];
 
@@ -48,7 +48,9 @@ function buildRefs(
         } catch {
             hasDb = false;
         }
-        const chatDbPath = join(home.path, 'jaw.db');
+        const brandedChatDbPath = join(home.path, 'weasley-podex.db');
+        const legacyChatDbPath = join(home.path, 'jaw.db');
+        const chatDbPath = existsSync(brandedChatDbPath) ? brandedChatDbPath : legacyChatDbPath;
         let hasChatDb = false;
         try {
             hasChatDb = existsSync(chatDbPath) && statSync(chatDbPath).isFile();

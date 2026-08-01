@@ -7,10 +7,10 @@ const projectRoot = join(import.meta.dirname, '../..');
 const packageJson = JSON.parse(readFileSync(join(projectRoot, 'package.json'), 'utf8')) as { scripts: Record<string, string> };
 const setupSrc = readFileSync(join(projectRoot, 'tests/setup/test-home.ts'), 'utf8');
 
-test('THC-001: test setup overrides inherited podex_HOME before DB import', () => {
-    assert.ok(setupSrc.includes('podex_INHERITED_HOME'), 'setup should preserve inherited home for diagnostics');
-    assert.ok(setupSrc.includes("process.env.podex_HOME = testHome"), 'setup should override podex_HOME to temp home');
-    assert.ok(!setupSrc.includes("throw new Error(`Refusing to run tests against live podex_HOME"),
+test('THC-001: test setup overrides inherited WEASLEY_PODEX_HOME before DB import', () => {
+    assert.ok(setupSrc.includes('WEASLEY_PODEX_INHERITED_HOME'), 'setup should preserve inherited home for diagnostics');
+    assert.ok(setupSrc.includes("process.env.WEASLEY_PODEX_HOME = testHome"), 'setup should override WEASLEY_PODEX_HOME to temp home');
+    assert.ok(!setupSrc.includes("throw new Error(`Refusing to run tests against live WEASLEY_PODEX_HOME"),
         'setup must not throw before overriding inherited live home');
 });
 

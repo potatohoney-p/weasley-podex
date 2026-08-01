@@ -1,7 +1,7 @@
 ﻿#!/usr/bin/env expect -f
 
-if {[info exists env(JAW_TUI_SMOKE_TIMEOUT)]} {
-    set timeout $env(JAW_TUI_SMOKE_TIMEOUT)
+if {[info exists env(WEASLEY_PODEX_TUI_SMOKE_TIMEOUT)]} {
+    set timeout $env(WEASLEY_PODEX_TUI_SMOKE_TIMEOUT)
 } else {
     set timeout 15
 }
@@ -14,7 +14,7 @@ if {![info exists env(LINES)]} {
     set env(LINES) 30
 }
 
-set env(JAW_TUI_FULLSCREEN) 1
+set env(WEASLEY_PODEX_TUI_FULLSCREEN) 1
 set saw_bye 0
 
 spawn node dist/bin/podex.js chat

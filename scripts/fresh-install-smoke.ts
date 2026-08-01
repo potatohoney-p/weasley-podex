@@ -6,8 +6,7 @@ import { execFileSync, spawn, type ChildProcess, type ExecFileSyncOptions } from
 
 const root: string = process.cwd();
 const npmCmd = 'npm';
-const jawCmd = 'jaw';
-const PODEXCmd = 'podex';
+const primaryCmd = 'weasley-podex';
 
 interface Args {
     mode: 'safe' | 'postinstall';
@@ -63,8 +62,8 @@ async function waitFor(url: string, timeoutMs: number = 15000): Promise<boolean>
 
 function resolveInstalledPackage(prefix: string): string {
     const candidates = [
-        path.join(prefix, 'lib', 'node_modules', 'podex'),
-        path.join(prefix, 'node_modules', 'podex'),
+        path.join(prefix, 'lib', 'node_modules', 'weasley-podex'),
+        path.join(prefix, 'node_modules', 'weasley-podex'),
     ];
     for (const c of candidates) {
         if (fs.existsSync(c)) return c;
@@ -99,10 +98,10 @@ async function main(): Promise<void> {
         tarballPath = path.join(root, tarballName);
         if (!fs.existsSync(tarballPath)) throw new Error(`tarball not found: ${tarballPath}`);
 
-        tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-fresh-'));
-        const homeTmp = fs.mkdtempSync(path.join(os.homedir(), '.podex-fresh-smoke-'));
+        tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'weasley-podex-fresh-'));
+        const homeTmp = fs.mkdtempSync(path.join(os.homedir(), '.weasley-podex-fresh-smoke-'));
         const prefix = path.join(tmp, 'prefix');
-        const jawHome = path.join(homeTmp, 'jaw-home');
+        const appHome = path.join(homeTmp, 'weasley-podex-home');
         fs.mkdirSync(prefix, { recursive: true });
 
         const binDir = npmGlobalBin(prefix);
@@ -111,7 +110,7 @@ async function main(): Promise<void> {
         fs.writeFileSync(path.join(homeTmp, '.zprofile'), `export PATH=${JSON.stringify(pathWithGlobalBin)}\n`);
         const installEnv: NodeJS.ProcessEnv = {
             ...process.env,
-            podex_HOME: jawHome,
+            WEASLEY_PODEX_HOME: appHome,
             npm_config_loglevel: 'error',
             npm_config_prefix: prefix,
             PATH: pathWithGlobalBin,
@@ -119,49 +118,47 @@ async function main(): Promise<void> {
             ZDOTDIR: homeTmp,
         };
         if (args.mode === 'safe') {
-            installEnv["JAW_SAFE"] = '1';
+            installEnv["WEASLEY_PODEX_SAFE"] = '1';
         } else {
-            delete installEnv["JAW_SAFE"];
-            installEnv["podex_SKIP_CLAUDE"] = '1';
-            installEnv["podex_SKIP_MCP_SERVERS"] = '1';
-            installEnv["podex_SKIP_SKILL_DEPS"] = '1';
+            delete installEnv["WEASLEY_PODEX_SAFE"];
+            installEnv["WEASLEY_PODEX_SKIP_CLAUDE"] = '1';
+            installEnv["WEASLEY_PODEX_SKIP_MCP_SERVERS"] = '1';
+            installEnv["WEASLEY_PODEX_SKIP_SKILL_DEPS"] = '1';
         }
         run(npmCmd, ['i', '-g', tarballPath, '--prefix', prefix], { env: installEnv });
 
         const pkgDir = resolveInstalledPackage(prefix);
-        const jawEntry = path.join(pkgDir, 'dist', 'bin', 'podex.js');
-        if (!fs.existsSync(jawEntry)) throw new Error(`cli entry not found: ${jawEntry}`);
+        const cliEntry = path.join(pkgDir, 'dist', 'bin', 'podex.js');
+        if (!fs.existsSync(cliEntry)) throw new Error(`cli entry not found: ${cliEntry}`);
 
-        const jawEnv: NodeJS.ProcessEnv = {
+        const appEnv: NodeJS.ProcessEnv = {
             ...process.env,
-            podex_HOME: jawHome,
+            WEASLEY_PODEX_HOME: appHome,
             npm_config_prefix: prefix,
             PATH: pathWithGlobalBin,
             Path: process.env["Path"],
             ZDOTDIR: homeTmp,
         };
 
-        const version = run(jawCmd, ['--version'], { env: jawEnv }).trim();
-        if (!version.toLowerCase().includes('podex')) throw new Error(`unexpected version output: ${version}`);
-        const PODEXVersion = run(PODEXCmd, ['--version'], { env: jawEnv }).trim();
-        if (PODEXVersion !== version) throw new Error(`podex version mismatch: ${PODEXVersion} !== ${version}`);
+        const version = run(primaryCmd, ['--version'], { env: appEnv }).trim();
+        if (!version.toLowerCase().includes('weasley podex')) throw new Error(`unexpected version output: ${version}`);
 
         if (args.mode === 'postinstall') {
             const verifier = path.join(pkgDir, 'scripts', 'verify-fresh-install.sh');
             if (!fs.existsSync(verifier)) throw new Error(`fresh-install verifier not found in package: ${verifier}`);
-            run('bash', [verifier, ...(args.skipDoctor ? ['--skip-doctor'] : [])], { env: jawEnv });
+            run('bash', [verifier, ...(args.skipDoctor ? ['--skip-doctor'] : [])], { env: appEnv });
         }
 
-        const doctorRaw = run(process.execPath, [jawEntry, '--home', jawHome, 'doctor', '--json'], { env: jawEnv });
+        const doctorRaw = run(process.execPath, [cliEntry, '--home', appHome, 'doctor', '--json'], { env: appEnv });
         const doctor = JSON.parse(doctorRaw) as { checks?: unknown[] };
         if (!Array.isArray(doctor?.checks) || doctor.checks.length === 0) {
             throw new Error('doctor --json returned empty checks');
         }
 
         const port = 30000 + Math.floor(Math.random() * 20000);
-        server = spawn(process.execPath, [jawEntry, '--home', jawHome, 'serve', '--port', String(port)], {
+        server = spawn(process.execPath, [cliEntry, '--home', appHome, 'serve', '--port', String(port)], {
             cwd: root,
-            env: jawEnv,
+            env: appEnv,
             stdio: 'pipe',
         });
 
@@ -201,7 +198,7 @@ async function main(): Promise<void> {
         if (tmp && fs.existsSync(tmp)) {
             fs.rmSync(tmp, { recursive: true, force: true });
         }
-        const homeSmokePrefix = path.join(os.homedir(), '.podex-fresh-smoke-');
+        const homeSmokePrefix = path.join(os.homedir(), '.weasley-podex-fresh-smoke-');
         for (const entry of fs.readdirSync(os.homedir())) {
             const candidate = path.join(os.homedir(), entry);
             if (candidate.startsWith(homeSmokePrefix) && fs.statSync(candidate).isDirectory()) {

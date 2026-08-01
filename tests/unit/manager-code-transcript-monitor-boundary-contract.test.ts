@@ -50,5 +50,5 @@ test('runtime monitor components remain Manager-local and independent of Code se
     assert.ok(monitorSources.includes('/api/bgtask'), 'background monitor remains backed by Manager background task APIs');
     assert.ok(monitorSources.includes('/api/orchestrate/worker-progress'), 'worker monitor remains backed by Manager worker progress APIs');
     assert.equal(monitorSources.includes('/api/code/sessions'), false, 'runtime monitors must not read Code session state');
-    assert.equal(monitorSources.includes('selectedInstance'), false, 'runtime monitors must not depend on selected child Jaw instance');
+    assert.equal(monitorSources.includes('selectedInstance'), false, 'runtime monitors must not depend on selected child Weasley Podex instance');
 });

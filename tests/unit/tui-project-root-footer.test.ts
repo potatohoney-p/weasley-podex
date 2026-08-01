@@ -20,14 +20,14 @@ function withColumns<T>(cols: number, fn: () => T): T {
 
 test('footer project path shortener keeps final useful project segments', () => {
     assert.equal(
-        shortenProjectPathForFooter('/Users/jun/Developer/new/700_projects/podex'),
+        shortenProjectPathForFooter('/Users/example/src/weasley-podex'),
         '.../700_projects/podex',
     );
 });
 
 test('rebuildFooter prefers projectRoot over server workingDir', () => {
     const ctx = {
-        info: { cli: 'codex', workingDir: '/Users/jun/.podex-3458', model: 'test-model' },
+        info: { cli: 'codex', workingDir: '/Users/example/.podex-3458', model: 'test-model' },
         label: 'jaw',
         accent: '\x1b[36m',
         streamState: 'idle',
@@ -35,7 +35,7 @@ test('rebuildFooter prefers projectRoot over server workingDir', () => {
         bgtaskCount: 0,
         isGit: true,
         gitBranch: 'dev',
-        projectRoot: '/Users/jun/Developer/new/700_projects/podex',
+        projectRoot: '/Users/example/src/weasley-podex',
         serverPort: 3457,
         store: createTuiStore(),
         tuiConfig: { pasteCollapseLines: 2, pasteCollapseChars: 160 },

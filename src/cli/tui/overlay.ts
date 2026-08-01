@@ -1,4 +1,4 @@
-﻿import { getArgumentCompletionItems, getCompletionItems } from '../commands.js';
+import { getArgumentCompletionItems, getCompletionItems } from '../commands.js';
 import { clipTextToCols, visualWidth } from './renderers.js';
 import type { OverlayItem } from '../types.js';
 
@@ -499,7 +499,7 @@ export function buildBgtaskInnerLines(
                 : ` ${dimCode}\u00B7 ${it.status}${it.ago ? ` \u00B7 ${it.ago}` : ''}${resetCode}`;
             lines.push(`  ${icon} ${kindCol} ${labelStyled}${hint}`);
         }
-        if (items.length > 10) lines.push(`  ${dimCode}... +${items.length - 10} more (podex bgtask list)${resetCode}`);
+        if (items.length > 10) lines.push(`  ${dimCode}... +${items.length - 10} more (weasley-podex bgtask list)${resetCode}`);
     }
     lines.push('');
     lines.push(`  ${dimCode}Press Escape or Ctrl+O to close${resetCode}`);

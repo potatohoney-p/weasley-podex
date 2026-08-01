@@ -4,7 +4,7 @@ import { commandLineMatchesDurableRuntimeOwner } from '../../src/browser/runtime
 import type { BrowserRuntimeOwner } from '../../src/browser/runtime-owner.js';
 
 const owner: BrowserRuntimeOwner = {
-    ownership: 'jaw-owned',
+    ownership: 'weasley-podex-owned',
     pid: 1234,
     port: 9240,
     userDataDir: '/tmp/jaw/browser-profile',

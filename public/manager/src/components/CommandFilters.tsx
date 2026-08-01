@@ -62,9 +62,9 @@ export function CommandFilters(props: CommandFiltersProps) {
                     className="home-input"
                     value={props.customHome}
                     onChange={event => props.onCustomHomeChange(event.target.value)}
-                    placeholder="Launch home (e.g. ~/.podex-custom)"
+                    placeholder="Launch home (e.g. ~/.weasley/podex-custom)"
                     aria-label="Custom home for started instances"
-                    title="Custom home, default ~/.podex for 3457 and ~/.podex-<port> for others"
+                    title="Custom home, default ~/.weasley/podex for 3457 and ~/.weasley/podex-<port> for others"
                 />
             </div>
             <label className="toggle-control compact-toggle" title="Show hidden instances">

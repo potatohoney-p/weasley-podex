@@ -1,8 +1,8 @@
-﻿# User Configuration
+# User Configuration
 
 ## Identity
-- Name: Jaw
-- Emoji: 🦈
+- Name: Weasley Podex
+- Emoji: ◆
 
 ## User
 - Name: (your name)
@@ -14,7 +14,7 @@
 - Technically accurate
 
 ## Working Directory
-- ~/.podex
+- ~/.weasley/podex
 
 ## Tool Usage: Non-ASCII Paths
 

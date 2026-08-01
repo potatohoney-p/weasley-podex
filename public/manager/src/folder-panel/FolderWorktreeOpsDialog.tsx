@@ -109,7 +109,7 @@ export function FolderWorktreeOpsDialog(props: FolderWorktreeOpsDialogProps) {
                         <div className="folder-worktree-ops__row">
                             <label>
                                 Path
-                                <input value={targetPath} onChange={event => setTargetPath(event.target.value)} placeholder="/Users/jun/..." disabled={props.busy} />
+                                <input value={targetPath} onChange={event => setTargetPath(event.target.value)} placeholder="/Users/example/..." disabled={props.busy} />
                             </label>
                         </div>
                         <div className="folder-worktree-ops__row">

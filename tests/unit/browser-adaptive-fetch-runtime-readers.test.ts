@@ -5,16 +5,16 @@ import { runAdaptiveFetch } from '../../src/browser/adaptive-fetch/index.js';
 test('adaptive fetch runtime selects normalized npm public endpoint fixture', async () => {
     const seen: string[] = [];
     const result = await runAdaptiveFetch({
-        url: 'https://www.npmjs.com/package/podex',
+        url: 'https://www.npmjs.com/package/weasley-podex',
         browserMode: 'never',
         trace: true,
     }, {
         fetch: async (input: URL | RequestInfo) => {
             const url = String(input);
             seen.push(url);
-            if (url === 'https://registry.npmjs.org/podex/latest') {
+            if (url === 'https://registry.npmjs.org/weasley-podex/latest') {
                 return jsonResponse({
-                    name: 'podex',
+                    name: 'weasley-podex',
                     version: '2.2.0',
                     description: 'Agent orchestration runtime',
                     license: 'MIT',
@@ -27,10 +27,10 @@ test('adaptive fetch runtime selects normalized npm public endpoint fixture', as
 
     assert.equal(result.ok, true);
     assert.equal(result.source, 'public_endpoint');
-    assert.match(String(result.content), /Package: podex@2\.2\.0/);
+    assert.match(String(result.content), /Package: weasley-podex@2\.2\.0/);
     assert.match(String(result.summary), /npm-registry-latest selected/);
-    assert.equal(seen.includes('https://registry.npmjs.org/podex/latest'), true);
-    assert.equal((result.attempts as Array<{ url?: string }>).some(attempt => attempt.url === 'https://registry.npmjs.org/podex/latest'), true);
+    assert.equal(seen.includes('https://registry.npmjs.org/weasley-podex/latest'), true);
+    assert.equal((result.attempts as Array<{ url?: string }>).some(attempt => attempt.url === 'https://registry.npmjs.org/weasley-podex/latest'), true);
 });
 
 test('adaptive fetch runtime discovers RSS fixture and selects bounded feed evidence', async () => {

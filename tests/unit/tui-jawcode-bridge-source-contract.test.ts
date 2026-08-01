@@ -57,7 +57,7 @@ test('renderWelcome clips long project rows to the terminal width', () => {
             model: 'gpt-5.5',
             directory: '/tmp/project',
             serverPort: 3457,
-            projectRoot: '/Users/jun/Developer/new/700_projects/jawcode/some/extremely/long/project/path',
+            projectRoot: '/Users/example/src/jawcode/some/extremely/long/project/path',
             gitBranch: 'dev',
             port: 3457,
         });

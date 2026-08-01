@@ -12,6 +12,11 @@ function read(path: string): string {
     return normalizeStrictPropertyAccess(readFileSync(join(projectRoot, path), 'utf8'));
 }
 
+function packageScripts(): Record<string, string> {
+    const pkg = JSON.parse(read('package.json').replace(/^\uFEFF/, '')) as { scripts?: Record<string, string> };
+    return pkg.scripts || {};
+}
+
 test('vite config includes manager entry and react plugin', () => {
     const vite = read('vite.config.ts');
 
@@ -30,18 +35,20 @@ test('frontend tsconfig typechecks manager TSX', () => {
 
 test('app icon validation stays scoped to packaged app assets', () => {
     const manifest = read('public/manifest.json');
-    const pkg = read('package.json');
+    const scripts = packageScripts();
     const iconChecker = read('scripts/check-app-icon-assets.cjs');
     const managerCss = read('public/manager/src/manager-components.css');
 
-    assert.ok(pkg.includes('"check:app-icons": "node scripts/check-app-icon-assets.cjs"'), 'package scripts must expose app icon validation');
-    assert.ok(manifest.includes('"src": "/icons/icon-192.png"'), 'manifest must keep the normal 192 app icon');
-    assert.ok(manifest.includes('"src": "/icons/icon-512.png"'), 'manifest must keep the normal 512 app icon');
-    assert.ok(manifest.includes('"src": "/icons/icon-512-maskable.png"'), 'manifest must keep the maskable 512 app icon');
-    assert.ok(manifest.includes('"purpose": "maskable"'), 'manifest must preserve a dedicated maskable icon entry');
-    assert.ok(iconChecker.includes('electron/build/icon.png'), 'app icon checker must validate the Electron packaged app PNG');
-    assert.ok(iconChecker.includes('electron/build/icon.icns'), 'app icon checker must validate the macOS packaged app ICNS');
-    assert.ok(iconChecker.includes('public/icons/icon-192.png'), 'app icon checker must validate public app icon inputs');
+    assert.equal(scripts['check:app-icons'], 'node scripts/check-app-icon-assets.cjs', 'package scripts must expose app icon validation');
+    assert.ok(manifest.includes('"src": "/assets/weasley-podex-mark.png"'), 'manifest must use the generated Weasley Podex mark');
+    assert.ok(manifest.includes('"purpose": "any maskable"'), 'manifest mark must support standard and maskable contexts');
+    assert.equal(manifest.includes('/icons/icon-'), false, 'manifest must not reference legacy public app icons');
+    assert.equal(/shark/i.test(manifest), false, 'manifest must not reference legacy shark assets');
+    assert.ok(iconChecker.includes('electron/build/weasley-podex-mark.png'), 'app icon checker must validate the Electron Weasley Podex mark');
+    assert.ok(iconChecker.includes('public/assets/weasley-podex-mark.png'), 'app icon checker must validate the public Weasley Podex mark');
+    assert.ok(iconChecker.includes('docs/assets/weasley-podex-mark.png'), 'app icon checker must validate the docs Weasley Podex mark');
+    assert.equal(iconChecker.includes('public/icons/icon-'), false, 'app icon checker must not require deleted legacy public icons');
+    assert.equal(/shark/i.test(iconChecker), false, 'app icon checker must not require legacy shark assets');
     assert.equal(iconChecker.includes('manager-components.css'), false, 'app icon checker must not validate manager-internal provider/avatar CSS');
     assert.equal(managerCss.includes('platform-specific icon'), false, 'manager CSS must not gain platform-specific icon shape rules for this goal');
 });
@@ -69,7 +76,7 @@ test('manager frontend has API entry and Open action', () => {
 test('manager server serves built dashboard HTML at /manager while preserving static manager assets', () => {
     const server = read('src/manager/server.ts');
     const preview = read('public/manager/src/InstancePreview.tsx');
-    const pkg = read('package.json');
+    const scripts = packageScripts();
 
     assert.ok(server.includes("join(distRoot, 'manager', 'index.html')"), 'built manager HTML must remain the first /manager fallback candidate');
     assert.ok(server.includes("join(sourceRoot, 'manager', 'index.html')"), 'source manager HTML may remain a last-resort development fallback');
@@ -89,7 +96,7 @@ test('manager server serves built dashboard HTML at /manager while preserving st
         'embedded manager preview must preserve dedicated preview-origin routing so iframe /api and /ws target the managed instance');
     assert.equal(preview.includes("transport: 'legacy-path'"), false,
         'embedded manager preview must not force the legacy /i path because it breaks root-relative instance API and websocket calls');
-    assert.ok(pkg.includes('"qa:manager-frontend": "npm run build:frontend && npm run typecheck:frontend"'),
+    assert.equal(scripts['qa:manager-frontend'], 'npm run build:frontend && npm run typecheck:frontend',
         'manual manager QA must have a build-first helper script');
 });
 
@@ -97,9 +104,10 @@ test('manager command bar exposes polished dashboard brand', () => {
     const command = read('public/manager/src/components/CommandBar.tsx');
     const compact = read('public/manager/src/manager-p0-1-1.css');
 
-    assert.ok(command.includes('podex'), 'command bar must render compact podex wordmark');
+    assert.ok(command.includes('Weasley Podex'), 'command bar must render the Weasley Podex wordmark');
+    assert.ok(command.includes('/assets/weasley-podex-mark.png'), 'command bar must render the generated Weasley Podex mark');
     assert.ok(command.includes('DASH'), 'command bar must render one-line DASH label');
-    assert.equal(command.includes('🦈'), false, 'top dashboard brand must not use emoji');
+    assert.equal(command.includes('◆'), false, 'top dashboard brand must not use emoji');
     assert.ok(compact.includes('manager-brand-heading'), 'brand heading must have explicit polish styling');
     assert.ok(compact.includes('manager-brand-dash'), 'DASH label must be styled as secondary context');
     assert.ok(compact.includes('font-weight: 850'), 'brand heading must use stronger typography');

@@ -1,14 +1,12 @@
 <div align="center">
 
-# podex
+<img src="public/assets/weasley-podex-mark.png" width="180" alt="Weasley Podex 回路ロゴ">
+
+# Weasley Podex
 
 ### あなた専用の AI エージェント。2 行でインストール。11 個の AI ランタイムをひとつのダッシュボードに。
 
-[![npm](https://img.shields.io/npm/v/podex)](https://npmjs.com/package/podex)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://typescriptlang.org)
-[![Node](https://img.shields.io/badge/node-%3E%3D22-blue)](https://nodejs.org)
-[![License](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
-[![Docker](https://img.shields.io/badge/Docker-supported-2496ED?logo=docker&logoColor=white)](#docker)
+[GitHub](https://github.com/potatohoney-p/weasley-podex) · [Website](https://potatohoney-p.github.io/weasley-podex/) · [npm](https://npmjs.com/package/weasley-podex)
 
 [English](README.md) / [한국어](README.ko.md) / [中文](README.zh-CN.md) / **日本語**
 
@@ -21,30 +19,33 @@
 
 ```bash
 # macOS / Linux
-JAW_SAFE=1 npm install -g podex    # skips optional tool/runtime setup
-jaw init                              # 準備ができたら対話型セットアップ
+WEASLEY_PODEX_SAFE=1 npm install -g weasley-podex    # skips optional tool/runtime setup
+weasley-podex init                              # 準備ができたら対話型セットアップ
 ```
 
-Windows ユーザーは下の WSL インストール手順を使ってください。ネイティブ PowerShell は podex のサポート対象インストール先ではありません。
+Windows ユーザーは下の WSL インストール手順を使ってください。ネイティブ PowerShell は Weasley Podex のサポート対象インストール先ではありません。
 
 </details>
 
 ```bash
 # macOS / Linux / WSL、Node.js 22+ が既にある場合
-npm install -g podex
-jaw dashboard
+npm install -g weasley-podex
+weasley-podex dashboard
 ```
 
 これで完了です。**http://localhost:3457** を開けば、あなた専用の AI エージェントが使えます。[Node.js 22+](https://nodejs.org) が必要です。
 
-> **初めてですか？** デフォルトの npm インストールは podex の初期化とネイティブ Claude のセットアップを試みます。他の AI CLI は任意です。macOS/Linux で npm インストール時にすべて入れる場合は `podex_INSTALL_CLI_TOOLS=1 npm install -g podex` を使ってください。Windows では下の WSL インストール手順を使ってください。
+> **初めてですか？** デフォルトの npm インストールは Weasley Podex の初期化とネイティブ Claude のセットアップを試みます。他の AI CLI は任意です。macOS/Linux で npm インストール時にすべて入れる場合は `WEASLEY_PODEX_INSTALL_CLI_TOOLS=1 npm install -g weasley-podex` を使ってください。Windows では下の WSL インストール手順を使ってください。
+
+> 状態はデフォルトで `~/.weasley/podex` に保存されます。別のホームを使う場合は `WEASLEY_PODEX_HOME` を設定してください。
 
 <details>
 <summary><b>macOS ワンクリック</b> — Node.js がない場合はこちら</summary>
 
 ```bash
+curl -fsSL https://raw.githubusercontent.com/potatohoney-p/weasley-podex/main/scripts/install.sh | bash
 source "${ZDOTDIR:-$HOME}/.zshrc" 2>/dev/null || true
-bash "$(npm root -g)/podex/scripts/verify-fresh-install.sh"
+bash "$(npm root -g)/weasley-podex/scripts/verify-fresh-install.sh"
 ```
 
 </details>
@@ -60,16 +61,17 @@ wsl --install
 再起動後、**Ubuntu** を開いて：
 
 ```bash
-# 2. podex + 全依存関係をインストール
+# 2. weasley-podex + 全依存関係をインストール
+curl -fsSL https://raw.githubusercontent.com/potatohoney-p/weasley-podex/main/scripts/install-wsl.sh | bash
 source ~/.bashrc
-jaw dashboard
-bash "$(npm root -g)/podex/scripts/verify-fresh-install.sh"
+weasley-podex dashboard
+bash "$(npm root -g)/weasley-podex/scripts/verify-fresh-install.sh"
 ```
 
 Windows PowerShell から WSL 内のコマンドを実行する場合は、WSL profile PATH が読み込まれるよう login shell 経由にしてください:
 
 ```powershell
-wsl.exe -d Ubuntu -- bash -lc "jaw dashboard"
+wsl.exe -d Ubuntu -- bash -lc "weasley-podex dashboard"
 ```
 
 </details>
@@ -85,9 +87,9 @@ docker compose up -d       # → http://localhost:3457
 
 ---
 
-## podex とは
+## Weasley Podex とは
 
-podex は、すでに使っている AI コーディング CLI — Pi、Antigravity、AI-E、Claude、Claude E、Codex、Codex App、Cursor、Gemini、Grok、Kiro、OpenCode、Copilot — を**ひとつのアシスタント、ひとつのメモリ、ひとつのダッシュボード**に統合するオープンソースプラットフォームです。
+Weasley Podex は、すでに使っている AI コーディング CLI — Pi、Antigravity、AI-E、Claude、Claude E、Codex、Codex App、Cursor、Gemini、Grok、Kiro、OpenCode、Copilot — を**ひとつのアシスタント、ひとつのメモリ、ひとつのダッシュボード**に統合するオープンソースプラットフォームです。
 
 メイン CLI（Boss）が他の CLI を「Employee（従業員）」として呼び出します。アプリを切り替える必要はなく、ひとつの場所から指示できます。
 
@@ -95,11 +97,6 @@ podex は、すでに使っている AI コーディング CLI — Pi、Antigrav
 - **トークン課金なし** — 既存の月額料金のまま
 - **ローカル実行** — コードがマシンの外に出ることはありません
 
-<div align="center">
-
-![podex Manager Dashboard](docs/screenshots/manager-dashboard-light.png)
-
-</div>
 
 ---
 
@@ -120,13 +117,13 @@ grok login --oauth   # xAI Grok / Grok Heavy
 kiro                 # AWS Kiro (free tier with AWS account)
 ```
 
-一括チェック：`jaw doctor`
+一括チェック：`weasley-podex doctor`
 
 <details>
-<summary>jaw doctor の出力例</summary>
+<summary>weasley-podex doctor の出力例</summary>
 
 ```
-🦈 podex Doctor — 13 checks
+◆ Weasley Podex Doctor — 13 checks
 
  ✅ Node.js        v22.15.0
  ✅ Claude CLI      installed
@@ -134,7 +131,7 @@ kiro                 # AWS Kiro (free tier with AWS account)
  ✅ Cursor CLI      installed
  ✅ OpenCode CLI    installed
  ✅ Copilot CLI     installed
- ✅ Database        jaw.db OK
+ ✅ Database        weasley-podex.db OK
  ✅ Skills          32 active, 194 reference
  ✅ MCP（プラグイン）  3 servers configured
  ✅ Memory          structured/ exists
@@ -153,51 +150,26 @@ kiro                 # AWS Kiro (free tier with AWS account)
 
 実行中のすべての AI インスタンスを一覧表示。ワンクリックで起動・停止・再起動。ダッシュボード内でライブ Web UI をプレビューできます。
 
-<div align="center">
-
-![Dashboard Navigator](docs/screenshots/dashboard-navigator.png)
-
-</div>
 
 ### カンバンボード
 
 インスタンスカードをレーン（Backlog → Ready → In Progress → Review → Done）にドラッグ。各 AI セッションが何に取り組んでいるかを追跡します。
 
-<div align="center">
-
-![カンバンボード](docs/screenshots/dashboard-kanban.png)
-
-</div>
 
 ### 優先度マトリックス
 
 アイゼンハワーマトリックスでタスクとリマインダーを整理。重要なものから処理しましょう。
 
-<div align="center">
-
-![優先度マトリックス](docs/screenshots/priority-matrix.png)
-
-</div>
 
 ### ノート
 
 ダッシュボード内のミニ Obsidian。フォルダ、ビジュアル（WYSIWYG）+ ソース + 分割編集、KaTeX（数式レンダリング）、Mermaid（コードとしての図表）、シンタックスハイライト付きコードブロック。
 
-<div align="center">
-
-![ノートエディタ](docs/screenshots/notes-wysiwyg.png)
-
-</div>
 
 ### エージェントステータス
 
 各 AI エンジンの稼働状況と使用量をひと目で確認。
 
-<div align="center">
-
-![Claude ステータス](docs/screenshots/claude-status-widget.png)
-
-</div>
 
 ---
 
@@ -218,7 +190,7 @@ Boss（Claude）が判断中...
 
 ```bash
 # 内部的にはこのコマンドひとつ：
-jaw dispatch --agent "Frontend" --task "dashboard.tsx の CSS グリッドレイアウトを修正"
+weasley-podex dispatch --agent "Frontend" --task "dashboard.tsx の CSS グリッドレイアウトを修正"
 ```
 
 Employee は設定に登録された他の AI CLI です。それぞれ独自のセッション、モデル、コンテキストを持ちます。Boss が出力をレビューしてからユーザーに提示します。
@@ -231,7 +203,7 @@ Employee は設定に登録された他の AI CLI です。それぞれ独自の
 |---|---|---|
 | **概要** | ワーカーとして設定された他の AI CLI（Codex、OpenCode 等） | 単一 CLI 内の並列タスクツール |
 | **用途** | 異なるコードベースやドメインにまたがるマルチスペシャリスト | 内部リサーチ、ファイル読み取り、並列分析 |
-| **使い方** | `jaw dispatch --agent "Name" --task "..."` | 自動 — CLI が内部的に生成 |
+| **使い方** | `weasley-podex dispatch --agent "Name" --task "..."` | 自動 — CLI が内部的に生成 |
 
 Employee は「Frontend は CSS、Backend は API」用。サブエージェントは「判断する前に 5 ファイルを並列で読む」用。
 
@@ -260,6 +232,8 @@ GPT 5.5 と Claude Opus 4.8 は Pro 以上のサブスクリプションで利�
 
 クォータ/ステータスパネルは registry と同じ runtime キーセットを維持します。Wrapper runtime（`ai-e`, `claude-e`, `codex-app`）は underlying provider に委譲し、Pi/AGY/Cursor/Grok/OpenCode のように CLI が quota window を公開しない場合は auth/status-only として表示します。
 
+Web UI のプロバイダーおよびメッセージング表示は、ブランドに依存しない略号 glyph をコードで描画します。サードパーティーのプロバイダー／ソーシャルサービスのロゴ画像はパッケージに同梱しません。
+
 **フォールバックチェーン**：あるエンジンがレートリミットされると、次のエンジンが自動で引き継ぎます。`/fallback [cli1 cli2...]` で設定。
 
 **OpenCode ワイルドカード**：OpenRouter、ローカル LLM（大規模言語モデル）、OpenAI 互換 API など任意のモデルエンドポイントに接続可能。
@@ -270,7 +244,7 @@ GPT 5.5 と Claude Opus 4.8 は Pro 以上のサブスクリプションで利�
 
 ## PABCD オーケストレーション（Plan → Audit → Build → Check → Done）
 
-複雑なタスクに対して、podex は構造化された 5 段階ワークフローを使用します。すべての遷移にユーザーの承認が必要です — 確認なしでは何も進みません。
+複雑なタスクに対して、Weasley Podex は構造化された 5 段階ワークフローを使用します。すべての遷移にユーザーの承認が必要です — 確認なしでは何も進みません。
 
 ```
 P (Plan) → A (Audit) → B (Build) → C (Check) → D (Done) → IDLE
@@ -285,7 +259,7 @@ P (Plan) → A (Audit) → B (Build) → C (Check) → D (Done) → IDLE
 | **C — Check** | 型チェック（`tsc --noEmit`）、ドキュメント更新、整合性チェック |
 | **D — Done** | 全変更のサマリー。アイドル状態に復帰 |
 
-状態はデータベースに永続化され、再起動後も保持されます。ワーカーはファイルを変更できません — 検証のみ。`jaw orchestrate`、`/orchestrate`、`/pabcd` で開始し、進行中の worklog は `/continue` で明示的に再開します。フェーズ遷移には証拠 attestation が必要です。例: `jaw orchestrate B --attest '{"from":"A","to":"B","did":"<what you did>"}'`（C→D は `checkOutput` と `exitCode` も必要）。Workflow helper slash commands: `/plan`, `/interview`, `/deliberate`, `/planaudit`, `/review`, `/search`, `/goal`, `/goalplan`, `/team`, `/task`, `/fork`, `/gd`。`/plan` は「これは PABCD P」の互換ガイドで、別の計画モードは作りません。`/search <query>` は active search skill にルーティングされます。Bounded automation は `/goal run ...` で表現され、別の `/autopilot` はありません。Durable goal（`/goal <objective>` + `update`/`done`/`cancel`/`pause`/`resume`）は再起動後も保持され、goal 再開は Web/CLI を含む全インターフェースで作業を再実行します。AI `goal pause --agent --audit` は 2 段階監査ゲート（`goal_pause_gate_pending` で自動 continuation を抑制）です。`/gd` は `/goal done --force` の短縮（完了証拠ゲートをバイパス）。`/goal run`（`preflight`/`start`/`stop`/`status`）は preflight を通過する追跡専用 preview で、turn/dispatch 予算を追跡します（強制は今後）。
+状態はデータベースに永続化され、再起動後も保持されます。ワーカーはファイルを変更できません — 検証のみ。`weasley-podex orchestrate`、`/orchestrate`、`/pabcd` で開始し、進行中の worklog は `/continue` で明示的に再開します。フェーズ遷移には証拠 attestation が必要です。例: `weasley-podex orchestrate B --attest '{"from":"A","to":"B","did":"<what you did>"}'`（C→D は `checkOutput` と `exitCode` も必要）。Workflow helper slash commands: `/plan`, `/interview`, `/deliberate`, `/planaudit`, `/review`, `/search`, `/goal`, `/goalplan`, `/team`, `/task`, `/fork`, `/gd`。`/plan` は「これは PABCD P」の互換ガイドで、別の計画モードは作りません。`/search <query>` は active search skill にルーティングされます。Bounded automation は `/goal run ...` で表現され、別の `/autopilot` はありません。Durable goal（`/goal <objective>` + `update`/`done`/`cancel`/`pause`/`resume`）は再起動後も保持され、goal 再開は Web/CLI を含む全インターフェースで作業を再実行します。AI `goal pause --agent --audit` は 2 段階監査ゲート（`goal_pause_gate_pending` で自動 continuation を抑制）です。`/gd` は `/goal done --force` の短縮（完了証拠ゲートをバイパス）。`/goal run`（`preflight`/`start`/`stop`/`status`）は preflight を通過する追跡専用 preview で、turn/dispatch 予算を追跡します（強制は今後）。
 
 ---
 
@@ -302,30 +276,27 @@ P (Plan) → A (Audit) → B (Build) → C (Check) → D (Done) → IDLE
 3 層すべてがシステムプロンプトに自動注入されます。メモリの検索：
 
 ```bash
-jaw memory search "API の認証はどう設定した？"
+weasley-podex memory search "API の認証はどう設定した？"
 ```
 
 ---
 
 ## スキル
 
-230 以上のスキルが開発ワークフロー、オフィスドキュメント、自動化、メディア、コンテンツ作成をカバーします。
+Weasley Podex は監査可能な小規模コアスキルを同梱し、インストール済み Codex 環境または指定した信頼済みリポジトリから追加スキルを取り込めます。
 
-| カテゴリ | スキル | 対応範囲 |
+| カテゴリ | 同梱スキル | 対応範囲 |
 |---|---|---|
-| **オフィス** | `pdf`, `docx`, `xlsx`, `pptx`, `hwp` | ドキュメントの読み取り・作成・編集。HWP/HWPX（韓国語ワープロ形式）をネイティブサポート |
-| **自動化** | `browser`, `vision-click`, `screen-capture`, `desktop-control` | Chrome DevTools Protocol（CDP）ブラウザ制御、AI 座標クリック、macOS スクリーンショット、Computer Use |
-| **メディア** | `video`, `imagegen`, `lecture-stt`, `tts` | Remotion 動画、OpenAI 画像生成、講義の文字起こし、テキスト読み上げ |
-| **連携** | `github`, `notion`, `telegram-send`, `memory` | Issues/PRs/CI、Notion ページ、Telegram メディア配信、永続メモリ |
+| **開発** | `dev`, `dev-pabcd` | 安全な実装と構造化された PABCD デリバリー |
+| **自動化** | `browser`, `web-ai` | ブラウザと認証済み Web AI ワークフロー |
+| **オーケストレーション** | `goal`, `search`, `memory` | 継続目標、根拠付き検索、永続メモリ |
 | **ビジュアライゼーション** | `diagram` | チャット内で SVG ダイアグラム、チャート、インタラクティブ図をレンダリング |
-| **コンテンツ/ライティング** | `k-writing` | 韓国語のプロモーション/コンテンツ作成: スレッド、Instagram カードニュース、LinkedIn、Web/ブログ、推敲を、必須検索・フック採点・AI っぽさ除去チェック付きで生成 |
-| **開発ガイド** | `dev`, `dev-frontend`, `dev-backend`, `dev-data`, `dev-testing`, `dev-pabcd` | エージェントプロンプトに注入されるエンジニアリングガイドライン |
 
-リファレンススキルは `skills_ref/` にあり、オンデマンドでアクティブランタイムにインストールされます。
+同梱リファレンススキルは `skills_ref/` にあり、オンデマンドで有効化されます。取り込んだスキルはユーザーのランタイムホームだけに保存されます。
 
 ```bash
-jaw skill install <name>    # リファレンススキルをアクティブ化
-jaw skill list              # 利用可能なスキルを表示
+weasley-podex skill install <name>    # リファレンススキルをアクティブ化
+weasley-podex skill list              # 利用可能なスキルを表示
 ```
 
 ---
@@ -335,9 +306,9 @@ jaw skill list              # 利用可能なスキルを表示
 | 機能 | 動作方式 |
 |---|---|
 | **Chrome DevTools Protocol** | ナビゲーション、クリック、入力、スクリーンショット、JS 実行、スクロール、キー入力 — Chrome のリモートコントロール |
-| **Vision-click** | 画面をスクリーンショット → AI がターゲット座標を抽出 → クリック。`jaw browser vision-click "Login button"` |
+| **Vision-click** | 画面をスクリーンショット → AI がターゲット座標を抽出 → クリック。`weasley-podex browser vision-click "Login button"` |
 | **Computer Use** | Codex Computer Use によるデスクトップアプリ自動化。Safari で localhost にアクセスすれば Codex アプリのように動作 |
-| **Web-AI ベンダー** | `jaw browser web-ai --vendor chatgpt\|gemini\|grok` — セッションライフサイクル、診断、ソース監査、ChatGPT code-mode zip 回収サポート |
+| **Web-AI ベンダー** | `weasley-podex browser web-ai --vendor chatgpt\|gemini\|grok` — セッションライフサイクル、診断、ソース監査、ChatGPT code-mode zip 回収サポート |
 | **Diagram スキル** | SVG ダイアグラムとインタラクティブなビジュアライゼーションを生成し、チャット内にインラインレンダリング |
 
 Computer Use で Finder、Safari、システム設定、Xcode など、あらゆる macOS アプリを自然言語で操作できます。
@@ -349,7 +320,7 @@ Computer Use で Finder、Safari、システム設定、Xcode など、あらゆ
 ### Telegram
 
 ```
-📱 Telegram ←→ 🦈 podex ←→ 🤖 AI Engines
+📱 Telegram ←→ ◆ Weasley Podex ←→ 🤖 AI Engines
 ```
 
 テキストチャット、音声メッセージ（マルチプロバイダ STT — 音声をテキストに自動変換）、ファイル/写真アップロード、スラッシュコマンド（51 件登録; workflow helper: `/plan`, `/interview`, `/review`, `/search`, `/goal`, `/orchestrate`, `/task`, `/fork`, `/gd`; CLI/Web 動的 `/skill:<id>`）、フォーラムトピックルーティングと **Dashboard Telegram Hub**（`/setthread`, `/threads`, `/hubhelp`、Manager UI でトピックごとの `model`/`systemPrompt` override）、スケジュールタスク（`every`/`cron` heartbeat）結果の自動配信。
@@ -358,7 +329,7 @@ Computer Use で Finder、Safari、システム設定、Xcode など、あらゆ
 <summary>セットアップ（3 ステップ）</summary>
 
 1. [@BotFather](https://t.me/BotFather) にメッセージ → `/newbot` → トークンをコピー
-2. `jaw init --telegram-token YOUR_TOKEN` または Web UI 設定から
+2. `weasley-podex init --telegram-token YOUR_TOKEN` または Web UI 設定から
 3. Bot に何かメッセージを送信。Chat ID は初回メッセージ時に自動保存
 
 </details>
@@ -375,17 +346,17 @@ Telegram と同等の機能 — テキスト、ファイル、コマンド。チ
 
 ## MCP（Model Context Protocol）
 
-[MCP](https://modelcontextprotocol.io) は AI ツールが機能を共有するための標準です — AI エージェント向けのプラグインのようなものです。podex はすべてのエンジンの MCP 設定を 1 ファイルで管理します。
+[MCP](https://modelcontextprotocol.io) は AI ツールが機能を共有するための標準です — AI エージェント向けのプラグインのようなものです。Weasley Podex はすべてのエンジンの MCP 設定を 1 ファイルで管理します。
 
 ```bash
-jaw mcp install @anthropic/context7
+weasley-podex mcp install @upstash/context7-mcp
 # → Claude、Codex、Gemini、OpenCode、Copilot、Antigravity の設定ファイルに同期
 ```
 
 複数の JSON ファイルを個別に編集する必要はありません。一度インストールすれば MCP 対応エンジンすべてに反映されます。Grok CLI は標準ランタイムですが、Grok 側に互換 MCP 設定面が確認されるまで MCP 同期対象とは表記しません。Antigravity MCP sync は `agy` runtime registry entry とは別の config target です。
 
 ```bash
-jaw mcp sync       # 手動編集後の再同期
+weasley-podex mcp sync       # 手動編集後の再同期
 ```
 
 ---
@@ -394,38 +365,38 @@ jaw mcp sync       # 手動編集後の再同期
 
 ```bash
 # コア
-jaw dashboard                     # マネージャーダッシュボードを起動
-jaw serve                         # サーバー起動（http://localhost:3457）
-jaw chat                          # ターミナルチャット UI
-jaw doctor                        # 12 項目の診断
+weasley-podex dashboard                     # マネージャーダッシュボードを起動
+weasley-podex serve                         # サーバー起動（http://localhost:3457）
+weasley-podex chat                          # ターミナルチャット UI
+weasley-podex doctor                        # 12 項目の診断
 
 # インスタンス
-jaw clone ~/project               # 新しいディレクトリにインスタンスを複製
-jaw --home ~/project serve --port 3458  # 2 つ目のインスタンスを起動
-jaw service install               # OS 起動時の自動スタート
+weasley-podex clone ~/project               # 新しいディレクトリにインスタンスを複製
+weasley-podex --home ~/project serve --port 3458  # 2 つ目のインスタンスを起動
+weasley-podex service install               # OS 起動時の自動スタート
 
 # AI & オーケストレーション
-jaw dispatch --agent "Backend" --task "..."  # Employee をディスパッチ
-jaw orchestrate                   # PABCD ワークフローの開始/制御
+weasley-podex dispatch --agent "Backend" --task "..."  # Employee をディスパッチ
+weasley-podex orchestrate                   # PABCD ワークフローの開始/制御
 
 # スキル & MCP
-jaw skill install <name>          # スキルをアクティブ化
-jaw skill list                    # 利用可能なスキルを表示
-jaw mcp install <package>         # MCP をインストール → MCP 対応エンジンに同期
-jaw mcp sync                      # MCP 設定の再同期
+weasley-podex skill install <name>          # スキルをアクティブ化
+weasley-podex skill list                    # 利用可能なスキルを表示
+weasley-podex mcp install <package>         # MCP をインストール → MCP 対応エンジンに同期
+weasley-podex mcp sync                      # MCP 設定の再同期
 
 # メモリ
-jaw memory search <query>         # 全メモリ層を横断検索
-jaw memory save <file> <content>  # 構造化メモリに保存
+weasley-podex memory search <query>         # 全メモリ層を横断検索
+weasley-podex memory save <file> <content>  # 構造化メモリに保存
 
 # ブラウザ
-jaw browser start                 # Chrome 自動化を起動
-jaw browser fetch "https://example.com" --json --trace  # 適応型 URL リーダー
-jaw browser snapshot              # ページ状態をキャプチャ
-jaw browser vision-click "Login"  # AI ベースのクリック
+weasley-podex browser start                 # Chrome 自動化を起動
+weasley-podex browser fetch "https://example.com" --json --trace  # 適応型 URL リーダー
+weasley-podex browser snapshot              # ページ状態をキャプチャ
+weasley-podex browser vision-click "Login"  # AI ベースのクリック
 
 # メンテナンス
-jaw reset                         # フルリセット
+weasley-podex reset                         # フルリセット
 ```
 
 ---
@@ -435,8 +406,8 @@ jaw reset                         # フルリセット
 設定、メモリ、データベースがそれぞれ独立した分離インスタンスを実行：
 
 ```bash
-jaw clone ~/my-project
-jaw --home ~/my-project serve --port 3458
+weasley-podex clone ~/my-project
+weasley-podex --home ~/my-project serve --port 3458
 ```
 
 各インスタンスは完全に独立 — 作業ディレクトリ、メモリ、MCP 設定すべて別々。マネージャーダッシュボードからすべて確認できます。
@@ -454,13 +425,13 @@ npm run gate:all       # リリース/ドキュメント整合性ゲート
 bash structure/check-doc-drift.sh
 ```
 
-アーキテクチャ詳細：[ARCHITECTURE.md](docs/ARCHITECTURE.md) · テストカバレッジ：[TESTS.md](TESTS.md) · 内部構造ドキュメント：[structure/](structure/)
+アーキテクチャ詳細：[ARCHITECTURE.md](https://github.com/potatohoney-p/weasley-podex/blob/main/docs/ARCHITECTURE.md) · [テストソース](https://github.com/potatohoney-p/weasley-podex/tree/main/tests) · [内部構造ドキュメント](https://github.com/potatohoney-p/weasley-podex/tree/main/structure)
 
 ---
 
 ## 比較
 
-| | podex 2.0 | Hermes Agent | Claude Code |
+| | Weasley Podex 2.0 | Hermes Agent | Claude Code |
 |---|---|---|---|
 | **モデルアクセス** | Pi、Antigravity、AI-E、Claude、Claude E、Codex、Codex App、Cursor、Gemini、Grok、Kiro、OpenCode、Copilot — ベンダー/ネイティブ認証経由 | API キー（OpenRouter 200+、Nous Portal） | Anthropic のみ |
 | **コストモデル** | 契約済みの月額サブスクリプション | トークン単位の API 課金 | Anthropic サブスクリプション |
@@ -471,7 +442,7 @@ bash structure/check-doc-drift.sh
 | **マルチエージェント** | Employee システム（他 CLI のディスパッチ）+ PABCD | サブエージェント生成 | Task ツール |
 | **ブラウザ自動化** | Chrome DevTools + vision-click + Computer Use | 限定的 | MCP 経由 |
 | **実行環境** | ローカル + Docker | ローカル/Docker/SSH/Daytona/Modal | ローカル |
-| **スキル** | 230+ 同梱 | 自己生成 + agentskills.io | ユーザー設定 |
+| **スキル** | 監査済みコア + ローカル/信頼済みインポート | 自己生成 + agentskills.io | ユーザー設定 |
 | **多言語対応** | 英語、韓国語、中国語、日本語 | 英語 | 英語 |
 
 ---
@@ -480,13 +451,13 @@ bash structure/check-doc-drift.sh
 
 | 症状 | 対処 |
 |---|---|
-| `podex: command not found` | `npm install -g podex` を再実行。macOS/Linux/WSL では `~/.local/bin` または `npm prefix -g` + `/bin` が `$PATH` に含まれているか確認。Windows PowerShell からは `wsl.exe -d Ubuntu -- bash -lc "jaw dashboard"` のように WSL login shell 経由で実行 |
+| `weasley-podex: command not found` | `npm install -g weasley-podex` を再実行。macOS/Linux/WSL では `~/.local/bin` または `npm prefix -g` + `/bin` が `$PATH` に含まれているか確認。Windows PowerShell からは `wsl.exe -d Ubuntu -- bash -lc "weasley-podex dashboard"` のように WSL login shell 経由で実行 |
 | `Error: node version` | Node.js 22+ にアップグレード：`nvm install 22` |
 | `NODE_MODULE_VERSION` mismatch | `npm run ensure:native`（ネイティブモジュールの自動リビルド） |
 | `EADDRINUSE: port 3457` | 別のインスタンスが起動中。`--port 3458` で回避 |
-| Telegram / Discord 認証失敗 | `jaw doctor` を実行してから `jaw serve` を再起動 |
-| ブラウザコマンドが動かない | Chrome/Chromium をインストールし、`jaw browser start` を先に実行 |
-| Employee ディスパッチがハング | Employee CLI が認証済みか確認（`jaw doctor`） |
+| Telegram / Discord 認証失敗 | `weasley-podex doctor` を実行してから `weasley-podex serve` を再起動 |
+| ブラウザコマンドが動かない | Chrome/Chromium をインストールし、`weasley-podex browser start` を先に実行 |
+| Employee ディスパッチがハング | Employee CLI が認証済みか確認（`weasley-podex doctor`） |
 | Computer Use が動かない | macOS のみ。Codex CLI が必要。システム設定で Automation 権限を確認 |
 
 ---
@@ -496,11 +467,3 @@ bash structure/check-doc-drift.sh
 1. `dev` から Fork してブランチを作成
 2. `npm run build && npm test`
 3. PR を送信
-
-
----
-
-<div align="center">
-
-
-</div>

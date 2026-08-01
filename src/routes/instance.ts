@@ -6,13 +6,13 @@
 import type { Router } from 'express';
 import fs from 'fs';
 import { join } from 'path';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 
 const LOCK_MARKER_FILENAME = '.dashboard-managed.json';
 
 export function registerInstanceRoutes(app: Router): void {
     app.get('/api/instance/lock', (_req, res) => {
-        const markerPath = join(JAW_HOME, LOCK_MARKER_FILENAME);
+        const markerPath = join(WEASLEY_PODEX_HOME, LOCK_MARKER_FILENAME);
         try {
             if (fs.existsSync(markerPath)) {
                 const marker = JSON.parse(fs.readFileSync(markerPath, 'utf8'));
@@ -24,7 +24,7 @@ export function registerInstanceRoutes(app: Router): void {
     });
 
     app.post('/api/instance/lock', (_req, res) => {
-        const markerPath = join(JAW_HOME, LOCK_MARKER_FILENAME);
+        const markerPath = join(WEASLEY_PODEX_HOME, LOCK_MARKER_FILENAME);
         try {
             if (fs.existsSync(markerPath)) {
                 const marker = JSON.parse(fs.readFileSync(markerPath, 'utf8'));
@@ -38,7 +38,7 @@ export function registerInstanceRoutes(app: Router): void {
     });
 
     app.delete('/api/instance/lock', (_req, res) => {
-        const markerPath = join(JAW_HOME, LOCK_MARKER_FILENAME);
+        const markerPath = join(WEASLEY_PODEX_HOME, LOCK_MARKER_FILENAME);
         try {
             if (fs.existsSync(markerPath)) {
                 const marker = JSON.parse(fs.readFileSync(markerPath, 'utf8'));

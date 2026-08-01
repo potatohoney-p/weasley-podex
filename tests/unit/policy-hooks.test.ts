@@ -15,8 +15,8 @@ test('missing config and kill switch preserve output byte-for-byte', () => {
     const text = 'exact\noutput';
     assert.deepEqual(applyOutputPolicy(text, { scope: 'main' }, { jawHome: home() }), { text, verdicts: [] });
     const jawHome = home({ output: { rules: [{ id: 'x', action: 'block', pattern: 'exact' }] } });
-    assert.deepEqual(applyOutputPolicy(text, { scope: 'main' }, { jawHome, env: { podex_POLICY_HOOKS: '0' } }), { text, verdicts: [] });
-    assert.equal(loadPolicyHooksConfig({ jawHome, env: { podex_POLICY_HOOKS: '0' } }), null);
+    assert.deepEqual(applyOutputPolicy(text, { scope: 'main' }, { jawHome, env: { WEASLEY_PODEX_POLICY_HOOKS: '0' } }), { text, verdicts: [] });
+    assert.equal(loadPolicyHooksConfig({ jawHome, env: { WEASLEY_PODEX_POLICY_HOOKS: '0' } }), null);
 });
 
 test('redact and block rules transform bounded output', () => {

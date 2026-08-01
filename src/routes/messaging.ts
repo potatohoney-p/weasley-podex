@@ -92,7 +92,7 @@ export function registerMessagingRoutes(app: Express, requireAuth: AuthMiddlewar
     });
 
     // Open file in system file manager (Finder reveal)
-    // NOTE: podex is a localhost-only program. No remote access.
+    // NOTE: Weasley Podex is a localhost-only program. No remote access.
     app.post('/api/file/open', requireAuth, (req, res) => {
         const { path: rawPath } = req.body;
         if (!rawPath || typeof rawPath !== 'string') {

@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Browser Automation — podex Docs</title>
+<title>Browser Automation — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -60,7 +59,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -82,7 +81,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -131,7 +130,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
@@ -144,9 +143,9 @@
     <span class="badge badge-category">Automation</span>
   </div>
 </div>
-<p class="lead">CDP Chrome 자동화 &mdash; 스냅샷, 클릭, 내비게이션, 스크린샷, 탭. <code>podex browser</code> 명령어를 통해 ref 기반 요소 타겟팅으로 Chrome을 제어합니다.</p>
+<p class="lead">CDP Chrome 자동화 &mdash; 스냅샷, 클릭, 내비게이션, 스크린샷, 탭. <code>weasley-podex browser</code> 명령어를 통해 ref 기반 요소 타겟팅으로 Chrome을 제어합니다.</p>
 
-<div class="callout callout-info">이 스킬은 <strong>기본적으로 활성화</strong>되어 있으며 모든 세션에 자동 주입됩니다. <code>podex serve</code>가 실행 중이어야 하며, Google Chrome이 설치되어 있어야 합니다.</div>
+<div class="callout callout-info">이 스킬은 <strong>기본적으로 활성화</strong>되어 있으며 모든 세션에 자동 주입됩니다. <code>weasley-podex serve</code>가 실행 중이어야 하며, Google Chrome이 설치되어 있어야 합니다.</div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>빠른 참조</h2>
@@ -156,11 +155,11 @@
 <tr><td>스킬 이름</td><td><code>browser</code></td></tr>
 <tr><td>카테고리</td><td>Automation</td></tr>
 <tr><td>상태</td><td><span class="badge badge-active">Active</span> (기본 로드)</td></tr>
-<tr><td>필수 요건</td><td><code>podex</code> 바이너리, Google Chrome</td></tr>
+<tr><td>필수 요건</td><td><code>weasley-podex</code> 바이너리, Google Chrome</td></tr>
 <tr><td>선택 사항</td><td><code>cliclick</code> (Homebrew, 좌표 기반 클릭용)</td></tr>
-<tr><td>스크린샷 저장 경로</td><td><code>~/.podex/screenshots/</code></td></tr>
+<tr><td>스크린샷 저장 경로</td><td><code>~/.weasley/podex/screenshots/</code></td></tr>
 <tr><td>관련 스킬</td><td><code>desktop-control</code>, <code>web-ai</code>, <code>vision-click</code></td></tr>
-<tr><td>스킬 파일</td><td><code>~/.podex/skills/browser/SKILL.md</code></td></tr>
+<tr><td>스킬 파일</td><td><code>~/.weasley/podex/skills/browser/SKILL.md</code></td></tr>
 </tbody>
 </table>
 
@@ -168,9 +167,9 @@
 <h2>사전 요구 사항</h2>
 
 <ul>
-<li><strong><code>podex serve</code></strong>가 실행 중이어야 합니다 &mdash; 브라우저 스킬은 podex 서버를 통해 통신합니다.</li>
+<li><strong><code>weasley-podex serve</code></strong>가 실행 중이어야 합니다 &mdash; 브라우저 스킬은 Weasley Podex 서버를 통해 통신합니다.</li>
 <li><strong>Google Chrome</strong>이 머신에 설치되어 있어야 합니다.</li>
-<li><strong><code>playwright-core</code></strong>가 podex 프로젝트에 설치되어 있어야 합니다 (CDP 통신에 사용).</li>
+<li><strong><code>playwright-core</code></strong>가 Weasley Podex 프로젝트에 설치되어 있어야 합니다 (CDP 통신에 사용).</li>
 <li><em>선택 사항:</em> 좌표 기반 마우스 조작을 위해 <code>brew install cliclick</code>을 설치합니다.</li>
 </ul>
 
@@ -189,25 +188,25 @@
 <h2>빠른 시작</h2>
 
 <pre><code># 자동화 세션 시작 (헤드리스, 창 표시 안 함)
-podex browser start --agent
+weasley-podex browser start --agent
 
 # 인터랙티브 브라우저 시작 (수동, 창 표시)
-podex browser start
+weasley-podex browser start
 
 # URL로 이동
-podex browser navigate "https://example.com"
+weasley-podex browser navigate "https://example.com"
 
 # 인터랙티브 스냅샷 (ref ID 표시)
-podex browser snapshot --interactive
+weasley-podex browser snapshot --interactive
 
 # ref로 클릭
-podex browser click e3
+weasley-podex browser click e3
 
 # 텍스트 입력 후 제출
-podex browser type e5 "hello" --submit
+weasley-podex browser type e5 "hello" --submit
 
 # 스크린샷 촬영
-podex browser screenshot</code></pre>
+weasley-podex browser screenshot</code></pre>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>스냅샷 출력</h2>
@@ -232,12 +231,12 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>명령어</th><th>설명</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser start [--port &lt;auto&gt;] [--headless] [--agent]</code></td><td>Chrome 실행. <code>--agent</code> = 헤드리스 자동화; 기본 = 인터랙티브 (창 표시).</td></tr>
-<tr><td><code>podex browser stop</code></td><td>브라우저 세션 종료.</td></tr>
-<tr><td><code>podex browser status</code></td><td>현재 CDP 연결 상태 및 포트 보고.</td></tr>
-<tr><td><code>podex browser doctor [--json]</code></td><td>CDP/런타임 소유권 불일치 진단 및 고아 프로세스 정리 범위 확인.</td></tr>
-<tr><td><code>podex browser cleanup-runtimes [--json] [--close --force]</code></td><td>기본은 드라이런. jaw 소유 고아 런타임만 <code>--close --force</code>로 종료.</td></tr>
-<tr><td><code>podex browser reset [--force]</code></td><td>브라우저 프로필 및 스크린샷 초기화. 명시적 요청 시에만 사용.</td></tr>
+<tr><td><code>weasley-podex browser start [--port &lt;auto&gt;] [--headless] [--agent]</code></td><td>Chrome 실행. <code>--agent</code> = 헤드리스 자동화; 기본 = 인터랙티브 (창 표시).</td></tr>
+<tr><td><code>weasley-podex browser stop</code></td><td>브라우저 세션 종료.</td></tr>
+<tr><td><code>weasley-podex browser status</code></td><td>현재 CDP 연결 상태 및 포트 보고.</td></tr>
+<tr><td><code>weasley-podex browser doctor [--json]</code></td><td>CDP/런타임 소유권 불일치 진단 및 고아 프로세스 정리 범위 확인.</td></tr>
+<tr><td><code>weasley-podex browser cleanup-runtimes [--json] [--close --force]</code></td><td>기본은 드라이런. Weasley Podex 소유 고아 런타임만 <code>--close --force</code>로 종료.</td></tr>
+<tr><td><code>weasley-podex browser reset [--force]</code></td><td>브라우저 프로필 및 스크린샷 초기화. 명시적 요청 시에만 사용.</td></tr>
 </tbody>
 </table>
 </div>
@@ -247,18 +246,18 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>명령어</th><th>설명</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser snapshot</code></td><td>전체 페이지 스냅샷 (모든 노드).</td></tr>
-<tr><td><code>podex browser snapshot --interactive</code></td><td>인터랙티브 요소만 ref ID와 함께 표시. 토큰 절약에 권장.</td></tr>
-<tr><td><code>podex browser snapshot --interactive --max-nodes 30 --json</code></td><td>노드 수 제한 및 JSON 출력.</td></tr>
-<tr><td><code>podex browser screenshot</code></td><td>현재 뷰포트 캡처. <code>~/.podex/screenshots/</code>에 저장.</td></tr>
-<tr><td><code>podex browser screenshot --full-page</code></td><td>전체 페이지 스크린샷 (스크롤 포함).</td></tr>
-<tr><td><code>podex browser screenshot --ref e5</code></td><td>ref ID로 특정 요소의 스크린샷 촬영.</td></tr>
-<tr><td><code>podex browser screenshot --clip 0 0 320 180 --json</code></td><td>영역 지정 스크린샷 및 JSON 출력 경로.</td></tr>
-<tr><td><code>podex browser text</code></td><td>페이지의 모든 보이는 텍스트 추출.</td></tr>
-<tr><td><code>podex browser text --format html</code></td><td>페이지 콘텐츠를 HTML로 추출.</td></tr>
-<tr><td><code>podex browser get-dom --selector ".card" --max-chars 2000 --json</code></td><td>CSS 선택자와 일치하는 DOM 하위 트리 가져오기.</td></tr>
-<tr><td><code>podex browser console --json --limit 20</code></td><td>콘솔 로그 항목 조회.</td></tr>
-<tr><td><code>podex browser network --json --limit 20</code></td><td>네트워크 요청 로그 조회.</td></tr>
+<tr><td><code>weasley-podex browser snapshot</code></td><td>전체 페이지 스냅샷 (모든 노드).</td></tr>
+<tr><td><code>weasley-podex browser snapshot --interactive</code></td><td>인터랙티브 요소만 ref ID와 함께 표시. 토큰 절약에 권장.</td></tr>
+<tr><td><code>weasley-podex browser snapshot --interactive --max-nodes 30 --json</code></td><td>노드 수 제한 및 JSON 출력.</td></tr>
+<tr><td><code>weasley-podex browser screenshot</code></td><td>현재 뷰포트 캡처. <code>~/.weasley/podex/screenshots/</code>에 저장.</td></tr>
+<tr><td><code>weasley-podex browser screenshot --full-page</code></td><td>전체 페이지 스크린샷 (스크롤 포함).</td></tr>
+<tr><td><code>weasley-podex browser screenshot --ref e5</code></td><td>ref ID로 특정 요소의 스크린샷 촬영.</td></tr>
+<tr><td><code>weasley-podex browser screenshot --clip 0 0 320 180 --json</code></td><td>영역 지정 스크린샷 및 JSON 출력 경로.</td></tr>
+<tr><td><code>weasley-podex browser text</code></td><td>페이지의 모든 보이는 텍스트 추출.</td></tr>
+<tr><td><code>weasley-podex browser text --format html</code></td><td>페이지 콘텐츠를 HTML로 추출.</td></tr>
+<tr><td><code>weasley-podex browser get-dom --selector ".card" --max-chars 2000 --json</code></td><td>CSS 선택자와 일치하는 DOM 하위 트리 가져오기.</td></tr>
+<tr><td><code>weasley-podex browser console --json --limit 20</code></td><td>콘솔 로그 항목 조회.</td></tr>
+<tr><td><code>weasley-podex browser network --json --limit 20</code></td><td>네트워크 요청 로그 조회.</td></tr>
 </tbody>
 </table>
 </div>
@@ -268,20 +267,20 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>명령어</th><th>설명</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser click e3</code></td><td>ref ID로 요소 클릭.</td></tr>
-<tr><td><code>podex browser click e3 --double</code></td><td>요소 더블 클릭.</td></tr>
-<tr><td><code>podex browser click e3 --right</code></td><td>우클릭 (컨텍스트 메뉴).</td></tr>
-<tr><td><code>podex browser type e3 "hello"</code></td><td>입력 필드에 텍스트 입력.</td></tr>
-<tr><td><code>podex browser type e3 "hello" --submit</code></td><td>텍스트 입력 후 Enter 키 전송.</td></tr>
-<tr><td><code>podex browser press Enter</code></td><td>키 입력 (Enter, Escape, Tab 등).</td></tr>
-<tr><td><code>podex browser hover e5</code></td><td>요소 위에 마우스 올리기.</td></tr>
-<tr><td><code>podex browser select e7 "option1"</code></td><td>드롭다운에서 옵션 선택.</td></tr>
-<tr><td><code>podex browser drag e3 e5</code></td><td>한 요소에서 다른 요소로 드래그.</td></tr>
-<tr><td><code>podex browser mouse-click 400 300</code></td><td>절대 좌표에서 클릭.</td></tr>
-<tr><td><code>podex browser mouse-click 400 300 --double</code></td><td>좌표에서 더블 클릭.</td></tr>
-<tr><td><code>podex browser move-mouse 400 300</code></td><td>좌표로 마우스 이동 (클릭 없음).</td></tr>
-<tr><td><code>podex browser mouse-down</code></td><td>마우스 버튼 누르기.</td></tr>
-<tr><td><code>podex browser mouse-up --right</code></td><td>마우스 버튼 놓기 (선택적으로 우클릭).</td></tr>
+<tr><td><code>weasley-podex browser click e3</code></td><td>ref ID로 요소 클릭.</td></tr>
+<tr><td><code>weasley-podex browser click e3 --double</code></td><td>요소 더블 클릭.</td></tr>
+<tr><td><code>weasley-podex browser click e3 --right</code></td><td>우클릭 (컨텍스트 메뉴).</td></tr>
+<tr><td><code>weasley-podex browser type e3 "hello"</code></td><td>입력 필드에 텍스트 입력.</td></tr>
+<tr><td><code>weasley-podex browser type e3 "hello" --submit</code></td><td>텍스트 입력 후 Enter 키 전송.</td></tr>
+<tr><td><code>weasley-podex browser press Enter</code></td><td>키 입력 (Enter, Escape, Tab 등).</td></tr>
+<tr><td><code>weasley-podex browser hover e5</code></td><td>요소 위에 마우스 올리기.</td></tr>
+<tr><td><code>weasley-podex browser select e7 "option1"</code></td><td>드롭다운에서 옵션 선택.</td></tr>
+<tr><td><code>weasley-podex browser drag e3 e5</code></td><td>한 요소에서 다른 요소로 드래그.</td></tr>
+<tr><td><code>weasley-podex browser mouse-click 400 300</code></td><td>절대 좌표에서 클릭.</td></tr>
+<tr><td><code>weasley-podex browser mouse-click 400 300 --double</code></td><td>좌표에서 더블 클릭.</td></tr>
+<tr><td><code>weasley-podex browser move-mouse 400 300</code></td><td>좌표로 마우스 이동 (클릭 없음).</td></tr>
+<tr><td><code>weasley-podex browser mouse-down</code></td><td>마우스 버튼 누르기.</td></tr>
+<tr><td><code>weasley-podex browser mouse-up --right</code></td><td>마우스 버튼 놓기 (선택적으로 우클릭).</td></tr>
 </tbody>
 </table>
 </div>
@@ -291,18 +290,18 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>명령어</th><th>설명</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser navigate "https://example.com"</code></td><td>URL로 이동.</td></tr>
-<tr><td><code>podex browser open "https://example.com"</code></td><td><code>navigate</code>의 별칭.</td></tr>
-<tr><td><code>podex browser tabs</code></td><td>열린 탭 목록 표시.</td></tr>
-<tr><td><code>podex browser tabs --json</code></td><td>탭 목록을 JSON으로 표시.</td></tr>
-<tr><td><code>podex browser active-tab --json</code></td><td>활성 탭 정보를 JSON으로 가져오기.</td></tr>
-<tr><td><code>podex browser tab-switch 2</code></td><td>인덱스로 탭 전환.</td></tr>
-<tr><td><code>podex browser reload</code></td><td>현재 페이지 새로고침.</td></tr>
-<tr><td><code>podex browser resize 1440 900</code></td><td>뷰포트 크기 변경.</td></tr>
-<tr><td><code>podex browser scroll --x 0 --y 1000</code></td><td>절대 위치로 스크롤.</td></tr>
-<tr><td><code>podex browser wait-for-selector ".toast-success" --timeout 30000</code></td><td>CSS 선택자가 나타날 때까지 대기.</td></tr>
-<tr><td><code>podex browser wait-for-text "Dashboard" --timeout 30000</code></td><td>특정 텍스트가 페이지에 나타날 때까지 대기.</td></tr>
-<tr><td><code>podex browser evaluate "document.title"</code></td><td>페이지 컨텍스트에서 JavaScript 실행.</td></tr>
+<tr><td><code>weasley-podex browser navigate "https://example.com"</code></td><td>URL로 이동.</td></tr>
+<tr><td><code>weasley-podex browser open "https://example.com"</code></td><td><code>navigate</code>의 별칭.</td></tr>
+<tr><td><code>weasley-podex browser tabs</code></td><td>열린 탭 목록 표시.</td></tr>
+<tr><td><code>weasley-podex browser tabs --json</code></td><td>탭 목록을 JSON으로 표시.</td></tr>
+<tr><td><code>weasley-podex browser active-tab --json</code></td><td>활성 탭 정보를 JSON으로 가져오기.</td></tr>
+<tr><td><code>weasley-podex browser tab-switch 2</code></td><td>인덱스로 탭 전환.</td></tr>
+<tr><td><code>weasley-podex browser reload</code></td><td>현재 페이지 새로고침.</td></tr>
+<tr><td><code>weasley-podex browser resize 1440 900</code></td><td>뷰포트 크기 변경.</td></tr>
+<tr><td><code>weasley-podex browser scroll --x 0 --y 1000</code></td><td>절대 위치로 스크롤.</td></tr>
+<tr><td><code>weasley-podex browser wait-for-selector ".toast-success" --timeout 30000</code></td><td>CSS 선택자가 나타날 때까지 대기.</td></tr>
+<tr><td><code>weasley-podex browser wait-for-text "Dashboard" --timeout 30000</code></td><td>특정 텍스트가 페이지에 나타날 때까지 대기.</td></tr>
+<tr><td><code>weasley-podex browser evaluate "document.title"</code></td><td>페이지 컨텍스트에서 JavaScript 실행.</td></tr>
 </tbody>
 </table>
 <div class="callout callout-warn"><code>evaluate</code>는 진단용 명령어입니다. web-ai와 같은 상위 레벨 벤더 워크플로우에서 임의의 사용자 제공 JavaScript를 전달하지 마세요.</div>
@@ -314,7 +313,7 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>영역</th><th>라벨</th><th>비고</th></tr></thead>
 <tbody>
-<tr><td>로컬 <code>podex browser</code> 기본 명령어</td><td><span class="badge badge-active">ready</span></td><td>서버 기반 로컬 Chrome/CDP 전용</td></tr>
+<tr><td>로컬 <code>weasley-podex browser</code> 기본 명령어</td><td><span class="badge badge-active">ready</span></td><td>서버 기반 로컬 Chrome/CDP 전용</td></tr>
 <tr><td><code>doctor</code> 및 <code>cleanup-runtimes</code></td><td><span class="badge badge-active">ready</span></td><td>기본은 드라이런; 종료하려면 <code>--force</code> 필요</td></tr>
 <tr><td>대시보드 표시/헤드리스 시작 분리</td><td><span class="badge badge-active">ready</span></td><td>표시 수동 모드와 헤드리스 에이전트 모드가 분리됨</td></tr>
 <tr><td>web-ai 프로바이더 워크플로우</td><td><span class="badge badge-category">beta</span></td><td><code>web-ai</code> 스킬 및 프로바이더별 게이트 사용</td></tr>
@@ -329,7 +328,7 @@ podex browser screenshot</code></pre>
 <li><strong>ref ID는 일시적입니다.</strong> 최신 스냅샷에만 유효합니다. 내비게이션, 새로고침, 탭 전환 또는 페이지를 변경하는 액션 이후에는 항상 <code>snapshot --interactive</code>를 다시 실행하세요.</li>
 <li><strong>스냅샷에는 <code>--interactive</code>를 권장합니다</strong> &mdash; 토큰 사용량을 줄일 수 있습니다. 전체 스냅샷은 비인터랙티브 노드를 포함하여 출력이 커질 수 있습니다.</li>
 <li><strong>자동화 세션에는 <code>--agent</code>를 사용하세요.</strong> 헤드리스로 시작하여 브라우저 창이 표시되지 않습니다.</li>
-<li><strong>일반 <code>ps</code> 출력에서 찾은 Chrome 프로세스를 절대 종료하지 마세요.</strong> jaw 소유 프로세스를 내구성 런타임 레코드를 통해 검증하는 <code>cleanup-runtimes --close --force</code>만 사용하세요.</li>
+<li><strong>일반 <code>ps</code> 출력에서 찾은 Chrome 프로세스를 절대 종료하지 마세요.</strong> Weasley Podex 소유 프로세스를 내구성 런타임 레코드를 통해 검증하는 <code>cleanup-runtimes --close --force</code>만 사용하세요.</li>
 <li><strong><code>reset</code> 전에 확인하세요.</strong> <code>reset</code> 명령어는 브라우저 프로필과 스크린샷을 삭제합니다. 사용자가 명시적으로 요청한 경우에만 사용하세요.</li>
 <li><strong><code>evaluate</code>는 진단 전용입니다.</strong> 상위 레벨 워크플로우에서 <code>evaluate</code>를 통해 임의의 사용자 제공 JavaScript를 전달하지 마세요.</li>
 <li><strong>비 DOM 요소</strong> (Canvas, WebGL, 크로스 오리진 iframe, 커스텀 UI)의 경우 사용 가능한 ref가 없음을 확인한 후에만 <code>vision-click</code> 스킬로 대체하세요.</li>
@@ -339,25 +338,25 @@ podex browser screenshot</code></pre>
 <h2>일반 워크플로우</h2>
 
 <h3>웹 검색</h3>
-<pre><code>podex browser start --agent
-podex browser navigate "https://www.google.com"
-podex browser snapshot --interactive
-podex browser type e3 "search query" --submit
-podex browser snapshot --interactive
-podex browser click e7</code></pre>
+<pre><code>weasley-podex browser start --agent
+weasley-podex browser navigate "https://www.google.com"
+weasley-podex browser snapshot --interactive
+weasley-podex browser type e3 "search query" --submit
+weasley-podex browser snapshot --interactive
+weasley-podex browser click e7</code></pre>
 
 <h3>폼 입력</h3>
-<pre><code>podex browser snapshot --interactive
-podex browser type e1 "John Doe"
-podex browser type e2 "john@example.com"
-podex browser click e3           # Submit button
-podex browser snapshot           # 제출 확인</code></pre>
+<pre><code>weasley-podex browser snapshot --interactive
+weasley-podex browser type e1 "John Doe"
+weasley-podex browser type e2 "john@example.com"
+weasley-podex browser click e3           # Submit button
+weasley-podex browser snapshot           # 제출 확인</code></pre>
 
 <h3>페이지 콘텐츠 읽기</h3>
-<pre><code>podex browser navigate "https://news.ycombinator.com"
-podex browser text               # 일반 텍스트 추출
-podex browser text --format html # HTML 콘텐츠
-podex browser snapshot --interactive</code></pre>
+<pre><code>weasley-podex browser navigate "https://news.ycombinator.com"
+weasley-podex browser text               # 일반 텍스트 추출
+weasley-podex browser text --format html # HTML 콘텐츠
+weasley-podex browser snapshot --interactive</code></pre>
 
 <h3>AI 웹 워크플로우</h3>
 <p>ChatGPT 또는 기타 web-ai 워크플로우의 경우 <code>web-ai</code> 스킬을 사용하세요. 브라우저 스킬은 기본 페이지 제어를 담당하며, <code>web-ai</code>는 구조화된 질문 렌더링, 활성 탭 안전성, 응답 기준선 처리를 담당합니다.</p>
@@ -369,7 +368,7 @@ podex browser snapshot --interactive</code></pre>
 
 <div class="example-callout">
   <div class="example-label">예시 1</div>
-  <code>"구글 검색해줘 &mdash; podex 설치 방법"</code>
+  <code>"구글 검색해줘 &mdash; weasley-podex 설치 방법"</code>
   <div class="example-desc">헤드리스 브라우저를 시작하고, Google로 이동하여 검색어를 입력한 뒤 결과를 반환합니다. <code>browser start --agent</code> + <code>navigate</code> + <code>type --submit</code> + <code>snapshot</code>을 트리거합니다.</div>
 </div>
 
@@ -403,13 +402,13 @@ podex browser snapshot --interactive</code></pre>
 <p>Chrome을 헤드리스로 실행하는 세 가지 방법:</p>
 
 <pre><code># 자동화에 권장
-podex browser start --agent
+weasley-podex browser start --agent
 
 # 수동 모드에서 명시적 헤드리스
-podex browser start --headless
+weasley-podex browser start --headless
 
 # 환경 변수 사용
-CHROME_HEADLESS=1 podex browser start</code></pre>
+CHROME_HEADLESS=1 weasley-podex browser start</code></pre>
 
 <p>모든 에이전트 자동화에는 <code>--agent</code>를 사용하세요. 브라우저 창이 표시되지 않으며, 자동화 세션에서 기본값으로 사용됩니다.</p>
 
@@ -424,49 +423,49 @@ CHROME_HEADLESS=1 podex browser start</code></pre>
 </tbody>
 </table>
 
-<p>기본 CDP 포트는 <code>podex</code> 서버 포트에서 파생됩니다. 명시적 오버라이드가 필요한 경우에만 <code>podex browser start --port &lt;port&gt;</code>를 사용하세요.</p>
+<p>기본 CDP 포트는 <code>weasley-podex</code> 서버 포트에서 파생됩니다. 명시적 오버라이드가 필요한 경우에만 <code>weasley-podex browser start --port &lt;port&gt;</code>를 사용하세요.</p>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>독립형 agbrowse 대안</h2>
 
-<p><strong>단일 Chrome 인스턴스</strong>를 명시적으로 구동하려는 경우 (예: 로그인된 프로필을 유지하거나, <code>podex serve</code>와 두 번째 CDP 세션을 동시에 실행하지 않으려는 경우) 동일한 브라우저 명령어를 독립형 <code>agbrowse</code> CLI (<code>npm install -g agbrowse</code>)를 통해 사용할 수 있습니다. 플래그 체계는 동일하며, 바이너리 접두사만 다릅니다.</p>
+<p><strong>단일 Chrome 인스턴스</strong>를 명시적으로 구동하려는 경우 (예: 로그인된 프로필을 유지하거나, <code>weasley-podex serve</code>와 두 번째 CDP 세션을 동시에 실행하지 않으려는 경우) 동일한 브라우저 명령어를 독립형 <code>agbrowse</code> CLI (<code>npm install -g agbrowse</code>)를 통해 사용할 수 있습니다. 플래그 체계는 동일하며, 바이너리 접두사만 다릅니다.</p>
 
 <div class="comparison-grid">
-  <div class="col-header">podex browser 형식</div>
+  <div class="col-header">weasley-podex browser 형식</div>
   <div class="col-header">agbrowse 형식</div>
-  <div class="col-cell">podex browser start --agent</div>
+  <div class="col-cell">weasley-podex browser start --agent</div>
   <div class="col-cell">agbrowse start</div>
-  <div class="col-cell">podex browser status</div>
+  <div class="col-cell">weasley-podex browser status</div>
   <div class="col-cell">agbrowse status</div>
-  <div class="col-cell">podex browser navigate "&lt;url&gt;"</div>
+  <div class="col-cell">weasley-podex browser navigate "&lt;url&gt;"</div>
   <div class="col-cell">agbrowse navigate "&lt;url&gt;"</div>
-  <div class="col-cell">podex browser snapshot --interactive</div>
+  <div class="col-cell">weasley-podex browser snapshot --interactive</div>
   <div class="col-cell">agbrowse snapshot --interactive</div>
-  <div class="col-cell">podex browser click e3</div>
+  <div class="col-cell">weasley-podex browser click e3</div>
   <div class="col-cell">agbrowse click e3</div>
-  <div class="col-cell">podex browser type e5 "hello" --submit</div>
+  <div class="col-cell">weasley-podex browser type e5 "hello" --submit</div>
   <div class="col-cell">agbrowse type e5 "hello" --submit</div>
-  <div class="col-cell">podex browser screenshot</div>
+  <div class="col-cell">weasley-podex browser screenshot</div>
   <div class="col-cell">agbrowse screenshot</div>
-  <div class="col-cell">podex browser stop</div>
+  <div class="col-cell">weasley-podex browser stop</div>
   <div class="col-cell">agbrowse stop</div>
 </div>
 
-<div class="callout callout-warn"><code>podex browser</code>와 <code>agbrowse</code>를 동일한 <code>--port</code>에서 동시에 실행하지 마세요 &mdash; 두 번째 시작이 첫 번째 CDP를 재사용하게 되고, 영구 상태 파일이 충돌할 수 있습니다.</div>
+<div class="callout callout-warn"><code>weasley-podex browser</code>와 <code>agbrowse</code>를 동일한 <code>--port</code>에서 동시에 실행하지 마세요 &mdash; 두 번째 시작이 첫 번째 CDP를 재사용하게 되고, 영구 상태 파일이 충돌할 수 있습니다.</div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>런타임 정리</h2>
 
 <pre><code># 런타임 상태 진단
-podex browser doctor --json
+weasley-podex browser doctor --json
 
 # 드라이런: 정리 대상 확인
-podex browser cleanup-runtimes
+weasley-podex browser cleanup-runtimes
 
-# jaw 소유 고아 런타임 실제 종료
-podex browser cleanup-runtimes --close --force</code></pre>
+# weasley-podex 소유 고아 런타임 실제 종료
+weasley-podex browser cleanup-runtimes --close --force</code></pre>
 
-<p><code>cleanup-runtimes</code>는 의도적으로 보수적입니다. jaw 소유 Chrome 실행에 의해 기록된 내구성 <code>browser-runtime-owner.json</code> 레코드에 대해서만 동작합니다. 프로세스 명령줄은 여전히 기록된 PID, CDP 포트 및 프로필과 일치해야 합니다. <code>--type=</code>을 포함하는 Chrome 헬퍼 프로세스는 거부됩니다. 일반 <code>ps</code> 출력을 Chrome 프로세스가 종료해도 안전하다는 근거로 사용하지 마세요.</p>
+<p><code>cleanup-runtimes</code>는 의도적으로 보수적입니다. Weasley Podex 소유 Chrome 실행에 의해 기록된 내구성 <code>browser-runtime-owner.json</code> 레코드에 대해서만 동작합니다. 프로세스 명령줄은 여전히 기록된 PID, CDP 포트 및 프로필과 일치해야 합니다. <code>--type=</code>을 포함하는 Chrome 헬퍼 프로세스는 거부됩니다. 일반 <code>ps</code> 출력을 Chrome 프로세스가 종료해도 안전하다는 근거로 사용하지 마세요.</p>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>복구 전략</h2>
@@ -504,9 +503,9 @@ podex browser cleanup-runtimes --close --force</code></pre>
 <table>
 <thead><tr><th>증상</th><th>원인</th><th>해결 방법</th></tr></thead>
 <tbody>
-<tr><td>CDP 연결 거부됨</td><td>Chrome이 시작되지 않았거나 잘못된 포트</td><td><code>podex browser status</code>로 확인 후 올바른 포트로 시작</td></tr>
-<tr><td><code>running:false</code>이면서 <code>owner:jaw-owned</code></td><td>잔존 런타임 메타데이터 또는 비활성 CDP</td><td><code>podex browser doctor</code> 실행 후 <code>browser start</code> 재시도</td></tr>
-<tr><td>이전 헤드리스 jaw Chrome이 남아 있음</td><td>내구성 jaw 소유 고아 후보</td><td><code>podex browser cleanup-runtimes</code> 드라이런 후 <code>--close --force</code></td></tr>
+<tr><td>CDP 연결 거부됨</td><td>Chrome이 시작되지 않았거나 잘못된 포트</td><td><code>weasley-podex browser status</code>로 확인 후 올바른 포트로 시작</td></tr>
+<tr><td><code>running:false</code>이면서 <code>owner:weasley-podex-owned</code></td><td>잔존 런타임 메타데이터 또는 비활성 CDP</td><td><code>weasley-podex browser doctor</code> 실행 후 <code>browser start</code> 재시도</td></tr>
+<tr><td>이전 헤드리스 Weasley Podex Chrome이 남아 있음</td><td>내구성 Weasley Podex 소유 고아 후보</td><td><code>weasley-podex browser cleanup-runtimes</code> 드라이런 후 <code>--close --force</code></td></tr>
 <tr><td>창이 테스트 브라우저만 열림</td><td>Chrome 싱글톤이 실행을 흡수함</td><td>모든 Chrome 창을 닫은 후 <code>start --agent</code> 사용</td></tr>
 <tr><td>헤드리스 CDP가 열리지 않음</td><td>GUI 없는 환경에서 헤드리스가 요청되지 않음</td><td><code>--headless</code> 또는 <code>--agent</code> 추가</td></tr>
 <tr><td>포트 충돌</td><td>다른 프로세스가 CDP 포트를 사용 중</td><td>다른 <code>--port</code> 선택</td></tr>
@@ -520,14 +519,14 @@ podex browser cleanup-runtimes --close --force</code></pre>
 <p>다음 명령어들은 <code>30_browser</code> 레퍼런스 설계의 패리티 대상으로 계획되어 있습니다. 이후 PRD에서 명시적으로 업그레이드되지 않는 한 현재 런타임에서는 <strong>사용할 수 없습니다</strong>.</p>
 
 <h3>계획된 관찰 및 진단</h3>
-<pre><code>podex browser console --clear --reload --duration 3000
-podex browser network --reload --duration 1000
-podex browser wait 2000</code></pre>
+<pre><code>weasley-podex browser console --clear --reload --duration 3000
+weasley-podex browser network --reload --duration 1000
+weasley-podex browser wait 2000</code></pre>
 
 <h3>계획된 액션</h3>
-<pre><code>podex browser resize 0 0 --fullscreen
-podex browser scroll down
-podex browser scroll up --amount 1000</code></pre>
+<pre><code>weasley-podex browser resize 0 0 --fullscreen
+weasley-podex browser scroll down
+weasley-podex browser scroll up --amount 1000</code></pre>
 
 <div class="callout callout-info"><code>wait-for &lt;ref&gt;</code>는 레퍼런스 설계에서 더 이상 사용되지 않습니다. ref는 스냅샷 범위에 한정되기 때문입니다. 선택자 기반 또는 텍스트 기반 대기를 사용하세요.</div>
 
@@ -551,7 +550,7 @@ podex browser scroll up --amount 1000</code></pre>
 <li>ref ID는 수명이 짧으며, 최신 스냅샷 범위에서만 유효한 것으로 처리해야 합니다.</li>
 <li>내비게이션 또는 주요 페이지 변경 후에는 항상 <code>snapshot --interactive</code>를 다시 실행하세요.</li>
 <li>토큰 절약을 위해 <code>--interactive</code>를 권장합니다.</li>
-<li>스크린샷은 <code>~/.podex/screenshots/</code>에 저장됩니다.</li>
+<li>스크린샷은 <code>~/.weasley/podex/screenshots/</code>에 저장됩니다.</li>
 <li>에이전트 자동화에는 <code>start --agent</code>를 기본으로 사용해야 합니다.</li>
 <li>Canvas, WebGL, 크로스 오리진 iframe, 커스텀 UI와 같은 비 DOM 요소는 명시적 대체로만 <code>vision-click</code> 스킬을 사용하세요.</li>
 </ul>

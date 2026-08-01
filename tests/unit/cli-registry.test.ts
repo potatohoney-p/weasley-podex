@@ -2,7 +2,7 @@ import test, { mock } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
     CLI_REGISTRY,
     CLI_KEYS,
@@ -64,7 +64,7 @@ test('JWC registry exposes package-backed runtime metadata', () => {
 });
 
 test('live CLI registry preserves JWC runtime metadata', async () => {
-    const kiroModelsPath = resolve(__dirname, '../../src/agent/kiro-models.js');
+    const kiroModelsPath = pathToFileURL(resolve(__dirname, '../../src/agent/kiro-models.js')).href;
     mock.module(kiroModelsPath, {
         namedExports: {
             fetchKiroModelInventory: async () => null,

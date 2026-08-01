@@ -49,7 +49,7 @@ test('WH-009: employee boundary blocks A-phase write operations', () => {
 });
 
 test('WH-010: no employee self-dispatch in boundary module', () => {
-    assert.ok(!boundSrc.includes('podex dispatch'), 'boundary module must not contain dispatch commands');
+    assert.ok(!boundSrc.includes('weasley-podex dispatch'), 'boundary module must not contain dispatch commands');
 });
 
 test('WH-011: handoff includes uncertainty prevention instruction', () => {

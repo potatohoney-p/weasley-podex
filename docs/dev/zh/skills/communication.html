@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Communication Skills — podex Docs</title>
+<title>Communication Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,28 +81,28 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>通信技能</h1>
-<p class="lead">podex 内置了六项通信技能，涵盖消息传递、电子邮件和社交媒体。这些技能让你可以发送 Telegram 消息、撰写和润色电子邮件、管理 Gmail 和 Google Drive、在终端中阅读电子邮件、发送 WhatsApp 消息以及发布 Twitter/X 帖子 &mdash; 所有操作均通过自然语言命令完成。</p>
+<p class="lead">面向消息、电子邮件和社交媒体的可选扩展示例。本页六项技能均未捆绑；使用前请核验提供方和软件包，并显式导入可信技能。</p>
 
 <h2>技能概览</h2>
 <table>
 <tr><th>技能</th><th>渠道</th><th>触发示例</th><th>状态</th></tr>
-<tr><td><strong>telegram-send</strong></td><td>Telegram</td><td><code>텔레그램으로 보내줘</code>, <code>send via telegram</code></td><td>活跃</td></tr>
-<tr><td><strong>email-draft-polish</strong></td><td>电子邮件（草稿/润色）</td><td><code>이메일 초안 써줘</code>, <code>polish this email</code></td><td>活跃</td></tr>
-<tr><td><strong>gog</strong></td><td>Gmail / Google Drive</td><td><code>Gmail 확인해줘</code>, <code>search my drive</code></td><td>活跃</td></tr>
-<tr><td><strong>himalaya</strong></td><td>终端邮件 (IMAP)</td><td><code>메일 읽어줘</code>, <code>check inbox</code></td><td>活跃</td></tr>
-<tr><td><strong>whatsapp</strong></td><td>WhatsApp</td><td><code>왓츠앱 메시지 보내줘</code>, <code>send whatsapp</code></td><td>活跃</td></tr>
-<tr><td><strong>xurl</strong></td><td>Twitter / X</td><td><code>트윗 올려줘</code>, <code>post to X</code></td><td>活跃</td></tr>
+<tr><td><strong>telegram-send</strong></td><td>Telegram</td><td><code>텔레그램으로 보내줘</code>, <code>send via telegram</code></td><td>可选导入</td></tr>
+<tr><td><strong>email-draft-polish</strong></td><td>电子邮件（草稿/润色）</td><td><code>이메일 초안 써줘</code>, <code>polish this email</code></td><td>可选导入</td></tr>
+<tr><td><strong>gog</strong></td><td>Gmail / Google Drive</td><td><code>Gmail 확인해줘</code>, <code>search my drive</code></td><td>可选导入</td></tr>
+<tr><td><strong>himalaya</strong></td><td>终端邮件 (IMAP)</td><td><code>메일 읽어줘</code>, <code>check inbox</code></td><td>可选导入</td></tr>
+<tr><td><strong>whatsapp</strong></td><td>WhatsApp</td><td><code>왓츠앱 메시지 보내줘</code>, <code>send whatsapp</code></td><td>可选导入</td></tr>
+<tr><td><strong>xurl</strong></td><td>Twitter / X</td><td><code>트윗 올려줘</code>, <code>post to X</code></td><td>可选导入</td></tr>
 </table>
 
 <h2 id="telegram-send">telegram-send</h2>
-<p>直接从 podex 向 Telegram 聊天发送消息、照片、文档和贴纸。此技能封装了 <code>telegram-send</code> CLI，自动处理聊天 ID 解析、文件上传和 Markdown 格式化。</p>
+<p>直接从 Weasley Podex 向 Telegram 聊天发送消息、照片、文档和贴纸。此技能封装了 <code>telegram-send</code> CLI，自动处理聊天 ID 解析、文件上传和 Markdown 格式化。</p>
 
 <h3>功能</h3>
 <ul>
@@ -115,8 +114,8 @@
 </ul>
 
 <h3>配置</h3>
-<p>需要在 podex 环境中配置 Telegram Bot API 令牌：</p>
-<pre><code># In ~/.podex/config.json or env
+<p>需要在 Weasley Podex 环境中配置 Telegram Bot API 令牌：</p>
+<pre><code># In ~/.weasley/podex/config.json or env
 TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
 TELEGRAM_CHAT_ID=default_chat_id</code></pre>
 
@@ -275,7 +274,7 @@ message.send.backend.login = "you@example.com"</code></pre>
 </div>
 
 <h2 id="whatsapp">whatsapp</h2>
-<p>通过 podex 发送 WhatsApp 消息。此技能通过 WhatsApp Web 或 WhatsApp Business API 向联系人和群组发送文本消息、媒体和文档。</p>
+<p>通过 Weasley Podex 发送 WhatsApp 消息。此技能通过 WhatsApp Web 或 WhatsApp Business API 向联系人和群组发送文本消息、媒体和文档。</p>
 
 <h3>功能</h3>
 <ul>
@@ -289,10 +288,10 @@ message.send.backend.login = "you@example.com"</code></pre>
 <h3>配置</h3>
 <p>WhatsApp 集成需要一个活跃的会话。初始设置通过二维码与 WhatsApp Web 配对：</p>
 <pre><code># Start WhatsApp pairing
-jaw whatsapp pair
+weasley-podex whatsapp pair
 
 # Verify connection
-jaw whatsapp status</code></pre>
+weasley-podex whatsapp status</code></pre>
 
 <h3>示例</h3>
 <pre><code># Send a message
@@ -330,7 +329,7 @@ jaw whatsapp status</code></pre>
 <h3>配置</h3>
 <p>需要 Twitter/X API 凭据或基于 Cookie 的身份验证：</p>
 <pre><code># Cookie-based auth (recommended)
-jaw x auth login
+weasley-podex x auth login
 
 # Or API key auth
 X_API_KEY=your_api_key
@@ -340,7 +339,7 @@ X_ACCESS_SECRET=your_access_secret</code></pre>
 
 <h3>示例</h3>
 <pre><code># Post a tweet
-"트윗 올려줘: podex v2.0 released!"
+"트윗 올려줘: weasley-podex v2.0 released!"
 
 # Thread creation
 "이 내용을 트윗 스레드로 올려줘"
@@ -397,7 +396,7 @@ X_ACCESS_SECRET=your_access_secret</code></pre>
 "Gmail로 팀 전체에 보내줘"</code></pre>
 
 <h3>定时发送</h3>
-<p>使用 podex 的调度功能来定时发送消息：</p>
+<p>使用 Weasley Podex 的调度功能来定时发送消息：</p>
 <pre><code># Schedule a Telegram reminder
 "내일 오전 9시에 텔레그램으로 '스탠드업 미팅' 리마인더 보내줘"
 

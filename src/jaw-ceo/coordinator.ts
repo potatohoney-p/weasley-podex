@@ -46,7 +46,7 @@ export type {
     JawCeoVoiceSessionRecord,
 } from './coordinator-types.js';
 
-const DEFAULT_DASHBOARD_NOTES_ROOT = path.join(process.env["HOME"] || process.cwd(), '.podex-dashboard', 'notes');
+const DEFAULT_DASHBOARD_NOTES_ROOT = path.join(process.env["HOME"] || process.cwd(), '.weasley', 'podex-dashboard', 'notes');
 
 export class JawCeoCoordinator {
     readonly store: JawCeoStore;

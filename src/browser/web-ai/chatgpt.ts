@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../../core/weasley-podex-env.js';
 ﻿import { getActivePage, getCdpSession, createTab, waitForPageByTargetId, getPageByTargetId, listTabs } from '../connection.js';
 import { getActiveTab, type ActiveTabResult, type BrowserTabInfo } from '../connection.js';
 import { cleanupIdleTabs, isPinned } from '../tab-lifecycle.js';
@@ -126,7 +127,7 @@ export async function status(port: number, input: { vendor?: string; probe?: str
 }
 
 async function ensureProviderTab(port: number, input: QuestionEnvelopeInput): Promise<{ page: Page; targetId: string }> {
-    const reuseTab = input.reuseTab === true || process.env["JAW_REUSE_TAB"] === '1';
+    const reuseTab = input.reuseTab === true || getWeasleyPodexEnv('REUSE_TAB') === '1';
     if (reuseTab) {
         const active = await requireVerifiedChatGptTab(port, input.vendor);
         const page = await requireActivePage(port);

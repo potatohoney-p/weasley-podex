@@ -1,5 +1,5 @@
-﻿/**
- * podex init — Phase 9.3
+/**
+ * weasley-podex init — Phase 9.3
  * Interactive setup wizard or --non-interactive flag mode.
  */
 import { createInterface } from 'node:readline';
@@ -7,7 +7,7 @@ import { parseArgs } from 'node:util';
 import fs from 'node:fs';
 
 import path from 'node:path';
-import { JAW_HOME, SETTINGS_PATH } from '../../src/core/config.js';
+import { WEASLEY_PODEX_HOME, SETTINGS_PATH } from '../../src/core/config.js';
 import { CLI_KEYS } from '../../src/cli/registry.js';
 
 const CLI_CHOICES = CLI_KEYS.join(', ');
@@ -34,7 +34,7 @@ const { values } = parseArgs({
 });
 
 if (values.help) {
-    console.log(`Usage: jaw init [options]
+    console.log(`Usage: weasley-podex init [options]
 
 Options:
   --help                Show this help
@@ -55,7 +55,7 @@ Options:
 }
 
 // Ensure home dir
-fs.mkdirSync(JAW_HOME, { recursive: true });
+fs.mkdirSync(WEASLEY_PODEX_HOME, { recursive: true });
 
 interface InitSettings {
     workingDir?: string;
@@ -91,11 +91,11 @@ const ask = (q: string, def: string): Promise<string> => new Promise(r => {
     rl.question(`  ${q} [${def}]: `, (ans) => r(ans.trim() || def));
 });
 
-console.log('\n  🦈 podex 초기 설정\n');
+console.log('\n  Weasley Podex 초기 설정\n');
 
 // Collect
 const workingDir = String(values['working-dir'] ||
-    await ask('Working directory', settings.workingDir || JAW_HOME));
+    await ask('Working directory', settings.workingDir || WEASLEY_PODEX_HOME));
 const cli = String(values.cli ||
     await ask(`CLI (${CLI_CHOICES})`, settings.cli || 'claude'));
 
@@ -170,7 +170,7 @@ if (dcEnabled) {
 
 // Skills dir
 const skillsDir = String(values['skills-dir'] ||
-    await ask('Skills directory', settings.skillsDir || path.join(JAW_HOME, 'skills')));
+    await ask('Skills directory', settings.skillsDir || path.join(WEASLEY_PODEX_HOME, 'skills')));
 
 rl.close();
 
@@ -208,7 +208,7 @@ if (!values['dry-run']) {
 
     // Ensure skills dir + heartbeat.json
     fs.mkdirSync(skillsDir as string, { recursive: true });
-    const hbPath = path.join(JAW_HOME, 'heartbeat.json');
+    const hbPath = path.join(WEASLEY_PODEX_HOME, 'heartbeat.json');
     if (!fs.existsSync(hbPath)) {
         fs.writeFileSync(hbPath, JSON.stringify({ jobs: [] }, null, 2));
     }
@@ -253,7 +253,7 @@ console.log(`
   Settings    : ${SETTINGS_PATH}
 
   다음 단계:
-    podex doctor     설치 상태 진단
-    podex serve      서버 시작
+    weasley-podex doctor     설치 상태 진단
+    weasley-podex serve      서버 시작
 `);
 

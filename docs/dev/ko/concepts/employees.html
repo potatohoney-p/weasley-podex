@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>직원 시스템 — podex 문서</title>
+<title>직원 시스템 — Weasley Podex 문서</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,22 +58,22 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>직원 시스템</h1>
-<p class="lead">보스 에이전트는 CLI 직원들(병렬로 작업을 수행하는 다른 AI 런타임)에게 태스크를 배정합니다. podex는 12개의 런타임을 지원하며, 직원 세션, 격리, 결과 수집을 관리합니다.</p>
+<p class="lead">보스 에이전트는 CLI 직원들(병렬로 작업을 수행하는 다른 AI 런타임)에게 태스크를 배정합니다. Weasley Podex는 12개의 런타임을 지원하며, 직원 세션, 격리, 결과 수집을 관리합니다.</p>
 
 <h2>작동 방식</h2>
-<p>메인 에이전트("보스")는 <code>jaw dispatch</code> 명령을 사용하여 특정 태스크를 직원 에이전트에게 위임할 수 있습니다. 각 직원은 컨텍스트 파일이 주입된 격리된 임시 작업 디렉토리에서 실행됩니다.</p>
-<pre><code>jaw dispatch --agent "Frontend" --task "Implement the login page"</code></pre>
-<p>보스 프롬프트에는 에이전트가 직원 작업에 <code>podex dispatch</code>를 사용하도록 안내하는 위임 규칙이 포함되어 있으며, CLI 내장 서브 에이전트(Task/Agent 도구)는 내부 병렬화를 위해 허용됩니다.</p>
+<p>메인 에이전트("보스")는 <code>weasley-podex dispatch</code> 명령을 사용하여 특정 태스크를 직원 에이전트에게 위임할 수 있습니다. 각 직원은 컨텍스트 파일이 주입된 격리된 임시 작업 디렉토리에서 실행됩니다.</p>
+<pre><code>weasley-podex dispatch --agent "Frontend" --task "Implement the login page"</code></pre>
+<p>보스 프롬프트에는 에이전트가 직원 작업에 <code>weasley-podex dispatch</code>를 사용하도록 안내하는 위임 규칙이 포함되어 있으며, CLI 내장 서브 에이전트(Task/Agent 도구)는 내부 병렬화를 위해 허용됩니다.</p>
 
 <h2>12개의 CLI 런타임</h2>
-<p>podex의 레지스트리(<code>src/cli/registry.ts</code>)는 12개의 최상위 런타임을 정의합니다. 각 직원에게 어떤 런타임이든 할당할 수 있습니다.</p>
+<p>Weasley Podex의 레지스트리(<code>src/cli/registry.ts</code>)는 12개의 최상위 런타임을 정의합니다. 각 직원에게 어떤 런타임이든 할당할 수 있습니다.</p>
 <table>
 <tr><th>런타임</th><th>바이너리</th><th>기본 모델</th><th>기본 노력 수준</th></tr>
 <tr><td>agy</td><td><code>agy</code></td><td>gemini-3.5-flash</td><td>-</td></tr>
@@ -93,7 +92,7 @@
 <h2>직원 vs 서브 에이전트</h2>
 <div class="callout callout-warn">직원과 CLI 서브 에이전트는 서로 다른 목적을 가지고 있습니다. 혼동하지 마세요.</div>
 <table>
-<tr><th></th><th>직원 (jaw dispatch)</th><th>CLI 서브 에이전트 (Task/Agent 도구)</th></tr>
+<tr><th></th><th>직원 (weasley-podex dispatch)</th><th>CLI 서브 에이전트 (Task/Agent 도구)</th></tr>
 <tr><td><strong>범위</strong></td><td>CLI 간 위임</td><td>동일 CLI 내부의 병렬화</td></tr>
 <tr><td><strong>격리</strong></td><td>별도의 tmp 디렉토리, AGENTS.md 주입</td><td>동일 프로세스/세션</td></tr>
 <tr><td><strong>인증</strong></td><td>보스 토큰 필요 (직원은 재위임 불가)</td><td>추가 인증 불필요</td></tr>
@@ -102,11 +101,11 @@
 
 <h2>Dispatch 명령</h2>
 <pre><code># From the boss prompt:
-podex dispatch --agent "Backend" --task "Add rate limiting to /api/upload"
+weasley-podex dispatch --agent "Backend" --task "Add rate limiting to /api/upload"
 
 # From the CLI:
-jaw dispatch --agent "Frontend" --task "Fix responsive layout" --port 3457</code></pre>
-<p>dispatch 엔드포인트(<code>POST /api/orchestrate/dispatch</code>)는 보스 범위의 <code>x-jaw-boss-token</code>이 필요합니다. 이 토큰은 직원 실행 환경에서 제거되어 직원이 추가 위임을 하지 못하도록 방지합니다.</p>
+weasley-podex dispatch --agent "Frontend" --task "Fix responsive layout" --port 3457</code></pre>
+<p>dispatch 엔드포인트(<code>POST /api/orchestrate/dispatch</code>)는 보스 범위의 <code>x-weasley-podex-boss-token</code>이 필요합니다. 이 토큰은 직원 실행 환경에서 제거되어 직원이 추가 위임을 하지 못하도록 방지합니다.</p>
 
 <h2>직원 프롬프트</h2>
 <p>직원 프롬프트는 <code>getEmployeePromptV2()</code>에 의해 구성되며 다음을 포함합니다:</p>
@@ -122,17 +121,17 @@ jaw dispatch --agent "Frontend" --task "Fix responsive layout" --port 3457</code
 
 <h2>직원 관리</h2>
 <pre><code># List employees
-jaw employee help
+weasley-podex employee help
 
 # Reset to defaults
-jaw employee reset
+weasley-podex employee reset
 
 # Via slash command
 /employee reset</code></pre>
 <p>Web UI의 사이드바 설정 패널에서 직원에 대한 전체 CRUD 기능을 제공합니다. 각 직원의 이름, CLI 런타임, 모델, 역할을 설정할 수 있습니다.</p>
 
 <h2>기본 직원</h2>
-<p>처음 실행 시 podex는 기본 직원 세트(Frontend, Backend, Documentation 등)를 생성합니다. <code>/employee reset</code> 명령으로 이 기본값을 다시 생성할 수 있습니다.</p>
+<p>처음 실행 시 Weasley Podex는 기본 직원 세트(Frontend, Backend, Documentation 등)를 생성합니다. <code>/employee reset</code> 명령으로 이 기본값을 다시 생성할 수 있습니다.</p>
 
 <div class="page-nav">
 <a class="prev" href="architecture.html">Architecture</a>

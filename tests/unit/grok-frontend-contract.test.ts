@@ -1,68 +1,81 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { providerIcon, providerLabel } from '../../public/js/provider-icons.ts';
 
 const root = join(import.meta.dirname, '..', '..');
 const src = (path: string) => readFileSync(join(root, path), 'utf8');
 
-test('GROK-FE-001: provider icons include local Grok SVG assets and aliases', () => {
+test('PROVIDER-GLYPH-001: provider indicators are generated centrally without brand assets', () => {
     const icons = src('public/js/provider-icons.ts');
-    const colorSvg = src('public/assets/providers/grok-color.svg');
-    const monoSvg = src('public/assets/providers/grok.svg');
-    assert.match(icons, /grok-color\.svg\?raw/);
-    assert.match(icons, /grok\.svg\?raw/);
+    assert.match(icons, /const PROVIDER_GLYPHS/);
+    assert.match(icons, /function renderProviderGlyph/);
+    assert.match(icons, /stroke="currentColor"/);
+    assert.match(icons, /aria-hidden="true"/);
+    assert.doesNotMatch(icons, /\.svg\?raw|lobehub|#[0-9a-f]{3,8}/i);
+
+    const retiredAssetDir = join(root, 'public', 'assets', 'providers');
+    const remainingSvg = existsSync(retiredAssetDir)
+        ? readdirSync(retiredAssetDir).filter(name => name.endsWith('.svg'))
+        : [];
+    assert.deepEqual(remainingSvg, []);
+});
+
+test('PROVIDER-GLYPH-002: runtime aliases resolve to neutral, accessible glyph markup', () => {
+    for (const [slug, resolved, glyph, label] of [
+        ['pi', 'pi', 'PI', 'Pi'],
+        ['grok-build', 'grok', 'GR', 'Grok'],
+        ['kiro', 'kiro-code', 'KR', 'Kiro'],
+        ['cursor-agent', 'cursor', 'CU', 'Cursor'],
+        ['agy', 'antigravity', 'AG', 'Antigravity'],
+        ['claude-e', 'claude', 'CL', 'Claude E'],
+        ['telegram', 'telegram', 'TG', 'Telegram'],
+        ['discord', 'discord', 'DC', 'Discord'],
+    ] as const) {
+        const rendered = providerIcon(slug);
+        assert.match(rendered, /^<svg[^>]+viewBox="0 0 24 24"/);
+        assert.match(rendered, new RegExp(`data-provider-glyph="${resolved}"`));
+        assert.match(rendered, new RegExp(`>${glyph}<\\/text>`));
+        assert.match(rendered, /aria-hidden="true"/);
+        assert.doesNotMatch(rendered, /<script|<style|(?:href|src)=["']https?:\/\//);
+        assert.equal(providerLabel(slug), label);
+    }
+    assert.equal(providerIcon('not-a-provider'), '');
+});
+
+test('PROVIDER-GLYPH-003: Grok, Kiro, and Cursor aliases remain in the resolver', () => {
+    const icons = src('public/js/provider-icons.ts');
     assert.match(icons, /normalized\.startsWith\('grok'\)/);
-    assert.match(icons, /label:\s*'Grok'/);
-    for (const svg of [colorSvg, monoSvg]) {
-        assert.match(svg, /<svg[^>]+viewBox=/);
-        assert.doesNotMatch(svg, /<script|<style|(?:href|src)=["']https?:\/\//);
-    }
-});
-
-test('KIRO-FE-001: provider icons include local Kiro SVG assets and aliases', () => {
-    const icons = src('public/js/provider-icons.ts');
-    const colorSvg = src('public/assets/providers/kiro-color.svg');
-    const monoSvg = src('public/assets/providers/kiro.svg');
-    assert.match(icons, /kiro-color\.svg\?raw/);
-    assert.match(colorSvg, /viewBox="0 0 24 24"/);
-    assert.match(icons, /kiro\.svg\?raw/);
     assert.match(icons, /normalized === 'kirocode'/);
-    assert.match(icons, /'kiro-code':\s*\{[\s\S]*label:\s*'Kiro'/);
-    for (const svg of [colorSvg, monoSvg]) {
-        assert.match(svg, /<svg[^>]+viewBox=/);
-        assert.doesNotMatch(svg, /<script|<style|(?:href|src)=["']https?:\/\//);
-    }
-});
-
-test('CURSOR-FE-001: provider icons use official local Cursor SVG assets', () => {
-    const icons = src('public/js/provider-icons.ts');
-    const colorSvg = src('public/assets/providers/cursor-color.svg');
-    const monoSvg = src('public/assets/providers/cursor.svg');
-    assert.match(icons, /cursor-color\.svg\?raw/);
-    assert.match(icons, /cursor\.svg\?raw/);
     assert.match(icons, /normalized === 'cursor'/);
-    assert.match(icons, /label:\s*'Cursor'/);
-    for (const svg of [colorSvg, monoSvg]) {
-        assert.match(svg, /<svg[^>]+viewBox=/);
-        assert.match(svg, /https:\/\/cursor\.com\/en-US\/brand/);
-        assert.doesNotMatch(svg, /<script|<style|(?:href|src)=["']https?:\/\//);
-    }
+    assert.match(icons, /grok:\s*\{\s*glyph:\s*'GR',[\s\S]*label:\s*'Grok'/);
+    assert.match(icons, /'kiro-code':\s*\{\s*glyph:\s*'KR',[\s\S]*label:\s*'Kiro'/);
+    assert.match(icons, /cursor:\s*\{\s*glyph:\s*'CU',[\s\S]*label:\s*'Cursor'/);
 });
 
-test('CODEX-FE-001: provider icons keep codex original and color only codex-app', () => {
+test('CODEX-FE-001: Codex surfaces use distinct neutral glyphs without OpenAI artwork', () => {
     const icons = src('public/js/provider-icons.ts');
+    const codex = providerIcon('codex');
+    const codexApp = providerIcon('codex-app');
+    const codexMono = providerIcon('codex', 'mono');
     assert.match(icons, /'codex-app'/);
     assert.match(icons, /normalized === 'codexapp'/);
-    assert.match(icons, /codex:\s*\{\s*color:\s*openaiSvg,\s*mono:\s*openaiSvg/);
-    assert.match(icons, /'codex-app':\s*\{\s*color:\s*openaiColorSvg,\s*mono:\s*openaiSvg/);
-    assert.match(icons, /codex:\s*\{[\s\S]*label:\s*'Codex'/);
-    assert.match(icons, /'codex-app':\s*\{[\s\S]*label:\s*'Codex App'/);
-    assert.doesNotMatch(icons, /Codex \(OpenAI\)|Codex App \(OpenAI\)/);
+    assert.match(codex, />CX<\/text>/);
+    assert.match(codexApp, />CA<\/text>/);
+    assert.match(codexMono, /data-variant="mono"/);
+    assert.match(codexMono, /currentColor/);
+    assert.notEqual(codex, codexApp);
+    assert.equal(providerLabel('codex'), 'Codex');
+    assert.equal(providerLabel('codex-app'), 'Codex App');
+    assert.doesNotMatch(icons, /OpenAI icon|GitHub Copilot|brand icon/i);
     assert.match(icons, /copilot:\s*\{[\s\S]*label:\s*'Copilot'/);
-    assert.doesNotMatch(icons, /GitHub Copilot/);
-    assert.doesNotMatch(src('public/assets/providers/copilot.svg'), /GitHub Copilot/);
-    assert.doesNotMatch(src('public/assets/providers/copilot-color.svg'), /GitHub Copilot/);
+});
+
+test('CURSOR-FE-001: Cursor remains a first-class runtime label', () => {
+    const icons = src('public/js/provider-icons.ts');
+    assert.match(icons, /normalized === 'cursor'/);
+    assert.match(icons, /label:\s*'Cursor'/);
 });
 
 test('CLAUDE-E-FE-001: frontend presents claude-e as Claude E', () => {

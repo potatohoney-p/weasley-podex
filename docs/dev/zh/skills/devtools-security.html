@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Security & Review Skills — podex Docs</title>
+<title>Security & Review Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,14 +81,14 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Security & Review Skills</h1>
-<p class="lead">podex 提供了一整套安全分析和代码审查技能，能够检测漏洞、强制执行最佳实践、进行威胁建模并简化同行评审——所有操作均可通过自然语言命令完成。</p>
+<p class="lead">Weasley Podex 提供了一整套安全分析和代码审查技能，能够检测漏洞、强制执行最佳实践、进行威胁建模并简化同行评审——所有操作均可通过自然语言命令完成。</p>
 
 <h2>技能概览</h2>
 <table>
@@ -235,7 +234,7 @@ PR #42 보안 리뷰해줘
 </ul>
 
 <h2>代码审查工作流</h2>
-<p>podex 通过专用技能支持代码审查流程的两个方面。</p>
+<p>Weasley Podex 通过专用技能支持代码审查流程的两个方面。</p>
 
 <h3>接收代码审查</h3>
 <p><code>receiving-code-review</code> 技能处理收到的审查评论，按严重程度分类，并为每个发现生成可操作的修复建议。</p>
@@ -275,7 +274,7 @@ PR에 리뷰 체크리스트 추가해줘</code></pre>
 </div>
 
 <h2>组合技能</h2>
-<p>安全技能可以链式组合以进行全面分析。podex 会自动检测何时需要多个技能并进行编排。</p>
+<p>安全技能可以链式组合以进行全面分析。Weasley Podex 会自动检测何时需要多个技能并进行编排。</p>
 
 <pre><code># Full security audit (combines multiple skills)
 전체 보안 감사 해줘
@@ -295,9 +294,9 @@ PR에 리뷰 체크리스트 추가해줘</code></pre>
 </table>
 
 <h2>配置</h2>
-<p>安全技能遵循 <code>.jaw/security.yaml</code> 中的项目级配置：</p>
+<p>安全技能遵循 <code>.weasley/security.yaml</code> 中的项目级配置：</p>
 
-<pre><code># .jaw/security.yaml
+<pre><code># .weasley/security.yaml
 severity_threshold: medium    # Minimum severity to report (low|medium|high|critical)
 ignore_paths:
   - "vendor/**"

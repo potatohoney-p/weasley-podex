@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 // ─── CLI Registry (single source of truth) ──────────
 
 import { getDefaultClaudeChoices, getDefaultClaudeModel } from './claude-models.js';
@@ -259,7 +260,7 @@ export const CLI_REGISTRY = {
 };
 
 export const CLI_KEYS = Object.keys(CLI_REGISTRY) as CliEngine[];
-const envDefaultCli = process.env['podex_DEFAULT_CLI'];
+const envDefaultCli = getWeasleyPodexEnv('DEFAULT_CLI');
 export const DEFAULT_CLI: CliEngine = (envDefaultCli && CLI_KEYS.includes(envDefaultCli as CliEngine))
     ? envDefaultCli as CliEngine
     : CLI_KEYS.includes('claude') ? 'claude' : (CLI_KEYS[0] ?? 'claude');

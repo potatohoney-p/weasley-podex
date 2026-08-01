@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard — podex Docs</title>
+<title>Dashboard — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link active" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -83,18 +82,18 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Dashboard</h1>
-<p class="lead">The multi-instance dashboard lets you run 7+ podex instances simultaneously and manage them from a single React-based UI. It includes notes, kanban board, schedule, reminders, settings, and memory federation.</p>
+<p class="lead">The multi-instance dashboard lets you run 7+ Weasley Podex instances simultaneously and manage them from a single React-based UI. It includes notes, kanban board, schedule, reminders, settings, and memory federation.</p>
 
 <h2>Starting the Dashboard</h2>
-<pre><code>jaw dashboard serve</code></pre>
-<p>This starts the manager server on port 24576 (default) and scans for podex instances starting from port 3457.</p>
+<pre><code>weasley-podex dashboard serve</code></pre>
+<p>This starts the manager server on port 24576 (default) and scans for Weasley Podex instances starting from port 3457.</p>
 <table>
 <tr><th>Option</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>--port</code></td><td>24576</td><td>Dashboard server port</td></tr>
@@ -106,7 +105,7 @@
 <h2>Instance Management</h2>
 <p>The dashboard scans for running instances and displays them in a list. Each instance shows its port, status, active CLI, model, and working directory.</p>
 <ul>
-<li><strong>Start</strong>: Launch a new podex instance on an available port</li>
+<li><strong>Start</strong>: Launch a new Weasley Podex instance on an available port</li>
 <li><strong>Stop</strong>: Gracefully shut down an instance</li>
 <li><strong>Preview</strong>: Embed the instance's Web UI in the dashboard via iframe</li>
 <li><strong>Permissions</strong>: Manage instance-level settings</li>
@@ -116,7 +115,7 @@
 <table>
 <tr><th>Tab</th><th>Description</th></tr>
 <tr><td><strong>Instances</strong></td><td>Instance list with start/stop/preview controls</td></tr>
-<tr><td><strong>Notes</strong></td><td>Jawsidian markdown notes with WYSIWYG editing</td></tr>
+<tr><td><strong>Notes</strong></td><td>Weasley Podex Notes markdown notes with WYSIWYG editing</td></tr>
 <tr><td><strong>Board</strong></td><td>Kanban task board with workflow lanes</td></tr>
 <tr><td><strong>Schedule</strong></td><td>Heartbeat job scheduling</td></tr>
 <tr><td><strong>Reminders</strong></td><td>Eisenhower-style priority matrix with drag/drop</td></tr>
@@ -127,15 +126,15 @@
 <p>The instance list supports filtering by status, CLI type, and text search across instance metadata.</p>
 
 <h2>Memory Federation</h2>
-<p>The dashboard provides L2 cross-instance memory search. This fans out queries to all <code>~/.podex-*</code> instance SQLite indexes.</p>
+<p>The dashboard provides L2 cross-instance memory search. This fans out queries to all <code>~/.weasley/podex-*</code> instance SQLite indexes.</p>
 <pre><code># Search across all instances
-jaw dashboard memory search "JWT authentication"
+weasley-podex dashboard memory search "JWT authentication"
 
 # List discovered instances
-jaw dashboard memory instances
+weasley-podex dashboard memory instances
 
 # Read from a specific instance
-jaw dashboard memory read 3457:shared/decisions.md</code></pre>
+weasley-podex dashboard memory read 3457:shared/decisions.md</code></pre>
 
 <h2>Desktop Integration</h2>
 <p>In the Electron desktop app, the dashboard gains additional panels:</p>
@@ -154,7 +153,7 @@ jaw dashboard memory read 3457:shared/decisions.md</code></pre>
 
 <div class="page-nav">
 <a class="prev" href="../concepts/prompts.html">Prompts</a>
-<a class="next" href="notes.html">Notes (Jawsidian)</a>
+<a class="next" href="notes.html">Weasley Podex Notes</a>
 </div>
 </main>
 </div>

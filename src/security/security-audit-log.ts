@@ -2,7 +2,7 @@ import Database from 'better-sqlite3';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 
 export type SecurityEventType =
     | 'service_start'
@@ -43,7 +43,7 @@ type Row = {
     hash: string;
 };
 
-const DB_PATH = join(JAW_HOME, 'security-audit.db');
+const DB_PATH = join(WEASLEY_PODEX_HOME, 'security-audit.db');
 
 function ensureDir(p: string): void {
     const d = dirname(p);

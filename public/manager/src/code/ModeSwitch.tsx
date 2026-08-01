@@ -5,7 +5,7 @@ type ModeSwitchProps = {
 
 export function ModeSwitch({ codeMode, onChange }: ModeSwitchProps) {
     return (
-        <div className="mode-switch" role="tablist" aria-label="Jaw / Code mode">
+        <div className="mode-switch" role="tablist" aria-label="Weasley Podex / Code mode">
             <button
                 type="button"
                 role="tab"
@@ -13,7 +13,7 @@ export function ModeSwitch({ codeMode, onChange }: ModeSwitchProps) {
                 aria-selected={!codeMode}
                 onClick={() => onChange(false)}
             >
-                Jaw
+                Weasley Podex
             </button>
             <button
                 type="button"

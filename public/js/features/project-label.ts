@@ -6,7 +6,7 @@ const HOME_PREFIX_RE = /^\/(?:Users|home)\/[^/]+/;
 const MAX_LABEL_LENGTH = 32;
 
 export type ProjectLabel = {
-    /** Display text, e.g. "~/Developer/…/podex +2" */
+    /** Display text, e.g. "~/Developer/…/weasley-podex +2" */
     text: string;
     /** Full untruncated paths for the title/tooltip attribute. */
     title: string;

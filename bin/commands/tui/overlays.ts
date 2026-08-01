@@ -9,6 +9,7 @@ import {
     makeSelectionKey, resetAutocompleteState,
 } from '../../../src/cli/tui/overlay.js';
 import { getPlainCommandDraft, getTrailingTextSegment } from '../../../src/cli/tui/composer.js';
+import { setWeasleyPodexEnv } from '../../../src/core/weasley-podex-env.js';
 import { findAtMentionMatch, listRepoFiles } from '../../../src/cli/tui/file-mention.js';
 import { clipTextToCols } from '../../../src/cli/tui/renderers.js';
 import { tuiWrite } from './tui-io.js';
@@ -147,8 +148,9 @@ export async function applySettingsSelection(ctx: TuiContext): Promise<void> {
         const tuiPatch = patch['tui'];
         if (tuiPatch && typeof tuiPatch === 'object' && !Array.isArray(tuiPatch)) {
             ctx.tuiConfig = { ...ctx.tuiConfig, ...(tuiPatch as Record<string, unknown>) };
-            if ((tuiPatch as Record<string, unknown>)['theme'] === 'dark' || (tuiPatch as Record<string, unknown>)['theme'] === 'light') {
-                process.env['JAW_TUI_THEME'] = (tuiPatch as Record<string, string>)['theme'];
+            const theme = (tuiPatch as Record<string, unknown>)['theme'];
+            if (theme === 'dark' || theme === 'light') {
+                setWeasleyPodexEnv('TUI_THEME', theme);
             }
         }
         await refreshInfo(ctx);

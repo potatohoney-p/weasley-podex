@@ -2,6 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { migrateSettings } from '../../src/core/config.ts';
 
+test('CfgM-000: migrateSettings upgrades exact legacy theme seeds', () => {
+    const migrated = migrateSettings({ tui: { themeSeed: 'jaw-dark' } });
+    assert.equal(migrated.tui.themeSeed, 'weasley-podex-dark');
+});
+
 test('CfgM-001: migrateSettings preserves user-typed Claude full-ID perCli model', () => {
     const s = migrateSettings({
         cli: 'claude',

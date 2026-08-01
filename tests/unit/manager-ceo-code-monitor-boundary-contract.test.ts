@@ -9,7 +9,7 @@ function read(path: string): string {
     return readFileSync(join(root, path), 'utf8');
 }
 
-test('Jaw CEO console owns orchestration control, not Code runtime monitor panels', () => {
+test('Weasley Podex CEO console owns orchestration control, not Code runtime monitor panels', () => {
     const ceoConsole = read('public/manager/src/jaw-ceo/JawCeoConsole.tsx');
     const ceoPanels = read('public/manager/src/jaw-ceo/JawCeoConsolePanels.tsx');
     const ceoHook = read('public/manager/src/jaw-ceo/useJawCeo.ts');
@@ -20,7 +20,7 @@ test('Jaw CEO console owns orchestration control, not Code runtime monitor panel
     assert.ok(combined.includes('continueCompletion'), 'CEO must own completion continuation actions');
     assert.ok(combined.includes('summarizeCompletion'), 'CEO must own completion summary actions');
     assert.ok(combined.includes('ackCompletion'), 'CEO must own completion acknowledgment actions');
-    assert.ok(combined.includes('/api/jaw-ceo'), 'CEO must use the Jaw CEO control API');
+    assert.ok(combined.includes('/api/jaw-ceo'), 'CEO must use the Weasley Podex CEO control API');
     assert.equal(combined.includes('GoalPabcdStatusPanel'), false, 'CEO must not render the Code goal/PABCD monitor');
     assert.equal(combined.includes('BackgroundTaskMonitorPanel'), false, 'CEO must not render the Code background task monitor');
     assert.equal(combined.includes('WorkerProgressMonitorPanel'), false, 'CEO must not render the Code worker progress monitor');
@@ -48,7 +48,7 @@ test('runtime observability monitors stay Manager-local and out of the Code sess
     assert.ok(statusClient.includes('/api/manager/runtime-status'), 'Code goal/PABCD monitor must read Manager runtime status');
     assert.ok(backgroundClient.includes('/api/bgtask'), 'Code background monitor must read background task APIs');
     assert.ok(workerClient.includes('/api/orchestrate/worker-progress'), 'Code worker monitor must read worker progress APIs');
-    assert.equal(combined.includes('/api/jaw-ceo'), false, 'Code runtime monitors must not call Jaw CEO control APIs');
+    assert.equal(combined.includes('/api/jaw-ceo'), false, 'Code runtime monitors must not call Weasley Podex CEO control APIs');
     assert.equal(combined.includes('sendJawCeoMessage'), false, 'Code runtime monitors must not send CEO messages');
     assert.equal(combined.includes('continueJawCeoCompletion'), false, 'Code runtime monitors must not own CEO continuation actions');
 });

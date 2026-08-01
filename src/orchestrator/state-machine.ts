@@ -1,6 +1,6 @@
-﻿// ─── PABCD State Machine ────────────────────────────
+// ─── PABCD State Machine ────────────────────────────
 // Sole orchestration state manager. Replaces the old round-loop pipeline entirely.
-// State persisted in jaw.db orc_state table.
+// State persisted in the Weasley Podex database's orc_state table.
 // CLI (bin/commands/orchestrate.ts) and server share the same DB.
 
 import { getOrcState, setOrcState, resetOrcState, resetAllOrcStates, deleteNonDefaultOrcStates } from '../core/db.js';
@@ -165,12 +165,12 @@ export function resetAllStaleStates(): number {
   const result = resetAllOrcStates.run();
   const cleared = result.changes;
   if (cleared > 0) {
-    console.log(`[jaw:pabcd] cleared ${cleared} stale orchestration state(s) (>24h old)`);
+    console.log(`[weasley-podex:pabcd] cleared ${cleared} stale orchestration state(s) (>24h old)`);
     broadcast('orc_state', { state: 'IDLE', title: '', scope: 'all' });
   }
   const pruned = deleteNonDefaultOrcStates.run();
   if (pruned.changes > 0) {
-    console.log(`[jaw:pabcd] pruned ${pruned.changes} non-default scope row(s)`);
+    console.log(`[weasley-podex:pabcd] pruned ${pruned.changes} non-default scope row(s)`);
   }
   return cleared;
 }
@@ -191,14 +191,14 @@ Update the <interview_tracker> at the END of your response (hidden from user).
 ⛔ Do NOT print known/unknown arrays in your visible text. No raw JSON in the response body.
 
 If all dimensions are covered and no blocking unknowns remain, suggest:
-"Ready for planning. Run \`podex orchestrate P\` to proceed."
+"Ready for planning. Run \`weasley-podex orchestrate P\` to proceed."
 
 User says:`,
 
   Pb2: `[PLANNING MODE — User Feedback]
 The user has reviewed your plan. Apply their feedback and present the revised plan.
 If user explicitly approves, advance with evidence:
-\`podex orchestrate A --attest '{"from":"P","to":"A","did":"<the plan you wrote>"}'\`.
+\`weasley-podex orchestrate A --attest '{"from":"P","to":"A","did":"<the plan you wrote>"}'\`.
 Otherwise revise and present again.
 
 ⛔ STOP after presenting the revision. WAIT for another user response.
@@ -221,7 +221,7 @@ Below are the plan audit results from the verification employee.
 If issues found: fix the plan and re-audit (output employee JSON again).
 If PASS: report results to the user and wait for approval.
 When user approves, advance with evidence:
-\`podex orchestrate B --attest '{"from":"A","to":"B","did":"<who audited + verdict>"}'\`.
+\`weasley-podex orchestrate B --attest '{"from":"A","to":"B","did":"<who audited + verdict>"}'\`.
 
 Reporting: distill the verdict and key findings into a concise bullet list (≤5 items).
 Use a diagram when the audit covers 3+ files or integration points.
@@ -236,7 +236,7 @@ Below are verification results for your code.
 If NEEDS_FIX: fix and re-verify (output employee JSON again).
 If DONE: report results to the user and wait for approval.
 When user approves, advance with evidence:
-\`podex orchestrate C --attest '{"from":"B","to":"C","did":"<what you built + verifier verdict>"}'\`.
+\`weasley-podex orchestrate C --attest '{"from":"B","to":"C","did":"<what you built + verifier verdict>"}'\`.
 
 Reporting: distill the verdict and key findings into a concise bullet list (≤5 items).
 Use a diagram when the verification covers 3+ files.
@@ -400,7 +400,7 @@ Suggest planning when ALL of these hold:
 - All "assumption" items either confirmed or explicitly accepted by user
 
 When ready: Summarize known facts (grouped by dimension), remaining unknowns, risky assumptions.
-Then suggest: "Ready for planning. Run \`podex orchestrate P\` to proceed."
+Then suggest: "Ready for planning. Run \`weasley-podex orchestrate P\` to proceed."
 
 The user can exit anytime: \`orchestrate reset\` (→ IDLE) or \`orchestrate P\` (→ Planning).
 
@@ -448,7 +448,7 @@ You are now in Planning mode. Write the complete plan, then report it simply to 
 Think of this as: a developer reporting a fully-formed plan to the CEO. The plan is already complete internally — your job is to explain it clearly and get approval.
 
 Steps:
-1. Read project docs, dev skills, and relevant code. If anything is unclear, return to Interview (\`podex orchestrate I\`) — do NOT ask questions in P.
+1. Read project docs, dev skills, and relevant code. If anything is unclear, return to Interview (\`weasley-podex orchestrate I\`) — do NOT ask questions in P.
 2. Write the complete plan internally:
    - Diff-level precision: exact file paths (NEW/MODIFY/DELETE), before/after diffs for MODIFY, complete content for NEW.
    - Loop-spec header (C2+): Loop archetype (from Interview) · Trigger · Goal · Non-goals · Verifier (the command/gate and what it measures, not only pass/fail) · Stop condition · Memory artifact · Expected terminal states (DONE|NOOP|BLOCKED|NEEDS_HUMAN|BUDGET_EXHAUSTED) · Escalation. For open-ended optimization add the divergence plan (descriptor axes, candidate/archetype assignments, deterministic selection rule, telemetry schema); if the verifier only reports win/lose or a bare score, instrumentation is B's first work item — before any candidate.
@@ -463,14 +463,14 @@ Steps:
 ⛔ STOP. WAIT for user approval before advancing.
 ⛔ When approved, advance WITH an evidence attestation (the forward gate requires it):
 \`\`\`bash
-podex orchestrate A --attest '{"from":"P","to":"A","did":"<one sentence: the concrete plan you wrote — files/surfaces + the devlog path>"}'
+weasley-podex orchestrate A --attest '{"from":"P","to":"A","did":"<one sentence: the concrete plan you wrote — files/surfaces + the devlog path>"}'
 \`\`\`
 
 You will receive user feedback with a [PLANNING MODE] prefix. Revise until approved.
 
 IMPORTANT — Project Workspace:
 Before writing a plan, confirm the project workspace: "작업할 프로젝트 디렉토리를 확인합니다: <dirs>. 이대로 진행할까요?"
-If projectDirs is not set, ask the user to run \`podex project set /path/to/repo\` before proceeding. Do NOT guess or infer the project path.`,
+If projectDirs is not set, ask the user to run \`weasley-podex project set /path/to/repo\` before proceeding. Do NOT guess or infer the project path.`,
 
   A: `[PABCD — A: PLAN AUDIT]
 
@@ -480,7 +480,7 @@ An employee must verify that your plan from P phase is feasible and safe before 
 ⚠️ You MUST dispatch an audit employee. Do NOT skip this step.
 ⚠️ Do NOT say "audit is unnecessary" — every plan must be verified before coding.
 
-FIRST: The approved plan is auto-injected at the top of every \`podex dispatch\`
+FIRST: The approved plan is auto-injected at the top of every \`weasley-podex dispatch\`
 task body under \`## Approved Plan\`. Do NOT tell the worker to read any file —
 just write the audit task itself.
 
@@ -495,7 +495,7 @@ Project root: <absolute path to the current working repository from pwd -P>
 The approved plan is already injected above under \`## Approved Plan\` — read it there.
 
 Resolve every repository-relative path against Project root.
-Do NOT use ~/.podex*, JAW_HOME, process.cwd(), or the employee temp cwd as the repository root.
+Do NOT use ~/.weasley/podex*, legacy ~/.podex*, WEASLEY_PODEX_HOME, process.cwd(), or the employee temp cwd as the repository root.
 
 Audit the PLAN (not code). Verify:
 1) All imports in the plan resolve to real files.
@@ -509,18 +509,18 @@ Then dispatch it (async — returns a runId immediately; the audit result
 re-enters your context in full as [PLAN AUDIT — Employee Results], up to ~8k
 chars):
 \`\`\`bash
-podex dispatch --agent "Backend" --task-file /tmp/jaw-audit-<epoch>.md --async
+weasley-podex dispatch --agent "Backend" --task-file /tmp/jaw-audit-<epoch>.md --async
 \`\`\`
 
 When the result arrives, judge it directly; only if it is marked "clipped",
-read the remainder first (\`podex worker read <runId> --tail 120\`):
+read the remainder first (\`weasley-podex worker read <runId> --tail 120\`):
 - If FAIL: fix the plan and re-dispatch.
 - If PASS: report results to the user.
 
 ⛔ STOP after reporting. WAIT for user approval.
 ⛔ When user approves, advance WITH an evidence attestation (the forward gate requires it):
 \`\`\`bash
-podex orchestrate B --attest '{"from":"A","to":"B","did":"<one sentence: who audited the plan + the verdict (PASS / fixed N issues)>"}'
+weasley-podex orchestrate B --attest '{"from":"A","to":"B","did":"<one sentence: who audited the plan + the verdict (PASS / fixed N issues)>"}'
 \`\`\``,
 
   B: `[PABCD — B: BUILD]
@@ -529,7 +529,7 @@ You are now in Build mode. The plan has been audited and approved.
 
 ⚠️ By default, YOU (the Boss) implement the code DIRECTLY. Employees are READ-ONLY verifiers.
 💡 To delegate writes to a worker, use \`--mutable\` (and optionally \`--scope\`):
-   \`podex dispatch --agent "Frontend" --mutable --scope "src/components" --task "Create button component"\`
+   \`weasley-podex dispatch --agent "Frontend" --mutable --scope "src/components" --task "Create button component"\`
 
 ⛔ Without --mutable, these are forbidden: "implement the feature", "write the code", "create src/x.ts".
 ✅ Always allowed: "verify src/x.ts compiles", "check integration of Y reports DONE/NEEDS_FIX".
@@ -550,7 +550,7 @@ Project root: <absolute path to the current working repository from pwd -P>
 The approved plan is already injected above under \`## Approved Plan\` — read it there.
 
 Resolve every repository-relative path against Project root.
-Do NOT use ~/.podex*, JAW_HOME, process.cwd(), or the employee temp cwd as the repository root.
+Do NOT use ~/.weasley/podex*, legacy ~/.podex*, WEASLEY_PODEX_HOME, process.cwd(), or the employee temp cwd as the repository root.
 
 Verify:
 1) Files in plan exist with expected content.
@@ -565,18 +565,18 @@ Then dispatch it (async — returns a runId immediately; the verification result
 re-enters your context in full as [IMPLEMENTATION REVIEW — Employee Results],
 up to ~8k chars):
 \`\`\`bash
-podex dispatch --agent "Backend" --task-file /tmp/jaw-verify-<epoch>.md --async
+weasley-podex dispatch --agent "Backend" --task-file /tmp/jaw-verify-<epoch>.md --async
 \`\`\`
 
 When the result arrives, judge it directly; only if it is marked "clipped",
-read the remainder first (\`podex worker read <runId> --tail 120\`):
+read the remainder first (\`weasley-podex worker read <runId> --tail 120\`):
 - NEEDS_FIX: YOU fix the issues yourself, then re-dispatch verification.
 - DONE: Report results to the user.
 
 ⛔ STOP after reporting. WAIT for user approval.
 ⛔ When user approves, advance WITH an evidence attestation (the forward gate requires it):
 \`\`\`bash
-podex orchestrate C --attest '{"from":"B","to":"C","did":"<one sentence: what you built + who verified it + the verdict>"}'
+weasley-podex orchestrate C --attest '{"from":"B","to":"C","did":"<one sentence: what you built + who verified it + the verdict>"}'
 \`\`\``,
 
   C: `[PABCD — C: CHECK + SCRUTINY]
@@ -587,7 +587,7 @@ You are now in Check mode. Perform verification in order:
 1. Run \`npx tsc --noEmit\` (TypeScript) or equivalent build check.
 2. Run tests if they exist.
 3. Verify all files saved and consistent.
-If Stage 1 fails → report and suggest \`podex orchestrate B\` (code fix).
+If Stage 1 fails → report and suggest \`weasley-podex orchestrate B\` (code fix).
 
 **Stage 1.5: Render Grounding (when applicable)**
 If any changed file is a render artifact (HTML, SVG, layout CSS, canvas/chart JS,
@@ -628,15 +628,15 @@ IF Seed exists:
   - Empty evidence = NOT MET.
 
 **Stage 3: Verdict**
-- All passed → RUN \`podex orchestrate D --attest\` now (C→D uniquely requires a pasted command
-  tail — a plain \`podex orchestrate D\` or narration alone will NOT pass the gate):
+- All passed → RUN \`weasley-podex orchestrate D --attest\` now (C→D uniquely requires a pasted command
+  tail — a plain \`weasley-podex orchestrate D\` or narration alone will NOT pass the gate):
   \`\`\`bash
-  podex orchestrate D --attest '{"from":"C","to":"D","did":"<what you checked>","checkOutput":"<paste the real tail of tsc/test output>","exitCode":0}'
+  weasley-podex orchestrate D --attest '{"from":"C","to":"D","did":"<what you checked>","checkOutput":"<paste the real tail of tsc/test output>","exitCode":0}'
   \`\`\`
   Do not merely suggest it or write "C → D"; execute the command before claiming C is complete.
-- Code issue → suggest \`podex orchestrate B\`
-- Plan issue (AC not met) → suggest \`podex orchestrate P\`
-- Spec issue (wrong requirements) → suggest \`podex orchestrate I\``,
+- Code issue → suggest \`weasley-podex orchestrate B\`
+- Plan issue (AC not met) → suggest \`weasley-podex orchestrate P\`
+- Spec issue (wrong requirements) → suggest \`weasley-podex orchestrate I\``,
 
   D: `[PABCD — D: DONE + WONDER/REFLECT]
 
@@ -663,8 +663,8 @@ Then perform two reflections:
 - D → IDLE → P is a context/bias-flush boundary: the next cycle resumes from disk artifacts (worklog, devlog, death log), not transcript momentum. Report the honest terminal state — a budget/time stop is BUDGET_EXHAUSTED with best-so-far evidence, never "완료".
 
 Present findings to user. Then:
-- If significant issues: "Seed를 개선하려면: \`podex orchestrate I\`"
-- If a goal is active and the objective still has remaining work-phases: this cycle's D closes the current work-phase; start the next one with \`podex orchestrate P\` (the legal path is D → IDLE → P). Do not declare the whole goal done yet.
+- If significant issues: "Seed를 개선하려면: \`weasley-podex orchestrate I\`"
+- If a goal is active and the objective still has remaining work-phases: this cycle's D closes the current work-phase; start the next one with \`weasley-podex orchestrate P\` (the legal path is D → IDLE → P). Do not declare the whole goal done yet.
 - Otherwise: "완료. D 단계까지 실행했고 오케스트레이션을 마무리했습니다."
 
 Returning to idle after D (next work-phase, if any, re-enters at P).`,
@@ -721,7 +721,7 @@ export function canTransition(
   }
   // Phase 2.1: I→P soft gate — warn if no interview context, but don't block.
   if (from === 'I' && to === 'P' && !ctx?.interview) {
-    console.warn('[jaw:pabcd] I→P without interview context — proceeding anyway');
+    console.warn('[weasley-podex:pabcd] I→P without interview context — proceeding anyway');
   }
 
   // Phase 60: AGENT path — FORM-ONLY evidence gate on the 4 forward transitions.

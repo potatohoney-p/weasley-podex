@@ -334,7 +334,7 @@ export function closeVoiceSession(ctx: JawCeoCoordinatorContext, sessionId: stri
     return auditTool(ctx.store, {
         tool: 'ceo.voice.close',
         ok: true,
-        message: `Closed Jaw CEO voice session ${sessionId}.`,
+        message: `Closed Weasley Podex CEO voice session ${sessionId}.`,
         sourceLabels: ['realtime'],
     });
 }

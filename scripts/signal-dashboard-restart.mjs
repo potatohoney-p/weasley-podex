@@ -66,12 +66,12 @@ for (const row of rows) {
     try {
         process.kill(row.pid, 'SIGUSR2');
         signaled += 1;
-        console.log(`[jaw:restart] SIGUSR2 -> pid ${row.pid}`);
+        console.log(`[weasley-podex:restart] SIGUSR2 -> pid ${row.pid}`);
     } catch {
         // Process exited between ps and signal.
     }
 }
 
 if (signaled === 0) {
-    console.log('[jaw:restart] no running dashboard — skip');
+    console.log('[weasley-podex:restart] no running dashboard — skip');
 }

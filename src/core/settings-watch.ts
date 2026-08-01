@@ -1,5 +1,5 @@
 ﻿// ─── Settings File Watcher (#233 external-write detection) ──
-// A separate CLI process (`podex project set` in a terminal) writes
+// A separate CLI process (`weasley-podex project set` in a terminal) writes
 // settings.json directly, so the running server's in-memory `settings`
 // goes stale and no `settings_change` ever reaches web UI or manager.
 // This watcher closes that gap: debounced fs.watch on the settings file,

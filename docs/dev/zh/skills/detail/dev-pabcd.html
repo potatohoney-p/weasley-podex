@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PABCD 工作流 — podex 文档</title>
+<title>PABCD 工作流 — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.3); }
@@ -29,7 +28,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -51,7 +50,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">使用指南</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -100,7 +99,7 @@
     <a href="../../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">首页</a>
   </div>
 </nav>
@@ -109,7 +108,7 @@
 <h1>PABCD 工作流 <span class="badge badge-active">默认启用</span></h1>
 <p class="lead">结构化的 Plan（计划） &rarr; Audit（审计） &rarr; Build（构建） &rarr; Check（检查） &rarr; Done（完成）开发工作流，每个关卡都设有强制性的用户检查点。</p>
 
-<div class="callout callout-info"><strong>自动启用的技能。</strong> <code>dev-pabcd</code> 是每个会话自动注入的 10 个开发技能之一。它在编排模式下激活，提供结构化的五阶段工作流，确保在没有经过审核的计划之前不会执行任何构建。</div>
+<div class="callout callout-info"><strong>捆绑核心技能。</strong><code>dev-pabcd</code> 是 <code>skills_ref/registry.json</code> 中八项经审计技能之一，在结构化编排中提供五阶段交付工作流。</div>
 
 <h2>快速参考</h2>
 <table>
@@ -121,7 +120,7 @@
 <tr><td>阶段</td><td>P（计划） &rarr; A（审计） &rarr; B（构建） &rarr; C（检查） &rarr; D（完成）</td></tr>
 <tr><td>用户关卡</td><td>P、A、B 需要用户批准 &mdash; C、D 自动推进</td></tr>
 <tr><td>Worker 角色</td><td>只读验证者（不编写代码）</td></tr>
-<tr><td>重置命令</td><td><code>podex orchestrate reset</code></td></tr>
+<tr><td>重置命令</td><td><code>weasley-podex orchestrate reset</code></td></tr>
 </table>
 
 <h2>状态机</h2>
@@ -139,12 +138,12 @@
 <h3>状态转换命令</h3>
 <table>
 <tr><th>命令</th><th>转换</th><th>前置条件</th></tr>
-<tr><td><code>podex orchestrate P</code></td><td>进入计划阶段</td><td>必须处于 IDLE 状态</td></tr>
-<tr><td><code>podex orchestrate A</code></td><td>进入计划审计阶段</td><td>必须处于 P 阶段（计划已批准）</td></tr>
-<tr><td><code>podex orchestrate B</code></td><td>进入构建阶段</td><td>必须处于 A 阶段（审计已通过）</td></tr>
-<tr><td><code>podex orchestrate C</code></td><td>进入检查阶段</td><td>必须处于 B 阶段（构建已批准）</td></tr>
-<tr><td><code>podex orchestrate D</code></td><td>进入完成阶段</td><td>必须处于 C 阶段（检查已完成）</td></tr>
-<tr><td><code>podex orchestrate reset</code></td><td>返回 IDLE 状态</td><td>任意状态</td></tr>
+<tr><td><code>weasley-podex orchestrate P</code></td><td>进入计划阶段</td><td>必须处于 IDLE 状态</td></tr>
+<tr><td><code>weasley-podex orchestrate A</code></td><td>进入计划审计阶段</td><td>必须处于 P 阶段（计划已批准）</td></tr>
+<tr><td><code>weasley-podex orchestrate B</code></td><td>进入构建阶段</td><td>必须处于 A 阶段（审计已通过）</td></tr>
+<tr><td><code>weasley-podex orchestrate C</code></td><td>进入检查阶段</td><td>必须处于 B 阶段（构建已批准）</td></tr>
+<tr><td><code>weasley-podex orchestrate D</code></td><td>进入完成阶段</td><td>必须处于 C 阶段（检查已完成）</td></tr>
+<tr><td><code>weasley-podex orchestrate reset</code></td><td>返回 IDLE 状态</td><td>任意状态</td></tr>
 </table>
 
 <h2>阶段详情</h2>
@@ -175,7 +174,7 @@
 </ul>
 
 <h4>开发日志命名约定</h4>
-<p>如果 PABCD 工作创建或更新了 <code>devlog/</code> 计划产物，计划中必须列出精确的 Jawdev 编号文件名：</p>
+<p>如果 PABCD 工作创建或更新了 <code>devlog/</code> 计划产物，计划中必须列出准确的带编号 Weasley Podex devlog 文件名：</p>
 <pre><code>00_overview.md
 01_phase1_&lt;slug&gt;.md
 02_phase2_&lt;slug&gt;.md</code></pre>
@@ -187,7 +186,7 @@
 <li>"有没有我不应该独自决定的业务逻辑？"</li>
 <li>"第一部分是否符合您的意图？"</li>
 </ol>
-<p>计划会被展示，并根据反馈进行修改。当用户批准后，使用 <code>podex orchestrate A</code> 进行状态转换。</p>
+<p>计划会被展示，并根据反馈进行修改。当用户批准后，使用 <code>weasley-podex orchestrate A</code> 进行状态转换。</p>
 </div>
 
 <div class="phase-card">
@@ -201,14 +200,14 @@
 <li>未经用户批准不得引入新的 <code>structure/</code>、<code>devlog/</code>、文档或 AGENTS 文件</li>
 <li>新的 JS/TS 文件遵循 TypeScript 优先规则，除非计划中说明了为什么需要使用 JS</li>
 <li>新的 TypeScript 代码兼容严格模式，或已说明限制</li>
-<li>新的开发日志阶段文档使用编号的 Jawdev 文件名约定</li>
+<li>新的开发日志阶段文档使用带编号的 Weasley Podex devlog 文件名约定</li>
 </ul>
 <p>Worker 输出审计的 JSON 结果。审查结果：</p>
 <ul>
 <li><strong>FAIL</strong> &rarr; 修复计划，重新审计</li>
 <li><strong>PASS</strong> &rarr; 向用户报告结果</li>
 </ul>
-<p>当用户批准后，使用 <code>podex orchestrate B</code> 进行状态转换。</p>
+<p>当用户批准后，使用 <code>weasley-podex orchestrate B</code> 进行状态转换。</p>
 </div>
 
 <div class="phase-card">
@@ -220,7 +219,7 @@
 <li><strong>DONE</strong> &rarr; 向用户报告结果</li>
 </ul>
 <p>除非在 P 阶段已批准或用户明确要求，否则不创建 <code>structure/</code> 或 <code>devlog/</code>。</p>
-<p>当用户批准后，使用 <code>podex orchestrate C</code> 进行状态转换。</p>
+<p>当用户批准后，使用 <code>weasley-podex orchestrate C</code> 进行状态转换。</p>
 </div>
 
 <div class="phase-card">
@@ -232,7 +231,7 @@
 <li>如适用，更新项目结构文档</li>
 <li>报告完成摘要</li>
 </ol>
-<p>完成后，通过 <code>podex orchestrate D</code> 自动转换到 D 阶段。</p>
+<p>完成后，通过 <code>weasley-podex orchestrate D</code> 自动转换到 D 阶段。</p>
 </div>
 
 <div class="phase-card">
@@ -250,20 +249,20 @@
 <table>
 <tr><th>#</th><th>规则</th><th>详情</th></tr>
 <tr><td>1</td><td>每次响应一个阶段</td><td>展示工作内容，然后在 P、A、B 关卡等待用户批准。绝不跳过。</td></tr>
-<tr><td>2</td><td>严格顺序</td><td>P &rarr; A &rarr; B &rarr; C &rarr; D。使用 <code>podex orchestrate reset</code> 从 IDLE 重新开始。</td></tr>
+<tr><td>2</td><td>严格顺序</td><td>P &rarr; A &rarr; B &rarr; C &rarr; D。使用 <code>weasley-podex orchestrate reset</code> 从 IDLE 重新开始。</td></tr>
 <tr><td>3</td><td>Worker 验证，Boss 编写</td><td>Worker 是只读的。所有代码由 Boss 在 B 阶段直接编写。</td></tr>
 </table>
 
 <h2>仓库根目录约定</h2>
 <p>在编写 PABCD 计划或派遣 Worker 之前，需要从目标仓库使用 <code>pwd -P</code> 确定实际的工作仓库根目录。</p>
 
-<p>每个 A/B 阶段的 <code>podex dispatch</code> 任务体<strong>必须</strong>以以下内容开头：</p>
+<p>每个 A/B 阶段的 <code>weasley-podex dispatch</code> 任务体<strong>必须</strong>以以下内容开头：</p>
 <pre><code>Project root: /absolute/path/to/current/repo</code></pre>
 
 <table>
 <tr><th>规则</th><th>说明</th></tr>
-<tr><td><code>Project root</code> = 工作仓库</td><td>必须是当前工作仓库，而不是 <code>JAW_HOME</code></td></tr>
-<tr><td>禁止推断</td><td>绝不允许 Worker 从 <code>~/.podex*</code>、<code>process.cwd()</code> 或员工临时目录推断仓库根目录</td></tr>
+<tr><td><code>Project root</code> = 工作仓库</td><td>必须是当前工作仓库，而不是 <code>WEASLEY_PODEX_HOME</code></td></tr>
+<tr><td>禁止推断</td><td>绝不允许 Worker 从 <code>~/.weasley/podex*</code>、<code>process.cwd()</code> 或员工临时目录推断仓库根目录</td></tr>
 <tr><td>绝对路径</td><td>所有相对仓库路径（<code>src/</code>、<code>tests/</code>、<code>structure/</code>、<code>skills_ref/</code>）必须基于 <code>Project root</code> 解析</td></tr>
 <tr><td>根目录未知 = 停止</td><td>如果 <code>Project root</code> 未知，在派遣前停止并询问</td></tr>
 </table>
@@ -271,10 +270,10 @@
 <h2>共享计划注入</h2>
 <p>当 P 阶段完成时，计划保存到<strong>工作日志的 <code>## Plan</code> 部分</strong>（唯一的真实来源）并保持在 <code>ctx.plan</code> 中。不会创建项目根目录文件。</p>
 
-<div class="callout callout-info"><strong>自动注入：</strong>在 A 和 B 阶段，编排器会在每个 <code>podex dispatch</code> 任务顶部的 <code>## Approved Plan</code> 下自动注入完整的计划内容。Worker 无需读取计划文件 &mdash; 计划会自动添加到前面。</div>
+<div class="callout callout-info"><strong>自动注入：</strong>在 A 和 B 阶段，编排器会在每个 <code>weasley-podex dispatch</code> 任务顶部的 <code>## Approved Plan</code> 下自动注入完整的计划内容。Worker 无需读取计划文件 &mdash; 计划会自动添加到前面。</div>
 
 <p>你的派遣任务体应该只包含实际的审计/验证指令。示例：</p>
-<pre><code>podex dispatch --agent "Backend" --task "Project root: /path/to/repo
+<pre><code>weasley-podex dispatch --agent "Backend" --task "Project root: /path/to/repo
 
 Audit: verify the imports in src/routes/auth.ts..."</code></pre>
 <p>不需要"读取计划"的指令 &mdash; 计划已经被自动注入了。</p>

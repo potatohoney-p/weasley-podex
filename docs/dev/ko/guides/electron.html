@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Electron 데스크톱 — podex 문서</title>
+<title>Electron 데스크톱 — Weasley Podex 문서</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,14 +58,14 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Electron 데스크톱</h1>
-<p class="lead">podex는 Electron 데스크톱 애플리케이션으로도 사용할 수 있습니다. 패키지 빌드는 Node.js 22 sidecar를 포함하므로 전역 npm install 없이도 대시보드 서버를 실행하고 터미널 <code>jaw</code> 명령을 설치할 수 있습니다.</p>
+<p class="lead">Weasley Podex는 Electron 데스크톱 애플리케이션으로도 사용할 수 있습니다. 패키지 빌드는 Node.js 22 sidecar를 포함하므로 전역 npm install 없이도 대시보드 서버를 실행하고 터미널 <code>weasley-podex</code> 명령을 설치할 수 있습니다.</p>
 
 <h2>설치</h2>
 <p>릴리스 또는 수동 desktop-release workflow에서 데스크톱 아티팩트를 다운로드하세요. macOS는 DMG/ZIP, Windows는 NSIS installer/ZIP, Linux는 AppImage로 배포됩니다.</p>
@@ -74,14 +73,14 @@
 npm run electron:dist:mac</code></pre>
 
 <h2>번들 Sidecar</h2>
-<p>릴리스 workflow는 패키징 전에 <code>scripts/bundle-sidecar.sh</code>를 실행합니다. Sidecar에는 Node.js 24.17, 컴파일된 서버 출력, 프론트엔드 assets, production dependencies, <code>better-sqlite3</code> 같은 rebuilt native modules, 그리고 <code>server/bin/jaw</code>/<code>server/bin/jaw.cmd</code> CLI shim이 포함됩니다.</p>
+<p>릴리스 workflow는 패키징 전에 <code>scripts/bundle-sidecar.sh</code>를 실행합니다. Sidecar에는 Node.js 24.17, 컴파일된 서버 출력, 프론트엔드 assets, production dependencies, <code>better-sqlite3</code> 같은 rebuilt native modules, 그리고 <code>server/bin/weasley-podex</code>/<code>server/bin/weasley-podex.cmd</code> CLI shim이 포함됩니다.</p>
 <table>
 <tr><th>플랫폼</th><th>대상</th><th>아티팩트</th></tr>
 <tr><td>macOS</td><td>arm64</td><td>DMG, ZIP</td></tr>
 <tr><td>Windows</td><td>x64</td><td>NSIS installer, ZIP</td></tr>
 <tr><td>Linux</td><td>x64</td><td>AppImage</td></tr>
 </table>
-<p>Electron main process는 native server module을 직접 import하지 않습니다. 패키지 앱에서는 bundled sidecar를 먼저 찾고, 개발 모드에서는 전역 <code>jaw</code> binary로 fallback합니다.</p>
+<p>Electron main process는 native server module을 직접 import하지 않습니다. 패키지 앱에서는 bundled sidecar를 먼저 찾고, 개발 모드에서는 전역 <code>weasley-podex</code> binary로 fallback합니다.</p>
 
 <h2>패널 레이아웃</h2>
 <p>Electron 앱은 멀티 패널 작업 공간을 제공합니다:</p>
@@ -127,10 +126,10 @@ npm run electron:dist:mac</code></pre>
 <p>Electron 앱이 macOS 자동화 접근 권한을 요청할 수 있습니다. 시스템 환경설정 > 개인 정보 보호 및 보안 > 자동화에서 권한을 허용하세요. 앱의 종료 과정은 시각적으로 표시되며 정리 작업을 안정적으로 처리합니다. 현재 릴리스 아티팩트는 unsigned/un-notarized이므로 macOS 첫 실행 시 우클릭 → 열기가 필요할 수 있습니다.</p>
 
 <h2>터미널 명령 설치</h2>
-<p>패키지 앱은 첫 실행 시 또는 tray menu에서 bundled sidecar shim을 가리키는 터미널 <code>jaw</code> 명령을 설치할 수 있습니다. macOS는 필요 시 admin prompt와 함께 <code>/usr/local/bin</code>에 설치하고, Linux는 <code>~/.local/bin</code>을 사용합니다. Windows PATH 등록은 NSIS installer script가 처리합니다.</p>
+<p>패키지 앱은 첫 실행 시 또는 tray menu에서 bundled sidecar shim을 가리키는 터미널 <code>weasley-podex</code> 명령을 설치할 수 있습니다. macOS는 필요 시 admin prompt와 함께 <code>/usr/local/bin</code>에 설치하고, Linux는 <code>~/.local/bin</code>을 사용합니다. Windows PATH 등록은 NSIS installer script가 처리합니다.</p>
 
 <h2>개발</h2>
-<pre><code># Run Electron in dev mode (concurrent with jaw server):
+<pre><code># Run Electron in dev mode (concurrent with weasley-podex server):
 npm run electron:dev
 
 # Typecheck/build the Electron app:

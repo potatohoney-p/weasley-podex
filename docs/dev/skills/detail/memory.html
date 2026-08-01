@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memory — podex Docs</title>
+<title>Memory — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -63,7 +62,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -86,7 +85,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -135,14 +134,14 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Memory</h1>
-<p class="lead">Long-term memory across sessions &mdash; search, read, save. The memory skill gives podex persistent recall of user preferences, project decisions, and durable knowledge that survives beyond a single conversation.</p>
+<p class="lead">Long-term memory across sessions &mdash; search, read, save. The memory skill gives Weasley Podex persistent recall of user preferences, project decisions, and durable knowledge that survives beyond a single conversation.</p>
 
 <div class="skill-meta">
   <span class="badge badge-active">Default Active: Yes</span>
@@ -155,16 +154,16 @@
 <tr><td>Skill name</td><td><code>memory</code></td></tr>
 <tr><td>Status</td><td>Active (auto-injected into every session)</td></tr>
 <tr><td>Category</td><td>Productivity</td></tr>
-<tr><td>SKILL.md path</td><td><code>~/.podex/skills/memory/SKILL.md</code></td></tr>
-<tr><td>Data directory</td><td><code>~/.podex/memory/structured/</code></td></tr>
+<tr><td>SKILL.md path</td><td><code>~/.weasley/podex/skills/memory/SKILL.md</code></td></tr>
+<tr><td>Data directory</td><td><code>~/.weasley/podex/memory/structured/</code></td></tr>
 <tr><td>Requires</td><td>None (no external dependencies)</td></tr>
-<tr><td>Install</td><td>Pre-installed (ships with podex)</td></tr>
+<tr><td>Install</td><td>Pre-installed (ships with Weasley Podex)</td></tr>
 <tr><td>Scope</td><td>L1 instance-local (read/write) + L2 dashboard (read-only)</td></tr>
 <tr><td>Embedding search</td><td>Optional, default OFF</td></tr>
 </table>
 
 <h2>Overview</h2>
-<p>The <code>memory</code> skill is the persistent knowledge layer for podex. It enables the AI to remember facts, preferences, and decisions across sessions without relying solely on conversation context. Every session has the memory skill injected automatically &mdash; there is no need to load it manually.</p>
+<p>The <code>memory</code> skill is the persistent knowledge layer for Weasley Podex. It enables the AI to remember facts, preferences, and decisions across sessions without relying solely on conversation context. Every session has the memory skill injected automatically &mdash; there is no need to load it manually.</p>
 
 <p>Memory operates at two scopes:</p>
 
@@ -172,7 +171,7 @@
   <div class="scope-card">
     <h4><span class="badge badge-active" style="margin-right:6px">L1</span> Instance-Local Memory</h4>
     <ul>
-      <li>Commands: <code>podex memory search/read/save</code></li>
+      <li>Commands: <code>weasley-podex memory search/read/save</code></li>
       <li>Default path for all operations</li>
       <li>Current instance only</li>
       <li><strong>Read + Write</strong></li>
@@ -182,7 +181,7 @@
   <div class="scope-card">
     <h4><span class="badge badge-readonly" style="margin-right:6px">L2</span> Dashboard Memory</h4>
     <ul>
-      <li>Commands: <code>podex dashboard memory search/read/instances</code></li>
+      <li>Commands: <code>weasley-podex dashboard memory search/read/instances</code></li>
       <li>Cross-instance federation</li>
       <li>Multiple instances / homes</li>
       <li><strong>Read-Only</strong></li>
@@ -201,7 +200,7 @@
 <tr><th>#</th><th>Rule</th><th>Details</th></tr>
 </thead>
 <tbody>
-<tr><td>1</td><td><strong>Search before answering</strong></td><td>When asked about past work, decisions, or preferences, always run <code>podex memory search &lt;keywords&gt;</code> first before responding.</td></tr>
+<tr><td>1</td><td><strong>Search before answering</strong></td><td>When asked about past work, decisions, or preferences, always run <code>weasley-podex memory search &lt;keywords&gt;</code> first before responding.</td></tr>
 <tr><td>2</td><td><strong>Save durable facts immediately</strong></td><td>User preferences, key decisions, and stable project facts should be saved as soon as they are identified.</td></tr>
 <tr><td>3</td><td><strong>Use structured destinations</strong></td><td>Prefer <code>structured/profile.md</code>, <code>structured/semantic/...</code>, or <code>structured/episodes/...</code> over ad-hoc paths.</td></tr>
 <tr><td>4</td><td><strong>Admit gaps</strong></td><td>If search returns nothing, say "I don't have a record of that." Do not fabricate memories.</td></tr>
@@ -216,59 +215,59 @@
 <h3>Search</h3>
 <p>Search the memory index for keywords. Returns matching entries with their source file paths.</p>
 <pre><code># Basic keyword search
-podex memory search "keyword"
+weasley-podex memory search "keyword"
 
 # Search for user preferences
-podex memory search "user preference"
+weasley-podex memory search "user preference"
 
 # Search with error codes or technical terms
-podex memory search "auth login 401"
+weasley-podex memory search "auth login 401"
 
 # Search with system/service terms
-podex memory search "launchd plist service"
+weasley-podex memory search "launchd plist service"
 
 # Cross-instance search (L2 dashboard, read-only)
-podex dashboard memory search "cross-instance topic"</code></pre>
+weasley-podex dashboard memory search "cross-instance topic"</code></pre>
 
 <div class="callout callout-info"><strong>Tip:</strong> Search broadly. If your first query returns nothing, try Korean/English variants. For example, search both "인증" and "auth" to catch bilingual entries.</div>
 
 <h3>Read</h3>
 <p>Read the full contents of a specific memory file, or a line range within it.</p>
 <pre><code># Read the user profile
-podex memory read structured/profile.md
+weasley-podex memory read structured/profile.md
 
 # Read a semantic knowledge file
-podex memory read structured/semantic/podex.md
+weasley-podex memory read structured/semantic/podex.md
 
 # Read an episodic entry
-podex memory read structured/episodes/live/2026-03-07.md
+weasley-podex memory read structured/episodes/live/2026-03-07.md
 
 # Read only specific lines (useful for large files)
-podex memory read structured/profile.md --lines 1-30</code></pre>
+weasley-podex memory read structured/profile.md --lines 1-30</code></pre>
 
 <h3>Save</h3>
 <p>Append durable facts to a memory file. Content is appended, not overwritten.</p>
 <pre><code># Save a user preference to the profile
-podex memory save structured/profile.md "- User prefers Korean UI and English code"
+weasley-podex memory save structured/profile.md "- User prefers Korean UI and English code"
 
 # Save a technical fact to a semantic file
-podex memory save structured/semantic/podex.md "- Memory runtime uses task snapshots before response generation"
+weasley-podex memory save structured/semantic/podex.md "- Memory runtime uses task snapshots before response generation"
 
 # Save a time-bound episode
-podex memory save structured/episodes/live/2026-03-07.md "## 16:30\n- Decided to remove query-provider setup from memory UX"</code></pre>
+weasley-podex memory save structured/episodes/live/2026-03-07.md "## 16:30\n- Decided to remove query-provider setup from memory UX"</code></pre>
 
 <div class="callout callout-warn"><strong>Important:</strong> Only save stable, durable facts. Transient data like "current task progress" or "temporary debug notes" should not go into memory. If in doubt, ask whether this fact will still be relevant next week.</div>
 
 <h3>List &amp; Init</h3>
 <p>Utility commands for inspecting and initializing the memory directory.</p>
 <pre><code># List all memory files and their sizes
-podex memory list
+weasley-podex memory list
 
 # Initialize the memory directory structure (first-time setup)
-podex memory init</code></pre>
+weasley-podex memory init</code></pre>
 
 <h2>Storage Layout</h2>
-<p>Memory is organized into a structured directory hierarchy under <code>~/.podex/memory/</code>. Each subdirectory serves a distinct purpose:</p>
+<p>Memory is organized into a structured directory hierarchy under <code>~/.weasley/podex/memory/</code>. Each subdirectory serves a distinct purpose:</p>
 
 <table>
 <thead>
@@ -309,7 +308,7 @@ podex memory init</code></pre>
 </table>
 
 <div class="storage-layout">
-<pre><code>~/.podex/memory/
+<pre><code>~/.weasley/podex/memory/
   structured/
     profile.md                          # User preferences and identity
     index.sqlite                        # Full-text search index
@@ -318,7 +317,7 @@ podex memory init</code></pre>
         2026-03-07.md                   # Daily episodic entries
         2026-05-29.md
     semantic/
-      podex.md                        # podex-specific knowledge
+      podex.md                        # Weasley Podex knowledge
       deployment.md                     # Deployment procedures
       project-architecture.md           # Architecture decisions
     procedures/
@@ -345,7 +344,7 @@ podex memory init</code></pre>
 
 <h3>User Asks "Do you remember...?"</h3>
 <p>When the user asks whether something was previously discussed:</p>
-<div class="workflow-step"><span class="step-num">1</span><span class="step-text">Run <code>podex memory search "&lt;keywords&gt;"</code></span></div>
+<div class="workflow-step"><span class="step-num">1</span><span class="step-text">Run <code>weasley-podex memory search "&lt;keywords&gt;"</code></span></div>
 <div class="workflow-step"><span class="step-num">2</span><span class="step-text">If found, answer with the remembered fact and cite the source file</span></div>
 <div class="workflow-step"><span class="step-num">3</span><span class="step-text">If not found, say there is no saved record and offer to save it</span></div>
 
@@ -356,11 +355,11 @@ podex memory init</code></pre>
 <div class="workflow-step"><span class="step-num">3</span><span class="step-text">Use semantic or profile files for long-lived knowledge</span></div>
 
 <h2>Usage Examples (~&#54644;&#51468;)</h2>
-<p>Here are real-world usage patterns in the natural Korean style that podex understands.</p>
+<p>Here are real-world usage patterns in the natural Korean style that Weasley Podex understands.</p>
 
 <div class="example-card">
   <div class="example-prompt">"&#45236;&#44032; &#51200;&#48264;&#50640; Tailwind &#50416;&#45796;&#44256; &#54664;&#45912; &#44144; &#44592;&#50613;&#54644;?"</div>
-  <div class="example-desc">Triggers the "Do you remember?" workflow. The agent runs <code>podex memory search "Tailwind"</code>, finds the saved preference in <code>structured/profile.md</code>, and responds with the exact entry and its source file.</div>
+  <div class="example-desc">Triggers the "Do you remember?" workflow. The agent runs <code>weasley-podex memory search "Tailwind"</code>, finds the saved preference in <code>structured/profile.md</code>, and responds with the exact entry and its source file.</div>
 </div>
 
 <div class="example-card">
@@ -380,7 +379,7 @@ podex memory init</code></pre>
 
 <div class="example-card">
   <div class="example-prompt">"&#45796;&#47480; &#51064;&#49828;&#53556;&#49828;&#50640;&#49436; &#51060; &#54532;&#47196;&#51229;&#53944; &#50612;&#46523;&#44172; &#49444;&#51221;&#54664;&#45716;&#51648; &#52286;&#50500;&#48464;"</div>
-  <div class="example-desc">Triggers L2 dashboard memory. The agent recognizes "other instance" and runs <code>podex dashboard memory search "project setup"</code> to federate across instances, returning read-only results from the dashboard.</div>
+  <div class="example-desc">Triggers L2 dashboard memory. The agent recognizes "other instance" and runs <code>weasley-podex dashboard memory search "project setup"</code> to federate across instances, returning read-only results from the dashboard.</div>
 </div>
 
 <h2>What to Save vs. What to Skip</h2>
@@ -408,7 +407,7 @@ podex memory init</code></pre>
 </thead>
 <tbody>
 <tr><td>Personal preference</td><td><code>structured/profile.md</code></td><td>"User prefers Korean UI, English code"</td></tr>
-<tr><td>Project architecture fact</td><td><code>structured/semantic/&lt;project&gt;.md</code></td><td>"podex uses SQLite for memory index"</td></tr>
+<tr><td>Project architecture fact</td><td><code>structured/semantic/&lt;project&gt;.md</code></td><td>"Weasley Podex uses SQLite for memory index"</td></tr>
 <tr><td>Decision with a date</td><td><code>structured/episodes/live/&lt;date&gt;.md</code></td><td>"2026-05-29: Chose Drizzle ORM over Prisma"</td></tr>
 <tr><td>Reusable workflow</td><td><code>structured/procedures/&lt;name&gt;.md</code></td><td>"Release checklist: lint, test, tag, deploy"</td></tr>
 <tr><td>Domain knowledge</td><td><code>structured/semantic/&lt;domain&gt;.md</code></td><td>"Cloudflare D1 has 10GB limit per database"</td></tr>
@@ -423,7 +422,7 @@ podex memory init</code></pre>
   <li><strong>Include error codes</strong> &mdash; search "401 unauthorized" to find auth-related memories</li>
   <li><strong>Try file names</strong> &mdash; search "launchd" or "plist" for system service memories</li>
   <li><strong>Be specific then broad</strong> &mdash; start with "Cloudflare D1 migration" then fall back to "database migration"</li>
-  <li><strong>Search symbols</strong> &mdash; error codes like "ECONNREFUSED" or config keys like "JAW_HOME" are indexed</li>
+  <li><strong>Search symbols</strong> &mdash; error codes like "ECONNREFUSED" or config keys like "WEASLEY_PODEX_HOME" are indexed</li>
 </ul>
 
 <div class="callout callout-info"><strong>Embedding search</strong> is optional and default OFF. The skill does not assume vector/semantic search is available. All search operations use the SQLite full-text index by default.</div>
@@ -440,7 +439,7 @@ podex memory init</code></pre>
 <h2>Related</h2>
 <ul>
   <li><a href="../../concepts/memory.html">Concepts: Memory</a> &mdash; high-level overview of the memory system architecture</li>
-  <li><a href="../../reference/cli.html">CLI Commands</a> &mdash; full <code>podex memory</code> command reference</li>
+  <li><a href="../../reference/cli.html">CLI Commands</a> &mdash; full <code>weasley-podex memory</code> command reference</li>
   <li><a href="../../guides/dashboard.html">Dashboard Guide</a> &mdash; L2 dashboard memory and cross-instance federation</li>
   <li><a href="../index.html">Skill Catalog</a> &mdash; browse all 118 skills</li>
   <li><a href="../productivity.html">Productivity Skills</a> &mdash; category page for memory and related skills</li>

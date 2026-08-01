@@ -1,13 +1,13 @@
-﻿/**
+/**
  * src/memory.js — Phase A: grep-based persistent memory
  */
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 import { join, resolve, relative } from 'path';
 import fs from 'fs';
 import { spawnSync } from 'child_process';
 import { log } from '../core/logger.js';
 
-export const MEMORY_DIR = join(JAW_HOME, 'memory');
+export const MEMORY_DIR = join(WEASLEY_PODEX_HOME, 'memory');
 
 const DEFAULT_MEMORY = `# Memory
 
@@ -111,7 +111,7 @@ export function save(filename: string, content: string) {
         }
         m.syncLegacyMarkdownShadowImport(filepath);
     }).catch(err => {
-        log.warn('[jaw:memory-save-sync]', (err as Error).message);
+        log.warn('[weasley-podex:memory-save-sync]', (err as Error).message);
     });
     return filepath;
 }
@@ -160,7 +160,7 @@ export function loadMemoryForPrompt(maxChars = 1500) {
     const content = fs.readFileSync(memPath, 'utf8').trim();
     if (!content || content === DEFAULT_MEMORY.trim()) return '';
     return content.length > maxChars
-        ? content.slice(0, maxChars) + '\n...(use `podex memory read MEMORY.md` for full content)'
+        ? content.slice(0, maxChars) + '\n...(use `weasley-podex memory read MEMORY.md` for full content)'
         : content;
 }
 

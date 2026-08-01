@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>podex — Windows Installation</title>
-    <meta name="description" content="One-click WSL setup for podex on Windows.">
+    <title>Weasley Podex — Windows Installation</title>
+    <meta name="description" content="One-click WSL setup for Weasley Podex on Windows.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -222,12 +222,12 @@
 <body>
     <div class="container">
         <header class="header">
-            <a href="index.html" class="logo">🦈 podex</a>
+            <a href="index.html" class="logo">◆ Weasley Podex</a>
             <a href="index.html" class="back-link">← Back to Home</a>
         </header>
 
         <h1 class="page-title"><span class="win-icon">🪟</span> Windows Setup</h1>
-        <p class="page-desc">podex runs natively inside the Windows Subsystem for Linux (WSL). Follow these two simple
+        <p class="page-desc">Weasley Podex runs natively inside the Windows Subsystem for Linux (WSL). Follow these two simple
             steps to get your AI assistant up and running.</p>
 
         <div class="step-card">
@@ -246,16 +246,16 @@
 
         <div class="step-card">
             <div class="step-num">2</div>
-            <h2 class="step-title">Bootstrap podex</h2>
+            <h2 class="step-title">Bootstrap Weasley Podex</h2>
             <p class="step-desc">After restarting your PC, open <strong>Ubuntu</strong> from the Start Menu. Create a
                 UNIX username and password if prompted, then paste this one-liner script:</p>
             <div class="code-block">
-                curl -fsSL https://raw.githubusercontent.com/potatohoney-p/podex/main/scripts/install-wsl.sh | bash
+                curl -fsSL https://raw.githubusercontent.com/potatohoney-p/weasley-podex/main/scripts/install-wsl.sh | bash
             </div>
             <div class="info-box">
                 <strong>What this does:</strong><br>
                 1. Installs Node.js v22 (using fnm or nvm)<br>
-                2. Installs <code>podex</code> globally via npm<br>
+                2. Installs <code>weasley-podex</code> globally via npm<br>
                 3. Runs a diagnostic check
             </div>
         </div>
@@ -263,7 +263,7 @@
         <div class="step-card">
             <div class="step-num">3</div>
             <h2 class="step-title">Authenticate AI Engines</h2>
-            <p class="step-desc">podex needs at least one AI engine to work. Pick whichever you have and run its auth
+            <p class="step-desc">Weasley Podex needs at least one AI engine to work. Pick whichever you have and run its auth
                 command in the terminal:</p>
             <div class="code-block">
                 <span class="dim"># ── Free ──</span><br>
@@ -282,20 +282,20 @@
         <div class="step-card" style="border-color: rgba(74, 222, 128, 0.3);">
             <div class="step-num" style="background: var(--green); box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);">4
             </div>
-            <h2 class="step-title">Start Chatting</h2>
-            <p class="step-desc">You're all set! Start the podex local server right from your Ubuntu terminal.</p>
+            <h2 class="step-title">Start the Dashboard</h2>
+            <p class="step-desc">You're all set! Start the Weasley Podex manager right from your Ubuntu terminal.</p>
             <div class="code-block">
-                jaw serve
+                weasley-podex dashboard
                 <br><br>
                 <span class="dim"># Then open this link in your Windows browser:</span><br>
-                <span class="user">http://localhost:3457</span>
+                <span class="user">http://localhost:24576</span>
             </div>
         </div>
     </div>
 
     <footer class="footer">
         <div class="container">
-            <p>MIT License · Made with ❤️ by the podex community</p>
+            <p>Apache-2.0 License · Made with ❤️ by the Weasley Podex community</p>
         </div>
     </footer>
 </body>

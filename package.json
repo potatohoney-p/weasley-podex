@@ -1,9 +1,20 @@
-﻿{
-    "name":  "podex",
+{
+    "name":  "weasley-podex",
     "version":  "2.2.9",
-    "description":  "Personal AI assistant powered by Pi, Antigravity, AI-E, Claude, Claude E, Codex, Codex App, Cursor, Grok, Kiro, OpenCode, and Copilot — Web, Terminal, Telegram, and Discord interfaces with 107 built-in skills",
+    "description":  "Weasley Podex — a local multi-runtime AI assistant for Web, Terminal, Telegram, Discord, and desktop workflows",
+    "author": "Weasley Contributors",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/potatohoney-p/weasley-podex.git"
+    },
+    "homepage": "https://github.com/potatohoney-p/weasley-podex#readme",
+    "bugs": {
+        "url": "https://github.com/potatohoney-p/weasley-podex/issues"
+    },
     "type":  "module",
     "keywords":  [
+                     "weasley-podex",
                      "ai-assistant",
                      "cli",
                      "antigravity",
@@ -25,14 +36,18 @@
                     "node":  "\u003e=22.4.0"
                 },
     "bin":  {
-                "podex":  "dist/bin/podex.js",
-                "jaw":  "dist/bin/podex.js"
+                "weasley-podex":  "dist/bin/podex.js"
             },
     "files":  [
                   "dist/",
                   "!dist/src/lib/native/*.node",
-                  "public/",
-                  "scripts/",
+    "public/",
+    "skills_ref/",
+    "mcp-ref/",
+    "scripts/",
+                  "LICENSE",
+                  "NOTICE",
+                  "README.md",
                   "package.json"
               ],
     "scripts":  {
@@ -100,15 +115,15 @@
                     "gate:strict-baseline":  "node scripts/release-gates.mjs strict-baseline",
                     "gate:all":  "node scripts/release-gates.mjs",
                     "prepublishOnly":  "npm run build \u0026\u0026 npm run build:frontend \u0026\u0026 npm run check:frontend-build-output",
-                    "electron:dev":  "concurrently -k -n jaw,electron \"node scripts/electron-dev-manager.mjs\" \"npm --prefix electron run dev\"",
+                    "electron:dev":  "concurrently -k -n server,electron \"node scripts/electron-dev-manager.mjs\" \"npm --prefix electron run dev\"",
                     "electron:build":  "npm --prefix electron run build",
                     "sidecar:bundle":  "bash scripts/bundle-sidecar.sh darwin arm64",
                     "electron:dist:mac":  "npm run build:frontend \u0026\u0026 npm run sidecar:bundle \u0026\u0026 npm --prefix electron run build \u0026\u0026 CSC_IDENTITY_AUTO_DISCOVERY=false npm --prefix electron run dist:mac \u0026\u0026 npm run electron:resign:mac \u0026\u0026 npm run check:electron-dist-mac-no-jwc \u0026\u0026 npm run check:app-icons",
-                    "electron:resign:mac":  "codesign --force --deep --sign - electron/dist/mac-arm64/podex.app",
+                    "electron:resign:mac":  "codesign --force --deep --sign - \"electron/dist/mac-arm64/Weasley Podex.app\"",
                     "electron:start":  "npm --prefix electron run start",
                     "check:cli-bin-links":  "node scripts/check-cli-bin-links.cjs",
                     "check:electron-sidecar-no-jwc":  "node scripts/check-electron-sidecar-no-jwc.cjs",
-                    "check:electron-dist-mac-no-jwc":  "node scripts/check-electron-sidecar-no-jwc.cjs --server-root electron/dist/mac-arm64/podex.app/Contents/Resources/server",
+                    "check:electron-dist-mac-no-jwc":  "node scripts/check-electron-sidecar-no-jwc.cjs --server-root \"electron/dist/mac-arm64/Weasley Podex.app/Contents/Resources/server\"",
                     "check:electron-dist-win-no-jwc":  "node scripts/check-electron-sidecar-no-jwc.cjs --server-root electron/dist/win-unpacked/resources/server",
                     "check:electron-dist-linux-no-jwc":  "node scripts/check-electron-sidecar-no-jwc.cjs --server-root electron/dist/linux-unpacked/resources/server",
                     "check:app-icons":  "node scripts/check-app-icon-assets.cjs",

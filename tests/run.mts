@@ -10,8 +10,10 @@
 // isolation:'process' runs each file in its own subprocess (matching the old
 // `--test` default). This keeps real-process/timing tests (bgtask spawn, session
 // probes) from contending in one shared event loop — in-process concurrency made
-// them flaky. podex_HOME (set by setup/test-home.ts here) is inherited by the
+// them flaky. WEASLEY_PODEX_HOME (set by setup/test-home.ts here) is inherited by the
 // child processes via env; --experimental-test-module-mocks propagates too.
+// Set WEASLEY_PODEX_TEST_CONCURRENCY to a positive integer when a developer
+// needs to cap subprocess pressure on a shared or resource-constrained machine.
 import './setup/test-home.ts';
 import { run } from 'node:test';
 import { spec } from 'node:test/reporters';
@@ -34,11 +36,22 @@ const argv = process.argv.slice(2);
 const all = argv.includes('--all');
 const watch = argv.includes('--watch');
 const explicit = argv.filter(a => !a.startsWith('--'));
+const concurrencyValue = process.env.WEASLEY_PODEX_TEST_CONCURRENCY?.trim();
+let concurrency: boolean | number = true;
+if (concurrencyValue) {
+    const parsed = Number(concurrencyValue);
+    if (!Number.isInteger(parsed) || parsed < 1) {
+        console.error('[tests/run] WEASLEY_PODEX_TEST_CONCURRENCY must be a positive integer');
+        process.exit(1);
+    }
+    concurrency = parsed;
+}
 let files: string[];
 if (explicit.length > 0) files = explicit.flatMap(p => { const a = resolve(p); return (existsSync(a) && statSync(a).isDirectory()) ? list(a, true) : [a]; });
 else if (all) files = list(TESTS_DIR, true);
 else files = [...list(TESTS_DIR, false), ...list(join(TESTS_DIR, 'unit'), false)];
 if (files.length === 0) { console.error('[tests/run] no test files matched'); process.exit(1); }
 let failures = 0;
-run({ files, concurrency: true, watch, isolation: 'process' }).on('test:fail', () => { failures += 1; }).compose(spec).pipe(process.stdout);
+console.error(`[tests/run] files=${files.length} concurrency=${concurrency === true ? 'auto' : concurrency}`);
+run({ files, concurrency, watch, isolation: 'process' }).on('test:fail', () => { failures += 1; }).compose(spec).pipe(process.stdout);
 if (!watch) process.on('beforeExit', () => { if (failures > 0 && !process.exitCode) process.exitCode = 1; });

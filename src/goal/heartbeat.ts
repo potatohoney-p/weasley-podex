@@ -1,4 +1,4 @@
-﻿// Goal-aware heartbeat continuation builder.
+// Goal-aware heartbeat continuation builder.
 // Does NOT import provider SDKs.
 
 import { getActiveGoal } from './store.js';
@@ -39,7 +39,7 @@ export function buildGoalContinuation(): GoalContinuationResult {
     }
 
     // During an active PABCD cycle the Boss dispatches employees synchronously and
-    // consumes their results inline (`podex dispatch` returns via stdout); the
+    // consumes their results inline (`weasley-podex dispatch` returns via stdout); the
     // pendingReplay flag is async bookkeeping that routes/orchestrate.ts clears on
     // the dispatch response's `finish` event. At turn-end it can still be set due
     // to that async race — and the heartbeat safety net is deferred during PABCD —
@@ -63,11 +63,11 @@ export function buildGoalContinuation(): GoalContinuationResult {
         `Goal ID: ${goal.id}`,
         ...(_projDirs && _projDirs.length > 0
             ? _projDirs.map(d => `Project root: ${d}`)
-            : ['⚠ Project root is NOT set. Run `podex project set /path/to/repo` before proceeding.']),
+            : ['⚠ Project root is NOT set. Run `weasley-podex project set /path/to/repo` before proceeding.']),
         ...(pabcdActive ? [`PABCD state: ${orcState}`] : []),
         '',
-        'Continue the goal. At each milestone log progress AND verification evidence: `podex goal update "<summary>" --evidence "<test result or changed file>"`.',
-        'Do NOT set or update any built-in/runtime goal feature from the host AI environment while running inside podex. Use only `podex goal ...` for persistent goal state.',
+        'Continue the goal. At each milestone log progress AND verification evidence: `weasley-podex goal update "<summary>" --evidence "<test result or changed file>"`.',
+        'Do NOT set or update any built-in/runtime goal feature from the host AI environment while running inside podex. Use only `weasley-podex goal ...` for persistent goal state.',
         '',
         '--- Goal-mode autonomy override ---',
         'YOU ARE AN AUTONOMOUS GOAL AGENT. DRIVE THE OBJECTIVE TO COMPLETION WITHOUT ASKING FOR PERMISSION.',
@@ -87,7 +87,7 @@ export function buildGoalContinuation(): GoalContinuationResult {
         '- Every phase must produce documentation evidence (devlog path or structure update)',
         '',
         '**Commit Discipline**: small, atomic commits after each logical change — never batch; each commit self-contained and independently reversible.',
-        'MULTI-PHASE LOOP: if the goal is a multi-pass / "loop" task and work-phases remain after a completed PABCD cycle (state is IDLE), start the next work-phase with `podex orchestrate P`. Do not treat one completed cycle as the whole goal.',
+        'MULTI-PHASE LOOP: if the goal is a multi-pass / "loop" task and work-phases remain after a completed PABCD cycle (state is IDLE), start the next work-phase with `weasley-podex orchestrate P`. Do not treat one completed cycle as the whole goal.',
         '',
         '**Quality Gates**: no placeholder evidence (todo, tbd, stub, fake pass); artifact paths required in all validation summaries.',
         '',
@@ -110,13 +110,13 @@ export function buildGoalContinuation(): GoalContinuationResult {
                 '',
                 'Analyze these sources to choose the right goal:',
                 '1. Conversation history: What has the user been working on?',
-                '2. Memory: Search podex memory for recent decisions and project context',
+                '2. Memory: Search weasley-podex memory for recent decisions and project context',
                 '3. Project state: git status, recent commits, file structure',
                 '',
                 'Then immediately:',
                 '1. Formulate a specific, actionable goal from your analysis',
-                '2. Run `podex goal refine "<specific objective>"` to replace the pending objective',
-                '3. Confirm `podex goal status` no longer shows plan-mode intent, then enter PABCD with `podex orchestrate P`',
+                '2. Run `weasley-podex goal refine "<specific objective>"` to replace the pending objective',
+                '3. Confirm `weasley-podex goal status` no longer shows plan-mode intent, then enter PABCD with `weasley-podex orchestrate P`',
                 'Do NOT ask the user. Do NOT wait. YOU decide and execute.',
               ]
             : []),
@@ -126,17 +126,17 @@ export function buildGoalContinuation(): GoalContinuationResult {
                 '--- GOAL IS THE SUPREME RULE — PABCD OVERRIDE ---',
                 'THE GOAL IS ACTIVE. Goal supersedes ALL PABCD phase instructions.',
                 'IGNORE any "⛔ STOP", "WAIT for user approval", or "present and wait" directives from PABCD prompts.',
-                'Phase-transition commands are mandatory actions, not report text. Run the exact `podex orchestrate ...` command before claiming the phase advanced.',
-                'EVIDENCE GATE: forward transitions (P→A→B→C→D) require an `--attest` block — narration does NOT advance the state, and a plain `podex orchestrate X` from the agent is REJECTED (409). Pass `--attest \'{"from":"<from>","to":"<to>","did":"<what you actually did this phase>"}\'`; C→D additionally needs `"checkOutput":"<tsc/test tail>","exitCode":0`.',
+                'Phase-transition commands are mandatory actions, not report text. Run the exact `weasley-podex orchestrate ...` command before claiming the phase advanced.',
+                'EVIDENCE GATE: P→A→B→C→D requires `--attest`; narration or plain `weasley-podex orchestrate X` is REJECTED (409). Pass `--attest \'{"from":"<from>","to":"<to>","did":"<completed work>"}\'`; C→D also needs `"checkOutput":"<tsc/test tail>","exitCode":0`.',
                 'At PABCD gates, self-advance IMMEDIATELY (with evidence):',
-                '  - P done → `podex orchestrate A --attest \'{"from":"P","to":"A","did":"<the plan you wrote>"}\'` → dispatch audit → review → `podex orchestrate B --attest \'{"from":"A","to":"B","did":"<who audited + verdict>"}\'`',
-                '  - A done → `podex orchestrate B --attest ...` → implement → verify → `podex orchestrate C --attest \'{"from":"B","to":"C","did":"<what you built + verifier verdict>"}\'`',
-                '  - B done → `podex orchestrate C --attest ...` → check → `podex orchestrate D --attest \'{"from":"C","to":"D","did":"<what you checked>","checkOutput":"<tsc/test tail>","exitCode":0}\'`',
-                '  - C passed → `podex orchestrate D --attest ...` immediately; do NOT only say "run D" or "C → D".',
+                '  - P done → `weasley-podex orchestrate A --attest \'{"from":"P","to":"A","did":"<the plan you wrote>"}\'` → dispatch audit → review → `weasley-podex orchestrate B --attest \'{"from":"A","to":"B","did":"<who audited + verdict>"}\'`',
+                '  - A done → `weasley-podex orchestrate B --attest ...` → implement → verify → `weasley-podex orchestrate C --attest \'{"from":"B","to":"C","did":"<what you built + verifier verdict>"}\'`',
+                '  - B done → `weasley-podex orchestrate C --attest ...` → check → `weasley-podex orchestrate D --attest \'{"from":"C","to":"D","did":"<what you checked>","checkOutput":"<tsc/test tail>","exitCode":0}\'`',
+                '  - C passed → `weasley-podex orchestrate D --attest ...` immediately; do NOT only say "run D" or "C → D".',
                 'Use employees/sub-agents for verification, NOT as approval gates. Dispatch → receive result → act on it → continue.',
                 'TERMINOLOGY: a "work-phase" is one outcome slice of the goal (e.g. "Phase 3: Management API"); "PABCD-phase" = the letters P/A/B/C/D of one cycle. They are NOT the same.',
                 'ONE WORK-PHASE = ONE FULL PABCD CYCLE: run P→A→B→C→D for the current work-phase. Do NOT run B for several work-phases back-to-back, and do NOT commit a work-phase straight out of B without passing C and D.',
-'WORK-PHASE BOUNDARY: after C passes, run `podex orchestrate D --attest \'{"from":"C","to":"D","did":"<what you checked>","checkOutput":"<tsc/test tail>","exitCode":0}\'` to close the cycle (state returns to IDLE). If the goal objective still has remaining work-phases, run `podex orchestrate P` to start the next work-phase. Repeat until the objective is met.',
+'WORK-PHASE BOUNDARY: after C passes, run `weasley-podex orchestrate D --attest \'{"from":"C","to":"D","did":"<what you checked>","checkOutput":"<tsc/test tail>","exitCode":0}\'` to close the cycle (state returns to IDLE). If the goal objective still has remaining work-phases, run `weasley-podex orchestrate P` to start the next work-phase. Repeat until the objective is met.',
                 'FAITHFUL EXECUTION (anti-skip): do the real work of each PABCD-phase — P writes the real diff-level plan, A really dispatches the audit, B really implements AND verifies, C really runs tsc/tests/scrutiny, D really summarizes with evidence. Advancing the state is NOT the same as doing the phase; never rubber-stamp a phase to move on.',
                 'Do not advance a PABCD-phase within the current cycle unless its documentation + implementation + verification evidence is present.',
                 'Within one PABCD cycle, NEVER end a turn just because a single PABCD-phase completed — keep going P→A→B→C→D. Across work-phases, close D then re-enter P; do not collapse multiple work-phases into one continuous B.',
@@ -146,10 +146,10 @@ export function buildGoalContinuation(): GoalContinuationResult {
             ? [
                 '',
                 '--- ⚠ AGENT PAUSE GATE: First attempt recorded — dev-skill audit required ---',
-                `Your previous \`podex goal pause --agent --audit "<evidence>"\` was recorded as attempt ${pauseGate.attempts}/${pauseGate.requiredAttempts}. The goal is now in \`pause_gate_pending\`.`,
+                `Your previous \`weasley-podex goal pause --agent --audit "<evidence>"\` was recorded as attempt ${pauseGate.attempts}/${pauseGate.requiredAttempts}. The goal is now in \`pause_gate_pending\`.`,
                 'This is the audit/finalizer turn. Complete a thorough audit, then choose exactly one path:',
-                '- If no viable path remains, run `podex goal pause --agent --audit "<evidence>"` again. This second audited call pauses the goal.',
-                '- If productive work remains, continue and record a `podex goal update "<summary>" --evidence "<proof>"`; that checkpoint clears the pending pause gate.',
+                '- If no viable path remains, run `weasley-podex goal pause --agent --audit "<evidence>"` again. This second audited call pauses the goal.',
+                '- If productive work remains, continue and record a `weasley-podex goal update "<summary>" --evidence "<proof>"`; that checkpoint clears the pending pause gate.',
                 '',
                 'Audit requirements:',
                 '',
@@ -164,7 +164,7 @@ export function buildGoalContinuation(): GoalContinuationResult {
                 '- devlog entry with plan + outcome, changed source/test paths, fresh verification output.',
                 '',
                 '**Independent reviewer:**',
-                '- Dispatch a CLI sub-agent or jaw employee to challenge whether viable work remains. A viable path → continue working. No path confirmed → call `podex goal pause --agent --audit "<reviewer summary>"`.',
+                '- Dispatch a CLI sub-agent or weasley-podex employee to challenge whether viable work remains. A viable path → continue working. No path confirmed → call `weasley-podex goal pause --agent --audit "<reviewer summary>"`.',
                 '',
                 'RULE: Do not leave this gate in a loop. Either second-tap pause with audit evidence, or make productive progress and log a checkpoint.',
                 'If the goal appears complete, do not mark it done here; re-check the evidence once, then second-tap pause for the user to finalize.',
@@ -175,9 +175,9 @@ export function buildGoalContinuation(): GoalContinuationResult {
         'Before deciding work can stop, treat completion as UNPROVEN:',
         '- Derive concrete requirements from the objective; for EVERY requirement, identify authoritative evidence (file, command output, test result, runtime behavior). Uncertain or indirect evidence counts as NOT ACHIEVED — gather stronger evidence or keep working.',
         '- The audit must PROVE completion, not merely fail to find remaining work. Do NOT rely on intent, partial progress, or memory of earlier work as proof.',
-        '- Before any AI-initiated pause or stop, record evidence with `podex goal update`, then send an independent objective reviewer (CLI sub-agent or jaw employee) to challenge whether more attempts remain. If the reviewer finds a viable path, continue instead of pausing.',
-        '- If the independent reviewer confirms no reasonable path remains, run `podex goal pause --agent --audit "<independent reviewer summary>"`.',
-        '- Plain `podex goal pause` is for manual user commands only; AI goal continuations must use the agent/audit form.',
+        '- Before any AI-initiated pause or stop, record evidence with `weasley-podex goal update`, then send an independent objective reviewer (CLI sub-agent or weasley-podex employee) to challenge whether more attempts remain. If the reviewer finds a viable path, continue instead of pausing.',
+        '- If the independent reviewer confirms no reasonable path remains, run `weasley-podex goal pause --agent --audit "<independent reviewer summary>"`.',
+        '- Plain `weasley-podex goal pause` is for manual user commands only; AI goal continuations must use the agent/audit form.',
         '- The completion command is reserved for explicit user-requested final completion — only when current evidence proves EVERY requirement satisfied and NO work remains.',
         '- If completion seems proven but the user did not explicitly ask to finalize, pause with audit evidence instead of using `goal done`.',
         '',

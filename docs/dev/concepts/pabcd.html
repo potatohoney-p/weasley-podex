@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PABCD Orchestration — podex Docs</title>
+<title>PABCD Orchestration — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -83,7 +82,7 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
@@ -121,7 +120,7 @@
 <tr><td><code>/deliberate &lt;plan&gt;</code></td><td>Review plan from Planner/Architect/Critic perspectives</td></tr>
 <tr><td><code>/planaudit [plan]</code></td><td>Generate read-only audit task text for employees</td></tr>
 </table>
-<p>CLI equivalent: <code>jaw orchestrate P|A|B|C|D|status|reset</code></p>
+<p>CLI equivalent: <code>weasley-podex orchestrate P|A|B|C|D|status|reset</code></p>
 
 <h2>Pipeline Flow</h2>
 <pre><code>orchestrate(prompt, meta)
@@ -153,9 +152,9 @@
 <h2>Tips</h2>
 <ul>
 <li>Always start with <code>/interview</code> for complex projects to avoid planning with incomplete information.</li>
-<li>Phase transitions are explicit -- the agent will tell you to run <code>jaw orchestrate A</code> when planning is done.</li>
+<li>Phase transitions are explicit -- the agent will tell you to run <code>weasley-podex orchestrate A</code> when planning is done.</li>
 <li>Use <code>/continue</code> for explicit worklog/PABCD resume. Natural "continue" messages are treated as normal prompts.</li>
-<li>Forward phase transitions require evidence attestation: <code>jaw orchestrate B --attest '{"from":"A","to":"B","did":"..."}'</code> (C→D also needs pasted <code>checkOutput</code> and <code>exitCode</code>).</li>
+<li>Forward phase transitions require evidence attestation: <code>weasley-podex orchestrate B --attest '{"from":"A","to":"B","did":"..."}'</code> (C→D also needs pasted <code>checkOutput</code> and <code>exitCode</code>).</li>
 <li>The <code>/orchestrate reset</code> command cleans up everything: active agents, workers, queue, employee sessions, state, and worklog.</li>
 </ul>
 

@@ -17,27 +17,27 @@ function writeNote(root: string, path = 'note.md'): string {
     return target;
 }
 
-test('system trash success uses podex_TEST_SYSTEM_TRASH_DIR', async (t) => {
+test('system trash success uses WEASLEY_PODEX_TEST_SYSTEM_TRASH_DIR', async (t) => {
     const root = tmpRoot();
     const dashboardHome = tmpRoot();
     const systemTrash = tmpRoot();
     const previousNodeEnv = process.env.NODE_ENV;
-    const previousTrashDir = process.env.podex_TEST_SYSTEM_TRASH_DIR;
-    const previousTrashFail = process.env.podex_TEST_SYSTEM_TRASH_FAIL;
+    const previousTrashDir = process.env.WEASLEY_PODEX_TEST_SYSTEM_TRASH_DIR;
+    const previousTrashFail = process.env.WEASLEY_PODEX_TEST_SYSTEM_TRASH_FAIL;
     t.after(() => {
         if (previousNodeEnv === undefined) delete process.env.NODE_ENV;
         else process.env.NODE_ENV = previousNodeEnv;
-        if (previousTrashDir === undefined) delete process.env.podex_TEST_SYSTEM_TRASH_DIR;
-        else process.env.podex_TEST_SYSTEM_TRASH_DIR = previousTrashDir;
-        if (previousTrashFail === undefined) delete process.env.podex_TEST_SYSTEM_TRASH_FAIL;
-        else process.env.podex_TEST_SYSTEM_TRASH_FAIL = previousTrashFail;
+        if (previousTrashDir === undefined) delete process.env.WEASLEY_PODEX_TEST_SYSTEM_TRASH_DIR;
+        else process.env.WEASLEY_PODEX_TEST_SYSTEM_TRASH_DIR = previousTrashDir;
+        if (previousTrashFail === undefined) delete process.env.WEASLEY_PODEX_TEST_SYSTEM_TRASH_FAIL;
+        else process.env.WEASLEY_PODEX_TEST_SYSTEM_TRASH_FAIL = previousTrashFail;
         rmSync(root, { recursive: true, force: true });
         rmSync(dashboardHome, { recursive: true, force: true });
         rmSync(systemTrash, { recursive: true, force: true });
     });
     process.env.NODE_ENV = 'test';
-    process.env.podex_TEST_SYSTEM_TRASH_DIR = systemTrash;
-    delete process.env.podex_TEST_SYSTEM_TRASH_FAIL;
+    process.env.WEASLEY_PODEX_TEST_SYSTEM_TRASH_DIR = systemTrash;
+    delete process.env.WEASLEY_PODEX_TEST_SYSTEM_TRASH_FAIL;
     writeNote(root);
 
     const result = await new NotesTrash({ dashboardHome }).trashFile(root, 'note.md');

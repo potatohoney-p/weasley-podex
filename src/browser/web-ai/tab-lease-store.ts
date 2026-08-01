@@ -1,7 +1,8 @@
+import { getWeasleyPodexEnv } from '../../core/weasley-podex-env.js';
 ﻿import { existsSync, mkdirSync, openSync, readFileSync, closeSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
-import { JAW_HOME } from '../../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../core/config.js';
 import { stripUndefined } from '../../core/strip-undefined.js';
 import { closeTab, listTabs } from '../connection.js';
 import type { WebAiVendor } from './types.js';
@@ -56,7 +57,7 @@ export interface CheckoutLeaseInput extends LeaseScopeInput {
     port: number;
 }
 
-const STORE_FILE = join(JAW_HOME, 'browser-web-ai-tab-leases.json');
+const STORE_FILE = join(WEASLEY_PODEX_HOME, 'browser-web-ai-tab-leases.json');
 const LOCK_STALE_MS = 30_000;
 const LOCK_RETRY_MS = 25;
 const LOCK_TIMEOUT_MS = 5_000;
@@ -122,26 +123,26 @@ export function parseDuration(value: string | number | null | undefined, fallbac
 }
 
 function poolTtlMs(): number {
-    return parseDuration(process.env["JAW_BROWSER_PROVIDER_POOL_TTL"] || process.env["AGBROWSE_PROVIDER_POOL_TTL"] || '15m');
+    return parseDuration(getWeasleyPodexEnv('BROWSER_PROVIDER_POOL_TTL') || process.env["AGBROWSE_PROVIDER_POOL_TTL"] || '15m');
 }
 
 function poolMaxPerKey(): number {
-    const parsed = Number(process.env["JAW_BROWSER_PROVIDER_POOL_MAX_PER_KEY"] || process.env["AGBROWSE_PROVIDER_POOL_MAX_PER_KEY"] || DEFAULT_POOL_MAX_PER_KEY);
+    const parsed = Number(getWeasleyPodexEnv('BROWSER_PROVIDER_POOL_MAX_PER_KEY') || process.env["AGBROWSE_PROVIDER_POOL_MAX_PER_KEY"] || DEFAULT_POOL_MAX_PER_KEY);
     return Number.isFinite(parsed) && parsed >= 0 ? Math.floor(parsed) : DEFAULT_POOL_MAX_PER_KEY;
 }
 
 function poolGlobalMax(): number {
-    const parsed = Number(process.env["JAW_BROWSER_PROVIDER_POOL_GLOBAL_MAX"] || process.env["AGBROWSE_PROVIDER_POOL_GLOBAL_MAX"] || DEFAULT_POOL_GLOBAL_MAX);
+    const parsed = Number(getWeasleyPodexEnv('BROWSER_PROVIDER_POOL_GLOBAL_MAX') || process.env["AGBROWSE_PROVIDER_POOL_GLOBAL_MAX"] || DEFAULT_POOL_GLOBAL_MAX);
     return Number.isFinite(parsed) && parsed >= 0 ? Math.floor(parsed) : DEFAULT_POOL_GLOBAL_MAX;
 }
 
 function activeMaxPerKey(): number {
-    const parsed = Number(process.env["JAW_BROWSER_PROVIDER_ACTIVE_MAX_PER_KEY"] || process.env["AGBROWSE_PROVIDER_ACTIVE_MAX_PER_KEY"] || DEFAULT_ACTIVE_MAX_PER_KEY);
+    const parsed = Number(getWeasleyPodexEnv('BROWSER_PROVIDER_ACTIVE_MAX_PER_KEY') || process.env["AGBROWSE_PROVIDER_ACTIVE_MAX_PER_KEY"] || DEFAULT_ACTIVE_MAX_PER_KEY);
     return Number.isFinite(parsed) && parsed >= 0 ? Math.floor(parsed) : DEFAULT_ACTIVE_MAX_PER_KEY;
 }
 
 function activeGlobalMax(): number {
-    const parsed = Number(process.env["JAW_BROWSER_PROVIDER_ACTIVE_GLOBAL_MAX"] || process.env["AGBROWSE_PROVIDER_ACTIVE_GLOBAL_MAX"] || DEFAULT_ACTIVE_GLOBAL_MAX);
+    const parsed = Number(getWeasleyPodexEnv('BROWSER_PROVIDER_ACTIVE_GLOBAL_MAX') || process.env["AGBROWSE_PROVIDER_ACTIVE_GLOBAL_MAX"] || DEFAULT_ACTIVE_GLOBAL_MAX);
     return Number.isFinite(parsed) && parsed >= 0 ? Math.floor(parsed) : DEFAULT_ACTIVE_GLOBAL_MAX;
 }
 

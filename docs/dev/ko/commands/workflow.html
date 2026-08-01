@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Workflow Commands — podex Docs</title>
+<title>Workflow Commands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,19 +81,19 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Workflow Commands</h1>
-<p class="lead">기획, 숙의, 감사, 목표 관리, 병렬 팀 오케스트레이션을 위한 슬래시 커맨드입니다. 이 커맨드들은 podex의 구조화된 워크플로우 라이프사이클을 구동합니다 -- 초기 아이디어부터 실행과 완료까지.</p>
+<p class="lead">기획, 숙의, 감사, 목표 관리, 병렬 팀 오케스트레이션을 위한 슬래시 커맨드입니다. 이 커맨드들은 Weasley Podex의 구조화된 워크플로우 라이프사이클을 구동합니다 -- 초기 아이디어부터 실행과 완료까지.</p>
 
 <h2>개요</h2>
 <p>워크플로우 커맨드는 채팅 인터페이스에서 <code>/</code>를 앞에 붙여 실행합니다. 이 커맨드들은 단일 대화 턴으로는 수행하기 어려운 전문적인 기획 및 오케스트레이션 루틴을 실행합니다. 각 커맨드는 고유한 컨텍스트, 프롬프트, 출력 구조를 가진 전용 워크플로우를 활성화합니다.</p>
 
-<div class="callout callout-info">정확한 구문을 외울 필요는 없습니다. 자연어로도 동작합니다 -- <code>"이 기능 계획 세워줘"</code>라고 말하면 podex가 자동으로 <code>/plan</code>으로 라우팅합니다. 슬래시 커맨드 형식은 정밀한 제어가 필요할 때 사용하세요.</div>
+<div class="callout callout-info">정확한 구문을 외울 필요는 없습니다. 자연어로도 동작합니다 -- <code>"이 기능 계획 세워줘"</code>라고 말하면 Weasley Podex가 자동으로 <code>/plan</code>으로 라우팅합니다. 슬래시 커맨드 형식은 정밀한 제어가 필요할 때 사용하세요.</div>
 
 <table>
 <tr><th>커맨드</th><th>용도</th><th>간단한 예시</th></tr>
@@ -113,7 +112,7 @@
 <h3>인자</h3>
 <table>
 <tr><th>인자</th><th>필수 여부</th><th>설명</th></tr>
-<tr><td><code>[request]</code></td><td>선택</td><td>계획할 내용의 자유 형식 설명. 생략하면 podex가 현재 대화 컨텍스트를 사용합니다.</td></tr>
+<tr><td><code>[request]</code></td><td>선택</td><td>계획할 내용의 자유 형식 설명. 생략하면 Weasley Podex가 현재 대화 컨텍스트를 사용합니다.</td></tr>
 </table>
 
 <h3>생성되는 내용</h3>

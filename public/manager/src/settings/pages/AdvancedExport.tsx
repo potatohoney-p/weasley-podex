@@ -54,7 +54,7 @@ export default function AdvancedExport({ port, client, triggerDownload }: Export
 
     const onExport = useCallback(() => {
         if (state.kind !== 'ready') return;
-        const filename = `podex-settings-${port}.json`;
+        const filename = `weasley-podex-settings-${port}.json`;
         download(filename, JSON.stringify(state.data, null, 2));
     }, [state, port, download]);
 
@@ -118,7 +118,7 @@ export default function AdvancedExport({ port, client, triggerDownload }: Export
                                 id="advanced-import"
                                 rows={8}
                                 value={importText}
-                                placeholder='{"cli":"codex","tui":{"themeSeed":"jaw-dark"}}'
+                                placeholder='{"cli":"codex","tui":{"themeSeed":"weasley-podex-dark"}}'
                                 onChange={(event) => setImportText(event.target.value)}
                                 aria-invalid={Boolean(importError)}
                             />

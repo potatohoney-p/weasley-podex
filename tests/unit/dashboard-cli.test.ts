@@ -51,8 +51,12 @@ test('dashboard service delegates to dashboard-service module', () => {
 
 test('dashboard-service.ts supports both launchd and systemd', () => {
     const svc = read('src/manager/dashboard-service.ts');
-    assert.ok(svc.includes('com.podex.dashboard'), 'launchd label must be com.podex.dashboard');
-    assert.ok(svc.includes('jaw-dashboard'), 'systemd unit must be jaw-dashboard');
+    assert.ok(svc.includes("const LABEL_LAUNCHD = 'com.weasley.podex.dashboard'"), 'launchd label must use Weasley namespace');
+    assert.ok(svc.includes("const LABEL_SYSTEMD = 'weasley-podex-dashboard'"), 'systemd unit must use Weasley namespace');
+    assert.ok(svc.includes("const LEGACY_LABEL_LAUNCHD = 'com.podex.dashboard'"), 'exact legacy launchd label must remain migratable');
+    assert.ok(svc.includes("const LEGACY_LABEL_SYSTEMD = 'jaw-dashboard'"), 'exact legacy systemd unit must remain migratable');
+    assert.ok(svc.includes('isManagedDashboardPlist'), 'legacy plist migration must verify ownership');
+    assert.ok(svc.includes('isManagedDashboardUnit'), 'legacy unit migration must verify ownership');
     assert.ok(svc.includes('detectBackend'), 'must use detectBackend from platform-service');
 });
 
@@ -73,8 +77,8 @@ test('dashboard lifecycle commands set exitCode on failure', () => {
 test('dashboard-service label does not collide with instance labels', () => {
     const svc = read('src/manager/dashboard-service.ts');
     const launchd = read('src/manager/launchd-service.ts');
-    assert.ok(svc.includes('com.podex.dashboard'), 'dashboard label format');
-    assert.ok(!launchd.includes('com.podex.dashboard'), 'instance labels must not use dashboard label');
+    assert.ok(svc.includes("const LABEL_LAUNCHD = 'com.weasley.podex.dashboard'"), 'dashboard label format');
+    assert.ok(!launchd.includes("'com.weasley.podex.dashboard'"), 'instance labels must not use dashboard label');
 });
 
 test('dashboard CLI supports --help flag', () => {

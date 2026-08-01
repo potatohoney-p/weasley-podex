@@ -43,7 +43,7 @@ test('goal PABCD status panel exposes goal, phase gate, runtime, and evidence su
     assert.equal(cssEntry.includes("@import '../goal-status/goal-pabcd-status.css';"), false, 'Code CSS entry must NOT import monitor panel CSS (slice 211 boundary)');
 });
 
-test('goal PABCD status surface stays independent of child Jaw instances', () => {
+test('goal PABCD status surface stays independent of child Weasley Podex instances', () => {
     const combined = [
         read('public/manager/src/goal-status/goal-pabcd-status-client.ts'),
         read('public/manager/src/goal-status/useGoalPabcdStatus.ts'),

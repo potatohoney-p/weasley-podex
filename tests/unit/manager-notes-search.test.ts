@@ -75,14 +75,14 @@ test('notes search can use a resolved ripgrep binary outside the server PATH', a
     assert.equal(command, '/opt/codex/vendor/path/rg');
 });
 
-test('notes search honors podex_RIPGREP_PATH for manager service environments', () => {
-    const previous = process.env.podex_RIPGREP_PATH;
+test('notes search honors WEASLEY_PODEX_RIPGREP_PATH for manager service environments', () => {
+    const previous = process.env.WEASLEY_PODEX_RIPGREP_PATH;
     try {
-        process.env.podex_RIPGREP_PATH = '/custom/bin/rg';
+        process.env.WEASLEY_PODEX_RIPGREP_PATH = '/custom/bin/rg';
         assert.equal(resolveRipgrepCommand(), '/custom/bin/rg');
     } finally {
-        if (previous === undefined) delete process.env.podex_RIPGREP_PATH;
-        else process.env.podex_RIPGREP_PATH = previous;
+        if (previous === undefined) delete process.env.WEASLEY_PODEX_RIPGREP_PATH;
+        else process.env.WEASLEY_PODEX_RIPGREP_PATH = previous;
     }
 });
 

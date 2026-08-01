@@ -139,7 +139,7 @@ test('validateDiscordFileSize accepts 5 MiB', async () => {
 
 test('normalizeChannelSendRequest maps body fields correctly', async () => {
     const { normalizeChannelSendRequest } = await import('../../src/messaging/send.js');
-    const jawHome = process.env.podex_HOME || process.env.JAW_HOME || path.join(os.homedir(), '.podex');
+    const jawHome = process.env.WEASLEY_PODEX_HOME || path.join(os.homedir(), '.weasley', 'podex');
     const testDir = path.join(jawHome, 'output');
     fs.mkdirSync(testDir, { recursive: true });
     const testPath = path.join(testDir, `send-test-${Date.now()}.png`);

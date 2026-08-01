@@ -5,7 +5,7 @@ type BadgeNavigator = Navigator & {
 
 const COMPLETION_DEDUPE_MS = 800;
 const BADGE_SIZE = 64;
-const BASE_TITLE_FALLBACK = 'podex';
+const BASE_TITLE_FALLBACK = 'Weasley Podex';
 
 let initialized = false;
 let unreadCount = 0;
@@ -51,10 +51,13 @@ function renderBadgeFavicon(count: number): string {
     if (!ctx) return originalFaviconHref;
 
     ctx.clearRect(0, 0, BADGE_SIZE, BADGE_SIZE);
-    ctx.font = '44px "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
+    ctx.fillStyle = '#071226';
+    ctx.fillRect(0, 0, BADGE_SIZE, BADGE_SIZE);
+    ctx.fillStyle = '#f2b35f';
+    ctx.font = '700 20px "Segoe UI", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('🦈', 28, 36);
+    ctx.fillText('WP', 27, 35);
 
     ctx.beginPath();
     ctx.arc(50, 15, count > 1 ? 12 : 9, 0, Math.PI * 2);

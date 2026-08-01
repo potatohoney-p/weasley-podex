@@ -163,10 +163,10 @@ test('validateImportPayload rejects null and primitives', () => {
 });
 
 test('validateImportPayload accepts object payload', () => {
-    const r = validateImportPayload('{"cli":"codex","tui":{"themeSeed":"jaw-dark"}}');
+    const r = validateImportPayload('{"cli":"codex","tui":{"themeSeed":"weasley-podex-dark"}}');
     assert.equal(r.ok, true);
     if (r.ok) {
-        assert.deepEqual(r.value, { cli: 'codex', tui: { themeSeed: 'jaw-dark' } });
+        assert.deepEqual(r.value, { cli: 'codex', tui: { themeSeed: 'weasley-podex-dark' } });
     }
 });
 

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import express from 'express';
 import http from 'node:http';
 import {
-    podex_ELECTRON_HEADER,
+    WEASLEY_PODEX_ELECTRON_HEADER,
     createElectronMetricsRouter,
     createElectronMetricsStore,
     validateMetricsSnapshot,
@@ -75,7 +75,7 @@ test('POST with invalid body is rejected with 400', async () => {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
-                [podex_ELECTRON_HEADER]: '1',
+                [WEASLEY_PODEX_ELECTRON_HEADER]: '1',
             },
             body: JSON.stringify({ ts: 'not-a-number' }),
         });
@@ -90,14 +90,14 @@ test('POST then GET returns the stored snapshot', async () => {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
-                [podex_ELECTRON_HEADER]: '1',
+                [WEASLEY_PODEX_ELECTRON_HEADER]: '1',
             },
             body: JSON.stringify(snap),
         });
         assert.equal(post.status, 200);
 
         const get = await fetch(`${baseUrl}/api/dashboard/electron-metrics`, {
-            headers: { [podex_ELECTRON_HEADER]: '1' },
+            headers: { [WEASLEY_PODEX_ELECTRON_HEADER]: '1' },
         });
         assert.equal(get.status, 200);
         const body = await get.json() as Record<string, unknown>;
@@ -116,13 +116,13 @@ test('GET after TTL expiry returns null snapshot', async () => {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
-                [podex_ELECTRON_HEADER]: '1',
+                [WEASLEY_PODEX_ELECTRON_HEADER]: '1',
             },
             body: JSON.stringify(snap),
         });
         await new Promise((resolve) => setTimeout(resolve, 60));
         const get = await fetch(`${baseUrl}/api/dashboard/electron-metrics`, {
-            headers: { [podex_ELECTRON_HEADER]: '1' },
+            headers: { [WEASLEY_PODEX_ELECTRON_HEADER]: '1' },
         });
         const body = await get.json() as Record<string, unknown>;
         assert.equal(body.available, true);

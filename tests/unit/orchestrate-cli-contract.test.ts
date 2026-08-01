@@ -32,8 +32,8 @@ test('ORC-CLI-003: standalone force and user approval are sent in state transiti
 
 test('ORC-CLI-008: standalone CLI attaches boss-token + --attest for the agent evidence gate', () => {
     assert.ok(cliSrc.includes("arg === '--attest'"), 'CLI parser should recognize --attest <json>');
-    assert.ok(cliSrc.includes("process.env['JAW_BOSS_TOKEN']"), 'CLI should read the boss token from env');
-    assert.ok(cliSrc.includes("'x-jaw-boss-token': bossToken"), 'CLI should send the boss-token header when present');
+    assert.ok(cliSrc.includes("getWeasleyPodexEnv('BOSS_TOKEN')"), 'CLI should read the boss token through the compatibility boundary');
+    assert.ok(cliSrc.includes("'x-weasley-podex-boss-token': bossToken"), 'CLI should send the branded boss-token header when present');
     assert.ok(cliSrc.includes('attestation !== undefined ? { attestation }'), 'CLI should forward the attestation in the body');
     assert.ok(cliSrc.includes('--attest'), 'help text should document --attest for agents');
     assert.ok(!cliSrc.includes('--force  '), 'help text must NOT advertise --force as a normal flag');

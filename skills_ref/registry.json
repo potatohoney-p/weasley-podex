@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "name": "Weasley Podex bundled core skills",
+  "license": "Apache-2.0",
+  "skills": {
+    "browser": {
+      "version": "1.0.0",
+      "category": "automation",
+      "defaultActive": true,
+      "description": "Operate and verify browser sessions through the Weasley Podex CLI."
+    },
+    "dev": {
+      "version": "1.0.0",
+      "category": "development",
+      "defaultActive": true,
+      "description": "Shared engineering workflow for safe, tested repository changes."
+    },
+    "dev-pabcd": {
+      "version": "1.0.0",
+      "category": "orchestration",
+      "defaultActive": true,
+      "description": "PABCD planning, audit, build, check, and delivery gates."
+    },
+    "diagram": {
+      "version": "1.0.0",
+      "category": "documentation",
+      "defaultActive": true,
+      "description": "Create small, accurate diagrams from verified system relationships."
+    },
+    "goal": {
+      "version": "1.0.0",
+      "category": "orchestration",
+      "defaultActive": true,
+      "description": "Run persistent goals with explicit progress, verification, and stop conditions."
+    },
+    "memory": {
+      "version": "1.0.0",
+      "category": "productivity",
+      "defaultActive": true,
+      "description": "Use instance-local and cross-instance memory without leaking private context."
+    },
+    "search": {
+      "version": "1.0.0",
+      "category": "research",
+      "defaultActive": true,
+      "description": "Unified search hub with source-first evidence verification."
+    },
+    "web-ai": {
+      "version": "1.0.0",
+      "category": "automation",
+      "defaultActive": true,
+      "description": "Use supported web AI sessions with bounded context and artifact capture."
+    }
+  }
+}

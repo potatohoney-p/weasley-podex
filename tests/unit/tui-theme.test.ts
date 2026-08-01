@@ -45,7 +45,7 @@ function withEnvs(o: Record<string, string | undefined>, fn: () => void): void {
 }
 
 test('fgToken emits the right escape per level (accent #62a8f5)', () => {
-    withEnvs({ NO_COLOR: undefined, JAW_TUI_THEME: undefined, FORCE_COLOR: '3' }, () => {
+    withEnvs({ NO_COLOR: undefined, WEASLEY_PODEX_TUI_THEME: undefined, FORCE_COLOR: '3' }, () => {
         assert.equal(fgToken('accent'), '\x1b[38;2;98;168;245m');
     });
     withEnvs({ NO_COLOR: undefined, FORCE_COLOR: '2' }, () => {
@@ -60,7 +60,7 @@ test('fgToken emits the right escape per level (accent #62a8f5)', () => {
 });
 
 test('light theme resolves different hexes', () => {
-    withEnvs({ NO_COLOR: undefined, FORCE_COLOR: '3', JAW_TUI_THEME: 'light' }, () => {
+    withEnvs({ NO_COLOR: undefined, FORCE_COLOR: '3', WEASLEY_PODEX_TUI_THEME: 'light' }, () => {
         assert.equal(activeTheme(), 'light');
         assert.equal(fgToken('accent'), '\x1b[38;2;31;111;235m'); // #1f6feb
     });

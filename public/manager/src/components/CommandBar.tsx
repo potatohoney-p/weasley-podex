@@ -24,8 +24,9 @@ export function CommandBar(props: CommandBarProps) {
                 </button>
             )}
             title={(
-                <h1 className="manager-brand-heading" aria-label="podex Dashboard">
-                    <span className="manager-brand-wordmark">podex</span>
+                <h1 className="manager-brand-heading" aria-label="Weasley Podex Dashboard">
+                    <img className="manager-brand-mark" src="/assets/weasley-podex-mark.png" alt="" />
+                    <span className="manager-brand-wordmark">Weasley Podex</span>
                     <span className="manager-brand-dash">DASH</span>
                 </h1>
             )}

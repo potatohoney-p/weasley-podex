@@ -15,15 +15,15 @@ import { interactiveConfirm } from '../../bin/interactive-confirm.js';
 import { isAgentDriven } from '../../bin/agent-driven.js';
 import { PassThrough } from 'node:stream';
 
-test('GHS-001: starPromptStatePath honors podex_HOME', async () => {
-    const prev = process.env.podex_HOME;
+test('GHS-001: starPromptStatePath honors WEASLEY_PODEX_HOME', async () => {
+    const prev = process.env.WEASLEY_PODEX_HOME;
     const dir = await mkdtemp(join(tmpdir(), 'jaw-star-home-'));
-    process.env.podex_HOME = dir;
+    process.env.WEASLEY_PODEX_HOME = dir;
     try {
         assert.equal(starPromptStatePath(), join(dir, 'state', 'star-prompt.json'));
     } finally {
-        if (prev === undefined) delete process.env.podex_HOME;
-        else process.env.podex_HOME = prev;
+        if (prev === undefined) delete process.env.WEASLEY_PODEX_HOME;
+        else process.env.WEASLEY_PODEX_HOME = prev;
         await rm(dir, { recursive: true, force: true });
     }
 });
@@ -54,7 +54,7 @@ test('GHS-002: starRepo calls gh starred API with hidden Windows console', () =>
 
     assert.deepEqual(result, { ok: true });
     assert.equal(seenCommand, 'gh');
-    assert.deepEqual(seenArgs, ['api', '-X', 'PUT', '/user/starred/potatohoney-p/podex']);
+    assert.deepEqual(seenArgs, ['api', '-X', 'PUT', '/user/starred/potatohoney-p/weasley-podex']);
     assert.equal(seenOptions?.windowsHide, true);
 });
 
@@ -85,7 +85,7 @@ test('GHS-004: maybePromptGithubStar marks once and thanks on successful star', 
     });
 
     assert.equal(marked, true);
-    assert.deepEqual(logs, ['[jaw] Thanks for the star!']);
+    assert.deepEqual(logs, ['[weasley-podex] Thanks for the star!']);
 });
 
 test('GHS-005: maybePromptGithubStar defers to the user when an agent drives the CLI', async () => {

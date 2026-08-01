@@ -32,7 +32,7 @@ export const CHATGPT_ATTACHMENT_OBSERVATION: FrontendCapabilityObservation = {
     activationPath: ['click composer plus', 'discover composer-scoped file input', 'set local file', 'wait for upload chip'],
     activeStateSignals: ['visible upload chip', 'sent user turn attachment evidence'],
     mutationRisk: 'medium',
-    notes: ['Live upload smoke returned JAW_UPLOAD_OK.', 'Accepted types and account limits remain UI-authoritative.'],
+    notes: ['Live upload smoke returned WEASLEY_PODEX_UPLOAD_OK.', 'Accepted types and account limits remain UI-authoritative.'],
 };
 
 export const CHATGPT_WEB_SEARCH_OBSERVATION: FrontendCapabilityObservation = {

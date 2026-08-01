@@ -1,5 +1,5 @@
 // ── Dispatch transport hardening contracts (devlog 260613 docs 08/60) ──
-// Root cause: `jaw dispatch` without --watch used blocking wait=true; undici's
+// Root cause: `weasley-podex dispatch` without --watch used blocking wait=true; undici's
 // default 5-min headersTimeout killed the CLI ("fetch failed") while the
 // worker kept running, and the orphaned result re-entered the conversation
 // later as an unmarked pendingReplay turn. Polls also died on a single

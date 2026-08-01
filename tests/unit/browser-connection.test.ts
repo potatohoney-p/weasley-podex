@@ -63,7 +63,7 @@ test('CDP-005: connection.ts delegates headless policy to launch policy helper',
     );
 });
 
-test('CDP-005b: connection.ts verifies jaw-owned Chrome on Windows instead of failing closed', () => {
+test('CDP-005b: connection.ts verifies Weasley Podex-owned Chrome on Windows instead of failing closed', () => {
     assert.match(
         connectionSrc,
         /powershell\.exe/,
@@ -103,7 +103,7 @@ test('CDP-007: CLI --headless option exists', () => {
 
 // ─── DIFF-D: skills_ref/browser/SKILL.md ────────────
 
-test('CDP-008: skills_ref SKILL.md uses podex not cli-claw', { skip: !fs.existsSync(join(root, 'skills_ref', 'browser', 'SKILL.md')) && 'skills_ref submodule not checked out' }, () => {
+test('CDP-008: bundled browser SKILL.md uses Weasley Podex, not cli-claw', { skip: !fs.existsSync(join(root, 'skills_ref', 'browser', 'SKILL.md')) && 'bundled browser skill is missing' }, () => {
     const skillPath = join(root, 'skills_ref', 'browser', 'SKILL.md');
     const skillSrc = readSource(skillPath, 'utf8');
     assert.doesNotMatch(
@@ -161,8 +161,8 @@ test('CDP-013: runtime ownership is tracked separately from activePort', () => {
     );
     assert.match(
         connectionSrc,
-        /createJawOwnedBrowserRuntime\(\{[\s\S]*pid:\s*chromeProc\.pid\s*\?\?\s*null[\s\S]*headless/,
-        'spawned Chrome should be classified as current-process Jaw-owned',
+        /createWeasleyPodexOwnedBrowserRuntime\(\{[\s\S]*pid:\s*chromeProc\.pid\s*\?\?\s*null[\s\S]*headless/,
+        'spawned Chrome should be classified as current-process Weasley Podex-owned',
     );
 });
 
@@ -193,11 +193,11 @@ test('CDP-016: CLI status prints runtime owner and idle close policy', () => {
     assert.match(cliBrowserSrc, /idleClose:/);
 });
 
-test('CDP-017: launchChrome clears stale jaw-owned process memory when CDP is gone', () => {
+test('CDP-017: launchChrome clears stale Weasley Podex-owned process memory when CDP is gone', () => {
     assert.match(connectionSrc, /resetStaleChromeProcIfCdpUnavailable/);
     assert.match(connectionSrc, /waitForCdpReady\(port,\s*1000\)/);
     assert.match(connectionSrc, /chromeProc\.kill\('SIGTERM'\)/);
-    assert.match(connectionSrc, /runtimeOwner\?\.ownership === 'jaw-owned'/);
+    assert.match(connectionSrc, /runtimeOwner\?\.ownership === 'weasley-podex-owned'/);
     assert.match(connectionSrc, /runtimeOwner = null/);
     assert.match(connectionSrc, /activePort = null/);
     assert.match(connectionSrc, /verifiedActiveTargetId = null/);
@@ -208,12 +208,12 @@ test('CDP-018: CLI start failure includes runtime diagnostics', () => {
     assert.match(cliBrowserSrc, /Failed to start Chrome/);
     assert.match(cliBrowserSrc, /owner:\s*\$\{runtime\.ownership \|\| 'none'\}/);
     assert.match(cliBrowserSrc, /tabs:\s*\$\{r\.tabs \?\? 0\}/);
-    assert.match(cliBrowserSrc, /podex browser status/);
+    assert.match(cliBrowserSrc, /weasley-podex browser status/);
 });
 
 test('CDP-019: browser doctor reports stale runtime and orphan cleanup scope', () => {
-    assert.match(diagnosticsSrc, /stale-jaw-owned-runtime/);
-    assert.match(diagnosticsSrc, /durable-jaw-owned-runtime-records-only/);
+    assert.match(diagnosticsSrc, /stale-weasley-podex-owned-runtime/);
+    assert.match(diagnosticsSrc, /durable-weasley-podex-owned-runtime-records-only/);
     assert.match(diagnosticsSrc, /idleAutoCloseScope/);
     assert.match(diagnosticsSrc, /safeExternalKill:\s*false/);
     assert.match(routesSrc, /\/api\/browser\/doctor/);
@@ -225,6 +225,8 @@ test('CDP-020: orphan runtime cleanup requires durable ownership proof and force
     assert.match(connectionSrc, /writeDurableBrowserRuntimeOwner\(owner\)/);
     assert.match(connectionSrc, /clearDurableBrowserRuntimeOwner\(owner\)/);
     assert.match(ownerStoreSrc, /browser-runtime-owner\.json/);
+    assert.match(ownerStoreSrc, /=== 'jaw-owned'/, 'legacy ownership records should be recognized only for migration');
+    assert.match(ownerStoreSrc, /\.ownership = 'weasley-podex-owned'/, 'legacy ownership records should normalize to the new public value');
     assert.match(ownerStoreSrc, /Pick<BrowserRuntimeOwner,\s*'pid'\s*\|\s*'port'\s*\|\s*'userDataDir'>/);
     assert.match(orphanSrc, /commandLineMatchesDurableRuntimeOwner/);
     assert.match(orphanSrc, /commandLineHasExactFlagValue/);

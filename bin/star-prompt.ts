@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../src/core/weasley-podex-env.js';
 import { spawnSync, type SpawnSyncReturns, type SpawnSyncOptionsWithStringEncoding } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -7,7 +8,7 @@ import { resolveHomePath } from '../src/core/path-expand.js';
 import { isAgentDriven } from './agent-driven.js';
 import { interactiveConfirm } from './interactive-confirm.js';
 
-const REPO = 'potatohoney-p/podex';
+const REPO = 'potatohoney-p/weasley-podex';
 
 interface StarPromptState {
     prompted_at: string;
@@ -30,9 +31,10 @@ interface MaybePromptGithubStarDeps {
 export type StarRepoResult = { ok: true } | { ok: false; error: string };
 
 function resolveJawHome(): string {
-    return process.env["podex_HOME"]
-        ? resolveHomePath(process.env["podex_HOME"], homedir())
-        : join(homedir(), '.podex');
+    const configured = getWeasleyPodexEnv('HOME');
+    return configured
+        ? resolveHomePath(configured, homedir())
+        : join(homedir(), '.weasley', 'podex');
 }
 
 export function starPromptStatePath(): string {
@@ -117,10 +119,10 @@ export function starRepo(
  */
 export function agentDeferralLines(): string[] {
     return [
-        `[jaw] podex isn't starred on GitHub yet.`,
-        `[jaw] Agent: do not answer this yourself — it uses the user's GitHub identity.`,
-        `[jaw] Ask the user whether to star ${REPO}, and only run`,
-        `[jaw] \`gh api -X PUT /user/starred/${REPO}\` if they say yes.`,
+        `[weasley-podex] Weasley Podex isn't starred on GitHub yet.`,
+        `[weasley-podex] Agent: do not answer this yourself — it uses the user's GitHub identity.`,
+        `[weasley-podex] Ask the user whether to star ${REPO}, and only run`,
+        `[weasley-podex] \`gh api -X PUT /user/starred/${REPO}\` if they say yes.`,
     ];
 }
 
@@ -150,7 +152,7 @@ export async function maybePromptGithubStar(deps: MaybePromptGithubStarDeps = {}
 
     const askYesNoImpl = deps.askYesNoFn
         ?? (() => interactiveConfirm({
-            question: '[jaw] Enjoying podex? Star it on GitHub (via gh)?',
+            question: '[weasley-podex] Enjoying Weasley Podex? Star it on GitHub (via gh)?',
             defaultYes: true,
         }));
     const approved = await askYesNoImpl();
@@ -160,11 +162,11 @@ export async function maybePromptGithubStar(deps: MaybePromptGithubStarDeps = {}
     const star = starRepoImpl();
     if (star.ok) {
         const log = deps.logFn ?? console.log;
-        log('[jaw] Thanks for the star!');
+        log('[weasley-podex] Thanks for the star!');
         return;
     }
 
     const warn = deps.warnFn ?? console.warn;
-    warn(`[jaw] Could not star repository automatically: ${star.error}`);
+    warn(`[weasley-podex] Could not star repository automatically: ${star.error}`);
 }
 

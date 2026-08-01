@@ -3,7 +3,7 @@
 
 import fs from 'fs';
 import { join } from 'path';
-import { settings, JAW_HOME } from '../core/config.js';
+import { settings, WEASLEY_PODEX_HOME } from '../core/config.js';
 import { getRecentMessages } from '../core/db.js';
 import { getActiveChatSession } from '../core/chat-sessions.js';
 import { getMemoryFlushFilePath } from '../memory/runtime.js';
@@ -53,7 +53,7 @@ Conversation:
 {{convo}}`;
 
 export function buildFlushPrompt(vars: { memFile: string; time: string; convo: string }): string {
-    const customPath = join(JAW_HOME, 'prompts', 'flush-prompt.md');
+    const customPath = join(WEASLEY_PODEX_HOME, 'prompts', 'flush-prompt.md');
     let template = DEFAULT_FLUSH_PROMPT_TEMPLATE;
     if (fs.existsSync(customPath)) {
         try {
@@ -69,7 +69,7 @@ export function buildFlushPrompt(vars: { memFile: string; time: string; convo: s
 // ─── Flush SysPrompt Loader (3-B) ───────────────────
 
 function loadFlushSysPrompt(): string {
-    const customPath = join(JAW_HOME, 'prompts', 'flush-system.md');
+    const customPath = join(WEASLEY_PODEX_HOME, 'prompts', 'flush-system.md');
     if (fs.existsSync(customPath)) {
         try {
             return fs.readFileSync(customPath, 'utf8');

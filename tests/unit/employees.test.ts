@@ -16,18 +16,22 @@ import {
 } from '../../src/core/employees.ts';
 
 const ROOT = process.cwd();
+const controlWorkflowPath = path.join(
+    import.meta.dirname, '..', '..', 'skills_ref', 'desktop-control', 'reference', 'control-workflow.md',
+);
+const hasControlWorkflow = fs.existsSync(controlWorkflowPath);
 
 async function withInactiveOpenCodex<T>(fn: () => Promise<T>): Promise<T> {
-    const previousDir = process.env['podex_OPENCODEX_DIR'];
+    const previousDir = process.env['WEASLEY_PODEX_OPENCODEX_DIR'];
     const testDir = fs.mkdtempSync(path.join(tmpdir(), 'jaw-ocx-inactive-'));
-    process.env['podex_OPENCODEX_DIR'] = testDir;
+    process.env['WEASLEY_PODEX_OPENCODEX_DIR'] = testDir;
     resetOpenCodexModelCacheForTest();
     try {
         return await fn();
     } finally {
         resetOpenCodexModelCacheForTest();
-        if (previousDir === undefined) delete process.env['podex_OPENCODEX_DIR'];
-        else process.env['podex_OPENCODEX_DIR'] = previousDir;
+        if (previousDir === undefined) delete process.env['WEASLEY_PODEX_OPENCODEX_DIR'];
+        else process.env['WEASLEY_PODEX_OPENCODEX_DIR'] = previousDir;
     }
 }
 
@@ -42,7 +46,7 @@ test('P37-CU-001: Control static employee is defined with Codex + luna + darwin 
 test('P37-CU-002: Control carries desktop-control + screen-capture + codex-imagegen', () => {
     // vision-click is no longer a separate active skill for Control — the
     // desktop-control skill's reference/vision-click.md covers routing, and
-    // the `podex browser vision-click` command encapsulates the
+    // the `weasley-podex browser vision-click` command encapsulates the
     // low-level recipe. See 37_revisions_and_integration.md §G.
     const control = findStaticEmployee('control'); // case-insensitive
     assert.ok(control);
@@ -102,14 +106,10 @@ test('P37-CU-008: unknown employee returns null', async () => {
     assert.equal(res, null);
 });
 
-test('P37-CU-010: desktop-control skill includes control-workflow reference', async () => {
-    const fs = await import('node:fs');
-    const path = await import('node:path');
-    const refPath = path.join(
-        import.meta.dirname, '..', '..', 'skills_ref', 'desktop-control', 'reference', 'control-workflow.md',
-    );
-    assert.ok(fs.existsSync(refPath), `missing: ${refPath}`);
-    const content = fs.readFileSync(refPath, 'utf8');
+test('P37-CU-010: desktop-control skill includes control-workflow reference', {
+    skip: !hasControlWorkflow && 'skills_ref submodule not checked out',
+}, () => {
+    const content = fs.readFileSync(controlWorkflowPath, 'utf8');
     assert.match(content, /Control workflow/, 'control-workflow.md must contain "Control workflow"');
 });
 
@@ -178,8 +178,8 @@ test('dispatch clears mismatched employee resume key before attempting resume', 
 
 test('employee CLI supports list and honest help text', () => {
     const src = fs.readFileSync(path.join(ROOT, 'bin/commands/employee.ts'), 'utf8');
-    assert.match(src, /podex employee list \[--port 3457\] \[--json\]/);
-    assert.match(src, /podex employee sessions-reset \[--port 3457\]/);
+    assert.match(src, /weasley-podex employee list \[--port 3457\] \[--json\]/);
+    assert.match(src, /weasley-podex employee sessions-reset \[--port 3457\]/);
     assert.match(src, /case 'list'/);
     assert.match(src, /case 'sessions-reset'/);
     assert.match(src, /\/api\/employees\/sessions\/reset/);

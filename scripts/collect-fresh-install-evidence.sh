@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# Collect fresh-machine install evidence for supported podex targets.
+# Collect fresh-machine install evidence for supported Weasley Podex targets.
 set -uo pipefail
 
 TARGET="auto"
 SKIP_INSTALL=0
 SKIP_DOCTOR=0
 OUT_DIR=""
-INSTALL_SCRIPT="${podex_INSTALL_SCRIPT:-}"
-VERIFIER_SCRIPT="${podex_VERIFIER_SCRIPT:-}"
-INSTALL_REF="${podex_INSTALL_REF:-main}"
-RAW_BASE="${podex_RAW_BASE:-https://raw.githubusercontent.com/potatohoney-p/podex/${INSTALL_REF}}"
+INSTALL_SCRIPT="${WEASLEY_PODEX_INSTALL_SCRIPT:-}"
+VERIFIER_SCRIPT="${WEASLEY_PODEX_VERIFIER_SCRIPT:-}"
+INSTALL_REF="${WEASLEY_PODEX_INSTALL_REF:-main}"
+RAW_BASE="${WEASLEY_PODEX_RAW_BASE:-https://raw.githubusercontent.com/potatohoney-p/weasley-podex/${INSTALL_REF}}"
 FAILURES=0
 
 usage() {
@@ -28,11 +28,11 @@ Options:
   -h, --help                      Show this help.
 
 Environment:
-  podex_INSTALL_SCRIPT          Default local installer path when --install-script is omitted.
-  podex_VERIFIER_SCRIPT         Default local verifier path when --verifier-script is omitted.
-  podex_INSTALL_REF             Default git ref when --install-ref is omitted.
-  podex_RAW_BASE                Default raw base URL when --raw-base is omitted.
-  podex_EVIDENCE_DIR            Default output directory when --out-dir is omitted.
+  WEASLEY_PODEX_INSTALL_SCRIPT  Default local installer path when --install-script is omitted.
+  WEASLEY_PODEX_VERIFIER_SCRIPT Default local verifier path when --verifier-script is omitted.
+  WEASLEY_PODEX_INSTALL_REF     Default git ref when --install-ref is omitted.
+  WEASLEY_PODEX_RAW_BASE        Default raw base URL when --raw-base is omitted.
+  WEASLEY_PODEX_EVIDENCE_DIR    Default output directory when --out-dir is omitted.
 USAGE
 }
 
@@ -69,7 +69,7 @@ while [ "$#" -gt 0 ]; do
     --install-ref)
       [ "$#" -ge 2 ] || { echo "Missing value for --install-ref" >&2; exit 2; }
       INSTALL_REF="$2"
-      RAW_BASE="https://raw.githubusercontent.com/potatohoney-p/podex/${INSTALL_REF}"
+      RAW_BASE="https://raw.githubusercontent.com/potatohoney-p/weasley-podex/${INSTALL_REF}"
       shift 2
       ;;
     --raw-base)
@@ -121,7 +121,7 @@ fi
 case "$TARGET" in
   macos|wsl|linux) ;;
   native-windows)
-    echo "Native Windows/Git Bash is not a supported podex install target. Use WSL." >&2
+    echo "Native Windows/Git Bash is not a supported Weasley Podex install target. Use WSL." >&2
     exit 2
     ;;
   *)
@@ -131,7 +131,7 @@ case "$TARGET" in
 esac
 
 if [ -z "$OUT_DIR" ]; then
-  OUT_DIR="${podex_EVIDENCE_DIR:-$HOME/podex-fresh-install-evidence-$(date -u +%Y%m%d-%H%M%S)}"
+  OUT_DIR="${WEASLEY_PODEX_EVIDENCE_DIR:-$HOME/weasley-podex-fresh-install-evidence-$(date -u +%Y%m%d-%H%M%S)}"
 fi
 mkdir -p "$OUT_DIR"
 SUMMARY="$OUT_DIR/summary.txt"
@@ -294,7 +294,7 @@ collect_snapshot() {
     if [ -r /etc/os-release ]; then
       sed -n '1,20p' /etc/os-release
     fi
-    for cmd in zsh bash git curl node npm nvm cargo rustc jaw podex claude codex gemini grok opencode copilot officecli powershell.exe wsl.exe; do
+    for cmd in zsh bash git curl node npm nvm cargo rustc weasley-podex jaw podex claude codex gemini grok opencode copilot officecli powershell.exe wsl.exe; do
       if command -v "$cmd" >/dev/null 2>&1; then
         echo "$cmd=$(command -v "$cmd")"
       else
@@ -362,7 +362,7 @@ run_installer() {
   else
     archive_remote_script "installer" "$RAW_BASE/scripts/$script_name" "$archived_installer"
   fi
-  run_logged "podex one-click installer" "$OUT_DIR/01-install.log" bash "$archived_installer"
+  run_logged "Weasley Podex one-click installer" "$OUT_DIR/01-install.log" bash "$archived_installer"
 }
 
 run_verifier() {
@@ -382,8 +382,8 @@ run_verifier() {
   elif command -v npm >/dev/null 2>&1; then
     local npm_root
     npm_root="$(npm root -g 2>/dev/null || true)"
-    if [ -n "$npm_root" ] && [ -f "$npm_root/podex/scripts/verify-fresh-install.sh" ]; then
-      verifier="$npm_root/podex/scripts/verify-fresh-install.sh"
+    if [ -n "$npm_root" ] && [ -f "$npm_root/weasley-podex/scripts/verify-fresh-install.sh" ]; then
+      verifier="$npm_root/weasley-podex/scripts/verify-fresh-install.sh"
     fi
   fi
 
@@ -397,7 +397,7 @@ run_verifier() {
 }
 
 run_shell_probes() {
-  local probe='set -e; printf "node_path="; command -v node; node --version; printf "npm_path="; command -v npm; npm --version; printf "jaw_path="; command -v jaw; jaw --version'
+  local probe='set -e; printf "node_path="; command -v node; node --version; printf "npm_path="; command -v npm; npm --version; printf "weasley_podex_path="; command -v weasley-podex; weasley-podex --version'
 
   if [ "$TARGET" = "macos" ]; then
     run_optional_shell_logged "bash login-shell probe (non-default on macOS)" "$OUT_DIR/30-bash-login-probe.log" "$probe"
@@ -419,22 +419,22 @@ run_shell_probes() {
 
   if [ "$TARGET" = "wsl" ]; then
     local distro="${WSL_DISTRO_NAME:-Ubuntu}"
-    record "PowerShell host probe command: wsl.exe -d $distro -- bash -lc \"jaw --version\""
+    record "PowerShell host probe command: wsl.exe -d $distro -- bash -lc \"weasley-podex --version\""
     if command -v powershell.exe >/dev/null 2>&1; then
-      run_logged "PowerShell-to-WSL jaw probe" "$OUT_DIR/33-powershell-to-wsl-probe.log" \
-        powershell.exe -NoProfile -Command "\$ErrorActionPreference = 'Stop'; wsl.exe -d '$distro' -- bash -lc 'jaw --version'"
+      run_logged "PowerShell-to-WSL Weasley Podex probe" "$OUT_DIR/33-powershell-to-wsl-probe.log" \
+        powershell.exe -NoProfile -Command "\$ErrorActionPreference = 'Stop'; wsl.exe -d '$distro' -- bash -lc 'weasley-podex --version'"
     else
       record "SKIP PowerShell-to-WSL probe: powershell.exe not found inside WSL"
       echo "PowerShell-to-WSL probe skipped: powershell.exe not found inside WSL"
       echo "Run this from Windows PowerShell, then re-run the auditor:"
       cat <<EOF
-wsl.exe -d $distro -- bash -lc 'EVIDENCE_DIR="\$(ls -dt ~/podex-fresh-install-evidence-* | head -1)"; { echo "command=wsl.exe -d $distro -- bash -lc jaw --version"; jaw --version; } | tee "\$EVIDENCE_DIR/33-powershell-to-wsl-probe.log"'
+wsl.exe -d $distro -- bash -lc 'EVIDENCE_DIR="\$(ls -dt ~/weasley-podex-fresh-install-evidence-* | head -1)"; { echo "command=wsl.exe -d $distro -- bash -lc weasley-podex --version"; weasley-podex --version; } | tee "\$EVIDENCE_DIR/33-powershell-to-wsl-probe.log"'
 EOF
     fi
   fi
 }
 
-echo "podex fresh-machine evidence collector"
+echo "weasley-podex fresh-machine evidence collector"
 echo "target=$TARGET"
 echo "out_dir=$OUT_DIR"
 

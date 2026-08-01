@@ -8,6 +8,10 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, basename, dirname } from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import {
+    computeLegacyUnitName,
+    computeUnitName,
+} from '../../src/manager/systemd-service.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..', '..');
@@ -16,7 +20,7 @@ const projectRoot = join(__dirname, '..', '..');
 
 function expectedInstanceId(jawHome: string): string {
     const base = basename(jawHome);
-    if (base === '.podex') return 'default';
+    if (base === '.podex' || (base === 'podex' && basename(dirname(jawHome)) === '.weasley')) return 'default';
     const hash = createHash('md5').update(jawHome).digest('hex').slice(0, 8);
     return `${base.replace(/^\./, '')}-${hash}`;
 }
@@ -46,11 +50,11 @@ test('S-003: /.dockerenv detection', () => {
 
 // ─── S-004~005: instanceId consistency ───────────────
 
-test('S-004: default JAW_HOME produces "default" instance', () => {
+test('S-004: default WEASLEY_PODEX_HOME produces "default" instance', () => {
     assert.equal(expectedInstanceId(join('/home/user', '.podex')), 'default');
 });
 
-test('S-005: custom JAW_HOME produces hashed instance', () => {
+test('S-005: custom WEASLEY_PODEX_HOME produces hashed instance', () => {
     const id = expectedInstanceId('/tmp/jaw-work');
     assert.ok(id.startsWith('jaw-work-'), `Expected jaw-work-<hash>, got ${id}`);
     assert.equal(id.length, 'jaw-work-'.length + 8);
@@ -65,16 +69,37 @@ test('S-006: sanitizeUnitName strips invalid chars', () => {
     assert.equal(sanitizeUnitName('jaw@special!'), 'jaw-special-');
 });
 
-test('S-007: UNIT_NAME format is jaw-<sanitized-instance>', () => {
-    const instance = expectedInstanceId(join('/home/user', '.podex'));
-    const unitName = `jaw-${sanitizeUnitName(instance)}`;
-    assert.equal(unitName, 'jaw-default');
+test('S-007: UNIT_NAME format is weasley-podex-<sanitized-instance>', () => {
+    const unitName = computeUnitName(3457, join('/home/user', '.podex'));
+    assert.equal(unitName, 'weasley-podex-default');
+});
+
+test('S-007b: legacy systemd unit is derived exactly for migration only', () => {
+    const home = '/tmp/custom-weasley-podex';
+    assert.equal(
+        computeLegacyUnitName(3458, home),
+        `jaw-${sanitizeUnitName(expectedInstanceId(home))}`,
+    );
+});
+
+test('S-007c: managed Weasley homes map to their exact historical systemd units', () => {
+    const root = '/tmp/weasley-user';
+    const currentHome = join(root, '.weasley', 'podex-3458');
+    const historicalHome = join(root, '.podex-3458');
+    assert.equal(
+        computeLegacyUnitName(3458, currentHome),
+        `jaw-${sanitizeUnitName(expectedInstanceId(historicalHome))}`,
+    );
+});
+
+test('S-007d: a managed default home stays default under a custom home root', () => {
+    assert.equal(computeUnitName(3457, join('/tmp/custom-root', '.weasley', 'podex')), 'weasley-podex-default');
 });
 
 test('S-008: UNIT_PATH follows /etc/systemd/system/ convention', () => {
-    const unitName = 'jaw-default';
+    const unitName = 'weasley-podex-default';
     const unitPath = `/etc/systemd/system/${unitName}.service`;
-    assert.equal(unitPath, '/etc/systemd/system/jaw-default.service');
+    assert.equal(unitPath, '/etc/systemd/system/weasley-podex-default.service');
 });
 
 // ─── S-009~010: parseArgs ────────────────────────────
@@ -143,8 +168,10 @@ test('S-013b: instance binary lookup is Windows-aware', async () => {
         'binary lookup should use where on Windows and which elsewhere');
     assert.ok(instanceCode.includes('split(/\\r?\\n/)'),
         'Windows where may return multiple lines and should select the first result');
-    assert.ok(instanceCode.includes('(?:^|[\\\\/])(?:podex|jaw)'),
+    assert.ok(instanceCode.includes('(?:^|[\\\\/])'),
         'argv path detection should support both POSIX and Windows separators');
+    assert.ok(instanceCode.includes('weasley-podex(?:\\.js)?|podex\\.js'),
+        'argv path detection should recognize the public CLI and internal entrypoint');
 });
 
 // ─── S-014: service.ts uses --no-open in ExecStart ──
@@ -177,9 +204,9 @@ test('S-016: macOS logs mapped to file paths (not delegated to launchd)', async 
         join(projectRoot, 'bin', 'commands', 'service.ts'),
         'utf8'
     );
-    // jaw service logs on macOS should NOT fall through to launchd default (install)
+    // weasley-podex service logs on macOS should NOT fall through to launchd default (install)
     assert.ok(serviceCode.includes("subcommand === 'logs'"), 'service.ts must handle logs subcommand for launchd');
-    assert.ok(serviceCode.includes('jaw-serve.log'), 'should show log file path');
+    assert.ok(serviceCode.includes('weasley-podex-serve.log'), 'should show log file path');
 });
 
 // ─── S-017: mktemp for secure temp file ──────────────
@@ -251,7 +278,7 @@ test('S-022: port validation accepts valid port numbers', () => {
 test('S-023: status reads port from unit file content', () => {
     // Simulate reading port from unit file
     const unitContent = `[Service]
-ExecStart="/usr/bin/node" "/usr/bin/jaw" --home /home/user/.podex serve --port 9999 --no-open`;
+ExecStart="/usr/bin/node" "/usr/bin/jaw" --home /home/user/.weasley-podex serve --port 9999 --no-open`;
     const portMatch = unitContent.match(/--port\s+(\d+)/);
     assert.ok(portMatch, 'should find --port in unit file');
     assert.equal(portMatch![1], '9999');
@@ -294,8 +321,8 @@ test('S-026: install.sh uses npm root -g for playwright-core detection', () => {
         'utf8'
     );
     assert.ok(installCode.includes('npm root -g'), 'install.sh should use npm root -g like doctor.ts');
-    assert.ok(installCode.includes('npm view podex version'),
-        'install.sh should check latest published podex version before reinstalling');
+    assert.ok(installCode.includes('npm view weasley-podex version'),
+        'install.sh should check the latest published Weasley Podex version before reinstalling');
     assert.ok(installCode.includes('skipping npm install'),
         'install.sh should skip reinstall when the latest version is already installed');
     assert.ok(installCode.includes('computer-use MCP'),
@@ -380,8 +407,8 @@ test('S-026c2: install.sh repairs partial installs instead of skipping latest po
     assert.ok(installCode.includes('claude codex gemini grok copilot opencode'), 'install.sh should check the bundled auto-installed CLIs');
     assert.ok(installCode.includes('Re-running npm install to repair the partial install'), 'latest podex should not skip when tools are missing');
     assert.ok(installCode.includes('Attempting npm repair install anyway'), 'network-version fallback should still repair missing tools');
-    assert.ok(installCode.includes('podex_STRICT_ONE_CLICK'), 'one-click strict CLI dependency failures should be explicit opt-in');
-    assert.ok(installCode.includes('unset podex_REQUIRE_CLI_TOOLS'), 'one-click install should keep optional backend installs best-effort by default');
+    assert.ok(installCode.includes('WEASLEY_PODEX_STRICT_ONE_CLICK'), 'one-click strict CLI dependency failures should be explicit opt-in');
+    assert.ok(installCode.includes('unset WEASLEY_PODEX_REQUIRE_CLI_TOOLS'), 'one-click install should keep optional backend installs best-effort by default');
 });
 
 test('S-026d: claude-e is optional so npm install works without Cargo', () => {
@@ -393,11 +420,11 @@ test('S-026d: claude-e is optional so npm install works without Cargo', () => {
     assert.equal(lock.packages?.['node_modules/claude-e']?.optional, true, 'lockfile package entry should mark claude-e optional');
 });
 
-test('S-026e: ai-e is not bundled — use jaw provider install ai-e', () => {
+test('S-026e: ai-e is not bundled — use weasley-podex provider install ai-e', () => {
     const pkg = JSON.parse(readFileSync(join(projectRoot, 'package.json'), 'utf8'));
     const lock = JSON.parse(readFileSync(join(projectRoot, 'package-lock.json'), 'utf8'));
     assert.equal(pkg.dependencies?.['@bitkyc08/ai-e'], undefined, 'ai-e must not be a hard dependency');
-    assert.equal(pkg.optionalDependencies?.['@bitkyc08/ai-e'], undefined, 'ai-e must not be an optional dependency — use jaw provider install');
+    assert.equal(pkg.optionalDependencies?.['@bitkyc08/ai-e'], undefined, 'ai-e must not be an optional dependency — use weasley-podex provider install');
     assert.equal(lock.packages?.['']?.dependencies?.['@bitkyc08/ai-e'], undefined, 'lockfile root must not have ai-e in dependencies');
     assert.equal(lock.packages?.['']?.optionalDependencies?.['@bitkyc08/ai-e'], undefined, 'lockfile root must not have ai-e in optionalDependencies');
     assert.equal(lock.packages?.['node_modules/@bitkyc08/ai-e'], undefined, 'lockfile must not include ai-e in the install tree');

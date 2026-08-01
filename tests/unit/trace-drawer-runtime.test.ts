@@ -2,10 +2,11 @@ import test from 'node:test';
 import { mock } from 'node:test';
 import assert from 'node:assert/strict';
 import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { setupWebUiDom, resetWebUiDom } from './web-ui-test-dom.ts';
 
 const ROOT = resolve(import.meta.dirname, '../..');
-const PROVIDER_ICONS_PATH = resolve(ROOT, 'public/js/provider-icons.js');
+const PROVIDER_ICONS_PATH = pathToFileURL(resolve(ROOT, 'public/js/provider-icons.js')).href;
 const originalFetch = globalThis.fetch;
 
 mock.module(PROVIDER_ICONS_PATH, {

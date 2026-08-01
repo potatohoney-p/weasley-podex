@@ -37,12 +37,12 @@ test('BSP-005: browser skill documents Korean search result verification ladder'
     const browserSkill = fs.readFileSync(browserSkillPath, 'utf8');
     assert.match(browserSkill, /Korean Search Result Verification/);
     assert.match(browserSkill, /URL candidates/);
-    assert.match(browserSkill, /podex browser fetch/);
+    assert.match(browserSkill, /weasley-podex browser fetch/);
     assert.match(browserSkill, /Naver-cafe\/blog\/search shell content/);
     assert.match(browserSkill, /PDF, attachment, table, list, ranking/);
     assert.match(browserSkill, /browse-needed/);
     assert.match(browserSkill, /agbrowse research plan/);
-    assert.match(browserSkill, /does not replace native\s+podex search\/browser verification/);
+    assert.match(browserSkill, /does not replace native\s+Weasley Podex search\/browser verification/);
 });
 
 test('BSP-006: browser skill documents known URL reader fallback ladder', { skip: !hasBrowserSkill && 'skills_ref submodule not checked out' }, () => {

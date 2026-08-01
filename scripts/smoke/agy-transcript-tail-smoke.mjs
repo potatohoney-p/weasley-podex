@@ -82,7 +82,7 @@ console.log(JSON.stringify({
     tail_parser_runs: true,
     corpus_has_RUN_COMMAND: hasRun,
     note: hasRun
-        ? 'Transcript tail is viable for jaw Stage 1 when conversation uuid is known.'
+        ? 'Transcript tail is viable for Weasley Podex Stage 1 when conversation uuid is known.'
         : 'This conversation has no RUN_COMMAND yet; use a cwd with tool-heavy history or resume cascade session.',
 }, null, 2));
 

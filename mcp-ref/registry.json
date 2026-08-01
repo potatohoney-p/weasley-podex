@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "servers": {
+    "context7": {
+      "name": "Context7",
+      "description": "Up-to-date library and framework documentation for coding agents.",
+      "category": "developer-tools",
+      "type": "remote",
+      "config": {
+        "type": "http",
+        "url": "https://mcp.context7.com/mcp"
+      },
+      "tags": [
+        "documentation",
+        "libraries",
+        "remote"
+      ],
+      "url": "https://github.com/upstash/context7"
+    }
+  }
+}

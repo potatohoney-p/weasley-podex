@@ -5,13 +5,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
     claimWorker, finishWorker,
     listPendingWorkerResults,
 } from '../../src/orchestrator/worker-registry.js';
 import { drainPendingReplays } from '../../src/orchestrator/pipeline.js';
 
-const srcRoot = new URL('../../src/', import.meta.url).pathname;
+const srcRoot = fileURLToPath(new URL('../../src/', import.meta.url));
 
 // ─── Source-level gate removal assertions ─────────────
 

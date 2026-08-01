@@ -4,7 +4,7 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-process.env.podex_HOME = mkdtempSync(join(tmpdir(), 'podex-goal-pause-loop-'));
+process.env.WEASLEY_PODEX_HOME = mkdtempSync(join(tmpdir(), 'podex-goal-pause-loop-'));
 
 const { parseCommand, executeCommand } = await import('../../src/cli/commands.ts');
 const { buildGoalContinuation } = await import('../../src/goal/heartbeat.ts');

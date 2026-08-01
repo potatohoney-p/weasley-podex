@@ -1,5 +1,7 @@
 ﻿import { basename } from 'node:path';
 import { createHash } from 'node:crypto';
+import { homedir } from 'node:os';
+import { join, resolve } from 'node:path';
 
 export type DashboardSettingsMetadata = {
     homeDisplay: string | null;
@@ -25,7 +27,8 @@ function readString(source: Record<string, unknown> | null, keys: string[]): str
 export function deriveDashboardInstanceId(homePath: string | null): string | null {
     if (!homePath) return null;
     const base = basename(homePath);
-    if (base === '.podex') return 'default';
+    const normalized = resolve(homePath);
+    if (normalized === resolve(join(homedir(), '.weasley', 'podex')) || normalized === resolve(join(homedir(), '.podex'))) return 'default';
     const hash = createHash('md5').update(homePath).digest('hex').slice(0, 8);
     return `${base.replace(/^\./, '')}-${hash}`;
 }
@@ -36,7 +39,7 @@ export function normalizeSettingsMetadata(settingsBody: unknown): DashboardSetti
     const source = data || root;
 
     const workingDir = readString(source, ['workingDir', 'cwd']);
-    const homeDisplay = readString(source, ['jawHome', 'JAW_HOME', 'home', 'homePath']) || workingDir;
+    const homeDisplay = readString(source, ['jawHome', 'WEASLEY_PODEX_HOME', 'home', 'homePath']) || workingDir;
     const currentCli = readString(source, ['cli', 'currentCli']);
     let currentModel = readString(source, ['model', 'currentModel']);
 

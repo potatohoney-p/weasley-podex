@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -33,7 +33,7 @@ if [ -f src/lib/tui/jawcode-tui-bundle.mjs ]; then
         "node_modules/@jawcode-dev/natives/native/$NATIVE_FILE" \
         "node_modules/@jawcode-internal/natives/native/$NATIVE_FILE" \
         "electron/sidecar/server/dist/src/lib/native/$NATIVE_FILE" \
-        "electron/dist/mac-arm64/podex.app/Contents/Resources/server/dist/src/lib/native/$NATIVE_FILE"; do
+        "electron/dist/mac-arm64/Weasley Podex.app/Contents/Resources/server/dist/src/lib/native/$NATIVE_FILE"; do
         if [ -f "$candidate" ]; then
             NATIVE_SRC="$candidate"
             break
@@ -60,4 +60,3 @@ else
     mv "$STAGING" dist
 fi
 echo "[atomic-build] dist/ swapped successfully"
-

@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../../../../../src/core/weasley-podex-env.js';
 import { ipcMain, dialog, shell, type BrowserWindow } from 'electron';
 import { mkdir, readdir, rename, stat, lstat, readFile, realpath, writeFile } from 'node:fs/promises';
 import { basename, dirname, isAbsolute, resolve, join } from 'node:path';
@@ -120,7 +121,8 @@ function readSafeEntryName(rawName: unknown): string {
 
 function resolveDefaultRoot(): string {
     const candidates = [
-        process.env.JAW_WORKSPACE_DIR,
+        getWeasleyPodexEnv('WORKSPACE_DIR'),
+        getWeasleyPodexEnv('WORKSPACE_DIR'),
         process.env.PWD,
         homedir(),
     ].filter((v): v is string => typeof v === 'string' && v.trim().length > 0);

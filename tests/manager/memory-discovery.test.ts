@@ -8,7 +8,7 @@ import { listSearchableInstancesAt } from '../../src/manager/memory/instance-dis
 import type { DashboardRegistry } from '../../src/manager/types.ts';
 
 function freshTmp(): string {
-    return mkdtempSync(join(tmpdir(), 'jaw-discovery-'));
+    return mkdtempSync(join(tmpdir(), 'weasley-podex-discovery-'));
 }
 
 function emptyRegistry(): DashboardRegistry {
@@ -31,21 +31,21 @@ function emptyRegistry(): DashboardRegistry {
     };
 }
 
-test('discovery: primary port (3457) → ~/.podex (no suffix)', () => {
+test('discovery: primary port (3457) uses ~/.weasley/podex', () => {
     const base = freshTmp();
-    mkdirSync(join(base, '.podex'));
+    mkdirSync(join(base, '.weasley', 'podex'), { recursive: true });
     const reg = emptyRegistry();
     reg.instances['3457'] = { label: 'primary', favorite: false, group: null, hidden: false, notes: null };
     const refs = listSearchableInstancesAt(reg, base);
     assert.equal(refs.length, 1);
-    assert.equal(refs[0]!.homePath, join(base, '.podex'));
+    assert.equal(refs[0]!.homePath, join(base, '.weasley', 'podex'));
     assert.equal(refs[0]!.homeSource, 'default-port');
     assert.equal(refs[0]!.hasDb, false);
 });
 
-test('discovery: non-primary port → ~/.podex-<port>', () => {
+test('discovery: non-primary port uses ~/.weasley/podex-<port>', () => {
     const base = freshTmp();
-    const home3458 = join(base, '.podex-3458');
+    const home3458 = join(base, '.weasley', 'podex-3458');
     mkdirSync(join(home3458, 'memory', 'structured'), { recursive: true });
     writeFileSync(join(home3458, 'memory', 'structured', 'index.sqlite'), '');
     const reg = emptyRegistry();
@@ -64,7 +64,7 @@ test('discovery: blacklist filters .bak, smoke-, manager-, dashboard', () => {
     // Simulate by injecting override map. Discovery only checks default-port names — we use
     // listSearchableInstancesAt with explicit overrides to push paths that match blacklist.
     const overrides = new Map<number, string>();
-    overrides.set(3457, join(base, '.podex-smoke-x'));
+    overrides.set(3457, join(base, '.weasley', 'podex-smoke-x'));
     const refs = listSearchableInstancesAt(reg, base, overrides);
     assert.equal(refs.length, 0);
 });
@@ -91,5 +91,27 @@ test('discovery: non-numeric port keys are skipped', () => {
     const refs = listSearchableInstancesAt(reg, base);
     assert.equal(refs.length, 1);
     assert.equal(refs[0]!.port, 3457);
+});
+
+test('discovery: branded chat database is preferred with exact legacy fallback', () => {
+    const base = freshTmp();
+    const brandedHome = join(base, 'branded');
+    const legacyHome = join(base, 'legacy');
+    mkdirSync(brandedHome, { recursive: true });
+    mkdirSync(legacyHome, { recursive: true });
+    writeFileSync(join(brandedHome, 'weasley-podex.db'), '');
+    writeFileSync(join(brandedHome, 'jaw.db'), '');
+    writeFileSync(join(legacyHome, 'jaw.db'), '');
+
+    const reg = emptyRegistry();
+    reg.instances['3457'] = { label: 'branded', favorite: false, group: null, hidden: false, notes: null };
+    reg.instances['3458'] = { label: 'legacy', favorite: false, group: null, hidden: false, notes: null };
+    const overrides = new Map<number, string>([[3457, brandedHome], [3458, legacyHome]]);
+    const refs = listSearchableInstancesAt(reg, base, overrides);
+
+    assert.equal(refs[0]!.chatDbPath, join(brandedHome, 'weasley-podex.db'));
+    assert.equal(refs[0]!.hasChatDb, true);
+    assert.equal(refs[1]!.chatDbPath, join(legacyHome, 'jaw.db'));
+    assert.equal(refs[1]!.hasChatDb, true);
 });
 

@@ -1,8 +1,8 @@
 ﻿#!/usr/bin/env bash
 # ═══════════════════════════════════════════════════════════════
-#  install-officecli.sh — Install OfficeCLI binary (fork-first, CJK-enhanced)
-#  Default: potatohoney-p/OfficeCLI (includes CJK font handling)
-#  Override: --upstream to install vanilla iOfficeAI/OfficeCLI
+#  install-officecli.sh — Install the Apache-2.0 OfficeCLI binary
+#  Default: iOfficeAI/OfficeCLI (verified public upstream releases)
+#  Compatibility: --upstream selects the same verified default
 #  Override: OFFICECLI_REPO=other/repo to use a different source
 # ═══════════════════════════════════════════════════════════════
 set -euo pipefail
@@ -17,7 +17,7 @@ warn()  { echo -e "${YELLOW}⚠${NC} $*"; }
 fail()  { echo -e "${RED}✖${NC} $*"; exit 1; }
 
 ENV_REPO="${OFFICECLI_REPO:-}"
-REPO="${ENV_REPO:-potatohoney-p/OfficeCLI}"
+REPO="${ENV_REPO:-iOfficeAI/OfficeCLI}"
 INSTALL_DIR="${HOME}/.local/bin"
 TARGET_BIN="${INSTALL_DIR}/officecli"
 DOWNLOAD_BIN="${INSTALL_DIR}/officecli.download"
@@ -44,7 +44,7 @@ Usage: ./scripts/install-officecli.sh [--force] [--update] [--upstream]
 Options:
   --force      Reinstall even when officecli already exists
   --update     Reinstall only when the installed version is older than latest
-  --upstream   Use vanilla iOfficeAI/OfficeCLI instead of the CJK-enhanced fork
+  --upstream   Use the verified iOfficeAI/OfficeCLI upstream (current default)
 EOF
       exit 0
       ;;
@@ -214,7 +214,7 @@ if [ "$UPSTREAM" = "true" ]; then
 elif [ -n "$ENV_REPO" ]; then
   echo "Source: ${REPO} (custom override)"
 else
-  echo "Source: ${REPO} (CJK-enhanced fork)"
+  echo "Source: ${REPO} (verified upstream)"
 fi
 
 # ── PATH hint ──

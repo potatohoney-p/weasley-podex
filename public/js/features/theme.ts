@@ -7,7 +7,8 @@ import githubLight from 'highlight.js/styles/github.css?inline';
 import { broadcastThemeToIframes } from '../diagram/iframe-renderer.js';
 import { rerenderMermaidDiagrams } from '../render.js';
 
-const STORAGE_KEY = 'jaw.uiTheme';
+const STORAGE_KEY = 'weasley-podex.uiTheme';
+const LEGACY_STORAGE_KEY = 'jaw.uiTheme';
 let hljsStyleEl: HTMLStyleElement | null = null;
 type ThemeValue = 'dark' | 'light' | 'auto';
 
@@ -34,10 +35,12 @@ function applyHljsTheme(theme: string): void {
 }
 
 export function initTheme(): void {
-    if (!localStorage.getItem(STORAGE_KEY) && localStorage.getItem('theme')) {
-        localStorage.setItem(STORAGE_KEY, localStorage.getItem('theme')!);
-        localStorage.removeItem('theme');
+    if (!localStorage.getItem(STORAGE_KEY)) {
+        const migrated = localStorage.getItem(LEGACY_STORAGE_KEY) || localStorage.getItem('theme');
+        if (migrated) localStorage.setItem(STORAGE_KEY, migrated);
     }
+    localStorage.removeItem(LEGACY_STORAGE_KEY);
+    localStorage.removeItem('theme');
 
     const previewTheme = readPreviewThemeParam();
     const saved = localStorage.getItem(STORAGE_KEY);

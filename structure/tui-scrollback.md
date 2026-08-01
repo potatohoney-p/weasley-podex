@@ -1,6 +1,6 @@
 ﻿---
 created: 2026-06-15
-tags: [podex, tui, scrollback, ghostty, architecture]
+tags: [weasley-podex, tui, scrollback, ghostty, architecture]
 ---
 
 # TUI Native Scrollback Architecture

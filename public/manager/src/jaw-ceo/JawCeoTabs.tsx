@@ -10,7 +10,7 @@ export function JawCeoTabs(props: {
     onChange: (tab: JawCeoConsoleTab) => void;
 }) {
     return (
-        <div className="jaw-ceo-tabs" role="tablist" aria-label="Jaw CEO console tabs">
+        <div className="jaw-ceo-tabs" role="tablist" aria-label="Weasley Podex CEO console tabs">
             {TABS.map(tab => (
                 <button
                     key={tab.id}

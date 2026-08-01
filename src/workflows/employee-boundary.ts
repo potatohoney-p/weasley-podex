@@ -6,7 +6,7 @@ import { hasImplementationDelegation } from './handoff.js';
 
 export function assertBossOnlyDispatch(isBoss: boolean): void {
     if (!isBoss) {
-        throw new Error('Only the Boss agent can dispatch jaw employees');
+        throw new Error('Only the Boss agent can dispatch Weasley Podex employees');
     }
 }
 

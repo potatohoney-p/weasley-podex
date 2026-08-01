@@ -216,8 +216,8 @@ test('AGY-RT-010: AGY quiet completion is mapped to lifecycle success, not inter
 
 test('AGY-RT-011: AGY timeout suffix is stripped without masking timeout-only output', () => {
     assert.deepEqual(
-        stripAgyTrailingTimeoutOutput('JAW_AGY_DONE\nError: timed out waiting for response\n'),
-        { text: 'JAW_AGY_DONE', stripped: true },
+        stripAgyTrailingTimeoutOutput('WEASLEY_PODEX_AGY_DONE\nError: timed out waiting for response\n'),
+        { text: 'WEASLEY_PODEX_AGY_DONE', stripped: true },
     );
     assert.deepEqual(
         stripAgyTrailingTimeoutOutput('Error: timed out waiting for response\n'),
@@ -273,7 +273,7 @@ test('AGY-RT-012: AGY resume does not trim current stdout by prior output length
     assert.doesNotMatch(resumeOffsetBlock, /bucketRow\?\.output_len|employeeOutputLen/);
 });
 
-test('AGY-RT-012b: AGY uses podex history instead of native resume', () => {
+test('AGY-RT-012b: AGY uses weasley-podex history instead of native resume', () => {
     const spawnSrc = readFileSync(join(__dirname, '../../src/agent/spawn.ts'), 'utf8');
     assert.match(spawnSrc, /const providerSupportsResume\s*=\s*cli !== 'agy'/);
     assert.match(spawnSrc, /const needsHistory\s*=\s*!opts\._skipHistory && \(!isResume \|\| cli === 'pi'\)/);
@@ -357,7 +357,7 @@ test('AGY-RT-013b: AGY resume strips multi-turn replay before live quiet complet
 
 test('AGY-RT-013c: AGY prompt echo strips history/current task prefix from live and final output', () => {
     const prompt = [
-        '[Current podex task]',
+        '[Current weasley-podex task]',
         '[Recent Context]',
         '[user] old request',
         '',
@@ -600,11 +600,11 @@ test('AGY-RT-023: stdout fallback with an intermediate planner prefix is withhel
 test('AGY-RT-023: describeAgyFinalSource reports mode and truncation for diagnosability', () => {
     assert.equal(
         describeAgyFinalSource({ agyFinalPlannerSeen: true, agyFinalPlannerText: 'x', agyFullTextTruncated: undefined, fullText: 'x' }),
-        '[jaw:agy:final] source=transcript chars=1 truncated=0',
+        '[weasley-podex:agy:final] source=transcript chars=1 truncated=0',
     );
     assert.equal(
         describeAgyFinalSource({ agyFinalPlannerSeen: undefined, agyFinalPlannerText: undefined, agyFullTextTruncated: true, fullText: 'abc' }),
-        '[jaw:agy:final] source=stdout-fallback chars=3 truncated=1',
+        '[weasley-podex:agy:final] source=stdout-fallback chars=3 truncated=1',
     );
 });
 

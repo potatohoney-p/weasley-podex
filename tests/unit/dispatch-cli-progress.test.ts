@@ -2,8 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
+const ROOT = fileURLToPath(new URL('../..', import.meta.url));
 
 test('dispatch CLI prints employee process summary from returned tools', () => {
     const src = fs.readFileSync(path.join(ROOT, 'bin', 'commands', 'dispatch.ts'), 'utf8');

@@ -27,7 +27,7 @@ async function probe(url: string, signal?: AbortSignal): Promise<boolean> {
       return (
         !!json &&
         json.ok === true &&
-        json.app === 'podex' &&
+        json.app === 'weasley-podex' &&
         json.service === 'manager-dashboard'
       );
     } finally {

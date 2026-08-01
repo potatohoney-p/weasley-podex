@@ -1,10 +1,10 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 /**
- * Read-only file-based bridge to the jaw-reminders Tauri app.
- * Reads the snapshot file written by jaw-reminders' Rust storage layer
- * (see jaw-reminders/src-tauri/src/reminders/storage.rs).
+ * Read-only file-based bridge to a compatible reminders companion app.
+ * Reads the snapshot file written by its storage layer.
  *
- * Tauri identifier: ai.lidge.jaw.reminders (jaw-reminders/src-tauri/tauri.conf.json:5)
- * Default macOS path: ~/Library/Application Support/ai.lidge.jaw.reminders/reminders.json
+ * Tauri identifier: com.weasley.podex.reminders
+ * Default macOS path: ~/Library/Application Support/com.weasley.podex.reminders/reminders.json
  *
  * Public API:
  *   loadJawRemindersSnapshot(options?)        Promise<JawRemindersBridgeStatus>
@@ -12,7 +12,7 @@
  *   resolveDefaultSnapshotPath()              string | null
  */
 
-import { promises as fs } from 'node:fs';
+import { existsSync, promises as fs } from 'node:fs';
 import { homedir, platform } from 'node:os';
 import { join } from 'node:path';
 import type {
@@ -25,8 +25,9 @@ import type {
   ReminderSubtask,
 } from './types.js';
 
-const LOG_PREFIX = '[jaw-reminders-bridge]';
-const TAURI_IDENTIFIER = 'ai.lidge.jaw.reminders';
+const LOG_PREFIX = '[weasley-podex-reminders-bridge]';
+const TAURI_IDENTIFIER = 'com.weasley.podex.reminders';
+const LEGACY_TAURI_IDENTIFIER = 'ai.lidge.jaw.reminders';
 const SNAPSHOT_FILENAME = 'reminders.json';
 const DEFAULT_POLL_MS = 5000;
 const MIN_POLL_MS = 500;
@@ -40,15 +41,18 @@ export interface JawRemindersWatchOptions extends JawRemindersBridgeOptions {
 }
 
 export function resolveDefaultSnapshotPath(): string | null {
-  const override = process.env['JAW_REMINDERS_SNAPSHOT_PATH'];
+  const override = getWeasleyPodexEnv('REMINDERS_SNAPSHOT_PATH');
   if (override && override.trim().length > 0) {
     return override;
   }
   if (platform() === 'darwin') {
-    return join(homedir(), 'Library', 'Application Support', TAURI_IDENTIFIER, SNAPSHOT_FILENAME);
+    const appSupport = join(homedir(), 'Library', 'Application Support');
+    const brandedPath = join(appSupport, TAURI_IDENTIFIER, SNAPSHOT_FILENAME);
+    const legacyPath = join(appSupport, LEGACY_TAURI_IDENTIFIER, SNAPSHOT_FILENAME);
+    return existsSync(brandedPath) || !existsSync(legacyPath) ? brandedPath : legacyPath;
   }
   // Linux/Windows are not yet first-class targets for the bridge.
-  // Consumers can still set JAW_REMINDERS_SNAPSHOT_PATH to opt in.
+  // Consumers can set WEASLEY_PODEX_REMINDERS_SNAPSHOT_PATH to opt in.
   return null;
 }
 
@@ -282,7 +286,7 @@ export async function loadJawRemindersSnapshot(
     return fail(
       '',
       'platform_unsupported',
-      `${LOG_PREFIX} no default snapshot path on platform ${platform()}; set JAW_REMINDERS_SNAPSHOT_PATH`,
+      `${LOG_PREFIX} no default snapshot path on platform ${platform()}; set WEASLEY_PODEX_REMINDERS_SNAPSHOT_PATH`,
     );
   }
   let raw: string;

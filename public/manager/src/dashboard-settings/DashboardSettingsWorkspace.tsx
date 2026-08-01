@@ -67,7 +67,7 @@ const COPY = {
             },
             language: {
                 label: '언어',
-                scope: '전체 Jaw UI',
+                scope: '전체 Weasley Podex UI',
                 description: 'i18n을 지원하는 매니저 대시보드 화면에 사용할 언어를 저장합니다.',
             },
             shortcuts: {
@@ -143,7 +143,7 @@ const COPY = {
             },
             language: {
                 label: 'Language',
-                scope: 'Global Jaw UI',
+                scope: 'Global Weasley Podex UI',
                 description: 'Sets the saved manager dashboard locale for i18n-aware surfaces.',
             },
             shortcuts: {
@@ -219,7 +219,7 @@ const COPY = {
             },
             language: {
                 label: '语言',
-                scope: '整个 Jaw 界面',
+                scope: '整个 Weasley Podex 界面',
                 description: '为支持 i18n 的管理器仪表盘界面设置已保存的语言。',
             },
             shortcuts: {
@@ -295,7 +295,7 @@ const COPY = {
             },
             language: {
                 label: '言語',
-                scope: 'Jaw UI 全体',
+                scope: 'Weasley Podex UI 全体',
                 description: 'i18n 対応のマネージャーダッシュボード画面で使用する言語を保存します。',
             },
             shortcuts: {

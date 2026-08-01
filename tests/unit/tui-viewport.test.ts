@@ -140,7 +140,7 @@ test('Viewport width changes rerender cells', () => {
     assert.equal(v.composeRegion({ x: 1, y: 1, width: 40, height: 1 })[0], 'user:42');
 });
 
-test('Viewport scrollback can reach current jaw chat launch session start', () => {
+test('Viewport scrollback can reach current Weasley Podex chat launch session start', () => {
     const v = new Viewport();
     v.setPrelude(['welcome']);
     v.setItems([

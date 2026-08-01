@@ -96,7 +96,7 @@ test('background task monitor remains Manager-local and session-independent', ()
         read('public/manager/src/background-tasks/background-task-client.ts'),
     ].join('\n');
 
-    assert.equal(combined.includes('selectedInstance'), false, 'monitor must not depend on selected child Jaw instance');
+    assert.equal(combined.includes('selectedInstance'), false, 'monitor must not depend on selected child Weasley Podex instance');
     assert.equal(combined.includes('CodeSession'), false, 'monitor must not model background tasks as Code sessions');
     assert.equal(combined.includes('/api/code'), false, 'monitor must not call Code session APIs');
     assert.equal(combined.includes('3465'), false, 'monitor must not hardcode child Jaw ports');

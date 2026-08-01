@@ -33,8 +33,8 @@ export function resolvePanelCapabilities(surface: ManagerSurface): PanelCapabili
     return {
         terminal: capability('terminal', 'disabled', 'Terminal requires the desktop PTY bridge.'),
         browser: capability('browser', 'disabled', 'Browser side panel is available in the desktop app.'),
-        folder: capability('folder', 'disabled', 'Folder side panel is available in the desktop app; use the Jawsidian Notes tab on web.'),
-        doc: capability('doc', 'disabled', 'Document side panel is available in the desktop app; use the Jawsidian document tab on web.'),
+        folder: capability('folder', 'disabled', 'Folder side panel is available in the desktop app; use the Weasley Podex Notes tab on web.'),
+        doc: capability('doc', 'disabled', 'Document side panel is available in the desktop app; use the Weasley Podex document tab on web.'),
         diff: capability('diff', 'disabled', 'Diff side panel is available in the desktop app.'),
     };
 }

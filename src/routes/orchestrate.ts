@@ -322,7 +322,7 @@ export function registerOrchestrateRoutes(app: Express, requireAuth: AuthMiddlew
     app.post('/api/orchestrate/dispatch', requireAuth, async (req, res) => {
         // Phase 8: server-authoritative dispatch guard. Boss-only token required.
         // Employees do not have this token (stripped in spawn.ts makeCleanEnv).
-        const bossToken = String(req.headers['x-jaw-boss-token'] || '');
+        const bossToken = String(req.headers['x-weasley-podex-boss-token'] || '');
         if (!verifyBossToken(bossToken)) {
             log.warn(`[dispatch:deny] ip=${req.ip} ua=${String(req.headers['user-agent'] || '').slice(0, 80)}`);
             return fail(res, 403, 'Dispatch requires boss-scoped token. Employees cannot dispatch.');
@@ -624,7 +624,7 @@ export function registerOrchestrateRoutes(app: Express, requireAuth: AuthMiddlew
 
     // ─── Batch Parallel Dispatch (G-13) ──────────────────
     app.post('/api/orchestrate/dispatch/batch', requireAuth, async (req, res) => {
-        const bossToken = String(req.headers['x-jaw-boss-token'] || '');
+        const bossToken = String(req.headers['x-weasley-podex-boss-token'] || '');
         if (!verifyBossToken(bossToken)) {
             return fail(res, 403, 'Dispatch requires boss-scoped token.');
         }
@@ -753,7 +753,7 @@ export function registerOrchestrateRoutes(app: Express, requireAuth: AuthMiddlew
                     runId: slot.runId,
                     status: run?.status || 'done',
                     preview: previewText(text, 600) || '',
-                    recoveryCommand: `podex worker read ${slot.runId} --tail 120`,
+                    recoveryCommand: `weasley-podex worker read ${slot.runId} --tail 120`,
                     outputBytes: run?.outputBytes || 0,
                     ...(verdict ? { verdict } : {}),
                 };
@@ -766,7 +766,7 @@ export function registerOrchestrateRoutes(app: Express, requireAuth: AuthMiddlew
                     runId: slot.runId,
                     status: 'failed',
                     error: msg,
-                    recoveryCommand: `podex worker status ${slot.runId}`,
+                    recoveryCommand: `weasley-podex worker status ${slot.runId}`,
                 };
             }
         };
@@ -942,10 +942,10 @@ export function registerOrchestrateRoutes(app: Express, requireAuth: AuthMiddlew
         const userInitiated = req.body?.userInitiated === true;
         const currentCtx = getCtx(scope);
 
-        // Phase 60: actor distinction. A valid JAW_BOSS_TOKEN ⇒ the main AGENT (gated by
+        // Phase 60: actor distinction. A valid WEASLEY_PODEX_BOSS_TOKEN identifies the main agent.
         // evidence). No token ⇒ a human (web/CLI/TG) ⇒ keep the free pass. The token is
         // present in the main agent's env and stripped from employee subagents (spawn.ts).
-        const bossTokenHeader = String(req.headers['x-jaw-boss-token'] || '');
+        const bossTokenHeader = String(req.headers['x-weasley-podex-boss-token'] || '');
         const isAgent = bossTokenHeader.length > 0 && verifyBossToken(bossTokenHeader);
 
         // Attestation source of truth = the --attest JSON forwarded in the body. Pipeline-parsed

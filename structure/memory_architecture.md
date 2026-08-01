@@ -1,7 +1,7 @@
 ---
 created: 2026-03-28
-tags: [podex, memory, architecture, runtime]
-aliases: [podex Memory Architecture, advanced memory runtime, memory architecture]
+tags: [weasley-podex, memory, architecture, runtime]
+aliases: [Weasley Podex Memory Architecture, advanced memory runtime, memory architecture]
 ---
 
 > 📚 [INDEX](INDEX.md) · [프롬프트 흐름 ↗](prompt_flow.md) · [에이전트 실행 ↗](agent_spawn.md) · **메모리 아키텍처**
@@ -21,10 +21,10 @@ graph TD
     USER["👤 사용자 대화"] --> DB["💾 messages DB"]
     DB -->|"새 세션 시작 시"| HB["📋 History Block"]
     DB -->|"assistant 응답 저장 후"| FLUSH["🧠 Memory Flush"]
-    FLUSH --> LIVE["📁 ~/.podex/memory/structured/episodes/live/YYYY-MM-DD.md"]
+    FLUSH --> LIVE["📁 ~/.weasley/podex/memory/structured/episodes/live/YYYY-MM-DD.md"]
     INDEX["🔎 index.sqlite"] -->|"ready"| ADV["📄 Advanced Memory Prompt"]
     ADV -->|"profile.md + task snapshot"| SYSPROMPT["📄 System Prompt"]
-    LEGACY["📝 ~/.podex/memory/MEMORY.md"] -->|"fallback / forDisk"| LEGACYPROMPT["📄 Legacy Prompt Context"]
+    LEGACY["📝 ~/.weasley/podex/memory/MEMORY.md"] -->|"fallback / forDisk"| LEGACYPROMPT["📄 Legacy Prompt Context"]
     HB --> PROMPT["📨 사용자 프롬프트 앞에 붙임"]
     LEGACYPROMPT --> SYSPROMPT
     ADV --> SYSPROMPT
@@ -72,7 +72,7 @@ graph TD
 | 항목 | 값 |
 |------|-----|
 | **소스** | `src/agent/memory-flush-controller.ts` `triggerMemoryFlush()` |
-| **저장소** | `~/.podex/memory/structured/episodes/live/YYYY-MM-DD.md` |
+| **저장소** | `~/.weasley/podex/memory/structured/episodes/live/YYYY-MM-DD.md` |
 | **트리거** | 메인 에이전트가 assistant 응답을 저장한 뒤 `memoryFlushCounter` 증가 |
 | **threshold** | `settings.memory.flushEvery` (config 기본값 `10`; legacy session memory 주입 간격은 `ceil(flushEvery / 2)`) |
 | **플러시 CLI** | `settings.memory.cli` 또는 현재 `settings.cli` |
@@ -115,7 +115,7 @@ Prefers ES Module only, no CommonJS.
 | 항목 | 값 |
 |------|-----|
 | **상태 소스** | `src/memory/runtime.ts` `getAdvancedMemoryStatus()` (alias `getMemoryStatus`) |
-| **저장소 루트** | `~/.podex/memory/structured` |
+| **저장소 루트** | `~/.weasley/podex/memory/structured` |
 | **routing.searchRead** | `index.sqlite` 존재 시 `advanced`, 없으면 `basic` |
 | **routing.save** | 항상 `integrated` |
 | **provider / enabled** | `integrated` / `true` |
@@ -149,7 +149,7 @@ Prefers ES Module only, no CommonJS.
 | 항목 | 값 |
 |------|-----|
 | **소스** | `src/prompt/builder.ts` `appendLegacyMemoryContext()` |
-| **저장소** | `~/.claude/projects/{hash}/memory/*.md` + `~/.podex/memory/MEMORY.md` |
+| **저장소** | `~/.claude/projects/{hash}/memory/*.md` + `~/.weasley/podex/memory/MEMORY.md` |
 | **주입 빈도** | 첫 3 assistant counter turn 또는 `memoryFlushCounter % ceil(flushEvery / 2) === 0` 일 때 session memory 주입 |
 | **CHAR_BUDGET** | `10000자` |
 | **주입 형태** | `## Recent Session Memories` + `## Core Memory` |
@@ -168,7 +168,7 @@ Prefers ES Module only, no CommonJS.
 
 | 항목 | 값 |
 |------|-----|
-| **소스** | `~/.podex/memory/MEMORY.md` |
+| **소스** | `~/.weasley/podex/memory/MEMORY.md` |
 | **주입 조건** | 내용이 50자 초과일 때만 |
 | **주입 형태** | `## Core Memory` 섹션 |
 | **용도** | 사용자 선호도, 핵심 결정사항, 장기 팩트 |
@@ -180,7 +180,7 @@ Prefers ES Module only, no CommonJS.
 | 항목 | 값 |
 |------|-----|
 | **인덱스 빌드** | `src/memory/indexing.ts` `reindexAll(root)` |
-| **인덱스 DB** | `~/.podex/memory/structured/index.sqlite` |
+| **인덱스 DB** | `~/.weasley/podex/memory/structured/index.sqlite` |
 | **검색 방식** | FTS5 BM25 + synonym query expansion + trigram side index + LIKE fallback |
 | **검색 테이블** | `chunks`, `chunks_fts`, `chunks_trigram`, `memory_synonyms` |
 | **인덱싱 파일** | `profile.md`, `shared/**`, `episodes/**`, `semantic/**`, `procedures/**` |
@@ -238,7 +238,7 @@ Prefers ES Module only, no CommonJS.
 - `src/cli/command-context.ts` 가 web/cli/telegram/discord 공통 memory ctx 를 제공한다.
 - `listMemory`, `searchMemory`, `getMemoryStatus`, `bootstrapMemory`, `reindexMemory`, `initMemoryRuntime` 가 연결된다.
 - `/memory status|bootstrap|reindex|adv ...` 는 `src/cli/handlers-runtime.ts` 에서 status / bootstrap / reindex / init / on / off 를 분기하고, `handlers.ts`는 이를 re-export한다.
-- `jaw memory search <query> --chat` 는 L1 memory 검색 후 `/api/messages/search`(최근 7일)도 best-effort로 조회해 chat history를 합쳐 표시한다.
+- `weasley-podex memory search <query> --chat` 는 L1 memory 검색 후 `/api/messages/search`(최근 7일)도 best-effort로 조회해 chat history를 합쳐 표시한다.
 - `searchMemory()` 는 `src/memory/injection.ts` `searchMemoryWithPolicy()`를 탄다. 현재 이 함수는 전달받은 `role`과 무관하게 advanced index 준비 여부만 보고 indexed search vs legacy grep search를 고른다.
 - remote interface의 settings patch allowlist에는 `showReasoning`도 포함된다. 메모리 명령 자체와 직접 관련되지는 않지만 `/thought`와 같은 command-context 통합 경로를 공유한다.
 
@@ -258,7 +258,7 @@ Prefers ES Module only, no CommonJS.
 | **역할** | 최근 대화 원문 전달 | assistant 응답을 structured episode 로 요약 저장 | indexed memory + profile + task snapshot 주입 | legacy session memory + core fallback | 핵심 기억 상시 주입 |
 | **타이밍** | 새 세션만 | assistant 응답 저장 직후 | advanced index ready일 때 매번 | advanced 미준비 또는 forDisk base | 매번 |
 | **크기 제한** | 8000자 | 최근 메시지 4개 미만이면 스킵 | 800 / 2800 | 10000 / 1500 | 1500자 |
-| **저장소** | `messages` DB | `memory/structured/episodes/live` | `memory/structured` | `~/.claude/projects/{hash}/memory` + `~/.podex/memory/MEMORY.md` | `MEMORY.md` |
+| **저장소** | `messages` DB | `memory/structured/episodes/live` | `memory/structured` | `~/.claude/projects/{hash}/memory` + `~/.weasley/podex/memory/MEMORY.md` | `MEMORY.md` |
 | **코드** | `spawn.ts` | `memory-flush-controller.ts` + `spawn.ts` | `builder.ts` + `injection.ts` + `runtime.ts` | `builder.ts` | `builder.ts` |
 | **resume 시** | ❌ 스킵 | ✅ 정상 동작 | ✅ 정상 동작 | ✅ 정상 동작 | ✅ 정상 동작 |
 
@@ -297,18 +297,18 @@ Prefers ES Module only, no CommonJS.
 
 | Layer | Command surface | Scope | Write path |
 |------|-----------------|-------|------------|
-| **L1 instance-local** | `jaw memory search/read/save/context` | 현재 `JAW_HOME`의 structured memory | read/write |
-| **L2 dashboard federation (memory)** | `jaw dashboard memory search/read/instances` | dashboard가 관리하는 여러 `~/.podex*` 인스턴스의 memory | read-only |
-| **L2 dashboard federation (chat)** | `jaw dashboard chat search` | dashboard가 관리하는 여러 `~/.podex*` 인스턴스의 jaw.db 채팅 이력 | read-only |
+| **L1 instance-local** | `weasley-podex memory search/read/save/context` | 현재 `WEASLEY_PODEX_HOME`의 structured memory | read/write |
+| **L2 dashboard federation (memory)** | `weasley-podex dashboard memory search/read/instances` | dashboard가 관리하는 여러 `~/.weasley/podex*` 인스턴스의 memory | read-only |
+| **L2 dashboard federation (chat)** | `weasley-podex dashboard chat search` | dashboard가 관리하는 여러 `~/.weasley/podex*` 인스턴스의 `weasley-podex.db` 채팅 이력 | read-only |
 
 운영 원칙:
 
-- L1이 기본이다. 일반적인 과거 결정, 선호, 프로젝트 기억은 먼저 `jaw memory search`로 찾는다.
+- L1이 기본이다. 일반적인 과거 결정, 선호, 프로젝트 기억은 먼저 `weasley-podex memory search`로 찾는다.
 - L2는 사용자가 dashboard memory, all instances, 다른 instance/home, cross-instance context를 명시할 때만 쓴다.
 - L2는 더 넓은 검색이지 더 안전한 기본값이 아니다. 다른 인스턴스의 오래된 맥락이 섞일 수 있다.
-- 저장은 항상 현재 인스턴스의 L1 `jaw memory save <file> <content>` 경로로만 한다.
-- `jaw memory context <file>` 는 memory 파일의 생성 시점(created_at frontmatter 또는 mtime)과 name/description 키워드로 관련 채팅 메시지를 시간 윈도우 검색한다. 세션 무관 cross-session 검색.
-- L2 chat은 `jaw dashboard chat search`로 다른 인스턴스의 jaw.db를 직접 읽어 LIKE 검색한다. schema probe로 tool_log 컬럼 유무를 자동 감지하고, native module 불일치나 DB 없음 등은 warning으로 보고한다.
+- 저장은 항상 현재 인스턴스의 L1 `weasley-podex memory save <file> <content>` 경로로만 한다.
+- `weasley-podex memory context <file>` 는 memory 파일의 생성 시점(created_at frontmatter 또는 mtime)과 name/description 키워드로 관련 채팅 메시지를 시간 윈도우 검색한다. 세션 무관 cross-session 검색.
+- L2 chat은 `weasley-podex dashboard chat search`로 다른 인스턴스의 `weasley-podex.db`를 직접 읽어 LIKE 검색한다. 정확한 구이름 `jaw.db`는 이전 호환으로만 읽는다. schema probe로 tool_log 컬럼 유무를 자동 감지하고, native module 불일치나 DB 없음 등은 warning으로 보고한다.
 - Embedding은 L2 dashboard add-on이며 기본 OFF다. 설정 전에는 FTS5/local 검색이 기본이다.
 
 ---
@@ -360,7 +360,7 @@ OFF → CONFIGURED → INDEXING → ACTIVE_HYBRID / ACTIVE_EMBEDDING
 
 ### 설정 파일
 
-`~/.podex-dashboard/embedding.json`:
+`~/.weasley/podex-dashboard/embedding.json`:
 
 | 키 | 예시 | 설명 |
 |---|---|---|

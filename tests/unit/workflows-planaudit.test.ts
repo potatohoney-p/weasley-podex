@@ -75,7 +75,7 @@ test('PA-011: handler returns artifact and steerPrompt', () => {
 
 test('PA-020: planaudit does not auto-dispatch employees', () => {
     assert.ok(
-        !auditSrc.includes('podex dispatch') && !auditSrc.includes('runSingleAgent'),
+        !auditSrc.includes('weasley-podex dispatch') && !auditSrc.includes('runSingleAgent'),
         'planaudit workflow must not auto-dispatch (preview-only)',
     );
 });

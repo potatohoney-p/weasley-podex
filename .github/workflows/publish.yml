@@ -48,9 +48,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Checkout public skill fixtures
-        run: git submodule update --init --depth 1 skills_ref
-
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
@@ -224,13 +221,20 @@ jobs:
           }
           const forbidden = pack.files
             .map(file => file.path)
-            .filter(path => /(^|\/)(devlog|skills_ref|officecli|node_modules)(\/|$)|\.node$/.test(path));
+            .filter(path => /(^|\/)(devlog|officecli|node_modules)(\/|$)|\.node$/.test(path));
           if (forbidden.length) {
             console.error(`forbidden files in npm pack:\n${forbidden.join('\n')}`);
             process.exit(1);
           }
           if (pack.size > 25_000_000) {
             console.error(`packed tarball too large: ${pack.size}`);
+            process.exit(1);
+          }
+          const required = ['skills_ref/registry.json', 'mcp-ref/registry.json'];
+          const packedPaths = new Set(pack.files.map(file => file.path));
+          const missing = required.filter(path => !packedPaths.has(path));
+          if (missing.length) {
+            console.error(`required bundled catalogs missing from npm pack:\n${missing.join('\n')}`);
             process.exit(1);
           }
           console.log(`pack OK: ${pack.filename}, ${pack.files.length} files, ${pack.size} bytes`);
@@ -241,13 +245,13 @@ jobs:
         if: ${{ steps.release.outputs.skip-publish != 'true' }}
         run: |
           set -euo pipefail
-          if npm view "podex@${{ steps.release.outputs.version }}" version >/tmp/npm-version.txt 2>/dev/null; then
+          if npm view "weasley-podex@${{ steps.release.outputs.version }}" version >/tmp/npm-version.txt 2>/dev/null; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
-            echo "::notice::podex@${{ steps.release.outputs.version }} already exists on npm; publish will be skipped."
+            echo "::notice::weasley-podex@${{ steps.release.outputs.version }} already exists on npm; publish will be skipped."
             cat /tmp/npm-version.txt
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::podex@${{ steps.release.outputs.version }} is not on npm yet; publish will run."
+            echo "::notice::weasley-podex@${{ steps.release.outputs.version }} is not on npm yet; publish will run."
           fi
 
       - name: Publish or dry-run
@@ -258,7 +262,7 @@ jobs:
             echo "::notice::DRY RUN - npm publish will not write to registry"
             npm publish --dry-run --tag "${{ steps.release.outputs.tag }}" --access public --provenance
           elif [ "${{ steps.registry.outputs.exists }}" = "true" ]; then
-            echo "::notice::SKIP - podex@${{ steps.release.outputs.version }} is already published"
+            echo "::notice::SKIP - weasley-podex@${{ steps.release.outputs.version }} is already published"
           else
             npm publish --tag "${{ steps.release.outputs.tag }}" --access public --provenance
           fi
@@ -268,12 +272,12 @@ jobs:
         run: |
           set -euo pipefail
           for attempt in $(seq 1 30); do
-            if version="$(npm view "podex@${{ steps.release.outputs.version }}" version 2>/dev/null)"; then
+            if version="$(npm view "weasley-podex@${{ steps.release.outputs.version }}" version 2>/dev/null)"; then
               test "$version" = "${{ steps.release.outputs.version }}"
-              npm dist-tag ls podex
+              npm dist-tag ls weasley-podex
               exit 0
             fi
-            echo "::notice::podex@${{ steps.release.outputs.version }} not visible yet (${attempt}/30)"
+            echo "::notice::weasley-podex@${{ steps.release.outputs.version }} not visible yet (${attempt}/30)"
             sleep 10
           done
           echo "::error::registry smoke failed"
@@ -313,14 +317,14 @@ jobs:
             echo
             echo "### Install"
             echo '```sh'
-            echo "npm install -g podex@${{ steps.release.outputs.tag }}"
-            echo "npm install -g podex@${{ steps.release.outputs.version }}"
+            echo "npm install -g weasley-podex@${{ steps.release.outputs.tag }}"
+            echo "npm install -g weasley-podex@${{ steps.release.outputs.version }}"
             echo '```'
             echo
             echo "### Verification"
             echo "- Published from \`${{ github.ref_name }}\` with npm dist-tag \`${{ steps.release.outputs.tag }}\`."
             echo "- npm package gates passed in this workflow."
-            echo "- npm registry smoke confirmed \`podex@${{ steps.release.outputs.version }}\`."
+            echo "- npm registry smoke confirmed \`weasley-podex@${{ steps.release.outputs.version }}\`."
             echo "- npm provenance was requested through GitHub OIDC Trusted Publishing."
           } > "$notes_file"
 

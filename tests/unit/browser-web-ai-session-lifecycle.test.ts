@@ -58,13 +58,13 @@ test('SESS-005: sessions persist answer metadata for watcher reattach', () => {
         status: 'complete',
         url: 'https://gemini.google.com/app/abc',
         conversationUrl: 'https://gemini.google.com/app/abc',
-        answerText: 'JAW_WATCH_OK',
+        answerText: 'WEASLEY_PODEX_WATCH_OK',
     });
 
     const stored = getSession(s.sessionId);
     assert.equal(stored?.status, 'complete');
     assert.equal(stored?.conversationUrl, 'https://gemini.google.com/app/abc');
-    assert.equal(stored?.answerText, 'JAW_WATCH_OK');
+    assert.equal(stored?.answerText, 'WEASLEY_PODEX_WATCH_OK');
     assert.ok(stored?.lastSeenTextHash);
     assert.ok(stored?.completedAt);
 });

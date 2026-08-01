@@ -43,7 +43,7 @@ test('/goalplan stores the hint separately and requires refine before checkpoint
         const planned = await executeCommand(parsed, { interface: 'telegram', locale: 'en' });
         assert.equal(planned?.ok, true);
         assert.match(planned?.text ?? '', /Goal plan activated: investigate context loss/);
-        assert.match(planned?.steerPrompt ?? '', /podex goal refine/);
+        assert.match(planned?.steerPrompt ?? '', /weasley-podex goal refine/);
 
         const pending = getActiveGoal();
         assert.ok(pending);

@@ -1,4 +1,4 @@
-﻿// Mirrored from agbrowse adaptive-fetch v2; keep runtime behavior aligned while podex mirror remains experimental.
+﻿// Mirrored from agbrowse adaptive-fetch v2; keep runtime behavior aligned while Weasley Podex mirror remains experimental.
 
 import { DEFAULT_MAX_BYTES, DEFAULT_REDIRECT_LIMIT, DEFAULT_TIMEOUT_MS, redactHeaders, validateFetchUrl } from './safety.js';
 import { isTextualContentType } from './transforms.js';

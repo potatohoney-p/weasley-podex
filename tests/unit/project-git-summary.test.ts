@@ -49,8 +49,8 @@ test('project git header formatter locks compact display contract', () => {
     const summary: ProjectGitSummary = {
         ok: true,
         available: true,
-        root: '/Users/jun/project',
-        repoRoot: '/Users/jun/project',
+        root: '/Users/example/project',
+        repoRoot: '/Users/example/project',
         branch: 'dev',
         head: 'abc1234',
         trackedChangedCount: 12,
@@ -68,8 +68,8 @@ test('project git header formatter supports branch-only and detached refs', () =
     assert.equal(formatProjectGitSummary({
         ok: true,
         available: true,
-        root: '/Users/jun/project',
-        repoRoot: '/Users/jun/project',
+        root: '/Users/example/project',
+        repoRoot: '/Users/example/project',
         branch: 'agent',
         head: 'abc1234',
         trackedChangedCount: 0,
@@ -80,8 +80,8 @@ test('project git header formatter supports branch-only and detached refs', () =
     assert.equal(formatProjectGitSummary({
         ok: true,
         available: true,
-        root: '/Users/jun/project',
-        repoRoot: '/Users/jun/project',
+        root: '/Users/example/project',
+        repoRoot: '/Users/example/project',
         branch: null,
         head: 'abc1234',
         trackedChangedCount: 2,
@@ -95,8 +95,8 @@ test('project git header formatter hides unavailable or empty refs', () => {
     assert.equal(formatProjectGitSummary({
         ok: true,
         available: true,
-        root: '/Users/jun/project',
-        repoRoot: '/Users/jun/project',
+        root: '/Users/example/project',
+        repoRoot: '/Users/example/project',
         branch: null,
         head: null,
         trackedChangedCount: 1,

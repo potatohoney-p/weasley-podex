@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 ﻿import express from 'express';
 import helmet from 'helmet';
 import { existsSync, readFileSync } from 'node:fs';
@@ -462,7 +463,7 @@ registerEmbeddedBrowserRoutes(app, (_req, _res, next) => next(), { scanFrom, sca
 app.get('/api/dashboard/health', (_req, res) => {
     res.json({
         ok: true,
-        app: 'podex',
+        app: 'weasley-podex',
         service: 'manager-dashboard',
         port,
         pid: process.pid,
@@ -878,7 +879,6 @@ function sendManagerHtml(res: express.Response, htmlPath: string): void {
 
 app.use('/dist', express.static(distRoot));
 app.use('/assets', express.static(join(distRoot, 'assets')));
-app.use('/icons', express.static(join(sourceRoot, 'icons')));
 app.use('/manager', express.static(join(sourceRoot, 'manager'), { index: false }));
 
 app.get('/.well-known/appspecific/com.chrome.devtools.json', (_req, res) => {
@@ -886,7 +886,7 @@ app.get('/.well-known/appspecific/com.chrome.devtools.json', (_req, res) => {
 });
 
 app.get('/favicon.ico', (_req, res) => {
-    res.sendFile('icon-192.png', { root: join(sourceRoot, 'icons') }, error => {
+    res.sendFile('weasley-podex-mark.png', { root: join(sourceRoot, 'assets') }, error => {
         if (!error || res.headersSent) return;
         res.status(204).end();
     });
@@ -958,7 +958,7 @@ async function main(): Promise<void> {
     }
     server.listen(port, '127.0.0.1', () => {
         const url = `http://localhost:${port}`;
-        console.log(`\n  Jaw Manager — ${url}`);
+        console.log(`\n  Weasley Podex Manager — ${url}`);
         console.log(`  Scanning: ${scanFrom}-${scanFrom + scanCount - 1}`);
         console.log(`  Preview: ${previewFrom}-${previewFrom + scanCount - 1}\n`);
 
@@ -970,7 +970,7 @@ async function main(): Promise<void> {
         // 'appeared' diffs, or initial workers would never get SSE streams.
         startWorkerEventBridge();
         instanceRegistry.start();
-        if (process.env["JAW_REMINDERS_SCHEDULER"] === '1') {
+        if (getWeasleyPodexEnv('REMINDERS_SCHEDULER') === '1') {
             stopRemindersScheduler = startRemindersScheduler({
                 store: remindersStore,
                 observability,
@@ -979,7 +979,7 @@ async function main(): Promise<void> {
             console.log('  Reminders scheduler: enabled');
         }
 
-        if (process.env["JAW_DASHBOARD_OPEN"] === '1') {
+        if (getWeasleyPodexEnv('DASHBOARD_OPEN') === '1' || getWeasleyPodexEnv('DASHBOARD_OPEN') === '1') {
             openUrlInBrowser(url, { logPrefix: 'dashboard' });
         }
     });

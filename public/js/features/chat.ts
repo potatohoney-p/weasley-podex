@@ -259,7 +259,7 @@ export async function sendMessage(source: SendSource = 'enter'): Promise<void> {
     try {
         await waitForSettingsSaveIdle();
 
-        // File paths like /Users/junny/... or /tmp/foo — not commands
+        // File paths like /Users/example/... or /tmp/foo — not commands
         const afterSlash = text.slice(1).trim();
         const firstToken = afterSlash.split(/\s+/)[0] || '';
         const isFilePath = firstToken.includes('/') || firstToken.includes('\\');

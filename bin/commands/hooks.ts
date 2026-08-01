@@ -6,13 +6,13 @@ import { loadPolicyHooksConfig, policyConfigPath, POLICY_LIMITS } from '../../sr
 import { inspectPolicyFlags } from '../../src/core/policy-flags.js';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw hooks inspect — inspect read-only pre-prompt context injection
+  weasley-podex hooks inspect — inspect read-only pre-prompt context injection
 
   Usage:
-    jaw hooks inspect [--scope main|heartbeat] [--job NAME] [--cli NAME] [--fresh] [--json]
+    weasley-podex hooks inspect [--scope main|heartbeat] [--job NAME] [--cli NAME] [--fresh] [--json]
 
   Environment:
-    podex_PRE_PROMPT_HOOKS=0   Disable all pre-prompt context hooks
+    WEASLEY_PODEX_PRE_PROMPT_HOOKS=0   Disable all pre-prompt context hooks
 `);
 
 function valueAfter(flag: string): string | undefined {

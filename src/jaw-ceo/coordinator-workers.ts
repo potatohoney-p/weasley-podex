@@ -125,7 +125,7 @@ export async function message(ctx: JawCeoCoordinatorContext, input: JawCeoMessag
             sourceLabels: ['dashboard'],
         });
     }
-    const response = 'Jaw CEO is ready. Select a worker or ask a dashboard question.';
+    const response = 'Weasley Podex CEO is ready. Select a worker or ask a dashboard question.';
     ctx.store.appendTranscript({ role: 'ceo', text: response, source: 'system' });
     return auditTool(ctx.store, {
         tool: 'ceo.message',
@@ -236,7 +236,7 @@ export async function sendMessage(ctx: JawCeoCoordinatorContext, args: {
     if (!ctx.deps.sendWorkerMessage) {
         return auditSendFailure(ctx, 'worker_send_unavailable', 'worker send adapter is unavailable in this host', args.port);
     }
-    const prompt = `[from: Jaw CEO]\n${args.message.trim()}`;
+    const prompt = `[from: Weasley Podex CEO]\n${args.message.trim()}`;
     try {
         const sent = await ctx.deps.sendWorkerMessage({
             port: args.port,

@@ -12,7 +12,7 @@ test('visualWidth counts Hangul as double-width', () => {
 
 test('visualWidth counts emoji as double-width and variation selectors as zero-width', () => {
     assert.equal(visualWidth('⏳'), 2);
-    assert.equal(visualWidth('🦈'), 2);
+    assert.equal(visualWidth('🧭'), 2);
     assert.equal(visualWidth('✔️'), 1);
 });
 
@@ -23,7 +23,7 @@ test('clipTextToCols respects visual width for mixed-width text', () => {
 });
 
 test('clipTextToCols keeps emoji-heavy rows inside visual width', () => {
-    const clipped = clipTextToCols('⏳ subagent: Verify estimateTokens callers: prompt with long detail 🦈 📁', 32);
+    const clipped = clipTextToCols('⏳ subagent: Verify estimateTokens callers: prompt with long detail 🧭 📁', 32);
     assert.ok(visualWidth(clipped) <= 32);
 });
 

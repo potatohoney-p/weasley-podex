@@ -1,6 +1,6 @@
 ﻿import { stripUndefined } from '../../core/strip-undefined.js';
 
-// Typed error taxonomy for podex web-ai. Mirrors agbrowse web-ai/errors.mjs
+// Typed error taxonomy for Weasley Podex web-ai. Mirrors agbrowse web-ai/errors.mjs
 // (https://github.com/potatohoney-p/agbrowse/blob/main/web-ai/errors.mjs) with the
 // extensions GPT Pro flagged in the 2026-05-01 plan close-out:
 //

@@ -10,7 +10,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..', '..');
 const processVerifySrc = readFileSync(join(projectRoot, 'src', 'manager', 'process-verify.ts'), 'utf8');
 let fakeLsofQueue = Promise.resolve();
-const LSOF_BIN_ENV = 'podex_LSOF_BIN';
+const LSOF_BIN_ENV = 'WEASLEY_PODEX_LSOF_BIN';
+const LSOF_TEST_OPTIONS = {
+    skip: process.platform === 'win32' && 'lsof backend is POSIX-only',
+};
 
 function withFakeLsof(script: string, fn: () => Promise<void>): () => Promise<void> {
     return async () => {
@@ -98,6 +101,7 @@ test('resolveListeningPid has a Windows netstat backend instead of lsof-only loo
 
 test(
     'resolveListeningPid parses single pNNN line as the owning pid',
+    LSOF_TEST_OPTIONS,
     withFakeLsof('echo p12345', async () => {
         assert.equal(await resolveListeningPid(3457), 12345);
     }),
@@ -105,6 +109,7 @@ test(
 
 test(
     'resolveListeningPid returns null when lsof prints zero pid lines',
+    LSOF_TEST_OPTIONS,
     withFakeLsof('echo "no listeners"', async () => {
         assert.equal(await resolveListeningPid(3457), null);
     }),
@@ -112,6 +117,7 @@ test(
 
 test(
     'resolveListeningPid returns null when lsof prints multiple pid lines',
+    LSOF_TEST_OPTIONS,
     withFakeLsof('printf "p11111\\np22222\\n"', async () => {
         assert.equal(await resolveListeningPid(3457), null);
     }),
@@ -119,6 +125,7 @@ test(
 
 test(
     'resolveListeningPid returns null when lsof exits non-zero',
+    LSOF_TEST_OPTIONS,
     withFakeLsof('echo "lsof: bad" 1>&2; exit 1', async () => {
         assert.equal(await resolveListeningPid(3457), null);
     }),
@@ -126,6 +133,7 @@ test(
 
 test(
     'resolveListeningPid ignores non-conforming pid lines',
+    LSOF_TEST_OPTIONS,
     withFakeLsof('printf "garbage\\np987\\nfNN\\n"', async () => {
         assert.equal(await resolveListeningPid(3457), 987);
     }),

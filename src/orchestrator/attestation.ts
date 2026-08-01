@@ -1,4 +1,4 @@
-﻿// ─── PABCD Phase Attestation ────────────────────────
+// ─── PABCD Phase Attestation ────────────────────────
 // Form-only evidence gate for PABCD phase transitions. The agent must submit a
 // well-formed <phase_attestation> block (via the `--attest` CLI arg, or emitted in
 // its message) with a non-empty narrative `did` field to advance. C→D additionally
@@ -207,7 +207,7 @@ const NO_STATE_PATTERNS: RegExp[] = [
 /**
  * Returns true if the text asserts a current PABCD phase (heuristic narration) — used to
  * detect "현재는 P입니다" style hallucination when the real state is IDLE. The caller is
- * responsible for confirming state===IDLE and that no real `podex orchestrate` command ran.
+ * responsible for confirming state===IDLE and that no real `weasley-podex orchestrate` command ran.
  */
 export function detectNoStateNarration(text: string): boolean {
   if (!text || typeof text !== 'string') return false;

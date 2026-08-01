@@ -50,7 +50,7 @@ tests/
 │   ├── opencode-events.json
 │   └── acp-updates.json
 └── helpers/
-    └── tmp-home.js                ← 테스트용 임시 JAW_HOME 유틸
+    └── tmp-home.js                ← 테스트용 임시 WEASLEY_PODEX_HOME 유틸
 ```
 
 ---

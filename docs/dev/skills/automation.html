@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Automation Skills — podex Docs</title>
+<title>Automation Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -35,7 +34,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -84,28 +83,28 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Automation Skills</h1>
-<p class="lead">Browser automation, screenshot-based interaction, and request routing. These skills give podex the ability to control Chrome via CDP, click UI elements from screenshots, and route web requests programmatically.</p>
+<p class="lead">Browser automation, screenshot-based interaction, and request routing. These skills give Weasley Podex the ability to control Chrome via CDP, click UI elements from screenshots, and route web requests programmatically.</p>
 
 <!-- ================================================================== -->
 <!-- browser -->
 <!-- ================================================================== -->
 
 <h2 id="browser">browser</h2>
-<p>Chrome browser control via the Chrome DevTools Protocol (CDP). Opens pages, navigates, takes reference snapshots, clicks elements, types text, extracts content, and captures screenshots. Requires the <code>podex</code> browser server to be running.</p>
+<p>Chrome browser control via the Chrome DevTools Protocol (CDP). Opens pages, navigates, takes reference snapshots, clicks elements, types text, extracts content, and captures screenshots. Requires the <code>weasley-podex</code> browser server to be running.</p>
 
 <table>
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>browser</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Automation</td></tr>
 <tr><td><strong>Protocol</strong></td><td>CDP (Chrome DevTools Protocol)</td></tr>
-<tr><td><strong>Prerequisite</strong></td><td><code>podex</code> browser server running</td></tr>
+<tr><td><strong>Prerequisite</strong></td><td><code>weasley-podex</code> browser server running</td></tr>
 <tr><td><strong>Trigger</strong></td><td>Open page, screenshot, click, type, scrape, navigate</td></tr>
 </table>
 
@@ -131,7 +130,7 @@
 /browser click "#submit-btn"
 
 # Type into an input field
-/browser type "#search-input" "podex documentation"
+/browser type "#search-input" "weasley-podex documentation"
 
 # Extract text content from an element
 /browser extract ".main-content" text
@@ -148,9 +147,9 @@
 </div>
 
 <h3>CDP Connection</h3>
-<p>The browser skill connects to Chrome through the <code>podex</code> browser server, which manages the CDP WebSocket connection. The server must be started before using browser commands.</p>
+<p>The browser skill connects to Chrome through the <code>weasley-podex</code> browser server, which manages the CDP WebSocket connection. The server must be started before using browser commands.</p>
 <pre><code># Start the browser server (runs on a dedicated port)
-jaw browser serve
+weasley-podex browser serve
 
 # The skill auto-connects when invoked
 # Connection is reused across commands in the same session</code></pre>

@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { broadcast } from './bus.js';
-import { JAW_HOME } from './config.js';
+import { WEASLEY_PODEX_HOME } from './config.js';
+import { getWeasleyPodexEnv } from './weasley-podex-env.js';
 
 export const POLICY_LIMITS = {
     maxRules: 16,
@@ -28,7 +29,7 @@ export type PolicyHooksConfig = {
 export type PolicyOptions = { jawHome?: string; configPath?: string; env?: NodeJS.ProcessEnv };
 
 function enabled(env: NodeJS.ProcessEnv): boolean {
-    const value = env['podex_POLICY_HOOKS'];
+    const value = getWeasleyPodexEnv('POLICY_HOOKS', env);
     return value !== '0' && value?.toLowerCase() !== 'false' && value?.toLowerCase() !== 'off';
 }
 
@@ -37,7 +38,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 export function policyConfigPath(options: PolicyOptions = {}): string {
-    return options.configPath || path.join(options.jawHome || JAW_HOME, 'policy-hooks.json');
+    return options.configPath || path.join(options.jawHome || WEASLEY_PODEX_HOME, 'policy-hooks.json');
 }
 
 export function loadPolicyHooksConfig(options: PolicyOptions = {}): PolicyHooksConfig | null {
@@ -116,4 +117,3 @@ export function runBeforeSpawnChecks(
     for (const verdict of verdicts) emitVerdict(verdict);
     return verdicts;
 }
-

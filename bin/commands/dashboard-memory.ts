@@ -1,4 +1,4 @@
-﻿import { parseArgs } from 'node:util';
+import { parseArgs } from 'node:util';
 import { DASHBOARD_DEFAULT_PORT } from '../../src/manager/constants.js';
 
 function dashboardPort(): number {
@@ -13,7 +13,7 @@ async function callDashboard<T>(path: string): Promise<T> {
     try {
         res = await fetch(url, { headers: { host: `127.0.0.1:${port}` } });
     } catch (err) {
-        throw new Error(`dashboard memory unreachable at :${port} — run \`jaw dashboard serve\` first. (${(err as Error).message})`);
+        throw new Error(`dashboard memory unreachable at :${port} — run \`weasley-podex dashboard serve\` first. (${(err as Error).message})`);
     }
     if (!res.ok) {
         const body = await res.text().catch(() => '');
@@ -55,17 +55,17 @@ function formatSearchResult(data: SearchResponse): string {
 
 function printHelp(): void {
     console.log(`
-  jaw dashboard memory — L2 cross-instance memory search (read-only)
+  weasley-podex dashboard memory — L2 cross-instance memory search (read-only)
 
   Usage:
-    jaw dashboard memory search "<query>" [--instance <id,id>] [--limit N]
-    jaw dashboard memory read <instanceId>:<relpath>
-    jaw dashboard memory instances
-    jaw dashboard memory list
-    jaw dashboard memory state           embedding status
-    jaw dashboard memory estimate        embedding cost estimate
-    jaw dashboard memory config [get|set] embedding config
-    jaw dashboard memory reindex --embedding
+    weasley-podex dashboard memory search "<query>" [--instance <id,id>] [--limit N]
+    weasley-podex dashboard memory read <instanceId>:<relpath>
+    weasley-podex dashboard memory instances
+    weasley-podex dashboard memory list
+    weasley-podex dashboard memory state           embedding status
+    weasley-podex dashboard memory estimate        embedding cost estimate
+    weasley-podex dashboard memory config [get|set] embedding config
+    weasley-podex dashboard memory reindex --embedding
 
   Options:
     --instance <ids>   comma-separated instance IDs to restrict the search
@@ -73,7 +73,7 @@ function printHelp(): void {
     --json             machine-readable JSON
     --port <port>      dashboard port (env DASHBOARD_PORT or default ${DASHBOARD_DEFAULT_PORT})
 
-  Read-only. Companion to \`jaw memory\` (L1, instance-local r/w).
+  Read-only. Companion to \`weasley-podex memory\` (L1, instance-local r/w).
   Embedding commands manage an optional dashboard add-on; default OFF unless configured.
 `);
 }
@@ -180,7 +180,7 @@ async function postDashboard<T>(path: string, body: unknown): Promise<T> {
             body: JSON.stringify(body),
         });
     } catch (err) {
-        throw new Error(`dashboard memory unreachable at :${port} — run \`jaw dashboard serve\` first. (${(err as Error).message})`);
+        throw new Error(`dashboard memory unreachable at :${port} — run \`weasley-podex dashboard serve\` first. (${(err as Error).message})`);
     }
     if (!res.ok) {
         const text = await res.text().catch(() => '');
@@ -216,14 +216,14 @@ async function handleEmbedConfig(args: string[]): Promise<void> {
         return;
     }
 
-    console.error('Usage: podex dashboard memory config [get|set] [--provider ...] [--api-key ...] [--mode ...]');
+    console.error('Usage: weasley-podex dashboard memory config [get|set] [--provider ...] [--api-key ...] [--mode ...]');
     process.exit(1);
 }
 
 async function handleReindex(args: string[]): Promise<void> {
     const hasEmbedding = args.includes('--embedding');
     if (!hasEmbedding) {
-        console.error('Usage: podex dashboard memory reindex --embedding');
+        console.error('Usage: weasley-podex dashboard memory reindex --embedding');
         process.exit(1);
     }
     console.log('Starting embedding sync...');

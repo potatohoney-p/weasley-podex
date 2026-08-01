@@ -1,4 +1,4 @@
-﻿// ── podex Service Worker ──
+﻿// ── Weasley Podex Service Worker ──
 // Three-tier fetch: navigate→network-first, hashed→cache-first, static→stale-while-revalidate
 
 const CACHE_NAME = 'PODEX-v3-dev-20260626';

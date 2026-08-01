@@ -112,7 +112,7 @@ function installPacked() {
 			CI: "",
 			JWC_SAFE: "",
 			JWC_SKIP_podex_BOOTSTRAP: "",
-			podex_HOME: PODEXHome,
+			WEASLEY_PODEX_HOME: PODEXHome,
 			JWC_podex_SKILLS_SOURCE_DIR: skillsFixture,
 		},
 	});
@@ -135,7 +135,7 @@ function assertRuntimeSource() {
 	const verifyScript = path.join(nodeModules, "jawcode", "scripts", "verify-runtime.cjs");
 	const output = run(process.execPath, [verifyScript, "--json"], {
 		cwd: tempRoot,
-		env: scrubbedPathEnv({ podex_HOME: PODEXHome }),
+		env: scrubbedPathEnv({ WEASLEY_PODEX_HOME: PODEXHome }),
 	}, true);
 	const parsed = JSON.parse(output);
 	assert.equal(parsed.ok, true);
@@ -166,7 +166,7 @@ function runPostinstallMatrix() {
 		const matrixHome = path.join(tempRoot, `matrix-${label}`);
 		const output = run(process.execPath, [script, "--postinstall", "--json"], {
 			cwd: tempRoot,
-			env: { ...process.env, CI: "", JWC_SAFE: "", JWC_SKIP_podex_BOOTSTRAP: "", ...env, podex_HOME: matrixHome },
+			env: { ...process.env, CI: "", JWC_SAFE: "", JWC_SKIP_podex_BOOTSTRAP: "", ...env, WEASLEY_PODEX_HOME: matrixHome },
 		}, true);
 		const parsed = JSON.parse(output);
 		assert.equal(parsed.skills.status, expected);
@@ -208,17 +208,17 @@ try {
 		assertRuntimeSource();
 		const versionOutput = run(path.join(nodeModules, ".bin", "jwc"), ["--version"], {
 			cwd: tempRoot,
-			env: scrubbedPathEnv({ podex_HOME: PODEXHome }),
+			env: scrubbedPathEnv({ WEASLEY_PODEX_HOME: PODEXHome }),
 		});
 		assert.equal(versionOutput, `jwc/${packageJson.version}`);
 		const helpOutput = run(path.join(nodeModules, ".bin", "jwc"), ["--help"], {
 			cwd: tempRoot,
-			env: scrubbedPathEnv({ podex_HOME: PODEXHome }),
+			env: scrubbedPathEnv({ WEASLEY_PODEX_HOME: PODEXHome }),
 		}, true);
 		assert.match(helpOutput, /jwc|Usage|usage/u);
 		run(path.join(nodeModules, ".bin", "jwc"), ["--smoke-test"], {
 			cwd: tempRoot,
-			env: scrubbedPathEnv({ podex_HOME: PODEXHome }),
+			env: scrubbedPathEnv({ WEASLEY_PODEX_HOME: PODEXHome }),
 		});
 		assertBootstrapOutputs();
 		if (!registryFaithful) await assertSdkImport();

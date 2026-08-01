@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Browser Automation — podex Docs</title>
+<title>Browser Automation — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -60,7 +59,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -82,7 +81,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -131,7 +130,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
@@ -144,9 +143,9 @@
     <span class="badge badge-category">Automation</span>
   </div>
 </div>
-<p class="lead">CDP Chrome automation &mdash; snapshot, click, navigate, screenshot, tabs. Control Chrome through ref-based element targeting with <code>podex browser</code> commands.</p>
+<p class="lead">CDP Chrome automation &mdash; snapshot, click, navigate, screenshot, tabs. Control Chrome through ref-based element targeting with <code>weasley-podex browser</code> commands.</p>
 
-<div class="callout callout-info">This skill is <strong>active by default</strong> and injected into every session. It requires <code>podex serve</code> to be running and Google Chrome to be installed.</div>
+<div class="callout callout-info">This skill is <strong>active by default</strong> and injected into every session. It requires <code>weasley-podex serve</code> to be running and Google Chrome to be installed.</div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>Quick Reference</h2>
@@ -156,11 +155,11 @@
 <tr><td>Skill name</td><td><code>browser</code></td></tr>
 <tr><td>Category</td><td>Automation</td></tr>
 <tr><td>Status</td><td><span class="badge badge-active">Active</span> (loaded by default)</td></tr>
-<tr><td>Requires</td><td><code>podex</code> binary, Google Chrome</td></tr>
+<tr><td>Requires</td><td><code>weasley-podex</code> binary, Google Chrome</td></tr>
 <tr><td>Optional</td><td><code>cliclick</code> (Homebrew, for coordinate-based clicks)</td></tr>
-<tr><td>Screenshots</td><td><code>~/.podex/screenshots/</code></td></tr>
+<tr><td>Screenshots</td><td><code>~/.weasley/podex/screenshots/</code></td></tr>
 <tr><td>Related skills</td><td><code>desktop-control</code>, <code>web-ai</code>, <code>vision-click</code></td></tr>
-<tr><td>Skill file</td><td><code>~/.podex/skills/browser/SKILL.md</code></td></tr>
+<tr><td>Skill file</td><td><code>~/.weasley/podex/skills/browser/SKILL.md</code></td></tr>
 </tbody>
 </table>
 
@@ -168,9 +167,9 @@
 <h2>Prerequisites</h2>
 
 <ul>
-<li><strong><code>podex serve</code></strong> must be running &mdash; the browser skill communicates through the podex server.</li>
+<li><strong><code>weasley-podex serve</code></strong> must be running &mdash; the browser skill communicates through the Weasley Podex server.</li>
 <li><strong>Google Chrome</strong> must be installed on the machine.</li>
-<li><strong><code>playwright-core</code></strong> must be installed in the podex project (used for CDP communication).</li>
+<li><strong><code>playwright-core</code></strong> must be installed in the Weasley Podex project (used for CDP communication).</li>
 <li><em>Optional:</em> <code>brew install cliclick</code> for coordinate-based mouse operations.</li>
 </ul>
 
@@ -189,25 +188,25 @@
 <h2>Quick Start</h2>
 
 <pre><code># Start an automation session (headless, no visible window)
-podex browser start --agent
+weasley-podex browser start --agent
 
 # Start an interactive browser (manual, visible)
-podex browser start
+weasley-podex browser start
 
 # Navigate to a URL
-podex browser navigate "https://example.com"
+weasley-podex browser navigate "https://example.com"
 
 # Take an interactive snapshot (shows ref IDs)
-podex browser snapshot --interactive
+weasley-podex browser snapshot --interactive
 
 # Click a ref
-podex browser click e3
+weasley-podex browser click e3
 
 # Type text and submit
-podex browser type e5 "hello" --submit
+weasley-podex browser type e5 "hello" --submit
 
 # Take a screenshot
-podex browser screenshot</code></pre>
+weasley-podex browser screenshot</code></pre>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>Snapshot Output</h2>
@@ -232,12 +231,12 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>Command</th><th>Description</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser start [--port &lt;auto&gt;] [--headless] [--agent]</code></td><td>Launch Chrome. <code>--agent</code> = headless automation; plain = interactive visible.</td></tr>
-<tr><td><code>podex browser stop</code></td><td>Close the browser session.</td></tr>
-<tr><td><code>podex browser status</code></td><td>Report current CDP connection state and port.</td></tr>
-<tr><td><code>podex browser doctor [--json]</code></td><td>Diagnose CDP/runtime ownership mismatch and orphan cleanup scope.</td></tr>
-<tr><td><code>podex browser cleanup-runtimes [--json] [--close --force]</code></td><td>Dry-run by default. Only closes jaw-owned orphan runtimes with <code>--close --force</code>.</td></tr>
-<tr><td><code>podex browser reset [--force]</code></td><td>Clear browser profile and screenshots. Only when explicitly requested.</td></tr>
+<tr><td><code>weasley-podex browser start [--port &lt;auto&gt;] [--headless] [--agent]</code></td><td>Launch Chrome. <code>--agent</code> = headless automation; plain = interactive visible.</td></tr>
+<tr><td><code>weasley-podex browser stop</code></td><td>Close the browser session.</td></tr>
+<tr><td><code>weasley-podex browser status</code></td><td>Report current CDP connection state and port.</td></tr>
+<tr><td><code>weasley-podex browser doctor [--json]</code></td><td>Diagnose CDP/runtime ownership mismatch and orphan cleanup scope.</td></tr>
+<tr><td><code>weasley-podex browser cleanup-runtimes [--json] [--close --force]</code></td><td>Dry-run by default. Only closes Weasley Podex-owned orphan runtimes with <code>--close --force</code>.</td></tr>
+<tr><td><code>weasley-podex browser reset [--force]</code></td><td>Clear browser profile and screenshots. Only when explicitly requested.</td></tr>
 </tbody>
 </table>
 </div>
@@ -247,18 +246,18 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>Command</th><th>Description</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser snapshot</code></td><td>Full page snapshot (all nodes).</td></tr>
-<tr><td><code>podex browser snapshot --interactive</code></td><td>Interactive elements only with ref IDs. Preferred for token budget.</td></tr>
-<tr><td><code>podex browser snapshot --interactive --max-nodes 30 --json</code></td><td>Limit node count and output as JSON.</td></tr>
-<tr><td><code>podex browser screenshot</code></td><td>Capture current viewport. Saves to <code>~/.podex/screenshots/</code>.</td></tr>
-<tr><td><code>podex browser screenshot --full-page</code></td><td>Full-page screenshot (scrolled).</td></tr>
-<tr><td><code>podex browser screenshot --ref e5</code></td><td>Screenshot a specific element by ref ID.</td></tr>
-<tr><td><code>podex browser screenshot --clip 0 0 320 180 --json</code></td><td>Clip region screenshot with JSON output path.</td></tr>
-<tr><td><code>podex browser text</code></td><td>Extract all visible text from the page.</td></tr>
-<tr><td><code>podex browser text --format html</code></td><td>Extract page content as HTML.</td></tr>
-<tr><td><code>podex browser get-dom --selector ".card" --max-chars 2000 --json</code></td><td>Get DOM subtree matching a CSS selector.</td></tr>
-<tr><td><code>podex browser console --json --limit 20</code></td><td>Retrieve console log entries.</td></tr>
-<tr><td><code>podex browser network --json --limit 20</code></td><td>Retrieve network request log.</td></tr>
+<tr><td><code>weasley-podex browser snapshot</code></td><td>Full page snapshot (all nodes).</td></tr>
+<tr><td><code>weasley-podex browser snapshot --interactive</code></td><td>Interactive elements only with ref IDs. Preferred for token budget.</td></tr>
+<tr><td><code>weasley-podex browser snapshot --interactive --max-nodes 30 --json</code></td><td>Limit node count and output as JSON.</td></tr>
+<tr><td><code>weasley-podex browser screenshot</code></td><td>Capture current viewport. Saves to <code>~/.weasley/podex/screenshots/</code>.</td></tr>
+<tr><td><code>weasley-podex browser screenshot --full-page</code></td><td>Full-page screenshot (scrolled).</td></tr>
+<tr><td><code>weasley-podex browser screenshot --ref e5</code></td><td>Screenshot a specific element by ref ID.</td></tr>
+<tr><td><code>weasley-podex browser screenshot --clip 0 0 320 180 --json</code></td><td>Clip region screenshot with JSON output path.</td></tr>
+<tr><td><code>weasley-podex browser text</code></td><td>Extract all visible text from the page.</td></tr>
+<tr><td><code>weasley-podex browser text --format html</code></td><td>Extract page content as HTML.</td></tr>
+<tr><td><code>weasley-podex browser get-dom --selector ".card" --max-chars 2000 --json</code></td><td>Get DOM subtree matching a CSS selector.</td></tr>
+<tr><td><code>weasley-podex browser console --json --limit 20</code></td><td>Retrieve console log entries.</td></tr>
+<tr><td><code>weasley-podex browser network --json --limit 20</code></td><td>Retrieve network request log.</td></tr>
 </tbody>
 </table>
 </div>
@@ -268,20 +267,20 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>Command</th><th>Description</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser click e3</code></td><td>Click element by ref ID.</td></tr>
-<tr><td><code>podex browser click e3 --double</code></td><td>Double-click element.</td></tr>
-<tr><td><code>podex browser click e3 --right</code></td><td>Right-click (context menu).</td></tr>
-<tr><td><code>podex browser type e3 "hello"</code></td><td>Type text into an input field.</td></tr>
-<tr><td><code>podex browser type e3 "hello" --submit</code></td><td>Type text then press Enter.</td></tr>
-<tr><td><code>podex browser press Enter</code></td><td>Press a key (Enter, Escape, Tab, etc.).</td></tr>
-<tr><td><code>podex browser hover e5</code></td><td>Hover over an element.</td></tr>
-<tr><td><code>podex browser select e7 "option1"</code></td><td>Select an option in a dropdown.</td></tr>
-<tr><td><code>podex browser drag e3 e5</code></td><td>Drag from one element to another.</td></tr>
-<tr><td><code>podex browser mouse-click 400 300</code></td><td>Click at absolute coordinates.</td></tr>
-<tr><td><code>podex browser mouse-click 400 300 --double</code></td><td>Double-click at coordinates.</td></tr>
-<tr><td><code>podex browser move-mouse 400 300</code></td><td>Move mouse to coordinates (no click).</td></tr>
-<tr><td><code>podex browser mouse-down</code></td><td>Press mouse button down.</td></tr>
-<tr><td><code>podex browser mouse-up --right</code></td><td>Release mouse button (optionally right).</td></tr>
+<tr><td><code>weasley-podex browser click e3</code></td><td>Click element by ref ID.</td></tr>
+<tr><td><code>weasley-podex browser click e3 --double</code></td><td>Double-click element.</td></tr>
+<tr><td><code>weasley-podex browser click e3 --right</code></td><td>Right-click (context menu).</td></tr>
+<tr><td><code>weasley-podex browser type e3 "hello"</code></td><td>Type text into an input field.</td></tr>
+<tr><td><code>weasley-podex browser type e3 "hello" --submit</code></td><td>Type text then press Enter.</td></tr>
+<tr><td><code>weasley-podex browser press Enter</code></td><td>Press a key (Enter, Escape, Tab, etc.).</td></tr>
+<tr><td><code>weasley-podex browser hover e5</code></td><td>Hover over an element.</td></tr>
+<tr><td><code>weasley-podex browser select e7 "option1"</code></td><td>Select an option in a dropdown.</td></tr>
+<tr><td><code>weasley-podex browser drag e3 e5</code></td><td>Drag from one element to another.</td></tr>
+<tr><td><code>weasley-podex browser mouse-click 400 300</code></td><td>Click at absolute coordinates.</td></tr>
+<tr><td><code>weasley-podex browser mouse-click 400 300 --double</code></td><td>Double-click at coordinates.</td></tr>
+<tr><td><code>weasley-podex browser move-mouse 400 300</code></td><td>Move mouse to coordinates (no click).</td></tr>
+<tr><td><code>weasley-podex browser mouse-down</code></td><td>Press mouse button down.</td></tr>
+<tr><td><code>weasley-podex browser mouse-up --right</code></td><td>Release mouse button (optionally right).</td></tr>
 </tbody>
 </table>
 </div>
@@ -291,18 +290,18 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>Command</th><th>Description</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser navigate "https://example.com"</code></td><td>Go to a URL.</td></tr>
-<tr><td><code>podex browser open "https://example.com"</code></td><td>Alias for <code>navigate</code>.</td></tr>
-<tr><td><code>podex browser tabs</code></td><td>List all open tabs.</td></tr>
-<tr><td><code>podex browser tabs --json</code></td><td>List tabs as JSON.</td></tr>
-<tr><td><code>podex browser active-tab --json</code></td><td>Get active tab info as JSON.</td></tr>
-<tr><td><code>podex browser tab-switch 2</code></td><td>Switch to tab by index.</td></tr>
-<tr><td><code>podex browser reload</code></td><td>Reload the current page.</td></tr>
-<tr><td><code>podex browser resize 1440 900</code></td><td>Resize the viewport.</td></tr>
-<tr><td><code>podex browser scroll --x 0 --y 1000</code></td><td>Scroll to absolute position.</td></tr>
-<tr><td><code>podex browser wait-for-selector ".toast-success" --timeout 30000</code></td><td>Wait until a CSS selector appears.</td></tr>
-<tr><td><code>podex browser wait-for-text "Dashboard" --timeout 30000</code></td><td>Wait until specific text appears on the page.</td></tr>
-<tr><td><code>podex browser evaluate "document.title"</code></td><td>Evaluate JavaScript in the page context.</td></tr>
+<tr><td><code>weasley-podex browser navigate "https://example.com"</code></td><td>Go to a URL.</td></tr>
+<tr><td><code>weasley-podex browser open "https://example.com"</code></td><td>Alias for <code>navigate</code>.</td></tr>
+<tr><td><code>weasley-podex browser tabs</code></td><td>List all open tabs.</td></tr>
+<tr><td><code>weasley-podex browser tabs --json</code></td><td>List tabs as JSON.</td></tr>
+<tr><td><code>weasley-podex browser active-tab --json</code></td><td>Get active tab info as JSON.</td></tr>
+<tr><td><code>weasley-podex browser tab-switch 2</code></td><td>Switch to tab by index.</td></tr>
+<tr><td><code>weasley-podex browser reload</code></td><td>Reload the current page.</td></tr>
+<tr><td><code>weasley-podex browser resize 1440 900</code></td><td>Resize the viewport.</td></tr>
+<tr><td><code>weasley-podex browser scroll --x 0 --y 1000</code></td><td>Scroll to absolute position.</td></tr>
+<tr><td><code>weasley-podex browser wait-for-selector ".toast-success" --timeout 30000</code></td><td>Wait until a CSS selector appears.</td></tr>
+<tr><td><code>weasley-podex browser wait-for-text "Dashboard" --timeout 30000</code></td><td>Wait until specific text appears on the page.</td></tr>
+<tr><td><code>weasley-podex browser evaluate "document.title"</code></td><td>Evaluate JavaScript in the page context.</td></tr>
 </tbody>
 </table>
 <div class="callout callout-warn"><code>evaluate</code> is a diagnostic command. Do not expose arbitrary user-provided JavaScript through higher-level vendor workflows such as web-ai.</div>
@@ -314,7 +313,7 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>Surface</th><th>Label</th><th>Notes</th></tr></thead>
 <tbody>
-<tr><td>Local <code>podex browser</code> primitives</td><td><span class="badge badge-active">ready</span></td><td>Server-backed local Chrome/CDP only</td></tr>
+<tr><td>Local <code>weasley-podex browser</code> primitives</td><td><span class="badge badge-active">ready</span></td><td>Server-backed local Chrome/CDP only</td></tr>
 <tr><td><code>doctor</code> and <code>cleanup-runtimes</code></td><td><span class="badge badge-active">ready</span></td><td>Dry-run by default; close requires <code>--force</code></td></tr>
 <tr><td>Dashboard visible/headless start split</td><td><span class="badge badge-active">ready</span></td><td>Visible manual and headless agent modes are separate</td></tr>
 <tr><td>web-ai provider workflows</td><td><span class="badge badge-category">beta</span></td><td>Use the <code>web-ai</code> skill and provider-specific gates</td></tr>
@@ -329,7 +328,7 @@ podex browser screenshot</code></pre>
 <li><strong>Ref IDs are ephemeral.</strong> They are scoped to the latest snapshot. Always re-run <code>snapshot --interactive</code> after navigation, reload, tab changes, or any action that changes the page.</li>
 <li><strong>Prefer <code>--interactive</code></strong> for snapshots to save token budget &mdash; full snapshots include non-interactive nodes and can be large.</li>
 <li><strong>Use <code>--agent</code></strong> for automation sessions. It starts headless and avoids popping a visible browser window.</li>
-<li><strong>Never close Chrome processes</strong> found via general <code>ps</code> output. Only use <code>cleanup-runtimes --close --force</code> which validates jaw-owned processes via durable runtime records.</li>
+<li><strong>Never close Chrome processes</strong> found via general <code>ps</code> output. Only use <code>cleanup-runtimes --close --force</code> which validates Weasley Podex-owned processes via durable runtime records.</li>
 <li><strong>Ask before <code>reset</code>.</strong> The <code>reset</code> command clears the browser profile and screenshots. Only use when the user explicitly requests it.</li>
 <li><strong><code>evaluate</code> is for diagnostics only.</strong> Do not pipe arbitrary user-provided JavaScript through <code>evaluate</code> in higher-level workflows.</li>
 <li><strong>Non-DOM elements</strong> (Canvas, WebGL, cross-origin iframes, custom UI) should fall back to the <code>vision-click</code> skill only after confirming no usable ref exists.</li>
@@ -339,25 +338,25 @@ podex browser screenshot</code></pre>
 <h2>Common Workflows</h2>
 
 <h3>Web Search</h3>
-<pre><code>podex browser start --agent
-podex browser navigate "https://www.google.com"
-podex browser snapshot --interactive
-podex browser type e3 "search query" --submit
-podex browser snapshot --interactive
-podex browser click e7</code></pre>
+<pre><code>weasley-podex browser start --agent
+weasley-podex browser navigate "https://www.google.com"
+weasley-podex browser snapshot --interactive
+weasley-podex browser type e3 "search query" --submit
+weasley-podex browser snapshot --interactive
+weasley-podex browser click e7</code></pre>
 
 <h3>Form Filling</h3>
-<pre><code>podex browser snapshot --interactive
-podex browser type e1 "John Doe"
-podex browser type e2 "john@example.com"
-podex browser click e3           # Submit button
-podex browser snapshot           # Verify submission</code></pre>
+<pre><code>weasley-podex browser snapshot --interactive
+weasley-podex browser type e1 "John Doe"
+weasley-podex browser type e2 "john@example.com"
+weasley-podex browser click e3           # Submit button
+weasley-podex browser snapshot           # Verify submission</code></pre>
 
 <h3>Read Page Content</h3>
-<pre><code>podex browser navigate "https://news.ycombinator.com"
-podex browser text               # Plain text extraction
-podex browser text --format html # HTML content
-podex browser snapshot --interactive</code></pre>
+<pre><code>weasley-podex browser navigate "https://news.ycombinator.com"
+weasley-podex browser text               # Plain text extraction
+weasley-podex browser text --format html # HTML content
+weasley-podex browser snapshot --interactive</code></pre>
 
 <h3>AI Web Workflows</h3>
 <p>For ChatGPT or other web-ai workflows, use the <code>web-ai</code> skill. The browser skill owns primitive page control; <code>web-ai</code> owns structured question rendering, active-tab safety, and response baseline handling.</p>
@@ -369,7 +368,7 @@ podex browser snapshot --interactive</code></pre>
 
 <div class="example-callout">
   <div class="example-label">Example 1</div>
-  <code>"&#44396;&#44544; &#44160;&#49353;&#54644;&#51468; &mdash; podex &#49444;&#52824; &#48169;&#48277;"</code>
+  <code>"&#44396;&#44544; &#44160;&#49353;&#54644;&#51468; &mdash; weasley-podex &#49444;&#52824; &#48169;&#48277;"</code>
   <div class="example-desc">Starts a headless browser, navigates to Google, types the search query, and returns results. Triggers <code>browser start --agent</code> + <code>navigate</code> + <code>type --submit</code> + <code>snapshot</code>.</div>
 </div>
 
@@ -403,13 +402,13 @@ podex browser snapshot --interactive</code></pre>
 <p>Three ways to run Chrome headless:</p>
 
 <pre><code># Recommended for automation
-podex browser start --agent
+weasley-podex browser start --agent
 
 # Explicit headless for manual mode
-podex browser start --headless
+weasley-podex browser start --headless
 
 # Via environment variable
-CHROME_HEADLESS=1 podex browser start</code></pre>
+CHROME_HEADLESS=1 weasley-podex browser start</code></pre>
 
 <p>Use <code>--agent</code> for all agent automation. It avoids popping a visible browser window and is the expected default in automated sessions.</p>
 
@@ -424,49 +423,49 @@ CHROME_HEADLESS=1 podex browser start</code></pre>
 </tbody>
 </table>
 
-<p>The default CDP port is derived from the <code>podex</code> server port. Use <code>podex browser start --port &lt;port&gt;</code> only when you need an explicit override.</p>
+<p>The default CDP port is derived from the <code>weasley-podex</code> server port. Use <code>weasley-podex browser start --port &lt;port&gt;</code> only when you need an explicit override.</p>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>Standalone agbrowse Alternative</h2>
 
-<p>When you explicitly want to drive a <strong>single Chrome instance</strong> (e.g., keep one logged-in profile open, avoid running both <code>podex serve</code> and a second CDP session), the same browser commands are available through the standalone <code>agbrowse</code> CLI (<code>npm install -g agbrowse</code>). The flag surface is identical; only the binary prefix changes.</p>
+<p>When you explicitly want to drive a <strong>single Chrome instance</strong> (e.g., keep one logged-in profile open, avoid running both <code>weasley-podex serve</code> and a second CDP session), the same browser commands are available through the standalone <code>agbrowse</code> CLI (<code>npm install -g agbrowse</code>). The flag surface is identical; only the binary prefix changes.</p>
 
 <div class="comparison-grid">
-  <div class="col-header">podex browser form</div>
+  <div class="col-header">weasley-podex browser form</div>
   <div class="col-header">agbrowse form</div>
-  <div class="col-cell">podex browser start --agent</div>
+  <div class="col-cell">weasley-podex browser start --agent</div>
   <div class="col-cell">agbrowse start</div>
-  <div class="col-cell">podex browser status</div>
+  <div class="col-cell">weasley-podex browser status</div>
   <div class="col-cell">agbrowse status</div>
-  <div class="col-cell">podex browser navigate "&lt;url&gt;"</div>
+  <div class="col-cell">weasley-podex browser navigate "&lt;url&gt;"</div>
   <div class="col-cell">agbrowse navigate "&lt;url&gt;"</div>
-  <div class="col-cell">podex browser snapshot --interactive</div>
+  <div class="col-cell">weasley-podex browser snapshot --interactive</div>
   <div class="col-cell">agbrowse snapshot --interactive</div>
-  <div class="col-cell">podex browser click e3</div>
+  <div class="col-cell">weasley-podex browser click e3</div>
   <div class="col-cell">agbrowse click e3</div>
-  <div class="col-cell">podex browser type e5 "hello" --submit</div>
+  <div class="col-cell">weasley-podex browser type e5 "hello" --submit</div>
   <div class="col-cell">agbrowse type e5 "hello" --submit</div>
-  <div class="col-cell">podex browser screenshot</div>
+  <div class="col-cell">weasley-podex browser screenshot</div>
   <div class="col-cell">agbrowse screenshot</div>
-  <div class="col-cell">podex browser stop</div>
+  <div class="col-cell">weasley-podex browser stop</div>
   <div class="col-cell">agbrowse stop</div>
 </div>
 
-<div class="callout callout-warn">Do not run <code>podex browser</code> and <code>agbrowse</code> against the same <code>--port</code> simultaneously &mdash; the second start will reuse the first CDP and the persisted state files can collide.</div>
+<div class="callout callout-warn">Do not run <code>weasley-podex browser</code> and <code>agbrowse</code> against the same <code>--port</code> simultaneously &mdash; the second start will reuse the first CDP and the persisted state files can collide.</div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>Runtime Cleanup</h2>
 
 <pre><code># Diagnose runtime state
-podex browser doctor --json
+weasley-podex browser doctor --json
 
 # Dry-run: see what would be cleaned
-podex browser cleanup-runtimes
+weasley-podex browser cleanup-runtimes
 
-# Actually close orphan jaw-owned runtimes
-podex browser cleanup-runtimes --close --force</code></pre>
+# Actually close orphan Weasley Podex-owned runtimes
+weasley-podex browser cleanup-runtimes --close --force</code></pre>
 
-<p><code>cleanup-runtimes</code> is intentionally conservative. It only acts on a durable <code>browser-runtime-owner.json</code> record written by jaw-owned Chrome launches. The process command line must still match the recorded PID, CDP port, and profile. Chrome helper processes containing <code>--type=</code> are rejected. Never use general <code>ps</code> output as proof that a Chrome process is safe to close.</p>
+<p><code>cleanup-runtimes</code> is intentionally conservative. It only acts on a durable <code>browser-runtime-owner.json</code> record written by Weasley Podex-owned Chrome launches. The process command line must still match the recorded PID, CDP port, and profile. Chrome helper processes containing <code>--type=</code> are rejected. Never use general <code>ps</code> output as proof that a Chrome process is safe to close.</p>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>Recovery Strategy</h2>
@@ -504,9 +503,9 @@ podex browser cleanup-runtimes --close --force</code></pre>
 <table>
 <thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
 <tbody>
-<tr><td>CDP connection refused</td><td>Chrome not started or wrong port</td><td><code>podex browser status</code>, then start with the expected port</td></tr>
-<tr><td><code>running:false</code> with <code>owner:jaw-owned</code></td><td>Stale runtime metadata or dead CDP</td><td><code>podex browser doctor</code>, then retry <code>browser start</code></td></tr>
-<tr><td>Old headless jaw Chrome remains</td><td>Durable jaw-owned orphan candidate</td><td><code>podex browser cleanup-runtimes</code> dry-run, then <code>--close --force</code></td></tr>
+<tr><td>CDP connection refused</td><td>Chrome not started or wrong port</td><td><code>weasley-podex browser status</code>, then start with the expected port</td></tr>
+<tr><td><code>running:false</code> with <code>owner:weasley-podex-owned</code></td><td>Stale runtime metadata or dead CDP</td><td><code>weasley-podex browser doctor</code>, then retry <code>browser start</code></td></tr>
+<tr><td>Old headless Weasley Podex Chrome remains</td><td>Durable Weasley Podex-owned orphan candidate</td><td><code>weasley-podex browser cleanup-runtimes</code> dry-run, then <code>--close --force</code></td></tr>
 <tr><td>Window only opens test browser</td><td>Chrome singleton absorbed launch</td><td>Close all Chrome windows, then use <code>start --agent</code></td></tr>
 <tr><td>Headless CDP not opening</td><td>Headless not requested in GUI-less env</td><td>Add <code>--headless</code> or use <code>--agent</code></td></tr>
 <tr><td>Port conflict</td><td>Another process owns the CDP port</td><td>Choose a different <code>--port</code></td></tr>
@@ -520,14 +519,14 @@ podex browser cleanup-runtimes --close --force</code></pre>
 <p>The following commands are planned parity targets from the <code>30_browser</code> reference design. They are <strong>not available</strong> in the current runtime unless explicitly upgraded in a later PRD.</p>
 
 <h3>Planned Observe and Diagnostics</h3>
-<pre><code>podex browser console --clear --reload --duration 3000
-podex browser network --reload --duration 1000
-podex browser wait 2000</code></pre>
+<pre><code>weasley-podex browser console --clear --reload --duration 3000
+weasley-podex browser network --reload --duration 1000
+weasley-podex browser wait 2000</code></pre>
 
 <h3>Planned Actions</h3>
-<pre><code>podex browser resize 0 0 --fullscreen
-podex browser scroll down
-podex browser scroll up --amount 1000</code></pre>
+<pre><code>weasley-podex browser resize 0 0 --fullscreen
+weasley-podex browser scroll down
+weasley-podex browser scroll up --amount 1000</code></pre>
 
 <div class="callout callout-info"><code>wait-for &lt;ref&gt;</code> is deprecated in the reference design because refs are snapshot-scoped. Prefer selector-based or text-based waits.</div>
 
@@ -551,7 +550,7 @@ podex browser scroll up --amount 1000</code></pre>
 <li>Ref IDs are short-lived and should be treated as latest-snapshot scoped.</li>
 <li>Always re-run <code>snapshot --interactive</code> after navigation or major page changes.</li>
 <li>Prefer <code>--interactive</code> for token budget.</li>
-<li>Screenshots save to <code>~/.podex/screenshots/</code>.</li>
+<li>Screenshots save to <code>~/.weasley/podex/screenshots/</code>.</li>
 <li><code>start --agent</code> should be the default for agent automation.</li>
 <li>Non-DOM elements such as Canvas, WebGL, cross-origin iframes, and custom UI should use the <code>vision-click</code> skill only as an explicit fallback.</li>
 </ul>

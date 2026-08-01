@@ -32,13 +32,13 @@ export function JawCeoWorkbenchButton(props: {
     const active = !disabled && (props.voiceStatus === 'active' || props.voiceStatus === 'connecting' || props.voiceStatus === 'silent');
     const status = disabled ? 'off' : props.error ? 'error' : voiceLabel(props.voiceStatus);
     const title = disabled
-        ? 'Jaw CEO is disabled.'
+        ? 'Weasley Podex CEO is disabled.'
         : props.error
-        ? `Jaw CEO error: ${props.error}`
-        : `Open Jaw CEO. Single chat session, voice ${voiceLabel(props.voiceStatus)}.`;
+        ? `Weasley Podex CEO error: ${props.error}`
+        : `Open Weasley Podex CEO. Single chat session, voice ${voiceLabel(props.voiceStatus)}.`;
 
     return (
-        <div className={`jaw-ceo-workbench-launcher${props.open ? ' is-open' : ''}${active ? ' is-active' : ''}${props.error && !disabled ? ' is-error' : ''}${disabled ? ' is-disabled' : ''}`} aria-label="Jaw CEO launcher">
+        <div className={`jaw-ceo-workbench-launcher${props.open ? ' is-open' : ''}${active ? ' is-active' : ''}${props.error && !disabled ? ' is-error' : ''}${disabled ? ' is-disabled' : ''}`} aria-label="Weasley Podex CEO launcher">
             <button
                 type="button"
                 className="jaw-ceo-workbench-button"
@@ -54,7 +54,7 @@ export function JawCeoWorkbenchButton(props: {
             <button
                 type="button"
                 className="jaw-ceo-workbench-icon"
-                aria-label={active ? 'Stop Jaw CEO voice' : 'Start Jaw CEO voice'}
+                aria-label={active ? 'Stop Weasley Podex CEO voice' : 'Start Weasley Podex CEO voice'}
                 title={active ? 'Stop voice' : 'Start voice'}
                 disabled={disabled || props.busy}
                 onClick={props.onToggleVoice}

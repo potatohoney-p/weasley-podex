@@ -1,9 +1,9 @@
-﻿/**
- * podex lock — Instance lock/unlock for process protection
+/**
+ * weasley-podex lock — Instance lock/unlock for process protection
  * Usage:
- *   podex lock [--port 3457]           Lock instance (protect from stopAll)
- *   podex unlock [--port 3457]         Unlock instance
- *   podex lock status [--port 3457]    Show lock status
+ *   weasley-podex lock [--port 3457]           Lock instance (protect from stopAll)
+ *   weasley-podex unlock [--port 3457]         Unlock instance
+ *   weasley-podex lock status [--port 3457]    Show lock status
  */
 import { parseArgs } from 'node:util';
 import { getServerUrl } from '../../src/core/config.js';
@@ -23,9 +23,9 @@ const { values } = parseArgs({
 function printHelp() {
     console.log(`
   Usage:
-    podex lock [--port 3457]           Lock instance (protect from stopAll)
-    podex unlock [--port 3457]         Unlock instance
-    podex lock status [--port 3457]    Show lock status
+    weasley-podex lock [--port 3457]           Lock instance (protect from stopAll)
+    weasley-podex unlock [--port 3457]         Unlock instance
+    weasley-podex lock status [--port 3457]    Show lock status
 
   Description:
     Lock protects a running instance from being killed during manager shutdown.

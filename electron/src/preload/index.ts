@@ -1,11 +1,12 @@
+import { getWeasleyPodexEnv } from '../../../src/core/weasley-podex-env.js';
 ﻿import { contextBridge, ipcRenderer, webUtils } from 'electron';
 import { getLatestMetrics, setupMetricsBridge } from './metrics.js';
 
 const DESKTOP_IDENTITY = {
-  name: 'podex-desktop',
+  name: 'weasley-podex-desktop',
   electron: true,
-  header: 'X-podex-Electron',
-  token: process.env.podex_ELECTRON_RENDERER_TOKEN ?? '',
+  header: 'X-Weasley-Podex-Electron',
+  token: getWeasleyPodexEnv('ELECTRON_RENDERER_TOKEN') ?? '',
 } as const;
 
 function isSameOrigin(input: RequestInfo | URL): boolean {
@@ -43,7 +44,7 @@ function markDesktopDocument(): void {
       } catch { /* ignore */ }
     }, { once: true });
   } catch (err) {
-    console.warn('[podex-desktop] failed to mark desktop document', err);
+    console.warn('[weasley-podex-desktop] failed to mark desktop document', err);
   }
 }
 

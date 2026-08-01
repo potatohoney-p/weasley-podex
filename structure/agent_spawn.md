@@ -1,7 +1,7 @@
 ---
 created: 2026-03-28
-tags: [podex, agent-runtime, orchestration, acp]
-aliases: [podex Agent Spawn, agent runtime, ACP orchestration]
+tags: [weasley-podex, agent-runtime, orchestration, acp]
+aliases: [Weasley Podex Agent Spawn, agent runtime, ACP orchestration]
 ---
 
 > 📚 [INDEX](INDEX.md) · **동기화 체크리스트** · [커맨드](commands.md) · [서버 API](server_api.md) · [str_func](str_func.md)
@@ -118,7 +118,7 @@ aliases: [podex Agent Spawn, agent runtime, ACP orchestration]
 ### Pi RPC branch
 
 - `pi`는 top-level runtime이며 `ai-e` provider가 아니다.
-- `src/agent/pi-runtime.ts`가 `settings.pi` profile을 정규화하고, `JAW_HOME/pi/runtime/<profileId>` 아래 `models.json` + `settings.json`을 생성한다.
+- `src/agent/pi-runtime.ts`가 `settings.pi` profile을 정규화하고, `WEASLEY_PODEX_HOME/pi/runtime/<profileId>` 아래 `models.json` + `settings.json`을 생성한다.
 - 실행은 `pi --mode rpc --no-session --no-context-files --provider <profileId> --model <model> --api-key <key>` 형태다.
 - binary resolution은 `PI_CODING_AGENT_BIN` → PATH `pi` → `npm exec --yes --package @earendil-works/pi-coding-agent pi --` 순서이며, npm fallback은 shell string이 아니라 command/baseArgs tuple로 spawn된다.
 - RPC stdin은 `get_state`, optional `set_thinking_level`, `prompt` JSONL 명령을 보내고, stdout JSONL 이벤트에서 `message_update`, `tool_execution_*`, `agent_end`를 파싱해 `agent_output`/`agent_tool`/completion으로 매핑한다.
@@ -302,7 +302,7 @@ orchestrate(prompt, meta)
 | `regenerateB()` | B 프롬프트 + workspace `AGENTS.md` 재생성 |
 
 - promptCache 키: `empId/name:cli:role:phase:workingDir:mutability:scope:taskTags:mcpHash`. CLI별 employee prompt, mutable/read-only override, scope, task tag attachment, MCP tool summary changes가 모두 cache invalidation에 들어간다.
-- Boss prompt는 `podex dispatch --agent ... --task ...` 경로만 설명.
+- Boss prompt는 `weasley-podex dispatch --agent ... --task ...` 경로만 설명.
 - Employee prompt는 CLI 자체 sub-agent(Task/Agent tool)를 내부 병렬화 용도로 허용.
 
 ---

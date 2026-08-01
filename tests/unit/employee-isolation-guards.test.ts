@@ -1,7 +1,7 @@
 // Phase 7/8/9 — employee isolation regression tests.
 // Covers:
 //   - Phase 9: PHASE_INSTRUCTIONS no longer contains delegation/audit-orchestration language
-//   - Phase 8: makeCleanEnv strips JAW_BOSS_TOKEN for employee spawns; verifyBossToken behaves correctly
+//   - Phase 8: makeCleanEnv strips WEASLEY_PODEX_BOSS_TOKEN for employee spawns; verifyBossToken behaves correctly
 //   - Phase 7: claimWorker throws WorkerBusyError on concurrent same-id claim
 
 import test from 'node:test';
@@ -65,18 +65,18 @@ test('PHASE8-002: verifyBossToken rejects wrong/empty tokens', () => {
 });
 
 // makeCleanEnv is an unexported helper inside spawn.ts, so we verify its
-// JAW_BOSS_TOKEN-stripping behavior via its public contract: employee spawns
-// (marked by JAW_EMPLOYEE_MODE=1 in extraEnv) must not see the token.
-test('PHASE8-003: employee spawn env must strip JAW_BOSS_TOKEN', async () => {
+// WEASLEY_PODEX_BOSS_TOKEN-stripping behavior via its public contract: employee spawns
+// (marked by WEASLEY_PODEX_EMPLOYEE_MODE=1 in extraEnv) must not see the token.
+test('PHASE8-003: employee spawn env must strip WEASLEY_PODEX_BOSS_TOKEN', async () => {
     // Duplicate the documented contract from src/agent/spawn.ts makeCleanEnv.
     // This keeps the test hermetic without depending on dynamic imports of the
     // spawn module (which pulls in DB + CLI detection side effects).
-    process.env.JAW_BOSS_TOKEN = 'boss-test-token';
+    process.env.WEASLEY_PODEX_BOSS_TOKEN = 'boss-test-token';
     const process_env_snapshot = { ...process.env };
-    const extraEnv = { JAW_EMPLOYEE_MODE: '1' } as Record<string, string>;
+    const extraEnv = { WEASLEY_PODEX_EMPLOYEE_MODE: '1' } as Record<string, string>;
     const clean = { ...process_env_snapshot };
-    if (extraEnv.JAW_EMPLOYEE_MODE === '1') delete clean.JAW_BOSS_TOKEN;
-    assert.strictEqual(clean.JAW_BOSS_TOKEN, undefined);
+    if (extraEnv.WEASLEY_PODEX_EMPLOYEE_MODE === '1') delete clean.WEASLEY_PODEX_BOSS_TOKEN;
+    assert.strictEqual(clean.WEASLEY_PODEX_BOSS_TOKEN, undefined);
 });
 
 // ─── Phase 7 ─────────────────────────────────────────

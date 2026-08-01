@@ -46,7 +46,7 @@ const QUIT_PROGRESS_SCRIPT = `
   overlay.id = 'podex-quit-overlay';
   overlay.setAttribute('role', 'status');
   overlay.setAttribute('aria-live', 'polite');
-  overlay.innerHTML = '<div class="podex-quit-card"><div class="podex-quit-spinner" aria-hidden="true"></div><div>Quitting podex...</div></div>';
+  overlay.innerHTML = '<div class="podex-quit-card"><div class="podex-quit-spinner" aria-hidden="true"></div><div>Quitting Weasley Podex...</div></div>';
   document.head.appendChild(style);
   document.body.appendChild(overlay);
 })();

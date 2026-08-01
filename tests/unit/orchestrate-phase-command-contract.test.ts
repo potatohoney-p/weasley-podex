@@ -10,14 +10,14 @@ const goalCliSrc = readSource(join(projectRoot, 'bin/commands/goal.ts'), 'utf8')
 
 test('C phase prompt tells agents to run orchestrate D (with --attest) instead of suggesting it', () => {
     // Phase 60: the executable instruction must carry --attest — a bare `orchestrate D` 409s.
-    assert.match(stateMachineSrc, /RUN \\\\?`podex orchestrate D --attest\\\\?` now/,
+    assert.match(stateMachineSrc, /RUN \\\\?`weasley-podex orchestrate D --attest\\\\?` now/,
         'C phase should require executing the D transition command WITH --attest evidence');
     assert.ok(stateMachineSrc.includes('Do not merely suggest it'),
         'C phase should distinguish command execution from suggestion text');
 });
 
 test('D phase prompt does not tell agents to run orchestrate D again', () => {
-    assert.ok(!stateMachineSrc.includes('`podex orchestrate D`로 마무리하세요'),
+    assert.ok(!stateMachineSrc.includes('`weasley-podex orchestrate D`로 마무리하세요'),
         'D phase should not ask for the D transition after already entering D');
 });
 

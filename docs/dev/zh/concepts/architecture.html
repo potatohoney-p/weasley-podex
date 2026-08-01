@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>架构 — podex 文档</title>
+<title>架构 — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,14 +58,14 @@
     <a class="active" href="../">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>架构</h1>
-<p class="lead">podex 是一个基于 Node.js 22 的多 AI 运行时服务器。根处理器和 200 个 API/媒体端点为 CLI、TUI、Web PWA、Electron 桌面、Telegram、Discord 和 Manager Dashboard 提供同一套会话、记忆和项目上下文。</p>
+<p class="lead">Weasley Podex 是一个基于 Node.js 22 的多 AI 运行时服务器。根处理器和 200 个 API/媒体端点为 CLI、TUI、Web PWA、Electron 桌面、Telegram、Discord 和 Manager Dashboard 提供同一套会话、记忆和项目上下文。</p>
 
 <h2>系统概览</h2>
 <p>所有运行表面都经过 <code>server.ts</code>。服务器处理认证、安全、SSE 事件和启动引导，然后委托给 <code>src/routes/</code> 与核心子系统。</p>
@@ -98,7 +97,7 @@ server.ts ──→ src/routes/* ──→ src/core/ | src/agent/ | src/orchestr
 <tr><td><code>settings.ts</code></td><td>18</td><td>设置、提示词、heartbeat-md、MCP、CLI 注册表、配额</td></tr>
 <tr><td><code>browser.ts</code></td><td>43</td><td>浏览器原语、标签页管理、web-ai 自动化和 code-mode 回收</td></tr>
 <tr><td><code>memory.ts</code></td><td>13</td><td>记忆运行时、KV 存储、记忆文件</td></tr>
-<tr><td><code>jaw-memory.ts</code></td><td>11</td><td>Jaw 记忆搜索、读取、保存、soul、刷新、反思</td></tr>
+<tr><td><code>jaw-memory.ts</code></td><td>11</td><td>Weasley Podex 记忆搜索、读取、保存、soul、刷新、反思</td></tr>
 <tr><td><code>orchestrate.ts</code></td><td>11</td><td>PABCD 状态、工作者、调度、队列管理</td></tr>
 <tr><td><code>goal.ts</code></td><td>3</td><td>持久化目标状态、历史记录</td></tr>
 <tr><td><code>goal-run.ts</code></td><td>3</td><td>有界目标运行生命周期</td></tr>
@@ -112,7 +111,7 @@ server.ts ──→ src/routes/* ──→ src/core/ | src/agent/ | src/orchestr
 </table>
 
 <h2>文件树概览</h2>
-<pre><code>podex/
+<pre><code>weasley-podex/
 ├── bin/                    # CLI entry + 30 command files
 │   ├── podex.ts          # Root CLI router
 │   └── commands/           # serve, init, doctor, chat, browser, ...
@@ -138,8 +137,8 @@ server.ts ──→ src/routes/* ──→ src/core/ | src/agent/ | src/orchestr
 │   ├── manager/            # React 19 dashboard app
 │   └── dist/               # Build output
 ├── electron/               # Electron desktop shell + packaged sidecar
-├── native/                 # jaw-claude-i Rust helper
-│   └── jaw-claude-i/       # 15 Rust source files
+├── native/                 # claude-e Rust helper
+│   └── claude-e/           # 15 Rust source files
 └── tests/                  # 447 test files</code></pre>
 
 <h2>核心子系统</h2>
@@ -162,7 +161,7 @@ server.ts ──→ src/routes/* ──→ src/core/ | src/agent/ | src/orchestr
 </ul>
 
 <h2>数据存储</h2>
-<p>podex 使用 <code>better-sqlite3</code> 通过 SQLite 存储会话、消息、记忆、员工、编排状态和排队消息。数据库模式定义在 <code>src/core/db.ts</code> 中。</p>
+<p>Weasley Podex 使用 <code>better-sqlite3</code> 通过 SQLite 存储会话、消息、记忆、员工、编排状态和排队消息。数据库模式定义在 <code>src/core/db.ts</code> 中。</p>
 <pre><code>session           # active CLI, session ID, model, working directory
 messages          # conversation history with trace and tool log
 memory            # key-value memory store

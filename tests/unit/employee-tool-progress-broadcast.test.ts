@@ -2,8 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
+const ROOT = fileURLToPath(new URL('../..', import.meta.url));
 
 test('employee tool events update worker progress without duplicate public rebroadcast', () => {
     const src = fs.readFileSync(path.join(ROOT, 'src', 'agent', 'events', 'helpers.ts'), 'utf8');

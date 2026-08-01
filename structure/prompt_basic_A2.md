@@ -1,14 +1,14 @@
 ---
 created: 2026-03-28
-tags: [podex, prompt, user-config, template]
-aliases: [A2 user prompt, podex A2, user config prompt]
+tags: [weasley-podex, prompt, user-config, template]
+aliases: [A2 user prompt, Weasley Podex A2, user config prompt]
 ---
 
 > 📚 [INDEX](INDEX.md) · [프롬프트 흐름 ↗](prompt_flow.md) · [A1](prompt_basic_A1.md) · **A2 사용자 설정** · [B](prompt_basic_B.md)
 
 # prompt_basic_A2 — 사용자 설정 프롬프트
 
-> 경로: `~/.podex/prompts/A-2.md`
+> 경로: `~/.weasley/podex/prompts/A-2.md`
 > 소스: `src/prompt/templates/a2-default.md` (25L)
 > 구현: `src/prompt/builder.ts` → `getA2Default()`, `initPromptFiles()`, `getSystemPrompt()`
 > 생성 조건: 파일이 없을 때만 자동 생성, 기존 파일은 절대 덮어쓰지 않음
@@ -36,8 +36,8 @@ aliases: [A2 user prompt, podex A2, user config prompt]
 # User Configuration
 
 ## Identity
-- Name: Jaw
-- Emoji: 🦈
+- Name: Weasley Podex
+- Emoji: ◆
 
 ## User
 - Name: (your name)
@@ -49,7 +49,7 @@ aliases: [A2 user prompt, podex A2, user config prompt]
 - Technically accurate
 
 ## Working Directory
-- ~/.podex
+- ~/.weasley/podex
 ```
 
 ---

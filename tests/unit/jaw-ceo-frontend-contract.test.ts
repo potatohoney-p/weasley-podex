@@ -30,8 +30,8 @@ test('jaw-ceo frontend installs workbench launcher outside instance groups', () 
     const row = read('public/manager/src/components/InstanceRow.tsx');
     const main = read('public/manager/src/main.tsx');
 
-    assert.ok(app.includes('useJawCeoDashboardBridge('), 'App must delegate Jaw CEO dashboard wiring to the bridge');
-    assert.ok(bridge.includes('useJawCeo('), 'bridge must own the Jaw CEO dashboard hook');
+    assert.ok(app.includes('useJawCeoDashboardBridge('), 'App must delegate Weasley Podex CEO dashboard wiring to the bridge');
+    assert.ok(bridge.includes('useJawCeo('), 'bridge must own the Weasley Podex CEO dashboard hook');
     assert.ok(bridge.includes('<JawCeoWorkbenchButton'), 'bridge must render the Workbench CEO launcher');
     assert.ok(bridge.includes('const workbenchControlsHidden = true'), 'CEO workbench controls must stay hidden while the launcher is parked');
     assert.ok(bridge.includes('workbenchControlsHidden ? null : ('), 'bridge must remove the CEO launcher from the Workbench while parked');
@@ -43,7 +43,7 @@ test('jaw-ceo frontend installs workbench launcher outside instance groups', () 
     assert.equal(list.includes('ceoPendingByPort'), false, 'instance list must not accept CEO pending counts by default');
     assert.equal(groups.includes('ceoWatchedPorts'), false, 'instance groups must not pass CEO watch state by default');
     assert.equal(row.includes('instance-row-ceo-flags'), false, 'instance rows must not show default CEO flags');
-    assert.ok(main.includes('./jaw-ceo/jaw-ceo.css'), 'manager entry must load Jaw CEO CSS');
+    assert.ok(main.includes('./jaw-ceo/jaw-ceo.css'), 'manager entry must load Weasley Podex CEO CSS');
 });
 
 test('jaw-ceo workbench launcher can disable CEO ready and microphone controls', () => {
@@ -100,7 +100,7 @@ test('jaw-ceo frontend exposes masked voice key settings inside CEO console', ()
     const virtualHook = read('public/manager/src/jaw-ceo/useJawCeoVirtualTimeline.ts');
     const settings = read('public/manager/src/jaw-ceo/JawCeoSettingsPanel.tsx');
 
-    assert.ok(api.includes('/api/jaw-ceo/settings'), 'frontend must use the Jaw CEO scoped settings endpoint');
+    assert.ok(api.includes('/api/jaw-ceo/settings'), 'frontend must use the Weasley Podex CEO scoped settings endpoint');
     assert.ok(api.includes('updateJawCeoSettings'), 'frontend must be able to save a new voice API key');
     assert.ok(tabs.includes("{ id: 'settings', label: 'Settings' }"), 'CEO console must expose a Settings tab');
     assert.equal(tabs.includes("label: 'Pending'"), false, 'pending worker results must render inside Chat, not a separate tab');
@@ -164,7 +164,7 @@ test('jaw-ceo frontend renders realtime voice overlay and silent state without i
     assert.notEqual(overlayIndex, -1, 'router must render the voice overlay');
     assert.ok(overlayIndex < layoutIndex, 'overlay must render as a shell-level sibling before WorkspaceLayout');
     assert.ok(overlayIndex < workspaceLayerIndex, 'overlay must not be mounted inside workspace-surface-layer');
-    assert.ok(overlay.includes('aria-label="Stop Jaw CEO voice"'), 'overlay stop control must be accessible');
+    assert.ok(overlay.includes('aria-label="Stop Weasley Podex CEO voice"'), 'overlay stop control must be accessible');
     assert.ok(main.includes('./jaw-ceo/jaw-ceo-console.css'), 'manager entry must load modern CEO console CSS');
     assert.ok(consolePanel.includes('jaw-ceo-console-titlebar'), 'console header must use the modern titlebar layout');
     assert.ok(consolePanel.includes('jaw-ceo-console-summary'), 'console header must expose compact status summary chips');

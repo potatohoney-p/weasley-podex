@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CLI-Only Commands — podex Docs</title>
+<title>CLI-Only Commands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,7 +81,7 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
@@ -100,8 +99,8 @@
 
 <table>
 <tr><th>命令</th><th>参数</th><th>描述</th></tr>
-<tr><td><code>/version</code></td><td>无</td><td>输出当前 podex 版本字符串</td></tr>
-<tr><td><code>/quit</code></td><td>无</td><td>优雅地退出 podex 进程</td></tr>
+<tr><td><code>/version</code></td><td>无</td><td>输出当前 Weasley Podex 版本字符串</td></tr>
+<tr><td><code>/quit</code></td><td>无</td><td>优雅地退出 Weasley Podex 进程</td></tr>
 <tr><td><code>/q</code></td><td>无</td><td><code>/quit</code> 的别名</td></tr>
 <tr><td><code>/file</code></td><td><code>&lt;path&gt; [caption]</code></td><td>将本地文件附加到对话中（不在界面上显示）</td></tr>
 <tr><td><code>/ide</code></td><td><code>pop | on | off</code></td><td>控制 IDE diff 视图面板</td></tr>
@@ -110,7 +109,7 @@
 <hr>
 
 <h2 id="version">/version</h2>
-<p>将已安装的 podex 版本、构建哈希和运行时信息输出到终端。适用于提交 bug 报告和验证更新是否成功。</p>
+<p>将已安装的 Weasley Podex 版本、构建哈希和运行时信息输出到终端。适用于提交 bug 报告和验证更新是否成功。</p>
 
 <h3>语法</h3>
 <pre><code>/version</code></pre>
@@ -119,16 +118,16 @@
 <p>无。该命令不接受任何参数或标志。</p>
 
 <h3>输出</h3>
-<pre><code>podex v2.14.0 (build a3f8c1d)
+<pre><code>weasley-podex v2.14.0 (build a3f8c1d)
 node: v22.11.0 | platform: darwin-arm64
-config: ~/.podex/config.yaml</code></pre>
+config: ~/.weasley/podex/config.yaml</code></pre>
 
 <h3>使用示例</h3>
 <pre><code># Check your version before reporting an issue
 /version
 
-# Pipe to clipboard (in your shell, not inside a jaw session)
-jaw --version | pbcopy</code></pre>
+# Pipe to clipboard (in your shell, not inside a weasley-podex session)
+weasley-podex --version | pbcopy</code></pre>
 
 <div class="callout-info">
 <strong>~해줘 tip</strong><br>
@@ -138,7 +137,7 @@ jaw --version | pbcopy</code></pre>
 <hr>
 
 <h2 id="quit">/quit, /q</h2>
-<p>优雅地关闭 podex 进程。该命令会将当前对话保存到会话日志，刷新所有待处理的记忆写入，然后以退出码 0 退出 Node.js 进程。<code>/q</code> 是功能完全相同的简写别名。</p>
+<p>优雅地关闭 Weasley Podex 进程。该命令会将当前对话保存到会话日志，刷新所有待处理的记忆写入，然后以退出码 0 退出 Node.js 进程。<code>/q</code> 是功能完全相同的简写别名。</p>
 
 <h3>语法</h3>
 <pre><code>/quit
@@ -149,7 +148,7 @@ jaw --version | pbcopy</code></pre>
 
 <h3>行为</h3>
 <ul>
-<li><strong>会话保存</strong> -- 当前对话会持久化到 <code>~/.podex/sessions/</code>，以便稍后使用 <code>/session load</code> 恢复。</li>
+<li><strong>会话保存</strong> -- 当前对话会持久化到 <code>~/.weasley/podex/sessions/</code>，以便稍后使用 <code>/session load</code> 恢复。</li>
 <li><strong>记忆刷新</strong> -- 退出前会提交所有进行中的记忆写入。</li>
 <li><strong>干净退出</strong> -- 进程以退出码 <code>0</code> 退出。如果超过 5 秒仍有阻塞，进程会强制终止。</li>
 <li><strong>无确认提示</strong> -- 该命令立即退出，不会提示"你确定吗？"</li>
@@ -195,7 +194,7 @@ jaw --version | pbcopy</code></pre>
 <ul>
 <li><strong>隐藏附件</strong> -- 文件内容被添加到 AI 上下文中，但不会输出到终端。这样在附加大文件时可以保持显示整洁。</li>
 <li><strong>大小限制</strong> -- 超过模型上下文窗口的文件会被截断并显示警告。对于非常大的文件，建议先拆分或摘要。</li>
-<li><strong>相对路径</strong> -- 相对于当前工作目录（即你启动 <code>jaw</code> 的目录）解析。</li>
+<li><strong>相对路径</strong> -- 相对于当前工作目录（即你启动 <code>weasley-podex</code> 的目录）解析。</li>
 <li><strong>二进制文件</strong> -- 图片和文档会进行 base64 编码。不支持的二进制格式会产生错误。</li>
 </ul>
 
@@ -284,12 +283,12 @@ jaw --version | pbcopy</code></pre>
 <h2>故障排除</h2>
 
 <h3>/file 提示"file not found"</h3>
-<p>请检查路径是否相对于你启动 <code>jaw</code> 的目录正确。如果不确定，请使用绝对路径：</p>
+<p>请检查路径是否相对于你启动 <code>weasley-podex</code> 的目录正确。如果不确定，请使用绝对路径：</p>
 <pre><code># Instead of relative path
 /file ./data/report.csv
 
 # Use absolute path
-/file /Users/jun/projects/data/report.csv</code></pre>
+/file /Users/example/projects/data/report.csv</code></pre>
 
 <h3>/ide pop 没有反应</h3>
 <p><code>pop</code> 模式需要 iTerm2、Wezterm 或 tmux。如果你使用的是其他终端模拟器（Terminal.app、Alacritty、Hyper），该命令会静默回退到 <code>on</code> 模式。请检查你的终端：</p>
@@ -297,7 +296,7 @@ jaw --version | pbcopy</code></pre>
 # Should output: iTerm.app, WezTerm, or tmux</code></pre>
 
 <h3>/quit 卡住了</h3>
-<p>如果 <code>/quit</code> 在 5 秒内没有退出，可能存在未完成的网络请求或文件写入。按 <code>Ctrl+C</code> 强制终止进程。检查 <code>~/.podex/sessions/</code> 以验证会话是否已保存。</p>
+<p>如果 <code>/quit</code> 在 5 秒内没有退出，可能存在未完成的网络请求或文件写入。按 <code>Ctrl+C</code> 强制终止进程。检查 <code>~/.weasley/podex/sessions/</code> 以验证会话是否已保存。</p>
 
 <div class="page-nav">
 <a class="prev" href="tools.html">Tools</a>

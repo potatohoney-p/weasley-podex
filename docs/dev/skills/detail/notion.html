@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notion — podex Docs</title>
+<title>Notion — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -73,7 +72,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -96,7 +95,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -145,17 +144,17 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Notion</h1>
-<p class="lead">Notion page and database CRUD via API &mdash; create, read, update, and query Notion pages, data sources (databases), and blocks directly from podex using the Notion API.</p>
+<p class="lead">Notion page and database CRUD via API &mdash; create, read, update, and query Notion pages, data sources (databases), and blocks directly from Weasley Podex using the Notion API.</p>
 
 <div class="skill-meta">
-  <span class="badge badge-active">Default Active: Yes</span>
+  <span class="badge badge-planned">Optional import</span>
   <span class="badge badge-scope">Category: Productivity</span>
   <span class="badge badge-env">Requires: NOTION_API_KEY</span>
 </div>
@@ -165,18 +164,18 @@
 <tr><td>Skill name</td><td><code>notion</code></td></tr>
 <tr><td>Status</td><td>Active (auto-injected into every session)</td></tr>
 <tr><td>Category</td><td>Productivity</td></tr>
-<tr><td>SKILL.md path</td><td><code>~/.podex/skills/notion/SKILL.md</code></td></tr>
+<tr><td>SKILL.md path</td><td><code>~/.weasley/podex/skills/notion/SKILL.md</code></td></tr>
 <tr><td>Homepage</td><td><a href="https://developers.notion.com">developers.notion.com</a></td></tr>
 <tr><td>API version</td><td><code>2025-09-03</code> (latest)</td></tr>
 <tr><td>Requires</td><td><code>NOTION_API_KEY</code> environment variable (key with <code>ntn_</code> prefix)</td></tr>
 <tr><td>Key location</td><td><code>~/.config/notion/api_key</code></td></tr>
 <tr><td>OAuth config</td><td><code>~/.config/notion/oauth.env</code></td></tr>
 <tr><td>Rate limit</td><td>~3 requests/sec (use <code>time.sleep(0.35)</code> for batch operations)</td></tr>
-<tr><td>Install</td><td>Pre-installed (ships with podex)</td></tr>
+<tr><td>Install</td><td>Import from an installed Codex catalog or explicit trusted repository</td></tr>
 </table>
 
 <h2>Overview</h2>
-<p>The <code>notion</code> skill provides full CRUD access to Notion workspaces through the Notion API. It enables podex to search for pages, create and update content, query databases (data sources), manage blocks, and apply visual design patterns &mdash; all without leaving the terminal.</p>
+<p>The <code>notion</code> skill provides full CRUD access to Notion workspaces through the Notion API. It enables Weasley Podex to search for pages, create and update content, query databases (data sources), manage blocks, and apply visual design patterns &mdash; all without leaving the terminal.</p>
 
 <p>Key capabilities:</p>
 <ul>
@@ -211,7 +210,7 @@ chmod 600 ~/.config/notion/api_key</code></pre>
 <div class="callout callout-warn"><strong>Important:</strong> Target pages and databases must be explicitly shared with your integration in Notion. Unshared pages will return 404 errors even if the API key is valid.</div>
 
 <h2>API Helper Function</h2>
-<p>The skill defines a reusable shell helper that all operations are built on. podex uses this internally when executing Notion commands:</p>
+<p>The skill defines a reusable shell helper that all operations are built on. Weasley Podex uses this internally when executing Notion commands:</p>
 
 <pre><code>NOTION_KEY=$(cat ~/.config/notion/api_key)
 
@@ -370,7 +369,7 @@ notion_api POST /data_sources '{
 <div class="callout callout-info"><strong>Dual ID pattern:</strong> When working with databases, use <code>database_id</code> for <code>POST /pages</code> (creating entries) and <code>data_source_id</code> for <code>POST /data_sources/{id}/query</code> (querying entries). Mixing them up will cause 404 errors.</div>
 
 <h2>Visual Design Rules</h2>
-<p>The skill includes a set of visual design rules (referred to as the "aesthetics guide") that ensure Notion pages created by podex look polished and follow Notion-native patterns.</p>
+<p>The skill includes a set of visual design rules (referred to as the "aesthetics guide") that ensure Notion pages created by Weasley Podex look polished and follow Notion-native patterns.</p>
 
 <div class="design-rule">
   <h4>1. Use mention links for page references</h4>
@@ -456,7 +455,7 @@ bulleted_list_item (mention &rarr; description)
 notion_api POST /search '{"query": "page name"}'</code></pre>
 
 <h2>Usage Examples (~&#54644;&#51468;)</h2>
-<p>Real-world usage patterns in the natural Korean style that podex understands.</p>
+<p>Real-world usage patterns in the natural Korean style that Weasley Podex understands.</p>
 
 <div class="example-card">
   <div class="example-prompt">"&#45432;&#49496;&#50640; &#49352; &#54168;&#51060;&#51648; &#47564;&#46308;&#50612;&#51468; &mdash; &#51228;&#47785; '&#51452;&#44036; &#54924;&#51032;&#47197;', &#49345;&#53468;&#45716; '&#51652;&#54665; &#51473;'&#51004;&#47196;"</div>
@@ -500,7 +499,7 @@ notion_api POST /search '{"query": "page name"}'</code></pre>
   <li><a href="../productivity.html">Productivity Skills</a> &mdash; category page for Notion and related productivity skills</li>
   <li><a href="memory.html">Memory</a> &mdash; persistent knowledge storage across sessions</li>
   <li><a href="../index.html">Skill Catalog</a> &mdash; browse all skills</li>
-  <li><a href="../../reference/cli.html">CLI Commands</a> &mdash; full podex command reference</li>
+  <li><a href="../../reference/cli.html">CLI Commands</a> &mdash; full Weasley Podex command reference</li>
 </ul>
 
 <div class="page-nav">

@@ -6,7 +6,7 @@ import { parseSubtasks, parseDirectAnswer, stripSubtaskJSON } from '../../src/or
 
 // ─── parseSubtasks ───────────────────────────────────
 
-test('ORP-001: fenced json subtasks parse', { skip: 'DEPRECATED: patch3 — podex dispatch unified' }, () => {
+test('ORP-001: fenced json subtasks parse', { skip: 'DEPRECATED: patch3 — weasley-podex dispatch unified' }, () => {
     const input = 'Plan:\n```json\n{"subtasks":[{"agent":"백엔드","task":"server.js 분리"}]}\n```\nDone.';
     const st = parseSubtasks(input);
     assert.ok(Array.isArray(st));

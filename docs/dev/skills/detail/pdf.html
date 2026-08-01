@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF &mdash; podex Docs</title>
+<title>PDF &mdash; Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
 .badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
@@ -30,7 +29,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -53,7 +52,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -102,7 +101,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
@@ -112,25 +111,25 @@
 <p class="lead">PDF read, create, edit, review + vision-based extraction. This skill handles the full lifecycle of PDF documents &mdash; from generating new files with <code>reportlab</code> to extracting text with <code>pdfplumber</code>, rendering pages to images with Poppler, and performing visual quality verification after every edit.</p>
 
 <p>
-  <span class="badge badge-ref">Reference</span>
+  <span class="badge badge-ref">Optional import</span>
   <span class="badge badge-category">AI &amp; Media</span>
 </p>
 
 <div class="callout callout-info">
-  <strong>Reference skill:</strong> <code>pdf</code> is not active by default. Install it with <code>jaw skill install pdf</code> or say "PDF &#49828;&#53420; &#49444;&#52824;&#54644;&#51468;" in chat. Once active, it is injected into the system prompt and the agent follows its workflow automatically whenever PDF tasks are detected.
+  <strong>Optional workflow:</strong> <code>pdf</code> is not part of the eight bundled skills. Import it from an installed Codex catalog or an explicitly trusted skill repository first; only then can <code>weasley-podex skill install pdf</code> activate it. The guidance below is a workflow reference, not a claim that the files ship in this package.
 </div>
 
 <h2>Quick Reference</h2>
 <table class="quick-ref">
 <tr><td>Skill name</td><td><code>pdf</code></td></tr>
 <tr><td>Category</td><td>AI &amp; Media</td></tr>
-<tr><td>Default active</td><td>No &mdash; requires <code>jaw skill install pdf</code></td></tr>
-<tr><td>SKILL.md path</td><td><code>~/.podex/skills/pdf/SKILL.md</code> (active) or <code>~/.podex/skills_ref/pdf/SKILL.md</code> (ref)</td></tr>
+<tr><td>Bundled</td><td>No &mdash; import from a trusted source before activation</td></tr>
+<tr><td>SKILL.md path</td><td>Defined by the imported catalog; verify with <code>weasley-podex skill info pdf</code></td></tr>
 <tr><td>Python packages</td><td><code>reportlab</code>, <code>pdfplumber</code>, <code>pypdf</code></td></tr>
 <tr><td>System tools</td><td><code>pdftoppm</code> (from Poppler)</td></tr>
 <tr><td>Temp directory</td><td><code>tmp/pdfs/</code></td></tr>
 <tr><td>Output directory</td><td><code>output/pdf/</code></td></tr>
-<tr><td>Related skills</td><td><code>pdf-vision</code>, <code>docx</code>, <code>pptx</code>, <code>xlsx</code></td></tr>
+<tr><td>Related workflows</td><td>Document extraction, visual QA, and office conversion (when separately installed)</td></tr>
 </table>
 
 <h2>Workflow</h2>
@@ -294,7 +293,7 @@ soffice --headless --convert-to pdf input.docx --outdir output/pdf/</code></pre>
 </div>
 
 <h2>Comparison with pdf-vision</h2>
-<p>podex ships two PDF-related skills. They are complementary, not redundant:</p>
+<p>Two optional PDF workflows are commonly imported together. They are complementary, not bundled:</p>
 
 <table>
 <thead>
@@ -309,7 +308,7 @@ soffice --headless --convert-to pdf input.docx --outdir output/pdf/</code></pre>
 </table>
 
 <div class="callout callout-info">
-  <strong>Tip:</strong> Install both with <code>jaw skill install pdf pdf-vision</code> or say "PDF &#49828;&#53420;&#51060;&#47049; pdf-vision &#46168; &#45796; &#49444;&#52824;&#54644;&#51468;". They work together seamlessly when both are active.
+  <strong>Tip:</strong> Install both with <code>weasley-podex skill install pdf pdf-vision</code> or say "PDF &#49828;&#53420;&#51060;&#47049; pdf-vision &#46168; &#45796; &#49444;&#52824;&#54644;&#51468;". They work together seamlessly when both are active.
 </div>
 
 <h2>Troubleshooting</h2>
@@ -341,7 +340,7 @@ sudo apt-get install -y libreoffice</code></pre>
 
 <h2>Installation</h2>
 <pre><code># CLI
-jaw skill install pdf
+weasley-podex skill install pdf
 
 # In-chat (Korean)
 "PDF &#49828;&#53420; &#49444;&#52824;&#54644;&#51468;"
@@ -350,13 +349,13 @@ jaw skill install pdf
 "Install the PDF skill"
 
 # Verify installation
-jaw skill info pdf</code></pre>
+weasley-podex skill info pdf</code></pre>
 
-<pre><code># Expected output of jaw skill info pdf:
+<pre><code># Expected output of weasley-podex skill info pdf:
 #   Name:     pdf
 #   Status:   active
 #   Category: AI &amp; Media
-#   Path:     ~/.podex/skills/pdf/SKILL.md
+#   Path:     ~/.weasley/podex/skills/pdf/SKILL.md
 #   Description: PDF creation, reading, editing, merging, and text extraction</code></pre>
 
 <div class="page-nav">

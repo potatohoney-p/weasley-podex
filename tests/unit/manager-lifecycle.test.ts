@@ -60,14 +60,14 @@ test('lifecycle builds start command with top-level home flag', () => {
         from: 3457,
         count: 50,
         jawPath: '/usr/local/bin/jaw',
-        homeRoot: '/Users/jun',
+        homeRoot: '/Users/example',
         storageRoot: dir,
     });
 
     assert.deepEqual(manager.buildStartCommand(3457), [
         '/usr/local/bin/jaw',
         '--home',
-        '/Users/jun/.podex',
+        join('/Users/example', '.weasley', 'podex'),
         'serve',
         '--port',
         '3457',
@@ -76,7 +76,7 @@ test('lifecycle builds start command with top-level home flag', () => {
     assert.deepEqual(manager.buildStartCommand(3458), [
         '/usr/local/bin/jaw',
         '--home',
-        '/Users/jun/.podex-3458',
+        join('/Users/example', '.weasley', 'podex-3458'),
         'serve',
         '--port',
         '3458',
@@ -150,17 +150,17 @@ test('lifecycle marks offline ports as startable with default home policy', (t) 
         from: 3457,
         count: 50,
         jawPath: '/usr/local/bin/jaw',
-        homeRoot: '/Users/jun',
+        homeRoot: '/Users/example',
         storageRoot: dir,
     });
 
     const defaultRow = manager.decorateInstance(makeOffline(3457));
     const row = manager.decorateInstance(makeOffline(3460));
 
-    assert.equal(defaultRow.lifecycle?.defaultHome, '/Users/jun/.podex');
+    assert.equal(defaultRow.lifecycle?.defaultHome, join('/Users/example', '.weasley', 'podex'));
     assert.equal(row.lifecycle?.owner, 'none');
     assert.equal(row.lifecycle?.canStart, true);
-    assert.equal(row.lifecycle?.defaultHome, '/Users/jun/.podex-3460');
+    assert.equal(row.lifecycle?.defaultHome, join('/Users/example', '.weasley', 'podex-3460'));
 });
 
 test('lifecycle stop can terminate external core listener PID but restart remains owner-limited', async (t) => {
@@ -183,7 +183,7 @@ test('lifecycle stop can terminate external core listener PID but restart remain
         },
         spawnImpl: ((command: string, args: string[]) => {
             assert.equal(command, '/usr/local/bin/jaw');
-            assert.deepEqual(args.slice(0, 2), ['--home', join(dir, '.podex')]);
+            assert.deepEqual(args.slice(0, 2), ['--home', join(dir, '.weasley', 'podex')]);
             const child = new FakeChild();
             children.push(child);
             return child;

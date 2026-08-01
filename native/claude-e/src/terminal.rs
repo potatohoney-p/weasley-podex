@@ -20,7 +20,7 @@ pub fn answer_terminal_query(data: &[u8], cols: u16, rows: u16) -> Vec<Vec<u8>> 
 
     // XTVERSION: ESC [ > q
     if contains_bytes(data, b"\x1b[>q") {
-        responses.push(b"\x1bP>|jaw-claude-i 0.1.0\x1b\\".to_vec());
+        responses.push(b"\x1bP>|claude-e 0.1.0\x1b\\".to_vec());
     }
 
     // Window size: ESC [ 18 t

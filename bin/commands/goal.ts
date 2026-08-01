@@ -1,5 +1,5 @@
-﻿#!/usr/bin/env node
-// bin/commands/goal.ts — CLI: jaw goal [set|plan|refine|status|update|done|cancel|pause|resume|clear|reset|history]
+#!/usr/bin/env node
+// bin/commands/goal.ts — CLI: weasley-podex goal [set|plan|refine|status|update|done|cancel|pause|resume|clear|reset|history]
 import { loadSettings, getServerUrl } from '../../src/core/config.js';
 import { cliFetch, getCliAuthToken } from '../../src/cli/api-auth.js';
 import { shouldShowHelp, printAndExit } from '../helpers/help.js';
@@ -7,9 +7,9 @@ import { errString, isConnRefused } from '../_http-client.js';
 import { GOAL_PLAN_PENDING_OBJECTIVE } from '../../src/goal/types.js';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw goal — Persistent goal lifecycle
+  weasley-podex goal — Persistent goal lifecycle
 
-  Usage: jaw goal <subcommand> [args...]
+  Usage: weasley-podex goal <subcommand> [args...]
 
   Subcommands:
     set <objective>     Set a new goal (up to 10000 characters)
@@ -27,13 +27,13 @@ if (shouldShowHelp(process.argv)) printAndExit(`
     history [limit]     Show goal history
 
   Examples:
-    jaw goal plan                              # AI decides goal from context
-    jaw goal plan "improve auth"               # AI uses hint as direction
-    jaw goal refine "Implement auth redirects" # Finalize AI-selected goal objective
-    jaw goal set "Implement keyboard shortcuts"
-    jaw goal update "K0 done"
-    jaw goal done "All phases complete"
-    jaw goal status
+    weasley-podex goal plan                              # AI decides goal from context
+    weasley-podex goal plan "improve auth"               # AI uses hint as direction
+    weasley-podex goal refine "Implement auth redirects" # Finalize AI-selected goal objective
+    weasley-podex goal set "Implement keyboard shortcuts"
+    weasley-podex goal update "K0 done"
+    weasley-podex goal done "All phases complete"
+    weasley-podex goal status
 `);
 
 loadSettings();
@@ -146,7 +146,7 @@ try {
         const pauseArgs = args.slice(1).filter(a => a !== '--agent');
         const audit = splitFlagValue(pauseArgs, '--audit');
         if (!agentRequested && !process.stdin.isTTY) {
-            console.error('Non-interactive goal pause must use: podex goal pause --agent --audit "<independent-review-summary>". Plain `podex goal pause` is for manual interactive use.');
+            console.error('Non-interactive goal pause must use: weasley-podex goal pause --agent --audit "<independent-review-summary>". Plain `weasley-podex goal pause` is for manual interactive use.');
             process.exit(1);
         }
         payload['reason'] = audit.before.join(' ').trim() || undefined;
@@ -189,7 +189,7 @@ try {
     }
 } catch (e) {
     if (isConnRefused(e)) {
-        console.error(`Server not running. Start with: jaw serve`);
+        console.error(`Server not running. Start with: weasley-podex serve`);
     } else {
         console.error(`Error: ${errString(e)}`);
     }

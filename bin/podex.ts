@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * podex — Phase 9.1
+ * Weasley Podex CLI
  * CLI entrypoint with subcommand routing.
  * No external dependencies — Node built-in only.
  */
@@ -11,6 +11,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { maybePromptGithubStar } from './star-prompt.js';
 import { resolveHomePath } from '../src/core/path-expand.js';
+import { getWeasleyPodexEnv, setWeasleyPodexEnv } from '../src/core/weasley-podex-env.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 interface PackageJson {
@@ -43,23 +44,23 @@ if (_homeIdx !== -1 && process.argv[_homeIdx + 1]) {
     const _knownCmds = ['serve', 'init', 'doctor', 'chat', 'employee', 'reset', 'mcp', 'skill', 'status', 'browser', 'design', 'memory', 'hooks', 'launchd', 'clone', 'service', 'dashboard', 'connector', 'reminders', 'orchestrate', 'dispatch', 'worker', 'project', 'goal', 'task', 'bgtask', 'jwc', 'provider'];
     if (_knownCmds.includes(_homeVal)) {
         console.error(`  ❌ --home requires a path argument (got subcommand '${_homeVal}')`);
-        console.error(`  Usage: jaw --home <path> ${_homeVal}`);
+        console.error(`  Usage: weasley-podex --home <path> ${_homeVal}`);
         process.exit(1);
     }
-    process.env["podex_HOME"] = resolveHomePath(_homeVal, homedir());
+    setWeasleyPodexEnv('HOME', resolveHomePath(_homeVal, homedir()));
     process.argv.splice(_homeIdx, 2);
 } else if (_homeIdx !== -1 && !process.argv[_homeIdx + 1]) {
     console.error('  ❌ --home requires a path argument');
-    console.error('  Usage: jaw --home <path> <command>');
+    console.error('  Usage: weasley-podex --home <path> <command>');
     process.exit(1);
 } else if (_homeEqArg) {
     const val = _homeEqArg.slice('--home='.length);
-    process.env["podex_HOME"] = resolveHomePath(val, homedir());
+    setWeasleyPodexEnv('HOME', resolveHomePath(val, homedir()));
     process.argv.splice(process.argv.indexOf(_homeEqArg), 1);
 }
 
-// ─── --NNNN port shorthand: sets podex_HOME (~/.podex[-port]) + PORT ───
-// e.g. `jaw serve --3458` → --home ~/.podex-3458 --port 3458.
+// ─── --NNNN port shorthand: sets WEASLEY_PODEX_HOME + PORT ───
+// e.g. `weasley-podex serve --3458` → --home ~/.weasley/podex-3458 --port 3458.
 // Must run AFTER --home parsing so an explicit --home wins for the home path.
 const _portShortIdx = process.argv.findIndex(a => /^--\d{2,5}$/.test(a));
 if (_portShortIdx !== -1) {
@@ -70,10 +71,10 @@ if (_portShortIdx !== -1) {
         process.exit(1);
     }
     // Only auto-derive home when --home was not explicitly provided.
-    if (!process.env["podex_HOME"]) {
-        process.env["podex_HOME"] = portNum === 3457
-            ? join(homedir(), '.podex')
-            : join(homedir(), `.podex-${portNum}`);
+    if (!getWeasleyPodexEnv('HOME')) {
+        setWeasleyPodexEnv('HOME', portNum === 3457
+            ? join(homedir(), '.weasley', 'podex')
+            : join(homedir(), '.weasley', `podex-${portNum}`));
     }
     process.env["PORT"] = portStr;
     process.argv.splice(_portShortIdx, 1);
@@ -96,8 +97,8 @@ function ensureNativeModulesReady(cmd: string | undefined): void {
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        console.error(`[jaw:native] native dependency check failed for Node ${process.version}.`);
-        console.error(`[jaw:native] ${message}`);
+        console.error(`[weasley-podex:native] native dependency check failed for Node ${process.version}.`);
+        console.error(`[weasley-podex:native] ${message}`);
         process.exit(1);
     }
 }
@@ -106,36 +107,36 @@ async function maybePromptForStarOnLaunch(): Promise<void> {
     try {
         await maybePromptGithubStar();
     } catch (err) {
-        console.error(`[jaw] Star prompt skipped: ${err instanceof Error ? err.message : String(err)}`);
+        console.error(`[weasley-podex] Star prompt skipped: ${err instanceof Error ? err.message : String(err)}`);
     }
 }
 
 function printHelp() {
     const c = { cyan: '\x1b[36m', dim: '\x1b[2m', bold: '\x1b[1m', reset: '\x1b[0m' };
     console.log(`
-${c.cyan}  🦈 jaw${c.reset} — AI agent orchestration platform  ${c.dim}v${pkg.version}${c.reset}
+${c.cyan}  Weasley Podex${c.reset} — local multi-runtime AI assistant  ${c.dim}v${pkg.version}${c.reset}
 
-  ${c.bold}Usage:${c.reset}  jaw <command> [args] [--flags]
-          jaw --home <path> <command>
+  ${c.bold}Usage:${c.reset}  weasley-podex <command> [args] [--flags]
+          weasley-podex --home <path> <command>
 
   ${c.bold}Quick start:${c.reset}
-    jaw init                            Initial setup wizard
-    jaw serve                           Start server (foreground)
-    jaw status --json                   Check server health
-    jaw dashboard serve                 Multi-instance dashboard
-    jaw doctor --json                   Diagnose installation
+    weasley-podex init                            Initial setup wizard
+    weasley-podex serve                           Start server (foreground)
+    weasley-podex status --json                   Check server health
+    weasley-podex dashboard serve                 Multi-instance dashboard
+    weasley-podex doctor --json                   Diagnose installation
 
   ${c.bold}Agent decision guide:${c.reset}
-    1. Check state first: jaw status [--json] or jaw dashboard status --json
+    1. Check state first: weasley-podex status [--json] or weasley-podex dashboard status --json
     2. Use --json on any command for machine-readable output.
-    3. Lifecycle actions need dashboard running: jaw dashboard start/stop <port>
-    4. Dispatch employees: jaw dispatch --agent "Name" --task "..."
-    5. Search memory: jaw memory search "<query>"
+    3. Lifecycle actions need dashboard running: weasley-podex dashboard start/stop <port>
+    4. Dispatch employees: weasley-podex dispatch --agent "Name" --task "..."
+    5. Search memory: weasley-podex memory search "<query>"
 
   ${c.bold}Server:${c.reset}
     serve [--port] [--no-open]          Start server (foreground)
     status [--json] [--dashboard]       Server health check
-    dashboard <sub> [--json]            Multi-instance manager (jaw dashboard --help)
+    dashboard <sub> [--json]            Multi-instance manager (weasley-podex dashboard --help)
 
   ${c.bold}Setup & diagnostics:${c.reset}
     init                                Interactive setup wizard
@@ -168,13 +169,13 @@ ${c.cyan}  🦈 jaw${c.reset} — AI agent orchestration platform  ${c.dim}v${pk
     clone <port> [--home]               Clone instance as independent agent
 
   ${c.bold}Options:${c.reset}
-    --home <path>       Data directory (default: ~/.podex)
-    --<port>            Port shorthand (e.g. --3458 → --home ~/.podex-3458 --port 3458)
+    --home <path>       Data directory (default: ~/.weasley/podex)
+    --<port>            Port shorthand (e.g. --3458 → --home ~/.weasley/podex-3458 --port 3458)
     --help, -h          Show help (works on all subcommands)
     --version, -v       Show version
 
   ${c.bold}Environment:${c.reset}
-    podex_HOME        Override data directory
+    WEASLEY_PODEX_HOME  Override data directory
     PORT                Default server port (3457)
     DASHBOARD_PORT      Dashboard port (24576)
 	`);
@@ -285,7 +286,7 @@ switch (command) {
         break;
     case '--version':
     case '-v':
-        console.log(`podex v${pkg.version}`);
+        console.log(`weasley-podex v${pkg.version}`);
         break;
     case '--help':
     case '-h':

@@ -6,12 +6,16 @@
     <script>
       // Resolve theme before CSS paints — prevents FOUC and wrong Mermaid theme
       (function() {
-        if (!localStorage.getItem('jaw.uiTheme') && localStorage.getItem('theme')) {
-          localStorage.setItem('jaw.uiTheme', localStorage.getItem('theme'));
-          localStorage.removeItem('theme');
+        var key = 'weasley-podex.uiTheme';
+        var legacyKey = 'jaw.uiTheme';
+        if (!localStorage.getItem(key)) {
+          var migrated = localStorage.getItem(legacyKey) || localStorage.getItem('theme');
+          if (migrated) localStorage.setItem(key, migrated);
         }
+        localStorage.removeItem(legacyKey);
+        localStorage.removeItem('theme');
         var q = new URLSearchParams(location.search).get('jawTheme');
-        var raw = (q === 'dark' || q === 'light') ? q : localStorage.getItem('jaw.uiTheme');
+        var raw = (q === 'dark' || q === 'light') ? q : localStorage.getItem(key);
         var t = (raw === 'dark' || raw === 'light') ? raw :
           (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         document.documentElement.setAttribute('data-theme', t);
@@ -21,10 +25,10 @@
     <meta name="theme-color" content="#22d3ee">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦈</text></svg>">
+    <link rel="icon" type="image/png" href="/assets/weasley-podex-mark.png">
     <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/icons/icon-192.png">
-    <title>podex</title>
+    <link rel="apple-touch-icon" href="/assets/weasley-podex-mark.png">
+    <title>Weasley Podex</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -58,7 +62,7 @@
     <!-- Left Sidebar -->
     <nav class="sidebar-left" role="navigation" aria-label="Main navigation">
         <button class="sidebar-toggle" id="toggleLeft" title="Collapse" aria-label="Collapse sidebar">◀</button>
-        <div class="logo">podex</div>
+        <div class="logo"><img class="logo-mark" src="/assets/weasley-podex-mark.png" alt=""><span>Weasley Podex</span></div>
         <span id="orcStateBadge" class="orc-state-badge" style="display:none"></span>
 
         <div>
@@ -120,7 +124,7 @@
         <div class="sidebar-bottom">
             <div class="section-title" data-i18n="sidebar.agentName">에이전트 이름</div>
             <div class="flex gap-1 items-center">
-                <input type="text" id="appNameInput" value="podex"
+                <input type="text" id="appNameInput" value="Weasley Podex"
                     class="input-agent-name">
                 <button class="sidebar-hb-btn btn-action-sm w-auto" id="appNameSave">✓</button>
             </div>
@@ -128,7 +132,7 @@
             <div class="section-title" style="margin-top:12px" data-i18n="sidebar.avatar">아바타</div>
             <div class="avatar-row">
                 <div class="avatar-card">
-                    <div class="avatar-preview agent-icon" id="agentAvatarPreview" data-icon="shark" aria-hidden="true"></div>
+                    <div class="avatar-preview agent-icon" id="agentAvatarPreview" data-icon="robot" aria-hidden="true"></div>
                     <span class="avatar-card-label">Agent</span>
                     <div class="avatar-card-actions">
                         <button class="avatar-action-btn" id="agentAvatarUploadBtn" title="Upload image">
@@ -177,7 +181,7 @@
     <div class="chat-area">
         <div class="drag-overlay" id="dragOverlay" data-i18n="drag.drop"><span data-icon="paperclip"></span> 파일을 여기에 드랍하세요</div>
         <div class="chat-header">
-            <span>podex ● <span id="headerCli">claude</span><span id="headerProject" class="header-project" hidden></span><span id="headerGitStatus" class="header-git-status" hidden></span></span>
+            <span>Weasley Podex ● <span id="headerCli">claude</span><span id="headerProject" class="header-project" hidden></span><span id="headerGitStatus" class="header-git-status" hidden></span></span>
             <div class="chat-header-actions">
                 <div class="chat-search" id="chatSearch" role="search" aria-label="Search messages">
                     <div class="chat-search-input-wrap">
@@ -198,7 +202,7 @@
             </div>
         </div>
         <div class="pabc-roadmap" id="pabcRoadmap">
-            <div class="shark-runner" id="sharkRunner"></div>
+            <div class="phase-runner" id="phaseRunner" aria-hidden="true"></div>
             <div class="pabc-dot future" data-phase="I" id="dot-I">I</div>
             <div class="pabc-connector" id="pabc-conn-0"></div>
             <div class="pabc-dot future" data-phase="P" id="dot-P">P</div>
@@ -228,8 +232,8 @@
         </div>
         <div class="chat-messages" id="chatMessages"></div>
         <div class="empty-state" id="emptyState">
-            <div class="empty-icon">podex</div>
-            <div class="empty-title">podex</div>
+            <div class="empty-icon"><img src="/assets/weasley-podex-mark.png" alt=""></div>
+            <div class="empty-title">Weasley Podex</div>
             <div class="empty-subtitle">메시지를 입력하세요</div>
         </div>
         <div class="typing-indicator" id="typingIndicator">
@@ -353,7 +357,7 @@
                     <button class="help-trigger" type="button" data-help-topic="session"
                         data-i18n-aria="help.session.aria" aria-label="세션 도움말">?</button>
                 </label>
-                <span id="inpCwd" class="cwd-display">~/.podex</span>
+                <span id="inpCwd" class="cwd-display">~/.weasley/podex</span>
             </div>
 
             <hr class="hr-divider">
@@ -1030,7 +1034,7 @@
                 </div>
                 <div class="settings-row">
                     <label>Custom Prompt</label>
-                    <span class="text-xs text-dim mono-path">~/.podex/prompts/flush-prompt.md</span>
+                    <span class="text-xs text-dim mono-path">~/.weasley/podex/prompts/flush-prompt.md</span>
                 </div>
                 <div
                     class="info-box">

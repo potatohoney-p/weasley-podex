@@ -122,7 +122,7 @@ export function AvatarCard({ kind, port }: Props) {
                     <img src={imageUrl} alt={`${label} current`} />
                 ) : (
                     <span className="settings-avatar-placeholder" aria-hidden="true">
-                        {kind === 'agent' ? '🦈' : '👤'}
+                        {kind === 'agent' ? 'WP' : '👤'}
                     </span>
                 )}
             </div>

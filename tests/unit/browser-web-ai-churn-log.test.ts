@@ -8,7 +8,7 @@ import {
     compactChurnLog,
     maybeRecordChurn,
 } from '../../src/browser/web-ai/churn-log.js';
-import { JAW_HOME } from '../../src/core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../src/core/config.js';
 
 function clearChurnLog(): void {
     const path = churnLogPath();
@@ -55,7 +55,7 @@ test('CL-004: compactChurnLog truncates to limit', () => {
             capturedAt: new Date().toISOString(),
         });
     }
-    const kept = compactChurnLog(JAW_HOME, 5);
+    const kept = compactChurnLog(WEASLEY_PODEX_HOME, 5);
     assert.equal(kept, 5);
     assert.equal(readChurnLog().length, 5);
 });

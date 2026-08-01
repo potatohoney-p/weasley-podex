@@ -1,4 +1,4 @@
-﻿// Mirrored from agbrowse adaptive-fetch v2; keep runtime behavior aligned while podex mirror remains experimental.
+// Mirrored from agbrowse adaptive-fetch v2; keep runtime behavior aligned while Weasley Podex mirror remains experimental.
 
 import { navigateInUserSession } from './browser-session.js';
 
@@ -75,13 +75,13 @@ function formatNonInteractiveMessage(challengeInfo: ChallengeInfoInput, url: str
     const type = challengeInfo.type || 'obstacle';
     switch (type) {
         case 'challenge':
-            return `WAF challenge detected at ${url}. To resolve: podex browser fetch "${url}" --browser-session interactive`;
+            return `WAF challenge detected at ${url}. To resolve: weasley-podex browser fetch "${url}" --browser-session interactive`;
         case 'auth_required':
-            return `Login required at ${url}. To resolve: podex browser fetch "${url}" --browser-session user (uses your logged-in Chrome session)`;
+            return `Login required at ${url}. To resolve: weasley-podex browser fetch "${url}" --browser-session user (uses your logged-in Chrome session)`;
         case 'paywall':
-            return `Paywall detected at ${url}. To resolve: podex browser fetch "${url}" --browser-session user (requires subscription in your browser)`;
+            return `Paywall detected at ${url}. To resolve: weasley-podex browser fetch "${url}" --browser-session user (requires subscription in your browser)`;
         default:
-            return `${type} detected at ${url}. To resolve: podex browser fetch "${url}" --browser-session interactive`;
+            return `${type} detected at ${url}. To resolve: weasley-podex browser fetch "${url}" --browser-session interactive`;
     }
 }
 

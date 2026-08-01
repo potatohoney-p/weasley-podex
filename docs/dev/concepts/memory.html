@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memory — podex Docs</title>
+<title>Memory — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -83,25 +82,25 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Memory</h1>
-<p class="lead">podex has a 3-tier memory system: structured file storage, episode-based conversation summaries, and semantic search with FTS5 indexing. Memory persists across sessions and is injected into the agent's system prompt.</p>
+<p class="lead">Weasley Podex has a 3-tier memory system: structured file storage, episode-based conversation summaries, and semantic search with FTS5 indexing. Memory persists across sessions and is injected into the agent's system prompt.</p>
 
 <h2>Three Tiers</h2>
 <table>
 <tr><th>Tier</th><th>Purpose</th><th>Storage</th></tr>
-<tr><td><strong>Structured</strong></td><td>Profile, preferences, decisions, soul/identity</td><td><code>~/.podex/memory/structured/</code></td></tr>
-<tr><td><strong>Episodes</strong></td><td>Conversation summaries from memory flush</td><td><code>~/.podex/memory/structured/episodes/live/</code></td></tr>
-<tr><td><strong>Semantic</strong></td><td>Imported and categorized knowledge</td><td><code>~/.podex/memory/structured/semantic/</code></td></tr>
+<tr><td><strong>Structured</strong></td><td>Profile, preferences, decisions, soul/identity</td><td><code>~/.weasley/podex/memory/structured/</code></td></tr>
+<tr><td><strong>Episodes</strong></td><td>Conversation summaries from memory flush</td><td><code>~/.weasley/podex/memory/structured/episodes/live/</code></td></tr>
+<tr><td><strong>Semantic</strong></td><td>Imported and categorized knowledge</td><td><code>~/.weasley/podex/memory/structured/semantic/</code></td></tr>
 </table>
 
 <h2>Memory Directory Structure</h2>
-<pre><code>~/.podex/memory/structured/
+<pre><code>~/.weasley/podex/memory/structured/
 ├── profile.md          # User profile and preferences
 ├── shared/
 │   ├── preferences.md  # Reflected preferences
@@ -136,28 +135,28 @@ Prefers ES Module only, no CommonJS.</code></pre>
 
 <h2>CLI Commands</h2>
 <pre><code># Search memory
-jaw memory search "JWT authentication"
+weasley-podex memory search "JWT authentication"
 
 # Read a memory file
-jaw memory read shared/decisions.md
+weasley-podex memory read shared/decisions.md
 
 # Save to memory
-jaw memory save shared/notes.md "New note content"
+weasley-podex memory save shared/notes.md "New note content"
 
 # List memory files
-jaw memory list
+weasley-podex memory list
 
 # Initialize memory
-jaw memory init
+weasley-podex memory init
 
 # Reflect recent episodes into structured memory
-jaw memory reflect
+weasley-podex memory reflect
 
 # Trigger memory flush
-jaw memory flush
+weasley-podex memory flush
 
 # Cleanup old entries
-jaw memory cleanup --days 30</code></pre>
+weasley-podex memory cleanup --days 30</code></pre>
 
 <h2>Slash Commands</h2>
 <table>
@@ -175,16 +174,16 @@ jaw memory cleanup --days 30</code></pre>
 <h2>L1 / L2 Memory Boundary</h2>
 <table>
 <tr><th>Layer</th><th>Command</th><th>Scope</th><th>Access</th></tr>
-<tr><td><strong>L1 (Instance-local)</strong></td><td><code>jaw memory</code></td><td>Current <code>JAW_HOME</code></td><td>Read/Write</td></tr>
-<tr><td><strong>L2 (Dashboard federation)</strong></td><td><code>jaw dashboard memory</code></td><td>All <code>~/.podex*</code> instances</td><td>Read-only</td></tr>
+<tr><td><strong>L1 (Instance-local)</strong></td><td><code>weasley-podex memory</code></td><td>Current <code>WEASLEY_PODEX_HOME</code></td><td>Read/Write</td></tr>
+<tr><td><strong>L2 (Dashboard federation)</strong></td><td><code>weasley-podex dashboard memory</code></td><td>All <code>~/.weasley/podex*</code> instances</td><td>Read-only</td></tr>
 </table>
-<div class="callout callout-info">Use L1 (<code>jaw memory</code>) for normal operations. L2 (<code>jaw dashboard memory</code>) is for explicit cross-instance searches when you need context from other instances.</div>
+<div class="callout callout-info">Use L1 (<code>weasley-podex memory</code>) for normal operations. L2 (<code>weasley-podex dashboard memory</code>) is for explicit cross-instance searches when you need context from other instances.</div>
 
 <h2>Dashboard Embedding (Optional)</h2>
 <p>The dashboard supports optional vector embedding on top of FTS5 search. This is an add-on layer that is <strong>off by default</strong>. Supported providers: OpenAI, Gemini, Voyage, Vertex, Local (Ollama).</p>
 <pre><code># Configure via dashboard settings or CLI:
-jaw dashboard memory config set --provider openai --api-key sk-...
-jaw dashboard memory reindex --embedding</code></pre>
+weasley-podex dashboard memory config set --provider openai --api-key sk-...
+weasley-podex dashboard memory reindex --embedding</code></pre>
 
 <h2>Memory Settings</h2>
 <pre><code>{

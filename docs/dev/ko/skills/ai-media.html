@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Media Skills — podex Docs</title>
+<title>AI Media Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,14 +81,14 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>AI Media Skills</h1>
-<p class="lead">podex에는 이미지, 영상, 오디오, 디자인 에셋을 생성하고 편집하고 처리하는 13개의 스킬이 내장되어 있습니다. 이 스킬들은 DALL-E, Sora, fal.ai, Hugging Face 등 외부 AI 서비스를 자연어 명령으로 감싸서 터미널을 벗어나지 않고도 미디어를 제작할 수 있게 해줍니다.</p>
+<p class="lead">이미지, 영상, 오디오, 디자인 워크플로를 위한 선택적 미디어 확장 예시입니다. 이 페이지의 13개 항목은 번들되지 않으며, 신뢰할 수 있는 스킬을 가져오기 전에 제공자·패키지·자격 증명·데이터 정책을 검토해야 합니다.</p>
 
 <h2>스킬 카탈로그</h2>
 <table>
@@ -194,7 +193,7 @@
 </div>
 
 <pre><code># 텍스트 음성 합성
-/speech "Welcome to podex. Your daily briefing is ready." --voice alloy
+/speech "Welcome to Weasley Podex. Your daily briefing is ready." --voice alloy
 
 # 커스텀 속도와 형식으로 음성 합성
 /speech --voice nova --speed 1.2 --format mp3 "오늘의 할 일을 알려드리겠습니다."
@@ -318,13 +317,13 @@
 /imagegen "sunset over the ocean" && open ./output/latest.png</code></pre>
 
 <h2>설정</h2>
-<p>API 키와 기본값은 <code>~/.podex/config.yaml</code> 또는 환경 변수를 통해 설정합니다:</p>
+<p>API 키와 기본값은 <code>~/.weasley/podex/config.yaml</code> 또는 환경 변수를 통해 설정합니다:</p>
 <pre><code># config.yaml
 skills:
   imagegen:
     default_model: gpt-image-1
     default_quality: hd
-    output_dir: ~/Pictures/podex
+    output_dir: ~/Pictures/weasley-podex
   sora:
     default_duration: 5s
     default_resolution: 1080p

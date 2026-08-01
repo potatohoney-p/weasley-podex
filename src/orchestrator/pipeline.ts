@@ -1,4 +1,4 @@
-﻿// ─── PABCD Orchestration ────────────────────────────
+// ─── PABCD Orchestration ────────────────────────────
 // Old round-loop pipeline fully removed.
 // PABCD state machine is the sole orchestration system.
 
@@ -190,7 +190,7 @@ export function buildApprovedPlanPromptBlock(
         '## Plan consistency guard',
         '- Treat the Approved Plan as the source of truth.',
         '- Resolve all repository-relative paths against Project root.',
-        '- Do not infer repository paths from ~/.podex*, JAW_HOME, process.cwd(), or employee temp cwd.',
+        '- Do not infer repository paths from ~/.weasley/podex*, legacy ~/.podex*, WEASLEY_PODEX_HOME, process.cwd(), or employee temp cwd.',
         '- Do not invent or change numeric targets, paths, resource IDs, dates, limits, or destructive operation parameters.',
         '- If your intended action conflicts with the Approved Plan, STOP and ask the user to confirm.',
         '---',
@@ -414,7 +414,7 @@ export async function orchestrate(
     }
 
     // spawn/resume agent
-    console.log(`[jaw:pabcd] state=${state}, spawning/resuming agent`);
+    console.log(`[weasley-podex:pabcd] state=${state}, spawning/resuming agent`);
     // #prompt-cache: snapshot lifecycle is owned by spawn.ts (frozen per resume
     // chain). Building one here per call regenerated it every turn and broke
     // the byte-stable system prompt — do not reintroduce a memorySnapshot pass.
@@ -458,12 +458,12 @@ export async function orchestrate(
     }
 
     // Phase 60: no-state narration detector. If the agent ASSERTS a current PABCD phase in prose
-    // while the real orchestrator state is IDLE (i.e. it never ran `podex orchestrate`), append
+    // while the real orchestrator state is IDLE (i.e. it never ran `weasley-podex orchestrate`), append
     // a one-time correction. Detect + warn only — never blocks, never mutates the message body.
     if (state === 'IDLE' && !meta["_workerResult"]) {
         const narrated = result["text"] as string || '';
         if (detectNoStateNarration(narrated)) {
-            result["text"] = `${narrated}\n\n> ⚠️ [pabcd] You referred to a PABCD phase, but the orchestrator is IDLE — no phase is active. Phases are real state, not narration: run \`podex orchestrate P\` (or \`I\`) to actually enter the state machine.`;
+            result["text"] = `${narrated}\n\n> ⚠️ [pabcd] You referred to a PABCD phase, but the orchestrator is IDLE — no phase is active. Phases are real state, not narration: run \`weasley-podex orchestrate P\` (or \`I\`) to actually enter the state machine.`;
         }
     }
 
@@ -628,7 +628,7 @@ export async function orchestrateContinue(
 
     // Active PABCD → resume from current state
     if (state !== 'IDLE') {
-        console.log(`[jaw:pabcd] continue in state=${state}`);
+        console.log(`[weasley-podex:pabcd] continue in state=${state}`);
         return orchestrate('Please continue from where you left off.', {
             ...meta,
             _skipClear: true,
@@ -669,7 +669,7 @@ export async function orchestrateReset(
         const { drainPending } = await import('../memory/heartbeat.js');
         await drainPending();
     } catch (err) {
-        console.warn('[jaw:pabcd] heartbeat drain after reset failed:', (err as Error).message);
+        console.warn('[weasley-podex:pabcd] heartbeat drain after reset failed:', (err as Error).message);
     }
     const latest = readLatestWorklog();
     if (!latest) {

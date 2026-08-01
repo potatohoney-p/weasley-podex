@@ -1,4 +1,4 @@
-﻿export interface BatchDispatchResultSummary {
+export interface BatchDispatchResultSummary {
     agent: string;
     ok: boolean;
     runId?: string;
@@ -33,7 +33,7 @@ export function printBatchDispatchSummary(results: BatchDispatchResultSummary[])
         if (preview) console.log(`  ${result.ok ? 'preview' : 'error'}: ${preview}`);
         const bytes = byteLabel(result.outputBytes);
         if (bytes) console.log(`  outputBytes: ${bytes}`);
-        const recovery = result.recoveryCommand || (result.runId ? `podex worker read ${result.runId} --tail 120` : '');
+        const recovery = result.recoveryCommand || (result.runId ? `weasley-podex worker read ${result.runId} --tail 120` : '');
         if (recovery) console.log(`  output: ${recovery}`);
         if (!result.ok) exitCode = 1;
     }

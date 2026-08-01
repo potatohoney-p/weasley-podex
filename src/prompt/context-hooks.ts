@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 import { log } from '../core/logger.js';
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 
 export type ContextHookScope = 'main' | 'heartbeat';
 
@@ -81,7 +82,7 @@ function boundedInt(value: unknown, fallback: number, hardMax: number): number {
 }
 
 function hooksEnabled(env: NodeJS.ProcessEnv): boolean {
-    const value = env['podex_PRE_PROMPT_HOOKS'];
+    const value = getWeasleyPodexEnv('PRE_PROMPT_HOOKS', env);
     return value !== '0' && value?.toLowerCase() !== 'false' && value?.toLowerCase() !== 'off';
 }
 
@@ -151,7 +152,7 @@ export function buildPrePromptContextHook(
     options: ContextHookOptions = {},
 ): ContextHookResult {
     const startedAt = performance.now();
-    const jawHome = options.jawHome || JAW_HOME;
+    const jawHome = options.jawHome || WEASLEY_PODEX_HOME;
     const configPath = options.configPath || path.join(jawHome, 'context-hooks.json');
     const env = options.env || process.env;
     const scoped = turnScope(input.currentPrompt || '');
@@ -223,7 +224,7 @@ export function buildPrePromptContextHook(
             continue;
         }
         if (!resolved) {
-            reports.push({ id, status: 'invalid', detail: 'path escapes podex_HOME' });
+            reports.push({ id, status: 'invalid', detail: 'path escapes WEASLEY_PODEX_HOME' });
             continue;
         }
         if (!fs.existsSync(resolved)) {
@@ -282,7 +283,7 @@ export function buildPrePromptContextHook(
     if (options.log !== false) {
         const included = reports.filter(item => item.status === 'included').length;
         const skipped = reports.length - included;
-        log.info(`[jaw:hook:pre-prompt] scope=${scoped.scope}${scoped.job ? ` job=${scoped.job}` : ''} sources=${included}/${reports.length} chars=${block.length} skipped=${skipped} durationMs=${report.durationMs.toFixed(1)}`);
+        log.info(`[weasley-podex:hook:pre-prompt] scope=${scoped.scope}${scoped.job ? ` job=${scoped.job}` : ''} sources=${included}/${reports.length} chars=${block.length} skipped=${skipped} durationMs=${report.durationMs.toFixed(1)}`);
     }
     return { block, report };
 }

@@ -141,7 +141,7 @@ describe('PABCD state-machine', () => {
     test('29. D prompt re-enters P for next work-phase when a goal is active', () => {
         const d = getStatePrompt('D');
         assert.ok(d.includes('a goal is active'), 'D missing goal-active branch');
-        assert.ok(d.includes('podex orchestrate P'), 'D must point next work-phase to orchestrate P');
+        assert.ok(d.includes('weasley-podex orchestrate P'), 'D must point next work-phase to orchestrate P');
         assert.ok(d.includes('D → IDLE → P'), 'D must state the legal re-entry path D → IDLE → P');
         assert.ok(d.includes('Do not declare the whole goal done yet'), 'D must not declare whole goal done after one cycle');
     });

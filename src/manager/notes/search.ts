@@ -5,6 +5,7 @@ import { homedir } from 'node:os';
 import { isAbsolute, join, posix, relative, resolve, sep } from 'node:path';
 import { hasReservedNoteSegment, NOTES_RESERVED_DIRS } from './constants.js';
 import { isPathInside, NOTE_FILE_EXT, notePathError } from './path-guards.js';
+import { getWeasleyPodexEnv } from '../../core/weasley-podex-env.js';
 
 export type NoteSearchResult = {
     path: string;
@@ -29,7 +30,6 @@ const MAX_LIMIT = 100;
 const MAX_COUNT_PER_FILE = 3;
 const DEFAULT_TIMEOUT_MS = 5000;
 const MAX_OUTPUT_BYTES = 2 * 1024 * 1024;
-const RIPGREP_ENV_PATH = 'podex_RIPGREP_PATH';
 const PROTECTED_SEARCH_DIR_GLOBS = [
     '.Trash',
     '.Trashes',
@@ -168,7 +168,7 @@ function findBundledRipgrep(): string | null {
 }
 
 export function resolveRipgrepCommand(): string {
-    const configured = process.env[RIPGREP_ENV_PATH]?.trim();
+    const configured = getWeasleyPodexEnv('RIPGREP_PATH')?.trim();
     if (configured) return configured;
     return findBundledRipgrep() || 'rg';
 }

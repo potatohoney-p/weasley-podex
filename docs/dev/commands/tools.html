@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tool Commands — podex Docs</title>
+<title>Tool Commands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -35,7 +34,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -84,14 +83,14 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Tool Commands</h1>
-<p class="lead">Tool commands manage podex's internal subsystems &mdash; skills, employees, MCP servers, memory, browser, orchestration, and project directories. These slash commands are available inside any podex session.</p>
+<p class="lead">Tool commands manage Weasley Podex's internal subsystems &mdash; skills, employees, MCP servers, memory, browser, orchestration, and project directories. These slash commands are available inside any Weasley Podex session.</p>
 
 <div class="callout callout-info">All tool commands start with <code>/</code> and can be triggered by natural language too. Korean "~해줘" patterns are mapped automatically &mdash; see the tip boxes below each command.</div>
 
@@ -148,7 +147,7 @@
 
 <!-- ───────────────────────────── /mcp ───────────────────────────── -->
 <h2 id="mcp">/mcp</h2>
-<p>Manage MCP (Model Context Protocol) servers. MCP servers extend podex's capabilities by providing additional tools, resources, and context. Sync discovers available servers; install adds new ones.</p>
+<p>Manage MCP (Model Context Protocol) servers. MCP servers extend Weasley Podex's capabilities by providing additional tools, resources, and context. Sync discovers available servers; install adds new ones.</p>
 
 <h3>Subcommands</h3>
 <table>
@@ -172,7 +171,7 @@
 
 <!-- ───────────────────────────── /memory ───────────────────────────── -->
 <h2 id="memory">/memory</h2>
-<p>Search podex's persistent memory system. Memory stores decisions, context, and facts across sessions. Use this command to recall previous context or verify what the system remembers.</p>
+<p>Search Weasley Podex's persistent memory system. Memory stores decisions, context, and facts across sessions. Use this command to recall previous context or verify what the system remembers.</p>
 
 <h3>Syntax</h3>
 <table>
@@ -206,12 +205,12 @@
 
 <!-- ───────────────────────────── /browser ───────────────────────────── -->
 <h2 id="browser">/browser</h2>
-<p>Control the headless Chrome browser instance managed by podex. Check browser health, list open tabs, and manage the browser session used for web automation and screenshots.</p>
+<p>Control the headless Chrome browser instance managed by Weasley Podex. Check browser health, list open tabs, and manage the browser session used for web automation and screenshots.</p>
 
 <h3>Subcommands</h3>
 <table>
 <tr><th>Subcommand</th><th>Args</th><th>Description</th></tr>
-<tr><td><code>/browser status</code></td><td>&mdash;</td><td>Show the current browser status: whether the podex browser server is running, the Chrome DevTools Protocol (CDP) connection state, viewport size, and active page URL.</td></tr>
+<tr><td><code>/browser status</code></td><td>&mdash;</td><td>Show the current browser status: whether the Weasley Podex browser server is running, the Chrome DevTools Protocol (CDP) connection state, viewport size, and active page URL.</td></tr>
 <tr><td><code>/browser tabs</code></td><td>&mdash;</td><td>List all open browser tabs with their titles, URLs, and active/inactive state. Useful for debugging multi-tab automation workflows.</td></tr>
 </table>
 
@@ -281,7 +280,7 @@
 
 <!-- ───────────────────────────── /project ───────────────────────────── -->
 <h2 id="project">/project</h2>
-<p>Manage project directories. podex tracks which directories are registered projects and uses this context for memory scoping, skill selection, and file operations. Switch between projects or register new ones.</p>
+<p>Manage project directories. Weasley Podex tracks which directories are registered projects and uses this context for memory scoping, skill selection, and file operations. Switch between projects or register new ones.</p>
 
 <h3>Subcommands</h3>
 <table>
@@ -305,7 +304,7 @@
 /project reset
 
 # Typical workflow: switch project before starting work
-/project set ~/Developer/podex
+/project set ~/Developer/weasley-podex
 "이 프로젝트의 TODO 보여줘"</code></pre>
 
 <h3>What Changes When You Set a Project</h3>
@@ -347,10 +346,10 @@
 </table>
 
 <h2>Natural Language Mapping</h2>
-<p>You do not need to memorize slash commands. podex maps natural Korean and English phrases to the appropriate tool command.</p>
+<p>You do not need to memorize slash commands. Weasley Podex maps natural Korean and English phrases to the appropriate tool command.</p>
 
 <table>
-<tr><th>You Say</th><th>podex Runs</th></tr>
+<tr><th>You Say</th><th>Weasley Podex Runs</th></tr>
 <tr><td>"메모리 검색해줘"</td><td><code>/memory</code></td></tr>
 <tr><td>"JWT 관련 메모리 찾아줘"</td><td><code>/memory JWT</code></td></tr>
 <tr><td>"PABCD 시작해줘"</td><td><code>/orchestrate P</code></td></tr>

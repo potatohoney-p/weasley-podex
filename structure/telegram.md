@@ -1,7 +1,7 @@
 ---
 created: 2026-03-28
-tags: [podex, telegram, messaging, heartbeat]
-aliases: [Telegram and Heartbeat, podex Telegram, messaging runtime]
+tags: [weasley-podex, telegram, messaging, heartbeat]
+aliases: [Telegram and Heartbeat, Weasley Podex Telegram, messaging runtime]
 ---
 
 > 📚 [INDEX](INDEX.md) · [에이전트 실행 ↗](agent_spawn.md) · [인프라 ↗](infra.md) · **텔레그램 & 하트비트**
@@ -43,7 +43,7 @@ aliases: [Telegram and Heartbeat, podex Telegram, messaging runtime]
 - `extractLocalImagePaths(markdown)`는 remark AST의 실제 image node만 문서 순서대로 읽는다. code fence 안의 image 문법은 대상이 아니다.
 - 절대 로컬 PNG/JPG/JPEG/GIF/WebP만 받고 HTTP(S), data, protocol-relative, relative, `/media/`, `/api/`, SVG/비디오 경로는 제외한다.
 - 동일 경로를 중복 제거한 뒤 최대 4개까지 반환한다.
-- 이 helper는 Markdown 후보 추출만 소유한다. `relayTelegramImages()`와 `relayDiscordImages()`가 각 후보를 `assertSendFilePath()`로 canonicalize해 JAW_HOME/workingDir/projectDirs 밖 경로를 경고 후 건너뛰고, 통과한 파일만 기존 채널 file-send transport로 전달한다.
+- 이 helper는 Markdown 후보 추출만 소유한다. `relayTelegramImages()`와 `relayDiscordImages()`가 각 후보를 `assertSendFilePath()`로 canonicalize해 WEASLEY_PODEX_HOME/workingDir/projectDirs 밖 경로를 경고 후 건너뛰고, 통과한 파일만 기존 채널 file-send transport로 전달한다.
 
 ### Remote channel structured elicitation guard
 
@@ -370,7 +370,7 @@ Mounted at `/api/dashboard/telegram-hub` (`loopbackOnly` middleware).
 
 ### 작업 스케줄
 
-- 설정: `~/.podex/heartbeat.json`
+- 설정: `~/.weasley/podex/heartbeat.json`
 - 각 작업: `id`, `name`, `enabled`, `schedule`, `prompt`
 - `schedule`은 `{ kind: 'every', minutes }` 또는 `{ kind: 'cron', cron, timeZone? }`
 - busy guard: 이전 작업 실행 중이면 버리지 않고 `pendingJobs` 큐에 넣는다

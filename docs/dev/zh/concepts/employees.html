@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Employee 系统 — podex 文档</title>
+<title>Employee 系统 — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,22 +58,22 @@
     <a class="active" href="../">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Employee 系统</h1>
-<p class="lead">Boss 代理将任务分派给 CLI employee -- 即其他并行执行工作的 AI 运行时。podex 支持 12 种运行时，并管理 employee 会话、隔离和结果收集。</p>
+<p class="lead">Boss 代理将任务分派给 CLI employee -- 即其他并行执行工作的 AI 运行时。Weasley Podex 支持 12 种运行时，并管理 employee 会话、隔离和结果收集。</p>
 
 <h2>工作原理</h2>
-<p>你的主代理（即 "boss"）可以使用 <code>jaw dispatch</code> 命令将特定任务委派给 employee 代理。每个 employee 在独立的临时工作目录中运行，并注入上下文文件。</p>
-<pre><code>jaw dispatch --agent "Frontend" --task "Implement the login page"</code></pre>
-<p>Boss 提示词包含委派规则，引导代理使用 <code>podex dispatch</code> 来执行 employee 工作，同时允许 CLI 原生子代理（Task/Agent 工具）用于内部并行化。</p>
+<p>你的主代理（即 "boss"）可以使用 <code>weasley-podex dispatch</code> 命令将特定任务委派给 employee 代理。每个 employee 在独立的临时工作目录中运行，并注入上下文文件。</p>
+<pre><code>weasley-podex dispatch --agent "Frontend" --task "Implement the login page"</code></pre>
+<p>Boss 提示词包含委派规则，引导代理使用 <code>weasley-podex dispatch</code> 来执行 employee 工作，同时允许 CLI 原生子代理（Task/Agent 工具）用于内部并行化。</p>
 
 <h2>12 种 CLI 运行时</h2>
-<p>podex 的注册表（<code>src/cli/registry.ts</code>）定义了 12 种顶级运行时。每个 employee 可以分配任意运行时。</p>
+<p>Weasley Podex 的注册表（<code>src/cli/registry.ts</code>）定义了 12 种顶级运行时。每个 employee 可以分配任意运行时。</p>
 <table>
 <tr><th>运行时</th><th>二进制文件</th><th>默认模型</th><th>默认 Effort</th></tr>
 <tr><td>agy</td><td><code>agy</code></td><td>gemini-3.5-flash</td><td>-</td></tr>
@@ -93,7 +92,7 @@
 <h2>Employee 与子代理的区别</h2>
 <div class="callout callout-warn">Employee 和 CLI 子代理用途不同，请勿混淆。</div>
 <table>
-<tr><th></th><th>Employee (jaw dispatch)</th><th>CLI 子代理 (Task/Agent 工具)</th></tr>
+<tr><th></th><th>Employee (weasley-podex dispatch)</th><th>CLI 子代理 (Task/Agent 工具)</th></tr>
 <tr><td><strong>范围</strong></td><td>跨 CLI 委派</td><td>同一 CLI 内部的并行化</td></tr>
 <tr><td><strong>隔离性</strong></td><td>独立的临时目录，注入 AGENTS.md</td><td>同一进程/会话</td></tr>
 <tr><td><strong>认证</strong></td><td>需要 Boss token（employee 不能再次分派）</td><td>无需额外认证</td></tr>
@@ -102,11 +101,11 @@
 
 <h2>Dispatch 命令</h2>
 <pre><code># From the boss prompt:
-podex dispatch --agent "Backend" --task "Add rate limiting to /api/upload"
+weasley-podex dispatch --agent "Backend" --task "Add rate limiting to /api/upload"
 
 # From the CLI:
-jaw dispatch --agent "Frontend" --task "Fix responsive layout" --port 3457</code></pre>
-<p>Dispatch 端点（<code>POST /api/orchestrate/dispatch</code>）需要 boss 范围的 <code>x-jaw-boss-token</code>。该 token 会从 employee 启动环境中移除，防止 employee 进一步分派。</p>
+weasley-podex dispatch --agent "Frontend" --task "Fix responsive layout" --port 3457</code></pre>
+<p>Dispatch 端点（<code>POST /api/orchestrate/dispatch</code>）需要 boss 范围的 <code>x-weasley-podex-boss-token</code>。该 token 会从 employee 启动环境中移除，防止 employee 进一步分派。</p>
 
 <h2>Employee 提示词</h2>
 <p>Employee 提示词由 <code>getEmployeePromptV2()</code> 构建，包含以下内容：</p>
@@ -122,17 +121,17 @@ jaw dispatch --agent "Frontend" --task "Fix responsive layout" --port 3457</code
 
 <h2>管理 Employee</h2>
 <pre><code># List employees
-jaw employee help
+weasley-podex employee help
 
 # Reset to defaults
-jaw employee reset
+weasley-podex employee reset
 
 # Via slash command
 /employee reset</code></pre>
 <p>Web UI 在侧边栏设置面板中提供完整的 Employee CRUD 功能。你可以设置每个 employee 的名称、CLI 运行时、模型和角色。</p>
 
 <h2>默认 Employee</h2>
-<p>首次运行时，podex 会预设一组默认 employee（Frontend、Backend、Documentation 等）。<code>/employee reset</code> 命令可重新恢复这些默认设置。</p>
+<p>首次运行时，Weasley Podex 会预设一组默认 employee（Frontend、Backend、Documentation 等）。<code>/employee reset</code> 命令可重新恢复这些默认设置。</p>
 
 <div class="page-nav">
 <a class="prev" href="architecture.html">Architecture</a>

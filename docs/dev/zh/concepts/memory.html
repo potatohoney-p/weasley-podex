@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>记忆系统 — podex 文档</title>
+<title>记忆系统 — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,25 +58,25 @@
     <a class="active" href="../">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>记忆系统</h1>
-<p class="lead">podex 拥有三层记忆系统：结构化文件存储、基于片段的对话摘要，以及带有 FTS5 索引的语义搜索。记忆在会话间持久保存，并注入到智能体的系统提示中。</p>
+<p class="lead">Weasley Podex 拥有三层记忆系统：结构化文件存储、基于片段的对话摘要，以及带有 FTS5 索引的语义搜索。记忆在会话间持久保存，并注入到智能体的系统提示中。</p>
 
 <h2>三个层级</h2>
 <table>
 <tr><th>层级</th><th>用途</th><th>存储位置</th></tr>
-<tr><td><strong>结构化</strong></td><td>用户档案、偏好设置、决策记录、灵魂/身份</td><td><code>~/.podex/memory/structured/</code></td></tr>
-<tr><td><strong>片段</strong></td><td>记忆刷新产生的对话摘要</td><td><code>~/.podex/memory/structured/episodes/live/</code></td></tr>
-<tr><td><strong>语义</strong></td><td>导入并分类的知识</td><td><code>~/.podex/memory/structured/semantic/</code></td></tr>
+<tr><td><strong>结构化</strong></td><td>用户档案、偏好设置、决策记录、灵魂/身份</td><td><code>~/.weasley/podex/memory/structured/</code></td></tr>
+<tr><td><strong>片段</strong></td><td>记忆刷新产生的对话摘要</td><td><code>~/.weasley/podex/memory/structured/episodes/live/</code></td></tr>
+<tr><td><strong>语义</strong></td><td>导入并分类的知识</td><td><code>~/.weasley/podex/memory/structured/semantic/</code></td></tr>
 </table>
 
 <h2>记忆目录结构</h2>
-<pre><code>~/.podex/memory/structured/
+<pre><code>~/.weasley/podex/memory/structured/
 ├── profile.md          # User profile and preferences
 ├── shared/
 │   ├── preferences.md  # Reflected preferences
@@ -112,28 +111,28 @@ Prefers ES Module only, no CommonJS.</code></pre>
 
 <h2>CLI 命令</h2>
 <pre><code># Search memory
-jaw memory search "JWT authentication"
+weasley-podex memory search "JWT authentication"
 
 # Read a memory file
-jaw memory read shared/decisions.md
+weasley-podex memory read shared/decisions.md
 
 # Save to memory
-jaw memory save shared/notes.md "New note content"
+weasley-podex memory save shared/notes.md "New note content"
 
 # List memory files
-jaw memory list
+weasley-podex memory list
 
 # Initialize memory
-jaw memory init
+weasley-podex memory init
 
 # Reflect recent episodes into structured memory
-jaw memory reflect
+weasley-podex memory reflect
 
 # Trigger memory flush
-jaw memory flush
+weasley-podex memory flush
 
 # Cleanup old entries
-jaw memory cleanup --days 30</code></pre>
+weasley-podex memory cleanup --days 30</code></pre>
 
 <h2>斜杠命令</h2>
 <table>
@@ -151,16 +150,16 @@ jaw memory cleanup --days 30</code></pre>
 <h2>L1 / L2 记忆边界</h2>
 <table>
 <tr><th>层</th><th>命令</th><th>作用范围</th><th>访问权限</th></tr>
-<tr><td><strong>L1（实例本地）</strong></td><td><code>jaw memory</code></td><td>当前 <code>JAW_HOME</code></td><td>读/写</td></tr>
-<tr><td><strong>L2（仪表盘联合）</strong></td><td><code>jaw dashboard memory</code></td><td>所有 <code>~/.podex*</code> 实例</td><td>只读</td></tr>
+<tr><td><strong>L1（实例本地）</strong></td><td><code>weasley-podex memory</code></td><td>当前 <code>WEASLEY_PODEX_HOME</code></td><td>读/写</td></tr>
+<tr><td><strong>L2（仪表盘联合）</strong></td><td><code>weasley-podex dashboard memory</code></td><td>所有 <code>~/.weasley/podex*</code> 实例</td><td>只读</td></tr>
 </table>
-<div class="callout callout-info">日常操作请使用 L1（<code>jaw memory</code>）。L2（<code>jaw dashboard memory</code>）用于需要从其他实例获取上下文时的跨实例搜索。</div>
+<div class="callout callout-info">日常操作请使用 L1（<code>weasley-podex memory</code>）。L2（<code>weasley-podex dashboard memory</code>）用于需要从其他实例获取上下文时的跨实例搜索。</div>
 
 <h2>仪表盘嵌入（可选）</h2>
 <p>仪表盘支持在 FTS5 搜索之上添加可选的向量嵌入。这是一个附加层，<strong>默认关闭</strong>。支持的提供商：OpenAI、Gemini、Voyage、Vertex、Local (Ollama)。</p>
 <pre><code># Configure via dashboard settings or CLI:
-jaw dashboard memory config set --provider openai --api-key sk-...
-jaw dashboard memory reindex --embedding</code></pre>
+weasley-podex dashboard memory config set --provider openai --api-key sk-...
+weasley-podex dashboard memory reindex --embedding</code></pre>
 
 <h2>记忆设置</h2>
 <pre><code>{

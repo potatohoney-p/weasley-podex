@@ -1,11 +1,10 @@
-﻿#!/usr/bin/env node
+#!/usr/bin/env node
 const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 
 const EXPECTED_BIN = {
-  'podex': 'dist/bin/podex.js',
-  jaw: 'dist/bin/podex.js',
+  'weasley-podex': 'dist/bin/podex.js',
 };
 
 function fail(message) {
@@ -36,6 +35,10 @@ function readJson(filePath) {
 
 function assertPackageBin(repoRoot) {
   const actual = readJson(path.join(repoRoot, 'package.json')).bin || {};
+  const actualNames = Object.keys(actual);
+  if (actualNames.length !== 1 || actualNames[0] !== 'weasley-podex') {
+    fail(`package.json must expose only the weasley-podex bin, got: ${actualNames.join(', ') || 'none'}`);
+  }
   for (const [name, target] of Object.entries(EXPECTED_BIN)) {
     if (actual[name] !== target) {
       fail(`package.json bin.${name} must be ${target}, got ${actual[name] || 'missing'}`);
@@ -44,7 +47,7 @@ function assertPackageBin(repoRoot) {
 }
 
 function assertEntry(repoRoot, allowMissingDist) {
-  const entry = path.join(repoRoot, EXPECTED_BIN['podex']);
+  const entry = path.join(repoRoot, EXPECTED_BIN['weasley-podex']);
   if (!fs.existsSync(entry)) {
     if (allowMissingDist) return;
     fail(`CLI entry missing: ${entry}`);
@@ -71,8 +74,8 @@ function globalBinDir(prefix) {
 
 function globalPackageDir(prefix) {
   return process.platform === 'win32'
-    ? path.join(prefix, 'node_modules', 'podex')
-    : path.join(prefix, 'lib', 'node_modules', 'podex');
+    ? path.join(prefix, 'node_modules', 'weasley-podex')
+    : path.join(prefix, 'lib', 'node_modules', 'weasley-podex');
 }
 
 function sameRealPath(left, right) {

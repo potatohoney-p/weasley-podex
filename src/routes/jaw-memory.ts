@@ -7,7 +7,7 @@ import { getMemoryStatus, searchIndexedMemory, readIndexedMemorySnippet, reflect
 import { ensureAdvancedMemoryStructure, scanSystemProfile } from '../memory/bootstrap.js';
 import { reindexSingleFile } from '../memory/indexing.js';
 import { getMemory, searchMessagesByTimeWindow } from '../core/db.js';
-import { settings, getServerUrl, JAW_HOME } from '../core/config.js';
+import { settings, getServerUrl, WEASLEY_PODEX_HOME } from '../core/config.js';
 import { stripUndefined } from '../core/strip-undefined.js';
 import { broadcast } from '../core/bus.js';
 import { submitMessage } from '../orchestrator/gateway.js';
@@ -110,7 +110,7 @@ export function registerJawMemoryRoutes(app: Express, requireAuth: AuthMiddlewar
     app.get('/api/jaw-memory/context', (req, res) => {
         try {
             const file = assertMemoryRelPath(String(req.query["file"] || ''), { allowExt: ['.md', '.txt', '.json'] });
-            const memDir = getAdvancedMemoryDir() || join(JAW_HOME, 'memory');
+            const memDir = getAdvancedMemoryDir() || join(WEASLEY_PODEX_HOME, 'memory');
             const fullPath = join(memDir, file);
             if (!existsSync(fullPath)) {
                 res.status(404).json({ error: `memory file not found: ${file}` });
@@ -302,7 +302,7 @@ export function registerJawMemoryRoutes(app: Express, requireAuth: AuthMiddlewar
                 kvEntries,
                 lang,
                 serverUrl: getServerUrl(),
-                instanceHome: JAW_HOME,
+                instanceHome: WEASLEY_PODEX_HOME,
             });
 
             const result = submitMessage(prompt, {

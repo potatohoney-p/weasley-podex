@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tool Commands — podex Docs</title>
+<title>Tool Commands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,14 +81,14 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Tool Commands</h1>
-<p class="lead">工具命令用于管理 podex 的内部子系统 &mdash; 技能、员工、MCP 服务器、记忆、浏览器、编排和项目目录。这些斜杠命令可在任何 podex 会话中使用。</p>
+<p class="lead">工具命令用于管理 Weasley Podex 的内部子系统 &mdash; 技能、员工、MCP 服务器、记忆、浏览器、编排和项目目录。这些斜杠命令可在任何 Weasley Podex 会话中使用。</p>
 
 <div class="callout callout-info">所有工具命令都以 <code>/</code> 开头，也可以通过自然语言触发。韩语 "~해줘" 模式会自动映射 &mdash; 请参阅每个命令下方的提示框。</div>
 
@@ -146,7 +145,7 @@
 
 <!-- ───────────────────────────── /mcp ───────────────────────────── -->
 <h2 id="mcp">/mcp</h2>
-<p>管理 MCP（模型上下文协议）服务器。MCP 服务器通过提供额外的工具、资源和上下文来扩展 podex 的功能。同步操作会发现可用的服务器；安装操作会添加新的服务器。</p>
+<p>管理 MCP（模型上下文协议）服务器。MCP 服务器通过提供额外的工具、资源和上下文来扩展 Weasley Podex 的功能。同步操作会发现可用的服务器；安装操作会添加新的服务器。</p>
 
 <h3>子命令</h3>
 <table>
@@ -170,7 +169,7 @@
 
 <!-- ───────────────────────────── /memory ───────────────────────────── -->
 <h2 id="memory">/memory</h2>
-<p>搜索 podex 的持久化记忆系统。记忆系统跨会话存储决策、上下文和事实信息。使用此命令可以回忆之前的上下文或验证系统记住了什么。</p>
+<p>搜索 Weasley Podex 的持久化记忆系统。记忆系统跨会话存储决策、上下文和事实信息。使用此命令可以回忆之前的上下文或验证系统记住了什么。</p>
 
 <h3>语法</h3>
 <table>
@@ -204,12 +203,12 @@
 
 <!-- ───────────────────────────── /browser ───────────────────────────── -->
 <h2 id="browser">/browser</h2>
-<p>控制由 podex 管理的无头 Chrome 浏览器实例。检查浏览器健康状态，列出已打开的标签页，并管理用于网页自动化和截图的浏览器会话。</p>
+<p>控制由 Weasley Podex 管理的无头 Chrome 浏览器实例。检查浏览器健康状态，列出已打开的标签页，并管理用于网页自动化和截图的浏览器会话。</p>
 
 <h3>子命令</h3>
 <table>
 <tr><th>子命令</th><th>参数</th><th>描述</th></tr>
-<tr><td><code>/browser status</code></td><td>&mdash;</td><td>显示当前浏览器状态：podex 浏览器服务器是否正在运行、Chrome DevTools Protocol (CDP) 连接状态、视口大小和当前页面 URL。</td></tr>
+<tr><td><code>/browser status</code></td><td>&mdash;</td><td>显示当前浏览器状态：Weasley Podex 浏览器服务器是否正在运行、Chrome DevTools Protocol (CDP) 连接状态、视口大小和当前页面 URL。</td></tr>
 <tr><td><code>/browser tabs</code></td><td>&mdash;</td><td>列出所有已打开的浏览器标签页及其标题、URL 和活跃/非活跃状态。适用于调试多标签页自动化工作流。</td></tr>
 </table>
 
@@ -279,7 +278,7 @@
 
 <!-- ───────────────────────────── /project ───────────────────────────── -->
 <h2 id="project">/project</h2>
-<p>管理项目目录。podex 跟踪哪些目录已注册为项目，并将此上下文用于记忆范围划定、技能选择和文件操作。可以在项目之间切换或注册新项目。</p>
+<p>管理项目目录。Weasley Podex 跟踪哪些目录已注册为项目，并将此上下文用于记忆范围划定、技能选择和文件操作。可以在项目之间切换或注册新项目。</p>
 
 <h3>子命令</h3>
 <table>
@@ -303,7 +302,7 @@
 /project reset
 
 # Typical workflow: switch project before starting work
-/project set ~/Developer/podex
+/project set ~/Developer/weasley-podex
 "이 프로젝트의 TODO 보여줘"</code></pre>
 
 <h3>设置项目后的变化</h3>
@@ -345,10 +344,10 @@
 </table>
 
 <h2>自然语言映射</h2>
-<p>您不需要记住斜杠命令。podex 会将自然韩语和英语短语映射到相应的工具命令。</p>
+<p>您不需要记住斜杠命令。Weasley Podex 会将自然韩语和英语短语映射到相应的工具命令。</p>
 
 <table>
-<tr><th>您说的话</th><th>podex 执行的命令</th></tr>
+<tr><th>您说的话</th><th>Weasley Podex 执行的命令</th></tr>
 <tr><td>"메모리 검색해줘"</td><td><code>/memory</code></td></tr>
 <tr><td>"JWT 관련 메모리 찾아줘"</td><td><code>/memory JWT</code></td></tr>
 <tr><td>"PABCD 시작해줘"</td><td><code>/orchestrate P</code></td></tr>

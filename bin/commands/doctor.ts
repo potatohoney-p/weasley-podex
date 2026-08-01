@@ -1,5 +1,6 @@
-﻿/**
- * podex doctor — Phase 9.4
+import { getWeasleyPodexEnv } from '../../src/core/weasley-podex-env.js';
+/**
+ * weasley-podex doctor — Phase 9.4
  * Diagnoses installation and configuration health.
  */
 import { parseArgs } from 'node:util';
@@ -7,7 +8,7 @@ import { execFileSync, execSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { JAW_HOME, SETTINGS_PATH, DB_PATH, HEARTBEAT_JOBS_PATH, detectCli } from '../../src/core/config.js';
+import { WEASLEY_PODEX_HOME, SETTINGS_PATH, DB_PATH, HEARTBEAT_JOBS_PATH, detectCli } from '../../src/core/config.js';
 import { detectSharedPathContamination } from '../../lib/mcp-sync.js';
 import { isDiscoverableSkillDirName } from '../../lib/mcp/skills-utils.js';
 import { classifyClaudeInstall } from '../../src/core/claude-install.js';
@@ -17,9 +18,9 @@ import { shouldShowHelp, printAndExit } from '../helpers/help.js';
 import { asArray, asRecord } from '../_http-client.js';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw doctor — diagnose installation and configuration
+  weasley-podex doctor — diagnose installation and configuration
 
-  Usage: jaw doctor [--json]
+  Usage: weasley-podex doctor [--json]
 
   Checks:
     - Node.js version and path
@@ -141,8 +142,8 @@ function verifyOfficeCli(): { status: 'ok' | 'info' | 'warn'; detail: string } {
     const candidate = candidates.find((entry) => fs.existsSync(entry));
     if (!candidate || !fs.existsSync(candidate)) {
         const installHint = process.platform === 'win32'
-            ? 'powershell -ExecutionPolicy Bypass -File "$(npm root -g)\\podex\\scripts\\install-officecli.ps1" -Update'
-            : 'bash "$(npm root -g)/podex/scripts/install-officecli.sh"';
+            ? 'powershell -ExecutionPolicy Bypass -File "$(npm root -g)\\weasley-podex\\scripts\\install-officecli.ps1" -Update'
+            : 'bash "$(npm root -g)/weasley-podex/scripts/install-officecli.sh"';
         return { status: 'info', detail: `not installed (optional — install on-demand: ${installHint})` };
     }
     try {
@@ -248,15 +249,15 @@ function check(name: string, fn: () => string) {
     }
 }
 
-console.log(!values.json ? '\n  🦈 podex doctor\n' : '');
+console.log(!values.json ? '\n  Weasley Podex doctor\n' : '');
 
 // 1. Home directory
 check('Home directory', () => {
-    if (!fs.existsSync(JAW_HOME)) {
-        fs.mkdirSync(JAW_HOME, { recursive: true });
+    if (!fs.existsSync(WEASLEY_PODEX_HOME)) {
+        fs.mkdirSync(WEASLEY_PODEX_HOME, { recursive: true });
     }
-    fs.accessSync(JAW_HOME, fs.constants.W_OK);
-    return JAW_HOME;
+    fs.accessSync(WEASLEY_PODEX_HOME, fs.constants.W_OK);
+    return WEASLEY_PODEX_HOME;
 });
 
 // 2. settings.json
@@ -265,13 +266,13 @@ function loadedSettings(): DoctorSettings {
     return (settings as DoctorSettings | null) || {};
 }
 check('settings.json', () => {
-    if (!fs.existsSync(SETTINGS_PATH)) throw new Error('WARN: not found — run podex init');
+    if (!fs.existsSync(SETTINGS_PATH)) throw new Error('WARN: not found — run weasley-podex init');
     settings = JSON.parse(fs.readFileSync(SETTINGS_PATH, 'utf8')) as DoctorSettings;
     return `cli=${settings?.cli || 'not set'}`;
 });
 
 // 3. Database
-check('jaw.db', () => {
+check('weasley-podex.db', () => {
     if (!fs.existsSync(DB_PATH)) throw new Error('WARN: not found — will be created on first serve');
     const stat = fs.statSync(DB_PATH);
     return `${(stat.size / 1024).toFixed(0)} KB`;
@@ -361,16 +362,15 @@ check('Channel consistency', () => {
 
 // 7. Skills directory
 check('Skills directory', () => {
-    const skillsDir = settings?.skillsDir || path.join(JAW_HOME, 'skills');
+    const skillsDir = settings?.skillsDir || path.join(WEASLEY_PODEX_HOME, 'skills');
     if (!fs.existsSync(skillsDir)) throw new Error('WARN: not found');
     const entries = fs.readdirSync(skillsDir, { withFileTypes: true })
         .filter(d => d.isDirectory() && isDiscoverableSkillDirName(d.name));
     if (entries.length === 0) {
-        const refDir = path.join(JAW_HOME, 'skills_ref').replace(/\\/g, '/');
         throw new Error(
             'WARN: skills directory is empty — agents will not work correctly\n'
-            + `     Run: git clone --depth 1 https://github.com/potatohoney-p/podex-skills.git "${refDir}"\n`
-            + '     Then: jaw skill reset'
+            + '     Run: weasley-podex skill reset\n'
+            + '     Bundled core skills work offline; WEASLEY_PODEX_SKILLS_REPO is an optional override.'
         );
     }
     const required = ['dev', 'diagram'];
@@ -378,7 +378,7 @@ check('Skills directory', () => {
     if (missing.length > 0) {
         throw new Error(
             `WARN: missing required skills: ${missing.join(', ')}\n`
-            + '     Run: jaw skill reset'
+            + '     Run: weasley-podex skill reset'
         );
     }
     return `${skillsDir} (${entries.length} active)`;
@@ -407,7 +407,7 @@ check('Shared path isolation', () => {
             }
             return `repaired (${repaired} symlink${repaired !== 1 ? 's' : ''} removed)`;
         }
-        throw new Error(`WARN: ${report.summary}\n     Run: jaw doctor --repair-shared-paths`);
+        throw new Error(`WARN: ${report.summary}\n     Run: weasley-podex doctor --repair-shared-paths`);
     }
     throw new Error(`WARN: ${report.summary}`);
 });
@@ -476,7 +476,8 @@ if (isWSL()) {
 
     check('CLI tools (WSL-native)', () => {
         const windowsTools: string[] = [];
-        for (const name of ['claude', 'codex', 'gemini', 'copilot', 'opencode', 'jaw']) {
+        // Keep `jaw` as a legacy contamination probe while `weasley-podex` is the public CLI.
+        for (const name of ['claude', 'codex', 'gemini', 'copilot', 'opencode', 'weasley-podex', 'jaw']) {
             const detected = detectCli(name);
             if (detected.path?.startsWith('/mnt/')) {
                 windowsTools.push(`${name} → ${detected.path}`);
@@ -599,7 +600,7 @@ async function runTccDiagnostics(_opts: { fix: boolean; prime: boolean }) {
 
     check('TCC AppleEvents grants', () => {
         const grants = readTccAppleEventsGrants();
-        if (grants.length === 0) return 'empty (run jaw serve from Terminal to trigger prompts)';
+        if (grants.length === 0) return 'empty (run weasley-podex serve from Terminal to trigger prompts)';
         const denied = grants.filter(g => g.authValue === 0);
         const allowed = grants.filter(g => g.authValue === 2);
         let detail = `allowed=${allowed.length}, denied=${denied.length}`;
@@ -623,7 +624,7 @@ async function runTccDiagnostics(_opts: { fix: boolean; prime: boolean }) {
 
     if (!values.json) {
         console.log('\n  ℹ️  Computer Use는 Terminal responsibility로 동작합니다.');
-        console.log('     Terminal에서 직접 `jaw serve` 실행 시 AppleEvents 권한이 상속됩니다.\n');
+        console.log('     Terminal에서 직접 `weasley-podex serve` 실행 시 AppleEvents 권한이 상속됩니다.\n');
     }
 }
 
@@ -671,7 +672,7 @@ if (!values.json) {
     const netCfg = loadedSettings().network || {};
     const bh = netCfg.bindHost || '127.0.0.1';
     const lb = netCfg.lanBypass === true;
-    const tokenEnv = !!process.env["JAW_AUTH_TOKEN"];
+    const tokenEnv = !!getWeasleyPodexEnv('AUTH_TOKEN');
     const isLoopback = bh === '127.0.0.1' || bh === '::1' || bh === 'localhost';
     const bindLabel = isLoopback ? '  (loopback only — LAN blocked)'
         : bh === '0.0.0.0' ? '  (all interfaces — LAN accessible)'
@@ -679,10 +680,10 @@ if (!values.json) {
     console.log('\n  Network');
     console.log(`    bindHost          : ${bh}${bindLabel}`);
     console.log(`    lanBypass         : ${lb}`);
-    console.log(`    JAW_AUTH_TOKEN env: ${tokenEnv ? 'persisted' : 'ephemeral (regenerated each start)'}`);
+    console.log(`    WEASLEY_PODEX_AUTH_TOKEN env: ${tokenEnv ? 'persisted' : 'ephemeral (regenerated each start)'}`);
     if (lb && isLoopback) {
         console.log(`    ⚠️  lanBypass is true but bindHost is ${bh} (loopback) — LAN devices cannot connect`);
-        console.log('      Fix: set network.bindHost to "0.0.0.0" in settings.json, or use: podex serve --lan');
+        console.log('      Fix: set network.bindHost to "0.0.0.0" in settings.json, or use: weasley-podex serve --lan');
     }
     if (bh === '0.0.0.0' && !lb) {
         console.log('    ℹ️  bindHost=0.0.0.0 without lanBypass: LAN clients need Bearer token');
@@ -715,7 +716,7 @@ if (values.json) {
     }
     const output: Record<string, unknown> = {
         checks: results,
-        network: { bindHost: bh, lanBypass: lb, authTokenPersisted: !!process.env["JAW_AUTH_TOKEN"], issues: networkIssues },
+        network: { bindHost: bh, lanBypass: lb, authTokenPersisted: !!getWeasleyPodexEnv('AUTH_TOKEN'), issues: networkIssues },
         activeChannel: loadedSettings().channel || 'telegram',
         discord: buildDiscordStatus(),
         wsl: isWSL() ? {

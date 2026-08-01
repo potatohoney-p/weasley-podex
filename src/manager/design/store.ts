@@ -38,7 +38,7 @@ export type DesignLocalPaths = {
 };
 
 const MAX_FILE_BYTES = 4 * 1024 * 1024;
-const STARTER_ARTIFACT = '<!doctype html>\n<html>\n<head><meta charset="utf-8"><title>New design page</title></head>\n<body>\n  <main style="font-family: system-ui; padding: 24px;">\n    <h1>New design page</h1>\n    <p>Edit artifact.html (agent direct write or jaw design files write) and reload.</p>\n  </main>\n</body>\n</html>\n';
+const STARTER_ARTIFACT = '<!doctype html>\n<html>\n<head><meta charset="utf-8"><title>New design page</title></head>\n<body>\n  <main style="font-family: system-ui; padding: 24px;">\n    <h1>New design page</h1>\n    <p>Edit artifact.html (agent direct write or weasley-podex design files write) and reload.</p>\n  </main>\n</body>\n</html>\n';
 
 let pageIdCounter = 0;
 

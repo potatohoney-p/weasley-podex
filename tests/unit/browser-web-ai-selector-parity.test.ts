@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { INPUT_SELECTORS, SEND_BUTTON_SELECTORS } from '../../src/browser/web-ai/chatgpt-composer.js';
 import { UPLOAD_BUTTON_SELECTORS } from '../../src/browser/web-ai/chatgpt-attachments.js';
 
-// 105.8: member-array drift — podex had narrowed these shared selector constants and lost
+// 105.8: member-array drift — Weasley Podex had narrowed these shared selector constants and lost
 // resilience agbrowse kept. These assert the restored fallbacks are present.
 
 test('BWAI-SELDRIFT-001: INPUT_SELECTORS includes the bare-textarea fallback', () => {

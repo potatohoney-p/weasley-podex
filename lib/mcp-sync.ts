@@ -1,7 +1,7 @@
 ﻿/**
  * lib/mcp-sync.ts — Re-export facade
  * Backward-compatible barrel that re-exports all public API from lib/mcp/ modules.
- * Source of truth: ~/.podex/mcp.json
+ * Source of truth: ~/.weasley/podex/mcp.json
  *
  * Supported targets (all global):
  *   Claude Code   → ~/.claude.json                        (JSON, mcpServers — user scope)

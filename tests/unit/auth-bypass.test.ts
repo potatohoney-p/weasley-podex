@@ -118,8 +118,8 @@ test('SC-003: config defaults remoteAccess.requireAuth=true', () => {
 });
 
 test('SC-004: server startup log includes curl example (token NOT hardcoded in output)', () => {
-    assert.ok(serverSrc.includes('cat ~/.podex/token'),
-        'startup log curl example must read token from file, not print raw token');
+    assert.match(serverSrc, /cat\s+\$\{join\(WEASLEY_PODEX_HOME,\s*['"]token['"]\)\}/,
+        'startup log curl example must read the token from the canonical Weasley Podex home');
 });
 
 test('SC-005: bindHost upgrade respects non-loopback settings', () => {

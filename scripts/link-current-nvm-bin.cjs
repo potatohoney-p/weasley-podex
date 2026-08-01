@@ -1,10 +1,10 @@
-﻿#!/usr/bin/env node
+#!/usr/bin/env node
 
 const fs = require('node:fs');
 const path = require('node:path');
 
-const PACKAGE_NAME = 'podex';
-const BIN_NAMES = ['podex', 'jaw'];
+const PACKAGE_NAME = 'weasley-podex';
+const BIN_NAMES = ['weasley-podex'];
 
 const repoRoot = path.resolve(__dirname, '..');
 const nodeBinDir = path.dirname(process.execPath);
@@ -52,7 +52,7 @@ function ensureRepoBinExecutable() {
 function main() {
     ensureRepoBinExecutable();
     if (!isNvmNode()) {
-        console.log(`[jaw:link] chmod ok; skip linking because node is not from nvm (${process.execPath})`);
+        console.log(`[weasley-podex:link] chmod ok; skip linking because node is not from nvm (${process.execPath})`);
         return;
     }
 
@@ -70,14 +70,14 @@ function main() {
         ...binChanges,
     ].filter(Boolean);
     const status = changed.length > 0 ? `updated ${changed.join(', ')}` : 'already linked';
-    console.log(`[jaw:link] ${status} -> ${nodeBinDir}`);
+    console.log(`[weasley-podex:link] ${status} -> ${nodeBinDir}`);
 }
 
 try {
     main();
 } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    console.error(`[jaw:link] failed: ${message}`);
+    console.error(`[weasley-podex:link] failed: ${message}`);
     process.exit(1);
 }
 

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env node
+#!/usr/bin/env node
 // bin/commands/worker.ts — inspect employee worker progress.
 
 import { loadSettings, getServerUrl } from '../../src/core/config.js';
@@ -13,21 +13,21 @@ import {
 import { unwrapEmployeeSummaries } from './dispatch-helpers.js';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw worker — inspect employee progress
+  weasley-podex worker — inspect employee progress
 
   Usage:
-    jaw worker status [agent|runId] [--recent N] [--json]
-    jaw worker watch [agent|runId] [--json]
-    jaw worker read <runId> [--offset N --limit N] [--json]
-    jaw worker read <runId> [--tail N]
+    weasley-podex worker status [agent|runId] [--recent N] [--json]
+    weasley-podex worker watch [agent|runId] [--json]
+    weasley-podex worker read <runId> [--offset N --limit N] [--json]
+    weasley-podex worker read <runId> [--tail N]
 
   Examples:
-    jaw worker status
-    jaw worker status Backend
-    jaw worker status wr_backend_...
-    jaw worker watch Backend
-    jaw worker read wr_backend_...
-    jaw worker read wr_backend_... --tail 80
+    weasley-podex worker status
+    weasley-podex worker status Backend
+    weasley-podex worker status wr_backend_...
+    weasley-podex worker watch Backend
+    weasley-podex worker read wr_backend_...
+    weasley-podex worker read wr_backend_... --tail 80
 `);
 
 loadSettings();
@@ -146,9 +146,9 @@ function numericFlag(name: string): number | undefined {
 }
 
 function requireRunId(runId: string | undefined): string {
-    if (!runId) throw new Error('Usage: podex worker read <runId> [--offset N --limit N] [--tail N]');
+    if (!runId) throw new Error('Usage: weasley-podex worker read <runId> [--offset N --limit N] [--tail N]');
     if (!runId.startsWith('wr_')) {
-        throw new Error(`worker read requires an explicit runId (expected wr_...). Try: podex worker status "${runId}"`);
+        throw new Error(`worker read requires an explicit runId (expected wr_...). Try: weasley-podex worker status "${runId}"`);
     }
     return runId;
 }
@@ -280,7 +280,7 @@ function printReadOutput(output: WorkerOutputRead): void {
     process.stdout.write(output.text);
     if (output.text && !output.text.endsWith('\n')) process.stdout.write('\n');
     if (!output.eof) {
-        console.error(`More output available: podex worker read ${output.runId} --offset ${output.nextOffset}`);
+        console.error(`More output available: weasley-podex worker read ${output.runId} --offset ${output.nextOffset}`);
     }
 }
 
@@ -388,11 +388,11 @@ try {
     }
 } catch (e: unknown) {
     if (isConnRefused(e)) {
-        console.error(`Server not running on port ${PORT || '(configured)'}. Start with: jaw serve`);
+        console.error(`Server not running on port ${PORT || '(configured)'}. Start with: weasley-podex serve`);
     } else {
         console.error(`Error: ${errString(e)}`);
         if (command === 'read' && agentArg && errString(e).includes('worker run not found')) {
-            console.error(`Try: podex worker status ${agentArg}`);
+            console.error(`Try: weasley-podex worker status ${agentArg}`);
         }
     }
     process.exit(1);

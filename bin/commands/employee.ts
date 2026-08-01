@@ -1,9 +1,9 @@
-﻿/**
- * podex employee — employee utilities
+/**
+ * weasley-podex employee — employee utilities
  * Usage:
- *   podex employee list [--port 3457] [--json]
- *   podex employee reset [--port 3457]
- *   podex employee sessions-reset [--port 3457]
+ *   weasley-podex employee list [--port 3457] [--json]
+ *   weasley-podex employee reset [--port 3457]
+ *   weasley-podex employee sessions-reset [--port 3457]
  */
 import { parseArgs } from 'node:util';
 import { getServerUrl } from '../../src/core/config.js';
@@ -26,9 +26,9 @@ const { values } = parseArgs({
 function printHelp() {
     console.log(`
   Usage:
-    podex employee list [--port 3457] [--json]
-    podex employee reset [--port 3457]
-    podex employee sessions-reset [--port 3457]
+    weasley-podex employee list [--port 3457] [--json]
+    weasley-podex employee reset [--port 3457]
+    weasley-podex employee sessions-reset [--port 3457]
 
   Description:
     List employees or reset DB employees to built-in defaults.

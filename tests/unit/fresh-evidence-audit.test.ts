@@ -38,7 +38,7 @@ function baseSummary(target: 'macos' | 'wsl', collectorHash: string, installerHa
     const installerSource = target === 'wsl' ? 'scripts/install-wsl.sh' : 'scripts/install.sh';
     return `
 2026-05-20T00:00:00Z target=${target}
-2026-05-20T00:00:00Z raw_base=https://raw.githubusercontent.com/potatohoney-p/podex/master
+2026-05-20T00:00:00Z raw_base=https://raw.githubusercontent.com/potatohoney-p/weasley-podex/main
 2026-05-20T00:00:00Z install_script=
 2026-05-20T00:00:00Z verifier_script=
 2026-05-20T00:00:00Z skip_install=0
@@ -47,8 +47,8 @@ function baseSummary(target: 'macos' | 'wsl', collectorHash: string, installerHa
 2026-05-20T00:00:00Z SCRIPT label="collector" source="scripts/collect-fresh-install-evidence.sh" file="/tmp/evidence/00-collector-script.sh" sha256="${collectorHash}"
 2026-05-20T00:00:00Z SNAPSHOT label="before" file="/tmp/evidence/00-before.txt"
 2026-05-20T00:00:01Z SCRIPT label="installer" source="${installerSource}" file="/tmp/evidence/02-installer-script.sh" sha256="${installerHash}"
-2026-05-20T00:00:01Z RUN label="podex one-click installer" log="/tmp/evidence/01-install.log" command="bash ${installerSource}"
-2026-05-20T00:00:02Z DONE label="podex one-click installer" status=0
+2026-05-20T00:00:01Z RUN label="Weasley Podex one-click installer" log="/tmp/evidence/01-install.log" command="bash ${installerSource}"
+2026-05-20T00:00:02Z DONE label="Weasley Podex one-click installer" status=0
 2026-05-20T00:00:03Z SCRIPT label="verifier" source="scripts/verify-fresh-install.sh" file="/tmp/evidence/21-verifier-script.sh" sha256="${verifierHash}"
 2026-05-20T00:00:03Z DONE label="packaged fresh-install verifier" status=0
 2026-05-20T00:00:04Z DONE label="current bash login-shell probe" status=0
@@ -67,6 +67,7 @@ ProductName:\t\tmacOS
 xcode_select=/Library/Developer/CommandLineTools
 ${nodeLine}
 npm=missing
+weasley-podex=missing
 jaw=missing
 podex=missing
 `;
@@ -78,6 +79,7 @@ uname=Linux host 6.6.87.2-microsoft-standard-WSL2 x86_64 GNU/Linux
 NAME="Ubuntu"
 ${nodeLine}
 npm=missing
+weasley-podex=missing
 jaw=missing
 podex=missing
 `;
@@ -110,8 +112,8 @@ function writeEvidence(
     writeFile(dir, '02-installer-script.sh', installerScript);
     writeFile(dir, '21-verifier-script.sh', verifierScript);
     const powershellSummary = target === 'wsl' && options.powershellProbe
-        ? `2026-05-20T00:00:05Z RUN label="PowerShell-to-WSL jaw probe" log="/tmp/evidence/33-powershell-to-wsl-probe.log" command="powershell.exe -NoProfile -Command wsl.exe -d Ubuntu -- bash -lc jaw --version"
-2026-05-20T00:00:06Z DONE label="PowerShell-to-WSL jaw probe" status=0
+        ? `2026-05-20T00:00:05Z RUN label="PowerShell-to-WSL Weasley Podex probe" log="/tmp/evidence/33-powershell-to-wsl-probe.log" command="powershell.exe -NoProfile -Command wsl.exe -d Ubuntu -- bash -lc weasley-podex --version"
+2026-05-20T00:00:06Z DONE label="PowerShell-to-WSL Weasley Podex probe" status=0
 `
         : '';
     const summary = baseSummary(target, sha256(collectorScript), sha256(installerScript), sha256(verifierScript))
@@ -124,50 +126,51 @@ label=after
 target=${target}
 node=/home/user/.nvm/versions/node/v22.22.3/bin/node
 npm=/home/user/.nvm/versions/node/v22.22.3/bin/npm
+weasley-podex=/home/user/.npm-global/bin/weasley-podex
 jaw=/home/user/.npm-global/bin/jaw
 podex=/home/user/.npm-global/bin/podex
 `);
     writeFile(dir, '20-verify.log', `
-podex fresh-install verification
+Weasley Podex fresh-install verification
 ✔ node version is >=22: v22.22.3
-✔ jaw works: /home/user/.npm-global/bin/jaw
+✔ weasley-podex works: /home/user/.npm-global/bin/weasley-podex
 ✔ npm global bin is on PATH: /home/user/.npm-global/bin
-${target === 'wsl' ? '✔ WSL bash login shell resolves node/npm/jaw\n' : ''}
-✔ jaw doctor completed
+${target === 'wsl' ? '✔ WSL bash login shell resolves node/npm/weasley-podex and legacy aliases\n' : ''}
+✔ weasley-podex doctor completed
 ALL PASS
 `);
     writeFile(dir, '30-bash-login-probe.log', options.bashProbe || `
 node_path=/home/user/.nvm/versions/node/v22.22.3/bin/node
 npm_path=/home/user/.nvm/versions/node/v22.22.3/bin/npm
-jaw_path=/home/user/.npm-global/bin/jaw
-podex v2.0.6
+weasley_podex_path=/home/user/.npm-global/bin/weasley-podex
+Weasley Podex v2.0.6
 `);
     if (target === 'macos') {
         writeFile(dir, '31-zsh-login-probe.log', `
 node_path=/Users/user/.nvm/versions/node/v22.22.3/bin/node
 npm_path=/Users/user/.nvm/versions/node/v22.22.3/bin/npm
-jaw_path=/Users/user/.npm-global/bin/jaw
-podex v2.0.6
+weasley_podex_path=/Users/user/.npm-global/bin/weasley-podex
+Weasley Podex v2.0.6
 `);
         writeFile(dir, '32-zsh-interactive-probe.log', `
 node_path=/Users/user/.nvm/versions/node/v22.22.3/bin/node
 npm_path=/Users/user/.nvm/versions/node/v22.22.3/bin/npm
-jaw_path=/Users/user/.npm-global/bin/jaw
-podex v2.0.6
+weasley_podex_path=/Users/user/.npm-global/bin/weasley-podex
+Weasley Podex v2.0.6
 `);
     }
     if (target === 'wsl' && options.powershellProbe) {
-        writeFile(dir, '33-powershell-to-wsl-probe.log', 'podex v2.0.6\n');
+        writeFile(dir, '33-powershell-to-wsl-probe.log', 'Weasley Podex v2.0.6\n');
     }
     if (target === 'wsl' && options.externalPowershellProbe) {
         writeFile(dir, '33-powershell-to-wsl-probe.log', `
-command=wsl.exe -d Ubuntu -- bash -lc jaw --version
-podex v2.0.6
+command=wsl.exe -d Ubuntu -- bash -lc weasley-podex --version
+Weasley Podex v2.0.6
 `);
     }
     if (target === 'wsl' && options.incompleteExternalPowershellProbe) {
         writeFile(dir, '33-powershell-to-wsl-probe.log', `
-podex v2.0.6
+Weasley Podex v2.0.6
 `);
     }
     return dir;
@@ -187,7 +190,7 @@ function verifyReleaseEvidence(args: string[] = []) {
     });
 }
 
-test('fresh evidence collector output passes auditor in local smoke mode', () => {
+test('fresh evidence collector output passes auditor in local smoke mode', { skip: process.platform === 'win32' }, () => {
     const home = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-evidence-home-'));
     const bin = path.join(home, 'bin');
     const outDir = path.join(home, 'evidence');
@@ -208,15 +211,20 @@ if [ "$1" = "prefix" ] && [ "$2" = "-g" ]; then echo "$HOME/.local"; exit 0; fi
 if [ "$1" = "root" ] && [ "$2" = "-g" ]; then echo "$HOME/.local/lib/node_modules"; exit 0; fi
 exit 0
 `);
+    writeExecutable(bin, 'weasley-podex', `
+#!/usr/bin/env bash
+if [ "$1" = "--version" ]; then echo "Weasley Podex v2.0.6"; exit 0; fi
+if [ "$1" = "doctor" ]; then exit 0; fi
+exit 0
+`);
     writeExecutable(bin, 'jaw', `
 #!/usr/bin/env bash
-if [ "$1" = "--version" ]; then echo "podex v2.0.6"; exit 0; fi
-if [ "$1" = "doctor" ]; then exit 0; fi
+if [ "$1" = "--version" ]; then echo "Weasley Podex v2.0.6"; exit 0; fi
 exit 0
 `);
     writeExecutable(bin, 'podex', `
 #!/usr/bin/env bash
-if [ "$1" = "--version" ]; then echo "podex v2.0.6"; exit 0; fi
+if [ "$1" = "--version" ]; then echo "Weasley Podex v2.0.6"; exit 0; fi
 exit 0
 `);
     writeExecutable(bin, 'ai-e', `
@@ -256,16 +264,17 @@ exit 0
 `);
 
     try {
+        const bashPath = (value: string) => value.replace(/\\/g, '/');
         const collect = spawnSync('bash', [
-            collector,
+            bashPath(collector),
             '--target',
             'macos',
             '--skip-install',
             '--skip-doctor',
             '--verifier-script',
-            verifier,
+            bashPath(verifier),
             '--out-dir',
-            outDir,
+            bashPath(outDir),
         ], {
             cwd: root,
             encoding: 'utf8',
@@ -380,8 +389,8 @@ test('fresh evidence auditor requires macOS zsh probes to prove node npm and jaw
     const dir = writeEvidence('macos');
     try {
         fs.writeFileSync(path.join(dir, '31-zsh-login-probe.log'), `
-jaw_path=/Users/user/.npm-global/bin/jaw
-podex v2.0.6
+weasley_podex_path=/Users/user/.npm-global/bin/jaw
+Weasley Podex v2.0.6
 `);
         const result = audit(dir, ['--target', 'macos']);
         assert.notEqual(result.status, 0);
@@ -450,11 +459,11 @@ test('fresh evidence auditor requires the WSL verifier login-shell check', () =>
     const dir = writeEvidence('wsl', { externalPowershellProbe: true });
     try {
         const verifyLog = fs.readFileSync(path.join(dir, '20-verify.log'), 'utf8')
-            .replace('✔ WSL bash login shell resolves node/npm/jaw\n', '');
+            .replace('✔ WSL bash login shell resolves node/npm/weasley-podex and legacy aliases\n', '');
         fs.writeFileSync(path.join(dir, '20-verify.log'), verifyLog);
         const result = audit(dir, ['--target', 'wsl']);
         assert.notEqual(result.status, 0);
-        assert.match(result.stderr, /20-verify\.log must include "WSL bash login shell resolves node\/npm\/jaw"/);
+        assert.match(result.stderr, /20-verify\.log must include "WSL bash login shell resolves node\/npm\/weasley-podex"/);
     } finally {
         fs.rmSync(dir, { recursive: true, force: true });
     }
@@ -475,7 +484,7 @@ test('fresh evidence auditor requires internal PowerShell-to-WSL probe command e
     const dir = writeEvidence('wsl', { powershellProbe: true });
     try {
         const summary = fs.readFileSync(path.join(dir, 'summary.txt'), 'utf8')
-            .replace(/^.*RUN label="PowerShell-to-WSL jaw probe".*\n/m, '');
+            .replace(/^.*RUN label="PowerShell-to-WSL Weasley Podex probe".*\n/m, '');
         fs.writeFileSync(path.join(dir, 'summary.txt'), summary);
         const result = audit(dir, ['--target', 'wsl']);
         assert.notEqual(result.status, 0);

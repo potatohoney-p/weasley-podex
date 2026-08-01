@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Session Commands — podex Docs</title>
+<title>Session Commands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .cmd-block { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px 28px; margin: 24px 0; }
 .cmd-block h3 { margin: 0 0 6px; font-size: 18px; }
@@ -28,7 +27,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -49,7 +48,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -98,16 +97,16 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Session Commands</h1>
-<p class="lead">会话命令用于管理当前的 podex 对话：查看帮助、浏览命令、检查状态、清除历史记录、压缩上下文、重置状态以及在对话中途重新引导智能体。这些是你在交互使用中最常用的命令。</p>
+<p class="lead">会话命令用于管理当前的 Weasley Podex 对话：查看帮助、浏览命令、检查状态、清除历史记录、压缩上下文、重置状态以及在对话中途重新引导智能体。这些是你在交互使用中最常用的命令。</p>
 
-<div class="callout callout-info">所有会话命令以 <code>/</code> 开头，可直接在聊天输入框中输入。你也可以使用自然语言触发它们 &mdash; podex 同样理解韩语和英语。请参阅下方每个命令的"~해줘"提示。</div>
+<div class="callout callout-info">所有会话命令以 <code>/</code> 开头，可直接在聊天输入框中输入。你也可以使用自然语言触发它们 &mdash; Weasley Podex 同样理解韩语和英语。请参阅下方每个命令的"~해줘"提示。</div>
 
 <h2>Quick Reference</h2>
 <div class="quick-ref">
@@ -130,7 +129,7 @@
 <div class="cmd-block" id="help">
 <h3><code>/help</code></h3>
 <div class="cmd-sig">/help <span class="arg">[command]</span></div>
-<p>显示 podex 命令的文档。不带参数调用时，会按类别分组列出所有可用命令。提供命令名称时，会显示该特定命令的详细用法、参数和示例。</p>
+<p>显示 Weasley Podex 命令的文档。不带参数调用时，会按类别分组列出所有可用命令。提供命令名称时，会显示该特定命令的详细用法、参数和示例。</p>
 
 <p><strong>参数：</strong></p>
 <table>
@@ -147,7 +146,7 @@
 /help steer
 </div>
 
-<div class="cmd-tip"><strong>"~해줘" 提示：</strong> "도움말 보여줘"、"명령어 뭐 있어?"、"compact 사용법 알려줘" 都会映射到 <code>/help</code>。podex 会检测你的意图并显示相关文档。</div>
+<div class="cmd-tip"><strong>"~해줘" 提示：</strong> "도움말 보여줘"、"명령어 뭐 있어?"、"compact 사용법 알려줘" 都会映射到 <code>/help</code>。Weasley Podex 会检测你的意图并显示相关文档。</div>
 </div>
 
 <!-- /commands -->
@@ -348,11 +347,11 @@
 <tr><td>会话严重混乱或损坏</td><td><code>/reset</code></td><td>终极选项 &mdash; 完全重启</td></tr>
 <tr><td>记不住命令名称</td><td><code>/commands</code></td><td>可搜索的全部可用命令面板</td></tr>
 <tr><td>需要检查 token 使用量或已加载的技能</td><td><code>/status</code></td><td>一目了然的会话诊断信息</td></tr>
-<tr><td>刚接触 podex，探索功能中</td><td><code>/help</code></td><td>内置于聊天中的文档</td></tr>
+<tr><td>刚接触 Weasley Podex，探索功能中</td><td><code>/help</code></td><td>内置于聊天中的文档</td></tr>
 </table>
 
 <h2>Command Lifecycle</h2>
-<p>会话命令在 podex 技术栈的不同层级上运行：</p>
+<p>会话命令在 Weasley Podex 技术栈的不同层级上运行：</p>
 <ul>
 <li><strong><code>/help</code></strong> 和 <strong><code>/commands</code></strong> 是只读的 &mdash; 它们显示信息而不修改状态。</li>
 <li><strong><code>/status</code></strong> 从多个子系统（模型、技能、记忆、目标）读取数据并汇总为快照。</li>
@@ -362,7 +361,7 @@
 <li><strong><code>/reset</code></strong> 销毁整个会话（消息 + 技能 + 目标 + 状态），并从启动默认值重新初始化。</li>
 </ul>
 
-<div class="callout callout-info"><strong>自然语言始终有效。</strong>你永远<em>不必</em>记住斜杠命令。说 "대화 지워줘" 和输入 <code>/clear</code> 效果相同。斜杠命令的存在是为了精确和速度，但 podex 的意图检测会处理其余一切。</div>
+<div class="callout callout-info"><strong>自然语言始终有效。</strong>你永远<em>不必</em>记住斜杠命令。说 "대화 지워줘" 和输入 <code>/clear</code> 效果相同。斜杠命令的存在是为了精确和速度，但 Weasley Podex 的意图检测会处理其余一切。</div>
 
 <div class="page-nav">
 <a class="prev" href="../skills/utility.html">Utility Skills</a>

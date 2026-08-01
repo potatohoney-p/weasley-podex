@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseTabDuration, selectProviderTabsForCleanup, selectTabsForCleanup } from '../../src/browser/tab-lifecycle.ts';
 import { cleanupLeasedTabs, listLeases } from '../../src/browser/web-ai/tab-lease-store.ts';
-import { JAW_HOME } from '../../src/core/config.ts';
+import { WEASLEY_PODEX_HOME } from '../../src/core/config.ts';
 
 test('browser tab lifecycle parses cleanup duration strings', () => {
     assert.equal(parseTabDuration('500ms'), 500);
@@ -200,8 +200,8 @@ test('browser tab cleanup API runs durable lease pool cleanup', () => {
 });
 
 test('browser web-ai lease cleanup reports actual closed count after close failure', async () => {
-    const storePath = join(JAW_HOME, 'browser-web-ai-tab-leases.json');
-    mkdirSync(JAW_HOME, { recursive: true });
+    const storePath = join(WEASLEY_PODEX_HOME, 'browser-web-ai-tab-leases.json');
+    mkdirSync(WEASLEY_PODEX_HOME, { recursive: true });
     writeFileSync(storePath, JSON.stringify({
         version: 1,
         leases: [

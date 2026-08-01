@@ -31,7 +31,7 @@ function readTuiSources(): string {
     return tuiSourcePaths.map(path => `\n// ${path}\n${read(path)}`).join('\n');
 }
 
-test('TUI remains a jaw chat surface and does not consume Manager Code mode APIs directly', () => {
+test('TUI remains a Weasley Podex chat surface and does not consume Manager Code mode APIs directly', () => {
     const tuiSources = readTuiSources();
 
     assert.doesNotMatch(tuiSources, /\/api\/code\b/, 'TUI must not fetch Manager Code mode /api/code routes directly');
@@ -45,7 +45,7 @@ test('TUI slash surface exposes generic podex controls but not a claimed JWC pro
 
     assert.match(commands, /name: 'model'[\s\S]*interfaces: \['cli', 'web', 'telegram', 'discord'\]/, 'generic /model is available to TUI through the CLI command registry');
     assert.match(commands, /name: 'settings'[\s\S]*interfaces: \['cli'\]/, 'TUI settings is a CLI-only command');
-    assert.match(commands, /name: 'effort'[\s\S]*interfaces: \['cli', 'web'\]/, 'generic /effort exists for podex chat');
+    assert.match(commands, /name: 'effort'[\s\S]*interfaces: \['cli', 'web'\]/, 'generic /effort exists for weasley-podex chat');
     assert.doesNotMatch(commands, /name: 'provider'/, 'TUI must not claim /provider parity until a real provider route exists');
     assert.match(runner, /getArgumentCompletionItems\('model', '', 'cli'/, 'no-arg /model opens the generic CLI model argument selector');
     assert.match(runner, /openSettingsScreen\(ctx\)/, 'TUI /settings opens the local settings screen rather than Manager Code popup UI');

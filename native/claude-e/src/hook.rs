@@ -10,7 +10,7 @@ pub struct HookDir {
 
 impl HookDir {
     pub fn create() -> Result<Self, String> {
-        let temp_dir = TempDir::with_prefix("jaw-claude-i-")
+        let temp_dir = TempDir::with_prefix("weasley-podex-claude-e-")
             .map_err(|e| format!("TempDir creation failed: {e}"))?;
 
         let dir_path = temp_dir.path().to_path_buf();
@@ -19,7 +19,7 @@ impl HookDir {
         let relay_script = dir_path.join("hook-relay.sh");
         let script_content = format!(
             r#"#!/bin/sh
-# jaw-claude-i hook relay: writes payload atomically, no stdout
+# Weasley Podex claude-e hook relay: writes payload atomically, no stdout
 set -eu
 umask 077
 
@@ -157,7 +157,7 @@ mod tests {
         let hd = HookDir::create().expect("should create");
         assert!(hd.relay_script.exists());
         let content = fs::read_to_string(&hd.relay_script).expect("read");
-        assert!(content.contains("jaw-claude-i"));
+        assert!(content.contains("Weasley Podex claude-e"));
     }
 
     #[test]

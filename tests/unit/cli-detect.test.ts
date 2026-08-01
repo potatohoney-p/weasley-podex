@@ -20,7 +20,9 @@ function writeExecutable(dir: string, name: string, content: string): string {
     return filePath;
 }
 
-test('isSpawnableCliFile rejects executable text stubs without shebang', () => {
+test('isSpawnableCliFile rejects executable text stubs without shebang', {
+    skip: process.platform === 'win32' && 'Unix executable-bit semantics are unavailable on Windows',
+}, () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-cli-detect-'));
     const stub = writeExecutable(dir, 'claude-broken', 'echo "Error: claude native binary not installed." >&2\n');
 
@@ -30,7 +32,9 @@ test('isSpawnableCliFile rejects executable text stubs without shebang', () => {
     assert.equal(result.reason, 'text file without shebang');
 });
 
-test('selectSpawnableCliPath skips broken PATH candidates and chooses a later runnable script', () => {
+test('selectSpawnableCliPath skips broken PATH candidates and chooses a later runnable script', {
+    skip: process.platform === 'win32' && 'Unix executable-bit semantics are unavailable on Windows',
+}, () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-cli-detect-'));
     const broken = writeExecutable(dir, 'claude-broken', 'echo "Error: claude native binary not installed." >&2\n');
     const working = writeExecutable(dir, 'claude-working', '#!/usr/bin/env sh\necho "2.1.126 (Claude Code)"\n');
@@ -42,7 +46,9 @@ test('selectSpawnableCliPath skips broken PATH candidates and chooses a later ru
     assert.deepEqual(result.rejected, [{ path: broken, reason: 'text file without shebang' }]);
 });
 
-test('selectSpawnableCliPath reports rejected candidates when none are spawnable', () => {
+test('selectSpawnableCliPath reports rejected candidates when none are spawnable', {
+    skip: process.platform === 'win32' && 'Unix executable-bit semantics are unavailable on Windows',
+}, () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-cli-detect-'));
     const broken = writeExecutable(dir, 'claude-broken', 'echo "broken"\n');
 

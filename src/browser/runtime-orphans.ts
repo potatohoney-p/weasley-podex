@@ -47,7 +47,7 @@ function readProcessCommandLine(pid: number): Promise<string | null> {
 }
 
 export function commandLineMatchesDurableRuntimeOwner(owner: BrowserRuntimeOwner, command: string | null): boolean {
-    if (!command || owner.ownership !== 'jaw-owned') return false;
+    if (!command || owner.ownership !== 'weasley-podex-owned') return false;
     if (!owner.port || !owner.userDataDir) return false;
     if (command.includes('--type=')) return false;
     return commandLineHasExactFlagValue(command, 'remote-debugging-port', String(owner.port))
@@ -64,7 +64,7 @@ function commandLineHasExactFlagValue(command: string, flag: string, expected: s
 }
 
 function isCurrentRuntime(owner: BrowserRuntimeOwner, current: BrowserRuntimeStatus | null | undefined): boolean {
-    if (!current || current.ownership !== 'jaw-owned') return false;
+    if (!current || current.ownership !== 'weasley-podex-owned') return false;
     return owner.pid === current.pid && owner.port === current.port && owner.userDataDir === current.userDataDir;
 }
 
@@ -72,7 +72,7 @@ export async function inspectBrowserRuntimeOrphans(
     currentRuntime?: BrowserRuntimeStatus | null,
 ): Promise<BrowserRuntimeOrphanCandidate[]> {
     const owner = readDurableBrowserRuntimeOwner();
-    if (!owner || owner.ownership !== 'jaw-owned') return [];
+    if (!owner || owner.ownership !== 'weasley-podex-owned') return [];
     if (isCurrentRuntime(owner, currentRuntime)) {
         return [{
             pid: owner.pid,

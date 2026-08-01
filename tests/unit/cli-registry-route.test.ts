@@ -1,10 +1,11 @@
 import test, { mock } from 'node:test';
 import assert from 'node:assert/strict';
 import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 import express, { type NextFunction, type Request, type Response } from 'express';
 
-const kiroModelsPath = resolve(import.meta.dirname, '../../src/agent/kiro-models.js');
+const kiroModelsPath = pathToFileURL(resolve(import.meta.dirname, '../../src/agent/kiro-models.js')).href;
 
 // Isolate the live-registry Kiro augmentation boundary; 270 is about JWC exposure.
 mock.module(kiroModelsPath, {

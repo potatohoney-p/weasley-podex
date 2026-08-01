@@ -9,7 +9,7 @@
  *
  * Wiring under test:
  *   JWC_SDK_PATH          → jwcRuntime.loadSdk() dynamic-imports dist-node/sdk.js
- *   podex_JWC_AGENT_DIR → engine auth/model discovery points at the cred store
+ *   WEASLEY_PODEX_JWC_AGENT_DIR → engine auth/model discovery points at the cred store
  *
  * Usage:
  *   JWC_110_E2E=1 node scripts/jwc-110-e2e.mjs
@@ -33,7 +33,7 @@ const distNode = process.env.JWC_SDK_PATH?.trim() || defaultBundle;
 assert.ok(existsSync(distNode), `jwc Node bundle not found: ${distNode} (run build:node, or set JWC_SDK_PATH)`);
 
 process.env.JWC_SDK_PATH = distNode;
-// No podex_JWC_AGENT_DIR override — jaw mode's default agentDir (~/.jwc/agent,
+// No WEASLEY_PODEX_JWC_AGENT_DIR override — the default agentDir (~/.jwc/agent,
 // 111 §e decision 0) must resolve the real credential store on its own.
 process.env.GJC_BRAND_NAME = "jwc";
 process.env.JWC_BRAND_NAME = "jwc";

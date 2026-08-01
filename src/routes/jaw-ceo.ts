@@ -3,7 +3,7 @@ import express, { type Express, type NextFunction, type Request, type RequestHan
 import { settings, saveSettings } from '../core/config.js';
 import { JawCeoCoordinator, type JawCeoCoordinatorDeps } from '../jaw-ceo/coordinator.js';
 import { extractOpenAiApiKey, hasInvalidOpenAiApiKeyInput, resolveJawCeoOpenAiApiKey } from '../jaw-ceo/openai-key.js';
-import { buildJawCeoRealtimeSessionConfig, JAW_CEO_REALTIME_MODEL, JAW_CEO_REALTIME_VOICE, openJawCeoRealtimeSideband } from '../jaw-ceo/realtime-sideband.js';
+import { buildJawCeoRealtimeSessionConfig, WEASLEY_PODEX_CEO_REALTIME_MODEL, WEASLEY_PODEX_CEO_REALTIME_VOICE, openJawCeoRealtimeSideband } from '../jaw-ceo/realtime-sideband.js';
 import type { JawCeoManagerEvent } from '../jaw-ceo/types.js';
 
 export type AuthMiddleware = (req: Request, res: Response, next: NextFunction) => void;
@@ -72,8 +72,8 @@ function publicVoiceSettings(ctx: RouteContext): Record<string, unknown> {
         openaiKeyLast4: key.value.slice(-4) || '',
         openaiKeySource: key.source,
         openaiKeyInvalid: hasInvalidOpenAiApiKeyInput(savedKey),
-        model: JAW_CEO_REALTIME_MODEL,
-        voice: JAW_CEO_REALTIME_VOICE,
+        model: WEASLEY_PODEX_CEO_REALTIME_MODEL,
+        voice: WEASLEY_PODEX_CEO_REALTIME_VOICE,
     };
 }
 
@@ -124,7 +124,7 @@ function registerCoreRoutes(ctx: RouteContext): void {
             path: String(input["path"] || ''),
             operation,
             content: String(input["content"] || ''),
-            reason: String(input["reason"] || 'Jaw CEO docs edit'),
+            reason: String(input["reason"] || 'Weasley Podex CEO docs edit'),
         }));
     }));
 }
@@ -267,7 +267,7 @@ async function connectVoice(ctx: RouteContext, req: Request, res: Response, args
         return;
     }
     ctx.coordinator.registerVoiceSession(openJawCeoRealtimeSideband({ sessionId: args.sessionId, callId, coordinator: ctx.coordinator, apiKey }));
-    ok(res, { sessionId: args.sessionId, answerSdp, model: JAW_CEO_REALTIME_MODEL, voice: JAW_CEO_REALTIME_VOICE });
+    ok(res, { sessionId: args.sessionId, answerSdp, model: WEASLEY_PODEX_CEO_REALTIME_MODEL, voice: WEASLEY_PODEX_CEO_REALTIME_VOICE });
 }
 
 function handleVoiceResponse(ctx: RouteContext, res: Response, response: globalThis.Response, answerSdp: string): boolean {

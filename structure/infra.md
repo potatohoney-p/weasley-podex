@@ -1,7 +1,7 @@
 ---
 created: 2026-03-28
-tags: [podex, infra, runtime, core]
-aliases: [podex Infra, infrastructure modules, core runtime]
+tags: [weasley-podex, infra, runtime, core]
+aliases: [Weasley Podex Infra, infrastructure modules, core runtime]
 ---
 
 > 📚 [INDEX](INDEX.md) · [에이전트 실행 ↗](agent_spawn.md) · [서버 API ↗](server_api.md) · **인프라 모듈**
@@ -19,12 +19,14 @@ aliases: [podex Infra, infrastructure modules, core runtime]
 
 | 항목 | 현재 값 |
 | --- | --- |
-| package | `podex` |
-| version | `2.2.4` |
+| package | `weasley-podex` |
+| version | `2.2.9` |
+| author / license | `Weasley Contributors` / `Apache-2.0` |
+| repository | `https://github.com/potatohoney-p/weasley-podex` |
 | type | `module` |
 | Node engine | `>=22.4.0` |
-| bin | `podex` → `dist/bin/podex.js`, `jaw` → `dist/bin/podex.js` |
-| published files | `dist/`, `public/`, `scripts/`, `package.json` |
+| bin | sole public `weasley-podex` → historical internal entrypoint `dist/bin/podex.js` |
+| published files | `dist/`, `public/`, `scripts/`, `LICENSE`, `NOTICE`, `README.md`, `package.json` |
 
 ### `package.json` scripts
 
@@ -75,14 +77,14 @@ aliases: [podex Infra, infrastructure modules, core runtime]
 | `gate:typecheck` / `gate:tests` / `gate:*` | `node scripts/release-gates.mjs <gate>` |
 | `gate:all` | `node scripts/release-gates.mjs` |
 | `prepublishOnly` | `npm run build && npm run build:frontend && npm run check:frontend-build-output` |
-| `electron:dev` | `concurrently -k -n jaw,electron "node scripts/electron-dev-manager.mjs" "npm --prefix electron run dev"` |
+| `electron:dev` | `concurrently -k -n server,electron "node scripts/electron-dev-manager.mjs" "npm --prefix electron run dev"` |
 | `electron:build` | `npm --prefix electron run build` |
 | `sidecar:bundle` | `bash scripts/bundle-sidecar.sh darwin arm64` |
 | `electron:dist:mac` | `npm run build:frontend && npm run sidecar:bundle && npm --prefix electron run build && CSC_IDENTITY_AUTO_DISCOVERY=false npm --prefix electron run dist:mac && npm run electron:resign:mac && npm run check:electron-dist-mac-no-jwc && npm run check:app-icons` |
-| `electron:resign:mac` | `codesign --force --deep --sign - electron/dist/mac-arm64/podex.app` |
+| `electron:resign:mac` | `codesign --force --deep --sign - "electron/dist/mac-arm64/Weasley Podex.app"` |
 | `electron:start` | `npm --prefix electron run start` |
 | `check:electron-sidecar-no-jwc` | `node scripts/check-electron-sidecar-no-jwc.cjs` |
-| `check:electron-dist-mac-no-jwc` | `node scripts/check-electron-sidecar-no-jwc.cjs --server-root electron/dist/mac-arm64/podex.app/Contents/Resources/server` |
+| `check:electron-dist-mac-no-jwc` | `node scripts/check-electron-sidecar-no-jwc.cjs --server-root "electron/dist/mac-arm64/Weasley Podex.app/Contents/Resources/server"` |
 | `check:electron-dist-win-no-jwc` | `node scripts/check-electron-sidecar-no-jwc.cjs --server-root electron/dist/win-unpacked/resources/server` |
 | `check:electron-dist-linux-no-jwc` | `node scripts/check-electron-sidecar-no-jwc.cjs --server-root electron/dist/linux-unpacked/resources/server` |
 | `check:app-icons` | `node scripts/check-app-icon-assets.cjs` |
@@ -94,7 +96,7 @@ aliases: [podex Infra, infrastructure modules, core runtime]
 
 | utility | command | purpose |
 | --- | --- | --- |
-| Fullscreen TUI `/quit` PTY smoke | `JAW_TUI_SMOKE_TIMEOUT=15 COLUMNS=100 LINES=30 scripts/smoke/tui-quit-smoke.exp` | built `dist/bin/podex.js chat`가 raw-mode fullscreen composer에서 `/quit`로 정상 종료되는지 검증 |
+| Fullscreen TUI `/quit` PTY smoke | `WEASLEY_PODEX_TUI_SMOKE_TIMEOUT=15 COLUMNS=100 LINES=30 scripts/smoke/tui-quit-smoke.exp` | legacy/internal timeout env로 built internal entrypoint `dist/bin/podex.js chat`가 raw-mode fullscreen composer에서 `/quit`로 정상 종료되는지 검증 |
 | Fullscreen TUI frame resize stress | `npx tsx --import ./tests/setup/test-home.ts scripts/smoke/tui-frame-resize-stress.ts` | live/committed/expanded tool rows + final answer가 resize 후에도 width-safe이고 bottom composer cluster가 고정되는지 검증 |
 | Fullscreen TUI WS sequence stress | `npx tsx --import ./tests/setup/test-home.ts scripts/smoke/tui-ws-sequence-stress.ts` | synthetic WS 이벤트로 live tool, final answer, Ctrl-O expansion, resize-safe frame을 서버/모델 없이 검증 |
 
@@ -103,48 +105,48 @@ aliases: [podex Infra, infrastructure modules, core runtime]
 | 모드 | 명령/엔트리 | 실제 동작 |
 | --- | --- | --- |
 | Source server dev | `npm run dev` | `tsx --env-file=.env server.ts`로 source server 실행 |
-| CLI serve | `jaw serve` / `podex serve` | `bin/commands/serve.ts`가 source면 `tsx server.ts`, dist면 `node --dns-result-order=ipv4first server.js` spawn |
-| CLI serve options | `--port`, `--host`, `--no-open`, `--lan`, `--remote`, `--trust-proxy`, `--trust-forwarded` | env로 `PORT`, `HOST`, `JAW_OPEN_BROWSER`, `JAW_LAN_MODE`, `JAW_REMOTE_ACCESS_MODE`, `JAW_TRUST_PROXY`, `JAW_TRUST_FORWARDED` 주입 |
+| CLI serve | `weasley-podex serve` | `bin/commands/serve.ts`가 source면 `tsx server.ts`, dist면 `node --dns-result-order=ipv4first server.js` spawn |
+| CLI serve options | `--port`, `--host`, `--no-open`, `--lan`, `--remote`, `--trust-proxy`, `--trust-forwarded` | env로 `PORT`, `HOST`, `WEASLEY_PODEX_OPEN_BROWSER`, `WEASLEY_PODEX_LAN_MODE`, `WEASLEY_PODEX_REMOTE_ACCESS_MODE`, `WEASLEY_PODEX_TRUST_PROXY`, `WEASLEY_PODEX_TRUST_FORWARDED` 주입 |
 | Frontend dev | `npm run dev:frontend` | Vite dev server port `5173`, `/api` proxy는 `http://localhost:3458` |
 | Frontend build | `npm run build:frontend` | Vite가 `public/index.html` + `public/manager/index.html`을 `public/dist`로 빌드 |
-| Manager dashboard | `jaw dashboard serve` | `src/manager/server.ts` 또는 `dist/src/manager/server.js` 실행, 기본 port `24576` |
-| Electron manager dashboard | Electron implicit spawn | Web/CLI lane `24576`과 분리된 manager port `24577` 기본값, fallback `24578-24590`; packaged app prefers bundled sidecar `server/bin/jaw` |
+| Manager dashboard | `weasley-podex dashboard serve` | `src/manager/server.ts` 또는 `dist/src/manager/server.js` 실행, 기본 port `24576` |
+| Electron manager dashboard | Electron implicit spawn | Web/CLI lane `24576`과 분리된 manager port `24577` 기본값, fallback `24578-24590`; packaged app prefers bundled sidecar `server/bin/weasley-podex` |
 | Docker local source | `Dockerfile` | local source copy → `npm run build` + `npm run build:frontend` → `node dist/server.js` |
-| Docker npm image | `Dockerfile.dev` | `npm install -g podex@${podex_VERSION}` → `jaw serve --no-open` |
-| Compose | `docker-compose.yml` | 단일 `jaw` service, `${PORT:-3457}:3457`, `.env`, named volume `jaw-data` |
+| Docker npm image | `Dockerfile.dev` | `npm install -g weasley-podex@${WEASLEY_PODEX_VERSION}` → `weasley-podex serve --no-open` |
+| Compose | `docker-compose.yml` | 단일 Weasley Podex service, `${PORT:-3457}:3457`, `.env`, named volume `weasley-podex-data` |
 
 ### 환경변수
 
 | 변수 | 실제 사용처 | 의미 |
 | --- | --- | --- |
-| `podex_HOME` | `src/core/config.ts`, `bin/podex.ts`, `bin/postinstall.ts` | 데이터 홈 override. 기본 `~/.podex` |
+| `WEASLEY_PODEX_HOME` | `src/core/config.ts`, `bin/podex.ts`, `bin/postinstall.ts` | primary 데이터 홈 override. 기본 `~/.weasley/podex` |
 | `PORT` | `server.ts`, `bin/commands/serve.ts`, CLI API commands | server port. 기본 `3457` |
 | `HOST` | `bin/commands/serve.ts` | serve child env로 전달 |
-| `JAW_OPEN_BROWSER` | `server.ts`, `serve.ts` | `serve` 실행 후 브라우저 open 여부 |
-| `JAW_LAN_MODE` | `server.ts`, `serve.ts` | LAN host/origin bypass 활성화 |
-| `JAW_REMOTE_ACCESS_MODE` | `serve.ts` | `--remote`에서 `direct`로 주입 |
-| `JAW_TRUST_PROXY` | `server.ts`, `serve.ts` | Express trust proxy 설정 |
-| `JAW_TRUST_FORWARDED` | `server.ts`, `serve.ts` | forwarded host/proto 신뢰 |
-| `JAW_AUTH_TOKEN` | `server.ts`, `doctor.ts` | loopback 외 API bearer auth token |
-| `JAW_BOSS_TOKEN` | `src/core/boss-auth.ts`, `bin/commands/dispatch.ts` | boss-only employee dispatch token |
-| `JAW_EMPLOYEE_MODE` | `bin/commands/dispatch.ts` | employee 내부 dispatch 차단 |
+| `WEASLEY_PODEX_OPEN_BROWSER` | `server.ts`, `serve.ts` | `serve` 실행 후 브라우저 open 여부 |
+| `WEASLEY_PODEX_LAN_MODE` | `server.ts`, `serve.ts` | LAN host/origin bypass 활성화 |
+| `WEASLEY_PODEX_REMOTE_ACCESS_MODE` | `serve.ts` | `--remote`에서 `direct`로 주입 |
+| `WEASLEY_PODEX_TRUST_PROXY` | `server.ts`, `serve.ts` | Express trust proxy 설정 |
+| `WEASLEY_PODEX_TRUST_FORWARDED` | `server.ts`, `serve.ts` | forwarded host/proto 신뢰 |
+| `WEASLEY_PODEX_AUTH_TOKEN` | `server.ts`, `doctor.ts` | loopback 외 API bearer auth token |
+| `WEASLEY_PODEX_BOSS_TOKEN` | `src/core/boss-auth.ts`, `bin/commands/dispatch.ts` | boss-only employee dispatch token |
+| `WEASLEY_PODEX_EMPLOYEE_MODE` | `bin/commands/dispatch.ts` | employee 내 dispatch 차단 |
 | `TELEGRAM_TOKEN`, `TELEGRAM_ALLOWED_CHAT_IDS` | `src/core/config.ts` | Telegram settings override |
-| `JAW_HUB_CALLBACK_URL` | `src/telegram/hub-callback.ts`, `src/manager/lifecycle.ts` | Telegram Hub member outbound callback override (loopback http only; manager spawn sets `http://127.0.0.1:${DASHBOARD_DEFAULT_PORT}`) |
+| `WEASLEY_PODEX_HUB_CALLBACK_URL` | `src/telegram/hub-callback.ts`, `src/manager/lifecycle.ts` | Telegram Hub member outbound callback override (loopback http only; manager spawn sets `http://127.0.0.1:${DASHBOARD_DEFAULT_PORT}`) |
 | `DISCORD_TOKEN`, `DISCORD_GUILD_ID`, `DISCORD_CHANNEL_IDS` | `src/core/config.ts` | Discord settings override |
-| `DASHBOARD_PORT`, `DASHBOARD_SCAN_FROM`, `DASHBOARD_SCAN_COUNT`, `JAW_DASHBOARD_OPEN` | `bin/commands/dashboard.ts`, `src/manager/server.ts` | Manager dashboard 실행/scan 설정 |
+| `DASHBOARD_PORT`, `DASHBOARD_SCAN_FROM`, `DASHBOARD_SCAN_COUNT`, `WEASLEY_PODEX_DASHBOARD_OPEN` | `bin/commands/dashboard.ts`, `src/manager/server.ts` | Manager dashboard 실행/scan 설정 |
 | `LOG_LEVEL` | `src/core/logger.ts` | logger verbosity |
-| `OFFICECLI_REPO` | `scripts/install-officecli.sh`, `scripts/install-officecli.ps1` | install 스크립트 소스 repo override (`potatohoney-p/OfficeCLI` 기본) |
-| `JAW_SAFE`, `npm_config_jaw_safe` | `bin/postinstall.ts` | postinstall safe mode |
-| `podex_MIGRATE_SHARED_PATHS`, `npm_config_jaw_migrate_shared_paths` | `bin/postinstall.ts` | shared path migration opt-in |
+| `OFFICECLI_REPO` | `scripts/install-officecli.sh`, `scripts/install-officecli.ps1` | install 스크립트 소스 repo override (`iOfficeAI/OfficeCLI` 기본) |
+| `WEASLEY_PODEX_SAFE`, `npm_config_weasley_podex_safe` | `bin/postinstall.ts` | postinstall safe mode |
+| `WEASLEY_PODEX_MIGRATE_SHARED_PATHS`, `npm_config_weasley_podex_migrate_shared_paths` | `bin/postinstall.ts` | shared path migration opt-in |
 | `TEST_PORT` | `package.json` `test:smoke` | smoke test target port |
 
 ### Docker 설정
 
 | 파일 | 실제 내용 |
 | --- | --- |
-| `Dockerfile` | `node:22-slim`, `python3 make g++ chromium curl`, non-root `jaw`, `npm ci --ignore-scripts && npm rebuild better-sqlite3`, `npm run build && npm run build:frontend`, `podex_HOME=/home/jaw/.podex`, `PORT=3457`, healthcheck `/api/health`, entrypoint `node --dns-result-order=ipv4first dist/server.js` |
-| `Dockerfile.dev` | `node:22-slim`, npm global `podex@${podex_VERSION}` (`ARG podex_VERSION=latest`), `/api/health` build guard, `podex_HOME=/home/jaw/.podex`, `PORT=3457`, entrypoint `jaw serve --no-open` |
-| `docker-compose.yml` | `jaw` service, `build: .`, `container_name: podex`, `${PORT:-3457}:3457`, `env_file: .env`, `jaw-data:/home/jaw/.podex`, `restart: unless-stopped`, `/dev/shm` tmpfs 512m |
+| `Dockerfile` | `node:22-slim`, `python3 make g++ chromium curl`, non-root runtime user, `npm ci --ignore-scripts && npm rebuild better-sqlite3`, `npm run build && npm run build:frontend`, `WEASLEY_PODEX_HOME=/home/weasley/.weasley/podex`, `PORT=3457`, healthcheck `/api/health`, entrypoint `node --dns-result-order=ipv4first dist/server.js` |
+| `Dockerfile.dev` | `node:22-slim`, npm global `weasley-podex@${WEASLEY_PODEX_VERSION}` (`ARG WEASLEY_PODEX_VERSION=latest`), `/api/health` build guard, `WEASLEY_PODEX_HOME=/home/weasley/.weasley/podex`, `PORT=3457`, entrypoint `weasley-podex serve --no-open` |
+| `docker-compose.yml` | Weasley Podex service, `build: .`, `container_name: weasley-podex`, `${PORT:-3457}:3457`, `env_file: .env`, `weasley-podex-data:/home/weasley/.weasley/podex`, `restart: unless-stopped`, `/dev/shm` tmpfs 512m |
 
 ### `scripts/` 실제 파일
 
@@ -158,9 +160,9 @@ aliases: [podex Infra, infrastructure modules, core runtime]
 
 | Module | 역할 |
 | --- | --- |
-| `config.ts` | 경로/설정/CLI 탐지 + `JAW_HOME`/`settings.json`/`skills_ref`/`messaging`/`network` defaults |
+| `config.ts` | 경로/설정/CLI 탐지 + `WEASLEY_PODEX_HOME`/`~/.weasley/podex`; `settings.json`/`skills_ref`/`messaging`/`network` defaults |
 | `codex-config.ts` | Codex `config.toml` context window sync |
-| `instance.ts` | launchd/systemd용 instance ID + node/jaw binary resolution |
+| `instance.ts` | launchd/systemd용 instance ID + sole public `weasley-podex` binary resolution |
 | `runtime-path.ts` | 서비스/launchd 환경에서 PATH 정규화 (`~/.local/bin`, `~/.claude/local/bin`, nvm/fnm/asdf/bun/homebrew 포함) |
 | `main-session.ts` | active_cli/session_id/model/working_dir/effort sync + reset helpers |
 | `message-summary.ts` | message preview/summary helper |
@@ -212,12 +214,12 @@ CLI → 서버 API 호출 시 인증 토큰을 관리하는 경량 헬퍼. 포�
 
 ## src/core/config.ts — 경로, 설정, CLI 탐지 (528L)
 
-**상수**: `JAW_HOME` (`podex_HOME` env || `~/.podex`) · `PROMPTS_DIR` · `DB_PATH` · `SETTINGS_PATH` · `HEARTBEAT_JOBS_PATH` (`heartbeat.json`) · `UPLOADS_DIR` · `SKILLS_DIR` · `SKILLS_REF_DIR` · `MIGRATION_MARKER` · `DEFAULT_PORT` (`3457`) · `CDP_PORT_OFFSET` (`5783`) · `APP_VERSION` (package.json)
+**상수**: `WEASLEY_PODEX_HOME` (resolved `WEASLEY_PODEX_HOME` or `~/.weasley/podex`) · `PROMPTS_DIR` · `DB_PATH` · `SETTINGS_PATH` · `HEARTBEAT_JOBS_PATH` (`heartbeat.json`) · `UPLOADS_DIR` · `SKILLS_DIR` · `SKILLS_REF_DIR` · `MIGRATION_MARKER` · `DEFAULT_PORT` (`3457`) · `CDP_PORT_OFFSET` (`5783`) · `APP_VERSION` (package.json)
 
 | Function | 역할 |
 | --- | --- |
 | `ensureDirs()` | `prompts/`, `uploads/`, `skills/`, `skills_ref/` 생성 |
-| `runMigration()` | legacy `claw.db`/project-local settings → `~/.podex/` migration |
+| `runMigration()` | legacy `~/.podex`/`claw.db`/project-local settings → `~/.weasley/podex/` migration |
 | `loadSettings()` | settings.json 로드 + normalize/migration |
 | `saveSettings(s)` | 설정 저장 |
 | `replaceSettings(s)` | ESM live binding 대체 |
@@ -229,14 +231,14 @@ CLI → 서버 API 호출 시 인증 토큰을 관리하는 경량 헬퍼. 포�
 | `detectAllCli()` | registry 기반 CLI 상태 반환 |
 | `buildDefaultPerCli()` | registry에서 기본 perCli 빌드 |
 
-`settings` 기본값에는 `showReasoning`, `channel`, `telegram.forwardAll`, `discord.forwardAll`, `messaging.lastActive/latestSeen`, `memory.autoReflectAfterFlush`, `memory.flushMessageWindow`, `avatar.*`, `stt.*`, `network.bindHost/lanBypass/remoteAccess`가 포함된다. `--home`은 `podex.ts`에서 `podex_HOME`으로 주입된 뒤 이 모듈이 로드된다.
+`settings` 기본값에는 `showReasoning`, `channel`, `telegram.forwardAll`, `discord.forwardAll`, `messaging.lastActive/latestSeen`, `memory.autoReflectAfterFlush`, `memory.flushMessageWindow`, `avatar.*`, `stt.*`, `network.bindHost/lanBypass/remoteAccess`가 포함된다. `--home`은 역사적 entrypoint `podex.ts`에서 `WEASLEY_PODEX_HOME`으로 주입된 뒤 이 모듈이 로드된다.
 
 ### Current registry defaults
 
 | CLI | Default Model | Notable model aliases |
 | --- | --- | --- |
 | `pi` | `grok-composer-2.5-fast` | Pi RPC runtime with isolated profile/model registration |
-| `agy` | AGY-selected | print-mode runtime; `--model` is capability-gated (observed in AGY 1.1.4); no separate effort flag. Model values must be the tier-bearing label form that `agy --model` accepts on its own, e.g. `Gemini 3.6 Flash (Medium)`. A bare tier-less slug such as `gemini-3.5-flash` is rejected (`requires --effort`) because podex never sends `--effort` for AGY. Note `agy models` prints effort-suffixed slugs (`gemini-3.6-flash-medium`), which is a different form — do not copy that output into the registry |
+| `agy` | AGY-selected | print-mode runtime; `--model` is capability-gated (observed in AGY 1.1.4); no separate effort flag. Model values must be the tier-bearing label form that `agy --model` accepts on its own, e.g. `Gemini 3.6 Flash (Medium)`. A bare tier-less slug such as `gemini-3.5-flash` is rejected (`requires --effort`) because Weasley Podex never sends `--effort` for AGY. Note `agy models` prints effort-suffixed slugs (`gemini-3.6-flash-medium`), which is a different form — do not copy that output into the registry |
 | `ai-e` | `sonnet` | AI-E wrapper runtime |
 | `claude` | `claude-opus-4-8` | canonical choices include `opus`, `sonnet`, `sonnet[1m]`, `haiku`; pinned full IDs include `claude-opus-5`/`claude-opus-5[1m]`; legacy aliases normalize |
 | `claude-e` | `claude-opus-4-8` | helper-backed Claude E runtime |
@@ -274,7 +276,7 @@ jaw_ceo_transcript (id PK, at, role, text, source, created_at)
 
 Virtual employees are not written to `employees` or `employee_sessions`. `src/core/employees.ts` emits `SyntheticEmployeeRow` values with `virtual:` IDs for one-off dispatch, and `src/orchestrator/distribute.ts` skips session resume/persist for those IDs.
 
-`trace`, `tool_log`, and `working_dir` are added by in-place migration if missing. `working_dir` also gets `idx_messages_wd`; Jaw CEO transcript rows are bounded by the coordinator persistence layer.
+`trace`, `tool_log`, and `working_dir` are added by in-place migration if missing. `working_dir` also gets `idx_messages_wd`; the Realtime CEO transcript table retains the historical internal `jaw_ceo_transcript` name and rows are bounded by the coordinator persistence layer.
 
 | Prepared Statement | 용도 |
 | --- | --- |
@@ -446,7 +448,7 @@ Advanced memory runtime의 entry point. FTS5 인덱스, search routing, task sna
 
 ### heartbeat.ts / heartbeat-schedule.ts
 
-주기 작업과 스케줄 파싱/실행을 담당한다. 현재 소스 오브 트루스는 `~/.podex/heartbeat.json`이며, schedule은 `every`/`cron` + `timeZone`을 지원한다. PABCD 활성, heartbeat 중첩, main agent busy 상태에서는 `pendingJobs` 큐로 밀어두고, user message queue가 먼저 비워진 뒤 heartbeat pending을 drain한다. 프롬프트 앞에는 memory search 지시를 자동 주입한다. (#252) job별 opt-in `runner: main|employee|script`(기본 main; employee는 `claimWorker`+`runSingleAgent`, busy 시 `skipped: employee busy` 경고 리포트; script는 argv `execFile` no-shell)와 `reportPolicy: always|anomaly_only|silent` + 구조화 리포트 계약(`heartbeat-report.ts`: status/changed/record_required/user_visible/summary/evidence/next_action)을 지원한다. `[SILENT]`/quiet marker는 정책과 무관하게 우선하며, silent 정책 anchor는 `delivered_at NULL` + "recorded (not sent)" 주입 문구로 구분된다. main runner는 `orchestrateAndCollectData`의 `agyPlannerOnly` 신호(#251)에 1회 한정 재시도한다. PUT `/api/heartbeat`는 UI가 모르는 runner 필드를 job id 기준 merge-by-id로 보존한다.
+주기 작업과 스케줄 파싱/실행을 담당한다. 현재 소스 오브 트루스는 `${WEASLEY_PODEX_HOME:-~/.weasley/podex}/heartbeat.json`이며, schedule은 `every`/`cron` + `timeZone`을 지원한다. PABCD 활성, heartbeat 중첩, main agent busy 상태에서는 `pendingJobs` 큐로 밀어두고, user message queue가 먼저 비워진 뒤 heartbeat pending을 drain한다. 프롬프트 앞에는 memory search 지시를 자동 주입한다. (#252) job별 opt-in `runner: main|employee|script`(기본 main; employee는 `claimWorker`+`runSingleAgent`, busy 시 `skipped: employee busy` 경고 리포트; script는 argv `execFile` no-shell)와 `reportPolicy: always|anomaly_only|silent` + 구조화 리포트 계약(`heartbeat-report.ts`: status/changed/record_required/user_visible/summary/evidence/next_action)을 지원한다. `[SILENT]`/quiet marker는 정책과 무관하게 우선하며, silent 정책 anchor는 `delivered_at NULL` + "recorded (not sent)" 주입 문구로 구분된다. main runner는 `orchestrateAndCollectData`의 `agyPlannerOnly` 신호(#251)에 1회 한정 재시도한다. PUT `/api/heartbeat`는 UI가 모르는 runner 필드를 job id 기준 merge-by-id로 보존한다.
 
 ### indexing.ts / keyword-expand.ts / bootstrap.ts
 
@@ -497,7 +499,7 @@ module-level policy로 `browser start` mode 정규화 + agent/debug/manual launc
 
 ## lib/mcp-sync.ts — MCP 통합 관리 (1212L)
 
-소스: `~/.podex/mcp.json`
+소스: `${WEASLEY_PODEX_HOME:-~/.weasley/podex}/mcp.json` (`~/.podex/mcp.json`은 legacy migration source)
 
 | Function | 역할 |
 | --- | --- |
@@ -506,20 +508,22 @@ module-level policy로 `browser start` mode 정규화 + agent/debug/manual launc
 | `toCodexToml(config)` | Codex `config.toml` 변환 |
 | `toOpenCodeMcp(config)` | OpenCode `opencode.json` 변환 |
 | `toCopilotMcp(config)` | Copilot `~/.copilot/mcp-config.json` 변환 |
-| `syncToAll(config, workDir)` | 통합 → 지원 MCP-aware CLI 설정 동기화 |
+| `syncToAll(config, workDir)` | 통합 → 8개 MCP-aware target 설정 동기화; result object key가 target inventory의 single source of truth |
 | `copyDefaultSkills()` | 2×3 분류 + Codex 폴백 + registry.json 동기화 |
-| `propagateSkillsToInstances()` | base `skills_ref`를 `~/.podex-*` instances로 동기화하고, 각 instance의 synced `skills_ref` 기준으로 default active skills를 활성화 (`baseActive` fallback 포함) |
+| `propagateSkillsToInstances()` | base `skills_ref`를 resolved Weasley Podex instances로 동기화하고, 각 instance의 synced `skills_ref` 기준으로 default active skills를 활성화 (`~/.podex-*`는 legacy discovery fallback, `baseActive` fallback 포함) |
 | `installMcpServers(config)` | npm -g / uv tool install |
 | `ensureSymlinkSafe(target, linkPath, opts)` | symlink 보호 모드 |
 | `safeMoveToBackup(pathToMove)` | 충돌 디렉토리 백업 이동 |
 | `ensureSkillsSymlinks(workingDir, opts)` | 스킬 심링크 + 보호 결과 반환 |
 
-Antigravity MCP sync is an existing config target at `~/.gemini/antigravity/mcp_config.json` via `lib/mcp/format-converters.ts`. It remains separate from the AGY runtime registry key `agy`; adding AGY runtime support does not make `ai-e.providers` include `agy`.
+현재 target inventory는 Claude (`~/.claude.json`), Codex (`~/.codex/config.toml`), Gemini (`~/.gemini/settings.json`), OpenCode (`~/.config/opencode/opencode.json`), Copilot (`~/.copilot/mcp-config.json`), Cursor (`~/.cursor/mcp.json`), Antigravity (`~/.gemini/antigravity/mcp_config.json`), Kiro (`~/.kiro/settings/mcp.json`) 총 8개다. Grok은 Cursor config를 compatibility scan하며 별도 target이 아니다.
+
+Target 수, 이름, 성공/건너뜀 출력은 반드시 `syncToAll()` result key에서 파생한다. CLI help·confirm 문구·test에 `8` 또는 target 목록을 독립적으로 하드코딩하지 않는다. Antigravity MCP target은 AGY runtime registry key `agy`와 별개이며 `ai-e.providers`에 `agy`를 추가하지 않는다.
 
 ### symlink 보호 정책
 
 - 실디렉토리 충돌 시 `fs.rmSync` 대신 `renameSync`로 백업
-- 백업 경로: `~/.podex/backups/skills-conflicts/<timestamp>/`
+- 백업 경로: `${WEASLEY_PODEX_HOME:-~/.weasley/podex}/backups/skills-conflicts/<timestamp>/`
 - 결과가 로그/API 응답에 기록됨 (`status: ok/skip`, `action: noop/backup/create/conflict`)
 
 ## lib/quota-copilot.ts — Copilot Quota & Auth (328L)
@@ -557,7 +561,7 @@ Copilot 할당량 조회 + 인증 토큰 관리. env → file cache → `gh auth
 | `employees.ts` | employee CRUD |
 | `heartbeat.ts` | heartbeat read/write |
 | `skills.ts` | skill list/enable/disable/reset |
-| `jaw-memory.ts` | jaw memory search/read/list/save/init/reflect/flush/soul |
+| `jaw-memory.ts` | historical internal filename for Weasley Podex memory search/read/list/save/init/reflect/flush/soul |
 | `avatar.ts` | avatar summary + image upload/delete/read |
 | `i18n.ts` | locale bundle endpoints |
 | `orchestrate.ts` | PABCD reset/state/workers/snapshot/queue steer/dispatch/worker result |
@@ -585,7 +589,7 @@ Copilot 할당량 조회 + 인증 토큰 관리. env → file cache → `gh auth
 | `assertSkillId(id)` | skill id 검증 + path segment 차단 |
 | `assertFilename(f, opts)` | 확장자 화이트리스트 + path separator 차단 + 길이 제한 |
 | `assertMemoryRelPath(input, opts)` | nested relative path 허용 + traversal 차단 |
-| `assertSendFilePath(filePath, workingDir?)` | `JAW_HOME`/`workingDir`/OS temp 아래 파일만 전송 허용 |
+| `assertSendFilePath(filePath, workingDir?)` | internal resolved `WEASLEY_PODEX_HOME` (`WEASLEY_PODEX_HOME`)/`workingDir`/OS temp 아래 파일만 전송 허용 |
 | `safeResolveUnder(base, rel)` | `path.resolve` 후 base 디렉토리 탈출 검증 |
 
 ### decode.ts (21L)
@@ -636,8 +640,9 @@ Copilot 할당량 조회 + 인증 토큰 관리. env → file cache → `gh auth
 
 ### bin/podex.ts — CLI Entrypoint
 
+> 역사적 내부 파일명. 공개 npm/bin 이름은 `weasley-podex` 하나다.
 > 서브커맨드 라우터 + `--home` flag 처리 (manual `indexOf`, NOT parseArgs)
-> `--home` → `process.env.podex_HOME` 설정 후 config.ts 동적 import
+> `--home` → `process.env.WEASLEY_PODEX_HOME` 설정 후 config.ts 동적 import;
 > known-command guard: `--home` 사용 시 알려진 명령어(`serve`, `init`, `doctor`, `chat`, `employee`, `reset`, `mcp`, `skill`, `status`, `browser`, `memory`, `launchd`, `clone`, `service`, `dashboard`, `orchestrate`, `dispatch`)와 경로 누락을 구분
 
 현재 subcommand router에 실제 등록된 명령은 `serve`, `init`, `doctor`, `chat`, `employee`, `reset`, `mcp`, `skill`, `status`, `browser`, `memory`, `launchd`, `clone`, `orchestrate`, `dispatch`, `service`, `dashboard`다.
@@ -650,16 +655,16 @@ Copilot 할당량 조회 + 인증 토큰 관리. env → file cache → `gh auth
 | --- | --- |
 | `--port` | `PORT` |
 | `--host` | `HOST` |
-| `--open` / `--no-open` | `JAW_OPEN_BROWSER` |
-| `--lan` | `JAW_LAN_MODE` |
-| `--remote` | `JAW_REMOTE_ACCESS_MODE=direct` |
-| `--trust-proxy` | `JAW_TRUST_PROXY` |
-| `--trust-forwarded` | `JAW_TRUST_FORWARDED` |
+| `--open` / `--no-open` | `WEASLEY_PODEX_OPEN_BROWSER` |
+| `--lan` | `WEASLEY_PODEX_LAN_MODE` |
+| `--remote` | `WEASLEY_PODEX_REMOTE_ACCESS_MODE=direct` |
+| `--trust-proxy` | `WEASLEY_PODEX_TRUST_PROXY` |
+| `--trust-forwarded` | `WEASLEY_PODEX_TRUST_FORWARDED` |
 
 ### bin/commands/dashboard.ts
 
-> `jaw dashboard serve [--port 24576] [--from 3457] [--count 50] [--no-open]`.
-> `jaw dashboard service`는 현재 “later phase”로 거절된다.
+> `weasley-podex dashboard serve [--port 24576] [--from 3457] [--count 50] [--no-open]`.
+> `weasley-podex dashboard service`는 현재 “later phase”로 거절된다.
 > Electron app의 implicit manager spawn은 `24577-24590` lane을 사용하며 Web/CLI 기본 manager `24576`을 스캔하거나 공유하지 않는다.
 
 | Option | Env |
@@ -667,11 +672,11 @@ Copilot 할당량 조회 + 인증 토큰 관리. env → file cache → `gh auth
 | `--port` | `DASHBOARD_PORT` |
 | `--from` | `DASHBOARD_SCAN_FROM` |
 | `--count` | `DASHBOARD_SCAN_COUNT` |
-| `--open` / `--no-open` | `JAW_DASHBOARD_OPEN` |
+| `--open` / `--no-open` | `WEASLEY_PODEX_DASHBOARD_OPEN` |
 
 ### bin/commands/clone.ts (165L)
 
-> `jaw clone` — JAW_HOME 환경 복제. source 디렉토리 검증(존재 + settings.json 포함).
+> `weasley-podex clone` — resolved data home 환경 복제. 소스에서는 `WEASLEY_PODEX_HOME` 상수로 표현한다. source 디렉토리 검증(존재 + settings.json 포함).
 > `--from <path>`: 소스 지정. `--with-memory`: memory/ 디렉토리도 복사. `--link-ref`: skills_ref/ 심볼릭 링크.
 > 복제 후 subprocess `regenerateB` 호출로 프롬프트/스킬 재생성.
 
@@ -685,7 +690,7 @@ Copilot 할당량 조회 + 인증 토큰 관리. env → file cache → `gh auth
 
 | Function | 역할 |
 | --- | --- |
-| `instanceId()` | JAW_HOME → label 식별자 (`default` / `<name>-<md5hash8>`) |
+| `instanceId()` | resolved `WEASLEY_PODEX_HOME` → label 식별자 (`default` / `<name>-<md5hash8>`) |
 | `xmlEsc(s)` | XML 특수문자 이스케이프 |
 | `generatePlist(port)` | launchd plist XML 생성 |
 
@@ -696,5 +701,5 @@ Copilot 할당량 조회 + 인증 토큰 관리. env → file cache → `gh auth
 ### bin/commands/browser.ts / memory.ts
 
 - `getServerUrl(undefined)` 패턴: PORT env 우선, 없으면 DEFAULT_PORT(`3457`)
-- memory.ts: init 경로 `${JAW_HOME}/memory/` (하드코딩 `~/.podex` 제거)
+- memory.ts: init 경로 `${WEASLEY_PODEX_HOME}/memory/`; 기본값은 `~/.weasley/podex`이며 `~/.podex`은 legacy data migration source다.
 

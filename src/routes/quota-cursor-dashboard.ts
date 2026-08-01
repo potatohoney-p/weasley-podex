@@ -4,13 +4,13 @@ import fs from 'fs';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { join } from 'path';
-import { JAW_HOME, SETTINGS_PATH } from '../core/config.js';
+import { WEASLEY_PODEX_HOME, SETTINGS_PATH } from '../core/config.js';
 import { stripUndefined } from '../core/strip-undefined.js';
 
 const execFileAsync = promisify(execFile);
 
 const CURSOR_USAGE_SUMMARY_URL = 'https://cursor.com/api/usage-summary';
-const CURSOR_SESSION_TOKEN_FILE = join(JAW_HOME, 'quota', 'cursor-session-token');
+const CURSOR_SESSION_TOKEN_FILE = join(WEASLEY_PODEX_HOME, 'quota', 'cursor-session-token');
 
 type QuotaRecord = Record<string, unknown>;
 
@@ -180,7 +180,7 @@ function mergeCursorQuota(base: QuotaRecord, overlay: QuotaRecord | null): Quota
         return stripUndefined({
             ...base,
             dashboardAuth: false,
-            dashboardHint: 'Set CURSOR_SESSION_TOKEN or ~/.podex/quota/cursor-session-token from cursor.com dashboard cookie WorkosCursorSessionToken',
+            dashboardHint: 'Set CURSOR_SESSION_TOKEN or ~/.weasley/podex/quota/cursor-session-token from cursor.com dashboard cookie WorkosCursorSessionToken',
         });
     }
     if (overlay["error"]) {

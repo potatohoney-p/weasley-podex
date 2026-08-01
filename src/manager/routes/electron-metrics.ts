@@ -1,7 +1,7 @@
 import type { Request, Response, Router } from 'express';
 import { Router as createRouter } from 'express';
 
-export const podex_ELECTRON_HEADER = 'x-podex-electron';
+export const WEASLEY_PODEX_ELECTRON_HEADER = 'x-weasley-podex-electron';
 export const ELECTRON_METRICS_TTL_MS = 30_000;
 
 export interface MetricsProcessSample {
@@ -129,7 +129,7 @@ export function createElectronMetricsRouter(
     const router = createRouter();
 
     router.get('/', (req: Request, res: Response<GetMetricsResponse>) => {
-        if (req.header(podex_ELECTRON_HEADER) !== '1') {
+        if (req.header(WEASLEY_PODEX_ELECTRON_HEADER) !== '1') {
             res.json({ available: false, reason: 'not-in-electron' });
             return;
         }
@@ -138,7 +138,7 @@ export function createElectronMetricsRouter(
     });
 
     router.post('/', (req: Request, res: Response) => {
-        if (req.header(podex_ELECTRON_HEADER) !== '1') {
+        if (req.header(WEASLEY_PODEX_ELECTRON_HEADER) !== '1') {
             res.status(403).json({ error: 'forbidden' });
             return;
         }

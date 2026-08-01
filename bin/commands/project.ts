@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// bin/commands/project.ts — CLI: jaw project [set|reset|clear|list]
+// bin/commands/project.ts — CLI: weasley-podex project [set|reset|clear|list]
 
 import { loadSettings, getServerUrl, setProjectDirs, clearProjectDirs, getProjectDirs } from '../../src/core/config.js';
 import { cliFetch, getCliAuthToken } from '../../src/cli/api-auth.js';
@@ -10,9 +10,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw project — manage project workspace directories
+  weasley-podex project — manage project workspace directories
 
-  Usage: jaw project <subcommand> [paths...]
+  Usage: weasley-podex project <subcommand> [paths...]
 
   Subcommands:
     set <path>[, <path>...]   Set active project directories (comma-separated)
@@ -21,10 +21,10 @@ if (shouldShowHelp(process.argv)) printAndExit(`
     list                      Show current project directories (default)
 
   Examples:
-    jaw project set ~/Dev/frontend, ~/Dev/backend
-    jaw project set /absolute/path/to/project
-    jaw project reset
-    jaw project list
+    weasley-podex project set ~/Dev/frontend, ~/Dev/backend
+    weasley-podex project set /absolute/path/to/project
+    weasley-podex project reset
+    weasley-podex project list
 `);
 
 loadSettings();
@@ -50,7 +50,7 @@ async function applyViaServer(patch: Record<string, unknown>): Promise<Record<st
 function parsePaths(input: string): string[] {
     const raw = input.split(',').map(s => s.trim()).filter(Boolean);
     if (raw.length === 0) {
-        console.error('  ❌ No paths specified. Usage: jaw project set <path>[, <path>...]');
+        console.error('  ❌ No paths specified. Usage: weasley-podex project set <path>[, <path>...]');
         process.exit(1);
     }
     const resolved: string[] = [];

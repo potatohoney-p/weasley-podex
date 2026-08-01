@@ -13,7 +13,8 @@ function readDocumentTheme(): DashboardUiTheme {
     return isTheme(value) ? value : 'auto';
 }
 
-const STORAGE_KEY = 'jaw.uiTheme';
+const STORAGE_KEY = 'weasley-podex.uiTheme';
+const LEGACY_STORAGE_KEY = 'jaw.uiTheme';
 
 export function applyDocumentTheme(theme: DashboardUiTheme): void {
     if (typeof document === 'undefined') return;
@@ -21,6 +22,7 @@ export function applyDocumentTheme(theme: DashboardUiTheme): void {
     try {
         if (typeof localStorage !== 'undefined') {
             localStorage.setItem(STORAGE_KEY, theme);
+            localStorage.removeItem(LEGACY_STORAGE_KEY);
         }
     } catch {
         // Storage may be disabled in private mode; theme still applies in-memory.

@@ -19,7 +19,6 @@ export const RUNTIME_EMOJI_TO_ICON: Record<string, IconName> = {
     '⚠': 'warning',
     '⚠️': 'warning',
     '💡': 'lightbulb',
-    '🦈': 'shark',
     '👤': 'user',
     '💭': 'thinking',
     '💬': 'message',

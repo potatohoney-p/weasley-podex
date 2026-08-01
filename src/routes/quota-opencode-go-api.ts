@@ -3,13 +3,13 @@
 import fs from 'fs';
 import os from 'os';
 import { join } from 'path';
-import { JAW_HOME, SETTINGS_PATH } from '../core/config.js';
+import { WEASLEY_PODEX_HOME, SETTINGS_PATH } from '../core/config.js';
 import { stripUndefined } from '../core/strip-undefined.js';
 
 const OPENCODE_GO_USAGE_URL = 'https://opencode.ai/zen/go/v1/usage';
 const OPENCODE_GO_MODELS_URL = 'https://opencode.ai/zen/go/v1/models';
 const OPENCODE_AUTH_FILE = join(os.homedir(), '.local/share/opencode/auth.json');
-const OPENCODE_GO_API_KEY_FILE = join(JAW_HOME, 'quota', 'opencode-go-api-key');
+const OPENCODE_GO_API_KEY_FILE = join(WEASLEY_PODEX_HOME, 'quota', 'opencode-go-api-key');
 
 type QuotaRecord = Record<string, unknown>;
 

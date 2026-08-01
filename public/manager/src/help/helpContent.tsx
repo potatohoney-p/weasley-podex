@@ -12,7 +12,7 @@ export type HelpEntry = {
 
 const InstancesHelp = (
     <>
-        <p className="help-lead">실행 중인 jaw 인스턴스를 보고, 미리보기·로그·설정을 다루는 곳이에요.</p>
+        <p className="help-lead">실행 중인 Weasley Podex 인스턴스를 보고, 미리보기·로그·설정을 다루는 곳이에요.</p>
         <ul className="help-bullets">
             <li>좌측 네비게이터에서 인스턴스를 골라 우측 Workbench(Overview / Preview / Logs / Settings)에서 작업하실 수 있어요.</li>
             <li>우측 상단 상태 점이 초록이면 온라인, 회색이면 오프라인이에요.</li>
@@ -29,7 +29,7 @@ const InstancesHelp = (
                 </tbody>
             </table>
         </div>
-        <p className="help-tip">인스턴스가 안 보이시면 터미널에서 <code>podex start</code>로 새 jaw를 띄워보세요. 자동으로 목록에 떠요.</p>
+        <p className="help-tip">인스턴스가 안 보이시면 터미널에서 <code>weasley-podex start</code>로 새 Weasley Podex 인스턴스를 띄워보세요. 자동으로 목록에 떠요.</p>
     </>
 );
 
@@ -83,10 +83,10 @@ const ScheduleHelp = (
 
 const NotesHelp = (
     <>
-        <p className="help-lead"><code>~/.podex-dashboard/notes/</code>의 마크다운 파일을 직접 편집하는 노트장이에요.</p>
+        <p className="help-lead"><code>~/.weasley/podex-dashboard/notes/</code>의 마크다운 파일을 직접 편집하는 노트장이에요.</p>
         <ul className="help-bullets">
             <li>좌측 트리에서 파일 선택, 우측에서 <strong>Raw / Preview / WYSIWYG</strong> 모드로 편집하실 수 있어요.</li>
-            <li>Instances Preview 채팅에서 vault 경로(예: <code>~/.podex-dashboard/notes/foo.md</code> 또는 <code>daily/foo.md</code>)를 <strong>클릭</strong>하면 Notes 탭으로 이동하고 해당 파일이 열려요. 자동 전환은 없고 클릭할 때만 이동합니다.</li>
+            <li>Instances Preview 채팅에서 vault 경로(예: <code>~/.weasley/podex-dashboard/notes/foo.md</code> 또는 <code>daily/foo.md</code>)를 <strong>클릭</strong>하면 Notes 탭으로 이동하고 해당 파일이 열려요. 자동 전환은 없고 클릭할 때만 이동합니다.</li>
             <li>vault 밖 경로(예: 프로젝트 <code>.ts</code> 파일)는 기존처럼 Finder로 열려요.</li>
             <li><kbd>⌘/Ctrl + S</kbd>로 저장, <kbd>⌘/Ctrl + E</kbd>로 모드 순환 전환이에요.</li>
             <li>파일이 외부에서 바뀌면 충돌 알림이 떠요 — Reload / Overwrite / Keep local 중 선택하세요.</li>
@@ -97,10 +97,10 @@ const NotesHelp = (
 
 const RemindersHelp = (
     <>
-        <p className="help-lead">Jaw Reminders 스냅샷을 대시보드에서 읽고 확인하는 미러 화면이에요.</p>
+        <p className="help-lead">Weasley Podex Reminders 스냅샷을 대시보드에서 읽고 확인하는 미러 화면이에요.</p>
         <ul className="help-bullets">
             <li><strong>All / Focused / Scheduled / High / Done</strong> 보기로 현재 reminder 상태를 훑어볼 수 있어요.</li>
-            <li>Refresh는 외부 Jaw Reminders 스냅샷을 다시 읽어서 대시보드용 row로 반영해요.</li>
+            <li>Refresh는 외부 Weasley Podex Reminders 스냅샷을 다시 읽어서 대시보드용 row로 반영해요.</li>
             <li>원본 reminder 저장소가 없거나 형식이 맞지 않아도 대시보드는 기존 미러 데이터를 유지하고 상태 메시지만 보여줘요.</li>
         </ul>
         <div className="help-deep">
@@ -169,10 +169,10 @@ const ShortcutsHelp = (
 
 const RoutingHelp = (
     <>
-        <p className="help-lead">jaw는 Boss가 직접 처리할지, Employee에게 보낼지 상황에 따라 나눠요.</p>
+        <p className="help-lead">Weasley Podex는 Boss가 직접 처리할지, Employee에게 보낼지 상황에 따라 나눠요.</p>
         <ul className="help-bullets">
             <li><strong>Boss</strong>는 현재 대화의 주 작업자예요. 단일 파일 수정, 상태 확인, GitHub 정리는 보통 Boss가 직접 처리해요.</li>
-            <li><strong>Employee</strong>는 <code>podex dispatch</code>로 보내는 독립 작업자예요. Backend, Frontend, Docs 같은 역할별 검증에 씁니다.</li>
+            <li><strong>Employee</strong>는 <code>weasley-podex dispatch</code>로 보내는 독립 작업자예요. Backend, Frontend, Docs 같은 역할별 검증에 씁니다.</li>
             <li><strong>PABCD</strong>에서는 A phase가 plan audit, B phase가 read-only verification 중심이에요. 구현은 Boss가 직접 합니다.</li>
             <li><strong>$computer-use</strong> 요청은 desktop-control 규칙을 따라 real desktop 또는 browser automation 경로로 라우팅돼요.</li>
         </ul>
@@ -223,7 +223,7 @@ export const HELP_CONTENT: Record<HelpTopicId, HelpEntry> = {
     instances: { title: 'Instances', subtitle: '인스턴스 운영', body: InstancesHelp },
     board: { title: 'Board', subtitle: 'Cross-instance Kanban', body: BoardHelp },
     schedule: { title: 'Schedule', subtitle: '시간 기반 작업', body: ScheduleHelp },
-    reminders: { title: 'Reminders', subtitle: 'Jaw Reminders mirror', body: RemindersHelp },
+    reminders: { title: 'Reminders', subtitle: 'Weasley Podex Reminders mirror', body: RemindersHelp },
     notes: { title: 'Notes', subtitle: '마크다운 노트', body: NotesHelp },
     settings: { title: 'Settings', subtitle: '대시보드 설정', body: SettingsHelp },
     shortcuts: { title: 'Shortcuts', subtitle: '전역 키보드 도움말', body: ShortcutsHelp },

@@ -1,4 +1,4 @@
-﻿import { WebAiError } from './errors.js';
+import { WebAiError } from './errors.js';
 import { listSessions } from './session.js';
 import type { WebAiVendor, WebAiSessionRecord } from './types.js';
 
@@ -88,7 +88,7 @@ export function ambiguousSessionTargetError(input: {
 }
 
 export function sessionPollRecoveryCommand(vendor: string, sessionId: string): string {
-    return `podex browser web-ai poll --vendor ${normalizeWebAiVendor(vendor)} --session ${sessionId} --navigate --json`;
+    return `weasley-podex browser web-ai poll --vendor ${normalizeWebAiVendor(vendor)} --session ${sessionId} --navigate --json`;
 }
 
 export function buildTargetMismatchResult(input: {

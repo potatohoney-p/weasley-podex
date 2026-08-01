@@ -1,5 +1,5 @@
 ﻿/**
- * podex design — Design workspace CLI (186 Phase 4).
+ * weasley-podex design — Design workspace CLI (186 Phase 4).
  *
  * FILE-FIRST: talks to src/manager/design/store.ts directly so agents can
  * list/create/read/write pages without a live dashboard. `path`/`edit`/
@@ -57,7 +57,7 @@ function die(message: string): never {
 }
 
 function usage(): void {
-    console.log(`${c.bold}podex design${c.reset} — design workspace (file-first)
+    console.log(`${c.bold}weasley-podex design${c.reset} — design workspace (file-first)
 
   design list [--project <dir>] [--json]
   design create --title <t> [--project <dir>] [--json]

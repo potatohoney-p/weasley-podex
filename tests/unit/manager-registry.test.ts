@@ -132,15 +132,15 @@ test('manager registry clamps scan and UI values', () => {
             },
             diffRootPolicy: 'working-dir-first',
             diffPinnedRootByPort: {
-                3462: '/Users/jun/Developer/new/700_projects/podex',
+                3462: '/Users/example/src/weasley-podex',
                 bad: '/tmp/ignored',
             },
             diffRecentRepoRoots: [
-                ' /Users/jun/Developer/new/700_projects/podex ',
-                '/Users/jun/Developer/new/700_projects/podex',
+                ' /Users/example/src/weasley-podex ',
+                '/Users/example/src/weasley-podex',
                 '',
                 42,
-                '/Users/jun/Developer/new/700_projects/other',
+                '/Users/example/src/other',
             ],
             diffDefaultMode: 'base',
             diffBaseRef: ' origin/master ',
@@ -174,7 +174,7 @@ test('manager registry clamps scan and UI values', () => {
             bad: { label: 'ignored' },
         },
         profiles: {
-            default: { label: ' Default ', homePath: '/Users/jun/.podex', pinned: true },
+            default: { label: ' Default ', homePath: '/Users/example/.podex', pinned: true },
             bad_profile: { label: 'ignored' },
         },
         activeProfileFilter: ['default', 'BAD'],
@@ -203,10 +203,10 @@ test('manager registry clamps scan and UI values', () => {
     assert.equal(loaded.registry.ui.dashboardShortcutKeymap.previousInstance, 'Alt+ArrowUp');
     assert.equal(loaded.registry.ui.dashboardShortcutKeymap.nextInstance, 'Alt+J');
     assert.equal(loaded.registry.ui.diffRootPolicy, 'working-dir-first');
-    assert.deepEqual(loaded.registry.ui.diffPinnedRootByPort, { 3462: '/Users/jun/Developer/new/700_projects/podex' });
+    assert.deepEqual(loaded.registry.ui.diffPinnedRootByPort, { 3462: '/Users/example/src/weasley-podex' });
     assert.deepEqual(loaded.registry.ui.diffRecentRepoRoots, [
-        '/Users/jun/Developer/new/700_projects/podex',
-        '/Users/jun/Developer/new/700_projects/other',
+        '/Users/example/src/weasley-podex',
+        '/Users/example/src/other',
     ]);
     assert.equal(loaded.registry.ui.diffDefaultMode, 'base');
     assert.equal(loaded.registry.ui.diffBaseRef, 'origin/master');
@@ -252,8 +252,8 @@ test('manager registry patch persists instance preferences', () => {
                 nextInstance: 'Alt+ArrowDown',
             },
             diffRootPolicy: 'manual',
-            diffPinnedRootByPort: { 3461: '/Users/jun/Developer/new/700_projects/podex' },
-            diffRecentRepoRoots: ['/Users/jun/Developer/new/700_projects/podex'],
+            diffPinnedRootByPort: { 3461: '/Users/example/src/weasley-podex' },
+            diffRecentRepoRoots: ['/Users/example/src/weasley-podex'],
             diffDefaultMode: 'staged',
             diffBaseRef: 'main',
             diffIncludeUntracked: false,
@@ -279,7 +279,7 @@ test('manager registry patch persists instance preferences', () => {
             },
         },
         instances: { 3461: { label: 'worker', favorite: true, hidden: true } },
-        profiles: { default: { label: 'Default', homePath: '/Users/jun/.podex', pinned: true } },
+        profiles: { default: { label: 'Default', homePath: '/Users/example/.podex', pinned: true } },
         activeProfileFilter: ['default'],
     }, { path });
 
@@ -298,8 +298,8 @@ test('manager registry patch persists instance preferences', () => {
     assert.equal(saved.registry.ui.dashboardShortcutKeymap.focusInstances, 'Alt+1');
     assert.equal(saved.registry.ui.dashboardShortcutKeymap.nextInstance, 'Alt+ArrowDown');
     assert.equal(saved.registry.ui.diffRootPolicy, 'manual');
-    assert.deepEqual(saved.registry.ui.diffPinnedRootByPort, { 3461: '/Users/jun/Developer/new/700_projects/podex' });
-    assert.deepEqual(saved.registry.ui.diffRecentRepoRoots, ['/Users/jun/Developer/new/700_projects/podex']);
+    assert.deepEqual(saved.registry.ui.diffPinnedRootByPort, { 3461: '/Users/example/src/weasley-podex' });
+    assert.deepEqual(saved.registry.ui.diffRecentRepoRoots, ['/Users/example/src/weasley-podex']);
     assert.equal(saved.registry.ui.diffDefaultMode, 'staged');
     assert.equal(saved.registry.ui.diffBaseRef, 'main');
     assert.equal(saved.registry.ui.diffIncludeUntracked, false);

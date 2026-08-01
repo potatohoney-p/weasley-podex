@@ -5,10 +5,16 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const skillsRoot = join(root, 'skills_ref');
 const skillPath = join(root, 'skills_ref/web-ai/SKILL.md');
 const browserSkillPath = join(root, 'skills_ref/browser/SKILL.md');
+const skillsRefCheckedOut = fs.existsSync(skillsRoot)
+    && (fs.existsSync(join(skillsRoot, '.git')) || fs.readdirSync(skillsRoot).length > 0);
+const optionalSkillsRef = {
+    skip: skillsRefCheckedOut ? false : 'optional skills_ref submodule not checked out',
+};
 
-test('WAIS-001: web-ai skill exists and documents structured prompt shape', () => {
+test('WAIS-001: web-ai skill exists and documents structured prompt shape', optionalSkillsRef, () => {
     const skill = fs.readFileSync(skillPath, 'utf8');
     assert.match(skill, /structured question envelope/);
     assert.match(skill, /\[SYSTEM\]/);
@@ -16,14 +22,14 @@ test('WAIS-001: web-ai skill exists and documents structured prompt shape', () =
     assert.match(skill, /## Constraints/);
 });
 
-test('WAIS-002: web-ai skill documents 30_browser-style workflow and fallback policy', () => {
+test('WAIS-002: web-ai skill documents 30_browser-style workflow and fallback policy', optionalSkillsRef, () => {
     const skill = fs.readFileSync(skillPath, 'utf8');
     assert.match(skill, /active-tab -> snapshot -> act -> snapshot -> verify/);
     assert.match(skill, /vision-click.*fallback/i);
     assert.match(skill, /refs are latest-snapshot scoped/i);
 });
 
-test('WAIS-003: web-ai skill keeps PRD32 first-slice scope narrow', () => {
+test('WAIS-003: web-ai skill keeps PRD32 first-slice scope narrow', optionalSkillsRef, () => {
     const skill = fs.readFileSync(skillPath, 'utf8');
     assert.match(skill, /ChatGPT/);
     assert.match(skill, /inline prompt/);
@@ -31,7 +37,7 @@ test('WAIS-003: web-ai skill keeps PRD32 first-slice scope narrow', () => {
     assert.match(skill, /file upload/);
 });
 
-test('WAIS-003b: web-ai skill documents context packaging before upload', () => {
+test('WAIS-003b: web-ai skill documents context packaging before upload', optionalSkillsRef, () => {
     const skill = fs.readFileSync(skillPath, 'utf8');
     assert.match(skill, /context-dry-run/);
     assert.match(skill, /context-render/);
@@ -39,7 +45,7 @@ test('WAIS-003b: web-ai skill documents context packaging before upload', () => 
     assert.match(skill, /--file` still means live browser upload/);
 });
 
-test('WAIS-004: browser skill delegates AI workflows to web-ai skill', () => {
+test('WAIS-004: browser skill delegates AI workflows to web-ai skill', optionalSkillsRef, () => {
     const browserSkill = fs.readFileSync(browserSkillPath, 'utf8');
     assert.match(browserSkill, /For ChatGPT web-ai workflows, use the `web-ai` skill/);
 });

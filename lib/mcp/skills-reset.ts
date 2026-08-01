@@ -4,24 +4,28 @@
  */
 import fs from 'fs';
 import { join, resolve } from 'path';
-import { execSync } from 'child_process';
 import {
-    JAW_HOME,
-    shouldSkipClone, writeCloneMeta, CLONE_TIMEOUT_MS,
+    WEASLEY_PODEX_HOME,
+    shouldSkipClone, writeCloneMeta,
     CODEX_ACTIVE, OPENCLAW_ACTIVE,
     copyDirRecursive, findPackageRoot,
-    isDiscoverableSkillDirName, isSkillSourceEntryName, shouldUseLocalSkillsSource,
+    isDiscoverableSkillDirName, isSkillSourceEntryName,
 } from './skills-utils.js';
 
 type SkillRegistry = {
-    skills?: Record<string, { category?: string }>;
+    skills?: Record<string, { category?: string; defaultActive?: boolean }>;
 };
 import {
     ensureWorkingDirSkillsLinks,
     createBackupContext,
     movePathToBackup,
 } from './skills-symlinks.js';
-import { copyDefaultSkills } from './skills-distribution.js';
+import {
+    assertValidSkillsSourceDirectory,
+    cloneConfiguredSkillsRepository,
+    copyDefaultSkills,
+    getConfiguredSkillsRepository,
+} from './skills-distribution.js';
 import { stripUndefined } from '../../src/core/strip-undefined.js';
 
 // ─── Types ─────────────────────────────────────────
@@ -47,51 +51,59 @@ export type SkillResetResult = SkillResetCoreResult & {
  * 미등록(커스텀) 스킬은 보존.
  */
 export function softResetSkills() {
-    const activeDir = join(JAW_HOME, 'skills');
-    const refDir = join(JAW_HOME, 'skills_ref');
+    const activeDir = join(WEASLEY_PODEX_HOME, 'skills');
+    const refDir = join(WEASLEY_PODEX_HOME, 'skills_ref');
     const packageRefDir = join(findPackageRoot(), 'skills_ref');
+    fs.mkdirSync(activeDir, { recursive: true });
+    fs.mkdirSync(refDir, { recursive: true });
 
-    // 1. Source for ref update: GitHub clone (latest) → bundled fallback (dev)
-    const SKILLS_REPO = 'https://github.com/potatohoney-p/podex-skills.git';
+    // 1. Source for ref update: explicitly configured repository → bundled core.
+    // With no WEASLEY_PODEX_SKILLS_REPO, reset performs no network operation.
     let sourceDir: string | null = null;
     let tmpCloneDir: string | null = null;
 
-    // 1a. Try GitHub clone first (public repo, always latest), unless local
-    // bundled skills are explicitly requested for compatibility closeout work.
-    if (shouldUseLocalSkillsSource()) {
-        const sourceMode = process.env["JAW_SKILLS_SOURCE"] || 'local';
-        console.log(`[skills:soft-reset] using local bundled source (JAW_SKILLS_SOURCE=${sourceMode})`);
-    } else if (shouldSkipClone()) {
-        console.log(`[skills:soft-reset] GitHub clone suppressed (cooldown active)`);
-    } else {
+    let configuredRepository: string | null = null;
+    try {
+        configuredRepository = getConfiguredSkillsRepository();
+    } catch (error) {
+        console.warn(`[skills:soft-reset] configured repository ignored: ${(error as Error).message}`);
+    }
+
+    // 1a. A remote clone is opt-in and always uses execFileSync argument
+    // boundaries through cloneConfiguredSkillsRepository().
+    if (configuredRepository && shouldSkipClone()) {
+        console.log('[skills:soft-reset] configured repository clone suppressed (cooldown active)');
+    } else if (configuredRepository) {
         try {
-            tmpCloneDir = join(JAW_HOME, '.skills_clone_tmp');
-            if (fs.existsSync(tmpCloneDir)) fs.rmSync(tmpCloneDir, { recursive: true });
-            console.log(`[skills:soft-reset] fetching latest skills from GitHub...`);
-            execSync(`git clone --depth 1 ${SKILLS_REPO} "${tmpCloneDir}"`, {
-                stdio: 'pipe', timeout: CLONE_TIMEOUT_MS,
-            });
+            tmpCloneDir = join(WEASLEY_PODEX_HOME, '.skills_clone_tmp');
+            if (fs.existsSync(tmpCloneDir)) fs.rmSync(tmpCloneDir, { recursive: true, force: true });
+            console.log('[skills:soft-reset] fetching configured skills repository...');
+            cloneConfiguredSkillsRepository(configuredRepository, tmpCloneDir);
+            assertValidSkillsSourceDirectory(tmpCloneDir);
             writeCloneMeta(true);
             sourceDir = tmpCloneDir;
-        } catch (e) {
+        } catch (error) {
             writeCloneMeta(false);
-            console.log(`[skills:soft-reset] GitHub clone skipped: ${(e as Error).message?.slice(0, 60)}`);
+            console.log(`[skills:soft-reset] configured repository unavailable: ${(error as Error).message?.slice(0, 80)}`);
+            if (tmpCloneDir && fs.existsSync(tmpCloneDir)) {
+                fs.rmSync(tmpCloneDir, { recursive: true, force: true });
+            }
             tmpCloneDir = null;
         }
     }
 
-    // 1b. Fallback: bundled skills_ref/ (dev mode with initialized submodule)
+    // 1b. Normal source and remote failure fallback: bundled skills_ref/.
     if (!sourceDir) {
         const bundledReady = fs.existsSync(packageRefDir) && fs.existsSync(join(packageRefDir, 'registry.json'));
         if (bundledReady) {
             sourceDir = packageRefDir;
-            console.log(`[skills:soft-reset] using bundled fallback`);
+            console.log('[skills:soft-reset] using bundled core');
         } else if (fs.existsSync(join(refDir, 'registry.json'))) {
-            // 1c. User already cloned into skills_ref/ manually — skip copy-to-ref, go straight to activation
+            // 1c. Keep an existing local catalog if a damaged package has no bundle.
             sourceDir = null;
-            console.log(`[skills:soft-reset] using existing skills_ref/ (manually cloned)`);
+            console.log('[skills:soft-reset] using existing local skills_ref');
         } else {
-            console.warn(`[skills:soft-reset] ⚠️ no source available — keeping current skills unchanged`);
+            console.warn('[skills:soft-reset] no source available — keeping current skills unchanged');
             return { restored: 0, added: 0 };
         }
     }
@@ -124,7 +136,7 @@ export function softResetSkills() {
         if (fs.existsSync(regPath)) {
             const reg = JSON.parse(fs.readFileSync(regPath, 'utf8')) as SkillRegistry;
             for (const [id, meta] of Object.entries(reg.skills || {})) {
-                if (meta.category === 'orchestration') autoActivate.add(id);
+                if (meta.defaultActive === true || meta.category === 'orchestration') autoActivate.add(id);
             }
         }
     } catch { /* registry parse error — skip */ }
@@ -171,8 +183,8 @@ export function softResetSkills() {
 // ─── Hard reset ────────────────────────────────────
 
 function runHardSkillResetCore(): SkillResetCoreResult {
-    const activeDir = join(JAW_HOME, 'skills');
-    const refDir = join(JAW_HOME, 'skills_ref');
+    const activeDir = join(WEASLEY_PODEX_HOME, 'skills');
+    const refDir = join(WEASLEY_PODEX_HOME, 'skills_ref');
     if (fs.existsSync(activeDir)) fs.rmSync(activeDir, { recursive: true, force: true });
     if (fs.existsSync(refDir)) fs.rmSync(refDir, { recursive: true, force: true });
     fs.mkdirSync(activeDir, { recursive: true });
@@ -183,7 +195,7 @@ function runHardSkillResetCore(): SkillResetCoreResult {
 
 // ─── Repair helpers ────────────────────────────────
 
-function isTrustedRepairTarget(repairTargetDir: string, jawHome = JAW_HOME): boolean {
+function isTrustedRepairTarget(repairTargetDir: string, jawHome = WEASLEY_PODEX_HOME): boolean {
     return resolve(repairTargetDir) === resolve(jawHome);
 }
 
@@ -228,7 +240,7 @@ export function repairManagedSkillLinksAfterReset(
         _jawHome?: string;
     } = {},
 ): { symlinks?: ReturnType<typeof ensureWorkingDirSkillsLinks>; repairedPaths: string[] } {
-    const jawHome = opts._jawHome ?? JAW_HOME;
+    const jawHome = opts._jawHome ?? WEASLEY_PODEX_HOME;
     if (!isTrustedRepairTarget(repairTargetDir, jawHome)) {
         return { repairedPaths: [] };
     }

@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../../core/weasley-podex-env.js';
 /**
  * TUI display mode resolution (line-mode vs alt-screen). Phase 4 flag gate.
  */
@@ -13,7 +14,7 @@ export interface TuiModeOptions {
     rows?: number | undefined;
 }
 
-/** CLI flag > env JAW_TUI_FULLSCREEN > settings.tui.fullscreen > default fullscreen. */
+/** CLI flag > env WEASLEY_PODEX_TUI_FULLSCREEN > settings.tui.fullscreen > default fullscreen. */
 export function resolveTuiDisplayMode(opts: TuiModeOptions = {}): TuiDisplayMode {
     const isTTY = opts.isTTY ?? Boolean(process.stdout.isTTY);
     const term = opts.term ?? process.env['TERM'] ?? '';
@@ -25,7 +26,7 @@ export function resolveTuiDisplayMode(opts: TuiModeOptions = {}): TuiDisplayMode
     if (opts.fullscreenFlag === true) return 'fullscreen';
     if (opts.fullscreenFlag === false) return 'line';
 
-    const env = process.env['JAW_TUI_FULLSCREEN'];
+    const env = getWeasleyPodexEnv('TUI_FULLSCREEN');
     if (env === '1' || env === 'true') return 'fullscreen';
     if (env === '0' || env === 'false') return 'line';
 

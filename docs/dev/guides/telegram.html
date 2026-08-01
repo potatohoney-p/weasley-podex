@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Telegram — podex Docs</title>
+<title>Telegram — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link active" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -79,14 +78,14 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Telegram</h1>
-<p class="lead">Control your podex agent remotely through Telegram. Send messages, receive responses, forward agent output, handle voice messages with STT, and use slash commands -- all from your phone.</p>
+<p class="lead">Control your Weasley Podex agent remotely through Telegram. Send messages, receive responses, forward agent output, handle voice messages with STT, and use slash commands -- all from your phone.</p>
 
 <h2>Setup</h2>
 <h3>1. Create a Bot with BotFather</h3>
@@ -106,8 +105,8 @@
 }</code></pre>
 <div class="callout callout-info">Leave <code>allowedChatIds</code> empty initially. Send <code>/id</code> to your bot to get your chat ID, then add it to the array for security.</div>
 
-<h3>3. Alternative: Use jaw init</h3>
-<pre><code>jaw init --channel telegram --telegram-token "YOUR_TOKEN"</code></pre>
+<h3>3. Alternative: Use weasley-podex init</h3>
+<pre><code>weasley-podex init --channel telegram --telegram-token "YOUR_TOKEN"</code></pre>
 
 <h2>Sending and Receiving</h2>
 <ul>
@@ -132,7 +131,7 @@ POST /api/channel/send  # Unified endpoint (preferred)</code></pre>
 <p>In group/supergroup chats, the bot only responds when mentioned with <code>@botUsername</code>. The mention is automatically stripped from the message before processing.</p>
 
 <h2>Dashboard Telegram Hub (P0–P4)</h2>
-<p>Forum topics can route to different podex instances. Manager UI configures <code>(chatId, threadId) → port</code> mappings. Hub commands: <code>/setthread</code>, <code>/threads</code>, <code>/hubhelp</code>. <strong>P4:</strong> per-topic <code>model</code> and <code>systemPrompt</code> overrides in Manager UI. See <code>structure/telegram.md</code> for the full hub-member relay model.</p>
+<p>Forum topics can route to different Weasley Podex instances. Manager UI configures <code>(chatId, threadId) → port</code> mappings. Hub commands: <code>/setthread</code>, <code>/threads</code>, <code>/hubhelp</code>. <strong>P4:</strong> per-topic <code>model</code> and <code>systemPrompt</code> overrides in Manager UI. See <code>structure/telegram.md</code> for the full hub-member relay model.</p>
 
 <h2>Watchdog diagnostics</h2>
 <p>When an agent turn stalls past the idle/progress watchdog threshold, kill diagnostics are relayed to the originating Telegram chat or forum topic so operators see why the turn ended.</p>

@@ -1,8 +1,8 @@
-﻿import fs from 'fs';
+import fs from 'fs';
 import os from 'os';
 import { createHash } from 'crypto';
 import { join } from 'path';
-import { settings, JAW_HOME, PROMPTS_DIR, SKILLS_DIR, SKILLS_REF_DIR, loadHeartbeatFile, deriveCdpPort } from '../core/config.js';
+import { settings, WEASLEY_PODEX_HOME, PROMPTS_DIR, SKILLS_DIR, SKILLS_REF_DIR, loadHeartbeatFile, deriveCdpPort } from '../core/config.js';
 import { expandHomePath } from '../core/path-expand.js';
 import { stripUndefined } from '../core/strip-undefined.js';
 import { getEmployees } from '../core/db.js';
@@ -150,7 +150,7 @@ const KNOWN_A1_SOURCE_HASHES = new Set([
 
 function normalizeRenderedContent(content: string): string {
     return content
-        .replaceAll(JAW_HOME, '{{JAW_HOME}}')
+        .replaceAll(WEASLEY_PODEX_HOME, '{{WEASLEY_PODEX_HOME}}')
         .replaceAll(String(deriveCdpPort()), '{{CDP_PORT}}');
 }
 
@@ -168,7 +168,7 @@ export function resolveLegacyA1Migration(opts: {
 
 // ─── Skill Loading ───────────────────────────────────
 
-/** Read all active skills from JAW_HOME/skills/ */
+/** Read all active skills from WEASLEY_PODEX_HOME/skills/ */
 export function loadActiveSkills() {
     try {
         if (!fs.existsSync(SKILLS_DIR)) return [];
@@ -253,7 +253,7 @@ export function getMergedSkills() {
 function getTemplateVars(): Record<string, string> {
     // DIAGRAM_CAPABILITIES/REFERENCES vars removed (#prompt-cache): the A-1
     // diagram section now defers that detail to the skill's MUST-READ body.
-    return { JAW_HOME, CDP_PORT: String(deriveCdpPort()) };
+    return { WEASLEY_PODEX_HOME, CDP_PORT: String(deriveCdpPort()) };
 }
 
 /** Render A1 system prompt from template */
@@ -471,12 +471,12 @@ function appendLegacyMemoryContext(prompt: string) {
     }
 
     try {
-        const memPath = join(JAW_HOME, 'memory', 'MEMORY.md');
+        const memPath = join(WEASLEY_PODEX_HOME, 'memory', 'MEMORY.md');
         if (fs.existsSync(memPath)) {
             const coreMem = fs.readFileSync(memPath, 'utf8').trim();
             if (coreMem && coreMem.length > 50) {
                 const truncated = coreMem.length > 1500
-                    ? coreMem.slice(0, 1500) + '\n...(use `podex memory read MEMORY.md` for full)'
+                    ? coreMem.slice(0, 1500) + '\n...(use `weasley-podex memory read MEMORY.md` for full)'
                     : coreMem;
                 next += '\n\n---\n## Core Memory\n' + truncated;
                 log.info(`[memory] MEMORY.md loaded: ${truncated.length} chars`);
@@ -563,8 +563,8 @@ export function getSystemPrompt(opts: { currentPrompt?: string; forDisk?: boolea
             if (fs.existsSync(pabcdPath)) {
                 prompt += `\n\n## PABCD Orchestration Guide
 PABCD is the structured 5-phase development workflow: I(Interview) → P(Plan) → A(Plan Audit) → B(Build) → C(Check) → D(Done). Large/"loop" work runs as MULTIPLE passes — one full P→A→B→C→D per work-phase (a work-phase is an outcome slice, not a PABCD letter).
-- Transitions are shell commands only: \`podex orchestrate I|P|A|B|C|D\` (forward-only; \`I\` reachable from any state, context preserved; \`reset\` → IDLE).
-- Forward transitions (P→A→B→C→D) require an EVIDENCE attestation, not narration ("현재는 B입니다" does nothing): \`podex orchestrate B --attest '{"from":"A","to":"B","did":"<what you did>"}'\` (C→D also needs \`checkOutput\`+\`exitCode\`). The state machine only moves on the command.
+- Transitions are shell commands only: \`weasley-podex orchestrate I|P|A|B|C|D\` (forward-only; \`I\` reachable from any state, context preserved; \`reset\` → IDLE).
+- Forward transitions (P→A→B→C→D) require an EVIDENCE attestation, not narration ("현재는 B입니다" does nothing): \`weasley-podex orchestrate B --attest '{"from":"A","to":"B","did":"<what you did>"}'\` (C→D also needs \`checkOutput\`+\`exitCode\`). The state machine only moves on the command.
 - Gates: P/A/B end with ⛔ STOP — present results and WAIT for user approval before advancing (goal mode self-advances). In goal mode, after D the agent re-enters P (D→IDLE→P) for the next work-phase until the objective is met; do each phase's real work, never rubber-stamp to advance.
 - A audits the PLAN via a read-only employee dispatch; B: YOU write all code, employees verify (\`--mutable\` is the only write exception); C runs mechanical checks (tsc/tests) — when the work-phase produces a render artifact (HTML/SVG/UI/chart), C also requires a render-grounding loop (run, observe, fix) before C→D (C-RENDER-GROUNDING-01) — then D summarizes.
 - Devlog plan docs use decade numbering (LEXICO-SPLIT-01). Loop/multi-pass tasks WRITE all per-phase docs to diff-level up front (DIFFLEVEL-ROADMAP-01) and may open with a design-only PABCD pass.
@@ -672,18 +672,18 @@ It defines phase contracts, dispatch pitfalls (delegation trap, context drift, p
 
     prompt += '\n\n---\n' + getBoundedLocalSearchContract();
 
-    // ─── Delegation rules: jaw employees vs CLI sub-agents ───
+    // ─── Delegation rules: Weasley Podex employees vs CLI sub-agents ───
     // Always-injected guard block (survives user-edited A-1.md overrides).
-    // Employee-dispatch prose is owned by A-1 "jaw Employees vs CLI Sub-agents"
+    // Employee-dispatch prose is owned by A-1 "Weasley Podex Employees vs CLI Sub-agents"
     // + orchestration.md; only the prohibition + dispatch one-liner stay here.
     prompt += '\n\n---\n## Delegation Rules\n';
     prompt += '### CLI Sub-agents (Task/Agent tool)\n';
     prompt += 'You CAN use your CLI\'s Task/Agent tools for internal subtasks: research, parallel file reads, code analysis.\n';
     prompt += 'Subagents you spawn must NOT spawn further subagents (1-level only).\n';
     prompt += 'When spawning a subagent, include: "Do NOT use Agent, subagent, or delegation tools. Do all work directly."\n';
-    prompt += '\n### jaw Employee Dispatch\n';
-    prompt += 'Write the task brief to a FRESH unique file per dispatch with your file tool, then `podex dispatch --agent "Name" --task-file <path> --async` — prints a runId and returns immediately. A completion notice carrying the FULL result (up to ~8k chars) re-enters your context when you are idle; if it says "clipped", read the rest via `podex worker read <runId> --tail 120`. Parallel fan-out: `--batch --agents-file <path> --async`. Omitting `--async` blocks the turn up to 10 minutes while polling — acceptable only for a quick (<2 min) read-only verify.\n';
-    prompt += 'CLI Task tool ≠ jaw employee dispatch — simple research → CLI sub-agents, never employees (full rules: "jaw Employees vs CLI Sub-agents" section).\n';
+    prompt += '\n### Weasley Podex Employee Dispatch\n';
+    prompt += 'Write the task brief to a FRESH unique file per dispatch with your file tool, then `weasley-podex dispatch --agent "Name" --task-file <path> --async` — prints a runId and returns immediately. A completion notice carrying the FULL result (up to ~8k chars) re-enters your context when you are idle; if it says "clipped", read the rest via `weasley-podex worker read <runId> --tail 120`. Parallel fan-out: `--batch --agents-file <path> --async`. Omitting `--async` blocks the turn up to 10 minutes while polling — acceptable only for a quick (<2 min) read-only verify.\n';
+    prompt += 'CLI Task tool ≠ Weasley Podex employee dispatch — simple research → CLI sub-agents, never employees (full rules: "Weasley Podex Employees vs CLI Sub-agents" section).\n';
 
     return prompt;
 }
@@ -905,8 +905,8 @@ export function getEmployeePromptV2(
     prompt += `\n- Execute the assigned task directly in this employee session.`;
     prompt += `\n- You CAN use CLI sub-agents (Task/Agent tool) for parallel work: research, file reads, code analysis. This is encouraged.`;
     prompt += `\nWhen spawning a sub-agent, include: "Do NOT use Agent, subagent, or delegation tools. Do all work directly."`;
-    prompt += `\n- ⛔ Do NOT run \`podex dispatch\` or any equivalent delegation command from this session.`;
-    prompt += `\n- ⛔ Do NOT output jaw dispatch JSON or subtask JSON.`;
+    prompt += `\n- ⛔ Do NOT run \`weasley-podex dispatch\` or any equivalent delegation command from this session.`;
+    prompt += `\n- ⛔ Do NOT output weasley-podex dispatch JSON or subtask JSON.`;
     prompt += `\n- ⛔ Do NOT describe Boss/employee orchestration structure in your answer.`;
 
     if (mcpSummary) {

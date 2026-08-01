@@ -293,7 +293,7 @@ export class DashboardLifecycleManager {
         try {
             const child = this.spawnImpl(command[0]!, command.slice(1), {
                 // P2b: instances in hub-member mode relay outbound to the dashboard hub.
-                env: { ...process.env, JAW_HUB_CALLBACK_URL: `http://127.0.0.1:${DASHBOARD_DEFAULT_PORT}` },
+                env: { ...process.env, WEASLEY_PODEX_HUB_CALLBACK_URL: `http://127.0.0.1:${DASHBOARD_DEFAULT_PORT}` },
                 stdio: 'pipe',
             }) as ChildProcessWithoutNullStreams;
             const token = LifecycleStore.newToken();
@@ -378,7 +378,7 @@ export class DashboardLifecycleManager {
             return {
                 ok: true, action, port,
                 status: 'started',
-                message: `Started Jaw on port ${port}.`,
+                message: `Started Weasley Podex on port ${port}.`,
                 home,
                 pid: attached.pid || null,
                 command,
@@ -435,7 +435,7 @@ export class DashboardLifecycleManager {
             await this.store.deleteMarker(entry.home);
             return {
                 ok: true, action, port, status: 'stopped',
-                message: `Stopped dashboard-owned Jaw on port ${port}.`,
+                message: `Stopped dashboard-owned Weasley Podex on port ${port}.`,
                 home: entry.home, pid: entry.pid || null, command: entry.command,
                 expectedStateAfter: 'offline',
                 stdout: entry.stdout, stderr: entry.stderr,
@@ -469,7 +469,7 @@ export class DashboardLifecycleManager {
             action,
             status: startResult.ok ? 'restarted' : startResult.status,
             message: startResult.ok
-                ? `Restarted dashboard-owned Jaw on port ${port}.`
+                ? `Restarted dashboard-owned Weasley Podex on port ${port}.`
                 : startResult.message,
             expectedStateAfter: startResult.ok ? 'restart-detected' : startResult.expectedStateAfter,
         });
@@ -653,7 +653,7 @@ export class DashboardLifecycleManager {
                 home,
                 command,
                 pid,
-                message: `External Jaw on port ${port} stopped by listener PID ${pid}.`,
+                message: `External Weasley Podex on port ${port} stopped by listener PID ${pid}.`,
                 expectedStateAfter: 'offline',
             };
         } catch (error) {

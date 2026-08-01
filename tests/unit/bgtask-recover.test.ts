@@ -3,7 +3,7 @@
 //
 // recoverBgTasks does a GLOBAL sweep (loadRecoverable → all running rows) and
 // this file stubs isAlive to declare every foreign PID dead. Under the shared
-// jaw.db that tests/run.mts hands to every isolation:'process' child, that would
+// weasley-podex.db that tests/run.mts hands to every isolation:'process' child, that would
 // clobber in-flight rows owned by other concurrent test files (e.g. bgtask-runner's
 // "exited before completion" task → "lost during server restart"). Import the
 // isolated-home setup FIRST so this file gets its own DB and only sweeps its own rows.

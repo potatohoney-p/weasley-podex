@@ -53,8 +53,8 @@ test('classic web and Manager preview both support STT keyboard fallback and ifr
     assert.ok(app.includes('usePreviewSttLifecycle(jawCeoBridge.voice)'), 'Manager App must install the preview STT lifecycle hook');
     assert.ok(lifecycle.includes("data?.type !== 'jaw-preview-stt-recording'"), 'Manager lifecycle hook must listen for child STT lifecycle messages');
     assert.ok(lifecycle.includes('isLocalPreviewMessageOrigin(event.origin)'), 'Manager lifecycle hook must origin-check child STT lifecycle messages');
-    assert.ok(lifecycle.includes('void voice.end()'), 'Manager lifecycle hook must release Jaw CEO realtime mic before preview STT starts');
-    assert.ok(bridge.includes('voice,'), 'Jaw CEO dashboard bridge must expose the voice controller for STT coordination');
+    assert.ok(lifecycle.includes('void voice.end()'), 'Manager lifecycle hook must release Weasley Podex CEO realtime mic before preview STT starts');
+    assert.ok(bridge.includes('voice,'), 'Weasley Podex CEO dashboard bridge must expose the voice controller for STT coordination');
 });
 
 test('STT shortcut copy and locale strings mention the fallback shortcut', () => {

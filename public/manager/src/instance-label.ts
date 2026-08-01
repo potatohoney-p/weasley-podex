@@ -3,9 +3,12 @@
 function compactGeneratedInstanceName(value: string, port: number): string {
     const rawName = value.split('/').filter(Boolean).pop() || value;
     const withoutHash = rawName
-        .replace(/^\.?podex-(\d+)-[a-f0-9]{7,}$/i, 'podex $1')
-        .replace(/^\.?podex-(\d+)$/i, 'podex $1');
-    return withoutHash || `podex ${port}`;
+        .replace(/^\.?podex$/i, 'Weasley Podex')
+        .replace(/^\.?podex-(\d+)-[a-f0-9]{7,}$/i, 'Weasley Podex $1')
+        .replace(/^\.?podex-(\d+)$/i, 'Weasley Podex $1')
+        .replace(/^\.?weasley-podex-(\d+)-[a-f0-9]{7,}$/i, 'Weasley Podex $1')
+        .replace(/^\.?weasley-podex-(\d+)$/i, 'Weasley Podex $1');
+    return withoutHash || `Weasley Podex ${port}`;
 }
 
 export function instanceLabel(instance: DashboardInstance): string {

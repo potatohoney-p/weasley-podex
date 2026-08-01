@@ -30,10 +30,10 @@ test('056 scope exclusion register classifies all adjacent surfaces', {
         'Terminal panel',
         'BrowserPanel',
         'Browser QA',
-        'Child Jaw instance/Jaw mode',
+        'Child Weasley Podex instance/Jaw mode',
         'Dashboard Board/Kanban connector',
         'Dashboard Reminders/Schedule',
-        'Jawsidian Notes',
+        'Weasley Podex Notes',
         'Doc panel',
         'Diff/Folder panel',
         'Dashboard memory federation',
@@ -46,7 +46,7 @@ test('056 scope exclusion register classifies all adjacent surfaces', {
 
     assert.match(register, /왜 빠졌나/, 'register must answer why a surface is out of scope');
     assert.match(register, /Do not run `npm run electron:dist:mac`/, 'register must preserve the no Electron rebuild rule');
-    assert.match(register, /Do not replace `\/Applications\/podex\.app`/, 'register must preserve the no installed app replacement rule');
+    assert.match(register, /Do not replace `\/Applications\/Weasley Podex\.app`/, 'register must preserve the no installed app replacement rule');
 });
 
 test('056 register depends on the completed QA matrix before release audit resumes', {

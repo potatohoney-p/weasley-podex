@@ -6,7 +6,7 @@ not a replacement for the system prompt, skills, or durable memory.
 
 ## Configuration
 
-Create `context-hooks.json` in `podex_HOME`:
+Create `context-hooks.json` in `WEASLEY_PODEX_HOME` (by default `~/.weasley/podex`):
 
 ```json
 {
@@ -38,7 +38,7 @@ Create `context-hooks.json` in `podex_HOME`:
 }
 ```
 
-Paths must be relative to `podex_HOME`. Each source must be a JSON object and
+Paths must be relative to `WEASLEY_PODEX_HOME`. Each source must be a JSON object and
 must declare a non-empty field allowlist. The process that owns a runtime fact
 is responsible for updating its JSON snapshot; the hook itself never writes
 state.
@@ -46,14 +46,14 @@ state.
 ## Boundaries
 
 - No shell commands, scripts, network requests, or arbitrary modules.
-- Source paths and resolved symlinks cannot escape `podex_HOME`.
+- Source paths and resolved symlinks cannot escape `WEASLEY_PODEX_HOME`.
 - Files larger than 64 KiB are rejected.
 - Configured limits are capped at 8 sources, 4,000 total characters, and 1,500
   characters per source.
 - Missing, stale, malformed, or oversized sources are skipped independently.
 - Values are JSON serialized and labeled as untrusted data rather than
   instructions.
-- `podex_PRE_PROMPT_HOOKS=0` is the emergency kill switch.
+- `WEASLEY_PODEX_PRE_PROMPT_HOOKS=0` is the emergency kill switch.
 
 These controls reduce prompt injection and latency risk, but they do not make
 an untrusted producer authoritative. Register only locally controlled state
@@ -62,13 +62,13 @@ files and expose the minimum fields needed for a decision.
 ## Inspection
 
 ```bash
-jaw hooks inspect
-jaw hooks inspect --scope heartbeat --job ac-guard --json
+weasley-podex hooks inspect
+weasley-podex hooks inspect --scope heartbeat --job ac-guard --json
 ```
 
 The command reports included, stale, invalid, out-of-scope, and over-budget
 sources and prints the exact prompt block. A configured prompt build also emits
-one bounded summary log line prefixed with `[jaw:hook:pre-prompt]`.
+one bounded summary log line prefixed with `[weasley-podex:hook:pre-prompt]`.
 
 If the configuration file is absent, disabled, invalid, or killed through the
 environment variable, prompt construction continues without hook content.

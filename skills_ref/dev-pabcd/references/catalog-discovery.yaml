@@ -1,0 +1,34 @@
+schema_version: 1
+name: weasley-podex-catalog-discovery
+license: Apache-2.0
+purpose: Help a user choose among meaningful product options before implementation.
+stages:
+  - id: experience
+    title: Experience and interaction
+    questions:
+      - id: primary_user
+        prompt: Who is the primary user and what outcome should feel easiest?
+      - id: interaction_model
+        prompt: Which interaction model best fits the task?
+        options: [guided, direct-manipulation, conversational, automated]
+      - id: information_density
+        prompt: How much information should be visible at once?
+        options: [focused, balanced, dense]
+  - id: domain
+    title: Domain behavior
+    depends_on: [experience]
+    questions:
+      - id: source_of_truth
+        prompt: Which system owns the canonical state?
+      - id: lifecycle
+        prompt: What states and transitions must the user understand?
+  - id: implementation
+    title: Derived implementation constraints
+    depends_on: [experience, domain]
+    questions:
+      - id: trust_boundary
+        prompt: Which actions cross a trust or authorization boundary?
+      - id: offline_behavior
+        prompt: What must still work without a network connection?
+output:
+  required_fields: [decision, rationale, rejected_options, verification]

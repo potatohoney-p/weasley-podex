@@ -1,7 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { existsSync, mkdirSync, openSync, closeSync, readFileSync, renameSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { JAW_HOME } from '../../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../core/config.js';
 import { WebAiError } from './errors.js';
 
 export const SESSION_STORE_VERSION = 1;
@@ -56,7 +56,7 @@ export interface PruneResult {
 }
 
 function storePath(): string {
-    return join(JAW_HOME, STORE_FILE);
+    return join(WEASLEY_PODEX_HOME, STORE_FILE);
 }
 
 function lockPath(): string {
@@ -329,7 +329,7 @@ export function pruneSessions(options: PruneOptions = {}): PruneResult {
 }
 
 export function loadLegacyBaselines(): unknown[] {
-    const path = join(JAW_HOME, 'web-ai-baselines.json');
+    const path = join(WEASLEY_PODEX_HOME, 'web-ai-baselines.json');
     if (!existsSync(path)) return [];
     try {
         const parsed = JSON.parse(readFileSync(path, 'utf8')) as { baselines?: unknown[] };

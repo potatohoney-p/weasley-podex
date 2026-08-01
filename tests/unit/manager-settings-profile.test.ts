@@ -21,10 +21,10 @@ test('expandPatch keeps top-level keys at the root', () => {
 
 test('expandPatch builds nested objects for dotted keys', () => {
     const out = expandPatch({
-        'tui.themeSeed': 'jaw-dark',
+        'tui.themeSeed': 'weasley-podex-dark',
         'tui.pasteCollapseLines': 5,
     });
-    assert.deepEqual(out, { tui: { themeSeed: 'jaw-dark', pasteCollapseLines: 5 } });
+    assert.deepEqual(out, { tui: { themeSeed: 'weasley-podex-dark', pasteCollapseLines: 5 } });
 });
 
 test('expandPatch deep-merges multiple per-cli edits into one perCli node', () => {

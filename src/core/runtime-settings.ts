@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from './weasley-podex-env.js';
 import {
     loadUnifiedMcp, syncToAll,
     ensureWorkingDirSkillsLinks, initMcpConfig,
@@ -25,7 +26,7 @@ function syncJwcConfigDefault(currentSettings: Record<string, any>): void {
         const model = ao?.['model'] || pc?.['model'] || 'claude-sonnet-4-6';
         const provider = ao?.['provider'] || pc?.['provider'] || 'anthropic';
         const modelRole = provider !== 'anthropic' ? `${provider}/${model}` : `${provider}/${model}`;
-        const agentDir = process.env['podex_JWC_AGENT_DIR'] || join(homedir(), '.jwc', 'agent');
+        const agentDir = getWeasleyPodexEnv('JWC_AGENT_DIR') || join(homedir(), '.jwc', 'agent');
         const configPath = join(agentDir, 'config.yml');
         let content: string;
         try {
@@ -45,7 +46,7 @@ function syncJwcConfigDefault(currentSettings: Record<string, any>): void {
         }
         writeFileSync(configPath, content, 'utf8');
     } catch (e: unknown) {
-        console.error('[jaw:jwc-config]', (e as Error).message);
+        console.error('[weasley-podex:jwc-config]', (e as Error).message);
     }
 }
 
@@ -184,9 +185,9 @@ export async function applyRuntimeSettingsPatch(
                 ensureWorkingDirSkillsLinks(settings["workingDir"], { onConflict: 'skip', includeClaude: true, allowReplaceManaged: true });
                 syncToAll(loadUnifiedMcp());
                 regenerateB();
-                log.info(`[jaw:workingDir] artifacts regenerated for ${settings["workingDir"]}`);
+                log.info(`[weasley-podex:workingDir] artifacts regenerated for ${settings["workingDir"]}`);
             } catch (e: unknown) {
-                console.error('[jaw:workingDir]', (e as Error).message);
+                console.error('[weasley-podex:workingDir]', (e as Error).message);
             }
         }
 

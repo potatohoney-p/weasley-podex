@@ -16,14 +16,14 @@ const folderRowsSource = readFileSync('public/manager/src/folder-panel/FolderTre
 
 test('folder drag payload round-trips folder entries', () => {
     const encoded = encodeFolderPanelDragPayload({
-        path: '/Users/jun/My Folder',
+        path: '/Users/example/My Folder',
         name: 'My Folder',
         kind: 'directory',
         size: 0,
     });
 
     assert.deepEqual(decodeFolderPanelDragPayload(encoded), {
-        path: '/Users/jun/My Folder',
+        path: '/Users/example/My Folder',
         name: 'My Folder',
         kind: 'directory',
     });
@@ -60,7 +60,7 @@ test('folder drag payload reads data only for recognized drops', () => {
 });
 
 test('shell escaping uses single quoted paths', () => {
-    assert.equal(shellEscapePath('/Users/jun/My File.txt'), "'/Users/jun/My File.txt'");
+    assert.equal(shellEscapePath('/Users/example/My File.txt'), "'/Users/example/My File.txt'");
     assert.equal(shellEscapePath("/tmp/a'b"), "'/tmp/a'\\''b'");
 });
 

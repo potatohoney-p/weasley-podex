@@ -1,5 +1,9 @@
-﻿appId: com.lidge.podex
-productName: podex
+appId: com.weasley.podex
+productName: Weasley Podex
+protocols:
+  - name: Weasley Podex
+    schemes:
+      - weasley-podex
 directories:
   output: dist
   buildResources: build
@@ -19,18 +23,14 @@ extraResources:
       - "!**/*.map"
       - "!**/test*"
       - "!**/.cache"
-  - from: build/icon.png
-    to: icon.png
-  - from: build/trayTemplate.png
-    to: trayTemplate.png
-  - from: build/trayTemplate@2x.png
-    to: trayTemplate@2x.png
-icon: build/icon.png
+  - from: build/weasley-podex-mark.png
+    to: weasley-podex-mark.png
+icon: build/weasley-podex-mark.png
 mac:
-  icon: build/icon.icns
+  icon: build/weasley-podex-mark.png
   category: public.app-category.developer-tools
   extendInfo:
-    NSAppleEventsUsageDescription: podex uses Automation only when you ask Computer Use to inspect or operate another desktop app.
+    NSAppleEventsUsageDescription: Weasley Podex uses Automation only when you ask Computer Use to inspect or operate another desktop app.
   entitlements: build/entitlements.mac.plist
   entitlementsInherit: build/entitlements.mac.plist
   target:
@@ -64,4 +64,3 @@ linux:
     - AppImage
   category: Development
 publish: null
-

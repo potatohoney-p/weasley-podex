@@ -78,7 +78,7 @@ test('CMP-SMOKE-001: managed /compact succeeds on isolated server with seeded hi
         });
         assert.equal(settingsRes.status, 200);
 
-        const dbPath = join(home, 'jaw.db');
+        const dbPath = join(home, 'weasley-podex.db');
         const db = new Database(dbPath);
         db.prepare('DELETE FROM messages').run();
         db.prepare('DELETE FROM session WHERE id != ?').run('default');

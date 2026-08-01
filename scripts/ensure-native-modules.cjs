@@ -99,19 +99,19 @@ const firstError = loadBetterSqlite3();
 if (!firstError) process.exit(0);
 
 if (!isRecoverableNativeMismatch(firstError)) {
-    console.error('[jaw:native] better-sqlite3 load failed with a non-recoverable error.');
+    console.error('[weasley-podex:native] better-sqlite3 load failed with a non-recoverable error.');
     console.error(firstError);
     process.exit(1);
 }
 
-console.warn('[jaw:native] better-sqlite3 load failed — rebuilding native module for current Node runtime...');
+console.warn('[weasley-podex:native] better-sqlite3 load failed — rebuilding native module for current Node runtime...');
 rebuildBetterSqlite3();
 
 const secondError = loadBetterSqlite3();
 if (secondError) {
-    console.error('[jaw:native] better-sqlite3 is still not loadable after rebuild.');
+    console.error('[weasley-podex:native] better-sqlite3 is still not loadable after rebuild.');
     console.error(secondError);
     process.exit(1);
 }
 
-console.log('[jaw:native] better-sqlite3 is ready for this Node runtime.');
+console.log('[weasley-podex:native] better-sqlite3 is ready for this Node runtime.');

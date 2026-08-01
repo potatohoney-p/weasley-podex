@@ -58,8 +58,8 @@ test('queue handler correlates by requestId for request-level isolation', () => 
 
 test('Discord forwarder sends text before a guarded local image attachment', async () => {
     const { createDiscordForwarder } = await import('../../src/discord/forwarder.js');
-    const jawHome = process.env["podex_HOME"];
-    assert.ok(jawHome, 'tests/run.mts must provide isolated podex_HOME');
+    const jawHome = process.env["WEASLEY_PODEX_HOME"];
+    assert.ok(jawHome, 'tests/run.mts must provide isolated WEASLEY_PODEX_HOME');
     const uploadDir = join(jawHome, 'uploads');
     mkdirSync(uploadDir, { recursive: true });
     const imagePath = join(uploadDir, 'discord-relay.png');

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { join, dirname } from 'path';
 import { createHash } from 'crypto';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 import { instanceId } from '../core/instance.js';
 import { log } from '../core/logger.js';
 
@@ -55,15 +55,15 @@ export type ParsedMarkdown = {
 export const DEFAULT_IMPORTED_COUNTS = { core: 0, markdown: 0, kv: 0, claude: 0 };
 
 export function getLegacyAdvancedMemoryDir() {
-    return join(JAW_HOME, 'memory-advanced');
+    return join(WEASLEY_PODEX_HOME, 'memory-advanced');
 }
 
 export function getAdvancedMemoryDir() {
-    return join(JAW_HOME, 'memory', 'structured');
+    return join(WEASLEY_PODEX_HOME, 'memory', 'structured');
 }
 
 export function getAdvancedMemoryBackupDir() {
-    return join(JAW_HOME, 'backup-memory-v1');
+    return join(WEASLEY_PODEX_HOME, 'backup-memory-v1');
 }
 
 export function getAdvancedFlushFilePath(date = new Date().toISOString().slice(0, 10)) {
@@ -189,7 +189,7 @@ export function writeMeta(patch: Partial<AdvancedMeta>) {
         schemaVersion: 1,
         phase: '1',
         homeId: instanceId(),
-        jawHome: JAW_HOME,
+        jawHome: WEASLEY_PODEX_HOME,
         initializedAt: new Date().toISOString(),
         migrationVersion: 1,
         migrationState: 'pending',
@@ -239,13 +239,13 @@ export function withMigrationLock<T>(fn: () => T) {
             let ownerPid = NaN;
             try { ownerPid = parseInt(fs.readFileSync(lockPath, 'utf8').trim(), 10); } catch { /* unreadable */ }
             if (Number.isFinite(ownerPid) && isProcessAlive(ownerPid)) {
-                log.warn(`[jaw:migration-lock] lock held by live PID ${ownerPid}, proceeding without lock`);
+                log.warn(`[weasley-podex:migration-lock] lock held by live PID ${ownerPid}, proceeding without lock`);
                 return fn();
             }
             // Stale lock — remove and retry
             try {
                 fs.unlinkSync(lockPath);
-                log.warn(`[jaw:migration-lock] removed stale lock${Number.isFinite(ownerPid) ? ` (PID ${ownerPid})` : ''}`);
+                log.warn(`[weasley-podex:migration-lock] removed stale lock${Number.isFinite(ownerPid) ? ` (PID ${ownerPid})` : ''}`);
             } catch (unlinkErr: unknown) {
                 if ((unlinkErr as NodeJS.ErrnoException)?.code !== 'ENOENT') throw unlinkErr;
             }
@@ -253,7 +253,7 @@ export function withMigrationLock<T>(fn: () => T) {
     }
 
     if (fd == null) {
-        log.warn('[jaw:migration-lock] could not acquire lock, proceeding without');
+        log.warn('[weasley-podex:migration-lock] could not acquire lock, proceeding without');
         return fn();
     }
 

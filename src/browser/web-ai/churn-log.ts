@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, appendFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { JAW_HOME } from '../../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../core/config.js';
 
 const LOG_NAME = 'churn-log.jsonl';
 const DEFAULT_COMPACT_LIMIT = 500;
@@ -22,11 +22,11 @@ export interface FeatureReport {
     features?: Array<{ feature: string; domHash?: string | null; state?: string; healing?: unknown }>;
 }
 
-export function churnLogPath(homeDir = JAW_HOME): string {
+export function churnLogPath(homeDir = WEASLEY_PODEX_HOME): string {
     return join(homeDir, LOG_NAME);
 }
 
-export function readChurnLog(homeDir = JAW_HOME): ChurnRecord[] {
+export function readChurnLog(homeDir = WEASLEY_PODEX_HOME): ChurnRecord[] {
     const path = churnLogPath(homeDir);
     if (!existsSync(path)) return [];
     const raw = readFileSync(path, 'utf8').trim();
@@ -39,13 +39,13 @@ export function readChurnLog(homeDir = JAW_HOME): ChurnRecord[] {
     return records;
 }
 
-export function appendChurnRecord(record: ChurnRecord, homeDir = JAW_HOME): void {
+export function appendChurnRecord(record: ChurnRecord, homeDir = WEASLEY_PODEX_HOME): void {
     const path = churnLogPath(homeDir);
     mkdirSync(homeDir, { recursive: true });
     appendFileSync(path, `${JSON.stringify(record)}\n`);
 }
 
-export function compactChurnLog(homeDir = JAW_HOME, limit = DEFAULT_COMPACT_LIMIT): number {
+export function compactChurnLog(homeDir = WEASLEY_PODEX_HOME, limit = DEFAULT_COMPACT_LIMIT): number {
     const records = readChurnLog(homeDir);
     if (records.length <= limit) return records.length;
     const kept = records.slice(-limit);
@@ -54,7 +54,7 @@ export function compactChurnLog(homeDir = JAW_HOME, limit = DEFAULT_COMPACT_LIMI
     return kept.length;
 }
 
-export function maybeRecordChurn(report: FeatureReport, homeDir = JAW_HOME): ChurnRecord[] {
+export function maybeRecordChurn(report: FeatureReport, homeDir = WEASLEY_PODEX_HOME): ChurnRecord[] {
     if (process.env["AGBROWSE_CHURN_LOG"] !== '1') return [];
     const prior = readChurnLog(homeDir);
     const records = changedFeatureRecords(report, prior);

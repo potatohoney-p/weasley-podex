@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, readFileSync, writeFileSync } from 'fs';
 import { tmpdir } from 'os';
-import { join } from 'path';
+import { delimiter, join } from 'path';
 import {
     applyCliEnvDefaults,
     buildSessionResumeKey,
@@ -39,14 +39,14 @@ test('preserves inherited opencode env when already set', () => {
 
 
 test('prefers bun-installed opencode before older path entries', () => {
-    const next = applyCliEnvDefaults('opencode', {}, { PATH: '/opt/homebrew/bin:/usr/bin' });
-    assert.ok(next.PATH?.startsWith(`${getOpencodePreferredBinDir()}:`));
+    const next = applyCliEnvDefaults('opencode', {}, { PATH: ['/opt/homebrew/bin', '/usr/bin'].join(delimiter) });
+    assert.ok(next.PATH?.startsWith(`${getOpencodePreferredBinDir()}${delimiter}`));
 });
 
 test('moves bun-installed opencode to the front when it already exists later in PATH', () => {
     const bun = getOpencodePreferredBinDir();
-    const next = applyCliEnvDefaults('opencode', {}, { PATH: `/opt/homebrew/bin:${bun}:/usr/bin` });
-    const parts = next.PATH?.split(':') || [];
+    const next = applyCliEnvDefaults('opencode', {}, { PATH: ['/opt/homebrew/bin', bun, '/usr/bin'].join(delimiter) });
+    const parts = next.PATH?.split(delimiter) || [];
     assert.equal(parts[0], bun);
     assert.equal(parts.filter(part => part === bun).length, 1);
 });
@@ -96,11 +96,11 @@ test('builds opencode resume key from effective Exa env', () => {
 test('opencode permission config always allows dynamic jaw homes', () => {
     const next = withOpencodeAlwaysAllowPermissions({
         permission: { websearch: 'ask' },
-        provider: { lidge: true },
+        provider: { customProvider: true },
     });
 
     assert.equal(next.$schema, 'https://opencode.ai/config.json');
-    assert.deepEqual(next.provider, { lidge: true });
+    assert.deepEqual(next.provider, { customProvider: true });
     assert.equal((next.permission as Record<string, unknown>)['*'], 'allow');
     assert.equal((next.permission as Record<string, unknown>).external_directory, 'allow');
     assert.equal((next.permission as Record<string, unknown>).websearch, 'allow');
@@ -112,7 +112,7 @@ test('writes opencode always-allow permissions without dropping existing config'
     const configPath = join(dir, 'opencode.json');
     writeFileSync(configPath, JSON.stringify({
         permission: { webfetch: 'allow' },
-        provider: { lidge: { models: { test: true } } },
+        provider: { customProvider: { models: { test: true } } },
     }, null, 2));
 
     ensureOpencodeAlwaysAllowPermissions(configPath);
@@ -121,5 +121,5 @@ test('writes opencode always-allow permissions without dropping existing config'
     assert.equal(next.permission.external_directory, 'allow');
     assert.equal(next.permission.webfetch, 'allow');
     assert.equal(next.permission.question, 'allow');
-    assert.deepEqual(next.provider, { lidge: { models: { test: true } } });
+    assert.deepEqual(next.provider, { customProvider: { models: { test: true } } });
 });

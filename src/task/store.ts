@@ -1,10 +1,10 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 import type { TaskItem, TaskStoreData, TaskStatus } from './types.js';
 
-const TASKS_PATH = path.join(JAW_HOME, 'tasks.json');
+const TASKS_PATH = path.join(WEASLEY_PODEX_HOME, 'tasks.json');
 
 function readStore(): TaskStoreData {
     try {

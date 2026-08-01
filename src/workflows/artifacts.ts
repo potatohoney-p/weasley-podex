@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 import type {
     WorkflowArtifact,
     WorkflowArtifactKind,
@@ -9,7 +9,7 @@ import type {
     UnknownCommandRecovery,
 } from '../cli/types.js';
 
-const ARTIFACT_ROOT = path.join(JAW_HOME, 'artifacts', 'workflows');
+const ARTIFACT_ROOT = path.join(WEASLEY_PODEX_HOME, 'artifacts', 'workflows');
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 function hashText(value: string): string {
@@ -41,7 +41,7 @@ function assertInsideRoot(candidate: string): string {
     const root = path.resolve(ARTIFACT_ROOT);
     const resolved = path.resolve(candidate);
     if (resolved !== root && !resolved.startsWith(root + path.sep)) {
-        throw new Error('Workflow artifact path escaped JAW_HOME artifact root');
+        throw new Error('Workflow artifact path escaped WEASLEY_PODEX_HOME artifact root');
     }
     return resolved;
 }

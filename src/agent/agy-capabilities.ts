@@ -82,8 +82,19 @@ function binaryMtimeMs(binary: string): number {
     }
 }
 
+function resolveAgyProbeCommand(binary: string, args: string[]): { command: string; args: string[] } {
+    if (process.platform !== 'win32' || !/\.(?:cmd|bat)$/i.test(binary)) {
+        return { command: binary, args };
+    }
+    return {
+        command: process.env["ComSpec"] || 'cmd.exe',
+        args: ['/d', '/s', '/c', 'call', binary, ...args],
+    };
+}
+
 function runAgyText(binary: string, args: string[]): string {
-    const result = spawnSync(binary, args, {
+    const probe = resolveAgyProbeCommand(binary, args);
+    const result = spawnSync(probe.command, probe.args, {
         encoding: 'utf8',
         stdio: ['ignore', 'pipe', 'pipe'],
         timeout: 3_000,

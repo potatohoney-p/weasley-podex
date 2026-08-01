@@ -4,18 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>podex 2.x: All Your AI Subscriptions. One Assistant.</title>
+    <title>Weasley Podex 2.x: All Your AI Subscriptions. One Assistant.</title>
     <meta name="description"
-        content="All your AI subscriptions. One assistant. podex routes Claude, ChatGPT, Codex, Cursor, Grok, Kiro, OpenCode, Copilot, and more through native subscriptions. Includes a manager dashboard, Kanban board, Notes workspace, Employee system, 200+ reference skills, and 7+ surfaces.">
-    <meta property="og:title" content="podex 2.x: All Your AI Subscriptions. One Assistant.">
+        content="All your AI subscriptions. One assistant. Weasley Podex routes Claude, ChatGPT, Codex, Cursor, Grok, Kiro, OpenCode, Copilot, and more through native subscriptions. Includes a manager dashboard, Kanban board, Notes workspace, Employee system, an audited core skill catalog, and 7+ surfaces.">
+    <meta property="og:title" content="Weasley Podex 2.x: All Your AI Subscriptions. One Assistant.">
     <meta property="og:description"
         content="All your AI subscriptions. One assistant. Route the AI coding subscriptions you already use through one local control plane.">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://potatohoney-p.github.io/podex/assets/og-card.jpg">
-    <meta property="og:url" content="https://potatohoney-p.github.io/podex/">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" type="image/png" href="assets/app-icon.png">
-    <link rel="apple-touch-icon" href="assets/app-icon.png">
+    <meta property="og:url" content="https://potatohoney-p.github.io/weasley-podex/">
+    <meta name="twitter:card" content="summary">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -259,11 +256,15 @@
         }
 
         .nav-brand-mark {
-            display: block;
+            display: grid;
             width: 24px;
             height: 24px;
+            place-items: center;
             border-radius: 50%;
-            object-fit: cover;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--accent);
+            font-size: 9px;
+            font-weight: 700;
             box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 0 12px rgba(34, 211, 238, 0.25);
         }
 
@@ -309,7 +310,7 @@
             display: none;
         }
 
-        /* Hero: media is the stage */
+        /* Hero */
         .hero {
             position: relative;
             min-height: 1080px;
@@ -318,18 +319,11 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .hero-backdrop,
         .hero-shade {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
-        }
-
-        .hero-backdrop {
-            z-index: -3;
-            object-fit: cover;
-            object-position: 50% 30%;
         }
 
         .hero-shade {
@@ -568,20 +562,6 @@
             color: var(--text);
         }
 
-        .brand-mark svg {
-            width: 100%;
-            height: 100%;
-            fill: currentColor;
-        }
-
-        .brand-mark.claude {
-            color: #d97757;
-        }
-
-        .brand-mark.google {
-            color: #4285f4;
-        }
-
         .brand-mono {
             width: auto;
             min-width: 24px;
@@ -592,25 +572,6 @@
         .brand-mono.pi {
             font-size: 20px;
             font-weight: 500;
-        }
-
-        .brand-with-sup {
-            position: relative;
-        }
-
-        .brand-with-sup::after {
-            position: absolute;
-            top: -3px;
-            right: -7px;
-            display: grid;
-            width: 12px;
-            height: 12px;
-            place-items: center;
-            border-radius: 50%;
-            background: var(--accent);
-            color: var(--bg);
-            content: "E";
-            font: 700 7px/1 var(--font-mono);
         }
 
         .hero-product {
@@ -736,10 +697,10 @@
             backdrop-filter: blur(10px) saturate(1.1);
         }
 
-        .hero-badges img {
-            width: auto;
-            max-width: 100%;
-            height: 20px;
+        .hero-badges span {
+            color: var(--dim);
+            font-size: 12px;
+            font-weight: 600;
         }
 
         /* Product showcase */
@@ -778,8 +739,22 @@
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
         }
 
-        .screenshot-stage img {
-            width: 100%;
+        .screenshot-stage .showcase-summary {
+            display: grid;
+            min-height: 260px;
+            place-content: center;
+            gap: 12px;
+            padding: 48px;
+            text-align: center;
+        }
+
+        .showcase-summary strong {
+            font-size: clamp(22px, 3vw, 36px);
+        }
+
+        .showcase-summary p {
+            max-width: 700px;
+            color: var(--dim);
         }
 
         .manager-rail {
@@ -813,7 +788,7 @@
             line-height: 1.55;
         }
 
-        /* Demo media */
+        /* Product walkthrough */
         .demo-section {
             padding: 104px 0;
         }
@@ -865,11 +840,22 @@
             background: #666672;
         }
 
-        .demo-shell video {
-            display: block;
-            width: 100%;
-            aspect-ratio: 1662 / 1080;
-            object-fit: cover;
+        .demo-summary {
+            display: grid;
+            min-height: 260px;
+            place-content: center;
+            gap: 12px;
+            padding: 48px;
+            text-align: center;
+        }
+
+        .demo-summary strong {
+            font-size: clamp(22px, 3vw, 36px);
+        }
+
+        .demo-summary p {
+            max-width: 720px;
+            color: var(--dim);
         }
 
         /* Provider runtime slab */
@@ -1014,11 +1000,15 @@
             background: #f2f3f5;
         }
 
-        .feature-visual img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top left;
+        .feature-summary {
+            display: grid;
+            min-height: 220px;
+            place-content: center;
+            padding: 32px;
+            color: #25252b;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
         }
 
         .feature-copy {
@@ -1292,16 +1282,16 @@
             display: none;
         }
 
-        .tab-panel img {
-            width: 100%;
-            max-height: 720px;
+        .tab-panel p {
+            display: grid;
+            min-height: 380px;
+            max-width: 760px;
+            place-content: center;
             margin: auto;
-            object-fit: contain;
-            object-position: center top;
-        }
-
-        .tab-panel.is-narrow img {
-            width: min(100%, 430px);
+            color: var(--dim);
+            font-size: clamp(18px, 2.5vw, 28px);
+            line-height: 1.5;
+            text-align: center;
         }
 
         /* Quickstart terminal slab */
@@ -1322,6 +1312,10 @@
         .quickstart-copy p {
             margin: 0;
             color: var(--dim);
+        }
+
+        .quickstart-copy p + p {
+            margin-top: 12px;
         }
 
         .quickstart-copy strong {
@@ -1808,6 +1802,10 @@
                 padding: 8px;
             }
 
+            .tab-panel p {
+                min-height: 214px;
+            }
+
             .beginner-content {
                 padding: 18px;
             }
@@ -1910,28 +1908,11 @@
 <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden">
-        <symbol id="logo-claude" viewBox="0 0 24 24">
-            <path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/>
-        </symbol>
-        <symbol id="logo-openai" viewBox="0 0 24 24">
-            <path d="M9.205 8.658v-2.26c0-.19.072-.333.238-.428l4.543-2.616c.619-.357 1.356-.523 2.117-.523 2.854 0 4.662 2.212 4.662 4.566 0 .167 0 .357-.024.547l-4.71-2.759a.797.797 0 00-.856 0l-5.97 3.473zm10.609 8.8V12.06c0-.333-.143-.57-.429-.737l-5.97-3.473 1.95-1.118a.433.433 0 01.476 0l4.543 2.617c1.309.76 2.189 2.378 2.189 3.948 0 1.808-1.07 3.473-2.76 4.163zM7.802 12.703l-1.95-1.142c-.167-.095-.239-.238-.239-.428V5.899c0-2.545 1.95-4.472 4.591-4.472 1 0 1.927.333 2.712.928L8.23 5.067c-.285.166-.428.404-.428.737v6.898zM12 15.128l-2.795-1.57v-3.33L12 8.658l2.795 1.57v3.33L12 15.128zm1.796 7.23c-1 0-1.927-.332-2.712-.927l4.686-2.712c.285-.166.428-.404.428-.737v-6.898l1.974 1.142c.167.095.238.238.238.428v5.233c0 2.545-1.974 4.472-4.614 4.472zm-5.637-5.303-4.544-2.617c-1.308-.761-2.188-2.378-2.188-3.948A4.482 4.482 0 014.21 6.327v5.423c0 .333.143.571.428.738l5.947 3.449-1.95 1.118a.432.432 0 01-.476 0zm-.262 3.9c-2.688 0-4.662-2.021-4.662-4.519 0-.19.024-.38.047-.57l4.686 2.71c.286.167.571.167.856 0l5.97-3.448v2.26c0 .19-.07.333-.237.428l-4.543 2.616c-.619.357-1.356.523-2.117.523zm5.899 2.83a5.947 5.947 0 005.827-4.756C22.287 18.339 24 15.84 24 13.296c0-1.665-.713-3.282-1.998-4.448.119-.5.19-.999.19-1.498 0-3.401-2.759-5.947-5.946-5.947-.642 0-1.26.095-1.88.31A5.962 5.962 0 0010.205 0a5.947 5.947 0 00-5.827 4.757C1.713 5.447 0 7.945 0 10.49c0 1.666.713 3.283 1.998 4.448-.119.5-.19 1-.19 1.499 0 3.401 2.759 5.946 5.946 5.946.642 0 1.26-.095 1.88-.309a5.96 5.96 0 004.162 1.713z"/>
-        </symbol>
-        <symbol id="logo-cursor" viewBox="0 0 24 24">
-            <path d="M11.503.131 1.891 5.678a.84.84 0 0 0-.42.726v11.188c0 .3.162.575.42.724l9.609 5.55a1 1 0 0 0 .998 0l9.61-5.55a.84.84 0 0 0 .42-.724V6.404a.84.84 0 0 0-.42-.726L12.497.131a1.01 1.01 0 0 0-.996 0M2.657 6.338h18.55c.263 0 .43.287.297.515L12.23 22.918c-.062.107-.229.064-.229-.06V12.335a.59.59 0 0 0-.295-.51l-9.11-5.257c-.109-.063-.064-.23.061-.23"/>
-        </symbol>
-        <symbol id="logo-opencode" viewBox="0 0 24 24">
-            <path d="M22 24H2V0h20zM17 4.8H7v14.4h10z"/>
-        </symbol>
-        <symbol id="logo-copilot" viewBox="0 0 24 24">
-            <path d="M23.922 16.997C23.061 18.492 18.063 22.02 12 22.02 5.937 22.02.939 18.492.078 16.997A.641.641 0 0 1 0 16.741v-2.869a.883.883 0 0 1 .053-.22c.372-.935 1.347-2.292 2.605-2.656.167-.429.414-1.055.644-1.517a10.098 10.098 0 0 1-.052-1.086c0-1.331.282-2.499 1.132-3.368.397-.406.89-.717 1.474-.952C7.255 2.937 9.248 1.98 11.978 1.98c2.731 0 4.767.957 6.166 2.093.584.235 1.077.546 1.474.952.85.869 1.132 2.037 1.132 3.368 0 .368-.014.733-.052 1.086.23.462.477 1.088.644 1.517 1.258.364 2.233 1.721 2.605 2.656a.841.841 0 0 1 .053.22v2.869a.641.641 0 0 1-.078.256Zm-11.75-5.992h-.344a4.359 4.359 0 0 1-.355.508c-.77.947-1.918 1.492-3.508 1.492-1.725 0-2.989-.359-3.782-1.259a2.137 2.137 0 0 1-.085-.104L4 11.746v6.585c1.435.779 4.514 2.179 8 2.179 3.486 0 6.565-1.4 8-2.179v-6.585l-.098-.104s-.033.045-.085.104c-.793.9-2.057 1.259-3.782 1.259-1.59 0-2.738-.545-3.508-1.492a4.359 4.359 0 0 1-.355-.508Zm2.328 3.25c.549 0 1 .451 1 1v2c0 .549-.451 1-1 1-.549 0-1-.451-1-1v-2c0-.549.451-1 1-1Zm-5 0c.549 0 1 .451 1 1v2c0 .549-.451 1-1 1-.549 0-1-.451-1-1v-2c0-.549.451-1 1-1Zm3.313-6.185c.136 1.057.403 1.913.878 2.497.442.544 1.134.938 2.344.938 1.573 0 2.292-.337 2.657-.751.384-.435.558-1.15.558-2.361 0-1.14-.243-1.847-.705-2.319-.477-.488-1.319-.862-2.824-1.025-1.487-.161-2.192.138-2.533.529-.269.307-.437.808-.438 1.578v.021c0 .265.021.562.063.893Zm-1.626 0c.042-.331.063-.628.063-.894v-.02c-.001-.77-.169-1.271-.438-1.578-.341-.391-1.046-.69-2.533-.529-1.505.163-2.347.537-2.824 1.025-.462.472-.705 1.179-.705 2.319 0 1.211.175 1.926.558 2.361.365.414 1.084.751 2.657.751 1.21 0 1.902-.394 2.344-.938.475-.584.742-1.44.878-2.497Z"/>
-        </symbol>
-    </svg>
 
     <nav class="site-nav pill-at-top" aria-label="Primary navigation">
-        <a class="nav-brand" href="./" aria-label="podex home">
-            <img class="nav-brand-mark" src="assets/app-icon.png" alt="" width="24" height="24" aria-hidden="true">
-            <span>podex</span>
+        <a class="nav-brand" href="./" aria-label="Weasley Podex home">
+            <span class="nav-brand-mark" aria-hidden="true">WP</span>
+            <span>Weasley Podex</span>
         </a>
         <div class="nav-actions">
             <a class="nav-link nav-docs" href="dev/">
@@ -1939,7 +1920,7 @@
                 Docs
             </a>
             <a class="nav-link nav-mobile-start" href="#quickstart">Get Started</a>
-            <a class="nav-link nav-github" href="https://github.com/potatohoney-p/podex" target="_blank" rel="noreferrer">
+            <a class="nav-link nav-github" href="https://github.com/potatohoney-p/weasley-podex" target="_blank" rel="noreferrer">
                 <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7A5.4 5.4 0 0 0 19.4 4 5 5 0 0 0 19.3.5S18.2.1 15 1.8a13.4 13.4 0 0 0-7 0C4.8.1 3.7.5 3.7.5A5 5 0 0 0 3.6 4a5.4 5.4 0 0 0-1.4 3.7c0 5.4 3.5 6.6 6.8 7A4.8 4.8 0 0 0 8 18v4"/><path d="M8 19c-3 .9-3-1.5-4-2"/></svg>
                 GitHub
             </a>
@@ -1948,7 +1929,6 @@
 
     <main id="main-content">
         <section class="hero" aria-labelledby="hero-title">
-            <img class="hero-backdrop" src="assets/hero-backdrop.jpg" alt="" width="1536" height="1024" loading="eager" fetchpriority="high" aria-hidden="true">
             <div class="hero-shade" aria-hidden="true"></div>
             <div class="container hero-inner">
                 <div class="hero-copy">
@@ -1958,8 +1938,8 @@
                         <span class="hero-line"><span class="hero-answer">One Assistant.</span></span>
                     </h1>
                     <p class="hero-sub">Route every coding subscription through one local system. Keep native OAuth, your preferred models, and your files on your machine.</p>
-                    <div class="hero-command" aria-label="Install and launch podex">
-                        <div><span>$</span> npm install -g podex<br><span>$</span> jaw dashboard</div>
+                    <div class="hero-command" aria-label="Install and launch Weasley Podex">
+                        <div><span>$</span> npm install -g weasley-podex<br><span>$</span> weasley-podex dashboard</div>
                         <small>localhost:24576</small>
                     </div>
                     <div class="hero-actions">
@@ -1967,11 +1947,11 @@
                             Get Started
                             <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
                         </a>
-                        <a class="button button-ghost" href="https://github.com/potatohoney-p/podex" target="_blank" rel="noreferrer">View on GitHub</a>
+                        <a class="button button-ghost" href="https://github.com/potatohoney-p/weasley-podex" target="_blank" rel="noreferrer">View on GitHub</a>
                     </div>
                     <div class="hero-quiet-links" aria-label="More resources">
                         <a class="quiet-link" href="dev/">Documentation</a>
-                        <a class="quiet-link" href="PODEX-intro.html">Guided intro</a>
+                        <a class="quiet-link" href="#quickstart">Quickstart</a>
                         <a class="quiet-link" href="windows.html">Windows?</a>
                         <a class="quiet-link" href="#quickstart" data-open-beginner>What is Terminal?</a>
                     </div>
@@ -1979,29 +1959,29 @@
 
                 <ul class="provider-constellation" aria-label="Thirteen supported AI runtime providers" aria-hidden="true">
                     <li class="provider-star"><span class="brand-mark brand-mono pi">π</span>Pi</li>
-                    <li class="provider-star"><span class="brand-mark claude"><svg aria-hidden="true"><use href="#logo-claude"/></svg></span>Claude</li>
-                    <li class="provider-star"><span class="brand-mark claude brand-with-sup"><svg aria-hidden="true"><use href="#logo-claude"/></svg></span>Claude E</li>
+                    <li class="provider-star"><span class="brand-mark brand-mono">CL</span>Claude</li>
+                    <li class="provider-star"><span class="brand-mark brand-mono">CE</span>Claude E</li>
                     <li class="provider-star"><span class="brand-mark brand-mono">AI·E</span>AI-E</li>
                     <li class="provider-star"><span class="brand-mark brand-mono">AGY</span>Antigravity</li>
-                    <li class="provider-star"><span class="brand-mark"><svg aria-hidden="true"><use href="#logo-openai"/></svg></span>Codex</li>
-                    <li class="provider-star"><span class="brand-mark"><svg aria-hidden="true"><use href="#logo-openai"/></svg></span>Codex App</li>
-                    <li class="provider-star"><span class="brand-mark"><svg aria-hidden="true"><use href="#logo-cursor"/></svg></span>Cursor</li>
+                    <li class="provider-star"><span class="brand-mark brand-mono">CX</span>Codex</li>
+                    <li class="provider-star"><span class="brand-mark brand-mono">CA</span>Codex App</li>
+                    <li class="provider-star"><span class="brand-mark brand-mono">CU</span>Cursor</li>
                     <li class="provider-star"><span class="brand-mark brand-mono">GROK</span>Grok</li>
                     <li class="provider-star"><span class="brand-mark brand-mono">KIRO</span>Kiro</li>
-                    <li class="provider-star"><span class="brand-mark"><svg aria-hidden="true"><use href="#logo-opencode"/></svg></span>OpenCode</li>
-                    <li class="provider-star"><span class="brand-mark"><svg aria-hidden="true"><use href="#logo-copilot"/></svg></span>Copilot</li>
+                    <li class="provider-star"><span class="brand-mark brand-mono">OC</span>OpenCode</li>
+                    <li class="provider-star"><span class="brand-mark brand-mono">CP</span>Copilot</li>
                     <li class="provider-star"><span class="brand-mark brand-mono">JWC</span>JWC</li>
                 </ul>
 
                 <div class="hero-product">
-                    <div class="terminal-window" aria-label="podex provider status terminal">
+                    <div class="terminal-window" aria-label="Weasley Podex provider status terminal">
                         <div class="terminal-titlebar">
                             <div class="terminal-dots" aria-hidden="true"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span></div>
-                            <span class="terminal-name">jaw / runtime registry</span>
+                            <span class="terminal-name">weasley-podex / runtime registry</span>
                             <span></span>
                         </div>
                         <div class="terminal-body">
-                            <p class="terminal-command"><span class="terminal-prompt">$</span> jaw dashboard --status</p>
+                            <p class="terminal-command"><span class="terminal-prompt">$</span> weasley-podex dashboard --status</p>
                             <dl class="provider-status">
                                 <div class="provider-status-row"><dt>Claude E</dt><dd>claude-opus-4-8</dd><dd class="terminal-ready">Ready</dd></div>
                                 <div class="provider-status-row"><dt>Codex App</dt><dd>gpt-5.5</dd><dd class="terminal-ready">Ready</dd></div>
@@ -2015,12 +1995,12 @@
                         </div>
                     </div>
                     <div class="hero-badges" aria-label="Project badges">
-                        <img src="https://img.shields.io/badge/tests-3700%2B-brightgreen" alt="Tests: 3700 plus" width="84" height="20">
-                        <img src="https://img.shields.io/npm/v/podex" alt="podex npm version" width="80" height="20">
-                        <img src="https://img.shields.io/badge/TypeScript-6.0-blue" alt="TypeScript 6.0" width="96" height="20">
-                        <img src="https://img.shields.io/badge/node-%3E%3D22.4-blue" alt="Node 22.4 or newer" width="90" height="20">
-                        <img src="https://img.shields.io/badge/Docker-supported-2496ED?logo=docker&amp;logoColor=white" alt="Docker supported" width="131" height="20">
-                        <img src="https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20WSL%20%7C%20Docker-lightgrey" alt="Platforms: macOS, Linux, WSL, and Docker" width="244" height="20">
+                        <span>3,700+ tests</span>
+                        <span>npm: weasley-podex</span>
+                        <span>TypeScript 6.0</span>
+                        <span>Node.js 22.4+</span>
+                        <span>Docker supported</span>
+                        <span>macOS · Linux · WSL · Docker</span>
                     </div>
                 </div>
             </div>
@@ -2033,10 +2013,10 @@
                         <p class="eyebrow">// manager</p>
                         <h2 id="manager-title">One control plane for every local AI session.</h2>
                     </div>
-                    <p>See every JAW home, open its live interface, manage employees, and keep work moving from one browser window.</p>
+                    <p>See every Weasley Podex home, open its live interface, manage employees, and keep work moving from one browser window.</p>
                 </div>
                 <div class="screenshot-stage">
-                    <img src="screenshots/manager-dashboard-light.png" alt="podex manager dashboard showing instance navigator, live preview, and runtime settings" width="3022" height="1526" loading="lazy">
+                    <div class="showcase-summary"><strong>Every local session in one view</strong><p>Navigate live instances, open each interface, manage employees, and keep Kanban and Notes attached to the right home.</p></div>
                 </div>
                 <div class="manager-rail">
                     <div class="manager-point"><strong>Live instances</strong><span>Active, running, and offline homes with preview controls.</span></div>
@@ -2054,13 +2034,12 @@
                         <h2 class="section-title" id="demo-title">See the system work.</h2>
                     </div>
                     <div class="demo-links">
-                        <a href="PODEX-intro.html">Open guided intro</a>
-                        <a href="PODEX-intro.mp4">Watch full video</a>
+                        <a href="#quickstart">Open quickstart</a>
                     </div>
                 </div>
                 <div class="demo-shell">
                     <div class="demo-bar" aria-hidden="true"><span></span><span></span><span></span></div>
-                    <video src="https://github.com/user-attachments/assets/a7cf17c9-bfb3-44f0-b7fd-d001a39643fd" width="1662" height="1080" autoplay loop muted playsinline preload="metadata" title="podex product demonstration"></video>
+                    <div class="demo-summary"><strong>Prompt, route, verify</strong><p>Choose a native AI subscription, route work to the right runtime, follow progress from any connected surface, and close with visible evidence.</p></div>
                 </div>
             </div>
         </section>
@@ -2069,18 +2048,18 @@
             <div class="container reveal">
                 <p class="kicker">13 runtime surfaces</p>
                 <h2 class="section-title" id="engines-title">Your subscriptions, composed as one system.</h2>
-                <p class="section-desc">Use one runtime or all thirteen. podex keeps each provider's native authentication, model defaults, and fallback role visible.</p>
+                <p class="section-desc">Use one runtime or all thirteen. Weasley Podex keeps each provider's native authentication, model defaults, and fallback role visible.</p>
                 <div class="engines-grid" role="list" aria-label="Supported AI runtimes">
                     <article class="engine-card dominant" role="listitem">
                         <div class="engine-head"><span class="brand-mark brand-mono pi">π</span><span class="engine-index">01 / 13</span></div>
                         <div><h3 class="engine-name">Pi</h3><div class="engine-model">grok-composer-2.5-fast</div><div class="engine-auth">Settings profile API key, local proxy, or PI_CODING_AGENT_BIN</div></div>
                     </article>
                     <article class="engine-card" role="listitem">
-                        <div class="engine-head"><span class="brand-mark claude"><svg aria-hidden="true"><use href="#logo-claude"/></svg></span><span class="engine-index">02</span></div>
+                        <div class="engine-head"><span class="brand-mark brand-mono">CL</span><span class="engine-index">02</span></div>
                         <div><h3 class="engine-name">Claude</h3><div class="engine-model">claude-opus-4-8</div><div class="engine-auth">claude auth login</div></div>
                     </article>
                     <article class="engine-card" role="listitem">
-                        <div class="engine-head"><span class="brand-mark claude brand-with-sup"><svg aria-hidden="true"><use href="#logo-claude"/></svg></span><span class="engine-index">03</span></div>
+                        <div class="engine-head"><span class="brand-mark brand-mono">CE</span><span class="engine-index">03</span></div>
                         <div><h3 class="engine-name">Claude E</h3><div class="engine-model">claude-opus-4-8</div><div class="engine-auth">underlying claude auth login</div></div>
                     </article>
                     <article class="engine-card" role="listitem">
@@ -2092,15 +2071,15 @@
                         <div><h3 class="engine-name">Antigravity</h3><div class="engine-model">AGY-selected</div><div class="engine-auth">checked by agy at runtime</div></div>
                     </article>
                     <article class="engine-card" role="listitem">
-                        <div class="engine-head"><span class="brand-mark"><svg aria-hidden="true"><use href="#logo-openai"/></svg></span><span class="engine-index">06</span></div>
+                        <div class="engine-head"><span class="brand-mark brand-mono">CX</span><span class="engine-index">06</span></div>
                         <div><h3 class="engine-name">Codex</h3><div class="engine-model">gpt-5.5</div><div class="engine-auth">codex login</div></div>
                     </article>
                     <article class="engine-card" role="listitem">
-                        <div class="engine-head"><span class="brand-mark"><svg aria-hidden="true"><use href="#logo-openai"/></svg></span><span class="engine-index">07</span></div>
+                        <div class="engine-head"><span class="brand-mark brand-mono">CA</span><span class="engine-index">07</span></div>
                         <div><h3 class="engine-name">Codex App</h3><div class="engine-model">gpt-5.5</div><div class="engine-auth">codex login</div></div>
                     </article>
                     <article class="engine-card" role="listitem">
-                        <div class="engine-head"><span class="brand-mark"><svg aria-hidden="true"><use href="#logo-cursor"/></svg></span><span class="engine-index">08</span></div>
+                        <div class="engine-head"><span class="brand-mark brand-mono">CU</span><span class="engine-index">08</span></div>
                         <div><h3 class="engine-name">Cursor</h3><div class="engine-model">composer-2.5</div><div class="engine-auth">cursor-agent login or CURSOR_API_KEY</div></div>
                     </article>
                     <article class="engine-card" role="listitem">
@@ -2112,16 +2091,16 @@
                         <div><h3 class="engine-name">Kiro</h3><div class="engine-model">registry-selected</div><div class="engine-auth">kiro</div></div>
                     </article>
                     <article class="engine-card" role="listitem">
-                        <div class="engine-head"><span class="brand-mark"><svg aria-hidden="true"><use href="#logo-opencode"/></svg></span><span class="engine-index">11</span></div>
+                        <div class="engine-head"><span class="brand-mark brand-mono">OC</span><span class="engine-index">11</span></div>
                         <div><h3 class="engine-name">OpenCode</h3><div class="engine-model">opencode-go/kimi-k2.6</div><div class="engine-auth">opencode</div></div>
                     </article>
                     <article class="engine-card" role="listitem">
-                        <div class="engine-head"><span class="brand-mark"><svg aria-hidden="true"><use href="#logo-copilot"/></svg></span><span class="engine-index">12</span></div>
+                        <div class="engine-head"><span class="brand-mark brand-mono">CP</span><span class="engine-index">12</span></div>
                         <div><h3 class="engine-name">Copilot</h3><div class="engine-model">claude-sonnet-4.6</div><div class="engine-auth">copilot login</div></div>
                     </article>
                     <article class="engine-card" role="listitem">
                         <div class="engine-head"><span class="brand-mark brand-mono">JWC</span><span class="engine-index">13</span></div>
-                        <div><h3 class="engine-name">JWC</h3><div class="engine-model">claude-sonnet-4-6</div><div class="engine-auth">jaw jwc install</div></div>
+                        <div><h3 class="engine-name">JWC</h3><div class="engine-model">claude-sonnet-4-6</div><div class="engine-auth">weasley-podex jwc install</div></div>
                     </article>
                 </div>
             </div>
@@ -2134,7 +2113,7 @@
                 <p class="section-desc">The dashboard, orchestration layer, skills, memory, and messaging surfaces stay connected around the work itself.</p>
                 <div class="feature-grid">
                     <article class="feature-card dominant">
-                        <div class="feature-visual"><img src="screenshots/dashboard-kanban.png" alt="podex Kanban board with task columns and project cards" width="1918" height="1159" loading="lazy"></div>
+                        <div class="feature-visual"><div class="feature-summary">Manager, Kanban, Notes, and live agent status share one local workspace.</div></div>
                         <div class="feature-copy"><h3 class="feature-title">Manager, Kanban, and Notes share one home</h3><p class="feature-desc">Track the task, inspect the live agent, and keep project knowledge beside it without switching products.</p></div>
                     </article>
                     <article class="feature-card">
@@ -2155,7 +2134,7 @@
                     </article>
                     <article class="feature-card">
                         <div class="feature-icon-box" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8"/></svg></div>
-                        <div><h3 class="feature-title">200+ skills</h3><p class="feature-desc">Activate focused workflows for code, documents, research, media, and integrations.</p></div>
+                        <div><h3 class="feature-title">Audited core skills</h3><p class="feature-desc">Use the bundled core catalog, then import additional local skills from sources you trust.</p></div>
                     </article>
                     <article class="feature-card">
                         <div class="feature-icon-box" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/><path d="M5 3 2 6"/></svg></div>
@@ -2188,7 +2167,7 @@
                             <span class="terminal-name">orchestration.log</span><span></span>
                         </div>
                         <div class="log-lines">
-                            <div class="log-line"><time>09:41:02</time><span><span class="terminal-prompt">$</span> jaw orchestrate</span></div>
+                            <div class="log-line"><time>09:41:02</time><span><span class="terminal-prompt">$</span> weasley-podex orchestrate</span></div>
                             <div class="log-line"><time>09:41:03</time><span><span class="log-phase">P → Plan</span> implementation plan recorded</span></div>
                             <div class="log-line"><time>09:42:18</time><span><span class="log-phase">A → Audit</span> feasibility and risk checked</span></div>
                             <div class="log-line"><time>09:43:11</time><span><span class="log-phase">B → Build</span> scoped implementation running</span></div>
@@ -2216,24 +2195,24 @@
                 </div>
                 <div class="platform-blocks">
                     <article class="platform-block">
-                        <div class="platform-copy"><h3>Desktop runtime, packaged</h3><p>DMG, NSIS, and AppImage releases include the server, Node.js sidecar, frontend, production dependencies, and a <code>jaw</code> command shim.</p></div>
-                        <div class="code-block"><span class="dim"># end-user flow</span><br>Download from GitHub Releases<br>Open podex Desktop<br>Install CLI command<br>jaw dashboard</div>
+                        <div class="platform-copy"><h3>Desktop runtime, packaged</h3><p>DMG, NSIS, and AppImage releases include the server, Node.js sidecar, frontend, production dependencies, and a <code>weasley-podex</code> command shim.</p></div>
+                        <div class="code-block"><span class="dim"># end-user flow</span><br>Download from GitHub Releases<br>Open Weasley Podex Desktop<br>Install CLI command<br>weasley-podex dashboard</div>
                     </article>
                     <article class="platform-block">
                         <div class="platform-copy"><h3>Container isolation</h3><p>Run as a non-root user with the Chromium sandbox enabled. The agent sees the mounted workspace, not the rest of the host.</p></div>
-                        <div class="code-block"><span class="dim"># quick start</span><br>docker compose up -d<br><span class="dim"># http://localhost:3457</span><br><br>docker build -t podex .</div>
+                        <div class="code-block"><span class="dim"># quick start</span><br>docker compose up -d<br><span class="dim"># http://localhost:3457</span><br><br>docker build -t weasley-podex .</div>
                     </article>
                 </div>
             </div>
         </section>
 
-        <section class="section band band-alt" id="screenshots" aria-labelledby="screenshots-title">
+        <section class="section band band-alt" id="interfaces" aria-labelledby="interfaces-title">
             <div class="container reveal">
                 <p class="kicker">Interfaces</p>
-                <h2 class="section-title" id="screenshots-title">The same assistant, wherever work finds you.</h2>
+                <h2 class="section-title" id="interfaces-title">The same assistant, wherever work finds you.</h2>
                 <p class="section-desc">Move between Manager, Notes, chat, terminal, Telegram, and orchestration without splitting memory or configuration.</p>
                 <div class="tabs-wrap">
-                    <div class="tab-list" role="tablist" aria-label="podex interface screenshots">
+                    <div class="tab-list" role="tablist" aria-label="Weasley Podex interface descriptions">
                         <button class="tab-button" id="tab-dashboard" role="tab" type="button" aria-selected="true" aria-controls="panel-dashboard" tabindex="0">Dashboard</button>
                         <button class="tab-button" id="tab-notes" role="tab" type="button" aria-selected="false" aria-controls="panel-notes" tabindex="-1">Notes</button>
                         <button class="tab-button" id="tab-web" role="tab" type="button" aria-selected="false" aria-controls="panel-web" tabindex="-1">Chat</button>
@@ -2241,12 +2220,12 @@
                         <button class="tab-button" id="tab-telegram" role="tab" type="button" aria-selected="false" aria-controls="panel-telegram" tabindex="-1">Telegram</button>
                         <button class="tab-button" id="tab-orchestration" role="tab" type="button" aria-selected="false" aria-controls="panel-orchestration" tabindex="-1">PABCD</button>
                     </div>
-                    <div class="tab-panel" id="panel-dashboard" role="tabpanel" aria-labelledby="tab-dashboard"><img src="screenshots/manager-dashboard-light.png" alt="podex manager dashboard" width="3022" height="1526" loading="lazy"></div>
-                    <div class="tab-panel" id="panel-notes" role="tabpanel" aria-labelledby="tab-notes" hidden><img src="screenshots/notes-wysiwyg.png" alt="podex Notes workspace with WYSIWYG markdown editing" width="2556" height="1548" loading="lazy"></div>
-                    <div class="tab-panel" id="panel-web" role="tabpanel" aria-labelledby="tab-web" hidden><img src="screenshots/web-ui.png" alt="podex Web UI" width="1320" height="1194" loading="lazy"></div>
-                    <div class="tab-panel" id="panel-terminal" role="tabpanel" aria-labelledby="tab-terminal" hidden><img src="screenshots/terminal-cli.png" alt="podex Terminal" width="561" height="273" loading="lazy"></div>
-                    <div class="tab-panel is-narrow" id="panel-telegram" role="tabpanel" aria-labelledby="tab-telegram" hidden><img src="screenshots/telegram-bot.png" alt="podex Telegram Bot" width="1290" height="2796" loading="lazy"></div>
-                    <div class="tab-panel" id="panel-orchestration" role="tabpanel" aria-labelledby="tab-orchestration" hidden><img src="screenshots/orchestration-log.png" alt="podex Orchestration log" width="844" height="436" loading="lazy"></div>
+                    <div class="tab-panel" id="panel-dashboard" role="tabpanel" aria-labelledby="tab-dashboard"><p>Dashboard brings instances, runtime controls, and live status into one command center.</p></div>
+                    <div class="tab-panel" id="panel-notes" role="tabpanel" aria-labelledby="tab-notes" hidden><p>Notes keeps project knowledge beside the sessions and tasks that use it.</p></div>
+                    <div class="tab-panel" id="panel-web" role="tabpanel" aria-labelledby="tab-web" hidden><p>Chat provides a focused web surface backed by the same local memory and event stream.</p></div>
+                    <div class="tab-panel" id="panel-terminal" role="tabpanel" aria-labelledby="tab-terminal" hidden><p>Terminal access exposes the complete CLI without leaving the shared runtime.</p></div>
+                    <div class="tab-panel is-narrow" id="panel-telegram" role="tabpanel" aria-labelledby="tab-telegram" hidden><p>Telegram carries conversations, files, commands, and scheduled results to mobile.</p></div>
+                    <div class="tab-panel" id="panel-orchestration" role="tabpanel" aria-labelledby="tab-orchestration" hidden><p>PABCD orchestration records each phase, approval, and verification result.</p></div>
                 </div>
             </div>
         </section>
@@ -2256,10 +2235,10 @@
                 <p class="kicker">Quickstart</p>
                 <h2 class="section-title" id="quickstart-title">Two commands to your local control plane.</h2>
                 <div class="quickstart-layout">
-                    <div class="quickstart-copy"><strong>Install once. Pick any runtime.</strong><p>Start with the subscription you already have. Add more providers later from the same settings surface.</p></div>
+                    <div class="quickstart-copy"><strong>Install once. Pick any runtime.</strong><p>Start with the subscription you already have. Add more providers later from the same settings surface.</p><p>State lives in <code>~/.weasley/podex</code>; override it with <code>WEASLEY_PODEX_HOME</code>.</p></div>
                     <div class="quickstart-terminal">
                         <div class="terminal-titlebar"><div class="terminal-dots" aria-hidden="true"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span></div><span class="terminal-name">zsh</span><span></span></div>
-                        <div class="code-block"><span class="terminal-prompt">$</span> npm install -g podex<br><span class="terminal-prompt">$</span> jaw dashboard<br><span class="cmd-note"># authenticate one runtime: claude, codex, copilot, grok, cursor, or another installed CLI</span></div>
+                        <div class="code-block"><span class="terminal-prompt">$</span> npm install -g weasley-podex<br><span class="terminal-prompt">$</span> weasley-podex dashboard<br><span class="cmd-note"># authenticate one runtime: claude, codex, copilot, grok, cursor, or another installed CLI</span></div>
                     </div>
                 </div>
                 <details class="beginner" id="terminal-help">
@@ -2268,8 +2247,8 @@
                         <h3>macOS, step by step</h3>
                         <div class="beginner-steps">
                             <article class="beginner-step"><p class="beginner-label">01 / Open Terminal</p><p class="beginner-copy">Open Finder → Applications → Utilities → Terminal.app, or press <code>⌘ Space</code> and type <code>Terminal</code>.</p></article>
-                            <article class="beginner-step"><p class="beginner-label">02 / Install</p><div class="code-block">curl -fsSL https://raw.githubusercontent.com/potatohoney-p/podex/main/scripts/install.sh | bash</div><p class="beginner-note">The installer sets up Node.js and podex.</p></article>
-                            <article class="beginner-step"><p class="beginner-label">03 / Launch</p><div class="code-block">claude auth login<br>jaw dashboard</div><p class="beginner-note">Open <strong>http://localhost:24576</strong>. The agent Web UI uses <strong>http://localhost:3457</strong> with <code>jaw serve</code>.</p></article>
+                            <article class="beginner-step"><p class="beginner-label">02 / Install</p><div class="code-block">curl -fsSL https://raw.githubusercontent.com/potatohoney-p/weasley-podex/main/scripts/install.sh | bash</div><p class="beginner-note">The installer sets up Node.js and Weasley Podex.</p></article>
+                            <article class="beginner-step"><p class="beginner-label">03 / Launch</p><div class="code-block">claude auth login<br>weasley-podex dashboard</div><p class="beginner-note">Open <strong>http://localhost:24576</strong>. The agent Web UI uses <strong>http://localhost:3457</strong> with <code>weasley-podex serve</code>.</p></article>
                         </div>
                     </div>
                 </details>
@@ -2280,12 +2259,12 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-top">
-                <div class="footer-intro"><div class="footer-brand">podex</div><p class="footer-statement">Thirteen AI runtimes, one local assistant, and one place to see the work.</p></div>
-                <div class="footer-col"><h3>START</h3><a href="#quickstart">Quickstart</a><a href="PODEX-intro.html">Guided intro</a><a href="windows.html">Windows setup</a></div>
+                <div class="footer-intro"><div class="footer-brand">Weasley Podex</div><p class="footer-statement">Thirteen AI runtimes, one local assistant, and one place to see the work.</p></div>
+                <div class="footer-col"><h3>START</h3><a href="#quickstart">Quickstart</a><a href="windows.html">Windows setup</a></div>
                 <div class="footer-col"><h3>BUILD</h3><a href="dev/">Documentation</a><a href="#engines">Runtimes</a><a href="#pabcd">PABCD</a></div>
-                <div class="footer-col"><h3>PROJECT</h3><a href="https://github.com/potatohoney-p/podex" target="_blank" rel="noreferrer">GitHub</a><a href="https://npmjs.com/package/podex" target="_blank" rel="noreferrer">npm</a><a href="https://github.com/potatohoney-p/podex/issues" target="_blank" rel="noreferrer">Issues</a></div>
+                <div class="footer-col"><h3>PROJECT</h3><a href="https://github.com/potatohoney-p/weasley-podex" target="_blank" rel="noreferrer">GitHub</a><a href="https://npmjs.com/package/weasley-podex" target="_blank" rel="noreferrer">npm</a><a href="https://github.com/potatohoney-p/weasley-podex/issues" target="_blank" rel="noreferrer">Issues</a></div>
             </div>
-            <div class="footer-bottom"><span>MIT License</span><span>Local-first, open source, provider-independent.</span></div>
+            <div class="footer-bottom"><span>Apache-2.0 License</span><span>Local-first, open source, provider-independent.</span></div>
         </div>
     </footer>
 
@@ -2301,13 +2280,6 @@
             window.addEventListener('scroll', syncNav, { passive: true });
 
             const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const demoVideo = document.querySelector('.demo-shell video');
-            if (reducedMotion) {
-                demoVideo.autoplay = false;
-                demoVideo.removeAttribute('autoplay');
-                demoVideo.pause();
-                demoVideo.controls = true;
-            }
 
             const reveals = document.querySelectorAll('.reveal');
             if (reducedMotion || !('IntersectionObserver' in window)) {

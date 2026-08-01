@@ -14,14 +14,14 @@ const builderSrc = readFileSync(join(root, 'src/prompt/builder.ts'), 'utf8');
 const skillsSrc = readFileSync(join(root, 'src/prompt/templates/skills.md'), 'utf8');
 
 test('PSC-001: externalized sections carry strong MUST-READ skill stubs', () => {
-    assert.ok(a1Src.includes('{{JAW_HOME}}/skills/search/SKILL.md'), 'search stub must point at the skill path');
+    assert.ok(a1Src.includes('{{WEASLEY_PODEX_HOME}}/skills/search/SKILL.md'), 'search stub must point at the skill path');
     assert.ok(/BEFORE any external\/web\/X\/real-time search, you MUST read/.test(a1Src), 'search stub must force a read');
-    assert.ok(a1Src.includes('{{JAW_HOME}}/skills/telegram-send/SKILL.md'), 'telegram stub must point at the skill path');
-    assert.ok(a1Src.includes('{{JAW_HOME}}/skills/structured-renderers/SKILL.md'), 'structured renderer stub must point at the skill path');
+    assert.ok(a1Src.includes('{{WEASLEY_PODEX_HOME}}/skills/telegram-send/SKILL.md'), 'telegram stub must point at the skill path');
+    assert.ok(a1Src.includes('{{WEASLEY_PODEX_HOME}}/skills/structured-renderers/SKILL.md'), 'structured renderer stub must point at the skill path');
     assert.ok(a1Src.includes('compose-block-v1') && a1Src.includes('variants[]'), 'compose-block schema guard must stay in A-1');
     assert.ok(a1Src.includes('type/title/body'), 'compose-block shorthand drift guard must stay in A-1');
-    assert.ok(a1Src.includes('{{JAW_HOME}}/skills/diagram/SKILL.md'), 'diagram stub must point at the skill path');
-    assert.ok(a1Src.includes('MUST read `{{JAW_HOME}}/skills/diagram/SKILL.md` before writing any output'), 'diagram read stays mandatory');
+    assert.ok(a1Src.includes('{{WEASLEY_PODEX_HOME}}/skills/diagram/SKILL.md'), 'diagram stub must point at the skill path');
+    assert.ok(a1Src.includes('MUST read `{{WEASLEY_PODEX_HOME}}/skills/diagram/SKILL.md` before writing any output'), 'diagram read stays mandatory');
 });
 
 test('PSC-002: retained backbone sections are untouched by the slim', () => {
@@ -46,7 +46,7 @@ test('PSC-004: PABCD guide is a path contract, not an inlined skill body', () =>
     assert.ok(orchestrationIdx > 0, 'guide heading stays');
     const block = builderSrc.slice(orchestrationIdx, orchestrationIdx + 1600);
     assert.ok(!block.includes('readFileSync(pabcdPath'), 'skill body must not be inlined');
-    assert.ok(block.includes('podex orchestrate I|P|A|B|C|D'), 'transition command summary stays inline');
+    assert.ok(block.includes('weasley-podex orchestrate I|P|A|B|C|D'), 'transition command summary stays inline');
     // devlog 260624_goal_work_phase_pabcd_loop, Slice 6: pin the loop / work-phase semantics
     // so the inline guide cannot silently regress to single-cycle wording.
     assert.ok(block.includes('one full P→A→B→C→D per work-phase'), 'inline guide must state one full cycle per work-phase');
@@ -57,8 +57,8 @@ test('PSC-004: PABCD guide is a path contract, not an inlined skill body', () =>
 });
 
 test('PSC-005: ref skill catalog stays a lookup instruction, never a listing', () => {
-    assert.ok(skillsSrc.includes('podex skill list --inactive'), 'browse command stays');
-    assert.ok(skillsSrc.includes('ls {{JAW_HOME}}/skills_ref/'), 'ls lookup stays');
+    assert.ok(skillsSrc.includes('weasley-podex skill list --inactive'), 'browse command stays');
+    assert.ok(skillsSrc.includes('ls {{WEASLEY_PODEX_HOME}}/skills_ref/'), 'ls lookup stays');
     assert.ok(!skillsSrc.includes('{{REF_SKILLS_LIST}}'), 'no per-skill ref listing variable');
 });
 

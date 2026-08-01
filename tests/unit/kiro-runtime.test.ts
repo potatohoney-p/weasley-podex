@@ -132,29 +132,29 @@ test('processKiroStdoutChunk does not stream read result text as assistant outpu
 test('parseKiroAssistantText captures continuation lines after > lead', () => {
     const raw = [
         'I will run the following command: pwd (using tool: shell)',
-        '/Users/jun',
+        '/Users/example',
         '- Completed in 0.1s',
         '> Here are the full results from all 10 tool calls.',
-        '1. pwd → /Users/jun',
+        '1. pwd → /Users/example',
         '2. ls → ok',
         '▸ Credits: 0.1 • Time: 5s',
     ].join('\n');
     assert.equal(
         parseKiroAssistantText(raw),
-        'Here are the full results from all 10 tool calls.\n1. pwd → /Users/jun\n2. ls → ok',
+        'Here are the full results from all 10 tool calls.\n1. pwd → /Users/example\n2. ls → ok',
     );
 });
 
 test('processKiroStdoutChunk streams continuation lines after > without waiting for close', () => {
     const ctx = { fullText: '', kiroDisplayedText: '' };
     processKiroStdoutChunk(ctx, '> Done — all 10 tool calls ran.\n');
-    const events = processKiroStdoutChunk(ctx, '1. pwd → /Users/jun\n2. ls → ok\n');
+    const events = processKiroStdoutChunk(ctx, '1. pwd → /Users/example\n2. ls → ok\n');
     const deltas = events.filter((event) => event.kind === 'assistant_delta').map((event) => event.text).join('');
     assert.match(deltas, /1\. pwd/);
     assert.match(deltas, /2\. ls → ok/);
     assert.equal(
         finalizeKiroFullText(ctx.fullText, ctx.kiroLineBuffer),
-        'Done — all 10 tool calls ran.\n1. pwd → /Users/jun\n2. ls → ok',
+        'Done — all 10 tool calls ran.\n1. pwd → /Users/example\n2. ls → ok',
     );
 });
 

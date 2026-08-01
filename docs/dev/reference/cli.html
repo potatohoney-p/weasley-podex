@@ -3,46 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CLI Commands — podex Docs</title>
+  <title>CLI Commands — Weasley Podex Docs</title>
   <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <main class="docs-main">
   <h1>CLI Commands</h1>
-  <p class="lead">podex currently exposes 40 slash commands across chat interfaces and an expanded root CLI for server, dashboard, orchestration, browser, memory, connector, and goal workflows.</p>
+  <p class="lead">Weasley Podex currently exposes 40 slash commands across chat interfaces and an expanded root CLI for server, dashboard, orchestration, browser, memory, connector, and goal workflows.</p>
 
   <h2>Root CLI</h2>
   <table>
     <tr><th>Command</th><th>Description</th></tr>
-    <tr><td><code>jaw serve</code></td><td>Start the core server.</td></tr>
-    <tr><td><code>jaw dashboard serve</code></td><td>Start the multi-instance manager dashboard.</td></tr>
-    <tr><td><code>jaw dashboard memory ...</code></td><td>Read-only cross-instance dashboard memory search/read/config/state/reindex helpers.</td></tr>
-    <tr><td><code>jaw dashboard chat search "query"</code></td><td>Search dashboard-discovered chat history across instances.</td></tr>
-    <tr><td><code>jaw init</code></td><td>Interactive setup wizard.</td></tr>
-    <tr><td><code>jaw doctor</code></td><td>Installation/runtime diagnostics.</td></tr>
-    <tr><td><code>jaw status</code></td><td>Server health check.</td></tr>
-    <tr><td><code>jaw chat</code></td><td>Terminal TUI.</td></tr>
-    <tr><td><code>jaw chat search "query"</code></td><td>Search local chat history with days/recent/context options.</td></tr>
-    <tr><td><code>jaw dispatch --agent ... --task ...</code></td><td>Dispatch an employee task; supports <code>--watch</code>, <code>--json</code>, and batch dispatch.</td></tr>
-    <tr><td><code>jaw worker status|watch [agent]</code></td><td>Inspect current/previous worker progress safely.</td></tr>
-    <tr><td><code>jaw employee list|reset</code></td><td>List/reset configured and static employees.</td></tr>
-    <tr><td><code>jaw orchestrate I|P|A|B|C|D|status|reset</code></td><td>Control the IPABCD/PABCD state machine.</td></tr>
-    <tr><td><code>jaw goal ...</code></td><td>Persistent goal lifecycle: set, plan, refine, update, done, cancel, pause, resume, history.</td></tr>
-    <tr><td><code>jaw task ...</code></td><td>Agent-native task checklist: add, edit, done, start, assign, list, clear.</td></tr>
-    <tr><td><code>jaw project set|list|clear</code></td><td>Manage projectDirs for review and orchestration scope.</td></tr>
-    <tr><td><code>jaw memory ...</code></td><td>Local memory search/read/save/list/context/reflect/flush.</td></tr>
-    <tr><td><code>jaw browser ...</code></td><td>Chrome CDP control, adaptive URL fetch, snapshots, screenshots, tabs, text, evaluate.</td></tr>
-    <tr><td><code>jaw browser web-ai ...</code></td><td>ChatGPT/Gemini/Grok web-AI render/send/poll/watch/session/context tooling.</td></tr>
-    <tr><td><code>jaw skill ...</code></td><td>Reference skill install/remove/info/list/reset.</td></tr>
-    <tr><td><code>jaw mcp ...</code></td><td>MCP install/sync/reset/list.</td></tr>
-    <tr><td><code>jaw connector ...</code></td><td>Dashboard board, notes, reminders, and audit connector commands.</td></tr>
-    <tr><td><code>jaw reminders ...</code></td><td>Local reminder list/add/done helpers.</td></tr>
-    <tr><td><code>jaw service ...</code></td><td>System service install/status/unset/logs through supported backends.</td></tr>
-    <tr><td><code>jaw lock</code> / <code>jaw unlock</code></td><td>Protect/unprotect an instance from stop-all flows.</td></tr>
-    <tr><td><code>jaw history search "query"</code></td><td>Search persisted chat history.</td></tr>
-    <tr><td><code>jaw clone</code></td><td>Clone an instance home.</td></tr>
-    <tr><td><code>jaw reset</code></td><td>Reset configuration/state.</td></tr>
+    <tr><td><code>weasley-podex serve</code></td><td>Start the core server.</td></tr>
+    <tr><td><code>weasley-podex dashboard serve</code></td><td>Start the multi-instance manager dashboard.</td></tr>
+    <tr><td><code>weasley-podex dashboard memory ...</code></td><td>Read-only cross-instance dashboard memory search/read/config/state/reindex helpers.</td></tr>
+    <tr><td><code>weasley-podex dashboard chat search "query"</code></td><td>Search dashboard-discovered chat history across instances.</td></tr>
+    <tr><td><code>weasley-podex init</code></td><td>Interactive setup wizard.</td></tr>
+    <tr><td><code>weasley-podex doctor</code></td><td>Installation/runtime diagnostics.</td></tr>
+    <tr><td><code>weasley-podex status</code></td><td>Server health check.</td></tr>
+    <tr><td><code>weasley-podex chat</code></td><td>Terminal TUI.</td></tr>
+    <tr><td><code>weasley-podex chat search "query"</code></td><td>Search local chat history with days/recent/context options.</td></tr>
+    <tr><td><code>weasley-podex dispatch --agent ... --task ...</code></td><td>Dispatch an employee task; supports <code>--watch</code>, <code>--json</code>, and batch dispatch.</td></tr>
+    <tr><td><code>weasley-podex worker status|watch [agent]</code></td><td>Inspect current/previous worker progress safely.</td></tr>
+    <tr><td><code>weasley-podex employee list|reset</code></td><td>List/reset configured and static employees.</td></tr>
+    <tr><td><code>weasley-podex orchestrate I|P|A|B|C|D|status|reset</code></td><td>Control the IPABCD/PABCD state machine.</td></tr>
+    <tr><td><code>weasley-podex goal ...</code></td><td>Persistent goal lifecycle: set, plan, refine, update, done, cancel, pause, resume, history.</td></tr>
+    <tr><td><code>weasley-podex task ...</code></td><td>Agent-native task checklist: add, edit, done, start, assign, list, clear.</td></tr>
+    <tr><td><code>weasley-podex project set|list|clear</code></td><td>Manage projectDirs for review and orchestration scope.</td></tr>
+    <tr><td><code>weasley-podex memory ...</code></td><td>Local memory search/read/save/list/context/reflect/flush.</td></tr>
+    <tr><td><code>weasley-podex browser ...</code></td><td>Chrome CDP control, adaptive URL fetch, snapshots, screenshots, tabs, text, evaluate.</td></tr>
+    <tr><td><code>weasley-podex browser web-ai ...</code></td><td>ChatGPT/Gemini/Grok web-AI render/send/poll/watch/session/context tooling.</td></tr>
+    <tr><td><code>weasley-podex skill ...</code></td><td>Reference skill install/remove/info/list/reset.</td></tr>
+    <tr><td><code>weasley-podex mcp ...</code></td><td>MCP install/sync/reset/list.</td></tr>
+    <tr><td><code>weasley-podex connector ...</code></td><td>Dashboard board, notes, reminders, and audit connector commands.</td></tr>
+    <tr><td><code>weasley-podex reminders ...</code></td><td>Local reminder list/add/done helpers.</td></tr>
+    <tr><td><code>weasley-podex service ...</code></td><td>System service install/status/unset/logs through supported backends.</td></tr>
+    <tr><td><code>weasley-podex lock</code> / <code>weasley-podex unlock</code></td><td>Protect/unprotect an instance from stop-all flows.</td></tr>
+    <tr><td><code>weasley-podex history search "query"</code></td><td>Search persisted chat history.</td></tr>
+    <tr><td><code>weasley-podex clone</code></td><td>Clone an instance home.</td></tr>
+    <tr><td><code>weasley-podex reset</code></td><td>Reset configuration/state.</td></tr>
   </table>
 
   <h2>Slash Commands</h2>

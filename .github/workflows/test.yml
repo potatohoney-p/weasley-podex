@@ -21,34 +21,14 @@ concurrency:
 jobs:
   node-tests:
     runs-on: ubuntu-latest
-    env:
-      SUBMODULE_PAT: ${{ secrets.SUBMODULE_PAT }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Checkout public submodules
-        run: |
-          git submodule update --init skills_ref
-          git submodule update --init officecli
-
-      - name: Checkout private submodules (needs SUBMODULE_PAT secret)
-        if: ${{ env.SUBMODULE_PAT != '' }}
-        run: |
-          git submodule update --init devlog
-        env:
-          GIT_CONFIG_COUNT: 1
-          GIT_CONFIG_KEY_0: url.https://x-access-token:${{ env.SUBMODULE_PAT }}@github.com/.insteadOf
-          GIT_CONFIG_VALUE_0: https://github.com/
-
-      - name: Skip private submodules when SUBMODULE_PAT is unavailable
-        if: ${{ env.SUBMODULE_PAT == '' }}
-        run: echo "Skipping private devlog checkout because SUBMODULE_PAT is not configured."
-
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
@@ -58,11 +38,13 @@ jobs:
         run: npm rebuild better-sqlite3
 
       - name: Build TypeScript
-        run: npx tsc
+        run: npm run typecheck
 
       - name: Run tests
-        run: npx tsx --import ./tests/setup/test-home.ts --experimental-test-module-mocks --test-force-exit --test tests/*.test.ts tests/unit/*.test.ts
-        timeout-minutes: 3
+        run: npm test
+        env:
+          WEASLEY_PODEX_TEST_CONCURRENCY: 2
+        timeout-minutes: 15
 
       - name: Release gates (gate:all)
         run: npm run gate:all
@@ -81,28 +63,6 @@ jobs:
 
       - name: Strict-baseline regression gate
         run: npm run check:strict-baseline
-
-      - name: Verify devlog submodule
-        id: devlog-check
-        run: |
-          if [[ ! -d devlog/_fin ]]; then
-            echo "⚠️ devlog submodule not checked out — SUBMODULE_PAT secret may be missing"
-            echo "available=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "available=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Devlog _fin status gate
-        if: steps.devlog-check.outputs.available == 'true'
-        run: bash structure/audit-fin-status.sh
-
-      - name: Upload audit report
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: fin-status-audit
-          path: devlog/_fin/_status_audit.md
-          if-no-files-found: ignore
 
       - name: Copilot gap check
         run: npm run check:copilot-gap

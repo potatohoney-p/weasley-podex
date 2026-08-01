@@ -1,36 +1,36 @@
 <!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CLI 명령어 — podex 문서</title><link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png"></head><body>
+<title>CLI 명령어 — Weasley Podex 문서</title><link rel="stylesheet" href="../../_shell.css">
+</head><body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
-<nav class="docs-sidebar"><div class="docs-logo"><a href="../../">podex</a></div><div class="docs-nav"><div class="docs-nav-section"><div class="docs-nav-title">Getting Started</div><a class="docs-nav-link" href="../">Overview</a><a class="docs-nav-link" href="../quickstart.html">Quickstart</a><a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a></div><div class="docs-nav-section"><div class="docs-nav-title">Concepts</div><a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a><a class="docs-nav-link" href="../concepts/employees.html">Employees</a><a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a><a class="docs-nav-link" href="../concepts/goals.html">Goals</a><a class="docs-nav-link" href="../concepts/skills.html">Skills</a><a class="docs-nav-link" href="../concepts/memory.html">Memory</a><a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a></div><div class="docs-nav-section"><div class="docs-nav-title">Guides</div><a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a><a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a><a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a><a class="docs-nav-link" href="../guides/telegram.html">Telegram</a><a class="docs-nav-link" href="../guides/discord.html">Discord</a><a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a><a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a><a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a></div><div class="docs-nav-section"><div class="docs-nav-title">Reference</div><a class="docs-nav-link active" href="../reference/cli.html">CLI Commands</a><a class="docs-nav-link" href="../reference/api.html">Server API</a><a class="docs-nav-link" href="../reference/config.html">Configuration</a><a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a><a class="docs-nav-link" href="../reference/events.html">Events</a></div><div class="docs-nav-section"><a class="docs-nav-link" href="../changelog.html">Changelog</a></div></div><div class="docs-lang"><a href="../../">EN</a><a class="active" href="../">한국어</a><a href="../zh/">中文</a></div><div class="docs-nav-footer"><a href="https://github.com/potatohoney-p/podex">GitHub</a><a href="../../../">Landing Page</a></div></nav>
+<nav class="docs-sidebar"><div class="docs-logo"><a href="../../">Weasley Podex</a></div><div class="docs-nav"><div class="docs-nav-section"><div class="docs-nav-title">Getting Started</div><a class="docs-nav-link" href="../">Overview</a><a class="docs-nav-link" href="../quickstart.html">Quickstart</a><a class="docs-nav-link" href="../quickstart-first-run.html">First Run</a></div><div class="docs-nav-section"><div class="docs-nav-title">Concepts</div><a class="docs-nav-link" href="../concepts/architecture.html">Architecture</a><a class="docs-nav-link" href="../concepts/employees.html">Employees</a><a class="docs-nav-link" href="../concepts/pabcd.html">PABCD</a><a class="docs-nav-link" href="../concepts/goals.html">Goals</a><a class="docs-nav-link" href="../concepts/skills.html">Skills</a><a class="docs-nav-link" href="../concepts/memory.html">Memory</a><a class="docs-nav-link" href="../concepts/prompts.html">Prompts</a></div><div class="docs-nav-section"><div class="docs-nav-title">Guides</div><a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a><a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a><a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a><a class="docs-nav-link" href="../guides/telegram.html">Telegram</a><a class="docs-nav-link" href="../guides/discord.html">Discord</a><a class="docs-nav-link" href="../guides/computer-use.html">Computer Use</a><a class="docs-nav-link" href="../guides/electron.html">Electron Desktop</a><a class="docs-nav-link" href="../guides/web-ai.html">Web AI</a></div><div class="docs-nav-section"><div class="docs-nav-title">Reference</div><a class="docs-nav-link active" href="../reference/cli.html">CLI Commands</a><a class="docs-nav-link" href="../reference/api.html">Server API</a><a class="docs-nav-link" href="../reference/config.html">Configuration</a><a class="docs-nav-link" href="../reference/keyboard.html">Keyboard Shortcuts</a><a class="docs-nav-link" href="../reference/events.html">Events</a></div><div class="docs-nav-section"><a class="docs-nav-link" href="../changelog.html">Changelog</a></div></div><div class="docs-lang"><a href="../../">EN</a><a class="active" href="../">한국어</a><a href="../zh/">中文</a></div><div class="docs-nav-footer"><a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a><a href="../../../">Landing Page</a></div></nav>
 <main class="docs-main">
 <h1>CLI 명령어</h1>
-<p class="lead">podex는 채팅 인터페이스의 슬래시 명령어와 터미널에서 사용할 수 있는 26개의 루트 라우터 케이스, 그리고 chat search, browser web-ai, dashboard memory/chat search 같은 그룹형 CLI 표면을 제공합니다.</p>
+<p class="lead">Weasley Podex는 채팅 인터페이스의 슬래시 명령어와 터미널에서 사용할 수 있는 26개의 루트 라우터 케이스, 그리고 chat search, browser web-ai, dashboard memory/chat search 같은 그룹형 CLI 표면을 제공합니다.</p>
 <h2>루트 CLI 하위 명령어</h2>
-<p>터미널에서 <code>jaw &lt;command&gt;</code> 형식으로 직접 실행합니다:</p>
+<p>터미널에서 <code>weasley-podex &lt;command&gt;</code> 형식으로 직접 실행합니다:</p>
 <table><tr><th>명령어</th><th>설명</th></tr>
-<tr><td><code>jaw serve</code></td><td>단일 인스턴스 서버 시작</td></tr>
-<tr><td><code>jaw dashboard</code></td><td>다중 인스턴스 대시보드 시작</td></tr>
-<tr><td><code>jaw init</code></td><td>대화형 설정 마법사</td></tr>
-<tr><td><code>jaw doctor</code></td><td>설치 상태 진단</td></tr>
-<tr><td><code>jaw status</code></td><td>서버 상태 확인</td></tr>
-<tr><td><code>jaw chat</code></td><td>터미널 REPL</td></tr>
-<tr><td><code>jaw dispatch</code></td><td>직원 작업 디스패치</td></tr>
-<tr><td><code>jaw employee</code></td><td>직원 관리</td></tr>
-<tr><td><code>jaw orchestrate</code></td><td>PABCD 상태 머신</td></tr>
-<tr><td><code>jaw goal</code></td><td>목표 생명주기 관리</td></tr>
-<tr><td><code>jaw memory</code></td><td>메모리 검색/읽기/저장</td></tr>
-<tr><td><code>jaw browser</code></td><td>Chrome CDP 브라우저 제어</td></tr>
-<tr><td><code>jaw skill</code></td><td>스킬 관리</td></tr>
-<tr><td><code>jaw mcp</code></td><td>MCP 서버 관리</td></tr>
-<tr><td><code>jaw service</code></td><td>시스템 서비스 관리</td></tr>
-<tr><td><code>jaw clone</code></td><td>인스턴스 복제</td></tr>
-<tr><td><code>jaw connector</code></td><td>대시보드 커넥터</td></tr>
-<tr><td><code>jaw reminders</code></td><td>리마인더 관리</td></tr>
-<tr><td><code>jaw project</code></td><td>프로젝트 디렉토리 관리</td></tr>
-<tr><td><code>jaw reset</code></td><td>설정 초기화</td></tr></table>
+<tr><td><code>weasley-podex serve</code></td><td>단일 인스턴스 서버 시작</td></tr>
+<tr><td><code>weasley-podex dashboard</code></td><td>다중 인스턴스 대시보드 시작</td></tr>
+<tr><td><code>weasley-podex init</code></td><td>대화형 설정 마법사</td></tr>
+<tr><td><code>weasley-podex doctor</code></td><td>설치 상태 진단</td></tr>
+<tr><td><code>weasley-podex status</code></td><td>서버 상태 확인</td></tr>
+<tr><td><code>weasley-podex chat</code></td><td>터미널 REPL</td></tr>
+<tr><td><code>weasley-podex dispatch</code></td><td>직원 작업 디스패치</td></tr>
+<tr><td><code>weasley-podex employee</code></td><td>직원 관리</td></tr>
+<tr><td><code>weasley-podex orchestrate</code></td><td>PABCD 상태 머신</td></tr>
+<tr><td><code>weasley-podex goal</code></td><td>목표 생명주기 관리</td></tr>
+<tr><td><code>weasley-podex memory</code></td><td>메모리 검색/읽기/저장</td></tr>
+<tr><td><code>weasley-podex browser</code></td><td>Chrome CDP 브라우저 제어</td></tr>
+<tr><td><code>weasley-podex skill</code></td><td>스킬 관리</td></tr>
+<tr><td><code>weasley-podex mcp</code></td><td>MCP 서버 관리</td></tr>
+<tr><td><code>weasley-podex service</code></td><td>시스템 서비스 관리</td></tr>
+<tr><td><code>weasley-podex clone</code></td><td>인스턴스 복제</td></tr>
+<tr><td><code>weasley-podex connector</code></td><td>대시보드 커넥터</td></tr>
+<tr><td><code>weasley-podex reminders</code></td><td>리마인더 관리</td></tr>
+<tr><td><code>weasley-podex project</code></td><td>프로젝트 디렉토리 관리</td></tr>
+<tr><td><code>weasley-podex reset</code></td><td>설정 초기화</td></tr></table>
 <h2>슬래시 명령어 (채팅 인터페이스)</h2>
 <p>채팅 입력창에서 <code>/</code> 접두사를 붙여 입력합니다:</p>
 <h3>세션</h3>

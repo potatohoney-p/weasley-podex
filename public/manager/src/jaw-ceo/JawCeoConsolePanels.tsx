@@ -246,7 +246,7 @@ function TimelineEntryView(props: {
             <article className={`jaw-ceo-message-row role-${entry.role}`}>
                 <span className="jaw-ceo-message-avatar" aria-hidden="true">{entry.role === 'user' ? 'You' : entry.role === 'ceo' ? 'CEO' : 'Log'}</span>
                 <div className="jaw-ceo-message-bubble">
-                    <div className="jaw-ceo-message-meta"><strong>{entry.role === 'user' ? 'You' : entry.role === 'ceo' ? 'Jaw CEO' : 'Tool output'}</strong><small>{formatTime(entry.at)}</small></div>
+                    <div className="jaw-ceo-message-meta"><strong>{entry.role === 'user' ? 'You' : entry.role === 'ceo' ? 'Weasley Podex CEO' : 'Tool output'}</strong><small>{formatTime(entry.at)}</small></div>
                     <div className="jaw-ceo-message-text"><MessageText text={entry.text} /></div>
                 </div>
             </article>
@@ -257,7 +257,7 @@ function TimelineEntryView(props: {
             <article className="jaw-ceo-message-row role-ceo is-live" aria-live="polite">
                 <span className="jaw-ceo-message-avatar is-live" aria-hidden="true">CEO</span>
                 <div className="jaw-ceo-message-bubble">
-                    <div className="jaw-ceo-message-meta"><strong>Jaw CEO live</strong><small>{entry.eventType || 'realtime'}</small></div>
+                    <div className="jaw-ceo-message-meta"><strong>Weasley Podex CEO live</strong><small>{entry.eventType || 'realtime'}</small></div>
                     <div className="jaw-ceo-message-text"><MessageText text={entry.text} /></div>
                 </div>
             </article>
@@ -280,7 +280,7 @@ function ChatPanel(props: { model: JawCeoConsoleModel; ceo: JawCeoController; vo
     const estimateSize = useCallback((index: number) => estimateTimelineItemSize(timeline[index]), [timeline]);
     const virtual = useJawCeoVirtualTimeline({ count: timeline.length, getItemKey, estimateSize });
     return (
-        <section className="jaw-ceo-chat-panel" aria-label="Jaw CEO chat">
+        <section className="jaw-ceo-chat-panel" aria-label="Weasley Podex CEO chat">
             <div ref={virtual.scrollRef} onScroll={virtual.onScroll} className="jaw-ceo-chat-log jaw-ceo-timeline is-virtual" aria-live="polite">
                 {timeline.length === 0 ? (
                     <div className="jaw-ceo-empty-state">

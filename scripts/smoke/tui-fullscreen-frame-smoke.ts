@@ -79,7 +79,7 @@ function expandViewportFill(rows: string[], height: number): string[] {
 
 withTerminalSize(72, 24, () => {
     const ctx = makeCtx();
-    ctx.welcomeLines = ['Welcome to jaw chat'];
+    ctx.welcomeLines = ['Welcome to Weasley Podex chat'];
     appendUserItem(ctx.store.transcript, 'hello', 'hello');
     appendToolItem(ctx.store.transcript, 'Bash', { status: 'done', detail: 'echo ok', stepRef: 's1' });
     upsertLiveToolItem(ctx.store.transcript, { icon: '🔧', label: 'Bash live', detail: 'npm test -- --runInBand', status: 'running', stepRef: 'live' });
@@ -95,7 +95,7 @@ withTerminalSize(72, 24, () => {
     assert.equal(expanded.length, 24);
     assert.ok(frame.rows.every(row => !row.includes('\n')), 'frame rows must be physical rows');
     assert.ok(expanded.every(row => visualWidth(row) <= 72), 'frame rows must be width safe');
-    assert.match(transcript, /Welcome to jaw chat/);
+    assert.match(transcript, /Welcome to Weasley Podex chat/);
     assert.match(transcript, /Final answer remains visible/);
     assert.match(transcript, /Bash live/);
     assert.match(stripAnsi(expanded[regions.composer.y - 1] ?? ''), /next 한글🙂/);

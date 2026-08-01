@@ -1,13 +1,14 @@
 ﻿import test, { mock } from 'node:test';
 import assert from 'node:assert/strict';
 import express, { type NextFunction, type Request, type Response } from 'express';
-import { mkdtempSync, realpathSync, rmSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import path, { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const acpHostCalls: Array<{ scope?: string; cwd?: string }> = [];
-const acpHostPath = resolve(import.meta.dirname, '../../src/code-mode/acp-host.js');
+const acpHostPath = pathToFileURL(resolve(import.meta.dirname, '../../src/code-mode/acp-host.js')).href;
 
 mock.module(acpHostPath, {
 	namedExports: {
@@ -79,6 +80,7 @@ test('code stored sessions route defaults to global catalog and validates cwd sc
 			const allScope = await fetch(`${baseUrl}/api/code/sessions/stored?scope=all`);
 			assert.equal(allScope.status, 200);
 			assert.deepEqual(acpHostCalls.at(-1), { scope: 'all' });
+			await allScope.json();
 
 			const missingCwd = await fetch(`${baseUrl}/api/code/sessions/stored?scope=cwd`);
 			assert.equal(missingCwd.status, 400);
@@ -91,6 +93,7 @@ test('code stored sessions route defaults to global catalog and validates cwd sc
 			const absoluteCwd = await fetch(`${baseUrl}/api/code/sessions/stored?scope=cwd&cwd=${encodeURIComponent(cwd)}`);
 			assert.equal(absoluteCwd.status, 200);
 			assert.deepEqual(acpHostCalls.at(-1), { scope: 'cwd', cwd });
+			await absoluteCwd.json();
 		});
 	} finally {
 		rmSync(cwd, { recursive: true, force: true });
@@ -118,11 +121,13 @@ test('code git-info reports repo root and current worktree context for nested cw
 	const repo = mkdtempSync(path.join(tmpdir(), 'podex-code-routes-repo-'));
 	const nested = path.join(repo, 'packages', 'app');
 	try {
-		execFileSync('mkdir', ['-p', nested]);
+		mkdirSync(nested, { recursive: true });
 		execFileSync('git', ['init'], { cwd: repo, stdio: 'ignore' });
 		execFileSync('git', ['config', 'user.email', 'test@example.com'], { cwd: repo });
 		execFileSync('git', ['config', 'user.name', 'Test User'], { cwd: repo });
-		execFileSync('sh', ['-lc', 'echo ok > README.md && git add README.md && git commit -m init >/dev/null'], { cwd: repo });
+		writeFileSync(path.join(repo, 'README.md'), 'ok\n');
+		execFileSync('git', ['add', 'README.md'], { cwd: repo });
+		execFileSync('git', ['commit', '-m', 'init'], { cwd: repo, stdio: 'ignore' });
 		const realRepo = realpathSync(repo);
 		await withServer(async baseUrl => {
 			const response = await fetch(`${baseUrl}/api/code/git-info?cwd=${encodeURIComponent(nested)}`);

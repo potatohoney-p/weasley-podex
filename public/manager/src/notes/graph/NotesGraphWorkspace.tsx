@@ -34,7 +34,7 @@ function defaultSettings(): NotesGraphSettings {
 
 export function NotesGraphWorkspace(props: NotesGraphWorkspaceProps) {
     // Graph is intentionally web-capable: data comes from the dashboard notes API.
-    // Electron side panels may render Jawsidian content, but must not become the
+    // Electron side panels may render Weasley Podex Notes content, but must not become the
     // source of graph connectivity or persistence.
     const [draft, setDraft] = useState<NotesGraphSettings>(() => normalizeNotesGraphSettings(props.settings ?? defaultSettings()));
     const [fitToken, setFitToken] = useState(0);

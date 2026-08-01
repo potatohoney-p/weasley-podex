@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Electron Desktop — podex Docs</title>
+<title>Electron Desktop — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -83,14 +82,14 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Electron Desktop</h1>
-<p class="lead">podex is available as a native Electron desktop application. Packaged builds include a Node.js 22 sidecar so the app can run the dashboard server and install a terminal <code>jaw</code> command without requiring a global npm install.</p>
+<p class="lead">Weasley Podex is available as a native Electron desktop application. Packaged builds include a Node.js 22 sidecar so the app can run the dashboard server and install a terminal <code>weasley-podex</code> command without requiring a global npm install.</p>
 
 <h2>Installation</h2>
 <p>Download the desktop artifact from the release or manual desktop-release workflow. macOS builds ship as DMG/ZIP, Windows builds ship as NSIS/ZIP, and Linux builds ship as AppImage.</p>
@@ -98,14 +97,14 @@
 npm run electron:dist:mac</code></pre>
 
 <h2>Bundled Sidecar</h2>
-<p>The release workflow runs <code>scripts/bundle-sidecar.sh</code> before packaging. The sidecar includes Node.js 24.17, compiled server output, frontend assets, production dependencies, rebuilt native modules such as <code>better-sqlite3</code>, and CLI shims under <code>server/bin/jaw</code> and <code>server/bin/jaw.cmd</code>.</p>
+<p>The release workflow runs <code>scripts/bundle-sidecar.sh</code> before packaging. The sidecar includes Node.js 24.17, compiled server output, frontend assets, production dependencies, rebuilt native modules such as <code>better-sqlite3</code>, and CLI shims under <code>server/bin/weasley-podex</code> and <code>server/bin/weasley-podex.cmd</code>.</p>
 <table>
 <tr><th>Platform</th><th>Target</th><th>Artifact</th></tr>
 <tr><td>macOS</td><td>arm64</td><td>DMG, ZIP</td></tr>
 <tr><td>Windows</td><td>x64</td><td>NSIS installer, ZIP</td></tr>
 <tr><td>Linux</td><td>x64</td><td>AppImage</td></tr>
 </table>
-<p>The Electron main process does not import native server modules directly. It discovers the bundled sidecar first, then falls back to a global <code>jaw</code> binary during development.</p>
+<p>The Electron main process does not import native server modules directly. It discovers the bundled sidecar first, then falls back to a global <code>weasley-podex</code> binary during development.</p>
 
 <h2>Panel Layout</h2>
 <p>The Electron app provides a multi-panel workspace:</p>
@@ -151,10 +150,10 @@ npm run electron:dist:mac</code></pre>
 <p>The Electron app may prompt for macOS automation access. Grant it in System Preferences > Privacy & Security > Automation. The app's quit flow is visible and handles cleanup gracefully. Current release artifacts are unsigned and un-notarized, so macOS may require right-click → Open on first launch.</p>
 
 <h2>Terminal Command Install</h2>
-<p>On first launch and from the tray menu, packaged apps can install a terminal <code>jaw</code> command that points at the bundled sidecar shim. macOS installs under <code>/usr/local/bin</code> with an admin prompt when needed. Linux uses <code>~/.local/bin</code>. Windows PATH registration is handled by the NSIS installer script.</p>
+<p>On first launch and from the tray menu, packaged apps can install a terminal <code>weasley-podex</code> command that points at the bundled sidecar shim. macOS installs under <code>/usr/local/bin</code> with an admin prompt when needed. Linux uses <code>~/.local/bin</code>. Windows PATH registration is handled by the NSIS installer script.</p>
 
 <h2>Development</h2>
-<pre><code># Run Electron in dev mode (concurrent with jaw server):
+<pre><code># Run Electron in dev mode (concurrent with weasley-podex server):
 npm run electron:dev
 
 # Typecheck/build the Electron app:

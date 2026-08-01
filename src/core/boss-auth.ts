@@ -5,19 +5,20 @@
 // share the same localhost privilege as the main agent.
 
 import crypto from 'crypto';
+import { getWeasleyPodexEnv, setWeasleyPodexEnv, weasleyPodexEnvName } from './weasley-podex-env.js';
 
-const TOKEN_ENV = 'JAW_BOSS_TOKEN';
+const TOKEN_ENV = weasleyPodexEnvName('BOSS_TOKEN');
 
 let bossToken: string | null = null;
 
 export function initBossToken(): string {
     if (bossToken) return bossToken;
-    const fromEnv = process.env[TOKEN_ENV];
+    const fromEnv = getWeasleyPodexEnv('BOSS_TOKEN');
     if (fromEnv && fromEnv.length >= 32) {
         bossToken = fromEnv;
     } else {
         bossToken = crypto.randomBytes(32).toString('hex');
-        process.env[TOKEN_ENV] = bossToken;
+        setWeasleyPodexEnv('BOSS_TOKEN', bossToken);
     }
     return bossToken;
 }

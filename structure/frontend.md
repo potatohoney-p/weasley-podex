@@ -1,7 +1,7 @@
 ---
 created: 2026-03-28
-tags: [podex, frontend, vite, pwa]
-aliases: [podex Frontend, public architecture, frontend.md]
+tags: [weasley-podex, frontend, vite, pwa]
+aliases: [Weasley Podex Frontend, public architecture, frontend.md]
 ---
 
 > 📚 [INDEX](INDEX.md) · [커맨드](commands.md) · [서버 API](server_api.md) · **프론트엔드 아키텍처**
@@ -11,7 +11,7 @@ aliases: [podex Frontend, public architecture, frontend.md]
 > Web UI 본체는 Vanilla HTML + CSS + TypeScript ES Modules로 구성된다. Manager 대시보드는 `public/manager/`의 React 19 + TSX 앱이다.
 > 빌드는 Vite 8 기준이며, `vite.config.ts`는 `public/index.html`과 `public/manager/index.html`을 multi-entry로 빌드한다.
 > 메인 UI는 `index.html`에서 Google Fonts `Chakra Petch` + `Outfit`을 불러오고, 로컬 `public/assets/fonts/GeistVF.woff2`와 `JetBrainsMono-Variable.woff2`는 자산으로 보관 중이다.
-> PWA는 `manifest.json` + `sw.js` + `icons/`로 구성된다. 오프라인 메시지 캐시, virtual scroll, markdown/KaTeX/Mermaid 렌더링, sandboxed diagram widget, avatar emoji/image 커스터마이즈, voice recording, SSE-first event-channel, PABCD roadmap, subagent-aware ProcessBlock 렌더링, slash command 복구 액션, 반응형 사이드바, theme toggle, chat search, workflow cockpit이 현재 런타임의 핵심이다.
+> PWA는 `manifest.json` + `sw.js` + 생성된 Weasley Podex 마크로 구성된다. 오프라인 메시지 캐시, virtual scroll, markdown/KaTeX/Mermaid 렌더링, sandboxed diagram widget, avatar emoji/image 커스터마이즈, voice recording, SSE-first event-channel, PABCD roadmap, subagent-aware ProcessBlock 렌더링, slash command 복구 액션, 반응형 사이드바, theme toggle, chat search, workflow cockpit이 현재 런타임의 핵심이다.
 
 ---
 
@@ -26,10 +26,8 @@ public/
 ├── assets/
 │   ├── fonts/            ← 2 fonts (GeistVF, JetBrainsMono variable)
 │   ├── providers/        ← 18 SVG provider assets
-│   └── shark.svg
+│   └── weasley-podex-mark.png
 ├── css/                  ← 12 CSS files
-├── icons/                ← 3 PWA icons
-├── img/                  ← shark sprite
 ├── js/                   ← 90 TypeScript modules
 │   ├── diagram/          ← 3 diagram pipeline modules
 │   ├── features/         ← 51 feature modules
@@ -53,7 +51,7 @@ public/
 | `public/manager/src/` | 304 | React 19 manager dashboard |
 | `public/css/` | 12 | theme/layout/chat/markdown/tool UI/diagram/trace drawer/workflow cockpit/chat-search |
 | `public/locales/` | 4 | `ko.json`, `en.json`, `ja.json`, `zh.json` |
-| `public/assets/providers/` | 18 | provider SVG 세트 |
+| provider/social logo assets | 0 | 외부 로고 파일을 제거하고 `js/provider-icons.ts`의 중립 glyph로 대체 |
 | `public/assets/fonts/` | 2 | 로컬 폰트 자산 |
 | `public/icons/` | 3 | PWA icons |
 
@@ -72,7 +70,7 @@ public/
 | `js/api.ts` | — | `api`, `apiJson`, `apiFire` fetch 래퍼 |
 | `js/locale.ts` | — | localStorage 기반 locale 동기화 |
 | `js/icons.ts` | 278L | Lucide 기반 중앙 아이콘 레지스트리 + emoji compatibility. `ICONS.robot`/`ICONS.tool` 등 ProcessBlock summary와 row icon에 재사용 |
-| `js/provider-icons.ts` | 117L | provider SVG raw import + hydrate helper + label lookup. `codex-app` alias는 OpenAI icon을 녹색 color variant로 표시. kiro-code는 `kiro.svg`/`kiro-color.svg` 사용 |
+| `js/provider-icons.ts` | 98L | `currentColor` 기반 중립 약어 glyph 생성 + hydrate helper + alias/label lookup. `color`/`mono` 호출 계약은 유지하지만 외부 브랜드 자산은 번들하지 않음 |
 | `js/uuid.ts` | — | virtual scroll와 live append가 공유하는 DOM-safe id 생성기 |
 | `js/preview-parent-origin.ts` | — | `postPreviewInvalidate(topics, reason)` + `postPreviewOpenDoc(path)` bridge |
 
@@ -200,7 +198,7 @@ settings.ts (barrel)
 | `css/layout.css` | 전체 grid layout, sidebar width, base UI scaffolding |
 | `css/chat.css` | chat area, message layout, input bar, attachments, voice button, virtual scroll container, slash command workflow chips, unknown-command recovery block, `.file-path-link` open states, `.chat-inline-img` 최소 높이/`object-fit: contain`, `.chat-inline-img-error` fallback |
 | `css/chat-search.css` | in-chat search overlay styling |
-| `css/orc-state.css` | PABCD roadmap, shark runner, orc glow, state badge, interview panel (known/unknown 트래커, dimension bars, budget panel) |
+| `css/orc-state.css` | PABCD roadmap, workflow runner, orc glow, state badge, interview panel (known/unknown 트래커, dimension bars, budget panel) |
 | `css/sidebar.css` | left/right sidebar, collapse behavior, status / CLI / app name sections |
 | `css/modals.css` | prompt/template/heartbeat/memory modal shells + form controls |
 | `css/markdown.css` | markdown rendering, code block, copy button, tables, mermaid/KaTeX styles |
@@ -217,7 +215,7 @@ settings.ts (barrel)
 
 ### Manager preview memory note
 
-2026-06-14 점검 기준, Chrome에서 manager Web UI를 열었을 때 1GB 근처까지 올라갔다가 약 10분 뒤 300MB대 근처로 안정화되는 패턴은 `jaw dashboard serve` manager 서버 누수보다 preview iframe의 cold-load peak로 해석한다. 실제 관찰에서는 manager 서버 `dist/src/manager/server.js` RSS가 약 170~220MB 수준이었고, 큰 RSS는 Chrome renderer와 각 `jaw serve` worker(`dist/server.js`) 쪽에 있었다.
+2026-06-14 점검 기준, Chrome에서 manager Web UI를 열었을 때 1GB 근처까지 올라갔다가 약 10분 뒤 300MB대 근처로 안정화되는 패턴은 `weasley-podex dashboard serve` manager 서버 누수보다 preview iframe의 cold-load peak로 해석한다. 실제 관찰에서는 manager 서버 `dist/src/manager/server.js` RSS가 약 170~220MB 수준이었고, 큰 RSS는 Chrome renderer와 각 `weasley-podex serve` worker(`dist/server.js`) 쪽에 있었다.
 
 원인 경로:
 
@@ -264,7 +262,7 @@ settings.ts (barrel)
 
 - Pi model field는 발견된 모델이 있으면 `SelectField`를 사용하고, 목록이 비어 있을 때만 free-text `TextField`로 fallback한다.
 - 등록 성공 시 `settings.pi.profiles`, `settings.pi.discoveredModels`, `perCli.pi.provider`, `perCli.pi.model` draft가 함께 갱신되어 Pi model dropdown에 새 모델이 바로 나타난다.
-| `manager/src/jaw-ceo/` | Jaw CEO console panels, orchestration-control actions, voice, virtual timeline |
+| `manager/src/jaw-ceo/` | Weasley Podex CEO console panels, orchestration-control actions, voice, virtual timeline |
 | `manager/src/goal-status/` `manager/src/background-tasks/` `manager/src/workers/` | Manager runtime-observability monitors for goal/PABCD, background tasks, web-ai bgtask bridges, worker progress, durable worker runs, shared status-category display contracts, safe event timelines, and explicit bounded raw-output drill-down |
 | `manager/src/notes/` | markdown notes, search sidebar, WYSIWYG editing, wikilinks, graph view |
 | `manager/src/hooks/` | dashboard registry/view persistence/instance message events hooks |
@@ -273,7 +271,7 @@ settings.ts (barrel)
 | `manager/src/clipboard/` | copy-text utility |
 | `manager/src/lib/` | shared utilities (preview-prefs, use-hidden-unload) |
 
-Manager 서버는 `jaw dashboard serve`가 실행하는 `src/manager/server.ts`이며 기본 port는 `24576`. React manager app은 `/api/manager/events`, `/api/dashboard/instances`, `/i/:port/api/messages/latest` 계열 polling으로 상태를 읽는다. Worker live bridge는 browser가 직접 EventSource를 여는 구조가 아니라 manager server의 `src/manager/worker-events.ts` + `src/manager/worker-sse-client.ts`가 각 worker instance `GET /api/events`를 server-side 구독하고 latest-message cache를 갱신하는 구조다. Jaw CEO right panel은 completion/watch/voice/orchestration control을 소유하고, Code mode monitor panels는 `/api/manager/runtime-status`, `/api/bgtask`, `/api/orchestrate/worker-progress` 기반 runtime observability를 소유한다. web-ai long task는 BrowserPanel이나 Code transcript가 아니라 `preset: "web-ai"` background task로 등록되며, monitor retry도 native web-ai session id를 보존한 preset 재등록을 사용한다. Background task monitor는 terminal completion, cancellation/orphaning, and notification handoff 모두를 `bgtask_update` + `GET /api/bgtask` hydration으로 반영한다. Worker Runs and Background Tasks remain separate panels and stores, but their client contracts preserve shared `statusCategory` so UI comparisons do not duplicate native status mapping.
+Manager 서버는 `weasley-podex dashboard serve`가 실행하는 `src/manager/server.ts`이며 기본 port는 `24576`. React manager app은 `/api/manager/events`, `/api/dashboard/instances`, `/i/:port/api/messages/latest` 계열 polling으로 상태를 읽는다. Worker live bridge는 browser가 직접 EventSource를 여는 구조가 아니라 manager server의 `src/manager/worker-events.ts` + `src/manager/worker-sse-client.ts`가 각 worker instance `GET /api/events`를 server-side 구독하고 latest-message cache를 갱신하는 구조다. Weasley Podex CEO right panel은 completion/watch/voice/orchestration control을 소유하고, Code mode monitor panels는 `/api/manager/runtime-status`, `/api/bgtask`, `/api/orchestrate/worker-progress` 기반 runtime observability를 소유한다. web-ai long task는 BrowserPanel이나 Code transcript가 아니라 `preset: "web-ai"` background task로 등록되며, monitor retry도 native web-ai session id를 보존한 preset 재등록을 사용한다. Background task monitor는 terminal completion, cancellation/orphaning, and notification handoff 모두를 `bgtask_update` + `GET /api/bgtask` hydration으로 반영한다. Worker Runs and Background Tasks remain separate panels and stores, but their client contracts preserve shared `statusCategory` so UI comparisons do not duplicate native status mapping.
 
 ---
 
@@ -317,10 +315,10 @@ Regression context: `devlog/_plan/260627_process_block_blank_expand/`.
 
 | 자산 | 현재 구현 |
 | --- | --- |
-| `manifest.json` | `standalone`, `theme_color: #22d3ee`, 192/512/maskable icons |
+| `manifest.json` | `standalone`, `theme_color: #22d3ee`, generated Weasley Podex mark |
 | `sw.js` | navigation network-first, `/dist/assets/*` cache-first, 그 외 stale-while-revalidate |
-| `icons/` | `icon-192.png`, `icon-512.png`, `icon-512-maskable.png` |
-| `assets/providers/` | `antigravity(-color)`, `claude(-color)`, `copilot(-color)`, `cursor(-color)`, `gemini(-color)`, `grok(-color)`, `kiro(-color)`, `openai`, `opencode`, `discord`, `telegram` |
+| `assets/weasley-podex-mark.png` | ImageGen으로 생성한 PWA/웹 제품 마크 |
+| provider/service glyphs | `js/provider-icons.ts`가 Pi, AI runtime, Discord, Telegram 표시를 동일한 코드 렌더링 glyph로 생성. 별도 로고 파일 세트는 없음 |
 | `assets/fonts/` | `GeistVF.woff2`, `JetBrainsMono-Variable.woff2` |
 | `locales/` | `ko.json`, `en.json`, `ja.json`, `zh.json` |
 
@@ -338,7 +336,7 @@ Regression context: `devlog/_plan/260627_process_block_blank_expand/`.
 | Event channel | `GET /api/events` SSE primary channel handles `agent_tool`→typed ProcessBlock step, `agent_output`→streaming renderer, `agent_done`→finalization; `ws.ts` is the shared dispatcher and legacy WebSocket fallback for pre-X-01 servers. Transient SSE drops are quiet for 8 seconds before the UI posts a disconnected message. |
 | 상태 | `agent_status`, `queue_update`, `orc_state`, `session_reset`, `clear`, Telegram/Discord `new_message` |
 | 반응형 | sidebar collapse/expand, mobile edge swipe, theme switch, PABCD roadmap, voice shortcut(`Ctrl/Cmd+Shift+Space`, `Alt/Option+M`) |
-| Manager | 별도 React 앱이 dashboard API polling으로 Jaw 인스턴스 scan/preview/lifecycle, notes, board, reminders, schedule, CEO console, **Telegram Hub** settings을 관리하고, manager server가 worker SSE bridge/cache를 담당 |
+| Manager | 별도 React 앱이 dashboard API polling으로 Weasley Podex 인스턴스 scan/preview/lifecycle, notes, board, reminders, schedule, CEO console, **Telegram Hub** settings을 관리하고, manager server가 worker SSE bridge/cache를 담당 |
 
 ---
 

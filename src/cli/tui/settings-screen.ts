@@ -1,4 +1,4 @@
-﻿import { visualWidth } from './renderers.js';
+import { visualWidth } from './renderers.js';
 
 export type SettingsRowKind = 'editable' | 'readonly';
 export type SettingsRowScope = 'cli' | 'web-ai' | 'runtime';
@@ -72,7 +72,7 @@ export function buildAppearanceRows(snapshot: SettingsScreenSnapshot): SettingsR
             label: 'Fullscreen Default',
             scope: 'cli',
             value: boolValue(tui['fullscreen'], true) ? 'enabled' : 'disabled',
-            description: 'Default jaw chat display mode',
+            description: 'Default weasley-podex chat display mode',
             kind: 'editable',
         },
         {
@@ -170,7 +170,7 @@ export function composeSettingsScreenLines(
     const rows = buildAppearanceRows(snapshot);
     const selected = Math.max(0, Math.min(state.selected, rows.length - 1));
     const lines: string[] = [
-        `  ${options.cyanCode}${options.boldCode}Settings:${options.resetCode} podex`,
+        `  ${options.cyanCode}${options.boldCode}Settings:${options.resetCode} Weasley Podex`,
         `  ${options.dimCode}Only supported local CLI/TUI settings and real Web AI settings are shown.${options.resetCode}`,
         '',
         `  ${options.dimCode}Preview:${options.resetCode}`,

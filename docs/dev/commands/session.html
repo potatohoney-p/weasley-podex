@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Session Commands — podex Docs</title>
+<title>Session Commands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 <style>
 .cmd-block { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px 28px; margin: 24px 0; }
 .cmd-block h3 { margin: 0 0 6px; font-size: 18px; }
@@ -28,7 +27,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -51,7 +50,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -100,16 +99,16 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Session Commands</h1>
-<p class="lead">Session commands manage your current podex conversation: viewing help, navigating commands, checking status, clearing history, compressing context, resetting state, and redirecting the agent mid-conversation. These are the commands you reach for most often during interactive use.</p>
+<p class="lead">Session commands manage your current Weasley Podex conversation: viewing help, navigating commands, checking status, clearing history, compressing context, resetting state, and redirecting the agent mid-conversation. These are the commands you reach for most often during interactive use.</p>
 
-<div class="callout callout-info">All session commands start with <code>/</code> and can be typed directly in the chat input. You can also trigger them via natural language &mdash; podex understands Korean and English equally. See the "~해줘" tips on each command below.</div>
+<div class="callout callout-info">All session commands start with <code>/</code> and can be typed directly in the chat input. You can also trigger them via natural language &mdash; Weasley Podex understands Korean and English equally. See the "~해줘" tips on each command below.</div>
 
 <h2>Quick Reference</h2>
 <div class="quick-ref">
@@ -132,7 +131,7 @@
 <div class="cmd-block" id="help">
 <h3><code>/help</code></h3>
 <div class="cmd-sig">/help <span class="arg">[command]</span></div>
-<p>Shows documentation for podex commands. When called without arguments, it lists all available commands grouped by category. When a command name is provided, it shows detailed usage, arguments, and examples for that specific command.</p>
+<p>Shows documentation for Weasley Podex commands. When called without arguments, it lists all available commands grouped by category. When a command name is provided, it shows detailed usage, arguments, and examples for that specific command.</p>
 
 <p><strong>Arguments:</strong></p>
 <table>
@@ -149,7 +148,7 @@
 /help steer
 </div>
 
-<div class="cmd-tip"><strong>"~해줘" tip:</strong> "도움말 보여줘", "명령어 뭐 있어?", "compact 사용법 알려줘" all map to <code>/help</code>. podex will detect your intent and show the relevant documentation.</div>
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "도움말 보여줘", "명령어 뭐 있어?", "compact 사용법 알려줘" all map to <code>/help</code>. Weasley Podex will detect your intent and show the relevant documentation.</div>
 </div>
 
 <!-- /commands -->
@@ -354,11 +353,11 @@
 <tr><td>Instance is deeply broken, start from scratch</td><td><code>/reset confirm</code></td><td>Bootstrap reset &mdash; only settings.json survives</td></tr>
 <tr><td>Cannot remember a command name</td><td><code>/commands</code></td><td>Searchable palette of everything available</td></tr>
 <tr><td>Need to check token usage or loaded skills</td><td><code>/status</code></td><td>Session diagnostics at a glance</td></tr>
-<tr><td>New to podex, exploring features</td><td><code>/help</code></td><td>Documentation built into the chat</td></tr>
+<tr><td>New to Weasley Podex, exploring features</td><td><code>/help</code></td><td>Documentation built into the chat</td></tr>
 </table>
 
 <h2>Command Lifecycle</h2>
-<p>Session commands operate at different levels of the podex stack:</p>
+<p>Session commands operate at different levels of the Weasley Podex stack:</p>
 <ul>
 <li><strong><code>/help</code></strong> and <strong><code>/commands</code></strong> are read-only &mdash; they display information without modifying state.</li>
 <li><strong><code>/status</code></strong> reads from multiple subsystems (model, skills, memory, goals) and aggregates a snapshot.</li>
@@ -369,7 +368,7 @@
 <li><strong><code>/reset confirm</code></strong> performs a full bootstrap reset &mdash; messages, memory, skills (hard), employees, and MCP are all cleared. Only settings.json survives.</li>
 </ul>
 
-<div class="callout callout-info"><strong>Natural language always works.</strong> You never <em>have</em> to remember slash commands. Saying "대화 지워줘" is the same as typing <code>/clear</code>. The slash commands exist for precision and speed, but podex's intent detection handles the rest.</div>
+<div class="callout callout-info"><strong>Natural language always works.</strong> You never <em>have</em> to remember slash commands. Saying "대화 지워줘" is the same as typing <code>/clear</code>. The slash commands exist for precision and speed, but Weasley Podex's intent detection handles the rest.</div>
 
 <div class="page-nav">
 <a class="prev" href="../skills/utility.html">Utility Skills</a>

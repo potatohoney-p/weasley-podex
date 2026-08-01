@@ -1,4 +1,5 @@
-﻿// ─── podex Server (glue + routes) ─────────────────
+import { getWeasleyPodexEnv } from './src/core/weasley-podex-env.js';
+// ─── Weasley Podex Server (glue + routes) ─────────────────
 // All business logic lives in src/ modules.
 
 import express from 'express';
@@ -62,7 +63,7 @@ import { ensureMemoryRuntimeReady, hasSoulFile } from './src/memory/runtime.js';
 
 import { loadLocales } from './src/core/i18n.js';
 import {
-    PROMPTS_DIR, DB_PATH,
+    WEASLEY_PODEX_HOME, PROMPTS_DIR, DB_PATH,
     settings, loadSettings, saveSettings,
     ensureDirs, runMigration,
 } from './src/core/config.js';
@@ -153,7 +154,7 @@ const PORT = process.env["PORT"] || settings["port"] || 3457;
 {
     const cleared = clearAllEmployeeSessions.run().changes;
     if (cleared > 0) {
-        console.log(`[jaw:startup] cleared ${cleared} stale employee resume session(s)`);
+        console.log(`[weasley-podex:startup] cleared ${cleared} stale employee resume session(s)`);
     }
 }
 
@@ -162,27 +163,29 @@ const PORT = process.env["PORT"] || settings["port"] || 3457;
     const { tmpdir } = await import('node:os');
     const tmpBase = tmpdir();
     try {
-        const orphans = fs.readdirSync(tmpBase).filter(e => e.startsWith('jaw-emp-'));
+        const orphans = fs.readdirSync(tmpBase).filter(e =>
+            e.startsWith('weasley-podex-employee-') || e.startsWith('jaw-emp-'),
+        );
         for (const e of orphans) {
             fs.rmSync(join(tmpBase, e), { recursive: true, force: true });
         }
-        if (orphans.length) console.log(`[jaw:startup] cleaned ${orphans.length} orphaned employee tmp dir(s)`);
+        if (orphans.length) console.log(`[weasley-podex:startup] cleaned ${orphans.length} orphaned employee tmp dir(s)`);
     } catch { /* tmpdir read may fail on restricted systems */ }
 }
 
 syncMainSessionToSettings();
 try {
     ensureMemoryRuntimeReady();
-    console.log('[jaw:startup] memory ready, hasSoul:', hasSoulFile());
+    console.log('[weasley-podex:startup] memory ready, hasSoul:', hasSoulFile());
 } catch (e: unknown) {
-    console.warn('[jaw:memory-init]', (e as Error).message);
+    console.warn('[weasley-podex:memory-init]', (e as Error).message);
 }
 
 // Phase 3.1: safe → auto 강제 마이그레이션 (기존 사용자 대응)
 if (settings["permissions"] === 'safe') {
     settings["permissions"] = 'auto';
     saveSettings(settings);
-    console.log('[jaw:migrate] permissions: safe → auto');
+    console.log('[weasley-podex:migrate] permissions: safe → auto');
 }
 
 initPromptFiles();
@@ -193,7 +196,7 @@ resetAllStaleStates();
 markStaleTraceRunsInterrupted();
 
 
-// Trace retention: prune on boot + every 6h to keep jaw.db from growing unbounded.
+// Trace retention: prune on boot + every 6h to keep weasley-podex.db from growing unbounded.
 const traceRetentionDays = settings["trace"]?.retentionDays ?? 7;
 const traceMaxRows = settings["trace"]?.maxRows ?? 50000;
 pruneTraceEvents(traceRetentionDays, traceMaxRows);
@@ -226,7 +229,7 @@ app.use(helmet({
 }));
 
 // ─── CORS (loopback always, LAN opt-in) ─────────────
-const lanMode = process.env["JAW_LAN_MODE"] === '1';
+const lanMode = getWeasleyPodexEnv('LAN_MODE') === '1';
 const lanAllowed = () => lanMode || settings["network"]?.lanBypass === true;
 const LAN_HINT = 'Set settings.network.bindHost="0.0.0.0" and lanBypass=true to allow LAN access.';
 
@@ -260,7 +263,7 @@ app.use((req, res, next) => {
 });
 
 // ─── Bearer Token Auth (CRITICAL endpoints) ─────────
-const JAW_AUTH_TOKEN = process.env["JAW_AUTH_TOKEN"] || crypto.randomBytes(32).toString('hex');
+const WEASLEY_PODEX_AUTH_TOKEN = getWeasleyPodexEnv('AUTH_TOKEN') || crypto.randomBytes(32).toString('hex');
 
 // Boss-only dispatch token (phase 8). Server generates and stores in process.env;
 // main-agent spawns inherit it, employee spawns strip it in makeCleanEnv.
@@ -274,7 +277,7 @@ function requireAuth(req: express.Request, res: express.Response, next: express.
         return next();
     }
     const token = (req.headers.authorization || '').replace('Bearer ', '');
-    if (token !== JAW_AUTH_TOKEN) {
+    if (token !== WEASLEY_PODEX_AUTH_TOKEN) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
     next();
@@ -299,7 +302,7 @@ app.use((req, res, next) => {
     // bucket). A 429 here extends a drop past the toast grace and the UI
     // reads as "disconnected" while the server is healthy.
     if (req.path === '/api/events') return next();
-    // Dispatch pollers (jaw dispatch / worker watch) poll two endpoints every
+    // Dispatch pollers (weasley-podex dispatch / worker watch) poll two endpoints every
     // 2s — bounded internal traffic that shares the localhost bucket with the
     // manager scan and the browser. A 429 mid-poll aborts a worker watch for
     // no protective gain (260613 doc 60). Exact poll prefixes only — the
@@ -356,7 +359,7 @@ registerEventsRoutes(app, requireAuth);
 registerInstanceRoutes(app);
 registerChatSessionRoutes(app);
 registerMessageRoutes(app);
-registerSystemRoutes(app, { jawAuthToken: JAW_AUTH_TOKEN });
+registerSystemRoutes(app, { jawAuthToken: WEASLEY_PODEX_AUTH_TOKEN });
 registerAgentControlRoutes(app, requireAuth);
 registerCommandRoutes(app, requireAuth);
 registerGoalRunRoutes(app, requireAuth);
@@ -370,7 +373,7 @@ registerJawCeoRoutes(app, requireAuth, {
     repoRoot: projectRoot,
     listInstances: async () => [{
         port: Number(PORT),
-        label: `Jaw :${PORT}`,
+        label: `Weasley Podex :${PORT}`,
         status: 'online',
         ok: true,
         currentCli: settings["cli"] || null,
@@ -509,7 +512,7 @@ server.on('error', (err: NodeJS.ErrnoException) => {
     if (err.code === 'EADDRINUSE') {
         console.error(`[server] port ${PORT} already in use — exiting`);
         console.error(`[server] diagnose: lsof -nP -iTCP:${PORT} -sTCP:LISTEN`);
-        console.error(`[server] if this is a stale podex process, stop that process and restart; no process was killed automatically`);
+        console.error(`[server] if this is a stale Weasley Podex process, stop it and restart; no process was killed automatically`);
     } else {
         console.error('[server] listen error:', err.message);
     }
@@ -524,12 +527,12 @@ server.listen(PORT, bindHost, async () => {
         saveSettings(settings);
     }
 
-    // #233: pick up external settings writes (terminal `podex project set`)
+    // #233: pick up external settings writes (terminal `weasley-podex project set`)
     startSettingsWatch();
 
     // Bootstrap i18n locale dictionaries
     loadLocales(join(projectRoot, 'public', 'locales'));
-    log.info(`\n  🦈 Jaw Agent — http://localhost:${PORT}\n`);
+    log.info(`\n  ◆ Weasley Podex — http://localhost:${PORT}\n`);
     log.info(`  CLI:    ${settings["cli"]}`);
     log.info(`  Perms:  ${settings["permissions"]}`);
     log.info(`  CWD:    ${settings["workingDir"]}`);
@@ -539,7 +542,7 @@ server.listen(PORT, bindHost, async () => {
     // Warn: lanBypass=true but bindHost=127.0.0.1 → LAN unreachable
     if (settings["network"]?.lanBypass === true && bindHost === '127.0.0.1' && !lanMode) {
         log.warn('  ⚠ lanBypass is enabled but bindHost is 127.0.0.1 — LAN devices cannot connect.');
-        log.warn('    → Set network.bindHost to "0.0.0.0" in settings.json, or use: podex serve --lan');
+        log.warn('    → Set network.bindHost to "0.0.0.0" in settings.json, or use: weasley-podex serve --lan');
     }
 
     // LAN URL hints + security warnings
@@ -562,14 +565,14 @@ server.listen(PORT, bindHost, async () => {
     const authDesc = lanAllowed()
         ? 'token required for non-LAN requests'
         : 'token required for remote requests (localhost bypassed)';
-    log.info(`  Auth:   ${JAW_AUTH_TOKEN.slice(0, 8)}... (${authDesc})`);
-    log.info(`  curl:   curl -H "Authorization: Bearer $(cat ~/.podex/token)" http://localhost:${PORT}/api/status\n`);
+    log.info(`  Auth:   ${WEASLEY_PODEX_AUTH_TOKEN.slice(0, 8)}... (${authDesc})`);
+    log.info(`  curl:   curl -H "Authorization: Bearer $(cat ${join(WEASLEY_PODEX_HOME, 'token')})" http://localhost:${PORT}/api/status\n`);
 
-    // Auto-open browser (opt-in via JAW_OPEN_BROWSER=1, set by `jaw serve --open`)
+    // Auto-open browser (opt-in via WEASLEY_PODEX_OPEN_BROWSER=1).
     // Skip in test environments to prevent browser tabs during npm test
     const isTestEnv = process.env["NODE_ENV"] === 'test'
         || (process.env["npm_lifecycle_event"] || '').includes('test');
-    if (process.env["JAW_OPEN_BROWSER"] === '1' && !isTestEnv) {
+    if (getWeasleyPodexEnv('OPEN_BROWSER') === '1' && !isTestEnv) {
         const url = `http://localhost:${PORT}`;
         openUrlInBrowser(url, { logPrefix: 'serve' });
     }
@@ -580,9 +583,9 @@ server.listen(PORT, bindHost, async () => {
         copyDefaultSkills();
         const moved = (symlinks?.links || []).filter(x => x.action === 'backup_replace');
         if (moved.length) {
-            console.log(`  Skills: moved ${moved.length} conflict path(s) to ~/.podex/backups/skills-conflicts`);
+            console.log(`  Skills: moved ${moved.length} conflict path(s) to ${join(WEASLEY_PODEX_HOME, 'backups', 'skills-conflicts')}`);
         }
-        console.log(`  MCP:    ~/.podex/mcp.json`);
+        console.log(`  MCP:    ${join(WEASLEY_PODEX_HOME, 'mcp.json')}`);
     } catch (e: unknown) { console.error('[mcp-init]', (e as Error).message); }
 
     hydrateTargetsFromSettings(settings);

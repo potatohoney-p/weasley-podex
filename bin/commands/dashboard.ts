@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../../src/core/weasley-podex-env.js';
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -19,9 +20,9 @@ const projectRoot = existsSync(join(commandRoot, 'package.json'))
 const subcommand = process.argv[3] || 'serve';
 
 if (shouldShowHelp(process.argv, 3)) printAndExit(`
-  jaw dashboard — multi-instance manager
+  weasley-podex dashboard — multi-instance manager
 
-  Usage: jaw dashboard <command> [options] [--json]
+  Usage: weasley-podex dashboard <command> [options] [--json]
 
   Commands:
     serve [--port] [--from] [--count] [--no-open]   Start dashboard server (foreground)
@@ -41,14 +42,14 @@ if (shouldShowHelp(process.argv, 3)) printAndExit(`
     --port <port>           Dashboard port (default: ${DASHBOARD_DEFAULT_PORT})
 
   Examples:
-    jaw dashboard serve
-    jaw dashboard status --json
-    jaw dashboard ls --json | jq '.[] | select(.status == "online")'
-    jaw dashboard start 3458 --home ~/.jaw-work
-    jaw dashboard stop 3457
-    jaw dashboard perm 3458 --home ~/.jaw-work
-    jaw dashboard service install
-    jaw dashboard service status
+    weasley-podex dashboard serve
+    weasley-podex dashboard status --json
+    weasley-podex dashboard ls --json | jq '.[] | select(.status == "online")'
+    weasley-podex dashboard start 3458 --home ~/.weasley/podex-work
+    weasley-podex dashboard stop 3457
+    weasley-podex dashboard perm 3458 --home ~/.weasley/podex-work
+    weasley-podex dashboard service install
+    weasley-podex dashboard service status
 `);
 
 const { values: globalOpts, positionals } = parseArgs({
@@ -104,7 +105,7 @@ switch (subcommand) {
     }
     default:
         console.error(`  ❌ Unknown dashboard command: ${subcommand}`);
-        console.error('  Run jaw dashboard --help for usage.');
+        console.error('  Run weasley-podex dashboard --help for usage.');
         process.exit(1);
 }
 
@@ -119,18 +120,18 @@ async function handleServe(): Promise<void> {
             : 'tsx');
     const args = isDistMode ? [serverJs] : [serverTs];
 
-    console.log(`\n  Jaw dashboard serve — port ${dashboardPort}`);
+    console.log(`\n  Weasley Podex dashboard serve — port ${dashboardPort}`);
     console.log(`  Scanning ports ${scanFrom}-${scanFrom + scanCount - 1}\n`);
 
     const child = spawn(command, args, {
         stdio: 'inherit',
         env: {
             ...process.env,
-            podex_BIN: process.env["podex_BIN"] || process.argv[1] || '',
+            WEASLEY_PODEX_BIN: getWeasleyPodexEnv('BIN') || process.argv[1] || '',
             DASHBOARD_PORT: String(dashboardPort),
             DASHBOARD_SCAN_FROM: String(scanFrom),
             DASHBOARD_SCAN_COUNT: String(scanCount),
-            ...(globalOpts.open ? { JAW_DASHBOARD_OPEN: '1' } : {}),
+            ...(globalOpts.open ? { WEASLEY_PODEX_DASHBOARD_OPEN: '1' } : {}),
         },
     });
 
@@ -170,7 +171,7 @@ async function handleStatus(): Promise<void> {
         if (json) {
             console.log(JSON.stringify(data));
         } else {
-            console.log(`  🦈 Dashboard running — port ${data["port"]}, pid ${data["pid"]}`);
+            console.log(`  ◆ Dashboard running — port ${data["port"]}, pid ${data["pid"]}`);
             console.log(`  Scan range: ${data["rangeFrom"]}-${data["rangeTo"]}`);
         }
     } catch {
@@ -222,7 +223,7 @@ async function handleList(): Promise<void> {
 async function handleLifecycle(action: string): Promise<void> {
     const targetPort = Number(positionals[0]);
     if (!targetPort || targetPort < 1) {
-        console.error(`  Usage: jaw dashboard ${action} <port> [--home <path>]`);
+        console.error(`  Usage: weasley-podex dashboard ${action} <port> [--home <path>]`);
         process.exit(1);
     }
     const url = `http://127.0.0.1:${dashboardPort}/api/dashboard/lifecycle/${action}`;
@@ -268,7 +269,7 @@ async function handleService(): Promise<void> {
             break;
         default:
             console.error(`  Unknown service command: ${serviceSub}`);
-            console.error('  Usage: jaw dashboard service [install|status|unset]');
+            console.error('  Usage: weasley-podex dashboard service [install|status|unset]');
             process.exit(1);
     }
 }

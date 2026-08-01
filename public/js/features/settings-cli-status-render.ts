@@ -22,7 +22,7 @@ export const QUOTA_SETUP_HINTS: Record<string, QuotaSetupHint> = {
         commands: [
             'cursor-agent login',
             'export CURSOR_SESSION_TOKEN="<WorkosCursorSessionToken from cursor.com DevTools>"',
-            'echo "$CURSOR_SESSION_TOKEN" > ~/.podex/quota/cursor-session-token && chmod 600 ~/.podex/quota/cursor-session-token',
+            'echo "$CURSOR_SESSION_TOKEN" > ~/.weasley/podex/quota/cursor-session-token && chmod 600 ~/.weasley/podex/quota/cursor-session-token',
         ],
     },
     agy: {
@@ -42,7 +42,7 @@ export const QUOTA_SETUP_HINTS: Record<string, QuotaSetupHint> = {
     },
     opencode: {
         title: 'OpenCode Go quota (API key)',
-        description: 'podex reads your sk- API key from ~/.local/share/opencode/auth.json (opencode-go) or OPENCODE_GO_API_KEY, then calls GET /zen/go/v1/usage. The usage endpoint is not deployed yet — quota bars appear when upstream ships it. Your key still works for models/chat.',
+        description: 'Weasley Podex reads your sk- API key from ~/.local/share/opencode/auth.json (opencode-go) or OPENCODE_GO_API_KEY, then calls GET /zen/go/v1/usage. The usage endpoint is not deployed yet — quota bars appear when upstream ships it. Your key still works for models/chat.',
         commands: [
             'opencode providers login',
             'export OPENCODE_GO_API_KEY=sk-...',
