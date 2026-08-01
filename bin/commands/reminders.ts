@@ -95,6 +95,6 @@ switch (subcommand) {
     }
     default:
         console.error(`  ❌ Unknown reminders command: ${subcommand}`);
-        console.error('  Usage: jaw reminders [list|add|done] [--json]');
+        console.error('  Usage: weasley-podex reminders [list|add|done] [--json]');
         process.exitCode = 1;
 }

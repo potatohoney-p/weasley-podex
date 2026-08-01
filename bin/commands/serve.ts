@@ -1,5 +1,5 @@
-﻿/**
- * podex serve — Phase 9.1
+/**
+ * weasley-podex serve — Phase 9.1
  * Starts the server in foreground with signal forwarding.
  */
 import { spawn } from 'node:child_process';
@@ -16,16 +16,16 @@ import { resolveBundledNodePath } from '../../src/core/runtime-path.js';
 loadSettings();
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw serve — start jaw server (foreground)
+  weasley-podex serve — start Weasley Podex server (foreground)
 
-  Usage: jaw serve [--port <3457>] [--no-open] [--home <path>]
+  Usage: weasley-podex serve [--port <3457>] [--no-open] [--home <path>]
 
   Options:
     --port <N>    Server port (default: 3457, or PORT env)
     --no-open     Don't open browser on start
 
   The server must be running for chat, dispatch, and browser commands.
-  Use 'jaw service install' to run as a background daemon instead.
+  Use 'weasley-podex service install' to run as a background daemon instead.
 `);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -46,10 +46,12 @@ const { values } = parseArgs({
     strict: false,
 });
 
-// Detect source vs dist: if server.js exists, use node; else use tsx + server.ts
+// In source, projectRoot contains server.ts. In a compiled package, this module
+// lives under dist/bin/commands and projectRoot is dist/, which contains the
+// real compiled server.js. Never treat a text pointer/shim as compiled output.
 const serverJs = join(projectRoot, 'server.js');
 const serverTs = join(projectRoot, 'server.ts');
-const isDistMode = fs.existsSync(serverJs);
+const isDistMode = fs.existsSync(serverJs) && !fs.existsSync(serverTs);
 const serverPath = isDistMode ? serverJs : serverTs;
 const envFile = join(projectRoot, '.env');
 
@@ -59,7 +61,7 @@ const modeLabels = [
     values['trust-proxy'] ? 'trust proxy' : '',
     values['trust-forwarded'] ? 'trust forwarded' : '',
 ].filter(Boolean);
-console.log(`\n  🦈 podex serve — port ${values.port}${modeLabels.length ? ` (${modeLabels.join(', ')})` : ''}\n`);
+console.log(`\n  Weasley Podex serve — port ${values.port}${modeLabels.length ? ` (${modeLabels.join(', ')})` : ''}\n`);
 
 let child;
 if (isDistMode) {
@@ -71,7 +73,7 @@ if (isDistMode) {
         [...nodeArgs, serverPath],
         {
             stdio: 'inherit',
-            env: { ...process.env, PORT: values.port as string, HOST: values.host as string, ...(values.open ? { JAW_OPEN_BROWSER: '1' } : {}), ...(values.lan ? { JAW_LAN_MODE: '1' } : {}), ...(values.remote ? { JAW_REMOTE_ACCESS_MODE: 'direct' } : {}), ...(values['trust-proxy'] ? { JAW_TRUST_PROXY: '1' } : {}), ...(values['trust-forwarded'] ? { JAW_TRUST_FORWARDED: '1' } : {}) },
+            env: { ...process.env, PORT: values.port as string, HOST: values.host as string, ...(values.open ? { WEASLEY_PODEX_OPEN_BROWSER: '1' } : {}), ...(values.lan ? { WEASLEY_PODEX_LAN_MODE: '1' } : {}), ...(values.remote ? { WEASLEY_PODEX_REMOTE_ACCESS_MODE: 'direct' } : {}), ...(values['trust-proxy'] ? { WEASLEY_PODEX_TRUST_PROXY: '1' } : {}), ...(values['trust-forwarded'] ? { WEASLEY_PODEX_TRUST_FORWARDED: '1' } : {}) },
         }
     );
 } else {
@@ -85,7 +87,7 @@ if (isDistMode) {
         tsxArgs,
         {
             stdio: 'inherit',
-            env: { ...process.env, PORT: values.port as string, HOST: values.host as string, ...(values.open ? { JAW_OPEN_BROWSER: '1' } : {}), ...(values.lan ? { JAW_LAN_MODE: '1' } : {}), ...(values.remote ? { JAW_REMOTE_ACCESS_MODE: 'direct' } : {}), ...(values['trust-proxy'] ? { JAW_TRUST_PROXY: '1' } : {}), ...(values['trust-forwarded'] ? { JAW_TRUST_FORWARDED: '1' } : {}) },
+            env: { ...process.env, PORT: values.port as string, HOST: values.host as string, ...(values.open ? { WEASLEY_PODEX_OPEN_BROWSER: '1' } : {}), ...(values.lan ? { WEASLEY_PODEX_LAN_MODE: '1' } : {}), ...(values.remote ? { WEASLEY_PODEX_REMOTE_ACCESS_MODE: 'direct' } : {}), ...(values['trust-proxy'] ? { WEASLEY_PODEX_TRUST_PROXY: '1' } : {}), ...(values['trust-forwarded'] ? { WEASLEY_PODEX_TRUST_FORWARDED: '1' } : {}) },
         }
     );
 }

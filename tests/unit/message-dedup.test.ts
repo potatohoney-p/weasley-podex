@@ -4,8 +4,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const srcRoot = new URL('../../src/', import.meta.url).pathname;
+const srcRoot = fileURLToPath(new URL('../../src/', import.meta.url));
 
 // ─── L2: gateway.ts 5s dedup window ──────────────────
 
@@ -37,7 +38,7 @@ test('MD-004: gateway dedup key normalizes whitespace', () => {
 
 // ─── L1: chat.ts frontend in-flight guard ────────────
 
-const chatSrc = fs.readFileSync(new URL('../../public/js/features/chat.ts', import.meta.url).pathname, 'utf8');
+const chatSrc = fs.readFileSync(fileURLToPath(new URL('../../public/js/features/chat.ts', import.meta.url)), 'utf8');
 
 test('MD-005: chat.ts has __chatSending guard flag', () => {
     assert.match(chatSrc, /let __chatSending\s*=\s*false/);
@@ -63,16 +64,16 @@ test('MD-008: chat.ts absorbs 409 duplicate silently (no error toast)', () => {
 
 // ─── L3-b: Boss prompts direct async dispatch + progress lookup ────
 
-test('MD-009: orchestration.md directs async podex dispatch instead of blocking Bash timeouts', () => {
+test('MD-009: orchestration.md directs async weasley-podex dispatch instead of blocking Bash timeouts', () => {
     const md = fs.readFileSync(join(srcRoot, 'prompt/templates/orchestration.md'), 'utf8');
-    assert.match(md, /podex dispatch/);
+    assert.match(md, /weasley-podex dispatch/);
     assert.match(md, /--task-file .*--async/);
     assert.match(md, /Omitting `--async` blocks the turn up to 10 minutes/);
 });
 
-test('MD-010: a1-system.md directs async podex dispatch instead of blocking Bash timeouts', () => {
+test('MD-010: a1-system.md directs async weasley-podex dispatch instead of blocking Bash timeouts', () => {
     const md = fs.readFileSync(join(srcRoot, 'prompt/templates/a1-system.md'), 'utf8');
-    assert.match(md, /podex dispatch --agent "Name" --task-file <path> --async/);
+    assert.match(md, /weasley-podex dispatch --agent "Name" --task-file <path> --async/);
     assert.match(md, /Omitting `--async` blocks the turn up to 10 minutes while polling/);
 });
 
@@ -80,8 +81,8 @@ test('MD-010b: boss prompts expose worker progress lookup and running-only snaps
     const a1 = fs.readFileSync(join(srcRoot, 'prompt/templates/a1-system.md'), 'utf8');
     const orchestration = fs.readFileSync(join(srcRoot, 'prompt/templates/orchestration.md'), 'utf8');
     for (const md of [a1, orchestration]) {
-        assert.match(md, /podex worker status \[agent(?:\|runId)?\] --port <port>/);
-        assert.match(md, /podex worker watch \[agent\] --port <port>/);
+        assert.match(md, /weasley-podex worker status \[agent(?:\|runId)?\] --port <port>/);
+        assert.match(md, /weasley-podex worker watch \[agent\] --port <port>/);
         assert.match(md, /snapshot\.workers[^\n]{0,80}running-only/);
         assert.match(md, /worker-progress\.previous/);
     }
@@ -89,7 +90,9 @@ test('MD-010b: boss prompts expose worker progress lookup and running-only snaps
 
 test('MD-011: builder.ts dynamic Delegation Rules block directs async dispatch with bounded blocking fallback', () => {
     const src = fs.readFileSync(join(srcRoot, 'prompt/builder.ts'), 'utf8');
-    const block = src.slice(src.indexOf('jaw Employee Dispatch'), src.indexOf('Do NOT confuse'));
+    const blockStart = src.indexOf('Weasley Podex Employee Dispatch');
+    const block = src.slice(blockStart, src.indexOf('return prompt;', blockStart));
+    assert.ok(blockStart >= 0, 'delegation-rules heading must exist');
     assert.match(block, /--task-file <path> --async/, 'delegation-rules block must direct async task-file dispatch');
     assert.match(block, /Omitting `--async` blocks the turn up to 10 minutes while polling/, 'delegation-rules block must document bounded blocking fallback');
 });

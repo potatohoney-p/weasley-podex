@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>메모리 — podex 문서</title>
+<title>메모리 — Weasley Podex 문서</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,25 +58,25 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>메모리</h1>
-<p class="lead">podex는 3계층 메모리 시스템을 갖추고 있습니다: 구조화된 파일 저장소, 에피소드 기반 대화 요약, 그리고 FTS5 인덱싱을 활용한 시맨틱 검색. 메모리는 세션 간에 유지되며 에이전트의 시스템 프롬프트에 주입됩니다.</p>
+<p class="lead">Weasley Podex는 3계층 메모리 시스템을 갖추고 있습니다: 구조화된 파일 저장소, 에피소드 기반 대화 요약, 그리고 FTS5 인덱싱을 활용한 시맨틱 검색. 메모리는 세션 간에 유지되며 에이전트의 시스템 프롬프트에 주입됩니다.</p>
 
 <h2>3개의 계층</h2>
 <table>
 <tr><th>계층</th><th>용도</th><th>저장 위치</th></tr>
-<tr><td><strong>구조화</strong></td><td>프로필, 선호 설정, 결정 사항, 소울/정체성</td><td><code>~/.podex/memory/structured/</code></td></tr>
-<tr><td><strong>에피소드</strong></td><td>메모리 플러시로 생성된 대화 요약</td><td><code>~/.podex/memory/structured/episodes/live/</code></td></tr>
-<tr><td><strong>시맨틱</strong></td><td>가져오기 및 분류된 지식</td><td><code>~/.podex/memory/structured/semantic/</code></td></tr>
+<tr><td><strong>구조화</strong></td><td>프로필, 선호 설정, 결정 사항, 소울/정체성</td><td><code>~/.weasley/podex/memory/structured/</code></td></tr>
+<tr><td><strong>에피소드</strong></td><td>메모리 플러시로 생성된 대화 요약</td><td><code>~/.weasley/podex/memory/structured/episodes/live/</code></td></tr>
+<tr><td><strong>시맨틱</strong></td><td>가져오기 및 분류된 지식</td><td><code>~/.weasley/podex/memory/structured/semantic/</code></td></tr>
 </table>
 
 <h2>메모리 디렉토리 구조</h2>
-<pre><code>~/.podex/memory/structured/
+<pre><code>~/.weasley/podex/memory/structured/
 ├── profile.md          # User profile and preferences
 ├── shared/
 │   ├── preferences.md  # Reflected preferences
@@ -112,28 +111,28 @@ Prefers ES Module only, no CommonJS.</code></pre>
 
 <h2>CLI 명령어</h2>
 <pre><code># Search memory
-jaw memory search "JWT authentication"
+weasley-podex memory search "JWT authentication"
 
 # Read a memory file
-jaw memory read shared/decisions.md
+weasley-podex memory read shared/decisions.md
 
 # Save to memory
-jaw memory save shared/notes.md "New note content"
+weasley-podex memory save shared/notes.md "New note content"
 
 # List memory files
-jaw memory list
+weasley-podex memory list
 
 # Initialize memory
-jaw memory init
+weasley-podex memory init
 
 # Reflect recent episodes into structured memory
-jaw memory reflect
+weasley-podex memory reflect
 
 # Trigger memory flush
-jaw memory flush
+weasley-podex memory flush
 
 # Cleanup old entries
-jaw memory cleanup --days 30</code></pre>
+weasley-podex memory cleanup --days 30</code></pre>
 
 <h2>슬래시 명령어</h2>
 <table>
@@ -151,16 +150,16 @@ jaw memory cleanup --days 30</code></pre>
 <h2>L1 / L2 메모리 경계</h2>
 <table>
 <tr><th>레이어</th><th>명령어</th><th>범위</th><th>접근 권한</th></tr>
-<tr><td><strong>L1 (인스턴스 로컬)</strong></td><td><code>jaw memory</code></td><td>현재 <code>JAW_HOME</code></td><td>읽기/쓰기</td></tr>
-<tr><td><strong>L2 (대시보드 연합)</strong></td><td><code>jaw dashboard memory</code></td><td>모든 <code>~/.podex*</code> 인스턴스</td><td>읽기 전용</td></tr>
+<tr><td><strong>L1 (인스턴스 로컬)</strong></td><td><code>weasley-podex memory</code></td><td>현재 <code>WEASLEY_PODEX_HOME</code></td><td>읽기/쓰기</td></tr>
+<tr><td><strong>L2 (대시보드 연합)</strong></td><td><code>weasley-podex dashboard memory</code></td><td>모든 <code>~/.weasley/podex*</code> 인스턴스</td><td>읽기 전용</td></tr>
 </table>
-<div class="callout callout-info">일반 작업에는 L1(<code>jaw memory</code>)을 사용하세요. L2(<code>jaw dashboard memory</code>)는 다른 인스턴스의 컨텍스트가 필요할 때 명시적으로 크로스 인스턴스 검색을 수행하기 위한 것입니다.</div>
+<div class="callout callout-info">일반 작업에는 L1(<code>weasley-podex memory</code>)을 사용하세요. L2(<code>weasley-podex dashboard memory</code>)는 다른 인스턴스의 컨텍스트가 필요할 때 명시적으로 크로스 인스턴스 검색을 수행하기 위한 것입니다.</div>
 
 <h2>대시보드 임베딩 (선택 사항)</h2>
 <p>대시보드는 FTS5 검색 위에 선택적 벡터 임베딩을 지원합니다. 이는 <strong>기본적으로 비활성화</strong>된 추가 레이어입니다. 지원 프로바이더: OpenAI, Gemini, Voyage, Vertex, Local (Ollama).</p>
 <pre><code># Configure via dashboard settings or CLI:
-jaw dashboard memory config set --provider openai --api-key sk-...
-jaw dashboard memory reindex --embedding</code></pre>
+weasley-podex dashboard memory config set --provider openai --api-key sk-...
+weasley-podex dashboard memory reindex --embedding</code></pre>
 
 <h2>메모리 설정</h2>
 <pre><code>{

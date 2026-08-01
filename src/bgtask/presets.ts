@@ -1,4 +1,4 @@
-﻿// ─── bgtask: presets ─────────────────────────────────
+// ─── bgtask: presets ─────────────────────────────────
 // Spec builders for common task shapes. web-ai preset rides the NATIVE
 // in-process watcher (src/browser/web-ai/watcher.ts owns DOM polling); the
 // bgtask probe only reads session status, so there is no double polling and
@@ -8,17 +8,17 @@ import type { BgTaskSpec } from './types.js';
 
 const WEB_AI_DEFAULT_DEADLINE_MS = 2 * 60 * 60 * 1000; // 2h — covers Pro/DeepThink long runs
 
-/** Actionable guidance when a --preset web-ai session id is not a native podex
+/** Actionable guidance when a --preset web-ai session id is not a native Weasley Podex
  *  web-ai session. The preset cannot own a standalone agbrowse session — point the
  *  user at the explicit generic form instead (40 web-ai/agbrowse bridge). The
  *  message intentionally keeps the `web-ai session not found: <id>` prefix so
  *  callers/tests that match /session not found/ stay valid. */
 export function standaloneSessionGuidance(sessionId: string): string {
     return `web-ai session not found: ${sessionId}. `
-        + 'The --preset web-ai watcher only owns NATIVE podex web-ai sessions. '
+        + 'The --preset web-ai watcher only owns native Weasley Podex web-ai sessions. '
         + `If "${sessionId}" is a standalone agbrowse session, the preset cannot attach to it — `
         + 'use the explicit generic form instead:\n'
-        + `  podex bgtask add --cmd '["agbrowse","web-ai","watch","${sessionId}"]' --prompt "..."`;
+        + `  weasley-podex bgtask add --cmd '["agbrowse","web-ai","watch","${sessionId}"]' --prompt "..."`;
 }
 
 export interface WebAiPresetInput {

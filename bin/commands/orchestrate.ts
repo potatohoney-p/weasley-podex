@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// bin/commands/orchestrate.ts — CLI: jaw orchestrate [P|A|B|C|D|status|reset]
+import { getWeasleyPodexEnv } from '../../src/core/weasley-podex-env.js';
+// bin/commands/orchestrate.ts — CLI: weasley-podex orchestrate [P|A|B|C|D|status|reset]
 // Calls the running server's API so WS broadcast reaches all clients in real-time.
 
 import { loadSettings, getServerUrl } from '../../src/core/config.js';
@@ -9,9 +10,9 @@ import { errString, isConnRefused } from '../_http-client.js';
 import type { OrcContext } from '../../src/orchestrator/state-machine.js';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw orchestrate — PABCD state machine transitions
+  weasley-podex orchestrate — PABCD state machine transitions
 
-  Usage: jaw orchestrate <phase>
+  Usage: weasley-podex orchestrate <phase>
 
   Phases:
     I       Enter Interview (from IDLE)
@@ -27,8 +28,8 @@ if (shouldShowHelp(process.argv)) printAndExit(`
   Interview is optional: IDLE -> P is also valid. I -> IDLE ends interview.
 
   Evidence (agent): forward transitions require a phase attestation, e.g.
-    jaw orchestrate B --attest '{"from":"A","to":"B","did":"<what you actually did>"}'
-    jaw orchestrate D --attest '{"from":"C","to":"D","did":"ran checks","checkOutput":"<tsc/test tail>","exitCode":0}'
+    weasley-podex orchestrate B --attest '{"from":"A","to":"B","did":"<what you actually did>"}'
+    weasley-podex orchestrate D --attest '{"from":"C","to":"D","did":"ran checks","checkOutput":"<tsc/test tail>","exitCode":0}'
 `);
 
 loadSettings();
@@ -136,7 +137,7 @@ try {
   // Phase 60: identify the main AGENT to the server via the boss token (present in the
   // agent's env, stripped from employee subagents). A human in a plain shell has no token
   // ⇒ treated as human ⇒ free pass. The agent must also pass --attest to clear the gate.
-  const bossToken = process.env['JAW_BOSS_TOKEN'] || '';
+  const bossToken = getWeasleyPodexEnv('BOSS_TOKEN') || '';
   let attestation: unknown;
   if (parsed.attest) {
     try { attestation = JSON.parse(parsed.attest); }
@@ -146,7 +147,7 @@ try {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      ...(bossToken ? { 'x-jaw-boss-token': bossToken } : {}),
+      ...(bossToken ? { 'x-weasley-podex-boss-token': bossToken } : {}),
     },
     body: JSON.stringify({
       state: target,
@@ -177,7 +178,7 @@ try {
   console.log(getStatePrompt(target));
 } catch (e: unknown) {
   if (isConnRefused(e)) {
-    console.error(`Server not running on port ${PORT}. Start with: jaw serve --port ${PORT}`);
+    console.error(`Server not running on port ${PORT}. Start with: weasley-podex serve --port ${PORT}`);
   } else {
     console.error(`Error: ${errString(e)}`);
   }

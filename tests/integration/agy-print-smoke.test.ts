@@ -89,7 +89,7 @@ function conversationIdFrom(stdout: string, stderr: string, logFile: string): st
     return extractAgyConversationId(`${stdout}\n${stderr}\n${log}`);
 }
 
-const enabled = process.env['JAW_AGY_SMOKE'] === '1';
+const enabled = process.env['WEASLEY_PODEX_AGY_SMOKE'] === '1';
 
 test('AGY print smoke: fresh and exact resume', { skip: !enabled }, async () => {
     await assertAgySmokeCapabilities();
@@ -101,7 +101,7 @@ test('AGY print smoke: fresh and exact resume', { skip: !enabled }, async () => 
         fs.writeFileSync(path.join(cwd, 'AGENTS.md'), 'AGY smoke workspace instruction sentinel.\n');
         fs.writeFileSync(path.join(cwd, 'GEMINI.md'), 'AGY smoke Gemini instruction sentinel.\n');
 
-        const freshPrompt = 'podex_AGY_SMOKE_FRESH. Reply with exactly: AGY_SMOKE_OK. Do not inspect files. Do not run commands.';
+        const freshPrompt = 'WEASLEY_PODEX_AGY_SMOKE_FRESH. Reply with exactly: AGY_SMOKE_OK. Do not inspect files. Do not run commands.';
         const freshLog = path.join(logDir, 'fresh.log');
         const startedAt = Date.now();
         const fresh = await runAgy(['-p', freshPrompt, '--log-file', freshLog, '--print-timeout', '1m'], cwd);
@@ -113,10 +113,10 @@ test('AGY print smoke: fresh and exact resume', { skip: !enabled }, async () => 
         const transcript = resolveAgyTranscriptPathForCurrentTurn(cwd, conversationId, startedAt - 5_000, freshPrompt);
         if (transcript.ok && transcript.transcriptPath) {
             const transcriptText = fs.readFileSync(transcript.transcriptPath, 'utf8');
-            assert.ok(transcriptText.includes('podex_AGY_SMOKE_FRESH'), 'transcript must include fresh prompt sentinel');
+            assert.ok(transcriptText.includes('WEASLEY_PODEX_AGY_SMOKE_FRESH'), 'transcript must include fresh prompt sentinel');
         }
 
-        const resumePrompt = 'podex_AGY_SMOKE_RESUME. Reply with exactly: AGY_RESUME_OK. Do not inspect files. Do not run commands.';
+        const resumePrompt = 'WEASLEY_PODEX_AGY_SMOKE_RESUME. Reply with exactly: AGY_RESUME_OK. Do not inspect files. Do not run commands.';
         const resumeLog = path.join(logDir, 'resume.log');
         const resume = await runAgy([
             '--conversation', conversationId,

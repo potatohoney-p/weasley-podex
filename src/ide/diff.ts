@@ -1,7 +1,7 @@
 /**
  * src/ide/diff.ts — IDE Diff View Module
  * Git diff 감지 + IDE (Antigravity/VS Code) 연동
- * 서버 변경 0줄 — jaw chat (TUI) 전용
+ * 서버 변경 0줄 — weasley-podex chat (TUI) 전용
  *
  * 접근법: before/after "dirty file set" 비교 (서브모듈 재귀 지원)
  */

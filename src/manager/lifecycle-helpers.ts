@@ -27,8 +27,9 @@ export function isPositivePort(port: number): boolean {
 }
 
 export function defaultHomeForPort(port: number, root = homedir()): string {
-    if (port === MANAGED_INSTANCE_PORT_FROM) return join(root, '.podex');
-    return join(root, `.podex-${port}`);
+    const weasleyRoot = join(root, '.weasley');
+    if (port === MANAGED_INSTANCE_PORT_FROM) return join(weasleyRoot, 'podex');
+    return join(weasleyRoot, `podex-${port}`);
 }
 
 export function waitForChildExit(

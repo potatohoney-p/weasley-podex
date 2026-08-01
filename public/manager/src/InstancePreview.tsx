@@ -456,7 +456,7 @@ export function InstancePreview(props: InstancePreviewProps) {
             {props.enabled && state.canPreview && state.src && (
                 <iframe
                     key={`${props.instance?.port || 'none'}:${props.refreshKey}`}
-                    title={`Jaw instance ${props.instance?.port} preview`}
+                    title={`Weasley Podex instance ${props.instance?.port} preview`}
                     ref={iframeRef}
                     className="preview-frame"
                     src={state.src}

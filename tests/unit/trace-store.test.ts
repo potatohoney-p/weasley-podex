@@ -99,7 +99,7 @@ test('updateTraceToolRow unlinks the stale spill file when the payload shrinks i
     const before = getTraceEvent(runId, tool.traceSeq!);
     assert.equal(before?.retention_status, 'spilled');
     assert.ok(before?.raw_path, 'oversized payload must spill to disk');
-    const spillAbs = nodePath.join(process.env['podex_HOME'] || '', before!.raw_path!);
+    const spillAbs = nodePath.join(process.env['WEASLEY_PODEX_HOME'] || '', before!.raw_path!);
     assert.ok(nodeFs.existsSync(spillAbs), 'spill file exists before update');
 
     tool.detail = 'small';

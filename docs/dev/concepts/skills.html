@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skills — podex Docs</title>
+<title>Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -83,24 +82,24 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Skills</h1>
-<p class="lead">Skills are domain knowledge plugins that get injected into the agent's system prompt. podex ships with 25 default active skills and 93 reference skills (118 total) covering development, cloud platforms, documentation, and more.</p>
+<p class="lead">Skills are domain-knowledge plugins injected into the agent system prompt. Weasley Podex ships an audited core catalog and can import additional skills from an installed Codex environment or a trusted repository configured by the user. The live <code>weasley-podex skill list</code> output is the source of truth.</p>
 
 <h2>How Skills Work</h2>
 <p>Each skill is a directory containing a <code>SKILL.md</code> file. Active skills are loaded into the system prompt automatically. Reference skills are listed as available but not injected unless activated.</p>
-<pre><code>~/.podex/skills/
+<pre><code>~/.weasley/podex/skills/
 ├── dev/SKILL.md           # Active: common development rules
 ├── dev-frontend/SKILL.md  # Active: frontend-specific guidance
 ├── browser/SKILL.md       # Active: browser automation
 └── ...
 
-~/.podex/skills_ref/
+~/.weasley/podex/skills_ref/
 ├── registry.json          # Reference skill catalog
 ├── cloudflare/SKILL.md    # Available on demand
 ├── docker/SKILL.md
@@ -114,25 +113,25 @@
 <tr><td><strong>Browser</strong></td><td>browser, web-ai, vision-click, desktop-control</td></tr>
 <tr><td><strong>Documents</strong></td><td>pdf, pdf-vision, pptx, xlsx, docx, hwp</td></tr>
 <tr><td><strong>Communication</strong></td><td>telegram-send, notion, github, x-post</td></tr>
-<tr><td><strong>Content / Writing</strong></td><td>k-writing for Korean promotional/content writing with channel routing, pre-search, hook scoring, and anti-AI checks</td></tr>
+<tr><td><strong>Optional extensions</strong></td><td>User-selected skills imported from an installed Codex environment or an explicit trusted repository; not bundled</td></tr>
 <tr><td><strong>System</strong></td><td>memory, init, review, security-review, verify, simplify, code-review</td></tr>
 </table>
 
 <h2>CLI Commands</h2>
 <pre><code># List all skills
-jaw skill list
+weasley-podex skill list
 
 # Install a skill
-jaw skill install cloudflare
+weasley-podex skill install cloudflare
 
 # Remove a skill
-jaw skill remove cloudflare
+weasley-podex skill remove cloudflare
 
 # Get skill info
-jaw skill info dev-frontend
+weasley-podex skill info dev-frontend
 
 # Reset skills to defaults
-jaw skill reset</code></pre>
+weasley-podex skill reset</code></pre>
 
 <h2>Slash Commands</h2>
 <table>
@@ -163,9 +162,9 @@ Trigger conditions for when the agent should activate this skill.
 ```</code></pre>
 
 <h2>Custom Skill Authoring</h2>
-<p>You can create custom skills by adding a directory to <code>~/.podex/skills/</code>:</p>
-<pre><code>mkdir -p ~/.podex/skills/my-custom-skill
-cat > ~/.podex/skills/my-custom-skill/SKILL.md << 'EOF'
+<p>You can create custom skills by adding a directory to <code>~/.weasley/podex/skills/</code>:</p>
+<pre><code>mkdir -p ~/.weasley/podex/skills/my-custom-skill
+cat > ~/.weasley/podex/skills/my-custom-skill/SKILL.md << 'EOF'
 # My Custom Skill
 
 Custom domain knowledge for my specific workflow.

@@ -286,7 +286,7 @@ export type DesktopShellCapability = 'terminal' | 'diff' | 'git' | 'folder' | 's
 /**
  * Electron shell-only bridge.
  *
- * Jawsidian notes and graph data must continue to flow through the dashboard
+ * Weasley Podex notes and graph data must continue to flow through the dashboard
  * HTTP APIs so the web dashboard and Electron render the same vault index.
  * These capabilities are host integrations, not graph connectivity sources.
  */

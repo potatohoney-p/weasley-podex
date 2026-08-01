@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Communication Skills — podex Docs</title>
+<title>Communication Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -35,7 +34,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -84,28 +83,28 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Communication Skills</h1>
-<p class="lead">podex bundles six communication skills for messaging, email, and social media. These skills let you send Telegram messages, draft and polish emails, manage Gmail and Google Drive, read terminal-based email, send WhatsApp messages, and post to Twitter/X &mdash; all from natural language commands.</p>
+<p class="lead">Optional communication-extension recipes for messaging, email, and social media. None of the six examples on this page are bundled; verify the provider and package, then import a trusted skill explicitly before using it.</p>
 
 <h2>Skill Overview</h2>
 <table>
 <tr><th>Skill</th><th>Channel</th><th>Trigger Examples</th><th>Status</th></tr>
-<tr><td><strong>telegram-send</strong></td><td>Telegram</td><td><code>텔레그램으로 보내줘</code>, <code>send via telegram</code></td><td>Active</td></tr>
-<tr><td><strong>email-draft-polish</strong></td><td>Email (draft/polish)</td><td><code>이메일 초안 써줘</code>, <code>polish this email</code></td><td>Active</td></tr>
-<tr><td><strong>gog</strong></td><td>Gmail / Google Drive</td><td><code>Gmail 확인해줘</code>, <code>search my drive</code></td><td>Active</td></tr>
-<tr><td><strong>himalaya</strong></td><td>Terminal email (IMAP)</td><td><code>메일 읽어줘</code>, <code>check inbox</code></td><td>Active</td></tr>
-<tr><td><strong>whatsapp</strong></td><td>WhatsApp</td><td><code>왓츠앱 메시지 보내줘</code>, <code>send whatsapp</code></td><td>Active</td></tr>
-<tr><td><strong>xurl</strong></td><td>Twitter / X</td><td><code>트윗 올려줘</code>, <code>post to X</code></td><td>Active</td></tr>
+<tr><td><strong>telegram-send</strong></td><td>Telegram</td><td><code>텔레그램으로 보내줘</code>, <code>send via telegram</code></td><td>Optional import</td></tr>
+<tr><td><strong>email-draft-polish</strong></td><td>Email (draft/polish)</td><td><code>이메일 초안 써줘</code>, <code>polish this email</code></td><td>Optional import</td></tr>
+<tr><td><strong>gog</strong></td><td>Gmail / Google Drive</td><td><code>Gmail 확인해줘</code>, <code>search my drive</code></td><td>Optional import</td></tr>
+<tr><td><strong>himalaya</strong></td><td>Terminal email (IMAP)</td><td><code>메일 읽어줘</code>, <code>check inbox</code></td><td>Optional import</td></tr>
+<tr><td><strong>whatsapp</strong></td><td>WhatsApp</td><td><code>왓츠앱 메시지 보내줘</code>, <code>send whatsapp</code></td><td>Optional import</td></tr>
+<tr><td><strong>xurl</strong></td><td>Twitter / X</td><td><code>트윗 올려줘</code>, <code>post to X</code></td><td>Optional import</td></tr>
 </table>
 
 <h2 id="telegram-send">telegram-send</h2>
-<p>Send messages, photos, documents, and stickers to Telegram chats directly from podex. This skill wraps the <code>telegram-send</code> CLI and automatically handles chat ID resolution, file uploads, and Markdown formatting.</p>
+<p>Send messages, photos, documents, and stickers to Telegram chats directly from Weasley Podex. This skill wraps the <code>telegram-send</code> CLI and automatically handles chat ID resolution, file uploads, and Markdown formatting.</p>
 
 <h3>Capabilities</h3>
 <ul>
@@ -117,8 +116,8 @@
 </ul>
 
 <h3>Configuration</h3>
-<p>Requires a Telegram Bot API token configured in the podex environment:</p>
-<pre><code># In ~/.podex/config.json or env
+<p>Requires a Telegram Bot API token configured in the Weasley Podex environment:</p>
+<pre><code># In ~/.weasley/podex/config.json or env
 TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
 TELEGRAM_CHAT_ID=default_chat_id</code></pre>
 
@@ -277,7 +276,7 @@ message.send.backend.login = "you@example.com"</code></pre>
 </div>
 
 <h2 id="whatsapp">whatsapp</h2>
-<p>Send WhatsApp messages through podex. This skill interfaces with WhatsApp Web or the WhatsApp Business API to deliver text messages, media, and documents to contacts and groups.</p>
+<p>Send WhatsApp messages through Weasley Podex. This skill interfaces with WhatsApp Web or the WhatsApp Business API to deliver text messages, media, and documents to contacts and groups.</p>
 
 <h3>Capabilities</h3>
 <ul>
@@ -291,10 +290,10 @@ message.send.backend.login = "you@example.com"</code></pre>
 <h3>Configuration</h3>
 <p>WhatsApp integration requires an active session. Initial setup pairs with WhatsApp Web via QR code:</p>
 <pre><code># Start WhatsApp pairing
-jaw whatsapp pair
+weasley-podex whatsapp pair
 
 # Verify connection
-jaw whatsapp status</code></pre>
+weasley-podex whatsapp status</code></pre>
 
 <h3>Examples</h3>
 <pre><code># Send a message
@@ -332,7 +331,7 @@ jaw whatsapp status</code></pre>
 <h3>Configuration</h3>
 <p>Requires Twitter/X API credentials or cookie-based authentication:</p>
 <pre><code># Cookie-based auth (recommended)
-jaw x auth login
+weasley-podex x auth login
 
 # Or API key auth
 X_API_KEY=your_api_key
@@ -342,7 +341,7 @@ X_ACCESS_SECRET=your_access_secret</code></pre>
 
 <h3>Examples</h3>
 <pre><code># Post a tweet
-"트윗 올려줘: podex v2.0 released!"
+"트윗 올려줘: weasley-podex v2.0 released!"
 
 # Thread creation
 "이 내용을 트윗 스레드로 올려줘"
@@ -399,7 +398,7 @@ X_ACCESS_SECRET=your_access_secret</code></pre>
 "Gmail로 팀 전체에 보내줘"</code></pre>
 
 <h3>Scheduled sends</h3>
-<p>Use podex's scheduling to time your messages:</p>
+<p>Use Weasley Podex's scheduling to time your messages:</p>
 <pre><code># Schedule a Telegram reminder
 "내일 오전 9시에 텔레그램으로 '스탠드업 미팅' 리마인더 보내줘"
 

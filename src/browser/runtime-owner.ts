@@ -1,9 +1,10 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 export const DEFAULT_IDLE_TIMEOUT_MS = 10 * 60 * 1000;
 export const DEFAULT_REAPER_INTERVAL_MS = 30 * 1000;
 
 const MIN_TIMER_MS = 100;
 
-export type BrowserRuntimeOwnership = 'jaw-owned' | 'external' | 'none';
+export type BrowserRuntimeOwnership = 'weasley-podex-owned' | 'external' | 'none';
 export type BrowserCloseReason = 'manual' | 'idle';
 export type BrowserCloseAction = 'close-owned' | 'disconnect-only' | 'skip';
 
@@ -56,7 +57,7 @@ export function createEmptyBrowserRuntime(
     };
 }
 
-export function createJawOwnedBrowserRuntime(options: {
+export function createWeasleyPodexOwnedBrowserRuntime(options: {
     port: number;
     pid: number | null;
     userDataDir: string;
@@ -64,7 +65,7 @@ export function createJawOwnedBrowserRuntime(options: {
 }): BrowserRuntimeOwner {
     const now = nowIso();
     return {
-        ownership: 'jaw-owned',
+        ownership: 'weasley-podex-owned',
         pid: options.pid,
         port: options.port,
         userDataDir: options.userDataDir,
@@ -94,14 +95,14 @@ export function createExternalBrowserRuntime(port: number): BrowserRuntimeOwner 
 
 export function browserIdleTimeoutMs(): number {
     return parseBrowserRuntimeTimeout(
-        process.env["JAW_BROWSER_IDLE_TIMEOUT_MS"],
+        getWeasleyPodexEnv('BROWSER_IDLE_TIMEOUT_MS'),
         DEFAULT_IDLE_TIMEOUT_MS,
     );
 }
 
 export function browserReaperIntervalMs(): number {
     return parseBrowserRuntimeTimeout(
-        process.env["JAW_BROWSER_REAPER_INTERVAL_MS"],
+        getWeasleyPodexEnv('BROWSER_REAPER_INTERVAL_MS'),
         DEFAULT_REAPER_INTERVAL_MS,
     );
 }
@@ -112,7 +113,7 @@ export function shouldCloseIdleRuntime(
     activeCommandCount: number,
 ): boolean {
     if (!owner) return false;
-    if (owner.ownership !== 'jaw-owned') return false;
+    if (owner.ownership !== 'weasley-podex-owned') return false;
     if (!owner.autoCloseEnabled) return false;
     if (activeCommandCount > 0) return false;
     if (!owner.lastUsedAt) return false;
@@ -130,6 +131,6 @@ export function decideBrowserCloseAction(
     if (owner.ownership === 'external') {
         return reason === 'manual' ? 'disconnect-only' : 'skip';
     }
-    if (owner.ownership !== 'jaw-owned') return 'skip';
+    if (owner.ownership !== 'weasley-podex-owned') return 'skip';
     return proofOk ? 'close-owned' : 'skip';
 }

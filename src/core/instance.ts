@@ -1,22 +1,23 @@
+import { getWeasleyPodexEnv } from './weasley-podex-env.js';
 /**
  * Shared instance utilities for launchd / systemd / docker service management.
  * Zero dependencies beyond node:* and config.ts.
  */
 import { execFileSync } from 'node:child_process';
-import { basename } from 'node:path';
+import { basename, resolve } from 'node:path';
 import { createHash } from 'node:crypto';
-import { JAW_HOME } from './config.js';
+import { DEFAULT_WEASLEY_PODEX_HOME, WEASLEY_PODEX_HOME, LEGACY_PODEX_HOME } from './config.js';
 import { buildServicePath, resolveBundledNodePath } from './runtime-path.js';
 
 /**
- * Derive a human-readable instance ID from JAW_HOME.
- * Default home (~/.podex) → 'default'
+ * Derive a human-readable instance ID from WEASLEY_PODEX_HOME.
+ * Default home (~/.weasley/podex) → 'default'
  * Custom home → '<basename>-<hash8>'
  */
 export function instanceId(): string {
-    const base = basename(JAW_HOME);
-    if (base === '.podex') return 'default';
-    const hash = createHash('md5').update(JAW_HOME).digest('hex').slice(0, 8);
+    const base = basename(WEASLEY_PODEX_HOME);
+    if ([DEFAULT_WEASLEY_PODEX_HOME, LEGACY_PODEX_HOME].some(home => resolve(home) === resolve(WEASLEY_PODEX_HOME))) return 'default';
+    const hash = createHash('md5').update(WEASLEY_PODEX_HOME).digest('hex').slice(0, 8);
     return `${base.replace(/^\./, '')}-${hash}`;
 }
 
@@ -42,13 +43,13 @@ export function getNodePath(): string {
     catch { return process.execPath || '/usr/local/bin/node'; }
 }
 
-/** Resolve absolute path to jaw binary. */
+/** Resolve the sole public Weasley Podex CLI. */
 export function getJawPath(): string {
-    if (process.env["podex_BIN"]) return process.env["podex_BIN"];
+    const configuredBin = getWeasleyPodexEnv('BIN');
+    if (configuredBin) return configuredBin;
     const argvPath = process.argv[1];
-    if (argvPath && /(?:^|[\\/])(?:podex|jaw)(?:\.js)?$/.test(argvPath)) return argvPath;
-    try { return whichWithServicePath('jaw'); }
-    catch { return whichWithServicePath('podex'); }
+    if (argvPath && /(?:^|[\\/])(?:weasley-podex(?:\.js)?|podex\.js)$/.test(argvPath)) return argvPath;
+    return whichWithServicePath('weasley-podex');
 }
 
 /**

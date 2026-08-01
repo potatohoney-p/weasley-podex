@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from './weasley-podex-env.js';
 import fs from 'fs';
 import { execFileSync } from 'child_process';
 import { homedir } from 'os';
@@ -82,7 +83,7 @@ function detectAiE(): CliDetection {
 }
 
 function detectClaudeE(): CliDetection {
-    const explicitHelper = process.env["CLAUDE_E_BIN"] || process.env["CLAUDE_EXEC_BIN"] || process.env["JAW_CLAUDE_I_BIN"];
+    const explicitHelper = process.env["CLAUDE_E_BIN"] || process.env["CLAUDE_EXEC_BIN"] || getWeasleyPodexEnv('CLAUDE_I_BIN');
     const packageCandidates = getClaudeExecPackageCandidates();
     const packageDetected = selectCompatibleHelperPath(packageCandidates, ['run', '--help']);
     if (packageDetected.available) return packageDetected;
@@ -138,9 +139,10 @@ function detectClaudeE(): CliDetection {
 
 function getAiEPackageCandidates(): string[] {
     const helper = nativeExecutableName('ai-e');
-    const jawHome = process.env['podex_HOME']
-        ? resolveHomePath(process.env['podex_HOME'], homedir())
-        : join(homedir(), '.podex');
+    const configuredHome = getWeasleyPodexEnv('HOME');
+    const jawHome = configuredHome
+        ? resolveHomePath(configuredHome, homedir())
+        : join(homedir(), '.weasley', 'podex');
     const candidates = [
         join(jawHome, 'providers', 'ai-e', 'node_modules', '@bitkyc08', 'ai-e', 'target', 'release', helper),
         join(jawHome, 'providers', 'ai-e', 'node_modules', '@bitkyc08', 'ai-e', 'target', 'debug', helper),
@@ -214,7 +216,7 @@ function getClaudeExecPackageCandidates(
     const candidates = [
         env["CLAUDE_E_BIN"],
         env["CLAUDE_EXEC_BIN"],
-        env["JAW_CLAUDE_I_BIN"],
+        getWeasleyPodexEnv('CLAUDE_I_BIN', env),
         join(projectDir, 'node_modules', 'claude-e', 'target', 'release', execHelper),
         join(projectDir, 'node_modules', 'claude-e', 'target', 'release', shortHelper),
         join(projectDir, 'node_modules', 'claude-e', 'target', 'debug', execHelper),
@@ -250,7 +252,12 @@ function selectCompatibleHelperPath(candidates: string[], helpArgs: string[]): C
 
 function helperSupportsIdleTimeout(binaryPath: string, helpArgs: string[]): boolean {
     try {
-        const output = execFileSync(binaryPath, helpArgs, {
+        const isWindowsScript = process.platform === 'win32' && /\.(?:cmd|bat)$/i.test(binaryPath);
+        const command = isWindowsScript ? (process.env["ComSpec"] || 'cmd.exe') : binaryPath;
+        const args = isWindowsScript
+            ? ['/d', '/s', '/c', 'call', binaryPath, ...helpArgs]
+            : helpArgs;
+        const output = execFileSync(command, args, {
             encoding: 'utf8',
             timeout: 3000,
             stdio: ['ignore', 'pipe', 'pipe'],

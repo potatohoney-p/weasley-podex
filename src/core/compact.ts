@@ -1,4 +1,4 @@
-﻿// ─── Compact Helpers ────────────────────────────────
+// ─── Compact Helpers ────────────────────────────────
 
 export const COMPACT_MARKER_CONTENT = 'Conversation compacted.';
 export const MANAGED_COMPACT_PREFIX = '[assistant] Managed compact summary:';
@@ -500,7 +500,7 @@ export function harvestBootstrapSlots(input: HarvestInput): BootstrapSlots {
     const task_snapshot = harvestTaskSnapshot(goal);
     const elapsed = Math.round(performance.now() - t0);
     if (elapsed > 100) {
-        console.warn(`[jaw:compact] harvestBootstrapSlots took ${elapsed}ms (target <150ms)`);
+        console.warn(`[weasley-podex:compact] harvestBootstrapSlots took ${elapsed}ms (target <150ms)`);
     }
     return { goal, recent_turns, tool_context, memory_hits, grep_hits, task_snapshot };
 }
@@ -557,7 +557,7 @@ export async function cliSwitchRefresh(opts: {
             text: `CLI switched ${opts.fromCli} → ${targetLabel} — session refreshed`,
         }, 'public');
     } catch (e) {
-        console.warn('[jaw:cli-switch] notice broadcast failed:', (e as Error).message);
+        console.warn('[weasley-podex:cli-switch] notice broadcast failed:', (e as Error).message);
     }
 
     return { refreshed: true, bootstrapWritten: hasAnyContent, targetBucketCleared: !!targetBucket };
@@ -637,9 +637,9 @@ export function renderBootstrapPrompt(slots: BootstrapSlots): string {
         'Resume from the plan in <current_state>. Do not repeat work already listed under <recent_actions>.',
         '',
         'The sections above are a starting snapshot built at compact time. The live memory index has more than was harvested. Before answering:',
-        '- Run `podex memory search "<keywords>"` for any term in <overall_goal> or the user\'s next message.',
-        '- Use `podex memory read <path>` to expand any line referenced in <key_knowledge> or <current_state>.',
-        '- If saving a durable fact, use `podex memory save <file> <content>` with an explicit destination such as `structured/episodes/live/YYYY-MM-DD.md`.',
+        '- Run `weasley-podex memory search "<keywords>"` for any term in <overall_goal> or the user\'s next message.',
+        '- Use `weasley-podex memory read <path>` to expand any line referenced in <key_knowledge> or <current_state>.',
+        '- If saving a durable fact, use `weasley-podex memory save <file> <content>` with an explicit destination such as `structured/episodes/live/YYYY-MM-DD.md`.',
         '- If a referenced file in <artifact_trail> is relevant, open it directly with the file-read tool — do not rely on the snippet alone.',
     ].join('\n');
 

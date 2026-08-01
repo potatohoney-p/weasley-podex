@@ -44,7 +44,7 @@ export function InstanceListContent(props: InstanceListContentProps) {
     return (
         <>
             {props.error && <section className="state error-state">Scan failed: {props.error}</section>}
-            {!props.error && props.loading && <section className="state">Scanning local Jaw instances...</section>}
+            {!props.error && props.loading && <section className="state">Scanning local Weasley Podex instances...</section>}
             {showEmpty && props.data?.manager && (
                 <EmptyNavigator
                     rangeFrom={props.data.manager.rangeFrom}

@@ -65,9 +65,9 @@ test('BWAI-TOOLS-003: target mismatch result includes safe recovery command', ()
     assert.equal(result.status, 'target-mismatch');
     assert.equal(result.expectedTargetId, 'target-old');
     assert.equal(result.actualTargetId, 'target-new');
-    assert.equal(result.recovery, 'podex browser web-ai poll --vendor chatgpt --session webai_abc --navigate --json');
+    assert.equal(result.recovery, 'weasley-podex browser web-ai poll --vendor chatgpt --session webai_abc --navigate --json');
     assert.deepEqual(result.warnings, ['poll target changed: target-old -> target-new']);
-    assert.equal(sessionPollRecoveryCommand('unknown', 'sid'), 'podex browser web-ai poll --vendor chatgpt --session sid --navigate --json');
+    assert.equal(sessionPollRecoveryCommand('unknown', 'sid'), 'weasley-podex browser web-ai poll --vendor chatgpt --session sid --navigate --json');
 });
 
 test('BWAI-TOOLS-004: multi-turn transcript renderer is deterministic markdown', () => {

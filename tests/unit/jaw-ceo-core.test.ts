@@ -175,7 +175,7 @@ test('jaw-ceo-coordinator sends worker messages with baseline watch and server-o
     });
 
     assert.equal(result.ok, true);
-    assert.equal(sentPrompts[0], '[from: Jaw CEO]\nsummarize current work');
+    assert.equal(sentPrompts[0], '[from: Weasley Podex CEO]\nsummarize current work');
     assert.equal(coordinator.store.listWatches()[0]?.latestMessageFallback.sinceMessageId, 40);
 
     const stale = coordinator.ingestManagerEvent({ kind: 'instance-message', port: 3457, messageId: 40, role: 'assistant', at: fixedNow().toISOString() });
@@ -245,10 +245,10 @@ test('jaw-ceo-docs-edit allows approved markdown and rejects code paths', async 
     await applyJawCeoDocsEdit({
         targetPath: path.join(docs, 'jaw-ceo-note.md'),
         operation: 'append_section',
-        content: '## Jaw CEO\nReady.',
+        content: '## Weasley Podex CEO\nReady.',
         policy,
     });
-    assert.match(await readFile(path.join(docs, 'jaw-ceo-note.md'), 'utf8'), /## Jaw CEO/);
+    assert.match(await readFile(path.join(docs, 'jaw-ceo-note.md'), 'utf8'), /## Weasley Podex CEO/);
 
     await assert.rejects(
         () => applyJawCeoDocsEdit({

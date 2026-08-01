@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// bin/commands/task.ts — CLI: jaw task [add|done|start|assign|cancel|list|clear]
+// bin/commands/task.ts — CLI: weasley-podex task [add|done|start|assign|cancel|list|clear]
 import { loadSettings, getServerUrl } from '../../src/core/config.js';
 import { cliFetch, getCliAuthToken } from '../../src/cli/api-auth.js';
 import { shouldShowHelp, printAndExit } from '../helpers/help.js';
@@ -8,9 +8,9 @@ interface TaskItem { id: string; content: string; status: string; owner?: string
 interface TaskResponse { ok: boolean; error?: string; task: TaskItem; removed?: number; tasks?: TaskItem[] }
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw task — Task checklist
+  weasley-podex task — Task checklist
 
-  Usage: jaw task <subcommand> [args...]
+  Usage: weasley-podex task <subcommand> [args...]
 
   Subcommands:
     add <content> [--owner Name] [--after id]   Add a task
@@ -23,11 +23,11 @@ if (shouldShowHelp(process.argv)) printAndExit(`
     clear                                       Remove done/cancelled tasks
 
   Examples:
-    jaw task add "Implement auth module"
-    jaw task add "Write tests" --owner Backend --after abc12345
-    jaw task done abc12345
-    jaw task list
-    jaw task clear
+    weasley-podex task add "Implement auth module"
+    weasley-podex task add "Write tests" --owner Backend --after abc12345
+    weasley-podex task done abc12345
+    weasley-podex task list
+    weasley-podex task clear
 `);
 
 loadSettings();
@@ -57,7 +57,7 @@ try {
                 filtered.push(rest[i]!);
             }
             const content = filtered.join(' ').trim();
-            if (!content) { console.error('Usage: jaw task add <content>'); process.exit(1); }
+            if (!content) { console.error('Usage: weasley-podex task add <content>'); process.exit(1); }
             const body: Record<string, string> = { action: 'add', content };
             if (owner) body['owner'] = owner;
             if (after) body['after'] = after;
@@ -71,7 +71,7 @@ try {
         case 'edit': {
             const id = args[1];
             const content = args.slice(2).join(' ').trim();
-            if (!id || !content) { console.error('Usage: jaw task edit <id> <new content>'); process.exit(1); }
+            if (!id || !content) { console.error('Usage: weasley-podex task edit <id> <new content>'); process.exit(1); }
             const res = await cliFetch(`${BASE}/api/task`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'update', id, content }) });
             const data = await res.json() as TaskResponse;
             if (!data.ok) { console.error(data.error || 'Failed'); process.exit(1); }
@@ -82,7 +82,7 @@ try {
         case 'start':
         case 'cancel': {
             const id = args[1];
-            if (!id) { console.error(`Usage: jaw task ${sub} <id>`); process.exit(1); }
+            if (!id) { console.error(`Usage: weasley-podex task ${sub} <id>`); process.exit(1); }
             const status = sub === 'done' ? 'done' : sub === 'start' ? 'in_progress' : 'cancelled';
             const res = await cliFetch(`${BASE}/api/task`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'update', id, status }) });
             const data = await res.json() as TaskResponse;
@@ -94,7 +94,7 @@ try {
         case 'assign': {
             const id = args[1];
             const owner = args[2];
-            if (!id || !owner) { console.error('Usage: jaw task assign <id> <owner>'); process.exit(1); }
+            if (!id || !owner) { console.error('Usage: weasley-podex task assign <id> <owner>'); process.exit(1); }
             const res = await cliFetch(`${BASE}/api/task`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'update', id, owner }) });
             const data = await res.json() as TaskResponse;
             if (!data.ok) { console.error(data.error || 'Failed'); process.exit(1); }
@@ -128,13 +128,13 @@ try {
         }
         default:
             console.error(`Unknown subcommand: ${sub}`);
-            console.error('Usage: jaw task [add|edit|done|start|assign|cancel|list|clear]');
+            console.error('Usage: weasley-podex task [add|edit|done|start|assign|cancel|list|clear]');
             process.exit(1);
     }
 } catch (e: unknown) {
     const err = e as Error & { cause?: { code?: string } };
     if (err?.cause?.code === 'ECONNREFUSED') {
-        console.error('  ❌ jaw server not running. Start with: jaw serve');
+        console.error('  ❌ Weasley Podex server not running. Start with: weasley-podex serve');
         process.exit(1);
     }
     console.error('Error:', err.message || e);

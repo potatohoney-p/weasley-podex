@@ -1,24 +1,59 @@
-﻿/**
+/**
  * lib/mcp/skills-distribution.ts
- * 3-way skill distribution: Codex live → GitHub clone → bundled fallback.
+ * Skill distribution: Codex live + bundled core, with an opt-in remote overlay.
  * Auto-activation of CODEX_ACTIVE + OPENCLAW_ACTIVE sets.
  */
 import fs from 'fs';
 import os from 'os';
 import { basename, join } from 'path';
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import {
-    JAW_HOME,
+    WEASLEY_PODEX_HOME,
     shouldSkipClone, writeCloneMeta, CLONE_TIMEOUT_MS,
     CODEX_ACTIVE, OPENCLAW_ACTIVE,
     copyDirRecursive, findPackageRoot,
     loadRegistry, getSkillVersion, shouldUpdateSkillDirectory,
-    isDiscoverableSkillDirName, isSkillSourceEntryName, shouldUseLocalSkillsSource,
+    isDiscoverableSkillDirName, isSkillSourceEntryName,
 } from './skills-utils.js';
 
 type SkillRegistry = {
-    skills?: Record<string, { category?: string }>;
+    skills?: Record<string, { category?: string; defaultActive?: boolean }>;
 };
+
+const CONFIGURED_SKILLS_REPO_ENV = 'WEASLEY_PODEX_SKILLS_REPO';
+
+/** Return the explicitly configured remote source, if any. */
+export function getConfiguredSkillsRepository(
+    env: NodeJS.ProcessEnv = process.env,
+): string | null {
+    const value = env[CONFIGURED_SKILLS_REPO_ENV]?.trim();
+    if (!value) return null;
+    if (/[\u0000-\u001f\u007f]/.test(value)) {
+        throw new Error(`${CONFIGURED_SKILLS_REPO_ENV} contains a control character`);
+    }
+    return value;
+}
+
+export function cloneConfiguredSkillsRepository(repository: string, destination: string): void {
+    execFileSync('git', ['clone', '--depth', '1', '--', repository, destination], {
+        stdio: 'pipe',
+        timeout: CLONE_TIMEOUT_MS,
+    });
+}
+
+export function assertValidSkillsSourceDirectory(directory: string): void {
+    const registryPath = join(directory, 'registry.json');
+    let parsed: unknown;
+    try {
+        parsed = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    } catch {
+        throw new Error('configured skills repository has no valid registry.json');
+    }
+    const skills = (parsed as { skills?: unknown } | null)?.skills;
+    if (!skills || typeof skills !== 'object' || Array.isArray(skills) || Object.keys(skills).length === 0) {
+        throw new Error('configured skills repository registry has no skills');
+    }
+}
 
 /**
  * Phase 6 — 2×3 Skill Classification at Install
@@ -26,13 +61,13 @@ type SkillRegistry = {
  * Priority: ~/.codex/skills/ (live Codex) > bundled skills_ref/ (fallback)
  *
  * 1. If Codex is installed, classify its skills into active/ref
- * 2. Copy bundled skills_ref/ (OpenClaw + Codex fallback) → ~/.podex/skills_ref/
+ * 2. Copy bundled skills_ref/ (OpenClaw + Codex fallback) → ~/.weasley/podex/skills_ref/
  * 3. Auto-activate: CODEX_ACTIVE + OPENCLAW_ACTIVE from refDir → activeDir
  *    (covers devices where Codex isn't installed)
  */
 export function copyDefaultSkills() {
-    const activeDir = join(JAW_HOME, 'skills');
-    const refDir = join(JAW_HOME, 'skills_ref');
+    const activeDir = join(WEASLEY_PODEX_HOME, 'skills');
+    const refDir = join(WEASLEY_PODEX_HOME, 'skills_ref');
     fs.mkdirSync(activeDir, { recursive: true });
     fs.mkdirSync(refDir, { recursive: true });
 
@@ -86,28 +121,28 @@ export function copyDefaultSkills() {
     }
 
     // ─── 2. Populate skills_ref/ ─────────────────────
-    // Priority: git clone (always latest) → bundled fallback (dev) → offline
+    // Default: bundled core. A remote source is consulted only when the
+    // canonical WEASLEY_PODEX_SKILLS_REPO variable is explicitly configured.
     const packageRefDir = join(findPackageRoot(), 'skills_ref');
-    const SKILLS_REPO = 'https://github.com/potatohoney-p/podex-skills.git';
-
     let skillsSourceResolved = false;
+    let configuredRepository: string | null = null;
+    try {
+        configuredRepository = getConfiguredSkillsRepository();
+    } catch (error) {
+        console.warn(`[skills] configured repository ignored: ${(error as Error).message}`);
+    }
 
-    // 2a. Try GitHub clone first (public repo, no auth needed), unless local
-    // bundled skills are explicitly requested for compatibility closeout work.
-    if (shouldUseLocalSkillsSource()) {
-        const sourceMode = process.env["JAW_SKILLS_SOURCE"] || 'local';
-        console.log(`[skills] using local bundled skills_ref (JAW_SKILLS_SOURCE=${sourceMode})`);
-    } else if (shouldSkipClone()) {
-        console.log(`[skills] GitHub clone suppressed (cooldown active)`);
-    } else {
+    // 2a. Optional remote source. With no configured repository, no network
+    // process is started; a fresh npm install therefore remains offline-safe.
+    if (configuredRepository && shouldSkipClone()) {
+        console.log('[skills] configured repository clone suppressed (cooldown active)');
+    } else if (configuredRepository) {
+        const tmpClone = join(WEASLEY_PODEX_HOME, '.skills_clone_tmp');
         try {
-            const tmpClone = join(JAW_HOME, '.skills_clone_tmp');
-            if (fs.existsSync(tmpClone)) fs.rmSync(tmpClone, { recursive: true });
-            console.log(`[skills] fetching latest skills from GitHub...`);
-            execSync(`git clone --depth 1 ${SKILLS_REPO} "${tmpClone}"`, {
-                stdio: 'pipe', timeout: CLONE_TIMEOUT_MS,
-            });
-            // Version-aware merge from clone
+            if (fs.existsSync(tmpClone)) fs.rmSync(tmpClone, { recursive: true, force: true });
+            console.log('[skills] fetching configured skills repository...');
+            cloneConfiguredSkillsRepository(configuredRepository, tmpClone);
+            assertValidSkillsSourceDirectory(tmpClone);
             const srcReg = loadRegistry(tmpClone);
             const dstReg = loadRegistry(refDir);
             const cloned = fs.readdirSync(tmpClone, { withFileTypes: true });
@@ -132,17 +167,19 @@ export function copyDefaultSkills() {
                     fs.copyFileSync(src, dst);
                 }
             }
-            fs.rmSync(tmpClone, { recursive: true, force: true });
-            console.log(`[skills] ✅ GitHub: ${cloneNew} new, ${cloneUpdated} updated`);
+            console.log(`[skills] configured repository: ${cloneNew} new, ${cloneUpdated} updated`);
             writeCloneMeta(true);
             skillsSourceResolved = true;
-        } catch (e) {
+        } catch (error) {
             writeCloneMeta(false);
-            console.log(`[skills] GitHub clone skipped: ${(e as Error).message?.slice(0, 60)}`);
+            console.log(`[skills] configured repository unavailable: ${(error as Error).message?.slice(0, 80)}`);
+        } finally {
+            if (fs.existsSync(tmpClone)) fs.rmSync(tmpClone, { recursive: true, force: true });
         }
     }
 
-    // 2b. Fallback: bundled skills_ref/ (dev mode with initialized submodule)
+    // 2b. Package-owned core skills are the normal source and the remote
+    // failure fallback.
     if (!skillsSourceResolved) {
         const bundledHasContent = fs.existsSync(packageRefDir) && fs.existsSync(join(packageRefDir, 'registry.json'));
         if (bundledHasContent) {
@@ -170,24 +207,21 @@ export function copyDefaultSkills() {
                     fs.copyFileSync(src, dst);
                 }
             }
-            if (refCopied > 0) console.log(`[skills] Bundled fallback: ${refCopied} new skills → ref`);
-            if (refUpdated > 0) console.log(`[skills] Bundled fallback: ${refUpdated} skills updated`);
+            console.log(`[skills] bundled core: ${refCopied} new, ${refUpdated} updated`);
             skillsSourceResolved = true;
         }
     }
 
     if (!skillsSourceResolved) {
-        const hasExisting = fs.existsSync(join(refDir, 'registry.json'));
-        if (!hasExisting) {
-            const refDirDisplay = refDir.replace(/\\/g, '/');
+        if (fs.existsSync(join(refDir, 'registry.json'))) {
+            console.log('[skills] using existing local skills_ref');
+            skillsSourceResolved = true;
+        } else {
             console.warn('');
-            console.warn('[skills] ⚠️  Skills not available (GitHub clone failed)');
+            console.warn('[skills] Skills are not available in this package');
             console.warn('');
-            console.warn('  Run manually:');
-            console.warn(`    git clone --depth 1 ${SKILLS_REPO} "${refDirDisplay}"`);
-            console.warn('    jaw skill reset');
-            console.warn('');
-            console.warn('  This fetches all skills and activates defaults.');
+            console.warn('  Reinstall weasley-podex, then run: weasley-podex skill reset');
+            console.warn(`  Optional remote override: set ${CONFIGURED_SKILLS_REPO_ENV}`);
             console.warn('');
         }
     }
@@ -201,7 +235,7 @@ export function copyDefaultSkills() {
         if (fs.existsSync(registryPath)) {
             const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8')) as SkillRegistry;
             for (const [id, meta] of Object.entries(registry.skills || {})) {
-                if (meta.category === 'orchestration') OPENCLAW_ACTIVE.add(id);
+                if (meta.defaultActive === true || meta.category === 'orchestration') OPENCLAW_ACTIVE.add(id);
             }
         }
     } catch { /* registry parse error — skip */ }
@@ -232,7 +266,7 @@ export function copyDefaultSkills() {
 }
 
 /**
- * Propagate skills from JAW_HOME to all ~/.podex-* instance directories.
+ * Propagate skills from WEASLEY_PODEX_HOME to all Weasley Podex instance directories.
  * Runs after copyDefaultSkills() so the base is already up-to-date.
  *
  * - skills_ref/: version-aware merge (new + updated)
@@ -240,15 +274,22 @@ export function copyDefaultSkills() {
  */
 export function propagateSkillsToInstances() {
     const home = os.homedir();
-    const baseActive = join(JAW_HOME, 'skills');
-    const baseRef = join(JAW_HOME, 'skills_ref');
+    const baseActive = join(WEASLEY_PODEX_HOME, 'skills');
+    const baseRef = join(WEASLEY_PODEX_HOME, 'skills_ref');
     if (!fs.existsSync(baseRef)) return;
 
     let instances: string[];
     try {
-        instances = fs.readdirSync(home, { withFileTypes: true })
+        const weasleyRoot = join(home, '.weasley');
+        const current = fs.existsSync(weasleyRoot)
+            ? fs.readdirSync(weasleyRoot, { withFileTypes: true })
+                .filter(d => d.isDirectory() && /^podex-\d+$/.test(d.name))
+                .map(d => join(weasleyRoot, d.name))
+            : [];
+        const legacy = fs.readdirSync(home, { withFileTypes: true })
             .filter(d => d.isDirectory() && /^\.podex-\d+$/.test(d.name))
             .map(d => join(home, d.name));
+        instances = [...current, ...legacy];
     } catch { return; }
 
     if (instances.length === 0) return;
@@ -262,7 +303,7 @@ export function propagateSkillsToInstances() {
         if (fs.existsSync(registryPath)) {
             const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8')) as SkillRegistry;
             for (const [id, meta] of Object.entries(registry.skills || {})) {
-                if (meta.category === 'orchestration') autoActivate.add(id);
+                if (meta.defaultActive === true || meta.category === 'orchestration') autoActivate.add(id);
             }
         }
     } catch { /* skip */ }

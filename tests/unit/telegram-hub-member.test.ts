@@ -5,7 +5,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { resolveHubCallback } from '../../src/telegram/hub-callback.ts';
 
-delete process.env['JAW_HUB_CALLBACK_URL']; // deterministic: undefined → fallback
+delete process.env['WEASLEY_PODEX_HUB_CALLBACK_URL']; // deterministic: undefined → fallback
 const FALLBACK = 'http://127.0.0.1:24576';
 
 test('resolveHubCallback: loopback http origins pass through (path/query stripped)', () => {

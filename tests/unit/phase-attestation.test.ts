@@ -148,7 +148,7 @@ test('ATT-NOSTATE-001: positives — asserting a current phase', () => {
 test('ATT-NOSTATE-002: negatives — explaining PABCD, not asserting current phase', () => {
   assert.equal(detectNoStateNarration('PABCD is a 5-phase workflow: P, A, B, C, D.'), false);
   assert.equal(detectNoStateNarration('The plan covers phases of work.'), false);
-  assert.equal(detectNoStateNarration('```\npodex orchestrate P  # enter planning\n```'), false);
+  assert.equal(detectNoStateNarration('```\nweasley-podex orchestrate P  # enter planning\n```'), false);
   assert.equal(detectNoStateNarration(''), false);
 });
 

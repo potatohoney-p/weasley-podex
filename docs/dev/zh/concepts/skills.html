@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>技能 — podex 文档</title>
+<title>技能 — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,24 +58,24 @@
     <a class="active" href="../">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>技能</h1>
-<p class="lead">技能是注入到智能体系统提示词中的领域知识插件。podex 内置 32 个活跃技能和 195 个参考技能，涵盖开发、云平台、文档等领域。</p>
+<p class="lead">技能是注入到智能体系统提示词中的领域知识插件。Weasley Podex 内置 32 个活跃技能和 195 个参考技能，涵盖开发、云平台、文档等领域。</p>
 
 <h2>技能的工作原理</h2>
 <p>每个技能是一个包含 <code>SKILL.md</code> 文件的目录。活跃技能会自动加载到系统提示词中。参考技能会被列为可用，但除非激活，否则不会被注入。</p>
-<pre><code>~/.podex/skills/
+<pre><code>~/.weasley/podex/skills/
 ├── dev/SKILL.md           # Active: common development rules
 ├── dev-frontend/SKILL.md  # Active: frontend-specific guidance
 ├── browser/SKILL.md       # Active: browser automation
 └── ...
 
-~/.podex/skills_ref/
+~/.weasley/podex/skills_ref/
 ├── registry.json          # Reference skill catalog
 ├── cloudflare/SKILL.md    # Available on demand
 ├── docker/SKILL.md
@@ -90,25 +89,25 @@
 <tr><td><strong>浏览器</strong></td><td>browser, web-ai, vision-click, desktop-control</td></tr>
 <tr><td><strong>文档</strong></td><td>pdf, pdf-vision, pptx, xlsx, docx, hwp</td></tr>
 <tr><td><strong>通讯</strong></td><td>telegram-send, notion, github, x-post</td></tr>
-<tr><td><strong>内容/写作</strong></td><td>k-writing：韩语推广/内容写作，包含渠道路由、预搜索、钩子评分和去 AI 痕迹校验</td></tr>
+<tr><td><strong>可选扩展</strong></td><td>从已安装的 Codex 环境或用户显式指定的可信仓库导入；不随核心包捆绑</td></tr>
 <tr><td><strong>系统</strong></td><td>memory, init, review, security-review, verify, simplify, code-review</td></tr>
 </table>
 
 <h2>CLI 命令</h2>
 <pre><code># List all skills
-jaw skill list
+weasley-podex skill list
 
 # Install a skill
-jaw skill install cloudflare
+weasley-podex skill install cloudflare
 
 # Remove a skill
-jaw skill remove cloudflare
+weasley-podex skill remove cloudflare
 
 # Get skill info
-jaw skill info dev-frontend
+weasley-podex skill info dev-frontend
 
 # Reset skills to defaults
-jaw skill reset</code></pre>
+weasley-podex skill reset</code></pre>
 
 <h2>斜杠命令</h2>
 <table>
@@ -139,9 +138,9 @@ Trigger conditions for when the agent should activate this skill.
 ```</code></pre>
 
 <h2>自定义技能创作</h2>
-<p>你可以通过在 <code>~/.podex/skills/</code> 中添加目录来创建自定义技能：</p>
-<pre><code>mkdir -p ~/.podex/skills/my-custom-skill
-cat > ~/.podex/skills/my-custom-skill/SKILL.md << 'EOF'
+<p>你可以通过在 <code>~/.weasley/podex/skills/</code> 中添加目录来创建自定义技能：</p>
+<pre><code>mkdir -p ~/.weasley/podex/skills/my-custom-skill
+cat > ~/.weasley/podex/skills/my-custom-skill/SKILL.md << 'EOF'
 # My Custom Skill
 
 Custom domain knowledge for my specific workflow.

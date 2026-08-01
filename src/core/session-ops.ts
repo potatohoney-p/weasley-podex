@@ -30,7 +30,7 @@ export async function clearSessionState(): Promise<void> {
         const bucket = resolveSessionBucket(settings["cli"] || 'claude', settings["model"] || '');
         if (bucket) clearSessionBucket.run(bucket);
     } catch (e) {
-        console.warn('[jaw:reset] session bucket clear failed:', (e as Error).message);
+        console.warn('[weasley-podex:reset] session bucket clear failed:', (e as Error).message);
     }
     bumpSessionOwnershipGeneration();
     clearMainSessionState();

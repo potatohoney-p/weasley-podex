@@ -1,5 +1,6 @@
 ﻿import test, { afterEach, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
+import { resolve } from 'node:path';
 
 import {
     buildApprovedPlanPromptBlock,
@@ -34,7 +35,7 @@ test('buildApprovedPlanPromptBlock includes numeric and destructive guard langua
     const block = buildApprovedPlanPromptBlock(ctx, 'B', '/repo/root');
 
     assert.ok(block.startsWith('## Approved Plan (authoritative)'));
-    assert.ok(block.includes('Project root: "/repo/root"'));
+    assert.ok(block.includes(`Project root: ${JSON.stringify(resolve('/repo/root'))}`));
     assert.ok(block.includes('64GB to 50GB'));
     assert.ok(block.includes('Never use 8GB'));
     assert.ok(block.includes('repository-relative paths'));

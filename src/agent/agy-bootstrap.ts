@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import type { SpawnContext } from '../types/agent.js';
 
 export const AGY_BOOTSTRAP_VERSION = 1;
-export const AGY_BOOTSTRAP_PREFIX = 'podex_BOOTSTRAP_SHA=';
+export const AGY_BOOTSTRAP_PREFIX = 'WEASLEY_PODEX_BOOTSTRAP_SHA=';
 
 export type AgyPromptOrder = 'task-first' | 'context-first';
 
@@ -109,9 +109,9 @@ export function buildAgyBootstrapEnvelope(input: {
         sentinel,
         `cwd=${workingDir}`,
         `session=${sessionId}`,
-        'rule=This marker proves the current podex runtime envelope reached AGY.',
+        'rule=This marker proves the current Weasley Podex runtime envelope reached AGY.',
     ].join('\n');
-    const currentTask = `[Current podex task]\n${taskPrompt}`;
+    const currentTask = `[Current weasley-podex task]\n${taskPrompt}`;
     const operationalSection = operationalContext
         ? [
             '[Operational Context — podex Integration]',

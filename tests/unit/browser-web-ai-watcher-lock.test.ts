@@ -4,11 +4,11 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-// 104.3 cross-process watcher lock. Uses a fresh temp podex_HOME so the lock dir lands
+// 104.3 cross-process watcher lock. Uses a fresh temp WEASLEY_PODEX_HOME so the lock dir lands
 // under an isolated home.
 test('BWAI-WLOCK-001: acquire is exclusive, releasable, and re-acquirable', async () => {
     const home = mkdtempSync(join(tmpdir(), 'cjwl-'));
-    process.env.podex_HOME = home;
+    process.env.WEASLEY_PODEX_HOME = home;
     const lock = await import('../../src/browser/web-ai/watcher-lock.js');
 
     const l1 = lock.acquireWatcherSessionLock('webai_1');
@@ -29,7 +29,7 @@ test('BWAI-WLOCK-001: acquire is exclusive, releasable, and re-acquirable', asyn
 });
 
 test('BWAI-WLOCK-002: staleness — no metadata / dead PID / stale heartbeat are stale', async () => {
-    process.env.podex_HOME = mkdtempSync(join(tmpdir(), 'cjwl-'));
+    process.env.WEASLEY_PODEX_HOME = mkdtempSync(join(tmpdir(), 'cjwl-'));
     const lock = await import('../../src/browser/web-ai/watcher-lock.js');
 
     assert.equal(lock.isWatcherLockStale(null, 1000), true);

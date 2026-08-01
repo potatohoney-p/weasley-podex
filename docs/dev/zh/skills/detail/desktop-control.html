@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Desktop Control — podex Docs</title>
+<title>Desktop Control — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -30,7 +29,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -52,7 +51,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">使用指南</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -101,24 +100,24 @@
     <a href="../../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">落地页</a>
   </div>
 </nav>
 <main class="docs-main">
 
-<h1>Desktop Control <span class="badge badge-active">默认启用</span></h1>
+<h1>Desktop Control <span class="badge badge-active">浏览器能力</span></h1>
 <p class="lead">Computer Use 桌面自动化 &mdash; <code>get_app_state</code>、<code>click</code>、<code>set_value</code>、键盘/指针操作。统一技能，用于所有 UI 自动化，根据目标在 CDP（浏览器 DOM）和 Computer Use（桌面应用）之间自动路由。</p>
 
 <div class="skill-meta">
   <div class="skill-meta-item"><strong>技能 ID：</strong> <code>desktop-control</code></div>
   <div class="skill-meta-item"><strong>类型：</strong> 自动启用</div>
   <div class="skill-meta-item"><strong>平台：</strong> macOS</div>
-  <div class="skill-meta-item"><strong>依赖：</strong> podex、Google Chrome</div>
+  <div class="skill-meta-item"><strong>依赖：</strong> Weasley Podex、Google Chrome</div>
   <div class="skill-meta-item"><strong>可选：</strong> cliclick (brew)</div>
 </div>
 
-<div class="callout callout-info">此技能<strong>始终注入</strong>到系统提示词中，无需手动加载。它取代了独立的 <code>browser</code> 和 <code>vision-click</code> 技能，将它们的功能整合到统一的路由系统中。</div>
+<div class="callout callout-info">本页说明由捆绑的 <code>browser</code> 技能和 CLI 实现的桌面控制示例。核心包不包含独立的 <code>desktop-control</code> 技能；原生控制扩展需显式导入。</div>
 
 <!-- ────────────────────────── Quick Reference ────────────────────────── -->
 
@@ -169,7 +168,7 @@
 <h3>解析顺序</h3>
 <ol>
 <li><strong>显式指定：</strong> 消息包含 <code>$computer-use</code> 或 <code>/computer-use</code> &rarr; 立即使用 Computer Use 路径。如果工具不可用，停止并报告 <code>precondition failed: computer-use unavailable</code>。</li>
-<li>目标能否通过 <code>podex browser snapshot --interactive</code> 引用来定位？ &rarr; <strong>CDP</strong>。</li>
+<li>目标能否通过 <code>weasley-podex browser snapshot --interactive</code> 引用来定位？ &rarr; <strong>CDP</strong>。</li>
 <li>非 DOM 的 Web 组件（Canvas、WebGL、iframe）在 <code>get_app_state</code> 截图中可见？ &rarr; <strong>Computer Use</strong> <code>click(x, y)</code>。</li>
 <li>目标在任何网页之外（应用窗口、菜单栏、系统对话框）？ &rarr; <strong>Computer Use</strong>。</li>
 <li>用户直接给出的像素坐标？ &rarr; <strong>Computer Use</strong> pointer-action。</li>
@@ -222,25 +221,25 @@
 
 <!-- ────────────────────────── CDP Commands ────────────────────────── -->
 
-<h2>CDP 路径 &mdash; <code>podex browser</code></h2>
+<h2>CDP 路径 &mdash; <code>weasley-podex browser</code></h2>
 <p>适用于所有可通过 Chrome DOM 定位的内容：页面文本、表单字段、页面内的按钮。处理 Web 内容时比 Computer Use 快 10 倍。</p>
 
 <h3>会话命令</h3>
-<pre><code>podex browser status                         # 会话是否活跃？
-podex browser start --agent                  # 无头自动化会话
-podex browser start --headless               # 手动无头模式（WSL/CI/Docker）
-podex browser start                          # 可见窗口（仅在用户要求时使用）
-podex browser navigate "https://example.com" # 导航到 URL
-podex browser open "https://example.com"     # 在新标签页中打开
-podex browser tabs                           # 列出标签页</code></pre>
+<pre><code>weasley-podex browser status                         # 会话是否活跃？
+weasley-podex browser start --agent                  # 无头自动化会话
+weasley-podex browser start --headless               # 手动无头模式（WSL/CI/Docker）
+weasley-podex browser start                          # 可见窗口（仅在用户要求时使用）
+weasley-podex browser navigate "https://example.com" # 导航到 URL
+weasley-podex browser open "https://example.com"     # 在新标签页中打开
+weasley-podex browser tabs                           # 列出标签页</code></pre>
 
 <h3>快照 + 操作</h3>
-<pre><code>podex browser snapshot --interactive   # 列出可点击元素（e1、e2、...）
-podex browser click e3                 # 通过引用点击
-podex browser type e5 "query" --submit # 输入 + 回车
-podex browser press Enter              # 备用按键
-podex browser screenshot               # 保存 PNG 截图
-podex browser text                     # 输出可见文本</code></pre>
+<pre><code>weasley-podex browser snapshot --interactive   # 列出可点击元素（e1、e2、...）
+weasley-podex browser click e3                 # 通过引用点击
+weasley-podex browser type e5 "query" --submit # 输入 + 回车
+weasley-podex browser press Enter              # 备用按键
+weasley-podex browser screenshot               # 保存 PNG 截图
+weasley-podex browser text                     # 输出可见文本</code></pre>
 
 <div class="callout callout-warn"><strong>导航后引用 ID 会重置。</strong> 导航到新页面后务必重新获取快照。</div>
 
@@ -262,14 +261,14 @@ podex browser text                     # 输出可见文本</code></pre>
 <li><strong>平台：</strong> 仅限 macOS。</li>
 <li>活跃的代理运行时必须暴露所有 Computer Use 工具（<code>list_apps</code>、<code>get_app_state</code>、<code>click</code>、<code>drag</code>、<code>press_key</code>、<code>scroll</code>、<code>set_value</code>、<code>type_text</code>、<code>perform_secondary_action</code>）。</li>
 <li>TCC 无障碍权限和 AppleEvents 必须授予控制应用。</li>
-<li>在打包安装中，可能需要 <code>/Applications/Jaw.app</code> 和 <code>/Applications/Codex Computer Use.app</code> 用于 TCC 归属。</li>
+<li>在打包安装中，可能需要 <code>/Applications/Weasley Podex.app</code> 和 <code>/Applications/Codex Computer Use.app</code> 用于 TCC 归属。</li>
 <li>如果应用名称未知，先调用 <code>list_apps()</code>。</li>
 </ul>
 
 <h3>CDP 路径</h3>
 <ul>
-<li><code>podex serve</code> 必须正在运行（通过 <code>podex browser status</code> 检查）。</li>
-<li>浏览器会话必须处于活跃状态（通过 <code>podex browser start --agent</code> 启动）。</li>
+<li><code>weasley-podex serve</code> 必须正在运行（通过 <code>weasley-podex browser status</code> 检查）。</li>
+<li>浏览器会话必须处于活跃状态（通过 <code>weasley-podex browser start --agent</code> 启动）。</li>
 </ul>
 
 <div class="callout callout-info">如果任何阻塞条件失败，报告 <code>precondition failed: &lt;name&gt;</code> 并停止。禁止静默切换路径。</div>
@@ -295,7 +294,7 @@ result=ok</code></pre>
 
 <h3>混合模式记录</h3>
 <pre><code>path=cdp+cu
-lookup=podex browser snapshot -> bbox of "Play"
+lookup=weasley-podex browser snapshot -> bbox of "Play"
 action_class=pointer-action
 action=click(x=812, y=514)
 result=ok</code></pre>
@@ -343,14 +342,14 @@ result=ok</code></pre>
 
 <h3>决策顺序</h3>
 <ol>
-<li><code>podex browser snapshot --interactive</code> 是否返回了引用？ &rarr; CDP <code>click</code>。</li>
+<li><code>weasley-podex browser snapshot --interactive</code> 是否返回了引用？ &rarr; CDP <code>click</code>。</li>
 <li>Computer Use 可用且目标在截图中可见？ &rarr; 直接使用 <code>click(x, y)</code> pointer-action（首选）。</li>
-<li>没有引用且直接坐标不适用 &rarr; <code>podex browser vision-click</code>（仅限 Codex，旧版）。</li>
+<li>没有引用且直接坐标不适用 &rarr; <code>weasley-podex browser vision-click</code>（仅限 Codex，旧版）。</li>
 </ol>
 
 <pre><code># CDP vision-click（在 Chrome 内，仅限 Codex）
-podex browser vision-click "Submit button"
-podex browser vision-click "Play button" --double
+weasley-podex browser vision-click "Submit button"
+weasley-podex browser vision-click "Play button" --double
 
 # 桌面 vision-click（CU-05）
 # 1. get_app_state(app) 获取截图
@@ -416,7 +415,7 @@ result=ok</code></pre>
 <pre><code># 发现所有目标都是 DOM 节点 -- 切换到 CDP
 path=cdp
 url=https://open.spotify.com
-action=podex browser snapshot --interactive
+action=weasley-podex browser snapshot --interactive
 result=ok (ref IDs: e1..e89)
 
 path=cdp
@@ -432,9 +431,9 @@ result=ok</code></pre>
 <table>
 <tr><th>症状</th><th>正确报告</th></tr>
 <tr><td>"我看不到光标"</td><td><code>cursor overlay is best-effort in the current build -- action=click(...) succeeded; visible cursor not guaranteed</code></td></tr>
-<tr><td>CDP 服务器未运行</td><td><code>precondition failed: podex serve not running. Start with 'jaw serve' and retry.</code></td></tr>
+<tr><td>CDP 服务器未运行</td><td><code>precondition failed: weasley-podex serve not running. Start with 'weasley-podex serve' and retry.</code></td></tr>
 <tr><td>Computer Use 工具缺失</td><td><code>precondition failed: computer-use unavailable</code></td></tr>
-<tr><td>podex CU 应用缺失（打包安装）</td><td><code>precondition failed: /Applications/Codex Computer Use.app missing. Recover: jaw doctor --tcc --fix</code></td></tr>
+<tr><td>Weasley Podex CU 应用缺失（打包安装）</td><td><code>precondition failed: /Applications/Codex Computer Use.app missing. Recover: weasley-podex doctor --tcc --fix</code></td></tr>
 <tr><td>操作时收到过期警告</td><td>重新调用 <code>get_app_state(app)</code> 然后重试；记录 <code>stale_warning=yes</code></td></tr>
 <tr><td>未找到目标引用</td><td>如果在截图中可见，使用 Computer Use <code>click(x, y)</code>。否则报告缺失。</td></tr>
 <tr><td>快照与点击之间发生导航偏移</td><td>重新获取快照并重试一次；如果仍然不对，报告问题。</td></tr>
@@ -531,7 +530,7 @@ result=ok</code></pre>
 <tr><th>技能</th><th>关系</th></tr>
 <tr><td><code>browser</code></td><td>CDP 命令参考 &mdash; 此技能取代了其覆盖范围</td></tr>
 <tr><td><code>screen-capture</code></td><td>通用 macOS 截图/摄像头/录屏（不变，独立关注点）</td></tr>
-<tr><td><code>vision-click</code></td><td>不再自动启用；已作为策略被吸收。通过 <code>podex skill install vision-click</code> 安装可获取底层配方（NDJSON 解析、DPR 校正）</td></tr>
+<tr><td><code>vision-click</code></td><td>不再自动启用；已作为策略被吸收。通过 <code>weasley-podex skill install vision-click</code> 安装可获取底层配方（NDJSON 解析、DPR 校正）</td></tr>
 </table>
 
 <!-- ────────────────────────── Page Nav ────────────────────────── -->

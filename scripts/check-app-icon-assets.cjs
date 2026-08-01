@@ -41,27 +41,16 @@ function checkPng(filePath, label) {
   return { width, height, bitDepth, colorType };
 }
 
-function checkIcns(filePath, label) {
-  checkExists(filePath, label);
-  const bytes = readFileSync(filePath);
-  if (bytes.length < 8 || bytes.subarray(0, 4).toString('ascii') !== 'icns') {
-    fail(`${label} is not an ICNS file: ${filePath}`);
-  }
-}
-
 const root = resolve(process.cwd());
 const pngs = [
-  ['electron/build/icon.png', 'Electron app PNG icon'],
-  ['public/icons/icon-192.png', 'PWA normal 192 icon'],
-  ['public/icons/icon-512.png', 'PWA normal 512 icon'],
-  ['public/icons/icon-512-maskable.png', 'PWA maskable 512 icon'],
+  ['electron/build/weasley-podex-mark.png', 'Electron Weasley Podex mark'],
+  ['public/assets/weasley-podex-mark.png', 'PWA Weasley Podex mark'],
+  ['docs/assets/weasley-podex-mark.png', 'Docs Weasley Podex mark'],
 ];
 
 for (const [file, label] of pngs) {
   checkPng(join(root, file), label);
 }
-checkIcns(join(root, 'electron/build/icon.icns'), 'macOS app ICNS icon');
-
 const builder = readFileSync(join(root, 'electron/electron-builder.yml'), 'utf8');
 if (/\bwin:\s*(?:\n\s+[^\n]*)*\n\s+icon:\s*build\/icon\.ico\b/m.test(builder)) {
   checkExists(join(root, 'electron/build/icon.ico'), 'Windows app ICO icon');

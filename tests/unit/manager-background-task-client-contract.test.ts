@@ -178,6 +178,6 @@ test('background task monitor contract stays separate from Code sessions and chi
     assert.ok(source.includes('/api/events'), 'client must use Manager multiplexed SSE stream');
     assert.ok(source.includes('statusCategory'), 'client must preserve shared runtime status categories');
     assert.equal(source.includes('CodeSession'), false, 'background tasks must not be modeled as Code sessions');
-    assert.equal(source.includes('selectedInstance'), false, 'background tasks must not depend on selected child Jaw instance');
+    assert.equal(source.includes('selectedInstance'), false, 'background tasks must not depend on selected child Weasley Podex instance');
     assert.equal(source.includes('3465'), false, 'client must not hardcode child Jaw ports');
 });

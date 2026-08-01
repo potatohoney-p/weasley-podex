@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Session Commands — podex Docs</title>
+<title>Session Commands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .cmd-block { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px 28px; margin: 24px 0; }
 .cmd-block h3 { margin: 0 0 6px; font-size: 18px; }
@@ -28,7 +27,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -49,7 +48,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -98,16 +97,16 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Session Commands</h1>
-<p class="lead">세션 명령어는 현재 podex 대화를 관리합니다: 도움말 보기, 명령어 탐색, 상태 확인, 히스토리 삭제, 컨텍스트 압축, 상태 초기화, 대화 중 에이전트 방향 전환 등을 수행합니다. 대화형 사용 중에 가장 자주 사용하게 되는 명령어들입니다.</p>
+<p class="lead">세션 명령어는 현재 Weasley Podex 대화를 관리합니다: 도움말 보기, 명령어 탐색, 상태 확인, 히스토리 삭제, 컨텍스트 압축, 상태 초기화, 대화 중 에이전트 방향 전환 등을 수행합니다. 대화형 사용 중에 가장 자주 사용하게 되는 명령어들입니다.</p>
 
-<div class="callout callout-info">모든 세션 명령어는 <code>/</code>로 시작하며 채팅 입력창에서 직접 입력할 수 있습니다. 자연어로도 실행할 수 있습니다 &mdash; podex는 한국어와 영어를 동일하게 이해합니다. 각 명령어 아래의 "~해줘" 팁을 참고하세요.</div>
+<div class="callout callout-info">모든 세션 명령어는 <code>/</code>로 시작하며 채팅 입력창에서 직접 입력할 수 있습니다. 자연어로도 실행할 수 있습니다 &mdash; Weasley Podex는 한국어와 영어를 동일하게 이해합니다. 각 명령어 아래의 "~해줘" 팁을 참고하세요.</div>
 
 <h2>빠른 참조</h2>
 <div class="quick-ref">
@@ -130,7 +129,7 @@
 <div class="cmd-block" id="help">
 <h3><code>/help</code></h3>
 <div class="cmd-sig">/help <span class="arg">[command]</span></div>
-<p>podex 명령어에 대한 문서를 표시합니다. 인수 없이 호출하면 카테고리별로 그룹화된 모든 사용 가능한 명령어를 나열합니다. 명령어 이름을 제공하면 해당 명령어의 상세 사용법, 인수, 예제를 표시합니다.</p>
+<p>Weasley Podex 명령어에 대한 문서를 표시합니다. 인수 없이 호출하면 카테고리별로 그룹화된 모든 사용 가능한 명령어를 나열합니다. 명령어 이름을 제공하면 해당 명령어의 상세 사용법, 인수, 예제를 표시합니다.</p>
 
 <p><strong>인수:</strong></p>
 <table>
@@ -147,7 +146,7 @@
 /help steer
 </div>
 
-<div class="cmd-tip"><strong>"~해줘" tip:</strong> "도움말 보여줘", "명령어 뭐 있어?", "compact 사용법 알려줘" 모두 <code>/help</code>에 매핑됩니다. podex가 의도를 감지하고 관련 문서를 표시합니다.</div>
+<div class="cmd-tip"><strong>"~해줘" tip:</strong> "도움말 보여줘", "명령어 뭐 있어?", "compact 사용법 알려줘" 모두 <code>/help</code>에 매핑됩니다. Weasley Podex가 의도를 감지하고 관련 문서를 표시합니다.</div>
 </div>
 
 <!-- /commands -->
@@ -348,11 +347,11 @@
 <tr><td>세션이 심하게 혼란스럽거나 손상된 경우</td><td><code>/reset</code></td><td>최후의 수단 &mdash; 전체 재시작</td></tr>
 <tr><td>명령어 이름이 기억나지 않는 경우</td><td><code>/commands</code></td><td>사용 가능한 모든 명령어를 검색할 수 있는 팔레트</td></tr>
 <tr><td>토큰 사용량이나 로드된 스킬을 확인해야 하는 경우</td><td><code>/status</code></td><td>세션 진단 정보를 한눈에 확인</td></tr>
-<tr><td>podex를 처음 사용하며 기능을 탐색하는 경우</td><td><code>/help</code></td><td>채팅에 내장된 문서</td></tr>
+<tr><td>Weasley Podex를 처음 사용하며 기능을 탐색하는 경우</td><td><code>/help</code></td><td>채팅에 내장된 문서</td></tr>
 </table>
 
 <h2>명령어 생명주기</h2>
-<p>세션 명령어는 podex 스택의 서로 다른 수준에서 동작합니다:</p>
+<p>세션 명령어는 Weasley Podex 스택의 서로 다른 수준에서 동작합니다:</p>
 <ul>
 <li><strong><code>/help</code></strong>과 <strong><code>/commands</code></strong>는 읽기 전용입니다 &mdash; 상태를 변경하지 않고 정보만 표시합니다.</li>
 <li><strong><code>/status</code></strong>는 여러 서브시스템(모델, 스킬, 메모리, 목표)에서 데이터를 읽어 스냅샷을 집계합니다.</li>
@@ -362,7 +361,7 @@
 <li><strong><code>/reset</code></strong>은 전체 세션(메시지 + 스킬 + 목표 + 상태)을 해체하고 부팅 기본값에서 다시 초기화합니다.</li>
 </ul>
 
-<div class="callout callout-info"><strong>자연어는 항상 동작합니다.</strong> 슬래시 명령어를 굳이 기억할 필요가 <em>없습니다</em>. "대화 지워줘"라고 말하는 것은 <code>/clear</code>를 입력하는 것과 동일합니다. 슬래시 명령어는 정확성과 속도를 위해 존재하지만, podex의 의도 감지가 나머지를 처리합니다.</div>
+<div class="callout callout-info"><strong>자연어는 항상 동작합니다.</strong> 슬래시 명령어를 굳이 기억할 필요가 <em>없습니다</em>. "대화 지워줘"라고 말하는 것은 <code>/clear</code>를 입력하는 것과 동일합니다. 슬래시 명령어는 정확성과 속도를 위해 존재하지만, Weasley Podex의 의도 감지가 나머지를 처리합니다.</div>
 
 <div class="page-nav">
 <a class="prev" href="../skills/utility.html">Utility Skills</a>

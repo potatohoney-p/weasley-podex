@@ -1,4 +1,4 @@
-export const JAW_CEO_ID = 'jaw-ceo' as const;
+export const WEASLEY_PODEX_CEO_ID = 'jaw-ceo' as const;
 
 export type JawCeoInputMode = 'text' | 'voice';
 export type JawCeoResponseMode = 'text' | 'voice' | 'both' | 'silent';

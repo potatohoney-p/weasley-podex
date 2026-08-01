@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Telegram — podex 문서</title>
+<title>Telegram — Weasley Podex 문서</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link active" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,14 +58,14 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Telegram</h1>
-<p class="lead">Telegram을 통해 podex 에이전트를 원격으로 제어하세요. 메시지 전송, 응답 수신, 에이전트 출력 전달, STT를 활용한 음성 메시지 처리, 슬래시 명령어 사용까지 -- 모두 휴대폰에서 가능합니다.</p>
+<p class="lead">Telegram을 통해 Weasley Podex 에이전트를 원격으로 제어하세요. 메시지 전송, 응답 수신, 에이전트 출력 전달, STT를 활용한 음성 메시지 처리, 슬래시 명령어 사용까지 -- 모두 휴대폰에서 가능합니다.</p>
 
 <h2>설정</h2>
 <h3>1. BotFather로 봇 생성</h3>
@@ -86,8 +85,8 @@
 }</code></pre>
 <div class="callout callout-info">처음에는 <code>allowedChatIds</code>를 비워 두세요. 봇에 <code>/id</code>를 보내 채팅 ID를 확인한 후, 보안을 위해 배열에 추가하세요.</div>
 
-<h3>3. 대안: jaw init 사용</h3>
-<pre><code>jaw init --channel telegram --telegram-token "YOUR_TOKEN"</code></pre>
+<h3>3. 대안: weasley-podex init 사용</h3>
+<pre><code>weasley-podex init --channel telegram --telegram-token "YOUR_TOKEN"</code></pre>
 
 <h2>메시지 송수신</h2>
 <ul>
@@ -112,7 +111,7 @@ POST /api/channel/send  # Unified endpoint (preferred)</code></pre>
 <p>그룹/슈퍼그룹 채팅에서는 <code>@botUsername</code>으로 멘션할 때만 봇이 응답합니다. 멘션은 처리 전에 메시지에서 자동으로 제거됩니다.</p>
 
 <h2>Dashboard Telegram Hub (P0–P4)</h2>
-<p>포럼 토픽을 서로 다른 podex 인스턴스로 라우팅합니다. Manager UI에서 <code>(chatId, threadId) → port</code> 매핑을 설정합니다. Hub 명령어: <code>/setthread</code>, <code>/threads</code>, <code>/hubhelp</code>. <strong>P4:</strong> Manager UI에서 토픽별 <code>model</code>/<code>systemPrompt</code> override. 자세한 hub-member relay 모델은 <code>structure/telegram.md</code>를 참조하세요.</p>
+<p>포럼 토픽을 서로 다른 Weasley Podex 인스턴스로 라우팅합니다. Manager UI에서 <code>(chatId, threadId) → port</code> 매핑을 설정합니다. Hub 명령어: <code>/setthread</code>, <code>/threads</code>, <code>/hubhelp</code>. <strong>P4:</strong> Manager UI에서 토픽별 <code>model</code>/<code>systemPrompt</code> override. 자세한 hub-member relay 모델은 <code>structure/telegram.md</code>를 참조하세요.</p>
 
 <h2>Watchdog 진단</h2>
 <p>에이전트 턴이 idle/progress watchdog 임계값을 넘어 멈추면, 종료 진단이 원래 Telegram 채팅 또는 포럼 토픽으로 전달되어 운영자가 턴이 끝난 이유를 확인할 수 있습니다.</p>

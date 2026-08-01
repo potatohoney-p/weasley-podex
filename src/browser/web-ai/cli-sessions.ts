@@ -67,7 +67,7 @@ export async function runSessionsCommand(
             ok: true,
             status: 'help',
             commands: ['list', 'show', 'resume', 'reattach', 'prune'],
-            usage: 'jaw web-ai sessions <list|show|resume|reattach|prune> [options]',
+            usage: 'weasley-podex browser web-ai sessions <list|show|resume|reattach|prune> [options]',
             vendor: 'chatgpt',
             warnings: [],
         };

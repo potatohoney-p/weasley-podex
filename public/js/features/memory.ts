@@ -394,7 +394,7 @@ export async function reindexAdvancedMemory(): Promise<void> {
 
 export function openCorruptedFolder(): void {
     const text = $('advStorageRoot')?.textContent || '';
-    const path = text ? `${text}/corrupted` : 'JAW_HOME/memory/structured/corrupted';
+    const path = text ? `${text}/corrupted` : 'WEASLEY_PODEX_HOME/memory/structured/corrupted';
     void copyText(path);
     alert(`Corrupted folder path copied/shown:\n${path}`);
 }

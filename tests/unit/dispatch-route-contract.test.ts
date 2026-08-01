@@ -131,7 +131,7 @@ test('batch dispatch route returns safe run summaries instead of full employee t
 
     assert.ok(batchBlock.includes('runId: slot.runId'), 'batch summaries must include runId');
     assert.ok(batchBlock.includes('preview: previewText(text, 600)'), 'batch summaries must include bounded preview');
-    assert.ok(batchBlock.includes('recoveryCommand: `podex worker read ${slot.runId} --tail 120`'), 'batch summaries must include worker read recovery command');
+    assert.ok(batchBlock.includes('recoveryCommand: `weasley-podex worker read ${slot.runId} --tail 120`'), 'batch summaries must include worker read recovery command');
     assert.ok(batchBlock.includes('outputBytes: run?.outputBytes || 0'), 'batch summaries must include durable output size');
     assert.equal(batchBlock.includes('ok: true, text'), false, 'batch success response must not expose full text field by default');
 });

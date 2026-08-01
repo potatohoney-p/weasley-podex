@@ -1,4 +1,5 @@
-﻿// ─── Distribute Helpers (parallel/sequential agent execution) ──
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
+// ─── Distribute Helpers (parallel/sequential agent execution) ──
 // Extracted from pipeline.ts for 500-line compliance.
 
 import { broadcast } from '../core/bus.js';
@@ -163,7 +164,7 @@ ${priorSummary}`;
 export function findEmployee(emps: EmployeeLike[], ap: AgentPhaseLike) {
     // Guard: immediately return null if agent name is missing/invalid
     if (!ap["agent"] || typeof ap["agent"] !== 'string') {
-        console.warn(`[jaw:match] ⚠️ invalid agent name: ${JSON.stringify(ap["agent"])}`);
+        console.warn(`[weasley-podex:match] ⚠️ invalid agent name: ${JSON.stringify(ap["agent"])}`);
         return null;
     }
     // 1st: exact match (safest)
@@ -178,7 +179,7 @@ export function findEmployee(emps: EmployeeLike[], ap: AgentPhaseLike) {
         const employeeName = text(e["name"]);
         return employeeName.length > 0 && (employeeName.includes(agentName) || agentName.includes(employeeName));
     });
-    if (fuzzy) console.warn(`[jaw:match] ⚠️ Fuzzy match: "${ap["agent"]}" → "${fuzzy["name"]}"`);
+    if (fuzzy) console.warn(`[weasley-podex:match] ⚠️ Fuzzy match: "${ap["agent"]}" → "${fuzzy["name"]}"`);
     return fuzzy ?? null;
 }
 
@@ -292,10 +293,10 @@ ${text(ap["task"])}
 
 ## ⛔ Isolation Requirements (hard blocks)
 You are an isolated employee session. The server will reject (HTTP 403) any of the following:
-- \`podex dispatch ...\`
+- \`weasley-podex dispatch ...\`
 - \`curl\` / direct POST to \`/api/orchestrate/dispatch\`
 Additionally you MUST NOT:
-- Use your CLI's Task / Agent / Subagent tool — it creates a hidden sub-agent outside jaw's visibility and conflicts with phase accounting.
+- Use your CLI's Task / Agent / Subagent tool — it creates a hidden sub-agent outside Weasley Podex's visibility and conflicts with phase accounting.
 - Output subtask JSON or reference the \`dev-code-reviewer\` skill as a delegation target. You are the single reviewer for this task.
 If the task seems to require parallel work, stop, write \`needs boss follow-up: <reason>\` in your output, and return. The boss will re-dispatch at the next phase.
 
@@ -353,7 +354,7 @@ ${worklogBlock}`.trim();
     const monitor = startWorkerMonitor({
         agentId: empId,
         stallThresholdMs: 120_000,
-        maxDurationMs: Number(process.env["JAW_WORKER_MAX_DURATION_MS"]) || 600_000,
+        maxDurationMs: Number(getWeasleyPodexEnv('WORKER_MAX_DURATION_MS')) || 600_000,
         onStall: (id) => {
             markWorkerStalled(id);
             broadcast('worker_stalled', { agentId: id, employeeName: emp["name"], isEmployee: true });
@@ -379,19 +380,19 @@ ${worklogBlock}`.trim();
         workspaceContext: workspaceBlock,
         origin: text(meta["origin"], 'web'),
         env: {
-            JAW_EMPLOYEE_MODE: '1',
-            JAW_EMPLOYEE_NAME: String(emp["name"] || ''),
-            JAW_EMPLOYEE_ROLE: String(ap["role"] || emp["role"] || ''),
-            JAW_WORKSPACE_ROOT: effectiveDirs?.[0] || settings["workingDir"] || '',
+            WEASLEY_PODEX_EMPLOYEE_MODE: '1',
+            WEASLEY_PODEX_EMPLOYEE_NAME: String(emp["name"] || ''),
+            WEASLEY_PODEX_EMPLOYEE_ROLE: String(ap["role"] || emp["role"] || ''),
+            WEASLEY_PODEX_WORKSPACE_ROOT: effectiveDirs?.[0] || settings["workingDir"] || '',
             ...(effectiveDirs && effectiveDirs.length > 0 ? (() => {
                 const val = JSON.stringify(effectiveDirs);
                 if (val.length > 8192) {
-                    console.warn(`⚠ JAW_PROJECT_DIRS exceeds 8192 chars (${val.length}), passing only first root`);
-                    return { JAW_PROJECT_DIRS: JSON.stringify([effectiveDirs[0]]) };
+                    console.warn(`⚠ WEASLEY_PODEX_PROJECT_DIRS exceeds 8192 chars (${val.length}), passing only first root`);
+                    return { WEASLEY_PODEX_PROJECT_DIRS: JSON.stringify([effectiveDirs[0]]) };
                 }
-                return { JAW_PROJECT_DIRS: val };
+                return { WEASLEY_PODEX_PROJECT_DIRS: val };
             })() : {}),
-            JAW_WORKLOG_PATH: worklogPath || '',
+            WEASLEY_PODEX_WORKLOG_PATH: worklogPath || '',
             PORT: String(process.env["PORT"] || ''),
         },
         lifecycle: {

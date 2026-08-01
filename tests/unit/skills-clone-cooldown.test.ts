@@ -4,10 +4,10 @@ import fs from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
-// Point JAW_HOME to a temp dir BEFORE importing mcp-sync
+// Point WEASLEY_PODEX_HOME to a temp dir BEFORE importing mcp-sync
 const testHome = join(tmpdir(), `podex-cooldown-test-${Date.now()}`);
 fs.mkdirSync(testHome, { recursive: true });
-process.env.podex_HOME = testHome;
+process.env.WEASLEY_PODEX_HOME = testHome;
 
 const { shouldSkipClone, writeCloneMeta, readCloneMeta, CLONE_META_PATH, CLONE_COOLDOWN_MS } =
     await import('../../lib/mcp-sync.ts');
@@ -16,12 +16,12 @@ const metaPath = join(testHome, '.skills_clone_meta.json');
 
 test.afterEach(() => {
     try { fs.unlinkSync(metaPath); } catch { /* may not exist */ }
-    delete process.env.JAW_FORCE_CLONE;
+    delete process.env.WEASLEY_PODEX_FORCE_CLONE;
 });
 
 test.after(() => {
     fs.rmSync(testHome, { recursive: true, force: true });
-    delete process.env.podex_HOME;
+    delete process.env.WEASLEY_PODEX_HOME;
 });
 
 test('CCD-001: shouldSkipClone() returns false when no meta file exists', () => {
@@ -62,10 +62,10 @@ test('CCD-006: corrupted meta file → shouldSkipClone() returns false', () => {
     assert.equal(shouldSkipClone(), false);
 });
 
-test('CCD-007: JAW_FORCE_CLONE=1 bypasses cooldown even within window', () => {
+test('CCD-007: WEASLEY_PODEX_FORCE_CLONE=1 bypasses cooldown even within window', () => {
     writeCloneMeta(false);
     assert.equal(shouldSkipClone(), true); // cooldown active
-    process.env.JAW_FORCE_CLONE = '1';
+    process.env.WEASLEY_PODEX_FORCE_CLONE = '1';
     assert.equal(shouldSkipClone(), false); // forced bypass
 });
 

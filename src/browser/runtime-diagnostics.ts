@@ -1,13 +1,13 @@
-﻿import { getActivePort, getBrowserRuntimeStatus, getBrowserStatus } from './connection.js';
+import { getActivePort, getBrowserRuntimeStatus, getBrowserStatus } from './connection.js';
 import type { BrowserRuntimeStatus } from './runtime-owner.js';
 import { inspectBrowserRuntimeOrphans, type BrowserRuntimeOrphanCandidate } from './runtime-orphans.js';
 import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 
 export type BrowserRuntimeIssueCode =
-    | 'stale-jaw-owned-runtime'
+    | 'stale-weasley-podex-owned-runtime'
     | 'external-runtime-not-autoclosed'
     | 'orphan-runtime-candidate'
     | 'chrome-singleton-risk'
@@ -26,9 +26,9 @@ export interface BrowserRuntimeDiagnostics {
     runtime: BrowserRuntimeStatus;
     cleanup: {
         idleAutoClose: boolean;
-        idleAutoCloseScope: 'current-server-jaw-owned-runtime' | 'none';
+        idleAutoCloseScope: 'current-server-weasley-podex-owned-runtime' | 'none';
         orphanJanitor: true;
-        orphanJanitorScope: 'durable-jaw-owned-runtime-records-only';
+        orphanJanitorScope: 'durable-weasley-podex-owned-runtime-records-only';
         safeExternalKill: false;
     };
     orphanCandidates: BrowserRuntimeOrphanCandidate[];
@@ -43,42 +43,42 @@ export async function getBrowserDiagnostics(port = getActivePort()): Promise<Bro
     const issues: BrowserRuntimeIssue[] = [];
     const recommendations: string[] = [];
 
-    if (!status.running && runtime.ownership === 'jaw-owned') {
+    if (!status.running && runtime.ownership === 'weasley-podex-owned') {
         issues.push({
-            code: 'stale-jaw-owned-runtime',
+            code: 'stale-weasley-podex-owned-runtime',
             severity: 'warn',
-            message: 'The server still has jaw-owned runtime metadata, but the expected CDP endpoint is not responding.',
+            message: 'The server still has Weasley Podex-owned runtime metadata, but the expected CDP endpoint is not responding.',
         });
-        recommendations.push('Run podex browser start again; launchChrome now clears stale jaw-owned process memory before retrying.');
+        recommendations.push('Run weasley-podex browser start again; launchChrome now clears stale Weasley Podex-owned process memory before retrying.');
     }
 
     if (runtime.ownership === 'external') {
         issues.push({
             code: 'external-runtime-not-autoclosed',
             severity: 'info',
-            message: 'podex is attached to an external CDP browser and will not auto-close that process.',
+            message: 'Weasley Podex is attached to an external CDP browser and will not auto-close that process.',
         });
-        recommendations.push('Use the owner that launched the external Chrome to close it; podex only disconnects from external runtimes.');
+        recommendations.push('Use the owner that launched the external Chrome to close it; Weasley Podex only disconnects from external runtimes.');
     }
 
     if (orphanCandidates.some((candidate) => candidate.action !== 'none')) {
         issues.push({
             code: 'orphan-runtime-candidate',
             severity: 'warn',
-            message: 'A durable jaw-owned browser runtime record exists outside the current server runtime.',
+            message: 'A durable Weasley Podex-owned browser runtime record exists outside the current server runtime.',
         });
-        recommendations.push('Run podex browser cleanup-runtimes for a dry-run, then add --close --force only if the candidate is expected.');
+        recommendations.push('Run weasley-podex browser cleanup-runtimes for a dry-run, then add --close --force only if the candidate is expected.');
     }
 
     detectChromeSingleton(issues, recommendations);
 
     const cleanup = {
         idleAutoClose: runtime.autoCloseEnabled === true,
-        idleAutoCloseScope: runtime.ownership === 'jaw-owned'
-            ? 'current-server-jaw-owned-runtime' as const
+        idleAutoCloseScope: runtime.ownership === 'weasley-podex-owned'
+            ? 'current-server-weasley-podex-owned-runtime' as const
             : 'none' as const,
         orphanJanitor: true as const,
-        orphanJanitorScope: 'durable-jaw-owned-runtime-records-only' as const,
+        orphanJanitorScope: 'durable-weasley-podex-owned-runtime-records-only' as const,
         safeExternalKill: false as const,
     };
 
@@ -87,7 +87,7 @@ export async function getBrowserDiagnostics(port = getActivePort()): Promise<Bro
 }
 
 function detectChromeSingleton(issues: BrowserRuntimeIssue[], recommendations: string[]): void {
-    const PROFILE_DIR = join(JAW_HOME, 'browser-profile');
+    const PROFILE_DIR = join(WEASLEY_PODEX_HOME, 'browser-profile');
 
     if (process.platform === 'win32') {
         try {
@@ -102,7 +102,7 @@ function detectChromeSingleton(issues: BrowserRuntimeIssue[], recommendations: s
                     severity: 'warn',
                     message: `${chromeLines.length} chrome.exe process(es) running — singleton risk if profile dir creation fails.`,
                 });
-                recommendations.push('podex uses unique profile to avoid absorption. If launch fails, close all Chrome windows.');
+                recommendations.push('Weasley Podex uses a unique profile to avoid absorption. If launch fails, close all Chrome windows.');
             }
         } catch {
             // tasklist unavailable

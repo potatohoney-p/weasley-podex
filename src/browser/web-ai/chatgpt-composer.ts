@@ -65,7 +65,7 @@ export const INPUT_SELECTORS = [
     'textarea[aria-label="Message ChatGPT"]',
     'main textarea:not([disabled])',
     'form textarea:not([disabled])',
-    // 105.8: restore agbrowse's bare-textarea fallback (podex had narrowed to main/form-scoped only,
+    // 105.8: restore agbrowse's bare-textarea fallback (Weasley Podex had narrowed to main/form-scoped only,
     // missing layouts where the composer textarea is neither inside <main> nor a <form>).
     'textarea:not([disabled])',
     'textarea[name="prompt-textarea"]',

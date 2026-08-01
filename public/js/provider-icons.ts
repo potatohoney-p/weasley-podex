@@ -1,56 +1,36 @@
-// ── Provider Icons ──
-// AI provider brand icons from lobehub/icons-static-svg.
-// SVGs are downloaded locally for offline support and bundled via Vite ?raw.
+// ── Provider Glyphs ──
+// Provider and social-service indicators are generated here from a single,
+// brand-neutral shape. No third-party logo artwork is bundled with the frontend.
 
-import claudeSvg from '../assets/providers/claude-color.svg?raw';
-import openaiSvg from '../assets/providers/openai.svg?raw';
-import geminiSvg from '../assets/providers/gemini-color.svg?raw';
-import antigravitySvg from '../assets/providers/antigravity-color.svg?raw';
-import grokSvg from '../assets/providers/grok-color.svg?raw';
-import copilotSvg from '../assets/providers/copilot-color.svg?raw';
-import cursorSvg from '../assets/providers/cursor-color.svg?raw';
-import kiroSvg from '../assets/providers/kiro-color.svg?raw';
+export type ProviderSlug = 'pi' | 'ai-e' | 'claude' | 'openai' | 'gemini' | 'antigravity' | 'grok' | 'copilot' | 'cursor' | 'kiro-code' | 'codex' | 'codex-app' | 'opencode' | 'discord' | 'telegram';
+export type ProviderIconVariant = 'color' | 'mono';
 
-// Mono variants for dark/light mode flexibility
-import claudeMonoSvg from '../assets/providers/claude.svg?raw';
-import geminiMonoSvg from '../assets/providers/gemini.svg?raw';
-import antigravityMonoSvg from '../assets/providers/antigravity.svg?raw';
-import grokMonoSvg from '../assets/providers/grok.svg?raw';
-import copilotMonoSvg from '../assets/providers/copilot.svg?raw';
-import cursorMonoSvg from '../assets/providers/cursor.svg?raw';
-import kiroMonoSvg from '../assets/providers/kiro.svg?raw';
-
-// Service icons (Discord, Telegram)
-import discordSvg from '../assets/providers/discord.svg?raw';
-import telegramSvg from '../assets/providers/telegram.svg?raw';
-import opencodeSvg from '../assets/providers/opencode.svg?raw';
-
-export type ProviderSlug = 'ai-e' | 'claude' | 'openai' | 'gemini' | 'antigravity' | 'grok' | 'copilot' | 'cursor' | 'kiro-code' | 'codex' | 'codex-app' | 'opencode' | 'discord' | 'telegram';
-
-interface ProviderIcon {
-    color: string;
-    mono: string;
+interface ProviderGlyph {
+    glyph: string;
     label: string;
 }
 
-const openaiColorSvg = openaiSvg.replace('fill="currentColor"', 'fill="#10A37F"');
-
-const PROVIDER_ICONS: Record<ProviderSlug, ProviderIcon> = {
-    'ai-e':    { color: openaiColorSvg, mono: openaiSvg, label: 'AI-E' },
-    claude:   { color: claudeSvg,  mono: claudeMonoSvg,  label: 'Claude' },
-    openai:   { color: openaiColorSvg, mono: openaiSvg,  label: 'OpenAI' },
-    gemini:   { color: geminiSvg,  mono: geminiMonoSvg,   label: 'Gemini' },
-    antigravity: { color: antigravitySvg, mono: antigravityMonoSvg, label: 'Antigravity' },
-    grok:     { color: grokSvg,    mono: grokMonoSvg,     label: 'Grok' },
-    copilot:  { color: copilotSvg, mono: copilotMonoSvg,  label: 'Copilot' },
-    cursor:   { color: cursorSvg,  mono: cursorMonoSvg,   label: 'Cursor' },
-    'kiro-code': { color: kiroSvg, mono: kiroMonoSvg, label: 'Kiro' },
-    codex:    { color: openaiSvg, mono: openaiSvg,  label: 'Codex' },
-    'codex-app': { color: openaiColorSvg, mono: openaiSvg, label: 'Codex App' },
-    opencode: { color: opencodeSvg, mono: opencodeSvg,   label: 'OpenCode' },
-    discord:  { color: discordSvg,  mono: discordSvg,    label: 'Discord' },
-    telegram: { color: telegramSvg, mono: telegramSvg,   label: 'Telegram' },
+const PROVIDER_GLYPHS: Record<ProviderSlug, ProviderGlyph> = {
+    pi:          { glyph: 'PI', label: 'Pi' },
+    'ai-e':      { glyph: 'AI', label: 'AI-E' },
+    claude:      { glyph: 'CL', label: 'Claude' },
+    openai:      { glyph: 'OA', label: 'OpenAI' },
+    gemini:      { glyph: 'GM', label: 'Gemini' },
+    antigravity: { glyph: 'AG', label: 'Antigravity' },
+    grok:        { glyph: 'GR', label: 'Grok' },
+    copilot:     { glyph: 'CP', label: 'Copilot' },
+    cursor:      { glyph: 'CU', label: 'Cursor' },
+    'kiro-code': { glyph: 'KR', label: 'Kiro' },
+    codex:       { glyph: 'CX', label: 'Codex' },
+    'codex-app': { glyph: 'CA', label: 'Codex App' },
+    opencode:    { glyph: 'OC', label: 'OpenCode' },
+    discord:     { glyph: 'DC', label: 'Discord' },
+    telegram:    { glyph: 'TG', label: 'Telegram' },
 };
+
+function renderProviderGlyph(slug: ProviderSlug, entry: ProviderGlyph, variant: ProviderIconVariant): string {
+    return `<svg class="provider-glyph" data-provider-glyph="${slug}" data-variant="${variant}" aria-hidden="true" focusable="false" fill="none" height="1em" viewBox="0 0 24 24" width="1em" xmlns="http://www.w3.org/2000/svg"><rect x="2.75" y="2.75" width="18.5" height="18.5" rx="5.25" stroke="currentColor" stroke-width="1.5"/><text x="12" y="14.8" fill="currentColor" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="7.25" font-weight="700" letter-spacing="-.25" text-anchor="middle">${entry.glyph}</text></svg>`;
+}
 
 const PROVIDER_LABEL_ALIASES: Record<string, string> = {
     'claude-e': 'Claude E',
@@ -65,6 +45,7 @@ const PROVIDER_LABEL_ALIASES: Record<string, string> = {
 
 function resolveProviderSlug(slug: string): ProviderSlug | null {
     const normalized = slug.toLowerCase().replace(/[-_\s]/g, '');
+    if (normalized === 'pi') return 'pi';
     if (normalized === 'aie') return 'ai-e';
     if (normalized === 'claude' || normalized.startsWith('claude')) return 'claude';
     if (normalized === 'gemini' || normalized.startsWith('gemini')) return 'gemini';
@@ -82,17 +63,17 @@ function resolveProviderSlug(slug: string): ProviderSlug | null {
     return null;
 }
 
-/** Get a provider icon SVG string. Returns color variant by default. */
-export function providerIcon(slug: string, variant: 'color' | 'mono' = 'color'): string {
+/** Get a brand-neutral, code-rendered provider glyph. */
+export function providerIcon(slug: string, variant: ProviderIconVariant = 'color'): string {
     const key = resolveProviderSlug(slug);
     if (!key) return '';
 
-    const entry = PROVIDER_ICONS[key];
-    return variant === 'mono' ? entry.mono : entry.color;
+    const safeVariant: ProviderIconVariant = variant === 'mono' ? 'mono' : 'color';
+    return renderProviderGlyph(key, PROVIDER_GLYPHS[key], safeVariant);
 }
 
 /**
- * Hydrate all `<span data-provider="SLUG">` elements with provider SVG icons.
+ * Hydrate all `<span data-provider="SLUG">` elements with provider glyphs.
  * Call once after DOMContentLoaded.
  */
 export function hydrateProviderIcons(root: Element = document.body): void {
@@ -113,5 +94,5 @@ export function providerLabel(slug: string): string {
     if (alias) return alias;
     const key = resolveProviderSlug(slug);
     if (!key) return slug;
-    return PROVIDER_ICONS[key].label;
+    return PROVIDER_GLYPHS[key].label;
 }

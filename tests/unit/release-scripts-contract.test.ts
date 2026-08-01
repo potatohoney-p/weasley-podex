@@ -112,7 +112,7 @@ test('npm publish workflow uses dev/preview/main branch policy without release r
     assert.ok(workflow.includes('skip_publish="true"'), 'preview stable sync must set an explicit skip output');
     assert.ok(workflow.includes('preview branch stable sync'), 'preview stable sync skip should be visible in the workflow logs');
     assert.ok(workflow.includes('Check registry package version'), 'publish workflow must detect already-published versions');
-    assert.ok(workflow.includes('SKIP - podex@${{ steps.release.outputs.version }} is already published'),
+    assert.ok(workflow.includes('SKIP - weasley-podex@${{ steps.release.outputs.version }} is already published'),
         'publish workflow must skip npm publish when the exact version already exists');
     assert.ok(workflow.includes("steps.registry.outputs.exists != 'true'"),
         'publish workflow must not retarget a GitHub Release for an already-published npm version');
@@ -161,19 +161,19 @@ test('release branch policy is reflected in CI workflows, release script, instal
     assert.ok(releaseScript.includes('branch%3Amain'), 'stable release script must link to main workflow runs');
     assert.ok(!releaseScript.includes('branch%3Amaster'), 'stable release script must not link to master workflow runs');
 
-    assert.ok(installScript.includes('/podex/main/scripts/install.sh'), 'install.sh usage should use main raw URL');
-    assert.ok(installWslScript.includes('/podex/main/scripts/install-wsl.sh'), 'install-wsl.sh usage should use main raw URL');
-    assert.ok(collectorScript.includes('INSTALL_REF="${podex_INSTALL_REF:-main}"'), 'fresh evidence collector should default to main');
+    assert.ok(installScript.includes('/weasley-podex/main/scripts/install.sh'), 'install.sh usage should use main raw URL');
+    assert.ok(installWslScript.includes('/weasley-podex/main/scripts/install-wsl.sh'), 'install-wsl.sh usage should use main raw URL');
+    assert.ok(collectorScript.includes('INSTALL_REF="${WEASLEY_PODEX_INSTALL_REF:-main}"'), 'fresh evidence collector should default to main');
 
-    assert.ok(readmes.includes('/podex/main/scripts/install.sh'), 'README install URLs should use main');
-    assert.ok(readmes.includes('/podex/main/scripts/install-wsl.sh'), 'README WSL install URLs should use main');
-    assert.ok(readmes.includes('/podex/main/scripts/collect-fresh-install-evidence.sh'), 'README evidence URLs should use main');
-    assert.ok(!readmes.includes('raw.githubusercontent.com/potatohoney-p/podex/master/scripts/'), 'README files must not point installers at master');
+    assert.ok(readmes.includes('/weasley-podex/main/scripts/install.sh'), 'README install URLs should use main');
+    assert.ok(readmes.includes('/weasley-podex/main/scripts/install-wsl.sh'), 'README WSL install URLs should use main');
+    assert.ok(readmes.includes('/weasley-podex/main/scripts/collect-fresh-install-evidence.sh'), 'README evidence URLs should use main');
+    assert.ok(!readmes.includes('raw.githubusercontent.com/potatohoney-p/weasley-podex/master/scripts/'), 'README files must not point installers at master');
     assert.ok(readmes.includes('branch from `dev`') || readmes.includes('`dev`에서 Fork') || readmes.includes('`dev` から Fork') || readmes.includes('从 `dev` Fork'),
         'contributor guidance should direct branches from dev');
 
-    assert.ok(docs.includes('/podex/main/scripts/install.sh'), 'landing page install URL should use main');
-    assert.ok(docs.includes('/podex/main/scripts/install-wsl.sh'), 'Windows docs install URL should use main');
-    assert.ok(!docs.includes('raw.githubusercontent.com/potatohoney-p/podex/master/scripts/install'), 'static docs must not point installers at master');
+    assert.ok(docs.includes('/weasley-podex/main/scripts/install.sh'), 'landing page install URL should use main');
+    assert.ok(docs.includes('/weasley-podex/main/scripts/install-wsl.sh'), 'Windows docs install URL should use main');
+    assert.ok(!docs.includes('raw.githubusercontent.com/potatohoney-p/weasley-podex/master/scripts/install'), 'static docs must not point installers at master');
 });
 

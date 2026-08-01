@@ -1,6 +1,6 @@
 ﻿import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
-import { JAW_HOME } from '../../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../core/config.js';
 import type { WebAiArtifactDescriptor } from './types.js';
 
 /**
@@ -26,11 +26,11 @@ function sanitizeSegment(segment: string): string {
 }
 
 /**
- * Resolve the artifacts directory for a session, under JAW_HOME (podex home — not
+ * Resolve the artifacts directory for a session, under WEASLEY_PODEX_HOME (podex home — not
  * agbrowse's ~/.browser-agent). Created lazily on first write, not eagerly.
  */
 export function resolveArtifactsDir(sessionId: string): string {
-    return join(JAW_HOME, 'web-ai-artifacts', sanitizeSegment(sessionId));
+    return join(WEASLEY_PODEX_HOME, 'web-ai-artifacts', sanitizeSegment(sessionId));
 }
 
 function ensureDir(dir: string): void {

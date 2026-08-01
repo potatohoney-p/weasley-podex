@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>칸반 보드 — podex 문서</title>
+<title>칸반 보드 — Weasley Podex 문서</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link active" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,7 +58,7 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
@@ -98,19 +97,19 @@
 
 <h2>CLI 접근</h2>
 <pre><code># Add a task
-jaw connector board add "Implement user auth" --lane backlog
+weasley-podex connector board add "Implement user auth" --lane backlog
 
 # Update a task
-jaw connector board update &lt;id&gt; --lane active
+weasley-podex connector board update &lt;id&gt; --lane active
 
 # List tasks
-jaw connector board list</code></pre>
+weasley-podex connector board list</code></pre>
 
 <h2>향후 계획: 인스턴스 동기화</h2>
 <div class="callout callout-info">향후 버전에서는 보드 작업을 인스턴스 오케스트레이션 상태와 동기화하는 기능을 지원할 예정이며, PABCD 단계가 자동으로 보드 카드를 생성하고 이동할 수 있게 됩니다.</div>
 
 <div class="page-nav">
-<a class="prev" href="notes.html">Notes (Jawsidian)</a>
+<a class="prev" href="notes.html">Weasley Podex Notes</a>
 <a class="next" href="telegram.html">Telegram</a>
 </div>
 </main>

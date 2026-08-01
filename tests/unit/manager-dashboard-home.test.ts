@@ -9,13 +9,13 @@ import {
     resolveDashboardHome,
 } from '../../src/manager/dashboard-home.js';
 
-test('dashboard home defaults to ~/.podex-dashboard', () => {
+test('dashboard home defaults to ~/.weasley/podex-dashboard', () => {
     const home = resolveDashboardHome({});
 
-    assert.equal(home, join(homedir(), DEFAULT_DASHBOARD_HOME_BASENAME));
+    assert.equal(home, join(homedir(), '.weasley', DEFAULT_DASHBOARD_HOME_BASENAME));
 });
 
-test('dashboard home honors podex_DASHBOARD_HOME override', () => {
+test('dashboard home honors WEASLEY_PODEX_DASHBOARD_HOME override', () => {
     const tmpHome = mkdtempSync(join(tmpdir(), 'jaw-dashboard-home-'));
     try {
         assert.equal(resolveDashboardHome({ [DASHBOARD_HOME_ENV]: tmpHome }), tmpHome);
@@ -37,10 +37,10 @@ test('dashboard home resolves relative override to absolute path', () => {
     assert.equal(home, resolve('relative-dashboard-home'));
 });
 
-test('dashboard home is independent from podex_HOME', () => {
-    const home = resolveDashboardHome({ podex_HOME: '/tmp/ignored-jaw-home' });
+test('dashboard home is independent from WEASLEY_PODEX_HOME', () => {
+    const home = resolveDashboardHome({ WEASLEY_PODEX_HOME: '/tmp/ignored-jaw-home' });
 
-    assert.equal(home, join(homedir(), DEFAULT_DASHBOARD_HOME_BASENAME));
+    assert.equal(home, join(homedir(), '.weasley', DEFAULT_DASHBOARD_HOME_BASENAME));
 });
 
 test('dashboard path resolution does not create directories', () => {

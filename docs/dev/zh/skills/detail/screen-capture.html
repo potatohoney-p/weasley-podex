@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Screen Capture &mdash; podex Docs</title>
+<title>Screen Capture &mdash; Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
 .badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
@@ -31,7 +30,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -54,7 +53,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">使用指南</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -103,7 +102,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">主页</a>
   </div>
 </nav>
@@ -113,20 +112,20 @@
 <p class="lead">macOS 屏幕截图、摄像头和屏幕录制 &mdash; 支持全屏、区域、窗口、剪贴板、多显示器、视频和摄像头捕获，使用 macOS 原生工具。</p>
 
 <p>
-  <span class="badge badge-active">默认启用</span>
+  <span class="badge badge-planned">可选导入</span>
   <span class="badge badge-category">实用工具</span>
 </p>
 
 <div class="callout callout-info">
-  <strong>内置技能：</strong> <code>screen-capture</code> 在每个 podex 会话中默认启用，无需安装。它使用 macOS 原生的 <code>screencapture</code> 进行屏幕截图和视频录制，以及可选的 <code>imagesnap</code> 进行摄像头捕获。如果需要浏览器专用截图，建议使用通过 CDP 捕获的 <code>podex browser screenshot</code>。
+  <strong>可选工作流：</strong><code>screen-capture</code> 不属于八项捆绑技能。请先导入经过审查的扩展；浏览器截图仍可通过核心 <code>weasley-podex browser screenshot</code> 命令使用。
 </div>
 
 <h2>快速参考</h2>
 <table class="quick-ref">
 <tr><td>技能名称</td><td><code>screen-capture</code></td></tr>
 <tr><td>分类</td><td>实用工具</td></tr>
-<tr><td>默认启用</td><td>是 &mdash; 内置，始终可用</td></tr>
-<tr><td>SKILL.md 路径</td><td><code>~/.podex/skills/screen-capture/SKILL.md</code></td></tr>
+<tr><td>捆绑</td><td>否 &mdash; 需导入经过审查的扩展</td></tr>
+<tr><td>SKILL.md 路径</td><td><code>~/.weasley/podex/skills/screen-capture/SKILL.md</code></td></tr>
 <tr><td>主要工具</td><td><code>screencapture</code>（macOS 内置）</td></tr>
 <tr><td>摄像头工具</td><td><code>imagesnap</code>（可选，通过 Homebrew 安装）</td></tr>
 <tr><td>平台</td><td>仅限 macOS</td></tr>
@@ -280,7 +279,7 @@ screencapture -x ~/finder.png</code></pre>
 
 <h3>捕获并分析</h3>
 <p>截取屏幕截图并立即传递给代理的视觉模型进行分析。这是 <code>vision-click</code> 和 <code>desktop-control</code> 所使用的模式。</p>
-<pre><code># 在 podex 会话中，只需说：
+<pre><code># 在 weasley-podex 会话中，只需说：
 "화면 캡처해서 뭐가 보이는지 설명해줘"
 
 # 代理运行：
@@ -330,7 +329,7 @@ which screencapture    # 应输出 /usr/sbin/screencapture</code></pre>
 </thead>
 <tbody>
 <tr><td><strong>默认捕获方式</strong></td><td>当工具专用捕获（Figma、Playwright、CDP）不可用时，使用 <code>screencapture</code> 作为默认方式。</td></tr>
-<tr><td><strong>浏览器截图</strong></td><td>对于网页，建议使用 <code>podex browser screenshot</code>（通过 Chrome DevTools Protocol 捕获，像素级精确）。</td></tr>
+<tr><td><strong>浏览器截图</strong></td><td>对于网页，建议使用 <code>weasley-podex browser screenshot</code>（通过 Chrome DevTools Protocol 捕获，像素级精确）。</td></tr>
 <tr><td><strong>静音模式</strong></td><td>在编程式捕获中始终使用 <code>-x</code> 标志以抑制快门声。</td></tr>
 <tr><td><strong>摄像头预热</strong></td><td>使用 <code>imagesnap</code> 时始终使用 <code>-w 2</code> 或更高值以获得更好的图像质量。</td></tr>
 <tr><td><strong>隐私权限</strong></td><td>需要屏幕录制权限（系统设置 &gt; 隐私 &gt; 屏幕录制）。如果权限缺失，代理会发出警告。</td></tr>
@@ -367,7 +366,7 @@ which screencapture    # 应输出 /usr/sbin/screencapture</code></pre>
 </div>
 
 <h2>与相关技能的比较</h2>
-<p>podex 有多个涉及视觉捕获的技能。请根据需求选择合适的工具：</p>
+<p>Weasley Podex 有多个涉及视觉捕获的技能。请根据需求选择合适的工具：</p>
 
 <table>
 <thead>
@@ -377,7 +376,7 @@ which screencapture    # 应输出 /usr/sbin/screencapture</code></pre>
 <tr><td><strong>侧重点</strong></td><td>macOS 原生截图和录屏</td><td>基于 CDP 的浏览器自动化</td><td>完整的桌面 + 浏览器自动化</td><td>视觉引导的点击定位</td></tr>
 <tr><td><strong>最适合</strong></td><td>快速截图、多显示器、视频、摄像头</td><td>网页截图、DOM 交互</td><td>跨应用工作流、混合目标</td><td>通过视觉识别点击 UI 元素</td></tr>
 <tr><td><strong>捕获方式</strong></td><td><code>screencapture</code> CLI</td><td>Chrome DevTools Protocol</td><td>CDP + Computer Use</td><td>截图 + 坐标映射</td></tr>
-<tr><td><strong>需要浏览器</strong></td><td>否</td><td>是（podex 服务器）</td><td>取决于目标</td><td>否</td></tr>
+<tr><td><strong>需要浏览器</strong></td><td>否</td><td>是（Weasley Podex 服务器）</td><td>取决于目标</td><td>否</td></tr>
 <tr><td><strong>何时优先使用</strong></td><td>无需浏览器、系统级捕获、视频、摄像头</td><td>网页（像素级精确）</td><td>复杂的多应用自动化</td><td>点击屏幕上的元素</td></tr>
 </tbody>
 </table>
@@ -389,7 +388,7 @@ which screencapture    # 应输出 /usr/sbin/screencapture</code></pre>
 <h2>故障排除</h2>
 
 <h3>屏幕录制权限被拒绝</h3>
-<p>如果 <code>screencapture</code> 生成了空白或全黑的图像，则终端应用（Terminal.app、iTerm2 或 podex Electron 应用）可能缺少屏幕录制权限。</p>
+<p>如果 <code>screencapture</code> 生成了空白或全黑的图像，则终端应用（Terminal.app、iTerm2 或 Weasley Podex Electron 应用）可能缺少屏幕录制权限。</p>
 <pre><code># 修复：在系统设置中授予权限
 # 系统设置 > 隐私与安全性 > 屏幕录制
 # 启用您的终端应用

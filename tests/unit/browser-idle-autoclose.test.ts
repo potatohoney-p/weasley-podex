@@ -21,7 +21,7 @@ const routesSrc = fs.readFileSync(join(root, 'src', 'routes', 'browser.ts'), 'ut
 
 function owner(overrides: Partial<BrowserRuntimeOwner> = {}): BrowserRuntimeOwner {
     return {
-        ownership: 'jaw-owned',
+        ownership: 'weasley-podex-owned',
         pid: 1234,
         port: 9245,
         userDataDir: '/tmp/jaw/browser-profile',
@@ -42,22 +42,22 @@ test('idle timeout parser accepts finite millisecond values and rejects unsafe v
 });
 
 test('runtime timeout helpers read env without adding CLI flags', () => {
-    const prevIdle = process.env.JAW_BROWSER_IDLE_TIMEOUT_MS;
-    const prevReaper = process.env.JAW_BROWSER_REAPER_INTERVAL_MS;
-    process.env.JAW_BROWSER_IDLE_TIMEOUT_MS = '3000';
-    process.env.JAW_BROWSER_REAPER_INTERVAL_MS = '500';
+    const prevIdle = process.env.WEASLEY_PODEX_BROWSER_IDLE_TIMEOUT_MS;
+    const prevReaper = process.env.WEASLEY_PODEX_BROWSER_REAPER_INTERVAL_MS;
+    process.env.WEASLEY_PODEX_BROWSER_IDLE_TIMEOUT_MS = '3000';
+    process.env.WEASLEY_PODEX_BROWSER_REAPER_INTERVAL_MS = '500';
     try {
         assert.equal(browserIdleTimeoutMs(), 3000);
         assert.equal(browserReaperIntervalMs(), 500);
     } finally {
-        if (prevIdle === undefined) delete process.env.JAW_BROWSER_IDLE_TIMEOUT_MS;
-        else process.env.JAW_BROWSER_IDLE_TIMEOUT_MS = prevIdle;
-        if (prevReaper === undefined) delete process.env.JAW_BROWSER_REAPER_INTERVAL_MS;
-        else process.env.JAW_BROWSER_REAPER_INTERVAL_MS = prevReaper;
+        if (prevIdle === undefined) delete process.env.WEASLEY_PODEX_BROWSER_IDLE_TIMEOUT_MS;
+        else process.env.WEASLEY_PODEX_BROWSER_IDLE_TIMEOUT_MS = prevIdle;
+        if (prevReaper === undefined) delete process.env.WEASLEY_PODEX_BROWSER_REAPER_INTERVAL_MS;
+        else process.env.WEASLEY_PODEX_BROWSER_REAPER_INTERVAL_MS = prevReaper;
     }
 });
 
-test('jaw-owned idle runtime closes only after timeout and with no active command', () => {
+test('Weasley Podex-owned idle runtime closes only after timeout and with no active command', () => {
     const runtime = owner();
     assert.equal(shouldCloseIdleRuntime(runtime, Date.parse('2026-04-30T00:09:59.000Z'), 0), false);
     assert.equal(shouldCloseIdleRuntime(runtime, Date.parse('2026-04-30T00:10:00.000Z'), 1), false);

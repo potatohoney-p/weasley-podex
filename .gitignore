@@ -33,7 +33,8 @@ electron/sidecar/jawcode/packages/jwc/dist-node/
 # reference repos (cloned for analysis, not tracked)
 devlog/_plan/*/_ref_*/
 
-# local/private planning workspace; devlog is a tracked submodule pointer
+# local/private planning workspace; never publish it with the open-source package
 devlog/
 .codegraph
 .codexclaw/
+.jwc/

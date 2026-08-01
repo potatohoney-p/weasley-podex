@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ═══════════════════════════════════════════════════════════════
-#  🦈 podex — WSL One-Click Installer
-#  Usage:  curl -fsSL https://raw.githubusercontent.com/potatohoney-p/podex/main/scripts/install-wsl.sh | bash
+#  Weasley Podex — WSL One-Click Installer
+#  Usage:  curl -fsSL https://raw.githubusercontent.com/potatohoney-p/weasley-podex/main/scripts/install-wsl.sh | bash
 # ═══════════════════════════════════════════════════════════════
 set -euo pipefail
 
@@ -21,12 +21,7 @@ fail()  { echo -e "${RED}✖${NC} $*"; exit 1; }
 
 echo ""
 echo -e "${CYAN}${BOLD}"
-echo "   ██████╗██╗     ██╗      ██╗ █████╗ ██╗    ██╗"
-echo "  ██╔════╝██║     ██║      ██║██╔══██╗██║    ██║"
-echo "  ██║     ██║     ██║█████╗██║███████║██║ █╗ ██║"
-echo "  ██║     ██║     ██║╚════╝██║██╔══██║██║███╗██║"
-echo "  ╚██████╗███████╗██║      ██║██║  ██║╚███╔███╔╝"
-echo "   ╚═════╝╚══════╝╚═╝      ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝"
+echo "  WEASLEY PODEX"
 echo -e "${NC}"
 echo -e "${DIM}  WSL One-Click Installer${NC}"
 echo ""
@@ -39,7 +34,11 @@ NPM_PATH_LINE='export PATH="$HOME/.local/bin:$PATH"'
 
 # Guard: reject Windows HOME (e.g. /mnt/c/Users/...)
 case "$HOME" in
-  /mnt/*) fail "HOME points to Windows path: $HOME — launch a proper WSL shell (wsl.exe -d Ubuntu)" ;;
+  /mnt/*)
+    if [ "${WEASLEY_PODEX_SOURCE_ONLY:-}" != "1" ]; then
+      fail "HOME points to Windows path: $HOME — launch a proper WSL shell (wsl.exe -d Ubuntu)"
+    fi
+    ;;
 esac
 
 wsl_npm_is_usable() {
@@ -218,7 +217,7 @@ add_npm_path_to_profile() {
   if ! grep -Fq "$NPM_PATH_LINE" "$profile" 2>/dev/null; then
     {
       echo ''
-      echo '# podex: user-local npm global bin'
+      echo '# Weasley Podex: user-local npm global bin'
       echo "$NPM_PATH_LINE"
     } >> "$profile"
     ok "Added ~/.local/bin to ${profile/#$HOME/~}"
@@ -299,37 +298,37 @@ configure_npm_prefix() {
   ok "npm global prefix set to $effective"
 }
 
-verify_jaw_command() {
-  local jaw_bin="$NPM_PREFIX/bin/jaw"
+verify_weasley_podex_command() {
+  local cli_bin="$NPM_PREFIX/bin/weasley-podex"
   export PATH="$NPM_PREFIX/bin:$PATH"
   hash -r 2>/dev/null || true
 
-  if ! command -v jaw &>/dev/null; then
-    fail "podex installed, but 'jaw' is not on PATH. Expected $jaw_bin"
+  if ! command -v weasley-podex &>/dev/null; then
+    fail "Weasley Podex installed, but 'weasley-podex' is not on PATH. Expected $cli_bin"
   fi
 
-  jaw --version >/dev/null 2>&1 || fail "jaw is on PATH but failed to run"
+  weasley-podex --version >/dev/null 2>&1 || fail "weasley-podex is on PATH but failed to run"
 }
 
 # ═══════════════════════════════════════
 #  Step 3: Install podex
 # ═══════════════════════════════════════
-install_jaw() {
-  if command -v jaw &>/dev/null; then
-    ok "podex already installed ($(jaw --version 2>/dev/null || echo 'unknown version'))"
+install_weasley_podex() {
+  if command -v weasley-podex &>/dev/null; then
+    ok "Weasley Podex already installed ($(weasley-podex --version 2>/dev/null || echo 'unknown version'))"
     info "Updating to latest..."
-    podex_INSTALL_CLI_TOOLS=1 \
-      npm install -g podex@latest
+    WEASLEY_PODEX_INSTALL_CLI_TOOLS=1 \
+      npm install -g weasley-podex@latest
   else
-    info "Installing podex globally..."
-    podex_INSTALL_CLI_TOOLS=1 \
-      npm install -g podex
+    info "Installing Weasley Podex globally..."
+    WEASLEY_PODEX_INSTALL_CLI_TOOLS=1 \
+      npm install -g weasley-podex
   fi
 
-  verify_jaw_command
-  local jaw_version
-  jaw_version="$(jaw --version)"
-  ok "podex installed: $jaw_version"
+  verify_weasley_podex_command
+  local cli_version
+  cli_version="$(weasley-podex --version)"
+  ok "Weasley Podex installed: $cli_version"
 }
 
 # ═══════════════════════════════════════
@@ -382,15 +381,15 @@ verify_browser_readiness() {
 # ═══════════════════════════════════════
 run_doctor() {
   info "Running diagnostics..."
-  verify_jaw_command
-  jaw doctor || true
+  verify_weasley_podex_command
+  weasley-podex doctor || true
 }
 
 # ═══════════════════════════════════════
 #  Main
 # ═══════════════════════════════════════
 main() {
-  info "Starting podex installation on WSL..."
+  info "Starting Weasley Podex installation on WSL..."
   echo ""
 
   ensure_sudo
@@ -405,7 +404,7 @@ main() {
   configure_npm_prefix
   echo ""
 
-  install_jaw
+  install_weasley_podex
   echo ""
 
   install_browser_deps
@@ -415,13 +414,13 @@ main() {
   echo ""
 
   echo -e "${GREEN}${BOLD}═══════════════════════════════════════${NC}"
-  echo -e "${GREEN}${BOLD}  🦈 podex is ready!${NC}"
+  echo -e "${GREEN}${BOLD}  Weasley Podex is ready!${NC}"
   echo -e "${GREEN}${BOLD}═══════════════════════════════════════${NC}"
   echo ""
-  echo -e "  Run:  ${CYAN}jaw dashboard${NC}"
-  echo -e "  Also: ${CYAN}jaw serve${NC}  ${DIM}# classic server mode${NC}"
-  echo -e "  If a new shell cannot find jaw: ${CYAN}source ~/.bashrc${NC}"
-  echo -e "  From Windows PowerShell: ${CYAN}wsl.exe -d Ubuntu -- bash -lc \"jaw dashboard\"${NC}"
+  echo -e "  Run:  ${CYAN}weasley-podex dashboard${NC}"
+  echo -e "  Also: ${CYAN}weasley-podex serve${NC}  ${DIM}# classic server mode${NC}"
+  echo -e "  If a new shell cannot find weasley-podex: ${CYAN}source ~/.bashrc${NC}"
+  echo -e "  From Windows PowerShell: ${CYAN}wsl.exe -d Ubuntu -- bash -lc \"weasley-podex dashboard\"${NC}"
   echo ""
   echo -e "${DIM}  Tip: Authenticate at least one AI engine:${NC}"
   echo -e "${DIM}    gh auth login        # GitHub Copilot (free)${NC}"
@@ -431,7 +430,6 @@ main() {
   echo ""
 }
 
-if [ "${podex_SOURCE_ONLY:-}" != "1" ]; then
+if [ "${WEASLEY_PODEX_SOURCE_ONLY:-}" != "1" ]; then
   main "$@"
 fi
-

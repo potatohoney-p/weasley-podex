@@ -9,7 +9,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..', '..');
 
 function read(path: string): string {
-    return normalizeStrictPropertyAccess(readFileSync(join(projectRoot, path), 'utf8'));
+    return normalizeStrictPropertyAccess(readFileSync(join(projectRoot, path), 'utf8')).replace(/\r\n/g, '\n');
 }
 
 test('browser URL normalization keeps preview host shorthands and Google search distinct', async () => {
@@ -26,33 +26,38 @@ test('browser URL normalization keeps preview host shorthands and Google search 
 });
 
 test('Electron desktop build refreshes manager frontend assets before packaging', () => {
-    const pkg = read('package.json');
+    const pkg = JSON.parse(read('package.json')) as { scripts: Record<string, string> };
 
-    assert.ok(
-        pkg.includes('"electron:dist:mac": "npm run build:frontend && npm run sidecar:bundle && npm --prefix electron run build && CSC_IDENTITY_AUTO_DISCOVERY=false npm --prefix electron run dist:mac && npm run electron:resign:mac && npm run check:electron-dist-mac-no-jwc && npm run check:app-icons"'),
+    assert.equal(
+        pkg.scripts['electron:dist:mac'],
+        'npm run build:frontend && npm run sidecar:bundle && npm --prefix electron run build && CSC_IDENTITY_AUTO_DISCOVERY=false npm --prefix electron run dist:mac && npm run electron:resign:mac && npm run check:electron-dist-mac-no-jwc && npm run check:app-icons',
         'electron:dist:mac must rebuild assets, bundle the sidecar, package the shell, and verify the final app before success',
     );
-    assert.ok(
-        pkg.includes('"sidecar:bundle": "bash scripts/bundle-sidecar.sh darwin arm64"'),
+    assert.equal(
+        pkg.scripts['sidecar:bundle'],
+        'bash scripts/bundle-sidecar.sh darwin arm64',
         'sidecar:bundle must assemble the Node.js sidecar for local mac packaging',
     );
-    assert.ok(
-        pkg.includes('"check:electron-sidecar-no-jwc": "node scripts/check-electron-sidecar-no-jwc.cjs"'),
+    assert.equal(
+        pkg.scripts['check:electron-sidecar-no-jwc'],
+        'node scripts/check-electron-sidecar-no-jwc.cjs',
         'package scripts must expose a staging sidecar no-JWC validator',
     );
     assert.ok(
-        pkg.includes('"check:electron-dist-mac-no-jwc": "node scripts/check-electron-sidecar-no-jwc.cjs --server-root electron/dist/mac-arm64/podex.app/Contents/Resources/server"'),
+        pkg.scripts['check:electron-dist-mac-no-jwc'].includes('Weasley Podex.app/Contents/Resources/server'),
         'package scripts must expose a final macOS app no-JWC validator',
     );
-    assert.ok(
-        pkg.includes('"check:electron-dist-win-no-jwc": "node scripts/check-electron-sidecar-no-jwc.cjs --server-root electron/dist/win-unpacked/resources/server"'),
+    assert.equal(
+        pkg.scripts['check:electron-dist-win-no-jwc'],
+        'node scripts/check-electron-sidecar-no-jwc.cjs --server-root electron/dist/win-unpacked/resources/server',
         'package scripts must expose a final Windows app no-JWC validator',
     );
-    assert.ok(
-        pkg.includes('"check:electron-dist-linux-no-jwc": "node scripts/check-electron-sidecar-no-jwc.cjs --server-root electron/dist/linux-unpacked/resources/server"'),
+    assert.equal(
+        pkg.scripts['check:electron-dist-linux-no-jwc'],
+        'node scripts/check-electron-sidecar-no-jwc.cjs --server-root electron/dist/linux-unpacked/resources/server',
         'package scripts must expose a final Linux app no-JWC validator',
     );
-    assert.ok(pkg.includes('"check:app-icons": "node scripts/check-app-icon-assets.cjs"'), 'package scripts must expose app icon validation');
+    assert.equal(pkg.scripts['check:app-icons'], 'node scripts/check-app-icon-assets.cjs', 'package scripts must expose app icon validation');
 });
 
 test('Electron sidecar bundle excludes JWC payload and verifies the absence contract', () => {
@@ -64,8 +69,8 @@ test('Electron sidecar bundle excludes JWC payload and verifies the absence cont
     assert.equal(pkg.optionalDependencies?.jawcode, undefined, 'jawcode must not be optional because optional dependencies install by default');
     assert.ok(script.includes('NODE_VERSION="24.17.0"'), 'sidecar must bundle a Node runtime');
     assert.ok(script.includes('npm ci --omit=dev --ignore-scripts'), 'release sidecar bundle must prefer lockfile-based production installs');
-    assert.equal(script.includes('podex_LOCAL_JAWCODE'), false, 'sidecar bundle must not have a local jawcode override');
-    assert.equal(script.includes('podex_ELECTRON_JAWCODE_VERSION'), false, 'sidecar bundle must not have an Electron jawcode install override');
+    assert.equal(script.includes('WEASLEY_PODEX_LOCAL_JAWCODE'), false, 'sidecar bundle must not have a local jawcode override');
+    assert.equal(script.includes('WEASLEY_PODEX_ELECTRON_JAWCODE_VERSION'), false, 'sidecar bundle must not have an Electron jawcode install override');
     assert.equal(script.includes('jawcode@$JAWCODE_VERSION'), false, 'Electron sidecar must not install jawcode');
     assert.equal(script.includes('jawcode/sdk'), false, 'Electron sidecar must not import jawcode/sdk during bundling');
     assert.equal(script.includes('bin/jwc'), false, 'Electron sidecar must not create a jwc shim');
@@ -88,8 +93,8 @@ test('Electron CLI installer rejects incomplete or partially installed sidecar c
     assert.ok(installCli.includes('Incomplete sidecar bundle'), 'installCli must report incomplete sidecar bundles explicitly');
     assert.ok(installCli.includes('if (failed.length > 0)'), 'installCli must fail when any symlink attempt fails after installation starts');
     assert.ok(installCli.includes('Failed to install CLI links'), 'installCli must not present partial symlink failures as success');
-    assert.ok(installCli.includes("const CLI_BINS = ['jaw'] as const"), 'Electron terminal installer must only install jaw');
-    assert.ok(installCli.includes("if (!getSidecarBinPath('jaw')) return"), 'install prompt must require the jaw sidecar shim before offering install');
+    assert.ok(installCli.includes("const CLI_BINS = ['weasley-podex'] as const"), 'Electron terminal installer must install the primary Weasley Podex CLI');
+    assert.ok(installCli.includes("if (!getSidecarBinPath('weasley-podex')) return"), 'install prompt must require the primary sidecar shim before offering install');
     assert.equal(installCli.includes("getSidecarBinPath('jwc')"), false, 'install prompt must not require jwc');
     assert.equal(installCli.includes('and "jwc"'), false, 'installer copy must not claim jwc is installed');
     assert.ok(installCli.includes("buttons: ['Skip', 'Install']"), 'install prompt must make the non-invasive option first');
@@ -155,7 +160,7 @@ test('Electron app primes macOS Automation permission for Computer Use', () => {
     assert.ok(helper.includes('/usr/bin/osascript'), 'Automation priming must use the macOS AppleScript bridge');
     assert.ok(helper.includes('tell application "System Events"'), 'Automation priming must request System Events control');
     assert.ok(helper.includes('com.google.Chrome'), 'Automation priming should also request Chrome control when Chrome is already running');
-    assert.ok(helper.includes('podex_SKIP_AUTOMATION_PRIME'), 'Automation priming must remain disableable for tests or support cases');
+    assert.ok(helper.includes("getWeasleyPodexEnv('SKIP_AUTOMATION_PRIME')"), 'Automation priming must remain disableable through the canonical environment accessor');
 });
 
 test('Electron permission and clipboard bridges are scoped instead of blanket-denied', () => {
@@ -195,7 +200,7 @@ test('Electron quit path shows progress and exits after manager cleanup', () => 
     assert.ok(main.includes('app.exit(0)'), 'quit flow must exit after cleanup without re-entering before-quit');
     assert.ok(main.includes("void requestApplicationQuit('window-close')"), 'red close button must use the same quit behavior as Cmd+Q');
     assert.ok(quitProgress.includes('podex-quit-overlay'), 'quit overlay must be injected into the renderer');
-    assert.ok(quitProgress.includes('Quitting podex...'), 'quit overlay must tell the user shutdown is in progress');
+    assert.ok(quitProgress.includes('Quitting Weasley Podex...'), 'quit overlay must tell the user shutdown is in progress');
     assert.ok(quitProgress.includes('animation: PODEXQuitSpin'), 'quit overlay must include a visible spinner');
 });
 

@@ -1,4 +1,4 @@
-﻿import type { SanitizedToolLogEntry } from '../shared/tool-log-sanitize.js';
+import type { SanitizedToolLogEntry } from '../shared/tool-log-sanitize.js';
 import { previewText } from './worker-progress.js';
 
 export interface WorkerReplayNoticeInput {
@@ -51,8 +51,8 @@ export function buildWorkerReplayNotice(input: WorkerReplayNoticeInput): string 
         task ? `Task: ${task}` : '',
         resultBlock,
         toolCount,
-        `Full log: podex worker read ${input.runId} --tail 120`,
-        ...(clipped ? [`Status: podex worker status ${input.runId}`] : []),
+        `Full log: weasley-podex worker read ${input.runId} --tail 120`,
+        ...(clipped ? [`Status: weasley-podex worker status ${input.runId}`] : []),
     ].filter(Boolean).join('\n');
 
     return notice.length > MAX_NOTICE_CHARS

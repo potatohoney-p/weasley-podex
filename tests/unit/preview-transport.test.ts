@@ -8,7 +8,7 @@ const onlineInstance: DashboardInstance = {
     ok: true,
     status: 'online',
     healthReason: null,
-    home: '/Users/jun/.podex',
+    home: '/Users/example/.podex',
     version: '2.0.13',
     checkedAt: '2026-05-28T06:00:00.000Z',
 };

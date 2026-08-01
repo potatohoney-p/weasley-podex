@@ -34,16 +34,16 @@ test('WSL installer treats Node and npm as a WSL-native toolchain', () => {
         'success output should include both node and npm versions');
 });
 
-test('WSL installer makes jaw and bundled CLI tools available immediately', () => {
-    assert.ok(installerSrc.includes('podex_INSTALL_CLI_TOOLS=1'));
-    assert.equal(installerSrc.includes('podex_REQUIRE_CLI_TOOLS=1'), false);
-    assert.equal(installerSrc.includes('podex_REQUIRE_OFFICECLI=1'), false);
-    assert.ok(installerSrc.includes('verify_jaw_command'));
-    assert.ok(installerSrc.includes('command -v jaw'));
-    assert.ok(installerSrc.includes('jaw --version >/dev/null 2>&1 || fail "jaw is on PATH but failed to run"'));
+test('WSL installer makes Weasley Podex and bundled CLI tools available immediately', () => {
+    assert.ok(installerSrc.includes('WEASLEY_PODEX_INSTALL_CLI_TOOLS=1'));
+    assert.equal(installerSrc.includes('WEASLEY_PODEX_REQUIRE_CLI_TOOLS=1'), false);
+    assert.equal(installerSrc.includes('WEASLEY_PODEX_REQUIRE_OFFICECLI=1'), false);
+    assert.ok(installerSrc.includes('verify_weasley_podex_command'));
+    assert.ok(installerSrc.includes('command -v weasley-podex'));
+    assert.ok(installerSrc.includes('weasley-podex --version >/dev/null 2>&1 || fail "weasley-podex is on PATH but failed to run"'));
     assert.ok(installerSrc.includes('hash -r 2>/dev/null || true'));
     assert.equal(installerSrc.includes("|| echo 'done'"), false);
-    assert.ok(installerSrc.includes('podex_SOURCE_ONLY'));
+    assert.ok(installerSrc.includes('WEASLEY_PODEX_SOURCE_ONLY'));
 });
 
 test('WSL installer installs browser helpers', () => {
@@ -58,9 +58,9 @@ test('WSL installer runs doctor in main', () => {
 
 test('fresh install verifier checks the supported WSL bash login shell path', () => {
     assert.ok(verifierSrc.includes('is_wsl()'));
-    assert.ok(verifierSrc.includes('WSL bash login shell cannot resolve node/npm/jaw'));
+    assert.ok(verifierSrc.includes('WSL bash login shell cannot resolve node/npm/weasley-podex'));
     assert.ok(verifierSrc.includes('bash -lc'));
-    assert.ok(verifierSrc.includes('jaw --version'));
+    assert.ok(verifierSrc.includes('weasley-podex --version'));
 });
 
 test('doctor exposes WSL permission and OfficeCLI checks', () => {

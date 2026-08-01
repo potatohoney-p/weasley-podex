@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prompt Pipeline — podex Docs</title>
+<title>Prompt Pipeline — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -83,14 +82,14 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Prompt Pipeline</h1>
-<p class="lead">podex assembles system prompts through a multi-layer pipeline: static templates (A1/A2), dynamic injection (memory, orchestration, skills), disk caching (B.md/AGENTS.md), and per-CLI spawn adapters.</p>
+<p class="lead">Weasley Podex assembles system prompts through a multi-layer pipeline: static templates (A1/A2), dynamic injection (memory, orchestration, skills), disk caching (B.md/AGENTS.md), and per-CLI spawn adapters.</p>
 
 <h2>Assembly Order</h2>
 <p>The <code>getSystemPrompt()</code> function in <code>src/prompt/builder.ts</code> assembles the prompt in this order:</p>
@@ -102,16 +101,16 @@
 <li><strong>Heartbeat jobs</strong> -- Scheduled task descriptions from <code>heartbeat.json</code></li>
 <li><strong>Skills section</strong> -- Active skills inline + available skill list</li>
 <li><strong>Vision-click hint</strong> -- Codex-only legacy fallback for desktop automation</li>
-<li><strong>Delegation rules</strong> -- CLI sub-agents vs jaw employees distinction</li>
+<li><strong>Delegation rules</strong> -- CLI sub-agents vs Weasley Podex employees distinction</li>
 </ol>
 
 <h2>Static Templates</h2>
 <h3>A-1.md (System Rules)</h3>
-<p>Path: <code>~/.podex/prompts/A-1.md</code>. Falls back to <code>src/prompt/templates/a1-system.md</code> (305 lines). Contains core system behavior: browser control rules, memory/heartbeat instructions, jaw employee vs CLI sub-agent distinctions, and channel send rules.</p>
+<p>Path: <code>~/.weasley/podex/prompts/A-1.md</code>. Falls back to <code>src/prompt/templates/a1-system.md</code> (305 lines). Contains core system behavior: browser control rules, memory/heartbeat instructions, Weasley Podex employee vs CLI sub-agent distinctions, and channel send rules.</p>
 <div class="callout callout-info">A-1.md uses hash-based migration. If you have not customized it, template updates apply automatically. Custom A-1 files are preserved.</div>
 
 <h3>A-2.md (User Settings)</h3>
-<p>Path: <code>~/.podex/prompts/A-2.md</code>. Template: <code>a2-default.md</code> (25 lines). Contains identity, user preferences, vibe, and working directory hints. Created only if missing -- never overwritten.</p>
+<p>Path: <code>~/.weasley/podex/prompts/A-2.md</code>. Template: <code>a2-default.md</code> (25 lines). Contains identity, user preferences, vibe, and working directory hints. Created only if missing -- never overwritten.</p>
 
 <h2>Dynamic Injection</h2>
 <h3>Memory Injection</h3>
@@ -123,19 +122,19 @@
 <p>Injection is role-aware: <code>boss</code> gets the full snapshot, <code>employee</code>/<code>subagent</code> gets a reduced profile, and <code>flush</code> role gets no memory injection.</p>
 
 <h3>Orchestration</h3>
-<p>If at least one employee is registered, the <code>orchestration.md</code> template is injected with <code>podex dispatch</code> usage examples. If <code>skills/dev-pabcd/SKILL.md</code> exists, a PABCD Orchestration Guide follows.</p>
+<p>If at least one employee is registered, the <code>orchestration.md</code> template is injected with <code>weasley-podex dispatch</code> usage examples. If <code>skills/dev-pabcd/SKILL.md</code> exists, a PABCD Orchestration Guide follows.</p>
 
 <h3>Heartbeat</h3>
-<p>Active heartbeat jobs from <code>~/.podex/heartbeat.json</code> are rendered with their enabled state, human-readable schedule, and prompt preview.</p>
+<p>Active heartbeat jobs from <code>~/.weasley/podex/heartbeat.json</code> are rendered with their enabled state, human-readable schedule, and prompt preview.</p>
 
 <h3>Skills</h3>
-<p>Active skills (<code>~/.podex/skills/*/SKILL.md</code>) are rendered inline. Reference skills (<code>~/.podex/skills_ref/registry.json</code>) are listed as available for discovery.</p>
+<p>Active skills (<code>~/.weasley/podex/skills/*/SKILL.md</code>) are rendered inline. Reference skills (<code>~/.weasley/podex/skills_ref/registry.json</code>) are listed as available for discovery.</p>
 
 <h2>Disk Cache (B.md)</h2>
 <p><code>regenerateB()</code> creates a cached version of the system prompt for disk:</p>
 <table>
 <tr><th>Output</th><th>Purpose</th></tr>
-<tr><td><code>~/.podex/prompts/B.md</code></td><td>Debug and cache file</td></tr>
+<tr><td><code>~/.weasley/podex/prompts/B.md</code></td><td>Debug and cache file</td></tr>
 <tr><td><code>{workDir}/AGENTS.md</code></td><td>Auto-read by Codex, Copilot, OpenCode</td></tr>
 </table>
 <p>Content hash is checked -- files are only rewritten when the prompt actually changes, preserving resume continuity.</p>
@@ -169,7 +168,7 @@ user: Previous question...
 Your new prompt here</code></pre>
 
 <h2>Customizing Prompts</h2>
-<p>Edit <code>~/.podex/prompts/A-2.md</code> to customize identity, preferences, and working directory. Use <code>/prompt</code> to preview the current A2 content. The Web UI settings panel also provides a prompt template editor.</p>
+<p>Edit <code>~/.weasley/podex/prompts/A-2.md</code> to customize identity, preferences, and working directory. Use <code>/prompt</code> to preview the current A2 content. The Web UI settings panel also provides a prompt template editor.</p>
 
 <div class="callout callout-info">
 <strong>Try it:</strong>

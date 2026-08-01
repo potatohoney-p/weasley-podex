@@ -71,7 +71,7 @@ test('AGY-TM-006: watchdog context is bounded and does not leak raw prompt-like 
         agyLastActivitySource: 'transcript',
         sessionId: 'sess-123',
         toolLog: [
-            { icon: 'x', label: '[Current podex task]\nSECRET_PROMPT_PAYLOAD'.repeat(20), toolType: 'tool', status: 'running' },
+            { icon: 'x', label: '[Current weasley-podex task]\nSECRET_PROMPT_PAYLOAD'.repeat(20), toolType: 'tool', status: 'running' },
         ],
     });
     assert.match(context, /\[AGY interrupted by watchdog\]/);

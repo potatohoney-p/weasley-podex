@@ -9,14 +9,16 @@ import { createHash } from 'crypto';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
 import { resolveHomePath } from '../../src/core/path-expand.js';
+import { getWeasleyPodexEnv } from '../../src/core/weasley-podex-env.js';
 
-// ─── JAW_HOME inline (config.ts → registry.ts import 체인 제거) ───
-export const JAW_HOME = process.env["podex_HOME"]
-    ? resolveHomePath(process.env["podex_HOME"])
-    : join(os.homedir(), '.podex');
+// ─── WEASLEY_PODEX_HOME inline (config.ts → registry.ts import 체인 제거) ───
+const configuredHome = getWeasleyPodexEnv('HOME');
+export const WEASLEY_PODEX_HOME = configuredHome
+    ? resolveHomePath(configuredHome)
+    : join(os.homedir(), '.weasley', 'podex');
 
 // ─── Clone cooldown ─────────────────────────────────
-export const CLONE_META_PATH = join(JAW_HOME, '.skills_clone_meta.json');
+export const CLONE_META_PATH = join(WEASLEY_PODEX_HOME, '.skills_clone_meta.json');
 export const CLONE_COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes
 export const CLONE_TIMEOUT_MS = 80_000;           // 80 seconds
 
@@ -37,7 +39,7 @@ export function readCloneMeta(): CloneMeta | null {
 
 export function writeCloneMeta(success: boolean): void {
     try {
-        fs.mkdirSync(JAW_HOME, { recursive: true });
+        fs.mkdirSync(WEASLEY_PODEX_HOME, { recursive: true });
         const meta: CloneMeta = { lastAttempt: Date.now(), success };
         fs.writeFileSync(CLONE_META_PATH, JSON.stringify(meta));
     } catch (e) {
@@ -46,7 +48,7 @@ export function writeCloneMeta(success: boolean): void {
 }
 
 export function shouldSkipClone(): boolean {
-    if (process.env["JAW_FORCE_CLONE"] === '1') return false;
+    if (getWeasleyPodexEnv('FORCE_CLONE') === '1') return false;
     const meta = readCloneMeta();
     if (!meta) return false;
     if (meta.success) return false;
@@ -54,7 +56,7 @@ export function shouldSkipClone(): boolean {
 }
 
 export function shouldUseLocalSkillsSource(): boolean {
-    const value = (process.env["JAW_SKILLS_SOURCE"] || '').trim().toLowerCase();
+    const value = (getWeasleyPodexEnv('SKILLS_SOURCE') || '').trim().toLowerCase();
     return value === 'local' || value === 'bundled' || value === 'package';
 }
 
@@ -74,7 +76,7 @@ export const CODEX_ACTIVE = new Set([
 export const OPENCLAW_ACTIVE = new Set([
     // vision-click is absorbed into desktop-control (reference/vision-click.md)
     // and stays as a reference skill; users who want the low-level recipe
-    // can opt in with: podex skill install vision-click
+    // can opt in with: weasley-podex skill install vision-click
     'browser', 'memory', 'search',
     'screen-capture', 'docx', 'xlsx', 'pptx', 'hwp', 'github', 'telegram-send',
     'video', 'pdf-vision', 'diagram', 'structured-renderers',

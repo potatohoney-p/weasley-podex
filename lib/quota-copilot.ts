@@ -1,7 +1,7 @@
 // ─── Copilot Quota: copilot_internal/user API ───────────────────
 // Token resolution order:
 //   1. ENV vars (COPILOT_GITHUB_TOKEN, GH_TOKEN, GITHUB_TOKEN)
-//   2. File cache (~/.podex/auth/copilot-token) — no keychain popup
+//   2. File cache (~/.weasley/podex/auth/copilot-token) — no keychain popup
 //   3. `gh auth token` — cross-platform fallback
 //   4. macOS Keychain (one-shot, cached to file, suppress on failure)
 //
@@ -13,11 +13,13 @@ import os from 'os';
 import path from 'path';
 import { resolveHomePath } from '../src/core/path-expand.js';
 import { stripUndefined } from '../src/core/strip-undefined.js';
+import { getWeasleyPodexEnv } from '../src/core/weasley-podex-env.js';
 
-const JAW_HOME = process.env["podex_HOME"]
-    ? resolveHomePath(process.env["podex_HOME"])
-    : path.join(os.homedir(), '.podex');
-const AUTH_DIR = path.join(JAW_HOME, 'auth');
+const WEASLEY_PODEX_HOME = resolveHomePath(
+    getWeasleyPodexEnv('HOME')
+    || path.join(os.homedir(), '.weasley', 'podex'),
+);
+const AUTH_DIR = path.join(WEASLEY_PODEX_HOME, 'auth');
 const TOKEN_CACHE_PATH = path.join(AUTH_DIR, 'copilot-token');
 
 let _cachedToken: string | null = null;

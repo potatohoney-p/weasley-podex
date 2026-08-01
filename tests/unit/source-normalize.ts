@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 export function normalizeStrictPropertyAccess(source: string): string {
     return unwrapHelperCall(source, 'stripUndefined')
@@ -60,5 +61,8 @@ function findCallEnd(source: string, bodyStart: number): number {
 }
 
 export function readSource(path: string, _encoding: BufferEncoding = 'utf8'): string {
-    return normalizeStrictPropertyAccess(readFileSync(path, 'utf8'));
+    const sourcePath = process.platform === 'win32' && /^\/[A-Za-z]:\//.test(path)
+        ? fileURLToPath(new URL(`file://${path}`))
+        : path;
+    return normalizeStrictPropertyAccess(readFileSync(sourcePath, 'utf8'));
 }

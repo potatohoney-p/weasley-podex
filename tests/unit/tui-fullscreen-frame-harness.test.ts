@@ -1,4 +1,4 @@
-﻿import test from 'node:test';
+import test from 'node:test';
 import assert from 'node:assert/strict';
 import { composeFrame, renderTranscriptItem } from '../../bin/commands/tui/fullscreen-mode.ts';
 import type { TuiContext } from '../../bin/commands/tui/types.ts';
@@ -325,7 +325,7 @@ test('fullscreen live tool rows stay width-safe during long mid-call updates', (
         upsertLiveToolItem(ctx.store.transcript, {
             icon: '⏳',
             label: 'subagent: Verify estimateTokens callers',
-            detail: 'prompt: In the repository /Users/jun/Developer/new/700_projects/podex check encoding joins 🦈 📁',
+            detail: 'prompt: In the repository /Users/example/src/weasley-podex check encoding joins ◆ 📁',
             status: 'running',
             stepRef: 'live-wide',
         });
@@ -368,7 +368,7 @@ test('fullscreen composeFrame stays bottom-pinned after composer text changes', 
 test('fullscreen composeFrame keeps composer cluster fixed after first message', () => {
     withTerminalSize(80, 24, () => {
         const ctx = makeCtx();
-        ctx.welcomeLines = ['Welcome to jaw chat'];
+        ctx.welcomeLines = ['Welcome to Weasley Podex chat'];
 
         const regions = solveLayout(80, 24, 1);
         const before = expandViewportFill(composeFrame(ctx, new Viewport()).rows, 24);
@@ -378,8 +378,8 @@ test('fullscreen composeFrame keeps composer cluster fixed after first message',
         const beforeMain = stripAnsi(before.slice(regions.transcript.y - 1, regions.statusLine.y - 1).join('\n'));
         const afterMain = stripAnsi(after.slice(regions.transcript.y - 1, regions.statusLine.y - 1).join('\n'));
 
-        assert.match(beforeMain, /Welcome to jaw chat/);
-        assert.match(afterMain, /Welcome to jaw chat/);
+        assert.match(beforeMain, /Welcome to Weasley Podex chat/);
+        assert.match(afterMain, /Welcome to Weasley Podex chat/);
         assert.match(afterMain, /hello/);
         assert.equal(before[regions.statusLine.y - 1], after[regions.statusLine.y - 1]);
         assert.equal(before[regions.composer.y - 2], after[regions.composer.y - 2]);
@@ -431,7 +431,7 @@ test('fullscreen composeFrame renders Appearance settings MVP in main content re
         const regions = solveLayout(96, 28, 1);
         const main = stripAnsi(expanded.slice(regions.transcript.y - 1, regions.statusLine.y - 1).join('\n'));
 
-        assert.match(main, /Settings: podex/);
+        assert.match(main, /Settings: Weasley Podex/);
         assert.match(main, /Only supported local CLI\/TUI settings/);
         assert.match(main, /Local CLI \/ TUI/);
         assert.match(main, /Web AI Settings/);
@@ -554,7 +554,7 @@ test('fullscreen ctrl-o full sweep keeps final answer visible and rows width-saf
             appendToolItem(ctx.store.transcript, 'Read File', {
                 stepRef: 'read-1',
                 status: 'done',
-                detail: '/Users/jun/Developer/new/700_projects/podex/src/cli/tui/transcript.ts',
+                detail: '/Users/example/src/weasley-podex/src/cli/tui/transcript.ts',
             });
             appendToolItem(ctx.store.transcript, 'Search', {
                 stepRef: 'search-1',
@@ -598,7 +598,7 @@ test('fullscreen reused viewport rerenders after terminal width shrinks', () => 
     appendToolItem(ctx.store.transcript, 'Read File', {
         stepRef: 'resize-read',
         status: 'done',
-        detail: '/Users/jun/Developer/new/700_projects/podex/bin/commands/tui/fullscreen-mode.ts',
+        detail: '/Users/example/src/weasley-podex/bin/commands/tui/fullscreen-mode.ts',
     });
     appendAssistantTurnText(ctx.store.transcript, 'Final answer remains visible after shrink.', 'main');
     finalizeStreamingAssistants(ctx.store.transcript);

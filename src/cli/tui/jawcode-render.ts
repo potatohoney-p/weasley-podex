@@ -31,9 +31,10 @@ function isOptionalJawcodeTuiLoadError(err: unknown): boolean {
     const message = typeof maybeError.message === 'string' ? maybeError.message : String(err);
     if (message.includes('pi_natives')) return true;
     if (code !== 'ERR_MODULE_NOT_FOUND') return false;
-    return message.includes('/lib/tui/bun-shim.mjs')
-        || message.includes('/lib/tui/jawcode-tui-bundle.mjs')
-        || message.includes('/lib/tui/jawcode-interactive-bundle.mjs');
+    const normalizedMessage = message.replaceAll('\\', '/');
+    return normalizedMessage.includes('/lib/tui/bun-shim.mjs')
+        || normalizedMessage.includes('/lib/tui/jawcode-tui-bundle.mjs')
+        || normalizedMessage.includes('/lib/tui/jawcode-interactive-bundle.mjs');
 }
 
 export async function tryInitJawcodeTui(): Promise<boolean> {

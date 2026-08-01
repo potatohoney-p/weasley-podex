@@ -14,20 +14,20 @@ import {
 } from '../../src/cli/opencodex-models.ts';
 
 async function withInactiveOpenCodexEnv<T>(fn: () => Promise<T>): Promise<T> {
-    const previousDir = process.env['podex_OPENCODEX_DIR'];
+    const previousDir = process.env['WEASLEY_PODEX_OPENCODEX_DIR'];
     const tmp = await mkdtemp(join(tmpdir(), 'jaw-ocx-inactive-'));
-    process.env['podex_OPENCODEX_DIR'] = tmp;
+    process.env['WEASLEY_PODEX_OPENCODEX_DIR'] = tmp;
     resetOpenCodexModelCacheForTest();
     try {
         return await fn();
     } finally {
         resetOpenCodexModelCacheForTest();
-        if (previousDir === undefined) delete process.env['podex_OPENCODEX_DIR'];
-        else process.env['podex_OPENCODEX_DIR'] = previousDir;
+        if (previousDir === undefined) delete process.env['WEASLEY_PODEX_OPENCODEX_DIR'];
+        else process.env['WEASLEY_PODEX_OPENCODEX_DIR'] = previousDir;
     }
 }
 
-test('opencodex runtime port path resolves podex_OPENCODEX_DIR lazily', async () => {
+test('opencodex runtime port path resolves WEASLEY_PODEX_OPENCODEX_DIR lazily', async () => {
     const src = await readFile(new URL('../../src/cli/opencodex-models.ts', import.meta.url), 'utf8');
     assert.match(src, /function openCodexRuntimePortPath\(\): string/);
     assert.match(src, /readFile\(openCodexRuntimePortPath\(\), 'utf8'\)/);
@@ -92,8 +92,8 @@ test('resolveCliDefaultModel uses the first active ocx routed model for Codex', 
     const address = server.address();
     assert.ok(address && typeof address === 'object');
     await writeFile(join(tmp, 'runtime-port.json'), JSON.stringify({ port: address.port }));
-    const previousDir = process.env['podex_OPENCODEX_DIR'];
-    process.env['podex_OPENCODEX_DIR'] = tmp;
+    const previousDir = process.env['WEASLEY_PODEX_OPENCODEX_DIR'];
+    process.env['WEASLEY_PODEX_OPENCODEX_DIR'] = tmp;
     try {
         const moduleUrl = pathToFileURL(join(process.cwd(), 'src/cli/opencodex-models.ts'));
         moduleUrl.searchParams.set('case', `active-${Date.now()}`);
@@ -102,8 +102,8 @@ test('resolveCliDefaultModel uses the first active ocx routed model for Codex', 
         assert.equal(await mod.resolveCliDefaultModel('codex-app'), activeModels[0]);
         assert.equal(await mod.resolveCliDefaultModel('claude'), CLI_REGISTRY.claude.defaultModel);
     } finally {
-        if (previousDir === undefined) delete process.env['podex_OPENCODEX_DIR'];
-        else process.env['podex_OPENCODEX_DIR'] = previousDir;
+        if (previousDir === undefined) delete process.env['WEASLEY_PODEX_OPENCODEX_DIR'];
+        else process.env['WEASLEY_PODEX_OPENCODEX_DIR'] = previousDir;
         await new Promise<void>((resolve, reject) => server.close((err) => err ? reject(err) : resolve()));
     }
 });

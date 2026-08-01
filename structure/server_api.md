@@ -1,7 +1,7 @@
 ---
 created: 2026-03-28
-tags: [podex, server, api, express]
-aliases: [podex Server API, server.ts reference, server_api]
+tags: [weasley-podex, server, api, express]
+aliases: [Weasley Podex Server API, server.ts reference, server_api]
 ---
 
 > 📚 [INDEX](INDEX.md) · [체크리스트 ↗](AGENTS.md) · [커맨드 ↗](commands.md) · **서버 API**
@@ -31,7 +31,7 @@ aliases: [podex Server API, server.ts reference, server_api]
 | `src/routes/settings.ts` | 430L | 23 | settings/prompt/project pick/git summary/heartbeat-md/MCP/CLI registry/quota/copilot/Pi profile registration |
 | `src/routes/memory.ts` | 191L | 13 | memory runtime + KV memory + memory files |
 | `src/routes/browser.ts` | 489L | 43 | browser primitive/tab/debug/doctor/cleanup routes + adaptive fetch + web-ai render/send/poll/watch/sessions/capabilities/code/context routes |
-| `src/routes/jaw-memory.ts` | 352L | 12 | jaw memory search/read/save/context/list/init/reflect/flush/soul/soul-activate/bootstrap |
+| `src/routes/jaw-memory.ts` | 352L | 12 | Weasley Podex memory search/read/save/context/list/init/reflect/flush/soul/soul-activate/bootstrap (historical internal filename) |
 | `src/routes/orchestrate.ts` | 1085L | 18 | reset/state/workers/worker-progress/worker-runs/snapshot/queue cancel/hold/queue steer async accept/dispatch/batch dispatch/worker result/state PUT |
 | `src/routes/goal.ts` | 183L | 3 | durable goal state get/history/set-update-complete-cancel-pause-resume-clear-reset |
 | `src/routes/goal-run.ts` | 83L | 3 | bounded goal-run state/preflight/start-pause-resume-stop |
@@ -42,7 +42,7 @@ aliases: [podex Server API, server.ts reference, server_api]
 | `src/routes/traces.ts` | 80L | 3 | public trace summary/event read routes |
 | `src/routes/link-preview.ts` | 319L | 2 | Rich link preview metadata fetch + guarded image proxy |
 | `src/routes/heartbeat.ts` | 47L | 2 | heartbeat GET + validated PUT |
-| `src/routes/jaw-ceo.ts` | 321L | 20 | Jaw CEO coordinator: state/message/query/docs-edit/settings/events/pending/watch/audit/voice/confirmations |
+| `src/routes/jaw-ceo.ts` | 321L | 20 | Weasley Podex CEO coordinator (historical internal route): state/message/query/docs-edit/settings/events/pending/watch/audit/voice/confirmations |
 | `src/routes/runtime-context.ts` | 46L | 4 | runtime context entry CRUD (ephemeral prompt injection), mounted at `/api/runtime-context` |
 | `src/routes/security-audit.ts` | 18L | 2 | security audit log entries + verify, mounted at `/api/security-audit` |
 | `src/routes/i18n.ts` | 35L | 2 | language list + locale bundle |
@@ -93,7 +93,7 @@ static → employees → heartbeat → skills → jaw-memory → orchestrate
 | `POST` | `/api/clear` | UI-only clear broadcast, DB 메시지는 유지 |
 | `POST` | `/api/session/reset` | 메시지 삭제 + session reset |
 | `GET` | `/media/:filename` | 미디어 파일 서빙 |
-| `GET` | `/api/image?path=<absolute path>` | `requireAuth` + `assertSendFilePath()` realpath guard로 JAW_HOME/workingDir/projectDirs 아래 이미지·비디오를 서빙. PNG/JPEG/GIF/WebP/MP4/WebM/MOV/OGG만 허용하고 SVG는 제외한다. 잘못된 입력·확장자는 `400`, 허용 루트 밖은 `403`, 미해결 경로·디렉터리는 `404`; 성공 응답은 `no-store` + `nosniff`. |
+| `GET` | `/api/image?path=<absolute path>` | `requireAuth` + `assertSendFilePath()` realpath guard로 WEASLEY_PODEX_HOME/workingDir/projectDirs 아래 이미지·비디오를 서빙. PNG/JPEG/GIF/WebP/MP4/WebM/MOV/OGG만 허용하고 SVG는 제외한다. 잘못된 입력·확장자는 `400`, 허용 루트 밖은 `403`, 미해결 경로·디렉터리는 `404`; 성공 응답은 `no-store` + `nosniff`. |
 | `GET` | `/api/instance/lock` | 인스턴스 잠금 상태 조회 |
 | `POST` | `/api/instance/lock` | 인스턴스 잠금 (stopAll 보호) |
 | `DELETE` | `/api/instance/lock` | 인스턴스 잠금 해제 |
@@ -127,8 +127,8 @@ static → employees → heartbeat → skills → jaw-memory → orchestrate
 | Employees | `GET /api/employees` `POST /api/employees` `PUT /api/employees/:id` `DELETE /api/employees/:id` `POST /api/employees/reset` `POST /api/employees/sessions/reset` |
 | Skills | `GET /api/skills` `GET /api/skills/:id` `POST /api/skills/enable` `POST /api/skills/disable` `POST /api/skills/reset` |
 | Memory Runtime / KV / Files | `GET /api/memory/status` `POST /api/memory/reindex` `POST /api/memory/bootstrap` `GET /api/memory/files` `GET /api/memory` `POST /api/memory` `DELETE /api/memory/:key` `GET /api/memory-files` `GET /api/memory-file` `GET /api/memory-files/:filename` `DELETE /api/memory-file` `DELETE /api/memory-files/:filename` `PUT /api/memory-files/settings` |
-| Jaw Memory | `GET /api/jaw-memory/search` `GET /api/jaw-memory/read` `POST /api/jaw-memory/save` `GET /api/jaw-memory/context` `GET /api/jaw-memory/list` `POST /api/jaw-memory/init` `POST /api/jaw-memory/reflect` `POST /api/jaw-memory/flush` `GET /api/jaw-memory/soul` `POST /api/jaw-memory/soul/activate` `POST /api/jaw-memory/soul` `POST /api/soul/bootstrap` |
-| Jaw CEO | `GET /api/jaw-ceo/state` `POST /api/jaw-ceo/message` `POST /api/jaw-ceo/query` `POST /api/jaw-ceo/docs/edit` `GET /api/jaw-ceo/settings` `PUT /api/jaw-ceo/settings` `POST /api/jaw-ceo/events/ingest` `POST /api/jaw-ceo/events/refresh` `GET /api/jaw-ceo/pending` `POST /api/jaw-ceo/pending/:completionKey/continue` `POST /api/jaw-ceo/pending/:completionKey/summarize` `POST /api/jaw-ceo/pending/:completionKey/ack` `POST /api/jaw-ceo/pending/:completionKey/dismiss` `POST /api/jaw-ceo/watch` `GET /api/jaw-ceo/audit` `POST /api/jaw-ceo/voice/connect` `POST /api/jaw-ceo/voice/:sessionId/close` `POST /api/jaw-ceo/confirmations` `POST /api/jaw-ceo/confirmations/:confirmationId/confirm` `POST /api/jaw-ceo/confirmations/:confirmationId/cancel` |
+| Weasley Podex Memory (historical route) | `GET /api/jaw-memory/search` `GET /api/jaw-memory/read` `POST /api/jaw-memory/save` `GET /api/jaw-memory/context` `GET /api/jaw-memory/list` `POST /api/jaw-memory/init` `POST /api/jaw-memory/reflect` `POST /api/jaw-memory/flush` `GET /api/jaw-memory/soul` `POST /api/jaw-memory/soul/activate` `POST /api/jaw-memory/soul` `POST /api/soul/bootstrap` |
+| Weasley Podex CEO (historical route) | `GET /api/jaw-ceo/state` `POST /api/jaw-ceo/message` `POST /api/jaw-ceo/query` `POST /api/jaw-ceo/docs/edit` `GET /api/jaw-ceo/settings` `PUT /api/jaw-ceo/settings` `POST /api/jaw-ceo/events/ingest` `POST /api/jaw-ceo/events/refresh` `GET /api/jaw-ceo/pending` `POST /api/jaw-ceo/pending/:completionKey/continue` `POST /api/jaw-ceo/pending/:completionKey/summarize` `POST /api/jaw-ceo/pending/:completionKey/ack` `POST /api/jaw-ceo/pending/:completionKey/dismiss` `POST /api/jaw-ceo/watch` `GET /api/jaw-ceo/audit` `POST /api/jaw-ceo/voice/connect` `POST /api/jaw-ceo/voice/:sessionId/close` `POST /api/jaw-ceo/confirmations` `POST /api/jaw-ceo/confirmations/:confirmationId/confirm` `POST /api/jaw-ceo/confirmations/:confirmationId/cancel` |
 | Messaging | `POST /api/upload` `POST /api/file/open` `POST /api/voice` `POST /api/telegram/send` `POST /api/channel/send` `POST /api/discord/send` |
 | Avatar | `GET /api/avatar` `POST /api/avatar/:target/upload` `DELETE /api/avatar/:target/image` `GET /api/avatar/:target/image` |
 | Traces | `GET /api/traces/:runId` `GET /api/traces/:runId/events` `GET /api/traces/:runId/events/:seq` |
@@ -138,7 +138,7 @@ static → employees → heartbeat → skills → jaw-memory → orchestrate
 | Dashboard Schedule | `GET /api/dashboard/schedule/work` `POST /api/dashboard/schedule/work` `PATCH /api/dashboard/schedule/work/:id` `DELETE /api/dashboard/schedule/work/:id` `POST /api/dashboard/schedule/work/:id/dispatch` |
 | i18n | `GET /api/i18n/languages` `GET /api/i18n/:lang` |
 
-> 실제 코드(`server.ts` + `src/routes/*.ts` + mounted runtime/security/Jaw CEO/dashboard sub-router)에서 추출한 총 235개 route handler 기준이다. 이 중 API 엔드포인트는 234개이고, 나머지 1개는 `/` 엔트리이다. Browser API 43개는 `src/routes/browser.ts`에서 등록된다. Jaw CEO 20개는 `src/routes/jaw-ceo.ts`에서 sub-router로 등록된다.
+> 실제 코드(`server.ts` + `src/routes/*.ts` + mounted runtime/security/Weasley Podex CEO/dashboard sub-router)에서 추출한 총 235개 route handler 기준이다. 이 중 API 엔드포인트는 234개이고, 나머지 1개는 `/` 엔트리이다. Browser API 43개는 `src/routes/browser.ts`에서 등록된다. Weasley Podex CEO 20개는 historical `src/routes/jaw-ceo.ts` sub-router로 등록된다.
 
 ---
 
@@ -146,7 +146,7 @@ static → employees → heartbeat → skills → jaw-memory → orchestrate
 
 ### 네트워크 가드
 
-- 기본 서버 bind는 `127.0.0.1`이지만 `settings.network.bindHost`, `JAW_LAN_MODE=1`, reverse-proxy mode에 따라 `0.0.0.0` bind가 가능하다.
+- 기본 서버 bind는 `127.0.0.1`이지만 `settings.network.bindHost`, `WEASLEY_PODEX_LAN_MODE=1`, reverse-proxy mode에 따라 `0.0.0.0` bind가 가능하다.
 - `ALLOWED_HOSTS`/`ALLOWED_ORIGINS`는 loopback을 기본 허용하고, LAN mode/bypass가 켜졌을 때 private network origin/host를 허용한다.
 - Legacy/client fallback WebSocket paths and manager-side note WebSocket surfaces must apply the same host/origin guard model; the current core public event path is SSE.
 
@@ -160,7 +160,7 @@ static → employees → heartbeat → skills → jaw-memory → orchestrate
 
 | Surface | Guard |
 | --- | --- |
-| Jaw Memory | `assertMemoryRelPath()` + `normalizeAdvancedReadPath()` |
+| Weasley Podex Memory (historical route) | `assertMemoryRelPath()` + `normalizeAdvancedReadPath()` |
 | Memory files | `assertMemoryRelPath()` / `assertFilename()` / `safeResolveUnder()` |
 | Skills | `assertSkillId()` |
 | Upload / avatar | `decodeFilenameSafe()` |
@@ -168,7 +168,7 @@ static → employees → heartbeat → skills → jaw-memory → orchestrate
 | Local inline media (`GET /api/image`) | `assertSendFilePath()` canonical realpath boundary + explicit media-extension allowlist (SVG 제외) |
 | Avatar image serve | `safeResolveUnder(UPLOADS_DIR, basename(...))` |
 
-- `/api/image`는 `path`가 단일 절대경로인지 먼저 검사한 뒤 guard를 실행한다. 존재하지 않아 canonicalize할 수 없는 경로는 `404`, JAW_HOME/workingDir/projectDirs 밖 또는 symlink 탈출은 `403`이며, guard 통과 뒤에도 allowlist와 regular-file 검사를 거친다.
+- `/api/image`는 `path`가 단일 절대경로인지 먼저 검사한 뒤 guard를 실행한다. 존재하지 않아 canonicalize할 수 없는 경로는 `404`, WEASLEY_PODEX_HOME/workingDir/projectDirs 밖 또는 symlink 탈출은 `403`이며, guard 통과 뒤에도 allowlist와 regular-file 검사를 거친다.
 
 ### 기타
 
@@ -202,15 +202,15 @@ static → employees → heartbeat → skills → jaw-memory → orchestrate
 
 ### `/api/orchestrate/dispatch`
 
-- boss-scoped `x-jaw-boss-token`이 필수다. employee spawn 환경에서는 이 토큰이 제거되므로 직원이 다시 dispatch하는 흐름은 서버에서 `403`으로 막힌다.
+- boss-scoped `x-weasley-podex-boss-token`이 필수다. employee spawn 환경에서는 이 토큰이 제거되므로 직원이 다시 dispatch하는 흐름은 서버에서 `403`으로 막힌다.
 - body는 정확히 하나의 target을 받는다: `{ agent, task }` 또는 `{ virtual, task, role?, cli?, model? }`.
 - `virtual` target은 `src/core/employees.ts`의 `security`/`testing` 프리셋 또는 자유 role 문자열로 `SyntheticEmployeeRow`를 만들고, DB employee row로 저장하지 않는다.
 - virtual dispatch에서 `cli`/`model`이 생략되면 현재 CLI와 `src/cli/registry.ts`의 registry default model을 사용한다.
 - 현재 plan이 있으면 dispatch body 상단에 `## Approved Plan`으로 자동 주입된다.
 - `wait:false` async dispatch `202`, `worker_busy` `409`, and result polling payloads include both stable `agentId` and per-dispatch `runId`. The `agentId` remains the same-employee concurrency guard; `runId` identifies a specific worker run in memory progress history.
-- `GET /api/orchestrate/worker-runs*` exposes durable worker-run safe metadata/events and bounded raw output reads. List/get/events are safe-only and include both native `status` plus shared `statusCategory` (`running|succeeded|failed|cancelled|orphaned`) for comparison with background tasks; `/output` is the only raw-text worker-run route and requires explicit `runId` plus offset/limit. `jaw worker read <runId>` is the CLI consumer of that explicit raw-output route; `worker status/watch` remain safe-summary surfaces.
+- `GET /api/orchestrate/worker-runs*` exposes durable worker-run safe metadata/events and bounded raw output reads. List/get/events are safe-only and include both native `status` plus shared `statusCategory` (`running|succeeded|failed|cancelled|orphaned`) for comparison with background tasks; `/output` is the only raw-text worker-run route and requires explicit `runId` plus offset/limit. `weasley-podex worker read <runId>` is the CLI consumer of that explicit raw-output route; `worker status/watch` remain safe-summary surfaces.
 - `GET/POST /api/bgtask` and `GET/DELETE /api/bgtask/:id` keep the existing background-task schema and add `statusCategory` to public task payloads. `statusCategory` is additive; bgtask storage and worker-run storage remain separate and no bgtask migration is performed.
-- `POST /api/orchestrate/dispatch/batch`는 같은 boss token으로 여러 직원/virtual task를 병렬 dispatch한다. 각 entry는 `agent` 또는 `virtual` 중 하나를 가진다. 응답은 full worker text를 기본 포함하지 않고 `{ agent, ok, runId, status, preview, recoveryCommand, outputBytes, error? }` 형태의 safe summary metadata를 반환한다. raw output은 `runId`로 `/api/orchestrate/worker-runs/:runId/output` 또는 `jaw worker read <runId>`에서 명시적으로 읽는다. 구버전 manager가 이 route 없이 HTML 404를 반환하면 `jaw dispatch --batch`는 JSON parse 예외 대신 stale/missing route 진단을 출력한다.
+- `POST /api/orchestrate/dispatch/batch`는 같은 boss token으로 여러 직원/virtual task를 병렬 dispatch한다. 각 entry는 `agent` 또는 `virtual` 중 하나를 가진다. 응답은 full worker text를 기본 포함하지 않고 `{ agent, ok, runId, status, preview, recoveryCommand, outputBytes, error? }` 형태의 safe summary metadata를 반환한다. raw output은 `runId`로 `/api/orchestrate/worker-runs/:runId/output` 또는 `weasley-podex worker read <runId>`에서 명시적으로 읽는다. 구버전 manager가 이 route 없이 HTML 404를 반환하면 `weasley-podex dispatch --batch`는 JSON parse 예외 대신 stale/missing route 진단을 출력한다.
 
 ### `/api/jaw-ceo/*`
 
@@ -299,7 +299,7 @@ static → employees → heartbeat → skills → jaw-memory → orchestrate
 
 ## Manager Dashboard Server Surface
 
-`jaw dashboard serve`가 띄우는 별도 manager 서버(`src/manager/server.ts`, 992L)는 core `server.ts` route count에 포함하지 않는다. Manager instance state는 `src/manager/instance-registry.ts`(120L)가 cached scan + diff event source로 제공한다. Manager React UI는 `/api/manager/events`, `/api/dashboard/instances`, `/i/:port/api/messages/latest` 계열 HTTP polling으로 상태를 읽고, manager server는 `src/manager/worker-events.ts` + `src/manager/worker-sse-client.ts`를 통해 각 worker instance의 `GET /api/events`를 server-side로 구독해 latest-message cache를 갱신한다. #233부터 worker의 `settings:settings_change`(cli/model/projectDirs 변경)는 `worker_settings_change`로 재발행되어 `GET /api/manager/events/stream`(SSE)으로 manager UI에 live 전달되고, UI(`useManagerEventStream`)는 해당 instance row를 즉시 재조회한다. Code mode의 goal/PABCD/background/worker monitors는 child Jaw instance가 아니라 manager-local `src/manager/routes/runtime-monitor.ts`를 통해 `/api/manager/runtime-status`, `/api/bgtask`, `/api/orchestrate/worker-progress` JSON API를 직접 읽는다. #260 이후 per-instance Jaw sidebar에는 worker progress monitor가 렌더링되지 않고, Code/CEO runtime observability lane에서만 표시된다. `/api/bgtask`의 `preset: "web-ai"` path는 native web-ai watcher가 진행하는 session id를 `session-status` probe로 관찰하고 `session-answer` extractor로 완료 결과를 전달한다. 이 bridge는 BrowserPanel tab state나 Code session transcript ownership으로 승격하지 않는다. `background_tasks.notified_at` 변경도 `bgtask_update`를 발행하므로 Manager monitor는 completion transition 뒤 별도 reload 없이 notification handoff 상태를 재조회할 수 있다.
+`weasley-podex dashboard serve`가 띄우는 별도 manager 서버(`src/manager/server.ts`, 992L)는 core `server.ts` route count에 포함하지 않는다. Manager instance state는 `src/manager/instance-registry.ts`(120L)가 cached scan + diff event source로 제공한다. Manager React UI는 `/api/manager/events`, `/api/dashboard/instances`, `/i/:port/api/messages/latest` 계열 HTTP polling으로 상태를 읽고, manager server는 `src/manager/worker-events.ts` + `src/manager/worker-sse-client.ts`를 통해 각 worker instance의 `GET /api/events`를 server-side로 구독해 latest-message cache를 갱신한다. #233부터 worker의 `settings:settings_change`(cli/model/projectDirs 변경)는 `worker_settings_change`로 재발행되어 `GET /api/manager/events/stream`(SSE)으로 manager UI에 live 전달되고, UI(`useManagerEventStream`)는 해당 instance row를 즉시 재조회한다. Code mode의 goal/PABCD/background/worker monitors는 child Weasley Podex instance가 아니라 manager-local `src/manager/routes/runtime-monitor.ts`를 통해 `/api/manager/runtime-status`, `/api/bgtask`, `/api/orchestrate/worker-progress` JSON API를 직접 읽는다. #260 이후 per-instance Weasley Podex sidebar에는 worker progress monitor가 렌더링되지 않고, Code/CEO runtime observability lane에서만 표시된다. `/api/bgtask`의 `preset: "web-ai"` path는 native web-ai watcher가 진행하는 session id를 `session-status` probe로 관찰하고 `session-answer` extractor로 완료 결과를 전달한다. 이 bridge는 BrowserPanel tab state나 Code session transcript ownership으로 승격하지 않는다. `background_tasks.notified_at` 변경도 `bgtask_update`를 발행하므로 Manager monitor는 completion transition 뒤 별도 reload 없이 notification handoff 상태를 재조회할 수 있다.
 
 | Surface | Endpoints |
 | --- | --- |
@@ -321,5 +321,5 @@ static → employees → heartbeat → skills → jaw-memory → orchestrate
 | Git diff/status/worktrees | `POST /api/dashboard/git/repo-candidates` `POST /api/dashboard/git/diff-summary` `POST /api/dashboard/git/file-diff` `POST /api/dashboard/git/status-map` `POST /api/dashboard/git/scm-snapshot` `POST /api/dashboard/git/scm-operation` `POST /api/dashboard/git/worktrees` `POST /api/dashboard/git/worktree-operation-preview` `POST /api/dashboard/git/worktree-operation` |
 | Memory federation | `GET /api/dashboard/memory/instances` `GET /api/dashboard/memory/search` `GET /api/dashboard/memory/read` `GET /api/dashboard/memory/chat/search` |
 | Memory embedding | `GET /api/dashboard/memory/embed-config` `POST /api/dashboard/memory/embed-config` `POST /api/dashboard/memory/reindex` `GET /api/dashboard/memory/embed-state` `GET /api/dashboard/memory/embed-estimate` `GET /api/dashboard/memory/reindex-stream` (SSE) |
-| Jaw CEO (manager) | `/api/jaw-ceo/*` (same sub-router as core server) |
+| Weasley Podex CEO (manager) | `/api/jaw-ceo/*` (same historical sub-router as core server) |
 

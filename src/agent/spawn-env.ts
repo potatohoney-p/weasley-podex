@@ -1,6 +1,6 @@
 import fs from 'fs';
 import os from 'os';
-import { dirname, join } from 'path';
+import { delimiter, dirname, join } from 'path';
 
 const OPENCODE_CONFIG_SCHEMA = 'https://opencode.ai/config.json';
 const OPENCODE_ALLOW_PERMISSIONS = [
@@ -30,10 +30,10 @@ function prependPathDir(
     dir: string,
 ): Record<string, string> {
     const currentPath = extraEnv["PATH"] ?? inheritedEnv["PATH"] ?? '';
-    const parts = currentPath.split(':').filter(Boolean).filter(part => part !== dir);
+    const parts = currentPath.split(delimiter).filter(Boolean).filter(part => part !== dir);
     return {
         ...extraEnv,
-        PATH: [dir, ...parts].join(':'),
+        PATH: [dir, ...parts].join(delimiter),
     };
 }
 
@@ -113,6 +113,6 @@ export function ensureOpencodeAlwaysAllowPermissions(
         fs.mkdirSync(dirname(configPath), { recursive: true });
         fs.writeFileSync(configPath, serialized);
     } catch (error) {
-        console.warn('[jaw:opencode] permission sync failed:', (error as Error).message);
+        console.warn('[weasley-podex:opencode] permission sync failed:', (error as Error).message);
     }
 }

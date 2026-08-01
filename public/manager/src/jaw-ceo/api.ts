@@ -18,7 +18,7 @@ async function parseJawCeoResponse<T>(response: Response, fallback: string): Pro
         try {
             body = JSON.parse(text) as JawCeoApiEnvelope<T>;
         } catch {
-            throw new Error(`${fallback}: endpoint returned non-JSON; restart the dashboard server to load the Jaw CEO API`);
+            throw new Error(`${fallback}: endpoint returned non-JSON; restart the dashboard server to load the Weasley Podex CEO API`);
         }
     }
     if (!response.ok || !body || body.ok === false) {
@@ -35,7 +35,7 @@ async function getJson<T>(path: string, fallback: string): Promise<T> {
     return await parseJawCeoResponse<T>(response, fallback);
 }
 
-async function postJson<T>(path: string, body: Record<string, unknown> = {}, fallback = 'Jaw CEO request failed'): Promise<T> {
+async function postJson<T>(path: string, body: Record<string, unknown> = {}, fallback = 'Weasley Podex CEO request failed'): Promise<T> {
     const response = await fetch(path, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -44,7 +44,7 @@ async function postJson<T>(path: string, body: Record<string, unknown> = {}, fal
     return await parseJawCeoResponse<T>(response, fallback);
 }
 
-async function putJson<T>(path: string, body: Record<string, unknown> = {}, fallback = 'Jaw CEO request failed'): Promise<T> {
+async function putJson<T>(path: string, body: Record<string, unknown> = {}, fallback = 'Weasley Podex CEO request failed'): Promise<T> {
     const response = await fetch(path, {
         method: 'PUT',
         headers: { 'content-type': 'application/json' },
@@ -54,15 +54,15 @@ async function putJson<T>(path: string, body: Record<string, unknown> = {}, fall
 }
 
 export async function fetchJawCeoState(): Promise<JawCeoPublicState> {
-    return await getJson<JawCeoPublicState>('/api/jaw-ceo/state', 'Jaw CEO state fetch failed');
+    return await getJson<JawCeoPublicState>('/api/jaw-ceo/state', 'Weasley Podex CEO state fetch failed');
 }
 
 export async function fetchJawCeoSettings(): Promise<JawCeoVoiceSettings> {
-    return await getJson<JawCeoVoiceSettings>('/api/jaw-ceo/settings', 'Jaw CEO settings fetch failed');
+    return await getJson<JawCeoVoiceSettings>('/api/jaw-ceo/settings', 'Weasley Podex CEO settings fetch failed');
 }
 
 export async function updateJawCeoSettings(args: { openaiApiKey?: string; clearOpenAiApiKey?: boolean }): Promise<JawCeoVoiceSettings> {
-    return await putJson<JawCeoVoiceSettings>('/api/jaw-ceo/settings', args, 'Jaw CEO settings save failed');
+    return await putJson<JawCeoVoiceSettings>('/api/jaw-ceo/settings', args, 'Weasley Podex CEO settings save failed');
 }
 
 export async function sendJawCeoMessage(args: {
@@ -79,7 +79,7 @@ export async function sendJawCeoMessage(args: {
         responseMode: args.responseMode || 'text',
     };
     if (args.sessionId) body["sessionId"] = args.sessionId;
-    return await postJson<JawCeoToolResult<JawCeoMessageData>>('/api/jaw-ceo/message', body, 'Jaw CEO message failed');
+    return await postJson<JawCeoToolResult<JawCeoMessageData>>('/api/jaw-ceo/message', body, 'Weasley Podex CEO message failed');
 }
 
 export async function refreshJawCeoEvents(args: {
@@ -91,18 +91,18 @@ export async function refreshJawCeoEvents(args: {
     if (args.ports !== undefined) body["ports"] = args.ports;
     if (args.events !== undefined) body["events"] = args.events;
     if (args.sinceCursor !== undefined) body["sinceCursor"] = args.sinceCursor;
-    return await postJson<{ pending: JawCeoCompletion[]; cursor: string }>('/api/jaw-ceo/events/refresh', body, 'Jaw CEO event refresh failed');
+    return await postJson<{ pending: JawCeoCompletion[]; cursor: string }>('/api/jaw-ceo/events/refresh', body, 'Weasley Podex CEO event refresh failed');
 }
 
 export async function continueJawCeoCompletion(completionKey: string, mode: 'text' | 'voice' | 'both' | 'silent'): Promise<JawCeoToolResult> {
-    return await postJson<JawCeoToolResult>(`/api/jaw-ceo/pending/${encodeURIComponent(completionKey)}/continue`, { mode }, 'Jaw CEO continue failed');
+    return await postJson<JawCeoToolResult>(`/api/jaw-ceo/pending/${encodeURIComponent(completionKey)}/continue`, { mode }, 'Weasley Podex CEO continue failed');
 }
 
 export async function summarizeJawCeoCompletion(completionKey: string, format: 'short' | 'detailed' = 'short'): Promise<JawCeoToolResult<{ summary: string; completion: JawCeoCompletion }>> {
     return await postJson<JawCeoToolResult<{ summary: string; completion: JawCeoCompletion }>>(
         `/api/jaw-ceo/pending/${encodeURIComponent(completionKey)}/summarize`,
         { format },
-        'Jaw CEO summarize failed',
+        'Weasley Podex CEO summarize failed',
     );
 }
 
@@ -110,7 +110,7 @@ export async function updateJawCeoCompletionStatus(completionKey: string, action
     return await postJson<JawCeoToolResult<JawCeoCompletion>>(
         `/api/jaw-ceo/pending/${encodeURIComponent(completionKey)}/${action}`,
         {},
-        'Jaw CEO pending update failed',
+        'Weasley Podex CEO pending update failed',
     );
 }
 
@@ -126,11 +126,11 @@ export async function connectJawCeoVoice(args: {
         responseMode: args.responseMode || 'voice',
     };
     if (args.sessionId) body["sessionId"] = args.sessionId;
-    return await postJson<JawCeoVoiceConnectData>('/api/jaw-ceo/voice/connect', body, 'Jaw CEO voice connect failed');
+    return await postJson<JawCeoVoiceConnectData>('/api/jaw-ceo/voice/connect', body, 'Weasley Podex CEO voice connect failed');
 }
 
 export async function closeJawCeoVoice(sessionId: string): Promise<JawCeoToolResult> {
-    return await postJson<JawCeoToolResult>(`/api/jaw-ceo/voice/${encodeURIComponent(sessionId)}/close`, {}, 'Jaw CEO voice close failed');
+    return await postJson<JawCeoToolResult>(`/api/jaw-ceo/voice/${encodeURIComponent(sessionId)}/close`, {}, 'Weasley Podex CEO voice close failed');
 }
 
 export async function createJawCeoConfirmation(args: {
@@ -145,7 +145,7 @@ export async function createJawCeoConfirmation(args: {
     if (args.targetPort !== undefined) body["targetPort"] = args.targetPort;
     if (args.sessionId !== undefined) body["sessionId"] = args.sessionId;
     if (args.expiresInMs !== undefined) body["expiresInMs"] = args.expiresInMs;
-    return await postJson<JawCeoToolResult<JawCeoConfirmationRecord>>('/api/jaw-ceo/confirmations', body, 'Jaw CEO confirmation create failed');
+    return await postJson<JawCeoToolResult<JawCeoConfirmationRecord>>('/api/jaw-ceo/confirmations', body, 'Weasley Podex CEO confirmation create failed');
 }
 
 export async function confirmJawCeoConfirmation(id: string, sessionId?: string): Promise<JawCeoToolResult<JawCeoConfirmationRecord>> {
@@ -154,7 +154,7 @@ export async function confirmJawCeoConfirmation(id: string, sessionId?: string):
     return await postJson<JawCeoToolResult<JawCeoConfirmationRecord>>(
         `/api/jaw-ceo/confirmations/${encodeURIComponent(id)}/confirm`,
         body,
-        'Jaw CEO confirmation failed',
+        'Weasley Podex CEO confirmation failed',
     );
 }
 
@@ -164,6 +164,6 @@ export async function cancelJawCeoConfirmation(id: string, reason?: string): Pro
     return await postJson<JawCeoToolResult<JawCeoConfirmationRecord>>(
         `/api/jaw-ceo/confirmations/${encodeURIComponent(id)}/cancel`,
         body,
-        'Jaw CEO confirmation cancel failed',
+        'Weasley Podex CEO confirmation cancel failed',
     );
 }

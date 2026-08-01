@@ -1,4 +1,4 @@
-﻿// ─── Agent Spawn + Kill/Steer/Queue ──────────────────
+// ─── Agent Spawn + Kill/Steer/Queue ──────────────────
 
 import fs from 'fs';
 import os from 'os';
@@ -411,7 +411,7 @@ function clearWorkerSlotsOnStop(reason: string) {
     const active = getActiveWorkers().length;
     if (active === 0 && !hasPendingWorkerReplays()) return;
     clearAllWorkers();
-    console.log(`[jaw:stop] cleared worker registry (active=${active}, reason=${reason})`);
+    console.log(`[weasley-podex:stop] cleared worker registry (active=${active}, reason=${reason})`);
 }
 
 function clearMainLiveRunOnStop(reason: string): void {
@@ -433,7 +433,7 @@ function abortInProcessRuntimeOnStop(reason: string): boolean {
     if (reason !== 'api' && reason !== 'user' && reason !== 'steer') return false;
     if (!jawRuntime.busy) return false;
     jawRuntime.abort().catch((err: unknown) => {
-        console.warn('[jaw:stop] jwc abort failed', (err as Error)?.message || err);
+        console.warn('[weasley-podex:stop] jwc abort failed', (err as Error)?.message || err);
     });
     return true;
 }
@@ -452,7 +452,7 @@ export function killActiveAgent(reason = 'user') {
     }
     if (!activeProcess) return hadTimer || cancelledPendingMain || abortedInProcess;  // timer/gated spawn/jwc abort 취소도 "killed" 취급
     const policy = getKillPolicy(reason);
-    console.log(`[jaw:kill] reason=${reason} cli=${getActiveMainCli() || 'unknown'} signal=${policy.signal} escalationMs=${policy.escalationMs}`);
+    console.log(`[weasley-podex:kill] reason=${reason} cli=${getActiveMainCli() || 'unknown'} signal=${policy.signal} escalationMs=${policy.escalationMs}`);
     if (activeProcess.pid) killReasons.set(activeProcess.pid, reason);
     try {
         if (activeProcess.pid) {
@@ -498,7 +498,7 @@ export function killAllAgents(reason = 'user') {
     }
     let killed = 0;
     for (const [id, proc] of activeProcesses) {
-        console.log(`[jaw:killAll] killing ${id}, reason=${reason}`);
+        console.log(`[weasley-podex:killAll] killing ${id}, reason=${reason}`);
         if (proc.pid) killReasons.set(proc.pid, reason);
         try {
             if (proc.pid) {
@@ -574,10 +574,10 @@ function makeCleanEnv(extraEnv: Record<string, string> = {}) {
     delete env["CLAUDE_CODE_SSE_PORT"];
     // Phase 8: strip boss-only dispatch token from employee spawns so employees
     // cannot authenticate against /api/orchestrate/dispatch even via localhost.
-    // Detect employee spawn by the explicit JAW_EMPLOYEE_MODE flag; main spawns
+    // Detect employee spawn by the explicit WEASLEY_PODEX_EMPLOYEE_MODE flag; main spawns
     // pass an empty extraEnv and keep the token inherited from process.env.
-    if (extraEnv["JAW_EMPLOYEE_MODE"] === '1') {
-        delete env["JAW_BOSS_TOKEN"];
+    if (extraEnv["WEASLEY_PODEX_EMPLOYEE_MODE"] === '1') {
+        delete env["WEASLEY_PODEX_BOSS_TOKEN"];
     }
     env["PATH"] = buildServicePath(env["PATH"] || '');
     return {
@@ -595,9 +595,9 @@ function formatCliUnavailableMessage(cli: string, detected: ReturnType<typeof de
             .map((entry) => `${entry.path} (${entry.reason})`)
             .join('; ');
         const suffix = rejected.length > 3 ? `; +${rejected.length - 3} more` : '';
-        return `CLI '${cli}' found on PATH but no spawnable executable was available. Rejected: ${details}${suffix}. Run \`jaw doctor --json\`.`;
+        return `CLI '${cli}' found on PATH but no spawnable executable was available. Rejected: ${details}${suffix}. Run \`weasley-podex doctor --json\`.`;
     }
-    return `CLI '${cli}' not found in PATH. Run \`jaw doctor --json\`.`;
+    return `CLI '${cli}' not found in PATH. Run \`weasley-podex doctor --json\`.`;
 }
 
 function buildHistoryBlock(currentPrompt: string, workingDir?: string | null, maxSessions = 10, maxTotalChars = 8000) {
@@ -750,7 +750,7 @@ type SpawnResult = {
 function cleanupEmployeeTmpDir(cwd: string, workingDir: string, label: string) {
     if (cwd !== workingDir) {
         try { fs.rmSync(cwd, { recursive: true, force: true }); }
-        catch (e) { console.warn(`[jaw:${label}] tmp cleanup failed:`, (e as Error).message); }
+        catch (e) { console.warn(`[weasley-podex:${label}] tmp cleanup failed:`, (e as Error).message); }
     }
 }
 
@@ -765,7 +765,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
 
     if (gateEligibleMain && !opts._settingsGateWaited && isRuntimeSettingsMutationInFlight()) {
         if (activeProcess || queueCtrl.isRetryPending() || mainSpawnStarting) {
-            console.log('[jaw] Agent already running, skipping');
+            console.log('[weasley-podex] Agent already running, skipping');
             return { child: null, promise: Promise.resolve({ text: '', code: -1 }) };
         }
         mainSpawnStarting = true;
@@ -804,7 +804,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
     // INVARIANT: 모든 외부 호출은 gateway.ts isAgentBusy()를 거침.
     // 직접 spawnAgent 호출 시 retryPendingTimer도 확인할 것.
     if ((activeProcess || (mainSpawnStarting && gateEligibleMain && !opts._settingsGateWaited)) && mainManaged) {
-        console.log('[jaw] Agent already running, skipping');
+        console.log('[weasley-podex] Agent already running, skipping');
         return { child: null, promise: Promise.resolve({ text: '', code: -1 }) };
     }
 
@@ -838,7 +838,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         if (st && st.retriesLeft <= 0) {
             const fbAvail = detectCli(st.fallbackCli)?.available;
             if (fbAvail) {
-                console.log(`[jaw:fallback] ${cli} retries exhausted → direct ${st.fallbackCli}`);
+                console.log(`[weasley-podex:fallback] ${cli} retries exhausted → direct ${st.fallbackCli}`);
                 broadcast('agent_fallback', { from: cli, to: st.fallbackCli, reason: 'retries exhausted', ...empTag }, isEmployee ? 'internal' : 'public');
                 return spawnAgent(prompt, {
                     ...opts, cli: st.fallbackCli, _isFallback: true, _skipInsert: true,
@@ -998,7 +998,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
     if (!opts.agentId && !opts.internal && !isResume) {
         const pending = consumePendingBootstrapPrompt();
         if (pending) {
-            console.log(`[jaw:compact] injecting bootstrap (${pending.length} chars)`);
+            console.log(`[weasley-podex:compact] injecting bootstrap (${pending.length} chars)`);
             prompt = `${pending}\n\n---\n\n${prompt}`;
         }
     }
@@ -1012,12 +1012,12 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         try {
             if (currentBucket) clearSessionBucket.run(currentBucket);
         } catch (e) {
-            console.warn('[jaw:resume] stale bucket clear failed:', (e as Error).message);
+            console.warn('[weasley-podex:resume] stale bucket clear failed:', (e as Error).message);
         }
         if (cli === 'opencode' && resumeKey !== (bucketResumeKey ?? null)) {
-            console.log(`[jaw:resume] ${cli} resume key changed ${bucketResumeKey ?? 'none'} → ${resumeKey}; starting fresh session`);
+            console.log(`[weasley-podex:resume] ${cli} resume key changed ${bucketResumeKey ?? 'none'} → ${resumeKey}; starting fresh session`);
         } else {
-            console.log(`[jaw:resume] ${cli} model changed ${bucketModel} → ${runtimeModel}; starting fresh session`);
+            console.log(`[weasley-podex:resume] ${cli} model changed ${bucketModel} → ${runtimeModel}; starting fresh session`);
         }
     }
 
@@ -1042,7 +1042,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
                     setSessionBucketSnapshot.run(currentBucket, runtimeModel, built);
                 }
             } catch (e) {
-                console.warn('[jaw:snapshot] freeze build failed:', (e as Error).message);
+                console.warn('[weasley-podex:snapshot] freeze build failed:', (e as Error).message);
             }
         }
     }
@@ -1063,7 +1063,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
             ? _projDirs.map(d => `Project root: ${d}`).join('\n') + '\n'
             : '';
         const memoryNudge = (!opts._isSmokeContinuation && !opts._isGoalContinuation)
-            ? '\n(need history? L1: podex chat/memory search/context | L2: podex dashboard memory search, podex dashboard chat search)'
+            ? '\n(need history? L1: weasley-podex chat/memory search/context | L2: weasley-podex dashboard memory search, weasley-podex dashboard chat search)'
             : '';
         prompt = `${ts}\n${projLine}${prompt}${memoryNudge}`;
     }
@@ -1097,7 +1097,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         ? detectCli('claude').path
         : null;
     const agyLogFile = cli === 'agy'
-        ? join(os.tmpdir(), `jaw-agy-${agentId || 'main'}-${Date.now()}-${crypto.randomUUID()}.log`)
+        ? join(os.tmpdir(), `weasley-podex-agy-${agentId || 'main'}-${Date.now()}-${crypto.randomUUID()}.log`)
         : null;
     const rawTimeoutCfg = (settings as Record<string, unknown>)['agentTimeout'];
     const globalTimeoutCfg = rawTimeoutCfg && typeof rawTimeoutCfg === 'object'
@@ -1132,7 +1132,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
             return buildArgs(cli, runtimeModel, effort, promptForArgs, sysPrompt, permissions, options);
         }
         const sid = resumeSessionId || '';
-        console.log(`[jaw:resume] ${cli} session=${sid.slice(0, 12)}...`);
+        console.log(`[weasley-podex:resume] ${cli} session=${sid.slice(0, 12)}...`);
         return buildResumeArgs(cli, runtimeModel, effort, sid, promptForArgs, permissions, options);
     };
     let args: string[] = [];
@@ -1152,7 +1152,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         const empPromptWithWorkspace = opts.workspaceContext
             ? `${opts.workspaceContext}\n\n${empPrompt}`
             : empPrompt;
-        const tmpDir = join(os.tmpdir(), `jaw-emp-${agentLabel}-${Date.now()}`);
+        const tmpDir = join(os.tmpdir(), `weasley-podex-employee-${agentLabel}-${Date.now()}`);
         fs.mkdirSync(tmpDir, { recursive: true });
 
         for (const name of ['AGENTS.md', 'CLAUDE.md', 'GEMINI.md', 'CONTEXT.md']) {
@@ -1168,7 +1168,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         }
 
         spawnCwd = tmpDir;
-        console.log(`[jaw:${agentLabel}] Employee isolated → ${tmpDir}`);
+        console.log(`[weasley-podex:${agentLabel}] Employee isolated → ${tmpDir}`);
     }
 
     if (cli === 'agy') {
@@ -1202,7 +1202,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         : detected.available;
     if (!cliAvailable) {
         const msg = formatCliUnavailableMessage(cli, detected);
-        console.error(`[jaw:${agentLabel}] ${msg}`);
+        console.error(`[weasley-podex:${agentLabel}] ${msg}`);
         if (mainManaged) clearLiveRun(liveScope);
         broadcast('agent_done', { text: `❌ ${msg}`, error: true, origin, ...empTag }, isEmployee ? 'internal' : 'public');
         resolve!({ text: '', code: 127 });
@@ -1212,10 +1212,10 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
     }
 
     if (cli === 'copilot') {
-        console.log(`[jaw:${agentLabel}] Spawning: copilot --acp --model ${model} [${permissions}]`);
+        console.log(`[weasley-podex:${agentLabel}] Spawning: copilot --acp --model ${model} [${permissions}]`);
     } else {
-        console.log(`[jaw:${agentLabel}] Spawning: ${cli} ${args.join(' ').slice(0, 120)}...`);
-        if (cli === 'claude-e') console.log(`[jaw:${agentLabel}:args] ${JSON.stringify(args)}`);
+        console.log(`[weasley-podex:${agentLabel}] Spawning: ${cli} ${args.join(' ').slice(0, 120)}...`);
+        if (cli === 'claude-e') console.log(`[weasley-podex:${agentLabel}:args] ${JSON.stringify(args)}`);
     }
 
 
@@ -1240,7 +1240,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
             }
 
             if (changed) fs.writeFileSync(cfgPath, JSON.stringify(cfg, null, 2) + '\n');
-        } catch (e: unknown) { console.warn('[jaw:copilot] config.json sync failed:', (e as Error).message); }
+        } catch (e: unknown) { console.warn('[weasley-podex:copilot] config.json sync failed:', (e as Error).message); }
 
         const acp = new AcpClient({ model, workDir: spawnCwd, permissions, env: spawnEnv });
         acp.spawn();
@@ -1471,7 +1471,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
                     effort: cfg.effort || '',
                     skipSessionPersist: opts._skipSessionPersist === true,
                 }))) {
-                    console.log(`[jaw:session] saved ${cli} session=${persistedAcpSessionId.slice(0, 12)}... (pre-shutdown)`);
+                    console.log(`[weasley-podex:session] saved ${cli} session=${persistedAcpSessionId.slice(0, 12)}... (pre-shutdown)`);
                 }
 
                 await acp.shutdown();
@@ -1518,7 +1518,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
                 fallbackMaxRetries: FALLBACK_MAX_RETRIES,
                 processQueue,
             }).catch((err: Error) => {
-                console.error('[jaw:lifecycle] handleAgentExit failed (ACP):', err.message);
+                console.error('[weasley-podex:lifecycle] handleAgentExit failed (ACP):', err.message);
             });
         });
 
@@ -1534,7 +1534,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
             throw new Error('Pi profile is not configured');
         }
         const piSessionId = isResume && bucketSessionId ? bucketSessionId : '';
-        console.log(`[jaw:pi] isResume=${isResume}, bucketSessionId=${bucketSessionId || 'none'}, piSessionId=${piSessionId || 'new'}`);
+        console.log(`[weasley-podex:pi] isResume=${isResume}, bucketSessionId=${bucketSessionId || 'none'}, piSessionId=${piSessionId || 'new'}`);
         const piPrompt = piSessionId ? prompt : withHistoryPrompt(prompt, historyBlock);
         const traceRunId = startTraceRun({ cli, model: runtimeModel, workingDir: settings["workingDir"] || null, agentLabel, audience: traceAudience });
         const ctx: SpawnContext = {
@@ -1622,7 +1622,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
             },
         });
         const piWatchdog = attachWatchdog(child, agentLabel, (reason) => {
-            console.log(`[jaw:watchdog] killing ${agentLabel} (pi) — ${reason}`);
+            console.log(`[weasley-podex:watchdog] killing ${agentLabel} (pi) — ${reason}`);
             ctx.stallReason = reason;
             if (child.pid) {
                 killProcessTree(child.pid, 'SIGTERM');
@@ -1675,7 +1675,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         }).catch((err: Error) => {
             piWatchdog.stop();
             if (ctx.stderrBuf.length < 4000) ctx.stderrBuf += err.message;
-            console.error('[jaw:pi] runtime failed:', err.message);
+            console.error('[weasley-podex:pi] runtime failed:', err.message);
             handleAgentExit({
                 ctx, code: 1, cli, model: runtimeModel, effectiveProvider: profile.id, agentLabel, mainManaged, origin,
                 resumeKey,
@@ -1690,7 +1690,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
                 fallbackMaxRetries: FALLBACK_MAX_RETRIES,
                 processQueue,
             }).catch((handleErr: Error) => {
-                console.error('[jaw:lifecycle] handleAgentExit failed (Pi):', handleErr.message);
+                console.error('[weasley-podex:lifecycle] handleAgentExit failed (Pi):', handleErr.message);
             });
         });
 
@@ -1904,7 +1904,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
                     effort: cfg.effort || '',
                     skipSessionPersist: opts._skipSessionPersist === true,
                 }))) {
-                    console.log(`[jaw:session] saved ${cli} session=${persistedThreadId.slice(0, 12)}... (pre-shutdown)`);
+                    console.log(`[weasley-podex:session] saved ${cli} session=${persistedThreadId.slice(0, 12)}... (pre-shutdown)`);
                 }
 
                 if (!codexAppSettled) {
@@ -1967,7 +1967,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
                 fallbackMaxRetries: FALLBACK_MAX_RETRIES,
                 processQueue,
             }).catch((err: Error) => {
-                console.error('[jaw:lifecycle] handleAgentExit failed (codex-app):', err.message);
+                console.error('[weasley-podex:lifecycle] handleAgentExit failed (codex-app):', err.message);
             });
         });
 
@@ -1985,7 +1985,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         ? buildOpencodeSpawnAudit({ args, cwd: spawnCwd, env: spawnEnv, binary: spawnCommand })
         : undefined;
     if (opencodeSpawnAudit) {
-        console.log(`[jaw:opencode:audit] ${JSON.stringify(opencodeSpawnAudit)}`);
+        console.log(`[weasley-podex:opencode:audit] ${JSON.stringify(opencodeSpawnAudit)}`);
     }
     const child = spawn(spawnCommand, args, {
         cwd: spawnCwd,
@@ -2023,9 +2023,9 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         const msg = err.code === 'ENOENT'
             ? `CLI '${cli}' 실행 실패 (ENOENT). 설치/경로를 확인하세요.`
             : err.code === 'ENOEXEC'
-                ? `CLI '${cli}' 실행 실패 (ENOEXEC). PATH의 실행 파일이 바이너리 또는 shebang 스크립트가 아닙니다. \`jaw doctor --json\`으로 깨진 shim을 확인하세요.`
+                ? `CLI '${cli}' 실행 실패 (ENOEXEC). PATH의 실행 파일이 바이너리 또는 shebang 스크립트가 아닙니다. \`weasley-podex doctor --json\`으로 깨진 shim을 확인하세요.`
                 : `CLI '${cli}' 실행 실패: ${err.message}`;
-        console.error(`[jaw:${agentLabel}:error] ${msg}`);
+        console.error(`[weasley-podex:${agentLabel}:error] ${msg}`);
         activeProcesses.delete(agentLabel);
         if (mainManaged) {
             activeProcess = null;
@@ -2113,7 +2113,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         agyQuietCompletionTimer = setTimeout(() => {
             agyQuietCompletionTimer = null;
             if (!child.pid || getAgyQuietCompletionDelayMs(ctx) === null) return;
-            console.log(`[jaw:agy] output quiet for ${quietCompletionDelayMs}ms — completing print run`);
+            console.log(`[weasley-podex:agy] output quiet for ${quietCompletionDelayMs}ms — completing print run`);
             killReasons.set(child.pid, AGY_COMPLETE_KILL_REASON);
             try {
                 killProcessTree(child.pid, 'SIGTERM');
@@ -2123,7 +2123,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
                     } catch { /* already dead */ }
                 }, DEFAULT_KILL_ESCALATION_MS);
             } catch (e) {
-                console.warn('[jaw:agy] quiet completion kill failed:', (e as Error).message);
+                console.warn('[weasley-podex:agy] quiet completion kill failed:', (e as Error).message);
             }
         }, quietCompletionDelayMs);
     };
@@ -2141,7 +2141,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
     if (typeof agentTimeoutCfg['absoluteMs'] === 'number') watchdogConfig.absoluteMs = agentTimeoutCfg['absoluteMs'];
     if (typeof agentTimeoutCfg['absoluteHardCapMs'] === 'number') watchdogConfig.absoluteHardCapMs = agentTimeoutCfg['absoluteHardCapMs'];
     const stallWatchdog = attachWatchdog(child, agentLabel, (reason) => {
-        console.log(`[jaw:watchdog] killing ${agentLabel} — ${reason}`);
+        console.log(`[weasley-podex:watchdog] killing ${agentLabel} — ${reason}`);
         ctx.stallReason = reason;
         if (cli === 'agy') {
             ctx.agyTranscriptMode = classifyAgyTranscriptMode(ctx);
@@ -2217,7 +2217,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
                 ctx.sessionId = rtEvt['sessionId'] as string;
             }
             if (evtName === 'error' && typeof rtEvt['message'] === 'string') {
-                const message = `[jaw:${cli}:error] ${rtEvt['message']}`;
+                const message = `[weasley-podex:${cli}:error] ${rtEvt['message']}`;
                 if (ctx.stderrBuf.length < 4000) ctx.stderrBuf = ctx.stderrBuf ? `${ctx.stderrBuf}\n${message}` : message;
                 pushTrace(ctx, message);
             }
@@ -2234,8 +2234,8 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         }
         recordOpencodeEvent(line, event);
         if (process.env["DEBUG"]) {
-            console.log(`[jaw:event:${agentLabel}] ${cli} type=${event.type}`);
-            console.log(`[jaw:raw:${agentLabel}] ${line.slice(0, 300)}`);
+            console.log(`[weasley-podex:event:${agentLabel}] ${cli} type=${event.type}`);
+            console.log(`[weasley-podex:raw:${agentLabel}] ${line.slice(0, 300)}`);
         }
         logEventSummary(agentLabel, dispatchCli, event, ctx);
         if (!ctx.sessionId) ctx.sessionId = extractSessionId(dispatchCli, event);
@@ -2254,7 +2254,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
             const idleMs = Date.now() - lastOpencodeIoAt;
             if (idleMs < 60_000) return;
             const snapshot = buildOpencodeRuntimeSnapshot(ctx);
-            const line = `[jaw:opencode:idle] ${idleMs}ms ${JSON.stringify(snapshot)}`;
+            const line = `[weasley-podex:opencode:idle] ${idleMs}ms ${JSON.stringify(snapshot)}`;
             console.warn(line);
             pushTrace(ctx, line);
         }, 30_000);
@@ -2276,7 +2276,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
             appendAgyFullText(ctx, text);
             if (agyResumeDecision.ok && !agyGuardedStaleDetected && isAgyStaleSessionOutput(text)) {
                 agyGuardedStaleDetected = true;
-                console.log('[jaw:agy] stale guarded resume output detected — terminating for fresh retry');
+                console.log('[weasley-podex:agy] stale guarded resume output detected — terminating for fresh retry');
                 if (child.pid) killProcessTree(child.pid, 'SIGTERM');
                 return;
             }
@@ -2350,7 +2350,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
         if (cli === 'agy') ctx.agyLastActivitySource = 'stderr';
         if ((kiroPlainText || cli === 'agy') && text) ctx.stallWatchdog?.markProgress();
         appendTraceEvent({ runId: ctx.traceRunId, source: 'stderr', eventType: 'stderr', raw: text });
-        console.error(`[jaw:stderr:${agentLabel}] ${text}`);
+        console.error(`[weasley-podex:stderr:${agentLabel}] ${text}`);
         if (ctx.stderrBuf.length < 4000) ctx.stderrBuf += text + '\n';
         scheduleAgyQuietCompletion();
     });
@@ -2397,12 +2397,12 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
                     ctx.sessionId = extractAgyConversationId(fs.readFileSync(agyLogFile, 'utf8'));
                 }
             } catch (e) {
-                console.warn('[jaw:agy] log session capture failed:', (e as Error).message);
+                console.warn('[weasley-podex:agy] log session capture failed:', (e as Error).message);
             }
         }
         if (cli === 'agy' && agyLogFile) {
             try { fs.rmSync(agyLogFile, { force: true }); }
-            catch (e) { console.warn('[jaw:agy] log cleanup failed:', (e as Error).message); }
+            catch (e) { console.warn('[weasley-podex:agy] log cleanup failed:', (e as Error).message); }
         }
         agyClosing = true;
         agyTranscriptWatcher?.stop();
@@ -2410,11 +2410,11 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
             ctx.agyTranscriptMode = classifyAgyTranscriptMode(ctx);
         }
         if (cli === 'agy' && isResume && (agyGuardedStaleDetected || isAgyStaleSessionOutput(ctx.fullText))) {
-            console.log(`[jaw:agy] stale session detected (Warning: conversation not found) — clearing bucket`);
+            console.log(`[weasley-podex:agy] stale session detected (Warning: conversation not found) — clearing bucket`);
             try {
                 const bucket = resolveSessionBucket(cli, runtimeModel, effectiveProvider);
                 clearSessionBucket.run(bucket);
-            } catch (e) { console.warn('[jaw:agy] stale bucket clear failed:', (e as Error).message); }
+            } catch (e) { console.warn('[weasley-podex:agy] stale bucket clear failed:', (e as Error).message); }
             ctx.sessionId = null;
             if (agyResumeDecision.ok && !opts._agyStaleFreshRetry) {
                 activeProcesses.delete(agentLabel);
@@ -2438,17 +2438,17 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
             });
             ctx.sessionId = captured.id;
             if (captured.source) {
-                console.log(`[jaw:kiro] session capture source=${captured.source} id=${captured.id?.slice(0, 12) ?? 'none'}...`);
+                console.log(`[weasley-podex:kiro] session capture source=${captured.source} id=${captured.id?.slice(0, 12) ?? 'none'}...`);
             }
             if (!ctx.sessionId) {
-                console.warn(`[jaw:kiro] session id capture failed cwd=${spawnCwd}`);
+                console.warn(`[weasley-podex:kiro] session id capture failed cwd=${spawnCwd}`);
             }
             if (isResume && isKiroStaleSessionOutput(ctx.fullText)) {
-                console.log('[jaw:kiro] stale session detected in output — clearing bucket');
+                console.log('[weasley-podex:kiro] stale session detected in output — clearing bucket');
                 try {
                     const bucket = resolveSessionBucket(cli, runtimeModel, effectiveProvider);
                     clearSessionBucket.run(bucket);
-                } catch (e) { console.warn('[jaw:kiro] stale bucket clear failed:', (e as Error).message); }
+                } catch (e) { console.warn('[weasley-podex:kiro] stale bucket clear failed:', (e as Error).message); }
                 ctx.sessionId = null;
             }
             const parsed = finalizeKiroFullText(ctx.fullText, ctx.kiroLineBuffer);
@@ -2465,7 +2465,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
             const fromStderr = parseAiESessionIdFromStderr(ctx.stderrBuf);
             if (fromStderr) {
                 ctx.sessionId = fromStderr;
-                console.log(`[jaw:ai-e:${effectiveProvider}] session capture id=${fromStderr.slice(0, 16)}...`);
+                console.log(`[weasley-podex:ai-e:${effectiveProvider}] session capture id=${fromStderr.slice(0, 16)}...`);
             }
         }
         let agyCloseTimedOut = false;
@@ -2591,7 +2591,7 @@ export function spawnAgent(prompt: string, opts: SpawnOpts = {}): SpawnResult {
             processQueue,
             ...(agyTotalOutputLen > 0 ? { outputLen: agyTotalOutputLen } : {}),
         }).catch((err: Error) => {
-            console.error('[jaw:lifecycle] handleAgentExit failed (CLI):', err.message);
+            console.error('[weasley-podex:lifecycle] handleAgentExit failed (CLI):', err.message);
         });
     });
 

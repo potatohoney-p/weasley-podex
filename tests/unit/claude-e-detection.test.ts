@@ -8,7 +8,14 @@ import { detectCli, getClaudeExecHelperCandidates, getClaudeIHelperCandidates } 
 
 function writeExecutable(dir: string, name: string): string {
     const filePath = path.join(dir, name);
-    fs.writeFileSync(filePath, `#!/usr/bin/env sh
+    fs.writeFileSync(filePath, process.platform === 'win32' ? `@echo off
+if "%~1"=="run" if "%~2"=="--help" (
+  echo       --idle-timeout-ms ^<IDLE_TIMEOUT_MS^>
+  echo       --hard-timeout-ms ^<HARD_TIMEOUT_MS^>
+  exit /b 0
+)
+echo claude-e 0.1.9
+` : `#!/usr/bin/env sh
 if [ "$1" = "run" ] && [ "$2" = "--help" ]; then
   echo "      --idle-timeout-ms <IDLE_TIMEOUT_MS>"
   echo "      --hard-timeout-ms <HARD_TIMEOUT_MS>"
@@ -29,7 +36,7 @@ test('claude-i helper candidates prefer explicit claude-e env override', () => {
     const candidates = getClaudeIHelperCandidates(projectDir, {
         CLAUDE_E_BIN: explicit,
         CLAUDE_EXEC_BIN: execAlias,
-        JAW_CLAUDE_I_BIN: legacy,
+        WEASLEY_PODEX_CLAUDE_I_BIN: legacy,
     });
 
     assert.equal(candidates[0], explicit);
@@ -47,28 +54,30 @@ test('claude-e helper candidates expose package bins and compatibility aliases',
     const explicit = path.join(projectDir, 'custom-claude-e');
 
     const candidates = getClaudeExecHelperCandidates(projectDir, { CLAUDE_E_BIN: explicit });
+    const shortHelper = process.platform === 'win32' ? 'claude-e.exe' : 'claude-e';
+    const execHelper = process.platform === 'win32' ? 'claude-exec.exe' : 'claude-exec';
 
     assert.equal(candidates[0], explicit);
-    assert.ok(candidates.some((candidate) => candidate.endsWith(path.join('target', 'release', 'claude-e'))));
-    assert.ok(candidates.some((candidate) => candidate.endsWith(path.join('target', 'release', 'claude-exec'))));
-    assert.ok(candidates.some((candidate) => candidate.endsWith(path.join('target', 'debug', 'claude-e'))));
-    assert.ok(candidates.some((candidate) => candidate.endsWith(path.join('target', 'debug', 'claude-exec'))));
+    assert.ok(candidates.some((candidate) => candidate.endsWith(path.join('target', 'release', shortHelper))));
+    assert.ok(candidates.some((candidate) => candidate.endsWith(path.join('target', 'release', execHelper))));
+    assert.ok(candidates.some((candidate) => candidate.endsWith(path.join('target', 'debug', shortHelper))));
+    assert.ok(candidates.some((candidate) => candidate.endsWith(path.join('target', 'debug', execHelper))));
 });
 
 test('detectCli resolves claude-e through CLAUDE_E_BIN fallback', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-claude-e-bin-'));
-    const helperName = process.platform === 'win32' ? 'claude-e.exe' : 'claude-e';
+    const helperName = process.platform === 'win32' ? 'claude-e.cmd' : 'claude-e';
     const helper = writeExecutable(dir, helperName);
     const oldPath = process.env.PATH;
     const oldShortOverride = process.env.CLAUDE_E_BIN;
     const oldExecOverride = process.env.CLAUDE_EXEC_BIN;
-    const oldOverride = process.env.JAW_CLAUDE_I_BIN;
+    const oldOverride = process.env.WEASLEY_PODEX_CLAUDE_I_BIN;
 
     try {
         process.env.PATH = '/usr/bin:/bin';
         process.env.CLAUDE_E_BIN = helper;
         delete process.env.CLAUDE_EXEC_BIN;
-        delete process.env.JAW_CLAUDE_I_BIN;
+        delete process.env.WEASLEY_PODEX_CLAUDE_I_BIN;
         const detected = detectCli('claude-e');
         assert.equal(detected.available, true);
         assert.equal(detected.path, helper);
@@ -79,7 +88,7 @@ test('detectCli resolves claude-e through CLAUDE_E_BIN fallback', () => {
         else process.env.CLAUDE_E_BIN = oldShortOverride;
         if (oldExecOverride === undefined) delete process.env.CLAUDE_EXEC_BIN;
         else process.env.CLAUDE_EXEC_BIN = oldExecOverride;
-        if (oldOverride === undefined) delete process.env.JAW_CLAUDE_I_BIN;
-        else process.env.JAW_CLAUDE_I_BIN = oldOverride;
+        if (oldOverride === undefined) delete process.env.WEASLEY_PODEX_CLAUDE_I_BIN;
+        else process.env.WEASLEY_PODEX_CLAUDE_I_BIN = oldOverride;
     }
 });

@@ -13,7 +13,7 @@ async function callDashboard<T>(path: string): Promise<T> {
     try {
         res = await fetch(url, { headers: { host: `127.0.0.1:${port}` } });
     } catch (err) {
-        throw new Error(`dashboard unreachable at :${port} — run \`jaw dashboard serve\` first. (${(err as Error).message})`);
+        throw new Error(`dashboard unreachable at :${port} — run \`weasley-podex dashboard serve\` first. (${(err as Error).message})`);
     }
     if (!res.ok) {
         const body = await res.text().catch(() => '');
@@ -58,10 +58,10 @@ function formatChatResult(data: ChatSearchResponse): string {
 
 function printHelp(): void {
     console.log(`
-  jaw dashboard chat — L2 cross-instance chat search (read-only)
+  weasley-podex dashboard chat — L2 cross-instance chat search (read-only)
 
   Usage:
-    jaw dashboard chat search "<query>" [--instance <id,id>] [--limit N] [--days N]
+    weasley-podex dashboard chat search "<query>" [--instance <id,id>] [--limit N] [--days N]
 
   Options:
     --instance <ids>   comma-separated instance IDs to restrict the search
@@ -70,8 +70,8 @@ function printHelp(): void {
     --json             machine-readable JSON
     --port <port>      dashboard port (env DASHBOARD_PORT or default ${DASHBOARD_DEFAULT_PORT})
 
-  Read-only. Searches jaw.db chat messages across all registered instances.
-  Companion to \`jaw chat search\` (L1, instance-local).
+  Read-only. Searches Weasley Podex chat databases across all registered instances.
+  Companion to \`weasley-podex chat search\` (L1, instance-local).
 `);
 }
 
@@ -100,7 +100,7 @@ export async function handleDashboardChat(argvFromSwitch: string[]): Promise<voi
         switch (sub) {
             case 'search': {
                 const q = positionals.join(' ').trim();
-                if (!q) { console.error('  Usage: jaw dashboard chat search "<query>"'); process.exit(1); }
+                if (!q) { console.error('  Usage: weasley-podex dashboard chat search "<query>"'); process.exit(1); }
                 const qs = new URLSearchParams({ q });
                 if (values.instance) qs.set('instance', String(values.instance));
                 if (values.limit) qs.set('limit', String(values.limit));

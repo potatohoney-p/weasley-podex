@@ -6,12 +6,12 @@ import { writeFileSync, unlinkSync } from 'node:fs';
 import { generateLaunchdPlist, type PlistOptions } from '../../src/core/launchd-plist.js';
 
 const defaults: PlistOptions = {
-    label: 'com.podex.default',
+    label: 'com.weasley.podex.default',
     port: '3457',
     nodePath: '/usr/local/bin/node',
-    jawPath: '/usr/local/bin/jaw',
-    jawHome: '/Users/u/.podex',
-    logDir: '/Users/u/.podex/logs',
+    jawPath: '/usr/local/bin/weasley-podex',
+    jawHome: '/Users/u/.weasley/podex',
+    logDir: '/Users/u/.weasley/podex/logs',
     servicePath: '/usr/local/bin:/usr/bin:/bin',
 };
 
@@ -35,7 +35,7 @@ test('P04C-004: plist includes --port and --home with correct values', () => {
     assert.match(plist, /<string>--port<\/string>/);
     assert.match(plist, /<string>--home<\/string>/);
     assert.match(plist, /<string>3457<\/string>/);
-    assert.match(plist, /<string>\/Users\/u\/\.podex<\/string>/);
+    assert.match(plist, /<string>\/Users\/u\/\.weasley\/podex<\/string>/);
 });
 
 test('P04C-005: plist escapes XML special characters in jawHome', () => {
@@ -63,8 +63,15 @@ test('P04C-007: plist sets RunAtLoad and KeepAlive', () => {
     assert.match(plist, /<key>KeepAlive<\/key>\s*<true\/>/);
 });
 
-test('P04C-008: plist sets podex_HOME env var', () => {
+test('P04C-008: plist sets WEASLEY_PODEX_HOME env var', () => {
     const plist = generateLaunchdPlist(defaults);
-    assert.match(plist, /<key>podex_HOME<\/key>\s*<string>\/Users\/u\/\.podex<\/string>/);
+    assert.match(plist, /<key>WEASLEY_PODEX_HOME<\/key>\s*<string>\/Users\/u\/\.weasley\/podex<\/string>/);
+});
+
+test('P04C-009: plist uses Weasley-branded log files', () => {
+    const plist = generateLaunchdPlist(defaults);
+    assert.match(plist, /weasley-podex-serve\.log/);
+    assert.match(plist, /weasley-podex-serve\.err/);
+    assert.doesNotMatch(plist, /jaw-serve\.(?:log|err)/);
 });
 

@@ -18,7 +18,7 @@ export async function executeRealtimeTool(ctx: JawCeoCoordinatorContext, name: s
         tool: name,
         ok: false,
         code: 'unknown_tool',
-        message: `Unknown Jaw CEO Realtime tool: ${name}`,
+        message: `Unknown Weasley Podex CEO Realtime tool: ${name}`,
         kind: 'policy',
         sourceLabels: ['realtime'],
     });
@@ -65,7 +65,7 @@ async function executeInstanceTool(ctx: JawCeoCoordinatorContext, name: string, 
         return await runLifecycleTool(ctx, {
             action: name,
             port: Number(args["port"]),
-            reason: String(args["reason"] || 'Jaw CEO lifecycle request'),
+            reason: String(args["reason"] || 'Weasley Podex CEO lifecycle request'),
             ...(typeof args["permission"] === 'string' ? { permission: args["permission"] } : {}),
             ...(typeof args["confirmationRecordId"] === 'string' ? { confirmationRecordId: args["confirmationRecordId"] } : {}),
         });
@@ -100,7 +100,7 @@ async function executeCeoTool(ctx: JawCeoCoordinatorContext, name: string, args:
             path: String(args["path"] || ''),
             operation: args["operation"] === 'replace_section' || args["operation"] === 'apply_patch' ? args["operation"] : 'append_section',
             content: String(args["content"] || ''),
-            reason: String(args["reason"] || 'Jaw CEO docs edit'),
+            reason: String(args["reason"] || 'Weasley Podex CEO docs edit'),
         });
     }
     return null;

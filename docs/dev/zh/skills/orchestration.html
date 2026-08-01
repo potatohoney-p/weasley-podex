@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Development Skills — podex Docs</title>
+<title>Development Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,16 +81,16 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Development Skills</h1>
-<p class="lead">podex 内置了 10 个开发编排技能，它们<strong>始终自动注入</strong>（auto-active）到每个会话中。这些技能构成了一个分层的专业角色团队——从通用编码到安全审计——因此你无需手动加载它们。只需描述你的需求，合适的技能就会自动激活。</p>
+<p class="lead">捆绑目录包含用于工程与结构化交付的 <code>dev</code> 和 <code>dev-pabcd</code>。本页其他专业角色名称仅为可选扩展示例，只有用户从可信来源导入后才存在。</p>
 
-<div class="callout callout-info">本页列出的所有 10 个开发技能均为<strong>自动激活</strong>状态。它们在会话启动时注入系统提示词，无需使用 <code>/skill load</code>。编排器（<code>dev</code>）会自动协调其他技能。</div>
+<div class="callout callout-info"><code>skills_ref/registry.json</code> 是唯一事实来源。本页只有 <code>dev</code> 与 <code>dev-pabcd</code> 捆绑并默认激活，其他行均为可选扩展模式。</div>
 
 <h2>技能概览</h2>
 <table>
@@ -132,7 +131,7 @@
 </table>
 
 <h2>dev-frontend</h2>
-<p>生产级前端开发，具有独特的美学风格。它会检测框架（React、Vue、Svelte、原生 JS）并从其模块化参考系统中应用专门的规则。当检测到 <code>role=frontend</code> 时自动注入。</p>
+<p>可选的前端专业角色示例。导入对应扩展后，它可以检测 React、Vue、Svelte 或原生 JS，并在 <code>role=frontend</code> 工作流中应用其规则。</p>
 <pre><code># 触发 dev-frontend
 "다크 모드 토글 컴포넌트 만들어줘"
 "이 페이지 반응형으로 만들어줘 — 모바일 우선"
@@ -212,7 +211,7 @@
 </table>
 
 <h2>编排工作原理</h2>
-<p>当你发送消息时，<code>dev</code> 编排器会根据所有 10 个技能对消息进行评估，并注入合适的专业上下文。多个技能可以同时激活。</p>
+<p>发送开发请求时，捆绑的 <code>dev</code> 技能会应用核心流程，并可结合用户显式导入的可选专业扩展。</p>
 
 <table>
 <tr><th>你的请求</th><th>激活的技能</th></tr>

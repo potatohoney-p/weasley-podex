@@ -18,8 +18,8 @@ test('code dev-agent context resolves source skill paths without caller cwd', as
     try {
         process.chdir(outside);
         const paths = resolveCodeDevContextPaths({ packageRoot: join(before) });
-        assert.match(paths.sourceMarkdownPath, /skills_ref\/web-ai\/modules\/gpt-dev-agent-context\.md$/);
-        assert.match(paths.sourceZipPath, /skills_ref\/web-ai\/modules\/gpt-dev-agent-context\.zip$/);
+        assert.equal(paths.sourceMarkdownPath, join(before, 'skills_ref', 'web-ai', 'modules', 'gpt-dev-agent-context.md'));
+        assert.equal(paths.sourceZipPath, join(before, 'skills_ref', 'web-ai', 'modules', 'gpt-dev-agent-context.zip'));
     } finally {
         process.chdir(before);
     }

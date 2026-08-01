@@ -41,7 +41,7 @@ test('EMP-005: getEmployeePrompt includes browser control section', () => {
     const emp = { name: 'Test', cli: 'claude', role: 'tester' };
     const prompt = getEmployeePrompt(emp);
     assert.ok(prompt.includes('Browser Control'));
-    assert.ok(prompt.includes('podex browser'));
+    assert.ok(prompt.includes('weasley-podex browser'));
 });
 
 test('EMP-006: getEmployeePrompt includes channel file delivery section', () => {
@@ -66,8 +66,13 @@ test('EMP-008: getEmployeePromptV2 adds compact skill and role contracts', () =>
     assert.ok(v2.includes('Skill Loading Contract'), 'v2 should include on-demand skill loading guidance');
     assert.ok(v2.includes('Role Contract'), 'v2 should include role contract');
     assert.ok(v2.includes('dev-frontend'), 'frontend role guide should be named');
-    assert.match(v2, /dev-frontend.*MUST USE for any frontend/,
-        'role guide should include the skill metadata description, not only the path');
+    if (hasSkillsRef) {
+        assert.match(v2, /dev-frontend.*MUST USE for any frontend/,
+            'role guide should include the skill metadata description, not only the path');
+    } else {
+        assert.match(v2, /Role guide: dev-frontend: unavailable/,
+            'missing optional skills_ref content should be reported honestly');
+    }
     assert.ok(!v2.includes('## Development Guide (Common)'), 'dev guide body should not be inlined');
 });
 
@@ -228,8 +233,8 @@ test('EMP-025: employee prompt uses employee naming and dispatch prohibition', (
     const emp = { name: 'Backend', cli: 'claude', role: 'backend' };
     clearPromptCache();
     const v2 = getEmployeePromptV2(emp, 'backend', 1);
-    assert.ok(v2.includes('jaw employee'), 'should reference jaw employee identity');
-    assert.ok(v2.includes('NEVER re-dispatch jaw employees'), 'should prohibit employee dispatch');
+    assert.ok(v2.includes('weasley-podex employee'), 'should reference weasley-podex employee identity');
+    assert.ok(v2.includes('NEVER re-dispatch Weasley Podex employees'), 'should prohibit employee dispatch');
     assert.ok(!v2.includes('worker agent in pipe mode'), 'should not use old worker pipe mode wording');
 });
 

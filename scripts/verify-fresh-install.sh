@@ -38,7 +38,8 @@ run_optional_version() {
     ok "$name works: $(command -v "$name")"
     return 0
   fi
-  if [ "${podex_REQUIRE_OPTIONAL_RUNTIMES:-0}" = "1" ] || [ "${podex_REQUIRE_OPTIONAL_RUNTIMES:-}" = "true" ]; then
+  require_optional_runtimes="${WEASLEY_PODEX_REQUIRE_OPTIONAL_RUNTIMES:-0}"
+  if [ "$require_optional_runtimes" = "1" ] || [ "$require_optional_runtimes" = "true" ]; then
     fail "$name optional runtime is missing or not runnable"
   fi
   ok "$name optional runtime not available; continuing"
@@ -71,7 +72,7 @@ is_wsl() {
   grep -qi microsoft /proc/version 2>/dev/null
 }
 
-echo "podex fresh-install verification"
+echo "Weasley Podex fresh-install verification"
 echo "shell=${SHELL:-unknown}"
 echo "path=${PATH:-}"
 
@@ -81,8 +82,7 @@ node -e 'process.exit(Number(process.versions.node.split(".")[0]) >= 22 ? 0 : 1)
 ok "node version is >=22: $(node --version)"
 
 run_version npm
-run_version jaw
-run_version podex
+run_version weasley-podex
 run_optional_version ai-e
 run_optional_version claude-e
 
@@ -102,26 +102,26 @@ if [ -x "$HOME/.local/bin/claude" ]; then
 fi
 
 if should_check_zsh; then
-  zsh -ic 'command -v node >/dev/null && command -v npm >/dev/null && command -v jaw >/dev/null && command -v podex >/dev/null' >/dev/null 2>&1 \
-    || fail "interactive zsh cannot resolve node/npm/jaw/podex"
-  ok "interactive zsh resolves node/npm/jaw/podex"
+  zsh -ic 'command -v node >/dev/null && command -v npm >/dev/null && command -v weasley-podex >/dev/null' >/dev/null 2>&1 \
+    || fail "interactive zsh cannot resolve node/npm/weasley-podex"
+  ok "interactive zsh resolves node/npm/weasley-podex"
 
-  zsh -lc 'command -v node >/dev/null && command -v npm >/dev/null && command -v jaw >/dev/null && command -v podex >/dev/null' >/dev/null 2>&1 \
-    || fail "login zsh cannot resolve node/npm/jaw/podex"
-  ok "login zsh resolves node/npm/jaw/podex"
+  zsh -lc 'command -v node >/dev/null && command -v npm >/dev/null && command -v weasley-podex >/dev/null' >/dev/null 2>&1 \
+    || fail "login zsh cannot resolve node/npm/weasley-podex"
+  ok "login zsh resolves node/npm/weasley-podex"
 fi
 
 if is_wsl; then
-  bash -lc 'command -v node >/dev/null && node --version >/dev/null && command -v npm >/dev/null && npm --version >/dev/null && command -v jaw >/dev/null && jaw --version >/dev/null && command -v podex >/dev/null && podex --version >/dev/null' >/dev/null 2>&1 \
-    || fail "WSL bash login shell cannot resolve node/npm/jaw/podex"
-  ok "WSL bash login shell resolves node/npm/jaw/podex"
+  bash -lc 'command -v node >/dev/null && node --version >/dev/null && command -v npm >/dev/null && npm --version >/dev/null && command -v weasley-podex >/dev/null && weasley-podex --version >/dev/null' >/dev/null 2>&1 \
+    || fail "WSL bash login shell cannot resolve node/npm/weasley-podex"
+  ok "WSL bash login shell resolves node/npm/weasley-podex"
 fi
 
 if [ "$SKIP_DOCTOR" != "1" ]; then
-  jaw doctor >/dev/null 2>&1 || fail "jaw doctor failed"
-  ok "jaw doctor completed"
+  weasley-podex doctor >/dev/null 2>&1 || fail "weasley-podex doctor failed"
+  ok "weasley-podex doctor completed"
 else
-  ok "jaw doctor skipped"
+  ok "weasley-podex doctor skipped"
 fi
 
 echo "ALL PASS"

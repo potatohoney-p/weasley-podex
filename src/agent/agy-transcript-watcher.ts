@@ -188,7 +188,7 @@ export function startAgyTranscriptWatcher(options: {
             if (!transcriptPath && Date.now() - startedAt > WAIT_PATH_MS) {
                 options.ctx.agyTranscriptMode = 'fallback-missing';
                 options.ctx.agyTranscriptLastReason = effectiveResolved.reason ?? 'transcript-path-unavailable';
-                console.warn(`[jaw:agy:transcript] gave up waiting (${effectiveResolved.reason ?? 'unknown'})`);
+                console.warn(`[weasley-podex:agy:transcript] gave up waiting (${effectiveResolved.reason ?? 'unknown'})`);
             }
             return;
         }
@@ -203,7 +203,7 @@ export function startAgyTranscriptWatcher(options: {
         options.ctx.agyFinalPlannerText = undefined;
         options.ctx.agyLastTranscriptError = undefined;
         options.ctx.metadata = { ...options.ctx.metadata, agyCheckpointSeen: false, agyPlannerOnly: false };
-        console.log(`[jaw:agy:transcript] tailing ${transcriptPath} (current-turn filter from ${new Date(startedAt).toISOString()})`);
+        console.log(`[weasley-podex:agy:transcript] tailing ${transcriptPath} (current-turn filter from ${new Date(startedAt).toISOString()})`);
     };
 
     const tick = () => {
@@ -243,7 +243,7 @@ export function startAgyTranscriptWatcher(options: {
                 options.onActivity?.();
             }
         } catch (e) {
-            console.warn('[jaw:agy:transcript] read failed:', (e as Error).message);
+            console.warn('[weasley-podex:agy:transcript] read failed:', (e as Error).message);
         }
     };
 

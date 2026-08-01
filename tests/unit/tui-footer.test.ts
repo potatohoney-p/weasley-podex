@@ -79,7 +79,7 @@ test('renderStatusBar clips optional details under narrow width', () => {
         elapsed: '123.4s',
         bgtask: 9,
         gitBranch: 'feature/some-long-branch',
-        cwd: '~/Developer/new/700_projects/podex',
+        cwd: '~/src/weasley-podex',
         port: 3457,
     }));
     assert.match(row, /\x1b\[(36|46)m/);
@@ -98,7 +98,7 @@ test('renderStatusBar keeps emoji-heavy working rows within terminal width', () 
         elapsed: '1.9s',
         bgtask: 3,
         gitBranch: 'feature/very-long-active-branch',
-        cwd: '/Users/jun/Developer/new/700_projects/podex',
+        cwd: '/Users/example/src/weasley-podex',
         port: 3457,
     }));
 

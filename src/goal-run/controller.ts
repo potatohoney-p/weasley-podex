@@ -9,9 +9,9 @@ import { classifyFailure } from './failure-matrix.js';
 import { getActiveGoal } from '../goal/store.js';
 import { getState } from '../orchestrator/state-machine.js';
 import { getActiveWorkers, hasPendingWorkerReplays } from '../orchestrator/worker-registry.js';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 
-const GOAL_DIR = path.join(JAW_HOME, 'goal');
+const GOAL_DIR = path.join(WEASLEY_PODEX_HOME, 'goal');
 const ACTIVE_RUN_PATH = path.join(GOAL_DIR, 'active-run.json');
 
 let activeRun: GoalRunState | null = null;

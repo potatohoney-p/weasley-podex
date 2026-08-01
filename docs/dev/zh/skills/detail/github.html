@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GitHub — podex 文档</title>
+<title>GitHub — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -41,7 +40,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -64,7 +63,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">使用指南</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -113,13 +112,13 @@
     <a href="../../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">首页</a>
   </div>
 </nav>
 <main class="docs-main">
 
-<h1>GitHub <span class="badge badge-active">默认启用</span></h1>
+<h1>GitHub <span class="badge badge-planned">可选导入</span></h1>
 <p class="lead">GitHub <code>gh</code> CLI &mdash; 议题、拉取请求、CI、代码审查、发布</p>
 
 <div class="skill-meta">
@@ -137,11 +136,11 @@
   </div>
   <div class="skill-meta-card">
     <dt>源文件</dt>
-    <dd><code>~/.podex/skills/github/SKILL.md</code></dd>
+    <dd><code>~/.weasley/podex/skills/github/SKILL.md</code></dd>
   </div>
 </div>
 
-<div class="callout callout-info">此技能<strong>默认启用</strong>，会在每个会话中自动注入。它涵盖了通过 <code>gh</code> CLI 进行的所有 GitHub 交互，包括先前 <code>gh-address-comments</code>、<code>gh-fix-ci</code>、<code>gh-issues</code> 和 <code>yeet</code> 技能的合并功能。</div>
+<div class="callout callout-info"><strong>可选工作流：</strong><code>github</code> 不属于八项捆绑技能。请先从已安装的 Codex 目录或显式可信仓库导入经过审查的技能。</div>
 
 <!-- ================================================================ -->
 <h2>快速参考</h2>
@@ -196,7 +195,7 @@
 <!-- ================================================================ -->
 <h2>安装与配置</h2>
 
-<p><code>github</code> 技能需要 <code>gh</code> CLI 可执行文件。podex 可以为您自动安装，也可以手动安装：</p>
+<p><code>github</code> 技能需要 <code>gh</code> CLI 可执行文件。Weasley Podex 可以为您自动安装，也可以手动安装：</p>
 
 <div class="install-box">
   <code># macOS (Homebrew)</code>

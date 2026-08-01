@@ -97,10 +97,10 @@ export function WorkspaceLayout(props: WorkspaceLayoutProps) {
     return (
         <div className={cls} style={style}>
             {props.drawerOpen && <div className="drawer-backdrop" onClick={props.onCloseDrawer} />}
-            <aside className="manager-sidebar" aria-label={props.navigatorLabel ?? 'Jaw instances'}>{props.navigator}</aside>
+            <aside className="manager-sidebar" aria-label={props.navigatorLabel ?? 'Weasley Podex instances'}>{props.navigator}</aside>
             <section className="manager-detail" aria-label="Manager workbench">{props.workbench}</section>
             <section className="manager-activity" aria-label="Manager inspector">{props.inspector}</section>
-            {props.sidePanel && <aside className="manager-ceo-panel" aria-label="Jaw CEO console">{props.sidePanel}</aside>}
+            {props.sidePanel && <aside className="manager-ceo-panel" aria-label="Weasley Podex CEO console">{props.sidePanel}</aside>}
             {props.rightPanelContent}
             {props.bottomPanelContent}
             <nav className="manager-mobile-nav" aria-label="Mobile dashboard navigation">

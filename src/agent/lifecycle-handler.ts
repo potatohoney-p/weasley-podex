@@ -1,4 +1,4 @@
-﻿// ─── Agent Lifecycle Handler (post-exit logic) ──────
+// ─── Agent Lifecycle Handler (post-exit logic) ──────
 // Extracted from spawn.ts to unify ACP + CLI exit handling.
 
 import fs from 'fs';
@@ -54,7 +54,7 @@ function insertGoalContinuationBoundary(label: string): void {
         insertMessage.run('user', content, 'goal_continuation', '', settings['workingDir'] || null, getActiveChatSession());
         broadcast('new_message', { role: 'user', content, source: 'goal', cli: 'goal_continuation' });
     } catch (err) {
-        console.warn('[jaw:goal] boundary insert failed:', (err as Error).message);
+        console.warn('[weasley-podex:goal] boundary insert failed:', (err as Error).message);
     }
 }
 
@@ -71,7 +71,7 @@ export function clearGoalTimers(): void {
 
 export function kickGoalContinuation(): boolean {
     if (!_spawnAgent) {
-        console.warn('[jaw:goal] kickGoalContinuation called but _spawnAgent is not registered');
+        console.warn('[weasley-podex:goal] kickGoalContinuation called but _spawnAgent is not registered');
         return false;
     }
     const goalCont = buildGoalContinuation();
@@ -80,7 +80,7 @@ export function kickGoalContinuation(): boolean {
         const contGoalId = contGoal?.id ?? '__none__';
         _goalContAttempts = 1;
         _goalContGoalId = contGoalId;
-        console.log(`[jaw:goal] kicking manual goal continuation`);
+        console.log(`[weasley-podex:goal] kicking manual goal continuation`);
         broadcast('goal_continuation', { reason: 'manual_kick', attempt: 1 });
         const existingCont = _goalTimers.get(contGoalId);
         if (existingCont) clearTimeout(existingCont);
@@ -90,7 +90,7 @@ export function kickGoalContinuation(): boolean {
             _skipInsert: true,
         });
         contP.catch((err: Error) => {
-            console.warn('[jaw:goal] kicked goal continuation failed:', err.message);
+            console.warn('[weasley-podex:goal] kicked goal continuation failed:', err.message);
             broadcast('goal_continuation_failed', { error: err.message });
         });
         return true;
@@ -99,7 +99,7 @@ export function kickGoalContinuation(): boolean {
 }
 
 
-// Match /goal done|cancel or podex goal done|cancel at line start or after whitespace
+// Match /goal done|cancel or weasley-podex goal done|cancel at line start or after whitespace
 const GOAL_DONE_RE = /(?:^|\n)\s*(?:\/goal|podex\s+goal)\s+done\b/im;
 const GOAL_CANCEL_RE = /(?:^|\n)\s*(?:\/goal|podex\s+goal)\s+cancel\b/im;
 const GOAL_PAUSE_RE = /(?:^|\n)\s*(?:\/goal|podex\s+goal)\s+pause\b/im;
@@ -286,7 +286,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
         && !wasSteer
     ) {
         console.warn(
-            `[jaw:smoke] ${cli} smoke detected (${smokeResult.confidence}). Auto-continuing.`,
+            `[weasley-podex:smoke] ${cli} smoke detected (${smokeResult.confidence}). Auto-continuing.`,
         );
         broadcast('agent_smoke', {
             cli, confidence: smokeResult.confidence,
@@ -303,7 +303,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
                 skipSessionPersist: opts._skipSessionPersist === true,
                 outputLen: params.outputLen,
             });
-            console.log(`[jaw:smoke] persisted session ${smokeSessionId.slice(0, 12)}... for continuation`);
+            console.log(`[weasley-podex:smoke] persisted session ${smokeSessionId.slice(0, 12)}... for continuation`);
         }
 
         activeProcesses.delete(agentLabel);
@@ -353,7 +353,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
 
     // ─── CLI-native compact → auto session refresh (awaited to avoid race with processQueue) ───
     if (ctx.cliNativeCompactDetected && mainManaged && !opts.internal) {
-        console.log('[jaw:compact] CLI-native compaction detected — auto-refreshing session');
+        console.log('[weasley-podex:compact] CLI-native compaction detected — auto-refreshing session');
         try {
             const { autoCompactRefresh } = await import('../core/compact.js');
             await autoCompactRefresh({
@@ -363,7 +363,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
                 model,
             });
         } catch (e) {
-            console.warn('[jaw:compact] auto-refresh failed:', (e as Error).message);
+            console.warn('[weasley-podex:compact] auto-refresh failed:', (e as Error).message);
         }
     }
 
@@ -376,7 +376,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
         skipSessionPersist: opts._skipSessionPersist === true,
         outputLen: params.outputLen,
     })) {
-        console.log(`[jaw:session] saved ${cli} session=${persistedSessionId.slice(0, 12)}...${wasKilled ? ' (post-kill)' : ''}`);
+        console.log(`[weasley-podex:session] saved ${cli} session=${persistedSessionId.slice(0, 12)}...${wasKilled ? ' (post-kill)' : ''}`);
     }
     if (cli === 'agy' && persistedSessionId) {
         const checkpointSeen = ctx.metadata?.['agyCheckpointSeen'] === true;
@@ -397,7 +397,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
         const turns = ctx.turns ?? memoryFlushCounter;
         const useTurnCountRefresh = shouldUseTurnCountRefresh(runtimeCli);
         if (useTurnCountRefresh && turns >= 35) {
-            console.log(`[jaw:compact] ${cli} reached ${turns} turns — forcing auto-refresh`);
+            console.log(`[weasley-podex:compact] ${cli} reached ${turns} turns — forcing auto-refresh`);
             try {
                 const { autoCompactRefresh } = await import('../core/compact.js');
                 await autoCompactRefresh({
@@ -407,10 +407,10 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
                     model,
                 });
             } catch (e) {
-                console.warn('[jaw:compact] turn-count auto-refresh failed:', (e as Error).message);
+                console.warn('[weasley-podex:compact] turn-count auto-refresh failed:', (e as Error).message);
             }
         } else if (useTurnCountRefresh && turns >= 25) {
-            console.log(`[jaw:compact] ${cli} at ${turns} turns — suggesting compact`);
+            console.log(`[weasley-podex:compact] ${cli} at ${turns} turns — suggesting compact`);
             broadcast('system_notice', {
                 code: 'compact_suggest',
                 text: `Session is at ${turns} turns. Consider running /compact to preserve context.`,
@@ -424,19 +424,19 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
     if (mainManaged && !opts.internal && code === 0 && !ctx.cliNativeCompactDetected) {
         const turns = ctx.turns ?? memoryFlushCounter;
         if (shouldClearHighTurnSessionBucket(runtimeCli, turns)) {
-            console.log(`[jaw:compact] ${cli} exited after ${turns} turns — clearing session bucket for fresh start`);
+            console.log(`[weasley-podex:compact] ${cli} exited after ${turns} turns — clearing session bucket for fresh start`);
             try {
                 const bucket = resolveSessionBucket(cli, model, effectiveProvider);
                 clearSessionBucket.run(bucket);
             } catch (e) {
-                console.warn('[jaw:compact] session bucket clear failed:', (e as Error).message);
+                console.warn('[weasley-podex:compact] session bucket clear failed:', (e as Error).message);
             }
         }
     }
 
     // ─── Success: clear fallback state (auto-recovery) ───
     if (code === 0 && fallbackState.has(cli)) {
-        console.log(`[jaw:fallback] ${cli} recovered — clearing fallback state`);
+        console.log(`[weasley-podex:fallback] ${cli} recovered — clearing fallback state`);
         fallbackState.delete(cli);
     }
     if (code === 0) clearErrors(cli);
@@ -444,7 +444,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
     if (code === 0 && runtimeCli === 'grok') {
         const recovered = backfillGrokTraceTools(ctx);
         if (recovered > 0) {
-            console.log(`[jaw:grok] recovered ${recovered} tool event(s) from Grok trace export`);
+            console.log(`[weasley-podex:grok] recovered ${recovered} tool event(s) from Grok trace export`);
         }
     }
 
@@ -472,7 +472,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
         if (bucket) {
             try { clearSessionBucket.run(bucket); } catch { /* ignore */ }
         }
-        console.log('[jaw:kiro] stale resume detected on success exit — retrying fresh with history');
+        console.log('[weasley-podex:kiro] stale resume detected on success exit — retrying fresh with history');
         try {
             const { peekPendingBootstrapPrompt } = await import('../core/main-session.js');
             if (!peekPendingBootstrapPrompt()) {
@@ -525,7 +525,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
         if (wasSteer && mainManaged && !opts.internal) {
             finalContent = `⏹️ [interrupted]\n\n${finalContent}`;
             if (traceText) traceText = `⏹️ [interrupted]\n${traceText}`;
-            console.log(`[jaw:steer] saving interrupted output (${finalContent.length} chars)`);
+            console.log(`[weasley-podex:steer] saving interrupted output (${finalContent.length} chars)`);
         }
 
         if (mainManaged && !opts.internal) {
@@ -633,12 +633,12 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
         if (invalidatedResume) {
             if (empSid && opts.agentId) {
                 clearEmployeeSession.run(opts.agentId);
-                console.log(`[jaw:session] invalidated stale employee resume — ${cli} agent=${opts.agentId}`);
+                console.log(`[weasley-podex:session] invalidated stale employee resume — ${cli} agent=${opts.agentId}`);
             } else {
                 updateSession.run(cli, null, model, settings["permissions"], settings["workingDir"], effortVal);
                 const bucket = resolveSessionBucket(cli, model, effectiveProvider);
                 if (bucket) clearSessionBucket.run(bucket);
-                console.log(`[jaw:session] invalidated stale resume — ${cli}/${bucket} session cleared`);
+                console.log(`[weasley-podex:session] invalidated stale resume — ${cli}/${bucket} session cleared`);
             }
         }
 
@@ -650,7 +650,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
             && !opts._skipResume
             && !opts._kiroFreshRetry
         ) {
-            console.log(`[jaw:resume] ${cli} stale resume invalidated — retrying current request without resume`);
+            console.log(`[weasley-podex:resume] ${cli} stale resume invalidated — retrying current request without resume`);
             broadcast('agent_retry', {
                 cli,
                 delay: 0,
@@ -695,7 +695,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
         if (!opts.internal && !opts._isFallback && effectiveIs429 && mainAttempt < MAIN_MAX_RETRIES) {
             const delayMs = computeBackoff(mainAttempt);
             const delaySec = Math.round(delayMs / 1000);
-            console.log(`[jaw:retry] ${cli} 429 detected — waiting ${delaySec}s before retry (attempt ${mainAttempt + 1}/${MAIN_MAX_RETRIES})`);
+            console.log(`[weasley-podex:retry] ${cli} 429 detected — waiting ${delaySec}s before retry (attempt ${mainAttempt + 1}/${MAIN_MAX_RETRIES})`);
             broadcast('agent_retry', { cli, delay: delaySec, reason: errMsg, attempt: mainAttempt + 1, maxRetries: MAIN_MAX_RETRIES, ...empTag }, isEmployee ? 'internal' : 'public');
             finalizeTraceRun(ctx.traceRunId, 'error', errMsg);
             retryState.setIsEmployee(isEmployee);
@@ -725,10 +725,10 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
                 const st = fallbackState.get(cli);
                 if (st) {
                     st.retriesLeft = Math.max(0, st.retriesLeft - 1);
-                    console.log(`[jaw:fallback] ${cli} retry consumed, ${st.retriesLeft} left`);
+                    console.log(`[weasley-podex:fallback] ${cli} retry consumed, ${st.retriesLeft} left`);
                 } else {
                     fallbackState.set(cli, { fallbackCli, retriesLeft: fallbackMaxRetries });
-                    console.log(`[jaw:fallback] ${cli} → ${fallbackCli}, ${fallbackMaxRetries} retries queued`);
+                    console.log(`[weasley-podex:fallback] ${cli} → ${fallbackCli}, ${fallbackMaxRetries} retries queued`);
                 }
                 broadcast('agent_fallback', { from: cli, to: fallbackCli, reason: errMsg, ...empTag }, isEmployee ? 'internal' : 'public');
                 finalizeTraceRun(ctx.traceRunId, 'error', errMsg);
@@ -770,7 +770,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
             && !cls.isAuth
         ) {
             clearEmployeeSession.run(opts.agentId);
-            console.log(`[jaw:session] employee stale resume pre-SessionStart — cleared ${opts.agentId} and retrying fresh`);
+            console.log(`[weasley-podex:session] employee stale resume pre-SessionStart — cleared ${opts.agentId} and retrying fresh`);
             broadcast('agent_retry', {
                 cli,
                 delay: 0,
@@ -798,7 +798,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
             recordError(cli, '429');
             const empDelayMs = computeBackoff(empAttempt, 3000, 60_000);
             const empDelaySec = Math.round(empDelayMs / 1000);
-            console.log(`[jaw:retry] employee ${cli} transient exit — retry in ${empDelaySec}s (attempt ${empAttempt + 1}/${EMP_MAX_RETRIES}, ${cls.message})`);
+            console.log(`[weasley-podex:retry] employee ${cli} transient exit — retry in ${empDelaySec}s (attempt ${empAttempt + 1}/${EMP_MAX_RETRIES}, ${cls.message})`);
             broadcast('agent_retry', { cli, delay: empDelaySec, reason: cls.message, isEmployee: true, attempt: empAttempt + 1 }, 'internal');
             finalizeTraceRun(ctx.traceRunId, 'error', cls.message);
             retryState.setIsEmployee(true);
@@ -839,7 +839,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
         if (bucket) {
             try { clearSessionBucket.run(bucket); } catch { /* ignore */ }
         }
-        console.log('[jaw:kiro] resume returned empty output — retrying fresh with history (original logic)');
+        console.log('[weasley-podex:kiro] resume returned empty output — retrying fresh with history (original logic)');
         broadcast('agent_retry', {
             cli,
             delay: 0,
@@ -883,7 +883,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
         }, isEmployee ? 'internal' : 'public');
     }
     if (agentLabel !== 'main' || code !== null) {
-        console.log(`[jaw:${agentLabel}] exited code=${code}, text=${ctx.fullText.length} chars`);
+        console.log(`[weasley-podex:${agentLabel}] exited code=${code}, text=${ctx.fullText.length} chars`);
     }
     const diagnostic = resolvedCode !== 0 && resolvedCode !== null
         ? classifyExitError(runtimeCli, resolvedCode, ctx.stderrBuf).message
@@ -911,21 +911,21 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
                 if (goalHasCompletionEvidence(activeGoal)) {
                     completeGoal();
                     clearGoalTimers();
-                    console.log('[jaw:goal] AI /goal done — evidence present, goal marked complete');
+                    console.log('[weasley-podex:goal] AI /goal done — evidence present, goal marked complete');
                     broadcast('goal_done', { goalId: activeGoal.id, source: 'ai_output' });
                 } else {
                     goalDoneRejected = true;
-                    console.warn('[jaw:goal] AI /goal done REJECTED — no verification evidence on latest checkpoint');
+                    console.warn('[weasley-podex:goal] AI /goal done REJECTED — no verification evidence on latest checkpoint');
                     broadcast('goal_done_rejected', { goalId: activeGoal.id, reason: 'no_evidence' });
                 }
             } else if (GOAL_CANCEL_RE.test(ctx.fullText)) {
                 cancelGoal();
                 clearGoalTimers();
-                console.log('[jaw:goal] AI output contained /goal cancel — goal cancelled');
+                console.log('[weasley-podex:goal] AI output contained /goal cancel — goal cancelled');
                 broadcast('goal_cancel', { goalId: activeGoal.id, source: 'ai_output' });
             } else if (GOAL_PAUSE_RE.test(ctx.fullText)) {
                 clearGoalTimers();
-                console.log('[jaw:goal] AI output contained /goal pause — timers cleared');
+                console.log('[weasley-podex:goal] AI output contained /goal pause — timers cleared');
                 broadcast('goal_pause_detected', { goalId: activeGoal.id, source: 'ai_output' });
             }
         }
@@ -945,7 +945,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
         const { delaySeconds, prompt: wakeupPrompt, reason: wakeupReason } = ctx.scheduleWakeup;
         const clampedDelay = Math.max(60, Math.min(3600, delaySeconds)) * 1000;
         if (clampedDelay !== delaySeconds * 1000) {
-            console.log(`[jaw:wakeup] delay clamped: ${delaySeconds}s → ${clampedDelay / 1000}s`);
+            console.log(`[weasley-podex:wakeup] delay clamped: ${delaySeconds}s → ${clampedDelay / 1000}s`);
         }
         const goalAtWakeup = getActiveGoal();
         const goalIdAtWakeup = goalAtWakeup?.id ?? '__none__';
@@ -954,9 +954,9 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
             _goalContGoalId = goalIdAtWakeup;
         }
         _goalContAttempts++;
-        console.log(`[jaw:wakeup] ScheduleWakeup intercepted — resuming in ${clampedDelay / 1000}s (${wakeupReason}) [goal=${goalIdAtWakeup}, attempt=${_goalContAttempts}/${GOAL_CONT_MAX_ATTEMPTS}]`);
+        console.log(`[weasley-podex:wakeup] ScheduleWakeup intercepted — resuming in ${clampedDelay / 1000}s (${wakeupReason}) [goal=${goalIdAtWakeup}, attempt=${_goalContAttempts}/${GOAL_CONT_MAX_ATTEMPTS}]`);
         if (_goalContAttempts > GOAL_CONT_MAX_ATTEMPTS) {
-            console.warn(`[jaw:wakeup] max attempts reached — not scheduling`);
+            console.warn(`[weasley-podex:wakeup] max attempts reached — not scheduling`);
             broadcast('goal_continuation_limit', { attempts: _goalContAttempts });
             _goalContAttempts = 0;
         } else {
@@ -967,16 +967,16 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
                 _goalTimers.delete(goalIdAtWakeup);
                 const currentGoal = getActiveGoal();
                 if (!currentGoal || currentGoal.id !== goalIdAtWakeup || currentGoal.status !== 'active') {
-                    console.log(`[jaw:wakeup] goal changed or inactive — skipping resume`);
+                    console.log(`[weasley-podex:wakeup] goal changed or inactive — skipping resume`);
                     return;
                 }
-                console.log(`[jaw:wakeup] firing delayed resume (${wakeupReason})`);
+                console.log(`[weasley-podex:wakeup] firing delayed resume (${wakeupReason})`);
                 insertGoalContinuationBoundary(`Goal resume (${wakeupReason})`);
                 const { promise: wakeP } = _spawnAgent(wakeupPrompt, {
                     _skipInsert: true,
                 });
                 wakeP.catch((err: Error) => {
-                    console.warn('[jaw:wakeup] delayed resume failed:', err.message);
+                    console.warn('[weasley-podex:wakeup] delayed resume failed:', err.message);
                     broadcast('schedule_wakeup_failed', { reason: wakeupReason, error: err.message });
                 });
             }, clampedDelay);
@@ -998,7 +998,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
                 recordTurn();
                 _goalContAttempts = 0;
                 _goalContGoalId = contGoalId;
-                console.log('[jaw:goal] pause gate pending after goal continuation — not scheduling another continuation');
+                console.log('[weasley-podex:goal] pause gate pending after goal continuation — not scheduling another continuation');
                 broadcast('goal_pause_gate_pending', { goalId: contGoalId, reason: goalCont.reason });
                 return;
             }
@@ -1008,13 +1008,13 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
             }
             _goalContAttempts++;
             if (_goalContAttempts > GOAL_CONT_MAX_ATTEMPTS) {
-                console.warn(`[jaw:goal] max continuation attempts (${GOAL_CONT_MAX_ATTEMPTS}) reached — stopping`);
+                console.warn(`[weasley-podex:goal] max continuation attempts (${GOAL_CONT_MAX_ATTEMPTS}) reached — stopping`);
                 broadcast('goal_continuation_limit', { attempts: _goalContAttempts });
                 _goalContAttempts = 0;
             } else {
                 recordTurn();
                 const delay = opts._isGoalContinuation ? 10000 : 2000;
-                console.log(`[jaw:goal] active goal — continuation ${_goalContAttempts}/${GOAL_CONT_MAX_ATTEMPTS} in ${delay}ms`);
+                console.log(`[weasley-podex:goal] active goal — continuation ${_goalContAttempts}/${GOAL_CONT_MAX_ATTEMPTS} in ${delay}ms`);
                 broadcast('goal_continuation', { reason: goalCont.reason, attempt: _goalContAttempts });
                 const existingCont = _goalTimers.get(contGoalId);
                 if (existingCont) clearTimeout(existingCont);
@@ -1022,12 +1022,12 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
                     _goalTimers.delete(contGoalId);
                     const currentGoal = getActiveGoal();
                     if (!currentGoal || currentGoal.id !== contGoalId || currentGoal.status !== 'active') {
-                        console.log(`[jaw:goal] goal changed or inactive — skipping continuation`);
+                        console.log(`[weasley-podex:goal] goal changed or inactive — skipping continuation`);
                         _goalContAttempts = 0;
                         return;
                     }
                     const contPrompt = goalDoneRejected
-                        ? `[goal-gate] Your previous \`/goal done\` was REJECTED: the latest checkpoint had no verification evidence. Before declaring done again, run \`podex goal update "<summary>" --evidence "<test result / changed file>"\` with concrete evidence, and metacognitively confirm every part of the objective is truly finished.\n\n${goalCont.prompt!}`
+                        ? `[goal-gate] Your previous \`/goal done\` was REJECTED: the latest checkpoint had no verification evidence. Before declaring done again, run \`weasley-podex goal update "<summary>" --evidence "<test result / changed file>"\` with concrete evidence, and metacognitively confirm every part of the objective is truly finished.\n\n${goalCont.prompt!}`
                         : goalCont.prompt!;
                     insertGoalContinuationBoundary(`Goal continue (${_goalContAttempts}/${GOAL_CONT_MAX_ATTEMPTS})`);
                     const { promise: contP } = _spawnAgent(contPrompt, {
@@ -1036,7 +1036,7 @@ export async function handleAgentExit(params: ExitHandlerParams): Promise<void> 
                         _skipInsert: true,
                     });
                     contP.catch((err: Error) => {
-                        console.warn('[jaw:goal] auto-continuation failed:', err.message);
+                        console.warn('[weasley-podex:goal] auto-continuation failed:', err.message);
                         broadcast('goal_continuation_failed', { error: err.message });
                     });
                 }, delay);

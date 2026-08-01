@@ -15,7 +15,7 @@ async function fetchDesktopStatus(): Promise<DesktopStatus> {
 
 function openCurrentDashboardPath(): void {
     const path = window.location.pathname + window.location.search;
-    window.location.href = `jaw://open?path=${encodeURIComponent(path)}`;
+    window.location.href = `weasley-podex://open?path=${encodeURIComponent(path)}`;
 }
 
 export function DesktopLink() {
@@ -42,8 +42,8 @@ export function DesktopLink() {
 
     if (status?.inDesktop) {
         return (
-            <span className="desktop-status-badge" title={`podex Desktop ${status.version}`}>
-                Running in podex Desktop
+            <span className="desktop-status-badge" title={`Weasley Podex Desktop ${status.version}`}>
+                Running in Weasley Podex Desktop
             </span>
         );
     }
@@ -55,7 +55,7 @@ export function DesktopLink() {
             type="button"
             className="desktop-open-button"
             onClick={openCurrentDashboardPath}
-            title={status?.downloadUrl || 'Open this dashboard path in podex Desktop'}
+            title={status?.downloadUrl || 'Open this dashboard path in Weasley Podex Desktop'}
         >
             Open in Desktop App
         </button>

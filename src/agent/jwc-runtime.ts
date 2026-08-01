@@ -1,4 +1,5 @@
-// JawRuntime — in-process jwc coding-agent engine, resident in the podex server.
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
+// JawRuntime — in-process jwc coding-agent engine, resident in the Weasley Podex server.
 // One AgentSession per (cwd, chatSession) main slot, reused across turns; no child
 // process, no NDJSON parse stack. Errors are isolated per turn — a thrown turn
 // disposes+recreates the session so the server survives (M2 done ①).
@@ -46,7 +47,7 @@ interface EngineSdk {
 let sdkPromise: Promise<EngineSdk> | null = null;
 const DEFAULT_JWC_SDK_SPEC = 'jawcode/sdk';
 const JWC_INSTALL_HINT =
-    'podex does not bundle JWC. Run jaw jwc install, set the printed JWC_SDK_PATH, and verify with jaw jwc doctor. For source builds, set JWC_SDK_PATH=/absolute/path/to/jawcode/packages/jwc/dist-node/sdk.js (for example, /Users/jun/Developer/new/700_projects/jawcode/packages/jwc/dist-node/sdk.js). Remove optional JWC dependencies with jaw jwc clean.';
+    'Weasley Podex does not bundle JWC. Run weasley-podex jwc install, set the printed JWC_SDK_PATH, and verify with weasley-podex jwc doctor. For source builds, set JWC_SDK_PATH=/absolute/path/to/jawcode/packages/jwc/dist-node/sdk.js (for example, /Users/you/src/jawcode/packages/jwc/dist-node/sdk.js). Remove optional JWC dependencies with weasley-podex jwc clean.';
 
 function formatSdkLoadError(spec: string, err: unknown): Error {
     const detail = err instanceof Error ? err.message : String(err);
@@ -67,9 +68,9 @@ function loadSdk(): Promise<EngineSdk> {
 /** Agent config dir for the embedded engine. jaw mode (resident) reuses the
  *  standalone jwc store `~/.jwc/agent` so the user's existing login/skills/memory
  *  carry over (111 §e decision 0; 130.2). Code mode (112.3 ACP) keeps an isolated
- *  dir instead. podex_JWC_AGENT_DIR overrides for tests/CI. */
+ *  dir instead. WEASLEY_PODEX_JWC_AGENT_DIR overrides for tests/CI. */
 function jwcAgentDir(): string {
-    const override = process.env['podex_JWC_AGENT_DIR'];
+    const override = getWeasleyPodexEnv('JWC_AGENT_DIR');
     if (override && override.trim()) return override.trim();
     return join(homedir(), '.jwc', 'agent');
 }

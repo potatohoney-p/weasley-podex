@@ -131,7 +131,7 @@ export function DesignPanel(props: DesignPanelProps) {
 
     // OD-1: Run = enqueue the generation request into the selected instance.
     // The panel stays a viewer; the instance's agent edits artifact.html via
-    // the file-first store (jaw design CLI / direct writes) and Reload/rescan
+    // the file-first store (Weasley Podex design CLI / direct writes) and Reload/rescan
     // picks the result up.
     const handleRun = useCallback(() => {
         if (!selectedPage) return;
@@ -152,7 +152,7 @@ export function DesignPanel(props: DesignPanelProps) {
                 `Artifact: ${paths.artifactPath}`,
                 `Brief: ${paths.promptPath} — read it first; it holds the page requirements.`,
                 '',
-                'Update artifact.html in place (direct file write or `jaw design files ... write --stdin`).',
+                'Update artifact.html in place (direct file write or `weasley-podex design files ... write --stdin`).',
                 'Write allowlist inside the page directory: artifact.html, prompt.md, page.json, assets/*.',
                 "Preview is CSP-locked (script-src 'none'): produce STATIC self-contained HTML/CSS — no <script>, no external CDN references; inline styles/SVG only.",
                 'A before-snapshot was already taken; restore points live under the page snapshots/ directory.',
@@ -201,7 +201,7 @@ export function DesignPanel(props: DesignPanelProps) {
     const emptyMessage = store.kind === 'loading' ? 'Loading design pages...'
         : store.kind === 'unavailable' ? 'Design store unavailable — update and restart the manager server (Phase 2 backend).'
         : store.kind === 'error' ? `Design store error: ${store.message}`
-        : 'No design pages yet. Create one with `jaw design create` or an agent run.';
+        : 'No design pages yet. Create one with `weasley-podex design create` or an agent run.';
 
     return (
         <div className="design-panel">

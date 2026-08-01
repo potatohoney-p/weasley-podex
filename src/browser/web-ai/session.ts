@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { JAW_HOME } from '../../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../core/config.js';
 import { stripUndefined } from '../../core/strip-undefined.js';
 import type {
     CommittedTurnBaseline,
@@ -19,7 +19,7 @@ const sessions = new Map<string, WebAiSessionRecord>();
 const notifications = new Map<string, WebAiNotificationEvent>();
 const sessionsByTarget = new Map<string, string>();
 let loadedPersistentStore = false;
-const STORE_PATH = join(JAW_HOME, 'web-ai-sessions.json');
+const STORE_PATH = join(WEASLEY_PODEX_HOME, 'web-ai-sessions.json');
 const ANSWER_EXCERPT_LIMIT = 400;
 
 interface PersistentWebAiStore {

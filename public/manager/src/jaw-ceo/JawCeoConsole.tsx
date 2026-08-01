@@ -71,20 +71,20 @@ export function JawCeoConsole(props: {
     const target = props.selectedPort == null ? 'Dashboard' : `Worker :${props.selectedPort}`;
     const voiceLabel = voiceFooterLabel(props.voice.status);
     return (
-        <div className="jaw-ceo-console" role="region" aria-label="Jaw CEO console" data-surface-owner="ceo-orchestration-control">
+        <div className="jaw-ceo-console" role="region" aria-label="Weasley Podex CEO console" data-surface-owner="ceo-orchestration-control">
             <header className="jaw-ceo-console-header">
                 <div className="jaw-ceo-console-titlebar">
                     <span className={`jaw-ceo-console-mark status-${props.voice.status}`} aria-hidden="true">CEO</span>
                     <div className="jaw-ceo-console-heading">
                         <span>Dashboard coordinator</span>
-                        <h3>Jaw CEO</h3>
+                        <h3>Weasley Podex CEO</h3>
                     </div>
                 </div>
                 <div className="jaw-ceo-console-header-actions">
-                    <button type="button" className="jaw-ceo-icon-btn" onClick={() => void props.ceo.refresh()} aria-label="Refresh Jaw CEO"><RefreshIcon /></button>
-                    <button ref={closeRef} type="button" className="jaw-ceo-console-close" onClick={props.onClose} aria-label="Close Jaw CEO"><CloseIcon /></button>
+                    <button type="button" className="jaw-ceo-icon-btn" onClick={() => void props.ceo.refresh()} aria-label="Refresh Weasley Podex CEO"><RefreshIcon /></button>
+                    <button ref={closeRef} type="button" className="jaw-ceo-console-close" onClick={props.onClose} aria-label="Close Weasley Podex CEO"><CloseIcon /></button>
                 </div>
-                <div className="jaw-ceo-console-summary" aria-label="Jaw CEO status summary">
+                <div className="jaw-ceo-console-summary" aria-label="Weasley Podex CEO status summary">
                     <span>{target}</span>
                     <span>Single session</span>
                     <span className={`voice-tone-${voiceTone(props.voice.status)}`}>Voice {voiceLabel}</span>

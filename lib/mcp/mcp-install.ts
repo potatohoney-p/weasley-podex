@@ -37,7 +37,7 @@ function resolveNpxPackage(args: readonly string[] | undefined) {
  * Returns per-server results.
  */
 export async function installMcpServers(config: McpInstallConfig) {
-    const { execSync, execFileSync } = await import('child_process');
+    const { execFileSync } = await import('child_process');
     const results: Record<string, McpInstallResult> = {};
     const pathLookupCmd = process.platform === 'win32' ? 'where' : 'which';
     const findBinary = (name: string) => {
@@ -69,7 +69,9 @@ export async function installMcpServers(config: McpInstallConfig) {
                 if (!info) { results[name] = { status: 'skip', reason: 'unknown npm pkg' }; continue; }
 
                 console.log(`[mcp:install] npm i -g ${info.pkg} ...`);
-                execSync(`npm i -g ${info.pkg}`, { stdio: 'pipe', timeout: 120000 });
+                execFileSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['install', '--global', info.pkg], {
+                    stdio: 'pipe', timeout: 120000, windowsHide: true,
+                });
 
                 const binPath = findBinary(info.bin);
 
@@ -85,9 +87,9 @@ export async function installMcpServers(config: McpInstallConfig) {
 
                 console.log(`[mcp:install] uv tool install ${pkg} ...`);
                 try {
-                    execSync(`uv tool install ${pkg}`, { stdio: 'pipe', timeout: 120000 });
+                    execFileSync('uv', ['tool', 'install', pkg], { stdio: 'pipe', timeout: 120000, windowsHide: true });
                 } catch {
-                    try { execSync(`uv tool upgrade ${pkg}`, { stdio: 'pipe', timeout: 120000 }); }
+                    try { execFileSync('uv', ['tool', 'upgrade', pkg], { stdio: 'pipe', timeout: 120000, windowsHide: true }); }
                     catch { /* already latest */ }
                 }
 

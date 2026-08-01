@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memory — podex Docs</title>
+<title>Memory — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -63,7 +62,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -86,7 +85,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">指南</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -135,14 +134,14 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">落地页</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Memory</h1>
-<p class="lead">跨会话的长期记忆 &mdash; 搜索、读取、保存。Memory 技能为 podex 提供持久化的回忆能力，包括用户偏好、项目决策以及跨越单次对话的持久知识。</p>
+<p class="lead">跨会话的长期记忆 &mdash; 搜索、读取、保存。Memory 技能为 Weasley Podex 提供持久化的回忆能力，包括用户偏好、项目决策以及跨越单次对话的持久知识。</p>
 
 <div class="skill-meta">
   <span class="badge badge-active">默认启用: 是</span>
@@ -155,16 +154,16 @@
 <tr><td>技能名称</td><td><code>memory</code></td></tr>
 <tr><td>状态</td><td>已激活（自动注入每个会话）</td></tr>
 <tr><td>类别</td><td>生产力</td></tr>
-<tr><td>SKILL.md 路径</td><td><code>~/.podex/skills/memory/SKILL.md</code></td></tr>
-<tr><td>数据目录</td><td><code>~/.podex/memory/structured/</code></td></tr>
+<tr><td>SKILL.md 路径</td><td><code>~/.weasley/podex/skills/memory/SKILL.md</code></td></tr>
+<tr><td>数据目录</td><td><code>~/.weasley/podex/memory/structured/</code></td></tr>
 <tr><td>依赖</td><td>无（无外部依赖）</td></tr>
-<tr><td>安装</td><td>预装（随 podex 附带）</td></tr>
+<tr><td>安装</td><td>预装（随 Weasley Podex 附带）</td></tr>
 <tr><td>作用域</td><td>L1 实例本地（读写）+ L2 仪表盘（只读）</td></tr>
 <tr><td>嵌入搜索</td><td>可选，默认关闭</td></tr>
 </table>
 
 <h2>概述</h2>
-<p><code>memory</code> 技能是 podex 的持久化知识层。它使 AI 能够跨会话记住事实、偏好和决策，而不仅仅依赖对话上下文。每个会话都会自动注入 memory 技能 &mdash; 无需手动加载。</p>
+<p><code>memory</code> 技能是 Weasley Podex 的持久化知识层。它使 AI 能够跨会话记住事实、偏好和决策，而不仅仅依赖对话上下文。每个会话都会自动注入 memory 技能 &mdash; 无需手动加载。</p>
 
 <p>Memory 在两个作用域下运行：</p>
 
@@ -172,7 +171,7 @@
   <div class="scope-card">
     <h4><span class="badge badge-active" style="margin-right:6px">L1</span> 实例本地记忆</h4>
     <ul>
-      <li>命令: <code>podex memory search/read/save</code></li>
+      <li>命令: <code>weasley-podex memory search/read/save</code></li>
       <li>所有操作的默认路径</li>
       <li>仅限当前实例</li>
       <li><strong>读 + 写</strong></li>
@@ -182,7 +181,7 @@
   <div class="scope-card">
     <h4><span class="badge badge-readonly" style="margin-right:6px">L2</span> 仪表盘记忆</h4>
     <ul>
-      <li>命令: <code>podex dashboard memory search/read/instances</code></li>
+      <li>命令: <code>weasley-podex dashboard memory search/read/instances</code></li>
       <li>跨实例联合查询</li>
       <li>多实例 / 多主机</li>
       <li><strong>只读</strong></li>
@@ -201,7 +200,7 @@
 <tr><th>#</th><th>规则</th><th>详情</th></tr>
 </thead>
 <tbody>
-<tr><td>1</td><td><strong>回答前先搜索</strong></td><td>当被问及过往工作、决策或偏好时，在回复之前始终先运行 <code>podex memory search &lt;keywords&gt;</code>。</td></tr>
+<tr><td>1</td><td><strong>回答前先搜索</strong></td><td>当被问及过往工作、决策或偏好时，在回复之前始终先运行 <code>weasley-podex memory search &lt;keywords&gt;</code>。</td></tr>
 <tr><td>2</td><td><strong>立即保存持久事实</strong></td><td>用户偏好、关键决策和稳定的项目事实应在识别后立即保存。</td></tr>
 <tr><td>3</td><td><strong>使用结构化目标路径</strong></td><td>优先使用 <code>structured/profile.md</code>、<code>structured/semantic/...</code> 或 <code>structured/episodes/...</code>，而非随意路径。</td></tr>
 <tr><td>4</td><td><strong>承认信息缺失</strong></td><td>如果搜索没有返回结果，应回答"我没有相关记录。"不要捏造记忆。</td></tr>
@@ -216,59 +215,59 @@
 <h3>搜索</h3>
 <p>在记忆索引中搜索关键词。返回匹配的条目及其源文件路径。</p>
 <pre><code># 基本关键词搜索
-podex memory search "keyword"
+weasley-podex memory search "keyword"
 
 # 搜索用户偏好
-podex memory search "user preference"
+weasley-podex memory search "user preference"
 
 # 搜索错误代码或技术术语
-podex memory search "auth login 401"
+weasley-podex memory search "auth login 401"
 
 # 搜索系统/服务相关术语
-podex memory search "launchd plist service"
+weasley-podex memory search "launchd plist service"
 
 # 跨实例搜索（L2 仪表盘，只读）
-podex dashboard memory search "cross-instance topic"</code></pre>
+weasley-podex dashboard memory search "cross-instance topic"</code></pre>
 
 <div class="callout callout-info"><strong>提示：</strong>广泛搜索。如果第一次查询没有返回结果，请尝试韩语/英语变体。例如，同时搜索"인증"和"auth"以匹配双语条目。</div>
 
 <h3>读取</h3>
 <p>读取特定记忆文件的完整内容，或其中的指定行范围。</p>
 <pre><code># 读取用户档案
-podex memory read structured/profile.md
+weasley-podex memory read structured/profile.md
 
 # 读取语义知识文件
-podex memory read structured/semantic/podex.md
+weasley-podex memory read structured/semantic/podex.md
 
 # 读取情景记忆条目
-podex memory read structured/episodes/live/2026-03-07.md
+weasley-podex memory read structured/episodes/live/2026-03-07.md
 
 # 仅读取指定行（适用于大文件）
-podex memory read structured/profile.md --lines 1-30</code></pre>
+weasley-podex memory read structured/profile.md --lines 1-30</code></pre>
 
 <h3>保存</h3>
 <p>将持久事实追加到记忆文件中。内容是追加写入，不会覆盖原有内容。</p>
 <pre><code># 将用户偏好保存到档案
-podex memory save structured/profile.md "- User prefers Korean UI and English code"
+weasley-podex memory save structured/profile.md "- User prefers Korean UI and English code"
 
 # 将技术事实保存到语义文件
-podex memory save structured/semantic/podex.md "- Memory runtime uses task snapshots before response generation"
+weasley-podex memory save structured/semantic/podex.md "- Memory runtime uses task snapshots before response generation"
 
 # 保存有时间标记的情景记忆
-podex memory save structured/episodes/live/2026-03-07.md "## 16:30\n- Decided to remove query-provider setup from memory UX"</code></pre>
+weasley-podex memory save structured/episodes/live/2026-03-07.md "## 16:30\n- Decided to remove query-provider setup from memory UX"</code></pre>
 
 <div class="callout callout-warn"><strong>重要：</strong>仅保存稳定、持久的事实。"当前任务进度"或"临时调试笔记"等临时数据不应存入记忆。如有疑问，请考虑这个事实下周是否仍然有意义。</div>
 
 <h3>列表 &amp; 初始化</h3>
 <p>用于检查和初始化记忆目录的实用命令。</p>
 <pre><code># 列出所有记忆文件及其大小
-podex memory list
+weasley-podex memory list
 
 # 初始化记忆目录结构（首次设置）
-podex memory init</code></pre>
+weasley-podex memory init</code></pre>
 
 <h2>存储布局</h2>
-<p>记忆被组织为 <code>~/.podex/memory/</code> 下的结构化目录层级。每个子目录有不同的用途：</p>
+<p>记忆被组织为 <code>~/.weasley/podex/memory/</code> 下的结构化目录层级。每个子目录有不同的用途：</p>
 
 <table>
 <thead>
@@ -309,7 +308,7 @@ podex memory init</code></pre>
 </table>
 
 <div class="storage-layout">
-<pre><code>~/.podex/memory/
+<pre><code>~/.weasley/podex/memory/
   structured/
     profile.md                          # 用户偏好和身份
     index.sqlite                        # 全文搜索索引
@@ -318,7 +317,7 @@ podex memory init</code></pre>
         2026-03-07.md                   # 每日情景条目
         2026-05-29.md
     semantic/
-      podex.md                        # podex 相关知识
+      podex.md                        # weasley-podex 相关知识
       deployment.md                     # 部署流程
       project-architecture.md           # 架构决策
     procedures/
@@ -345,7 +344,7 @@ podex memory init</code></pre>
 
 <h3>用户问"你记得...吗？"</h3>
 <p>当用户询问之前是否讨论过某事时：</p>
-<div class="workflow-step"><span class="step-num">1</span><span class="step-text">运行 <code>podex memory search "&lt;keywords&gt;"</code></span></div>
+<div class="workflow-step"><span class="step-num">1</span><span class="step-text">运行 <code>weasley-podex memory search "&lt;keywords&gt;"</code></span></div>
 <div class="workflow-step"><span class="step-num">2</span><span class="step-text">如果找到，回答记忆中的事实并引用源文件</span></div>
 <div class="workflow-step"><span class="step-num">3</span><span class="step-text">如果未找到，说明没有已保存的记录并提议保存</span></div>
 
@@ -356,11 +355,11 @@ podex memory init</code></pre>
 <div class="workflow-step"><span class="step-num">3</span><span class="step-text">使用语义或档案文件保存长期知识</span></div>
 
 <h2>使用示例（~&#54644;&#51468;）</h2>
-<p>以下是 podex 能理解的、以自然韩语风格编写的实际使用模式。</p>
+<p>以下是 Weasley Podex 能理解的、以自然韩语风格编写的实际使用模式。</p>
 
 <div class="example-card">
   <div class="example-prompt">"&#45236;&#44032; &#51200;&#48264;&#50640; Tailwind &#50416;&#45796;&#44256; &#54664;&#45912; &#44144; &#44592;&#50613;&#54644;?"</div>
-  <div class="example-desc">触发"你记得...吗？"工作流。代理运行 <code>podex memory search "Tailwind"</code>，在 <code>structured/profile.md</code> 中找到已保存的偏好，并返回确切的条目及其源文件。</div>
+  <div class="example-desc">触发"你记得...吗？"工作流。代理运行 <code>weasley-podex memory search "Tailwind"</code>，在 <code>structured/profile.md</code> 中找到已保存的偏好，并返回确切的条目及其源文件。</div>
 </div>
 
 <div class="example-card">
@@ -380,7 +379,7 @@ podex memory init</code></pre>
 
 <div class="example-card">
   <div class="example-prompt">"&#45796;&#47480; &#51064;&#49828;&#53556;&#49828;&#50640;&#49436; &#51060; &#54532;&#47196;&#51229;&#53944; &#50612;&#46523;&#44172; &#49444;&#51221;&#54664;&#45716;&#51648; &#52286;&#50500;&#48464;"</div>
-  <div class="example-desc">触发 L2 仪表盘记忆。代理识别到"其他实例"并运行 <code>podex dashboard memory search "project setup"</code> 进行跨实例联合查询，返回来自仪表盘的只读结果。</div>
+  <div class="example-desc">触发 L2 仪表盘记忆。代理识别到"其他实例"并运行 <code>weasley-podex dashboard memory search "project setup"</code> 进行跨实例联合查询，返回来自仪表盘的只读结果。</div>
 </div>
 
 <h2>应该保存 vs. 应该跳过</h2>
@@ -408,7 +407,7 @@ podex memory init</code></pre>
 </thead>
 <tbody>
 <tr><td>个人偏好</td><td><code>structured/profile.md</code></td><td>"用户偏好韩语 UI、英语代码"</td></tr>
-<tr><td>项目架构事实</td><td><code>structured/semantic/&lt;project&gt;.md</code></td><td>"podex 使用 SQLite 作为记忆索引"</td></tr>
+<tr><td>项目架构事实</td><td><code>structured/semantic/&lt;project&gt;.md</code></td><td>"Weasley Podex 使用 SQLite 作为记忆索引"</td></tr>
 <tr><td>带日期的决策</td><td><code>structured/episodes/live/&lt;date&gt;.md</code></td><td>"2026-05-29: 选择 Drizzle ORM 而非 Prisma"</td></tr>
 <tr><td>可重用的工作流</td><td><code>structured/procedures/&lt;name&gt;.md</code></td><td>"发布清单：lint、test、tag、deploy"</td></tr>
 <tr><td>领域知识</td><td><code>structured/semantic/&lt;domain&gt;.md</code></td><td>"Cloudflare D1 每个数据库有 10GB 限制"</td></tr>
@@ -423,7 +422,7 @@ podex memory init</code></pre>
   <li><strong>包含错误代码</strong> &mdash; 搜索"401 unauthorized"以查找与认证相关的记忆</li>
   <li><strong>尝试文件名</strong> &mdash; 搜索"launchd"或"plist"以查找系统服务相关的记忆</li>
   <li><strong>先精确后宽泛</strong> &mdash; 先搜索"Cloudflare D1 migration"，然后回退到"database migration"</li>
-  <li><strong>搜索符号</strong> &mdash; 错误代码如"ECONNREFUSED"或配置键如"JAW_HOME"均已被索引</li>
+  <li><strong>搜索符号</strong> &mdash; 错误代码如"ECONNREFUSED"或配置键如"WEASLEY_PODEX_HOME"均已被索引</li>
 </ul>
 
 <div class="callout callout-info"><strong>嵌入搜索</strong>是可选的，默认关闭。该技能不假定向量/语义搜索可用。所有搜索操作默认使用 SQLite 全文索引。</div>
@@ -440,7 +439,7 @@ podex memory init</code></pre>
 <h2>相关内容</h2>
 <ul>
   <li><a href="../../concepts/memory.html">概念：记忆</a> &mdash; 记忆系统架构的高层概述</li>
-  <li><a href="../../reference/cli.html">CLI 命令</a> &mdash; 完整的 <code>podex memory</code> 命令参考</li>
+  <li><a href="../../reference/cli.html">CLI 命令</a> &mdash; 完整的 <code>weasley-podex memory</code> 命令参考</li>
   <li><a href="../../guides/dashboard.html">仪表盘指南</a> &mdash; L2 仪表盘记忆和跨实例联合查询</li>
   <li><a href="../index.html">技能目录</a> &mdash; 浏览代表性技能目录</li>
   <li><a href="../productivity.html">生产力技能</a> &mdash; 记忆及相关技能的分类页面</li>

@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diagrams — podex Docs</title>
+<title>Diagrams — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -34,7 +33,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -56,7 +55,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -105,7 +104,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
@@ -260,7 +259,7 @@ sequenceDiagram
 <div class="callout callout-info"><strong>Style-first, script-last:</strong> For <code>diagram-html</code> widgets, always put <code>&lt;style&gt;</code> and <code>&lt;link&gt;</code> tags first, then HTML structure, then <code>&lt;script&gt;</code> tags last. This ensures visual content appears before scripts execute during streaming.</div>
 
 <h2>Delivery Mechanism</h2>
-<p>All three formats &mdash; inline SVG, <code>```mermaid</code>, <code>```diagram-html</code> &mdash; are rendered inline in the chat response. The jaw frontend parses the reply text and mounts them automatically. <code>diagram-html</code> goes into a sandboxed <code>&lt;iframe&gt;</code> that the host creates; the skill does <strong>not</strong> create the iframe.</p>
+<p>All three formats &mdash; inline SVG, <code>```mermaid</code>, <code>```diagram-html</code> &mdash; are rendered inline in the chat response. The Weasley Podex frontend parses the reply text and mounts them automatically. <code>diagram-html</code> goes into a sandboxed <code>&lt;iframe&gt;</code> that the host creates; the skill does <strong>not</strong> create the iframe.</p>
 
 <div class="forbidden-grid">
 <div class="forbidden-card">
@@ -358,7 +357,7 @@ sequenceDiagram
 <h2>Theme Integration</h2>
 
 <h3>CSS variable mapping</h3>
-<p>The podex host exposes these CSS variables for diagram theming:</p>
+<p>The Weasley Podex host exposes these CSS variables for diagram theming:</p>
 <table>
 <tr><th>Variable</th><th>Use</th></tr>
 <tr><td><code>--bg</code></td><td>Page background</td></tr>
@@ -379,7 +378,7 @@ sequenceDiagram
 <tr><td>Inline SVG</td><td>CSS classes adapt to host theme automatically</td></tr>
 <tr><td><code>diagram-html</code> iframe (JS)</td><td><code>window.__jawTheme.isDark</code> (boolean)</td></tr>
 <tr><td><code>diagram-html</code> iframe (CSS values)</td><td><code>window.__jawTokens['--bg']</code>, <code>['--text']</code>, etc.</td></tr>
-<tr><td>Mermaid</td><td>Automatic via podex <code>themeVariables</code></td></tr>
+<tr><td>Mermaid</td><td>Automatic via Weasley Podex <code>themeVariables</code></td></tr>
 </table>
 
 <div class="callout callout-danger"><strong>Never</strong> use <code>matchMedia('prefers-color-scheme')</code> in diagrams. The host controls the theme, not the OS setting.</div>

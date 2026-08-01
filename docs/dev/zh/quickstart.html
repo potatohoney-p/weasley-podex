@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>快速开始 — podex 文档</title>
+<title>快速开始 — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../">podex</a></div>
+  <div class="docs-logo"><a href="../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="./guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="./guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="./guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="./guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="./guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="./guides/discord.html">Discord</a>
@@ -59,14 +58,14 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>快速开始</h1>
-<p class="lead">安装 podex 并在 5 分钟内启动您的第一个 AI 代理会话。</p>
+<p class="lead">安装 Weasley Podex 并在 5 分钟内启动您的第一个 AI 代理会话。</p>
 
 <h2>前提条件</h2>
 <ul>
@@ -78,16 +77,16 @@
 
 <h2>安装</h2>
 <h3>macOS / Linux</h3>
-<pre><code>npm install -g podex</code></pre>
+<pre><code>npm install -g weasley-podex</code></pre>
 
 <h3>Windows</h3>
 <div class="callout callout-warn">Windows 需要 WSL（适用于 Linux 的 Windows 子系统）。请先安装 WSL，然后从开始菜单打开 Ubuntu 并在其中运行命令。</div>
 <pre><code># In WSL Ubuntu terminal:
-npm install -g podex</code></pre>
+npm install -g weasley-podex</code></pre>
 <p>详细的 Windows 指南：<a href="../windows.html">Windows Setup</a></p>
 
 <h2>初始设置</h2>
-<pre><code>jaw init</code></pre>
+<pre><code>weasley-podex init</code></pre>
 <p>设置向导将引导您完成以下步骤：</p>
 <ol>
 <li>选择您的主要 CLI（Claude Code、Codex、Gemini CLI 等）</li>
@@ -108,14 +107,14 @@ gemini</code></pre>
 <div class="callout callout-info"><code>settings.json</code> 中的 API 密钥只用于语音识别（Gemini API）或图像生成（OpenAI API）等可选功能。主要 CLI 认证由每个工具自己的登录流程处理。</div>
 
 <h2>验证安装</h2>
-<pre><code>jaw doctor</code></pre>
+<pre><code>weasley-podex doctor</code></pre>
 <p>此命令会检查您的设置并报告任何问题。</p>
 
 <h2>故障排除</h2>
 <table>
 <tr><th>错误</th><th>解决方法</th></tr>
-<tr><td><code>command not found: jaw</code></td><td>确保 npm 全局 bin 目录在您的 PATH 中。运行 <code>npm bin -g</code> 查看路径。</td></tr>
-<tr><td><code>EACCES permission denied</code></td><td>使用 <code>sudo npm install -g podex</code> 或修复 npm 权限。</td></tr>
+<tr><td><code>command not found: weasley-podex</code></td><td>确保 npm 全局 bin 目录在您的 PATH 中。运行 <code>npm bin -g</code> 查看路径。</td></tr>
+<tr><td><code>EACCES permission denied</code></td><td>使用 <code>sudo npm install -g weasley-podex</code> 或修复 npm 权限。</td></tr>
 <tr><td><code>node: command not found</code></td><td>从 nodejs.org 安装 Node.js 22.4+</td></tr>
 </table>
 

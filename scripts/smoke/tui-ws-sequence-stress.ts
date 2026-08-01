@@ -123,7 +123,7 @@ function toolEvents(): Record<string, unknown>[] {
             type: 'agent_tool',
             icon: label === 'Search' ? '⌕' : label === 'Read' ? '□' : '$',
             label,
-            detail: `${label.toLowerCase()}-${n} /Users/jun/Developer/new/700_projects/podex/src/cli/tui/${n}.ts`,
+            detail: `${label.toLowerCase()}-${n} /Users/example/src/weasley-podex/src/cli/tui/${n}.ts`,
             status: 'running',
             stepRef: `tool-${n}`,
         };

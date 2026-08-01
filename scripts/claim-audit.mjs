@@ -2,7 +2,7 @@
 /**
  * G10 mirror — podex claim audit.
  *
- * podex is a multi-CLI agent runtime that talks to local Chrome via the
+ * Weasley Podex is a multi-CLI agent runtime that talks to local Chrome via the
  * `agbrowse` skill. podex itself does NOT operate hosted/cloud browsers,
  * does NOT expose remote CDP, does NOT bypass CAPTCHA/Cloudflare/stealth,
  * and does NOT publish benchmark leaderboard scores.

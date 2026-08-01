@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Telegram Send &#8212; podex Docs</title>
+<title>Telegram Send &#8212; Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
 .badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
@@ -34,7 +33,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -57,7 +56,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -106,7 +105,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
@@ -116,7 +115,7 @@
 <p class="lead">Send voice, photo, and document files via Telegram bot &mdash; with a Bot-API-first delivery policy, automatic chat ID resolution, and a local endpoint fallback for text notices and retries.</p>
 
 <p>
-  <span class="badge badge-active">Default Active</span>
+  <span class="badge badge-planned">Optional import</span>
   <span class="badge badge-category">Communication</span>
 </p>
 
@@ -128,10 +127,10 @@
 <table class="quick-ref">
 <tr><td>Skill name</td><td><code>telegram-send</code></td></tr>
 <tr><td>Category</td><td>Communication</td></tr>
-<tr><td>Default active</td><td>Yes &mdash; injected at session start</td></tr>
-<tr><td>SKILL.md path</td><td><code>~/.podex/skills/telegram-send/SKILL.md</code></td></tr>
+<tr><td>Bundled</td><td>No &mdash; import a reviewed skill before activation</td></tr>
+<tr><td>SKILL.md path</td><td><code>~/.weasley/podex/skills/telegram-send/SKILL.md</code></td></tr>
 <tr><td>System tools</td><td><code>curl</code>, <code>jq</code></td></tr>
-<tr><td>Config source</td><td><code>~/.podex/settings.json</code> (<code>telegram.token</code>, <code>telegram.allowedChatIds</code>)</td></tr>
+<tr><td>Config source</td><td><code>~/.weasley/podex/settings.json</code> (<code>telegram.token</code>, <code>telegram.allowedChatIds</code>)</td></tr>
 <tr><td>Primary API</td><td>Telegram Bot API (<code>https://api.telegram.org/bot&lt;TOKEN&gt;/...</code>)</td></tr>
 <tr><td>Fallback API</td><td>Local endpoint (<code>http://localhost:3457/api/telegram/send</code>)</td></tr>
 <tr><td>Supported types</td><td><code>photo</code>, <code>voice</code>, <code>document</code>, <code>text</code></td></tr>
@@ -140,7 +139,7 @@
 </table>
 
 <h2>Delivery Policy (Bot-First)</h2>
-<p>The skill follows a strict two-tier delivery strategy. The Telegram Bot API is always tried first. The local podex endpoint serves as a convenience layer for text and as a fallback when the Bot API fails.</p>
+<p>The skill follows a strict two-tier delivery strategy. The Telegram Bot API is always tried first. The local Weasley Podex endpoint serves as a convenience layer for text and as a fallback when the Bot API fails.</p>
 
 <table>
 <thead>
@@ -165,8 +164,8 @@
 <tr><th>Input</th><th>Source</th><th>Required For</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>Bot token</strong></td><td><code>~/.podex/settings.json</code> &rarr; <code>telegram.token</code></td><td>All Bot API calls</td></tr>
-<tr><td><strong>Chat ID</strong></td><td><code>~/.podex/settings.json</code> &rarr; <code>telegram.allowedChatIds[-1]</code></td><td>All Bot API calls</td></tr>
+<tr><td><strong>Bot token</strong></td><td><code>~/.weasley/podex/settings.json</code> &rarr; <code>telegram.token</code></td><td>All Bot API calls</td></tr>
+<tr><td><strong>Chat ID</strong></td><td><code>~/.weasley/podex/settings.json</code> &rarr; <code>telegram.allowedChatIds[-1]</code></td><td>All Bot API calls</td></tr>
 <tr><td><strong>File path</strong></td><td>Provided by user or generated by previous task</td><td><code>photo</code>, <code>voice</code>, <code>document</code></td></tr>
 <tr><td><strong>Caption / text</strong></td><td>Provided by user (optional for media)</td><td><code>text</code>; optional caption for media</td></tr>
 </tbody>
@@ -175,10 +174,10 @@
 <h2>Step-by-Step Workflow</h2>
 
 <h3>Step 1: Read Token and Chat ID</h3>
-<p>The agent reads credentials from the podex settings file. Tokens are kept in shell variables only &mdash; never printed to stdout or logs.</p>
+<p>The agent reads credentials from the Weasley Podex settings file. Tokens are kept in shell variables only &mdash; never printed to stdout or logs.</p>
 
-<pre><code>TOKEN=$(jq -r '.telegram.token' ~/.podex/settings.json)
-CHAT_ID=$(jq -r '.telegram.allowedChatIds[-1]' ~/.podex/settings.json)</code></pre>
+<pre><code>TOKEN=$(jq -r '.telegram.token' ~/.weasley/podex/settings.json)
+CHAT_ID=$(jq -r '.telegram.allowedChatIds[-1]' ~/.weasley/podex/settings.json)</code></pre>
 
 <p>If <code>CHAT_ID</code> resolves to <code>null</code> (no previous Telegram message on record), the agent recovers by pinging the local endpoint:</p>
 
@@ -212,7 +211,7 @@ CHAT_ID=$(jq -r '.telegram.allowedChatIds[-1]' ~/.podex/settings.json)</code></p
   -F "caption=Weekly report"</code></pre>
 
 <h3>Step 3: Local Endpoint (Secondary / Fallback)</h3>
-<p>The local podex server exposes a Telegram send endpoint at:</p>
+<p>The local Weasley Podex server exposes a Telegram send endpoint at:</p>
 
 <div class="api-box">
   <h4>POST http://localhost:3457/api/telegram/send</h4>
@@ -250,9 +249,9 @@ CHAT_ID=$(jq -r '.telegram.allowedChatIds[-1]' ~/.podex/settings.json)</code></p
 </table>
 
 <h2>Configuration</h2>
-<p>The skill reads all configuration from <code>~/.podex/settings.json</code>. No separate config file is needed.</p>
+<p>The skill reads all configuration from <code>~/.weasley/podex/settings.json</code>. No separate config file is needed.</p>
 
-<pre><code>// ~/.podex/settings.json (relevant keys)
+<pre><code>// ~/.weasley/podex/settings.json (relevant keys)
 {
   "telegram": {
     "token": "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
@@ -331,8 +330,8 @@ sudo apt-get install -y jq</code></pre>
 
 <p>If you receive an error, check that:</p>
 <ol>
-<li>The podex server is running (<code>jaw server status</code>)</li>
-<li>The bot token is configured in <code>~/.podex/settings.json</code></li>
+<li>The Weasley Podex server is running (<code>weasley-podex server status</code>)</li>
+<li>The bot token is configured in <code>~/.weasley/podex/settings.json</code></li>
 <li>You have sent at least one message to the bot on Telegram (to establish the chat)</li>
 </ol>
 
@@ -419,7 +418,7 @@ sudo apt-get install -y jq</code></pre>
 <p>If <code>jq -r '.telegram.allowedChatIds[-1]'</code> returns <code>null</code>, the bot has not received any messages from you yet. Send any message to the bot on Telegram first, then the chat ID will be recorded in settings. Alternatively, the agent will auto-recover by probing the local endpoint.</p>
 
 <h3>Bot API returns 401 Unauthorized</h3>
-<p>The bot token is invalid or expired. Generate a new token from <a href="https://t.me/BotFather">@BotFather</a> and update <code>~/.podex/settings.json</code>.</p>
+<p>The bot token is invalid or expired. Generate a new token from <a href="https://t.me/BotFather">@BotFather</a> and update <code>~/.weasley/podex/settings.json</code>.</p>
 
 <h3>Bot API returns 400 Bad Request</h3>
 <p>Common causes:</p>
@@ -430,11 +429,11 @@ sudo apt-get install -y jq</code></pre>
 </ul>
 
 <h3>Local endpoint connection refused</h3>
-<p>The podex server is not running. Start it with:</p>
-<pre><code>jaw server start
+<p>The Weasley Podex server is not running. Start it with:</p>
+<pre><code>weasley-podex server start
 
 # Or check status
-jaw server status</code></pre>
+weasley-podex server status</code></pre>
 
 <h3>jq not found</h3>
 <p>Install jq to parse the settings file:</p>
@@ -448,14 +447,14 @@ sudo apt-get install -y jq
 jq --version</code></pre>
 
 <h2>Comparison with Telegram Guide</h2>
-<p>podex documentation covers Telegram in two places. They serve different purposes:</p>
+<p>Weasley Podex documentation covers Telegram in two places. They serve different purposes:</p>
 
 <table>
 <thead>
 <tr><th></th><th>This page (Skill Reference)</th><th><a href="../../guides/telegram.html">Telegram Guide</a></th></tr>
 </thead>
 <tbody>
-<tr><td><strong>Focus</strong></td><td>Technical details of the <code>telegram-send</code> skill &mdash; API commands, delivery policy, safety rules</td><td>End-to-end setup guide for connecting Telegram to podex</td></tr>
+<tr><td><strong>Focus</strong></td><td>Technical details of the <code>telegram-send</code> skill &mdash; API commands, delivery policy, safety rules</td><td>End-to-end setup guide for connecting Telegram to Weasley Podex</td></tr>
 <tr><td><strong>Audience</strong></td><td>Users who want to understand exactly what the agent does when sending to Telegram</td><td>New users setting up Telegram integration for the first time</td></tr>
 <tr><td><strong>Covers</strong></td><td>SKILL.md internals, Bot API calls, fallback logic, troubleshooting</td><td>Bot creation, token setup, initial message pairing, dashboard config</td></tr>
 </tbody>

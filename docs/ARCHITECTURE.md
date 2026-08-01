@@ -1,4 +1,4 @@
-# podex Architecture
+# Weasley Podex Architecture
 
 Technical overview for contributors. The detailed source-of-truth map lives in
 `structure/`; start with `structure/INDEX.md`, then use
@@ -7,6 +7,12 @@ Technical overview for contributors. The detailed source-of-truth map lives in
 
 This file is intentionally higher level than `structure/` so it can stay useful
 in public and submodule-light checkouts.
+
+The public identity is **Weasley Podex**: npm package and primary CLI
+`weasley-podex`, repository `potatohoney-p/weasley-podex`, default data home
+`~/.weasley/podex`, and override `WEASLEY_PODEX_HOME`. Source filenames and API
+paths that still contain `podex` or `jaw` are historical internal contracts;
+the only public CLI is `weasley-podex`.
 
 The static HTML site under `docs/dev/` is a browsable mirror; when it diverges,
 treat `structure/` plus the Markdown files in `docs/` as source of truth.
@@ -127,7 +133,7 @@ Important boundaries:
 
 ## Orchestration
 
-podex uses explicit orchestration for complex work:
+Weasley Podex uses explicit orchestration for complex work:
 
 ```text
 I (Interview) -> P (Plan) -> A (Audit) -> B (Build) -> C (Check) -> D (Done)
@@ -135,21 +141,21 @@ I (Interview) -> P (Plan) -> A (Audit) -> B (Build) -> C (Check) -> D (Done)
 
 Key points:
 
-- PABCD entry is explicit through `jaw orchestrate`, `/orchestrate`, or
+- PABCD entry is explicit through `weasley-podex orchestrate`, `/orchestrate`, or
   `/pabcd`.
 - Resume is explicit `/continue`; natural-language “continue/계속/이어서” is a
   normal prompt.
 - `/plan` is a compatibility guide for PABCD P, not a separate planning mode.
 - `/review [focus]` resolves a validated project directory from configured
   `projectDirs` or recent conversation/git evidence; it does not fall back to
-  JAW_HOME or bare `process.cwd()`.
+  the internal `WEASLEY_PODEX_HOME` compatibility constant or bare `process.cwd()`.
 - `/goal plan` and `/goalplan` store a raw `planHint` and require
-  `/goal refine <specific objective>` or `podex goal refine ...` before
+  `/goal refine <specific objective>` or `weasley-podex goal refine ...` before
   checkpoints are accepted.
 - `/goal run ...` is the bounded automation preview surface. Budget enforcement
   is tracking-oriented unless the corresponding gate has been implemented.
-- Worker progress is query-first through `jaw worker status` and watchable via
-  `jaw worker watch` or `jaw dispatch --watch`.
+- Worker progress is query-first through `weasley-podex worker status` and watchable via
+  `weasley-podex worker watch` or `weasley-podex dispatch --watch`.
 
 Goal pause gate (P0):
 
@@ -159,12 +165,12 @@ Goal pause gate (P0):
 
 Pre-prompt context hooks:
 
-- `src/prompt/context-hooks.ts` injects bounded JSON snapshots from `JAW_HOME/context-hooks.json` before model reasoning (`main` / `heartbeat` scopes).
-- Inspected via `jaw hooks inspect`; kill switch `podex_PRE_PROMPT_HOOKS=0`. Details: `docs/dev/pre-prompt-context-hooks.md`.
+- `src/prompt/context-hooks.ts` injects bounded JSON snapshots from `${WEASLEY_PODEX_HOME:-~/.weasley/podex}/context-hooks.json` before model reasoning (`main` / `heartbeat` scopes). The source still names the resolved directory `WEASLEY_PODEX_HOME` internally.
+- Inspected via `weasley-podex hooks inspect`; the existing `WEASLEY_PODEX_PRE_PROMPT_HOOKS=0` switch is a legacy compatibility variable. Details: `docs/dev/pre-prompt-context-hooks.md`.
 
 PABCD evidence gate:
 
-- Forward P→A/A→B/B→C/C→D requires `jaw orchestrate <phase> --attest '{"from","to","did",...}'` (C→D also `checkOutput`/`exitCode`). Goal mode self-advances but still requires attestation as proof-of-work.
+- Forward P→A/A→B/B→C/C→D requires `weasley-podex orchestrate <phase> --attest '{"from","to","did",...}'` (C→D also `checkOutput`/`exitCode`). Goal mode self-advances but still requires attestation as proof-of-work.
 
 ---
 
@@ -185,7 +191,7 @@ Use `structure/server_api.md` for the full table. Major route groups:
 | Browser | `/api/browser/*`, `/api/browser/web-ai/*` |
 | Messaging | `/api/channel/send`, `/api/telegram/send`, `/api/discord/send` |
 | Manager | `/api/dashboard/board/*`, `/api/dashboard/schedule/*`, manager-only routes |
-| Jaw CEO | `/api/jaw-ceo/*` |
+| Realtime CEO (historical internal route name) | `/api/jaw-ceo/*` |
 | Traces/security | `/api/traces/*`, `/api/security-audit/*` |
 
 `/api/channel/send` is the canonical outbound channel send endpoint. Telegram
@@ -215,7 +221,7 @@ unchanged. See `structure/INDEX.md` rows 145–146 and `structure/frontend.md`.
 
 ## Manager Dashboard
 
-`jaw dashboard serve` runs a separate manager server on port `24576` by default.
+`weasley-podex dashboard serve` runs a separate manager server on port `24576` by default.
 Electron implicit spawn uses a separate `24577-24590` lane.
 
 The manager owns:
@@ -227,7 +233,8 @@ The manager owns:
 - notes, WYSIWYG editing, graph/search, snippets, history, and assets,
 - git diff repo candidates, summary, and file diff APIs,
 - read-only dashboard memory federation (L1/L2) and optional embedding search,
-- Electron panel bridges for terminal, browser, diff, folder, docs, and Jaw CEO.
+- Electron panel bridges for terminal, browser, diff, folder, docs, and the
+  Realtime CEO surface (historical internal `jaw-ceo` module name).
 
 Manager routes are documented separately in `structure/server_api.md` because
 they are not all mounted on the core `server.ts` app.
@@ -237,7 +244,7 @@ they are not all mounted on the core `server.ts` app.
 ## Electron Desktop
 
 The Electron app now ships as a self-contained desktop runtime instead of
-depending solely on a globally installed `jaw` binary. Packaged desktop builds
+depending solely on a globally installed CLI. Packaged desktop builds
 include a Node.js sidecar:
 
 - `scripts/bundle-sidecar.sh` downloads Node.js 24.17 for the target platform.
@@ -245,10 +252,12 @@ include a Node.js sidecar:
   dependencies into `electron/sidecar/server`.
 - Frontend-only dependencies are pruned before packaging.
 - `better-sqlite3` is rebuilt against the bundled Node runtime.
-- A generated `bin/jaw` or `bin/jaw.cmd` shim launches `dist/bin/podex.js`.
+- A generated `bin/weasley-podex` or `bin/weasley-podex.cmd` shim launches the
+  historical internal entrypoint `dist/bin/podex.js`.
 - `electron/electron-builder.yml` ships the sidecar as `extraResources/server`.
-- `electron/src/main/lib/jaw-spawn.ts` prefers the bundled sidecar `jaw` before
-  falling back to `JAW_BIN` or a global `jaw`.
+- `electron/src/main/lib/jaw-spawn.ts` keeps its historical filename but prefers
+  the bundled `weasley-podex` binary, with `WEASLEY_PODEX_BIN` available as an
+  explicit path override.
 
 Current release targets:
 

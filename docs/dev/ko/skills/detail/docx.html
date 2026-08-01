@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Word 문서 — podex 문서</title>
+<title>Word 문서 — Weasley Podex 문서</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="문서 검색..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">가이드</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">대시보드</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">노트 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">노트 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">칸반 보드</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">텔레그램</a>
       <a class="docs-nav-link" href="../../guides/discord.html">디스코드</a>
@@ -83,7 +82,7 @@
     <a href="../../zh/">&#x4E2D;&#x6587;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">랜딩 페이지</a>
   </div>
 </nav>
@@ -92,7 +91,7 @@
 <h1>Word 문서</h1>
 <p class="lead">.docx 생성, 편집, 읽기 및 시각적 검증</p>
 
-<div class="callout callout-info"><strong>기본 활성화: 예</strong> &mdash; <code>docx</code> 스킬은 기본적으로 사용 가능하며, Word 문서, <code>.docx</code> 파일, 보고서, 메모, 편지 또는 템플릿을 언급하면 자동으로 트리거됩니다. 수동 로딩이 필요 없습니다.</div>
+<div class="callout callout-info"><strong>선택적 워크플로우:</strong> <code>docx</code>는 번들되지 않습니다. 설치된 Codex 카탈로그 또는 명시한 신뢰 저장소에서 검토한 사본을 가져온 뒤 활성화하세요.</div>
 
 <h2>개요</h2>
 <p><code>docx</code> 스킬은 Word 문서의 전체 라이프사이클을 처리합니다: 처음부터 생성, 기존 파일 편집, 읽기 및 분석, 템플릿 기반 생성, 변경 내용 추적 관리, 그리고 필수 시각적 QA 검증. 이 스킬은 <code>.docx</code> 파일에만 적용되며 &mdash; PDF, 스프레드시트, HWPX 또는 Google Docs에는 적용되지 않습니다.</p>

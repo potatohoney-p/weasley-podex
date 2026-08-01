@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 import fs from 'fs';
-import { join, relative, resolve } from 'path';
-import { JAW_HOME } from '../core/config.js';
+import { isAbsolute, join, relative, resolve, sep } from 'path';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 import { db } from '../core/db.js';
 import type { ToolEntry } from '../types/agent.js';
 import { stringifyTraceValue, tracePreview } from './redact.js';
@@ -9,7 +9,7 @@ import type { TraceAudience, TraceCarrier, TraceEventInput, TracePointer, TraceR
 
 const TRACE_INLINE_MAX_BYTES = 96_000;
 const TRACE_PREVIEW_CHARS = 360;
-const TRACE_DIR = join(JAW_HOME, 'traces');
+const TRACE_DIR = join(WEASLEY_PODEX_HOME, 'traces');
 const TRACE_ID_RE = /^tr_[A-Za-z0-9_-]{16,80}$/;
 
 type TraceRunRow = {
@@ -99,8 +99,9 @@ function nextSeq(runId: string): number {
 }
 function safeRawPath(rawPath: string): string | null {
     const base = resolve(TRACE_DIR);
-    const absolute = resolve(JAW_HOME, rawPath);
-    if (!absolute.startsWith(base + '/') && absolute !== base) return null;
+    const absolute = resolve(WEASLEY_PODEX_HOME, rawPath);
+    const fromBase = relative(base, absolute);
+    if (fromBase === '..' || fromBase.startsWith(`..${sep}`) || isAbsolute(fromBase)) return null;
     return absolute;
 }
 function persistPayload(runId: string, seq: number, payload: string): {
@@ -109,7 +110,7 @@ function persistPayload(runId: string, seq: number, payload: string): {
     if (Buffer.byteLength(payload, 'utf8') <= TRACE_INLINE_MAX_BYTES) return { rawJson: payload, rawPath: null, status: 'available' };
     const file = join(ensureTraceDir(runId), `${String(seq).padStart(6, '0')}.json`);
     fs.writeFileSync(file, payload);
-    return { rawJson: null, rawPath: relative(JAW_HOME, file), status: 'spilled' };
+    return { rawJson: null, rawPath: relative(WEASLEY_PODEX_HOME, file), status: 'spilled' };
 }
 
 export function startTraceRun(input: TraceRunInput): string {

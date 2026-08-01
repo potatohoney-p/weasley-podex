@@ -94,27 +94,23 @@ test('PG-016: safeResolveUnder blocks encoded traversal (..%2f)', () => {
 test('PG-017: expandHomePath handles POSIX and Windows tilde separators', () => {
     assert.equal(expandHomePath('~/jaw', '/home/user'), '/home/user/jaw');
     assert.equal(expandHomePath('~\\jaw', 'C:\\Users\\jun'), 'C:\\Users\\jun\\jaw');
-    assert.equal(expandHomePath('~', '/Users/jun'), '/Users/jun');
+    assert.equal(expandHomePath('~', '/Users/example'), '/Users/example');
 });
 
-test('PG-018: assertSendFilePath uses podex_HOME/os.homedir instead of HOME-only fallback', () => {
-    const previousCliHome = process.env.podex_HOME;
-    const previousJawHome = process.env.JAW_HOME;
+test('PG-018: assertSendFilePath uses WEASLEY_PODEX_HOME/os.homedir instead of HOME-only fallback', () => {
+    const previousCliHome = process.env.WEASLEY_PODEX_HOME;
     const previousHome = process.env.HOME;
     const testHome = path.join(os.tmpdir(), 'jaw-send-path-home');
     const allowedFile = path.join(testHome, 'out.txt');
     try {
         fs.mkdirSync(testHome, { recursive: true });
         fs.writeFileSync(allowedFile, 'ok');
-        process.env.podex_HOME = testHome;
-        delete process.env.JAW_HOME;
+        process.env.WEASLEY_PODEX_HOME = testHome;
         delete process.env.HOME;
         assert.equal(assertSendFilePath(allowedFile), fs.realpathSync.native(allowedFile));
     } finally {
-        if (previousCliHome == null) delete process.env.podex_HOME;
-        else process.env.podex_HOME = previousCliHome;
-        if (previousJawHome == null) delete process.env.JAW_HOME;
-        else process.env.JAW_HOME = previousJawHome;
+        if (previousCliHome == null) delete process.env.WEASLEY_PODEX_HOME;
+        else process.env.WEASLEY_PODEX_HOME = previousCliHome;
         if (previousHome == null) delete process.env.HOME;
         else process.env.HOME = previousHome;
         fs.rmSync(testHome, { recursive: true, force: true });
@@ -122,75 +118,71 @@ test('PG-018: assertSendFilePath uses podex_HOME/os.homedir instead of HOME-only
 });
 
 test('PG-019: assertSendFilePath rejects arbitrary tmp files outside allowed roots', () => {
-    const previousCliHome = process.env.podex_HOME;
-    const previousJawHome = process.env.JAW_HOME;
+    const previousCliHome = process.env.WEASLEY_PODEX_HOME;
     const testHome = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-send-path-home-'));
     const tmpFile = path.join(os.tmpdir(), `jaw-send-path-denied-${Date.now()}.txt`);
     try {
         fs.writeFileSync(tmpFile, 'secret');
-        process.env.podex_HOME = testHome;
-        delete process.env.JAW_HOME;
+        process.env.WEASLEY_PODEX_HOME = testHome;
         assert.throws(() => assertSendFilePath(tmpFile), /path_not_allowed/);
     } finally {
-        if (previousCliHome == null) delete process.env.podex_HOME;
-        else process.env.podex_HOME = previousCliHome;
-        if (previousJawHome == null) delete process.env.JAW_HOME;
-        else process.env.JAW_HOME = previousJawHome;
+        if (previousCliHome == null) delete process.env.WEASLEY_PODEX_HOME;
+        else process.env.WEASLEY_PODEX_HOME = previousCliHome;
         fs.rmSync(testHome, { recursive: true, force: true });
         fs.rmSync(tmpFile, { force: true });
     }
 });
 
 test('PG-020: assertSendFilePath allows files under workingDir', () => {
-    const previousCliHome = process.env.podex_HOME;
+    const previousCliHome = process.env.WEASLEY_PODEX_HOME;
     const testHome = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-send-path-home-'));
     const workingDir = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-send-path-working-'));
     const allowedFile = path.join(workingDir, 'report.txt');
     try {
-        process.env.podex_HOME = testHome;
+        process.env.WEASLEY_PODEX_HOME = testHome;
         fs.writeFileSync(allowedFile, 'ok');
         assert.equal(assertSendFilePath(allowedFile, workingDir), fs.realpathSync.native(allowedFile));
     } finally {
-        if (previousCliHome == null) delete process.env.podex_HOME;
-        else process.env.podex_HOME = previousCliHome;
+        if (previousCliHome == null) delete process.env.WEASLEY_PODEX_HOME;
+        else process.env.WEASLEY_PODEX_HOME = previousCliHome;
         fs.rmSync(testHome, { recursive: true, force: true });
         fs.rmSync(workingDir, { recursive: true, force: true });
     }
 });
 
 test('PG-021: assertSendFilePath allows files under exact projectDirs realpath roots', () => {
-    const previousCliHome = process.env.podex_HOME;
+    const previousCliHome = process.env.WEASLEY_PODEX_HOME;
     const testHome = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-send-path-home-'));
     const projectDir = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-send-path-project-'));
     const allowedFile = path.join(projectDir, 'artifact.png');
     try {
-        process.env.podex_HOME = testHome;
+        process.env.WEASLEY_PODEX_HOME = testHome;
         fs.writeFileSync(allowedFile, 'ok');
         const canonicalProjectDir = fs.realpathSync.native(projectDir);
         assert.equal(assertSendFilePath(allowedFile, undefined, [canonicalProjectDir]), fs.realpathSync.native(allowedFile));
     } finally {
-        if (previousCliHome == null) delete process.env.podex_HOME;
-        else process.env.podex_HOME = previousCliHome;
+        if (previousCliHome == null) delete process.env.WEASLEY_PODEX_HOME;
+        else process.env.WEASLEY_PODEX_HOME = previousCliHome;
         fs.rmSync(testHome, { recursive: true, force: true });
         fs.rmSync(projectDir, { recursive: true, force: true });
     }
 });
 
 test('PG-022: assertSendFilePath rejects symlink escape from allowed workingDir', { skip: process.platform === 'win32' }, () => {
-    const previousCliHome = process.env.podex_HOME;
+    const previousCliHome = process.env.WEASLEY_PODEX_HOME;
     const testHome = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-send-path-home-'));
     const workingDir = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-send-path-working-'));
     const outsideDir = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-send-path-outside-'));
     const outsideFile = path.join(outsideDir, 'secret.txt');
     const linkPath = path.join(workingDir, 'secret-link.txt');
     try {
-        process.env.podex_HOME = testHome;
+        process.env.WEASLEY_PODEX_HOME = testHome;
         fs.writeFileSync(outsideFile, 'secret');
         fs.symlinkSync(outsideFile, linkPath);
         assert.throws(() => assertSendFilePath(linkPath, workingDir), /path_not_allowed/);
     } finally {
-        if (previousCliHome == null) delete process.env.podex_HOME;
-        else process.env.podex_HOME = previousCliHome;
+        if (previousCliHome == null) delete process.env.WEASLEY_PODEX_HOME;
+        else process.env.WEASLEY_PODEX_HOME = previousCliHome;
         fs.rmSync(testHome, { recursive: true, force: true });
         fs.rmSync(workingDir, { recursive: true, force: true });
         fs.rmSync(outsideDir, { recursive: true, force: true });
@@ -198,17 +190,17 @@ test('PG-022: assertSendFilePath rejects symlink escape from allowed workingDir'
 });
 
 test('PG-023: assertSendFilePath rejects home files outside allowed roots', () => {
-    const previousCliHome = process.env.podex_HOME;
+    const previousCliHome = process.env.WEASLEY_PODEX_HOME;
     const testHome = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-send-path-home-'));
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'jaw-send-path-user-home-'));
     const homeFile = path.join(fakeHome, 'private.txt');
     try {
-        process.env.podex_HOME = testHome;
+        process.env.WEASLEY_PODEX_HOME = testHome;
         fs.writeFileSync(homeFile, 'private');
         assert.throws(() => assertSendFilePath(homeFile), /path_not_allowed/);
     } finally {
-        if (previousCliHome == null) delete process.env.podex_HOME;
-        else process.env.podex_HOME = previousCliHome;
+        if (previousCliHome == null) delete process.env.WEASLEY_PODEX_HOME;
+        else process.env.WEASLEY_PODEX_HOME = previousCliHome;
         fs.rmSync(testHome, { recursive: true, force: true });
         fs.rmSync(fakeHome, { recursive: true, force: true });
     }

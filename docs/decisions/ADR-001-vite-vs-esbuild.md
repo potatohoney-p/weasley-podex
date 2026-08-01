@@ -4,12 +4,12 @@
 |-------------|--------------------------------|
 | **Status**  | Accepted                       |
 | **Date**    | 2026-03-20                     |
-| **Authors** | podex maintainers            |
+| **Authors** | Weasley Podex maintainers    |
 | **Issue**   | #82                            |
 
 ## Context
 
-podex has a web UI served by Express (`public/`, ~4,100 lines of TypeScript across
+Weasley Podex has a web UI served by Express (`public/`, ~4,100 lines of TypeScript across
 19 modules). The frontend was bundled with esbuild since 2026-02-25 (see
 `devlog/_fin/260225_esbuild_번들러_도입.md`). A Vite migration was proposed as P1 in the
 frontend modernization roadmap (`devlog/_plan/future_feature/260227_frontend_modernization/plan.md`)

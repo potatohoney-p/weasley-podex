@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Utility Skills — podex Docs</title>
+<title>Utility Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,32 +81,32 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Utility Skills</h1>
-<p class="lead">일상적인 작업을 위한 범용 도우미 스킬입니다. 문서 처리(PDF, XLSX), 메모리 관리, 화면 캡처, 비밀번호, 날씨, 텍스트 음성 변환, 동영상 다운로드 등을 포함합니다. 이 스킬들은 다른 카테고리에 깔끔하게 분류되지 않는 다양하지만 필수적인 작업들을 처리합니다.</p>
+<p class="lead">번들된 <code>memory</code> 스킬과 선택적 유틸리티 확장 예시입니다. 이 페이지에서는 <code>memory</code>만 8개 코어 카탈로그에 포함되며, 나머지는 신뢰할 수 있는 명시적 가져오기 또는 외부 연동이 필요합니다.</p>
 
 <h2>Overview</h2>
-<p>Utility 스킬은 광범위한 일상 작업을 다룹니다. 일부는 하네스에서 직접 로드하는 내장 스킬이고, 나머지는 MCP 서버 또는 외부 도구 연동으로 구현됩니다. 이 중 5개 스킬은 기본 활성화(Active) 상태로 제공되며, 나머지 7개는 사용 가능하지만 설정이나 외부 의존성이 필요합니다.</p>
+<p>번들 여부는 <code>skills_ref/registry.json</code>을 단일 진실 원천으로 사용하세요. 아래 확장 이름은 예시이며 사전 설치나 패키지 제공을 보장하지 않습니다.</p>
 
 <table>
 <tr><th>스킬</th><th>상태</th><th>유형</th><th>설명</th></tr>
 <tr><td><code>memory</code></td><td><strong>Active</strong></td><td>Built-in</td><td>자동 저장 및 불러오기를 지원하는 세션 간 영구 메모리</td></tr>
-<tr><td><code>pdf</code></td><td><strong>Active</strong></td><td>Built-in</td><td>PDF 문서 읽기, 파싱, 텍스트 추출 및 요약</td></tr>
-<tr><td><code>pdf-vision</code></td><td><strong>Active</strong></td><td>Built-in</td><td>스캔 문서 및 이미지에 대한 비전 기반 PDF 읽기</td></tr>
-<tr><td><code>screen-capture</code></td><td><strong>Active</strong></td><td>Built-in</td><td>현재 화면 또는 특정 영역의 스크린샷 캡처</td></tr>
-<tr><td><code>xlsx</code></td><td><strong>Active</strong></td><td>Built-in</td><td>Excel 스프레드시트 읽기, 쓰기 및 조작</td></tr>
-<tr><td><code>1password</code></td><td>Available</td><td>MCP</td><td>1Password 볼트에서 자격 증명 및 비밀 조회</td></tr>
-<tr><td><code>goplaces</code></td><td>Available</td><td>MCP</td><td>장소 검색, 길찾기 및 장소 정보 제공</td></tr>
-<tr><td><code>summarize</code></td><td>Available</td><td>Built-in</td><td>긴 텍스트, 기사 또는 트랜스크립트 요약</td></tr>
-<tr><td><code>tts</code></td><td>Available</td><td>External</td><td>음성 출력을 위한 텍스트 음성 변환</td></tr>
-<tr><td><code>video-downloader</code></td><td>Available</td><td>External</td><td>URL에서 동영상 다운로드 (YouTube 등)</td></tr>
-<tr><td><code>video-frames</code></td><td>Available</td><td>External</td><td>분석을 위한 동영상 파일 프레임 추출</td></tr>
-<tr><td><code>weather</code></td><td>Available</td><td>MCP</td><td>위치별 현재 날씨 및 예보</td></tr>
+<tr><td><code>pdf</code></td><td><strong>선택적 가져오기</strong></td><td>Extension</td><td>PDF 문서 읽기, 파싱, 텍스트 추출 및 요약</td></tr>
+<tr><td><code>pdf-vision</code></td><td><strong>선택적 가져오기</strong></td><td>Extension</td><td>스캔 문서 및 이미지에 대한 비전 기반 PDF 읽기</td></tr>
+<tr><td><code>screen-capture</code></td><td><strong>선택적 가져오기</strong></td><td>Extension</td><td>현재 화면 또는 특정 영역의 스크린샷 캡처</td></tr>
+<tr><td><code>xlsx</code></td><td><strong>선택적 가져오기</strong></td><td>Extension</td><td>Excel 스프레드시트 읽기, 쓰기 및 조작</td></tr>
+<tr><td><code>1password</code></td><td>선택적 가져오기</td><td>MCP</td><td>1Password 볼트에서 자격 증명 및 비밀 조회</td></tr>
+<tr><td><code>goplaces</code></td><td>선택적 가져오기</td><td>MCP</td><td>장소 검색, 길찾기 및 장소 정보 제공</td></tr>
+<tr><td><code>summarize</code></td><td>선택적 가져오기</td><td>Extension</td><td>긴 텍스트, 기사 또는 트랜스크립트 요약</td></tr>
+<tr><td><code>tts</code></td><td>선택적 가져오기</td><td>External</td><td>음성 출력을 위한 텍스트 음성 변환</td></tr>
+<tr><td><code>video-downloader</code></td><td>선택적 가져오기</td><td>External</td><td>URL에서 동영상 다운로드 (YouTube 등)</td></tr>
+<tr><td><code>video-frames</code></td><td>선택적 가져오기</td><td>External</td><td>분석을 위한 동영상 파일 프레임 추출</td></tr>
+<tr><td><code>weather</code></td><td>선택적 가져오기</td><td>MCP</td><td>위치별 현재 날씨 및 예보</td></tr>
 </table>
 
 <!-- ================================================================== -->
@@ -115,14 +114,14 @@
 <!-- ================================================================== -->
 
 <h2 id="memory">memory</h2>
-<p>세션 간에 유지되는 영구 메모리입니다. memory 스킬은 중요한 컨텍스트 -- 결정 사항, 선호 설정, 프로젝트 노트, 피드백 -- 를 자동으로 저장하고 관련될 때 불러옵니다. 메모리는 <code>~/.podex/memory/</code> 아래에 Markdown 파일로 저장되며, 빠른 검색을 위해 SQLite로 인덱싱됩니다.</p>
+<p>세션 간에 유지되는 영구 메모리입니다. memory 스킬은 중요한 컨텍스트 -- 결정 사항, 선호 설정, 프로젝트 노트, 피드백 -- 를 자동으로 저장하고 관련될 때 불러옵니다. 메모리는 <code>~/.weasley/podex/memory/</code> 아래에 Markdown 파일로 저장되며, 빠른 검색을 위해 SQLite로 인덱싱됩니다.</p>
 
 <table>
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>memory</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
 <tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
-<tr><td><strong>Storage</strong></td><td><code>~/.podex/memory/</code> (Markdown + SQLite index)</td></tr>
+<tr><td><strong>Storage</strong></td><td><code>~/.weasley/podex/memory/</code> (Markdown + SQLite index)</td></tr>
 <tr><td><strong>Trigger</strong></td><td>Remember, recall, note, preference, feedback</td></tr>
 </table>
 
@@ -160,7 +159,7 @@
 
 <h3>메모리 구조</h3>
 <p>메모리는 네임스페이스가 지정된 Markdown 파일로 구성됩니다. 자동 메모리 시스템은 <code>MEMORY.md</code>를 인덱스로 작성하고, 세부 항목은 주제별 파일에 기록합니다.</p>
-<pre><code>~/.podex/memory/
+<pre><code>~/.weasley/podex/memory/
   MEMORY.md                    # Index with links to detailed files
   feedback_goal_done_method.md # Specific feedback entry
   feedback_poll_dont_wait.md   # Another feedback entry
@@ -179,7 +178,7 @@
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>pdf</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Status</strong></td><td>선택적 가져오기</td></tr>
 <tr><td><strong>Input</strong></td><td>로컬 파일 경로 또는 URL</td></tr>
 <tr><td><strong>Best for</strong></td><td>선택 가능한 텍스트가 있는 디지털 PDF</td></tr>
 </table>
@@ -226,7 +225,7 @@
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>pdf-vision</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Status</strong></td><td>선택적 가져오기</td></tr>
 <tr><td><strong>Model</strong></td><td>비전 지원 LLM (Claude, GPT-4V)</td></tr>
 <tr><td><strong>Best for</strong></td><td>스캔 문서, 손글씨, 이미지가 많은 PDF</td></tr>
 </table>
@@ -271,7 +270,7 @@
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>screen-capture</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Status</strong></td><td>선택적 가져오기</td></tr>
 <tr><td><strong>Output</strong></td><td>PNG 이미지 (파일 또는 인라인)</td></tr>
 <tr><td><strong>Platform</strong></td><td>macOS (screencapture), Linux (scrot/gnome-screenshot)</td></tr>
 </table>
@@ -317,7 +316,7 @@
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>xlsx</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Status</strong></td><td>선택적 가져오기</td></tr>
 <tr><td><strong>Formats</strong></td><td><code>.xlsx</code>, <code>.xls</code>, <code>.csv</code> (읽기/쓰기)</td></tr>
 <tr><td><strong>Library</strong></td><td>SheetJS (xlsx)</td></tr>
 </table>
@@ -364,7 +363,7 @@
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>1password</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (1Password CLI 필요)</td></tr>
+<tr><td><strong>Status</strong></td><td>선택적 가져오기 (1Password CLI 필요)</td></tr>
 <tr><td><strong>Prerequisite</strong></td><td><code>op</code> CLI 설치 및 로그인 완료</td></tr>
 <tr><td><strong>Auth</strong></td><td><code>op</code>를 통한 생체 인증 또는 마스터 비밀번호</td></tr>
 </table>
@@ -386,7 +385,7 @@
 /1password get "AWS Production" --field password
 
 # Inject a secret into a command
-op run --env-file=.env -- jaw serve
+op run --env-file=.env -- weasley-podex serve
 
 # List all vaults
 /1password vaults</code></pre>
@@ -414,7 +413,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>goplaces</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (MCP server)</td></tr>
+<tr><td><strong>Status</strong></td><td>선택적 가져오기 (MCP server)</td></tr>
 <tr><td><strong>API</strong></td><td>Google Maps / Apple Maps</td></tr>
 <tr><td><strong>Prerequisite</strong></td><td>Maps API 키 설정 필요</td></tr>
 </table>
@@ -460,7 +459,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>summarize</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available</td></tr>
+<tr><td><strong>Status</strong></td><td>선택적 가져오기</td></tr>
 <tr><td><strong>Input</strong></td><td>텍스트, 파일 경로 또는 URL</td></tr>
 <tr><td><strong>Styles</strong></td><td>Bullets, paragraph, executive, key-takeaways</td></tr>
 </table>
@@ -497,7 +496,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>tts</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (external)</td></tr>
+<tr><td><strong>Status</strong></td><td>선택적 가져오기 (external)</td></tr>
 <tr><td><strong>Engines</strong></td><td>macOS <code>say</code>, OpenAI TTS, ElevenLabs</td></tr>
 <tr><td><strong>Output</strong></td><td>직접 재생 또는 오디오 파일 (MP3, WAV)</td></tr>
 </table>
@@ -534,7 +533,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>video-downloader</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (external)</td></tr>
+<tr><td><strong>Status</strong></td><td>선택적 가져오기 (external)</td></tr>
 <tr><td><strong>Prerequisite</strong></td><td><code>yt-dlp</code> 설치 필요</td></tr>
 <tr><td><strong>Platforms</strong></td><td>YouTube, Vimeo, Twitter 및 1000개 이상의 사이트</td></tr>
 </table>
@@ -581,7 +580,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>video-frames</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (external)</td></tr>
+<tr><td><strong>Status</strong></td><td>선택적 가져오기 (external)</td></tr>
 <tr><td><strong>Prerequisite</strong></td><td><code>ffmpeg</code> 설치 필요</td></tr>
 <tr><td><strong>Output</strong></td><td>PNG/JPEG 프레임 이미지</td></tr>
 </table>
@@ -618,7 +617,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>weather</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (MCP server)</td></tr>
+<tr><td><strong>Status</strong></td><td>선택적 가져오기 (MCP server)</td></tr>
 <tr><td><strong>API</strong></td><td>OpenWeatherMap / WeatherAPI</td></tr>
 <tr><td><strong>Data</strong></td><td>현재 상태, 시간별, 일별 예보</td></tr>
 </table>

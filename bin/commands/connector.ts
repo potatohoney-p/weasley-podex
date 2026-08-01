@@ -1,4 +1,4 @@
-﻿import { parseArgs } from 'node:util';
+import { parseArgs } from 'node:util';
 import {
     connectorBoardAdd,
     connectorBoardUpdate,
@@ -66,7 +66,7 @@ const HELP = `Dashboard Connector CLI — unified entry point for board, notes, 
 Surfaces:
   board       Kanban board tasks (backlog/ready/active/review/done)
   notes       Dashboard markdown notes
-  reminders   Priority-based reminders (alias: podex reminders)
+  reminders   Priority-based reminders (alias: weasley-podex reminders)
   audit       Connector audit log
 
 Board commands:
@@ -78,7 +78,7 @@ Notes commands:
   connector notes write --path "path/to/note.md" --body "content"
   connector notes list [--json]
 
-Reminders commands (delegates to podex reminders):
+Reminders commands (delegates to weasley-podex reminders):
   connector reminders add "title" [--priority high] [--due ISO] [--remind ISO]
   connector reminders list [--json]
   connector reminders done <id>

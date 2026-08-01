@@ -1,25 +1,25 @@
 ﻿---
 created: 2026-04-02
-tags: [podex, officecli, docx-xlsx-pptx, smoke-test, CJK]
-aliases: [OfficeCLI Integration, podex OfficeCLI, officecli 연동]
+tags: [weasley-podex, officecli, docx-xlsx-pptx, smoke-test, CJK]
+aliases: [OfficeCLI Integration, Weasley Podex OfficeCLI, officecli 연동]
 ---
 # OfficeCLI 연동 가이드
 
-> **On-Demand Model (since v2.1):** OfficeCLI is no longer installed during `npm install -g podex`.
+> **On-Demand Model (since v2.1):** OfficeCLI is no longer installed during `npm install -g weasley-podex`.
 > It is installed on-demand when a skill needs L1/L2 features or HWP support.
 > Basic office document editing uses Python OOXML libraries as the primary path.
-> Postinstall 제어: OfficeCLI는 v2.1+ on-demand 설치(`scripts/install-officecli.sh`). `OFFICECLI_REPO`로 fork/업스트림 소스를 override (`structure/infra.md` §환경변수).
+> Postinstall 제어: OfficeCLI는 v2.1+ on-demand 설치(`scripts/install-officecli.sh`). 기본값은 Apache-2.0 `iOfficeAI/OfficeCLI` 공개 릴리스이며, `OFFICECLI_REPO`로 신뢰하는 대체 소스를 지정할 수 있습니다 (`structure/infra.md` §환경변수).
 
-OfficeCLI는 podex에서 오피스 문서를 직접 다룰 때 쓰는 기본 런타임 도구이다. Word, Excel, PowerPoint 파일을 열고, 읽고, 수정하고, 검증하는 일을 하나의 바이너리로 처리한다. Microsoft Office를 따로 설치하지 않아도 된다.
+OfficeCLI는 Weasley Podex에서 오피스 문서를 직접 다룰 때 쓰는 기본 런타임 도구이다. Word, Excel, PowerPoint 파일을 열고, 읽고, 수정하고, 검증하는 일을 하나의 바이너리로 처리한다. Microsoft Office를 따로 설치하지 않아도 된다.
 
 이 통합이 중요한 이유는 에이전트가 문서 작업을 쉘 명령 한 번으로 끝낼 수 있기 때문이다. `.docx`, `.xlsx`, `.pptx`를 각각 다른 툴로 나누지 않아도 되고, `--json` 출력으로 결과를 바로 후속 자동화에 연결할 수 있다. smoke test까지 함께 두었기 때문에 “설치만 되었는가”가 아니라 “실제로 문서 편집이 되는가”를 바로 확인할 수 있다.
 
-사용 흐름은 단순하다. `bash "$(npm root -g)/podex/scripts/install-officecli.sh"`로 전역 OfficeCLI를 준비한다. 그다음 `bash tests/smoke/test_officecli_integration.sh`를 실행해 12개 기본 시나리오를 검증한다. 이 smoke test는 `OFFICECLI_BIN`이 없으면 먼저 PATH의 `officecli`를 찾고, 그래도 없을 때만 저장소 안의 `officecli/bin/release/officecli-*` publish output을 찾는다. 마지막 호환 fallback으로만 기존 `officecli/build-local/officecli`를 사용한다. 다른 바이너리를 강제로 시험하고 싶으면 `OFFICECLI_BIN=/path/to/officecli bash tests/smoke/test_officecli_integration.sh`처럼 실행한다.
+사용 흐름은 단순하다. `bash "$(npm root -g)/weasley-podex/scripts/install-officecli.sh"`로 전역 OfficeCLI를 준비한다. 그다음 `bash tests/smoke/test_officecli_integration.sh`를 실행해 12개 기본 시나리오를 검증한다. 이 smoke test는 `OFFICECLI_BIN`이 없으면 먼저 PATH의 `officecli`를 찾고, 그래도 없을 때만 저장소 안의 `officecli/bin/release/officecli-*` publish output을 찾는다. 마지막 호환 fallback으로만 기존 `officecli/build-local/officecli`를 사용한다. 다른 바이너리를 강제로 시험하고 싶으면 `OFFICECLI_BIN=/path/to/officecli bash tests/smoke/test_officecli_integration.sh`처럼 실행한다.
 
 실무에서는 아래처럼 바로 시작하면 된다.
 
 ```bash
-bash "$(npm root -g)/podex/scripts/install-officecli.sh"
+bash "$(npm root -g)/weasley-podex/scripts/install-officecli.sh"
 officecli create report.docx
 officecli add report.docx /body --type paragraph --prop text="분기 요약"
 officecli view report.docx text
@@ -49,7 +49,7 @@ sequenceDiagram
     participant Binary as officecli
     participant Test as smoke test
 
-    User->>Script: bash "$(npm root -g)/podex/scripts/install-officecli.sh"
+    User->>Script: bash "$(npm root -g)/weasley-podex/scripts/install-officecli.sh"
     Script->>Binary: 플랫폼별 바이너리 다운로드
     User->>Test: bash tests/smoke/test_officecli_integration.sh
     Test->>Binary: create, add, set, validate, batch, get
@@ -64,12 +64,12 @@ sequenceDiagram
 
 | 작업 | 명령 |
 | --- | --- |
-| podex 글로벌 설치 | `npm install -g podex` |
-| 기본 설치 (CJK fork) | `bash "$(npm root -g)/podex/scripts/install-officecli.sh"` |
-| upstream 설치 | `bash "$(npm root -g)/podex/scripts/install-officecli.sh" --upstream` |
-| 강제 재설치 | `bash "$(npm root -g)/podex/scripts/install-officecli.sh" --force` |
-| 오래된 경우만 갱신 | `bash "$(npm root -g)/podex/scripts/install-officecli.sh" --update` |
-| 커스텀 소스 | `OFFICECLI_REPO=other/repo bash "$(npm root -g)/podex/scripts/install-officecli.sh"` |
+| Weasley Podex 글로벌 설치 | `npm install -g weasley-podex` |
+| 기본 설치 (검증된 upstream) | `bash "$(npm root -g)/weasley-podex/scripts/install-officecli.sh"` |
+| upstream 명시 (호환 옵션) | `bash "$(npm root -g)/weasley-podex/scripts/install-officecli.sh" --upstream` |
+| 강제 재설치 | `bash "$(npm root -g)/weasley-podex/scripts/install-officecli.sh" --force` |
+| 오래된 경우만 갱신 | `bash "$(npm root -g)/weasley-podex/scripts/install-officecli.sh" --update` |
+| 커스텀 소스 | `OFFICECLI_REPO=other/repo bash "$(npm root -g)/weasley-podex/scripts/install-officecli.sh"` |
 | 버전 확인 | `officecli --version` |
 | smoke test | `bash tests/smoke/test_officecli_integration.sh` |
 | 특정 바이너리 지정 테스트 | `OFFICECLI_BIN=/path/to/officecli bash tests/smoke/test_officecli_integration.sh` |
@@ -78,8 +78,8 @@ sequenceDiagram
 
 | 항목 | 내용 |
 | --- | --- |
-| 대상 릴리스 | `potatohoney-p/OfficeCLI` latest release (fork-first) |
-| upstream 전환 | `--upstream` 플래그로 `iOfficeAI/OfficeCLI` 사용 가능 |
+| 대상 릴리스 | Apache-2.0 `iOfficeAI/OfficeCLI` latest release |
+| upstream 명시 | `--upstream`은 현재 기본값을 명시하는 호환 플래그 |
 | 소스 오버라이드 | `OFFICECLI_REPO=other/repo` 환경변수로 임의 소스 지정 |
 | 우선순위 규칙 | `OFFICECLI_REPO`와 `--upstream`은 함께 쓰지 않는다 |
 | 설치 위치 | `~/.local/bin/officecli` |
@@ -136,19 +136,15 @@ officecli hwp --json
 | HWP export/read | `officecli view file.hwp pdf --out out.pdf --json`; `officecli view file.hwp dump --json` |
 | HWP native rhwp op | `officecli view file.hwp native --op get-style-list --json`; `officecli set file.hwp /native-op --prop op=split-paragraph --prop output=out.hwp --json` |
 
-### upstream / fork 차이
+### upstream / custom source
 
-설치 스크립트는 **fork-first**로 동작한다. 기본 소스가 `potatohoney-p/OfficeCLI`이며, CJK 폰트 처리가 강화되어 있다. vanilla upstream이 필요하면 `--upstream` 플래그를 사용한다.
+기본 소스는 공개 상태와 Apache-2.0 라이선스를 확인한 `iOfficeAI/OfficeCLI`입니다. 조직 내부 포크처럼 사용자가 신뢰하는 다른 릴리스가 필요할 때만 `OFFICECLI_REPO=owner/repo`를 지정합니다. `--upstream`은 기존 자동화 호환을 위해 남아 있으며 현재 기본값과 동일합니다.
 
-| 항목 | 기본 설치 (fork) | `--upstream` 설치 |
-| --- | --- | --- |
-| GitHub 소스 | `potatohoney-p/OfficeCLI` | `iOfficeAI/OfficeCLI` |
-| 설치 위치 | `~/.local/bin/officecli` | `~/.local/bin/officecli` |
-| 일반 OOXML 작업 | 지원 | 지원 |
-| CJK 폰트 처리 | 강화됨 (우선 권장) | 제한적일 수 있음 |
-| smoke test 호환 | 완전 호환 | 완전 호환 |
+### 선택적 문서 워크플로우
 
-### 관련 스킬
+아래 이름은 Weasley Podex의 8개 번들 스킬에 포함되지 않는다. 설치된 Codex
+카탈로그나 사용자가 명시한 신뢰 저장소에서 가져온 경우에만 사용할 수 있으며,
+OfficeCLI 자체는 위의 직접 명령으로 독립적으로 사용할 수 있다.
 
 | 스킬 | 역할 |
 | --- | --- |
@@ -157,16 +153,13 @@ officecli hwp --json
 | `pptx` | PowerPoint 슬라이드 생성 (CJK·접근성 포함) |
 | `hwp` | HWP/HWPX 생성·편집, rhwp-backed binary HWP readiness gate |
 
-### 공유 reference
-
-| 파일 | 역할 |
-| --- | --- |
-| `skills_ref/references/officecli-cjk.md` | DOCX/XLSX/PPTX 공통 CJK 규칙 |
-| `skills_ref/references/officecli-accessibility.md` | DOCX/XLSX/PPTX 공통 접근성 기준 |
+가져온 스킬의 실제 위치와 설명은 `weasley-podex skill list` 및
+`weasley-podex skill info <name>`으로 확인한다. 별도 CJK·접근성 규칙이
+필요하면 가져온 카탈로그의 문서 또는 OfficeCLI 공식 문서를 따른다.
 
 ## 변경 기록
 
 - 2026-05-15: HWP/rhwp doctor/capabilities parity, sidecar 설치, `.hwp create` 계약, HWP fixture smoke를 통합했다
-- 2026-04-02: Phase 20 — overlay routing을 제거하고 공통 규칙을 `skills_ref/references/`로 이동했다
+- 2026-08-02: 비번들 문서 스킬과 존재하지 않는 공유 reference 경로를 명시적 선택 항목으로 정리했다
 - 2026-04-02: narrative-first 구조와 frontmatter를 추가하고 smoke test의 바이너리 선택 규칙을 문서와 맞췄다
 

@@ -11,18 +11,18 @@ import {
 } from '../../src/workflows/artifacts.ts';
 import type { WorkflowArtifact } from '../../src/cli/types.ts';
 
-test('workflow artifact path resolves inside JAW_HOME artifact root', () => {
+test('workflow artifact path resolves inside WEASLEY_PODEX_HOME artifact root', () => {
     const root = path.resolve(getWorkflowArtifactsRoot());
     const projectKey = projectKeyFromPath('/tmp/example-project');
     const artifactPath = resolveWorkflowArtifactPath(projectKey, 'artifact-1', '2026-05-27');
     assert.ok(artifactPath.startsWith(root + path.sep));
-    assert.match(artifactPath, /2026-05-27\/artifact-1\.json$/);
+    assert.ok(artifactPath.endsWith(path.join('2026-05-27', 'artifact-1.json')));
 });
 
 test('workflow artifact path rejects traversal outside root', () => {
     assert.throws(
         () => resolveWorkflowArtifactPath('../escape', '../../bad', '2026-05-27'),
-        /escaped JAW_HOME artifact root|Invalid workflow artifact/,
+        /escaped WEASLEY_PODEX_HOME artifact root|Invalid workflow artifact/,
     );
 });
 

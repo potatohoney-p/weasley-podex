@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF &mdash; podex Docs</title>
+<title>PDF &mdash; Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
 .badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
@@ -30,7 +29,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -53,7 +52,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -102,7 +101,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
@@ -112,25 +111,25 @@
 <p class="lead">PDF 읽기, 생성, 편집, 검토 + 비전 기반 추출. 이 스킬은 PDF 문서의 전체 수명 주기를 처리합니다 &mdash; <code>reportlab</code>으로 새 파일을 생성하는 것부터 <code>pdfplumber</code>로 텍스트를 추출하고, Poppler로 페이지를 이미지로 렌더링하며, 매 편집 후 시각적 품질 검증을 수행하는 것까지 포함합니다.</p>
 
 <p>
-  <span class="badge badge-ref">Reference</span>
+  <span class="badge badge-ref">선택적 가져오기</span>
   <span class="badge badge-category">AI &amp; Media</span>
 </p>
 
 <div class="callout callout-info">
-  <strong>레퍼런스 스킬:</strong> <code>pdf</code>는 기본적으로 활성화되어 있지 않습니다. <code>jaw skill install pdf</code>로 설치하거나 채팅에서 "PDF 스킬 설치해줘"라고 말하세요. 활성화되면 시스템 프롬프트에 주입되어 PDF 작업이 감지될 때마다 에이전트가 자동으로 워크플로우를 따릅니다.
+  <strong>선택적 워크플로우:</strong> <code>pdf</code>는 8개 번들 스킬에 포함되지 않습니다. 설치된 Codex 카탈로그 또는 사용자가 명시한 신뢰 저장소에서 먼저 가져온 뒤에만 <code>weasley-podex skill install pdf</code>로 활성화할 수 있습니다. 아래 내용은 워크플로우 참고이며 해당 파일이 패키지에 포함된다는 뜻이 아닙니다.
 </div>
 
 <h2>빠른 참조</h2>
 <table class="quick-ref">
 <tr><td>스킬 이름</td><td><code>pdf</code></td></tr>
 <tr><td>카테고리</td><td>AI &amp; Media</td></tr>
-<tr><td>기본 활성화</td><td>아니오 &mdash; <code>jaw skill install pdf</code> 필요</td></tr>
-<tr><td>SKILL.md 경로</td><td><code>~/.podex/skills/pdf/SKILL.md</code> (활성) 또는 <code>~/.podex/skills_ref/pdf/SKILL.md</code> (레퍼런스)</td></tr>
+<tr><td>번들 포함</td><td>아니오 &mdash; 신뢰 소스에서 가져온 뒤 활성화</td></tr>
+<tr><td>SKILL.md 경로</td><td>가져온 카탈로그가 결정하며 <code>weasley-podex skill info pdf</code>로 확인</td></tr>
 <tr><td>Python 패키지</td><td><code>reportlab</code>, <code>pdfplumber</code>, <code>pypdf</code></td></tr>
 <tr><td>시스템 도구</td><td><code>pdftoppm</code> (Poppler 포함)</td></tr>
 <tr><td>임시 디렉토리</td><td><code>tmp/pdfs/</code></td></tr>
 <tr><td>출력 디렉토리</td><td><code>output/pdf/</code></td></tr>
-<tr><td>관련 스킬</td><td><code>pdf-vision</code>, <code>docx</code>, <code>pptx</code>, <code>xlsx</code></td></tr>
+<tr><td>관련 워크플로우</td><td>문서 추출, 시각 QA, 오피스 변환(별도 설치 시)</td></tr>
 </table>
 
 <h2>워크플로우</h2>
@@ -294,7 +293,7 @@ soffice --headless --convert-to pdf input.docx --outdir output/pdf/</code></pre>
 </div>
 
 <h2>pdf-vision과의 비교</h2>
-<p>podex에는 두 가지 PDF 관련 스킬이 포함되어 있습니다. 이들은 중복이 아닌 상호 보완적입니다:</p>
+<p>Weasley Podex에는 두 가지 PDF 관련 스킬이 포함되어 있습니다. 이들은 중복이 아닌 상호 보완적입니다:</p>
 
 <table>
 <thead>
@@ -309,7 +308,7 @@ soffice --headless --convert-to pdf input.docx --outdir output/pdf/</code></pre>
 </table>
 
 <div class="callout callout-info">
-  <strong>팁:</strong> <code>jaw skill install pdf pdf-vision</code>으로 둘 다 설치하거나 "PDF 스킬이랑 pdf-vision 둘 다 설치해줘"라고 말하세요. 두 스킬이 모두 활성화되면 원활하게 함께 작동합니다.
+  <strong>팁:</strong> <code>weasley-podex skill install pdf pdf-vision</code>으로 둘 다 설치하거나 "PDF 스킬이랑 pdf-vision 둘 다 설치해줘"라고 말하세요. 두 스킬이 모두 활성화되면 원활하게 함께 작동합니다.
 </div>
 
 <h2>문제 해결</h2>
@@ -341,7 +340,7 @@ sudo apt-get install -y libreoffice</code></pre>
 
 <h2>설치</h2>
 <pre><code># CLI
-jaw skill install pdf
+weasley-podex skill install pdf
 
 # In-chat (Korean)
 "PDF 스킬 설치해줘"
@@ -350,13 +349,13 @@ jaw skill install pdf
 "Install the PDF skill"
 
 # Verify installation
-jaw skill info pdf</code></pre>
+weasley-podex skill info pdf</code></pre>
 
-<pre><code># Expected output of jaw skill info pdf:
+<pre><code># Expected output of weasley-podex skill info pdf:
 #   Name:     pdf
 #   Status:   active
 #   Category: AI &amp; Media
-#   Path:     ~/.podex/skills/pdf/SKILL.md
+#   Path:     ~/.weasley/podex/skills/pdf/SKILL.md
 #   Description: PDF creation, reading, editing, merging, and text extraction</code></pre>
 
 <div class="page-nav">

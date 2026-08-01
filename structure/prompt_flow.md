@@ -1,7 +1,7 @@
 ---
 created: 2026-03-28
-tags: [podex, prompt, pipeline, architecture]
-aliases: [Prompt Injection Flow, podex prompt flow, prompt pipeline]
+tags: [weasley-podex, prompt, pipeline, architecture]
+aliases: [Prompt Injection Flow, Weasley Podex prompt flow, prompt pipeline]
 ---
 
 > 📚 [INDEX](INDEX.md) · **프롬프트 파이프라인** · [A1](prompt_basic_A1.md) · [A2](prompt_basic_A2.md) · [B](prompt_basic_B.md) · [메모리](memory_architecture.md)
@@ -47,15 +47,15 @@ graph TD
 
 ### A-1.md
 
-- 경로: `~/.podex/prompts/A-1.md`
+- 경로: `~/.weasley/podex/prompts/A-1.md`
 - 템플릿 폴백: `src/prompt/templates/a1-system.md`
-- 역할: 시스템 규칙, browser control, memory/heartbeat, jaw employee vs CLI sub-agent 구분, 채널 전송 규칙
+- 역할: 시스템 규칙, browser control, memory/heartbeat, Weasley Podex employee vs CLI sub-agent 구분, 채널 전송 규칙
 
 핵심은 "파일 우선, 템플릿 폴백"이다. `A-1.md`가 있으면 그대로 쓰고, 없을 때만 템플릿을 렌더한다.
 
 ### A-2.md
 
-- 경로: `~/.podex/prompts/A-2.md`
+- 경로: `~/.weasley/podex/prompts/A-2.md`
 - 템플릿: `src/prompt/templates/a2-default.md`
 - 역할: Identity / User / Vibe / Working Directory 같은 사용자 설정 힌트
 
@@ -149,16 +149,16 @@ advanced index가 아직 준비되지 않았거나 `forDisk: true`인 경우 `ap
 현재 orchestration 안내는 JSON subtasks가 아니라 shell dispatch 기준이다.
 
 ```bash
-podex dispatch --agent "Frontend" --task "Specific task instruction"
+weasley-podex dispatch --agent "Frontend" --task "Specific task instruction"
 ```
 
 직원 진행 조회는 dispatch stdout만 보지 않는다. orchestration prompt는
-`podex worker status [agent] --port <port>`와
-`podex worker watch [agent] --port <port>`를 안내하며, `snapshot.workers`는
+`weasley-podex worker status [agent] --port <port>`와
+`weasley-podex worker watch [agent] --port <port>`를 안내하며, `snapshot.workers`는
 running-only이고 완료된 safe-summary progress는 worker-progress previous
 snapshot에 남는다고 명시한다.
 
-지연된 employee 결과 replay도 boss context에 full stdout을 재주입하지 않는다. 원래 dispatch 연결이 끊긴 뒤 결과가 도착하면 다음 boss turn에는 bounded notice만 들어가며, notice는 agent/run identity, 짧은 preview, `podex worker status <runId>`, `podex worker read <runId> --tail 120` 복구 명령을 제공한다. 전체 raw output은 runId 기반 explicit read surface에서만 읽는다.
+지연된 employee 결과 replay도 boss context에 full stdout을 재주입하지 않는다. 원래 dispatch 연결이 끊긴 뒤 결과가 도착하면 다음 boss turn에는 bounded notice만 들어가며, notice는 agent/run identity, 짧은 preview, `weasley-podex worker status <runId>`, `weasley-podex worker read <runId> --tail 120` 복구 명령을 제공한다. 전체 raw output은 runId 기반 explicit read surface에서만 읽는다.
 
 추가로 `skills/dev-pabcd/SKILL.md`가 있으면 `## PABCD Orchestration Guide`가 이어 붙는다. 이 인라인 가이드는 loop/multi-pass 작업을 명시한다 — 큰/"loop" 작업은 work-phase(결과 슬라이스)마다 풀 PABCD 한 바퀴를 돌고, goal 모드에서 D 이후 D→IDLE→P로 다음 work-phase의 P에 재진입하며, 각 phase의 실제 작업을 충실히 수행한다(anti-skip). devlog/_plan/260624_goal_work_phase_pabcd_loop/ 참고.
 
@@ -167,8 +167,8 @@ snapshot에 남는다고 명시한다.
 Forward phase transitions **P→A, A→B, B→C, C→D** require a narrative attestation — not a boolean checkbox. Implementation: `src/orchestrator/attestation.ts`, enforced in `state-machine.ts` via `checkAttestationGate()`.
 
 ```bash
-podex orchestrate B --attest '{"from":"A","to":"B","did":"<what you actually did this phase>"}'
-podex orchestrate D --attest '{"from":"C","to":"D","did":"ran checks","checkOutput":"<tsc/test tail>","exitCode":0}'
+weasley-podex orchestrate B --attest '{"from":"A","to":"B","did":"<what you actually did this phase>"}'
+weasley-podex orchestrate D --attest '{"from":"C","to":"D","did":"ran checks","checkOutput":"<tsc/test tail>","exitCode":0}'
 ```
 
 | Rule | Detail |
@@ -183,24 +183,24 @@ podex orchestrate D --attest '{"from":"C","to":"D","did":"ran checks","checkOutp
 
 ### Pre-prompt context hooks
 
-`src/prompt/context-hooks.ts` + `~/.podex/context-hooks.json` (optional).
+`src/prompt/context-hooks.ts` + `~/.weasley/podex/context-hooks.json` (optional).
 
 - Injected in `getSystemPrompt()` **after** runtime-context block, **before** bounded-local-search contract (runtime turns only; skipped for `forDisk`)
-- Config: bounded sources under `JAW_HOME`, scopes `main` | `heartbeat`, per-source `maxAgeSeconds`, char budgets (hard caps: 8 sources / 4000 total chars)
+- Config: bounded sources under `WEASLEY_PODEX_HOME`, scopes `main` | `heartbeat`, per-source `maxAgeSeconds`, char budgets (hard caps: 8 sources / 4000 total chars)
 - `freshSession` from `spawn.ts` (`!isResume`) is passed into hook metadata
 - Fail-open: missing/invalid config does not block spawn
-- CLI: `podex hooks` (`bin/commands/hooks.ts`) — inspect config + dry-run report
+- CLI: `weasley-podex hooks` (`bin/commands/hooks.ts`) — inspect config + dry-run report
 - Docs: `docs/dev/pre-prompt-context-hooks.md`
 
 ### Runtime policy hooks (output boundary + event flags)
 
-`src/core/policy-hooks.ts` + `src/core/policy-flags.ts` + `~/.podex/policy-hooks.json` (optional; layer inert without config, kill switch `podex_POLICY_HOOKS=0`).
+`src/core/policy-hooks.ts` + `src/core/policy-flags.ts` + `~/.weasley/podex/policy-hooks.json` (optional; layer inert without config, kill switch `WEASLEY_PODEX_POLICY_HOOKS=0`).
 
 - afterOutput warn/block/redact rules (bounded: 16 rules / 200-char patterns / 256KiB eval) applied before the durable assistant insert (`src/agent/lifecycle-handler.ts`), at the jwc settle path (`src/agent/spawn.ts`), on outbound channel sends (`src/messaging/send.ts`), and on heartbeat results before quiet-check/anchor insert (`src/memory/heartbeat.ts`)
-- Built-in event flags: `record_pending` (tool-log pattern -> `~/.podex/policy-flags.json` -> next-turn `[POLICY FLAG]` reminder prepended in `src/orchestrator/pipeline.ts`), `heartbeatQuietOk` extra quiet markers alongside `[SILENT]`
+- Built-in event flags: `record_pending` (tool-log pattern -> `~/.weasley/podex/policy-flags.json` -> next-turn `[POLICY FLAG]` reminder prepended in `src/orchestrator/pipeline.ts`), `heartbeatQuietOk` extra quiet markers alongside `[SILENT]`
 - beforeSpawn deterministic checks (prompt-size warn, forbidden patterns) at the spawn choke point — warn/trace only, never blocking
 - Known v1 limitation: live streaming deltas reach the web UI before final-output policy; only final text is checked
-- CLI: `podex hooks policy [--json]`
+- CLI: `weasley-podex hooks policy [--json]`
 
 ### Bounded local search contract
 
@@ -215,7 +215,7 @@ podex orchestrate D --attest '{"from":"C","to":"D","did":"ran checks","checkOutp
 
 heartbeat 섹션은 `loadHeartbeatFile()` 결과를 본다.
 
-- 입력 파일: `~/.podex/heartbeat.json`
+- 입력 파일: `~/.weasley/podex/heartbeat.json`
 - 템플릿: `heartbeat-jobs.md`
 - 각 job은 enabled 상태, 사람이 읽는 schedule, prompt preview를 렌더한다
 
@@ -225,8 +225,8 @@ heartbeat 섹션은 `loadHeartbeatFile()` 결과를 본다.
 
 skills 섹션은 active skills와 reference registry를 합쳐 렌더한다.
 
-- active skills: `{{JAW_HOME}}/skills/*/SKILL.md`
-- reference skills: `{{JAW_HOME}}/skills_ref/registry.json`
+- active skills: `{{WEASLEY_PODEX_HOME}}/skills/*/SKILL.md`
+- reference skills: `{{WEASLEY_PODEX_HOME}}/skills_ref/registry.json`
 
 렌더 규칙:
 
@@ -246,7 +246,7 @@ skills 섹션은 active skills와 reference registry를 합쳐 렌더한다.
 delegation rules 블록은 prompt 끝에 항상 붙는다.
 
 - CLI sub-agents는 내부 병렬 작업용
-- jaw employees는 `podex dispatch`
+- Weasley Podex employees는 `weasley-podex dispatch`
 - 둘을 혼동하지 말 것
 
 이 블록은 orchestration 템플릿 유무와 무관하게 항상 추가된다.
@@ -259,7 +259,7 @@ delegation rules 블록은 prompt 끝에 항상 붙는다.
 
 | 출력 | 역할 |
 | --- | --- |
-| `~/.podex/prompts/B.md` | 디버그/캐시 |
+| `~/.weasley/podex/prompts/B.md` | 디버그/캐시 |
 | `{workDir}/AGENTS.md` | Codex, Copilot, OpenCode가 자동으로 읽는 지침 파일 |
 
 중요한 점:
@@ -318,7 +318,7 @@ delegation rules 블록은 prompt 끝에 항상 붙는다.
 ### Resume 처리
 
 - standard CLI는 `buildResumeArgs()`로 세션 ID를 전달한다. AGY는 `--conversation <sessionId>`를 사용하고, `-c`/`--continue`는 최신 대화 재개라 bucket persistence에는 쓰지 않는다
-- AGY can ingest native active-directory context files such as `AGENTS.md` and `GEMINI.md`, and podex may pass workspace directories with `--add-dir`. That native ingestion does not by itself prove podex's wrapper-injected operational context, exact resume policy, transcript anchoring, quota UI, or post-compaction invariants; those remain supervised podex runtime contracts.
+- AGY can ingest native active-directory context files such as `AGENTS.md` and `GEMINI.md`, and Weasley Podex may pass workspace directories with `--add-dir`. That native ingestion does not by itself prove podex's wrapper-injected operational context, exact resume policy, transcript anchoring, quota UI, or post-compaction invariants; those remain supervised Weasley Podex runtime contracts.
 - Copilot ACP는 `loadSession()`을 먼저 시도한다
 - ACP `loadSession()` 실패 시에만 `createSession()` 후 history fallback을 다시 붙인다
 
@@ -341,7 +341,7 @@ delegation rules 블록은 prompt 끝에 항상 붙는다.
 
 핵심 규칙:
 
-- 직원은 jaw employee를 재디스패치하지 않는다 (`podex dispatch` 호출 금지, subtask JSON 출력 금지).
+- 직원은 Weasley Podex employee를 재디스패치하지 않는다 (`weasley-podex dispatch` 호출 금지, subtask JSON 출력 금지).
 - 반대로 CLI 자체 sub-agent(Task/Agent tool)는 명시적으로 **허용**된다. employee는 내부 병렬화를 위해 Task/Agent tool을 자유롭게 쓸 수 있고, sub-agent에게는 "Do NOT use Agent, subagent, or delegation tools"를 전달해 1-level 깊이를 강제한다.
 - employee 프롬프트는 process cwd가 격리 임시 디렉터리일 수 있다고 명시하고, task의 `## Workspace Context` 블록을 project root로 사용하라고 지시한다.
 
@@ -349,5 +349,5 @@ delegation rules 블록은 prompt 끝에 항상 붙는다.
 
 ## 한 줄 요약
 
-현재 prompt 파이프라인은 "A1/A2 파일 기반 캐시 + role-aware memory injection + pre-prompt context hooks + bounded local search contract + `podex dispatch` 중심 orchestration + PABCD `--attest` evidence gate + per-CLI spawn input adapter" 구조다.
+현재 prompt 파이프라인은 "A1/A2 파일 기반 캐시 + role-aware memory injection + pre-prompt context hooks + bounded local search contract + `weasley-podex dispatch` 중심 orchestration + PABCD `--attest` evidence gate + per-CLI spawn input adapter" 구조다.
 

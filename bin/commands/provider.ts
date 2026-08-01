@@ -1,15 +1,15 @@
-﻿/**
- * podex provider — on-demand provider runtime installer.
+/**
+ * weasley-podex provider — on-demand provider runtime installer.
  *
  * Providers removed from optionalDependencies can be installed into a
- * JAW_HOME-owned prefix, similar to `jaw jwc`.
+ * WEASLEY_PODEX_HOME-owned prefix, similar to `weasley-podex jwc`.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join, parse, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { JAW_HOME } from '../../src/core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../src/core/config.js';
 import { resolveHomePath } from '../../src/core/path-expand.js';
 import { shouldShowHelp, printAndExit } from '../helpers/help.js';
 
@@ -34,24 +34,24 @@ const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 function usage(): string {
     const names = Object.keys(PROVIDERS).join(', ');
     return `
-  jaw provider — on-demand provider runtime helper
+  weasley-podex provider — on-demand provider runtime helper
 
   Usage:
-    jaw provider install <name> [--prefix <dir>] [--dry-run] [--json]
-    jaw provider clean <name>   [--prefix <dir>] [--dry-run] [--json]
-    jaw provider doctor <name>  [--json]
-    jaw provider list           [--json]
+    weasley-podex provider install <name> [--prefix <dir>] [--dry-run] [--json]
+    weasley-podex provider clean <name>   [--prefix <dir>] [--dry-run] [--json]
+    weasley-podex provider doctor <name>  [--json]
+    weasley-podex provider list           [--json]
 
   Available providers: ${names}
 
   Examples:
-    jaw provider install ai-e
-    jaw provider doctor ai-e
-    jaw provider clean ai-e
-    jaw provider list
+    weasley-podex provider install ai-e
+    weasley-podex provider doctor ai-e
+    weasley-podex provider clean ai-e
+    weasley-podex provider list
 
   Notes:
-    - Installs into an external prefix: ~/.podex/providers/<name>/
+    - Installs into an external prefix: ~/.weasley/podex/providers/<name>/
     - The binary is detected via PATH or the provider prefix automatically.
 `;
 }
@@ -74,7 +74,7 @@ function resolveProvider(name: string | undefined, json = false): ProviderSpec {
 }
 
 function defaultPrefix(providerName: string): string {
-    return join(JAW_HOME, 'providers', providerName);
+    return join(WEASLEY_PODEX_HOME, 'providers', providerName);
 }
 
 function normalizePrefix(value: unknown, providerName: string): string {
@@ -85,7 +85,7 @@ function normalizePrefix(value: unknown, providerName: string): string {
 function assertSafePrefix(prefix: string): void {
     const root = parse(prefix).root;
     const home = resolve(homedir());
-    const jawHome = resolve(JAW_HOME);
+    const jawHome = resolve(WEASLEY_PODEX_HOME);
     if (!prefix || prefix === root || prefix === home || prefix === jawHome || dirname(prefix) === root) {
         throw new Error(`Refusing unsafe provider prefix: ${prefix}`);
     }
@@ -132,7 +132,7 @@ function runInstall(providerName: string | undefined, values: Record<string, unk
         console.log(JSON.stringify({ ok: true, provider: spec.name, prefix, package: spec.package }, null, 2));
     } else {
         console.log(`  ${spec.name} installed at: ${prefix}`);
-        console.log(`  The runtime will be detected automatically via jaw doctor.`);
+        console.log(`  The runtime will be detected automatically via weasley-podex doctor.`);
     }
 }
 
@@ -162,8 +162,8 @@ function runDoctor(providerName: string | undefined, values: Record<string, unkn
         provider: spec.name,
         prefix,
         prefixExists: existsSync(prefix),
-        installCommand: `jaw provider install ${spec.name}`,
-        cleanCommand: `jaw provider clean ${spec.name}`,
+        installCommand: `weasley-podex provider install ${spec.name}`,
+        cleanCommand: `weasley-podex provider clean ${spec.name}`,
     };
     if (json) {
         console.log(JSON.stringify(payload, null, 2));

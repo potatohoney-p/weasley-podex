@@ -1,6 +1,6 @@
 ﻿---
 created: 2026-03-28
-tags: [podex, sse, websocket, ndjson, stream-events, parser]
+tags: [weasley-podex, sse, websocket, ndjson, stream-events, parser]
 aliases: [CLI Stream Event Reference, stream events, SSE event channel, NDJSON parser]
 ---
 
@@ -60,7 +60,7 @@ SSE behavior:
 
 ### Manager worker SSE bridge
 
-`jaw dashboard serve` does not make the React manager browser subscribe directly to every worker's EventSource. The manager server starts `src/manager/worker-events.ts`, which listens for worker lifecycle changes and uses `src/manager/worker-sse-client.ts` to subscribe to each live worker's `http://127.0.0.1:{port}/api/events` stream. Worker SSE updates feed a debounced latest-message cache used by manager/Jaw CEO surfaces; the React manager still consumes manager HTTP polling endpoints such as `/api/manager/events` and `/api/dashboard/instances`.
+`weasley-podex dashboard serve` does not make the React manager browser subscribe directly to every worker's EventSource. The manager server starts `src/manager/worker-events.ts`, which listens for worker lifecycle changes and uses `src/manager/worker-sse-client.ts` to subscribe to each live worker's `http://127.0.0.1:{port}/api/events` stream. Worker SSE updates feed a debounced latest-message cache used by manager/Weasley Podex CEO surfaces; the React manager still consumes manager HTTP polling endpoints such as `/api/manager/events` and `/api/dashboard/instances`.
 
 ---
 
@@ -147,7 +147,7 @@ SSE behavior:
 | `agent:claude-e:cleanup` | `{ runId, event, escalated? }` | `claude-e-runtime.ts`; cleanup start/done lifecycle |
 | `agent:claude-e:error` | `{ runId, message?, exitCode? }` | `claude-e-runtime.ts`; helper/runtime error |
 
-Worker run events, delayed replay notices, and batch dispatch summaries are safe metadata surfaces. They may carry bounded previews and recovery commands, but they do not embed raw employee stdout; raw worker output remains an explicit `/api/orchestrate/worker-runs/:runId/output` / `podex worker read <runId>` read path.
+Worker run events, delayed replay notices, and batch dispatch summaries are safe metadata surfaces. They may carry bounded previews and recovery commands, but they do not embed raw employee stdout; raw worker output remains an explicit `/api/orchestrate/worker-runs/:runId/output` / `weasley-podex worker read <runId>` read path.
 
 `bgtask_update` frames stay on topic `bgtask` and expose `running[]` plus `changed`; both entries keep native bgtask `status` and add shared `statusCategory`. Worker runs and bgtasks do not share storage, but Manager can compare their status buckets without reimplementing per-surface mappings.
 
@@ -183,7 +183,7 @@ Plaintext `thinking_delta`는 headless `--print`/`-p` stream에서 partial messa
 
 ### top-level 타입
 
-| type | 설명 | jaw 처리 |
+| type | 설명 | Weasley Podex 처리 |
 | --- | --- | --- |
 | `system` | init/status/subtype metadata | model/tools/version 저장, compacting 상태 감지 |
 | `stream_event` | Anthropic streaming wrapper | 아래 세부 규칙 적용 |
@@ -233,7 +233,7 @@ stream close →
 
 ### Claude E / Claude Interactive (`claude-e`)
 
-`claude-e`는 Claude CLI를 PTY로 띄우고, transcript tail과 hook output을 JSONL로 다시 내보내는 experimental runtime이다. Embedded native source lives at `native/claude-e/` and still builds the compatibility binary `jaw-claude-i`; compatibility `claude-exec` and legacy `jaw-claude-i` / `claude-i` helper names remain fallback binaries outside the embedded crate. Public registry key is `claude-e`; runtime telemetry namespace is `agent:claude-e:*`. Some persisted helper/session internals still use the historical `claude-i` bucket name. `src/agent/spawn.ts`는 helper의 `jaw_runtime` 이벤트를 discriminator 전에 처리하고, 일반 Claude `system`/`assistant`/`result` event는 Claude-like parser 경로를 공유한다.
+`claude-e`는 Claude CLI를 PTY로 띄우고, transcript tail과 hook output을 JSONL로 다시 내보내는 experimental runtime이다. Embedded native source와 새 binary는 모두 `native/claude-e/` / `claude-e` 이름을 사용한다. Compatibility `claude-exec`와 exact legacy `jaw-claude-i` / `claude-i` helper는 이전 설치 탐지용 fallback으로만 남는다. Public registry key is `claude-e`; runtime telemetry namespace is `agent:claude-e:*`. Some persisted helper/session internals still use the historical `claude-i` bucket name. `src/agent/spawn.ts`는 helper의 `jaw_runtime` 이벤트를 discriminator 전에 처리하고, 일반 Claude `system`/`assistant`/`result` event는 Claude-like parser 경로를 공유한다.
 
 호출 플래그:
 
@@ -241,7 +241,7 @@ stream close →
 run --jsonl --output-format stream-json --timeout-ms 600000 [--resume <sessionId>] -- <claude args...>
 ```
 
-| helper/event | jaw 처리 |
+| helper/event | Weasley Podex 처리 |
 | --- | --- |
 | `jaw_runtime.runtime_started` | `agent:claude-e:runtime_started` broadcast |
 | `jaw_runtime.claude_spawned` | underlying Claude pid telemetry |
@@ -250,7 +250,7 @@ run --jsonl --output-format stream-json --timeout-ms 600000 [--resume <sessionId
 | `assistant` | transcript에서 온 완성 assistant message를 text block 단위로 `fullText`에 누적하고 `agent_output` single chunk로 preview |
 | `result` | cost/turns/duration/session/usage를 Claude path와 동일하게 저장 |
 
-Session bucket은 `claude-i`로 분리되어 standard `claude` session ID와 섞이지 않는다. Helper는 interactive Claude CLI를 래핑하므로 `jaw doctor`가 selected runtime(`claude-e` preferred)과 underlying `claude` 설치/버전을 둘 다 확인한다.
+Session bucket은 `claude-i`로 분리되어 standard `claude` session ID와 섞이지 않는다. Helper는 interactive Claude CLI를 래핑하므로 `weasley-podex doctor`가 selected runtime(`claude-e` preferred)과 underlying `claude` 설치/버전을 둘 다 확인한다.
 
 Thinking visibility:
 
@@ -263,7 +263,7 @@ Thinking visibility:
 
 ## 4. Codex CLI (`--json`)
 
-| event.type | 조건 | jaw 처리 |
+| event.type | 조건 | Weasley Podex 처리 |
 | --- | --- | --- |
 | `thread.started` | — | session/thread id 추출 |
 | `turn.started` | — | trace에 turn boundary 기록 |
@@ -299,7 +299,7 @@ Reasoning config:
 | `turn/start.summary` | `detailed` |
 | `turn/start.effort` | 현재 UI/설정 effort |
 
-| method | 조건 | jaw 처리 |
+| method | 조건 | Weasley Podex 처리 |
 | --- | --- | --- |
 | `item/started` | `reasoning` + 빈 `summary/content` | placeholder 없이 무시 |
 | `item/started` | `reasoning` + 기존 `summary/content` 있음 | 초기 reasoning을 `💭` thinking buffer에 축적 |
@@ -339,7 +339,7 @@ cursor-agent --resume <chatId> -p --trust --output-format stream-json --model <r
 
 Cursor CLI는 separate effort flag가 없으므로 `src/agent/cursor-runtime.ts`가 model+effort를 full model id로 먼저 해석한다. `system` 이벤트에서 `session_id`와 model metadata를 저장하고, `assistant` message/content text는 snapshot/delta 중복을 줄여 `pendingOutputChunk`로 flush한다.
 
-| event.type | jaw 처리 |
+| event.type | Weasley Podex 처리 |
 | --- | --- |
 | `system` | session id, model, raw cursor metadata 저장 |
 | `assistant` | text delta/snapshot을 `fullText`와 `agent_output` chunk로 누적 |
@@ -350,7 +350,7 @@ Cursor CLI는 separate effort flag가 없으므로 `src/agent/cursor-runtime.ts`
 
 ## 7. Gemini CLI (`-o stream-json`)
 
-| event.type | jaw 처리 |
+| event.type | Weasley Podex 처리 |
 | --- | --- |
 | `init` | model/session id 저장 |
 | `tool_result` | `✅` 또는 `❌` + same `stepRef` |
@@ -370,7 +370,7 @@ Cursor CLI는 separate effort flag가 없으므로 `src/agent/cursor-runtime.ts`
 
 `grok-build`는 현재 `--effort` / `--reasoning-effort`를 서버가 거부하므로 podex는 Grok 경로에 effort 또는 system-prompt override 플래그를 넘기지 않는다. 프로젝트 지침은 Grok CLI가 cwd의 instruction files를 읽는 쪽에 맡기고, 대화 히스토리는 `-p` prompt 문자열에 합쳐 넣는다.
 
-| event.type | jaw 처리 |
+| event.type | Weasley Podex 처리 |
 | --- | --- |
 | `thought` | 기본적으로 final text에 넣지 않는다. `showReasoning`이 켜진 경우에만 buffer 후 `end`에서 💭 thinking step으로 flush |
 | `text` | `data`/`text` delta를 `fullText`와 `agent_output` live chunk에 그대로 누적 |
@@ -385,7 +385,7 @@ Grok CLI 런타임과 `browser web-ai --vendor grok`는 별도 표면이다. 전
 
 ACP 자체는 NDJSON이 아니라 `session/update` 이벤트를 사용한다. 현재 Copilot ACP task/subagent 관측 wire shape은 `tool_call`의 `rawInput.agent_type === 'task'`이며, 완료는 같은 `toolCallId`의 `tool_call_update`로 온다.
 
-| update type | jaw 처리 |
+| update type | Weasley Podex 처리 |
 | --- | --- |
 | `agent_thought_chunk` | `💭` thinking |
 | `tool_call` | 일반 tool은 kind 기반 `📖/✏️/⚡/🔍/🌐` 또는 `🔧`, `stepRef=acp:callid:{toolCallId}` |
@@ -404,7 +404,7 @@ ACP 자체는 NDJSON이 아니라 `session/update` 이벤트를 사용한다. �
 
 ## 10. OpenCode CLI (`--format json`)
 
-| event.type | jaw 처리 |
+| event.type | Weasley Podex 처리 |
 | --- | --- |
 | `tool_use` + `part.tool === 'task'` | `🤖/✅/❌ subagent[{subagent_type}]: {description}`, `toolType=subagent`, `stepRef=opencode:call:{callID}` |
 | `tool_use` | 일반 tool은 `🔧/✅/❌ {tool}` |
@@ -497,7 +497,7 @@ Grok CLI는 live stdout에 tool event가 없을 수 있어 §8 trace backfill �
 
 ### Goal pause gate ↔ continuation (P0 2026-06-27)
 
-Agent pause는 2-tap gate: 첫 `podex goal pause --agent --audit` → `agentPauseCount = 1`; 둘째 → `pauseGoal()`.
+Agent pause는 2-tap gate: 첫 `weasley-podex goal pause --agent --audit` → `agentPauseCount = 1`; 둘째 → `pauseGoal()`.
 
 | Surface | Behavior |
 | --- | --- |

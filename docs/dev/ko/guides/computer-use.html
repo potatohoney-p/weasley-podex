@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>컴퓨터 사용 — podex 문서</title>
+<title>컴퓨터 사용 — Weasley Podex 문서</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,14 +58,14 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>컴퓨터 사용</h1>
-<p class="lead">podex는 브라우저 CDP 통합과 Codex 기반 비전 클릭 파이프라인을 통해 데스크톱 자동화를 지원합니다. 에이전트는 스크린샷 촬영, 요소 클릭, 텍스트 입력, 탐색을 브라우저와 데스크톱 모두에서 수행할 수 있습니다.</p>
+<p class="lead">Weasley Podex는 브라우저 CDP 통합과 Codex 기반 비전 클릭 파이프라인을 통해 데스크톱 자동화를 지원합니다. 에이전트는 스크린샷 촬영, 요소 클릭, 텍스트 입력, 탐색을 브라우저와 데스크톱 모두에서 수행할 수 있습니다.</p>
 
 <h2>두 가지 접근 방식</h2>
 <table>
@@ -76,38 +75,38 @@
 </table>
 
 <h2>CDP 브라우저 자동화</h2>
-<p>podex는 CDP를 통해 Chrome을 실행하고 제어합니다:</p>
+<p>Weasley Podex는 CDP를 통해 Chrome을 실행하고 제어합니다:</p>
 <pre><code># Start browser
-jaw browser start
+weasley-podex browser start
 
 # Take a screenshot
-jaw browser screenshot
+weasley-podex browser screenshot
 
 # Take a DOM snapshot with ref attributes
-jaw browser snapshot
+weasley-podex browser snapshot
 
 # Click an element by ref
-jaw browser click ref123
+weasley-podex browser click ref123
 
 # Type text into an element
-jaw browser type ref456 "Hello World" --submit
+weasley-podex browser type ref456 "Hello World" --submit
 
 # Navigate to a URL
-jaw browser navigate https://example.com
+weasley-podex browser navigate https://example.com
 
 # Get page text
-jaw browser text</code></pre>
+weasley-podex browser text</code></pre>
 
 <h2>비전 클릭 파이프라인</h2>
 <p>DOM ref 속성이나 직접 좌표 지정이 적합하지 않은 경우, 비전 클릭 파이프라인은 AI 비전을 사용하여 UI 요소를 찾고 클릭합니다:</p>
-<pre><code>jaw browser vision-click "Submit button" --provider codex</code></pre>
+<pre><code>weasley-podex browser vision-click "Submit button" --provider codex</code></pre>
 <p>파이프라인 흐름: 스크린샷 촬영 → AI 비전으로 좌표 추출 → DPR 보정 → 클릭 → 검증.</p>
 <div class="callout callout-info">프롬프트에서 <code>$computer-use</code> 토큰을 사용하면 데스크톱 수준의 자동화 작업을 위해 Codex employee가 트리거됩니다.</div>
 
 <h2>macOS TCC 권한</h2>
-<p>macOS에서는 데스크톱 자동화를 위해 화면 녹화 및 손쉬운 사용 권한이 필요합니다. podex에는 TCC 권한 확인 도구가 포함되어 있습니다:</p>
+<p>macOS에서는 데스크톱 자동화를 위해 화면 녹화 및 손쉬운 사용 권한이 필요합니다. Weasley Podex에는 TCC 권한 확인 도구가 포함되어 있습니다:</p>
 <pre><code># Check TCC permissions
-jaw doctor --tcc</code></pre>
+weasley-podex doctor --tcc</code></pre>
 <p>시스템 환경설정 > 개인정보 보호 및 보안 > 화면 녹화 및 손쉬운 사용에서 권한을 부여해야 할 수 있습니다.</p>
 
 <h2>Safari 팁</h2>
@@ -128,7 +127,7 @@ jaw doctor --tcc</code></pre>
 
 <h2>런타임 진단</h2>
 <pre><code># Check browser runtime health
-jaw browser status
+weasley-podex browser status
 
 # Doctor check for orphan processes
 GET /api/browser/doctor

@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Utility Skills — podex Docs</title>
+<title>Utility Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,32 +81,32 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Utility Skills</h1>
-<p class="lead">通用辅助技能，用于日常任务：文档处理（PDF、XLSX）、记忆管理、屏幕截图、密码管理、天气查询、文字转语音、视频下载等。这些技能处理那些不太适合归入其他类别的杂项但必要的操作。</p>
+<p class="lead">捆绑的 <code>memory</code> 技能以及可选工具扩展示例。本页只有 <code>memory</code> 属于八项核心目录；其他条目均需显式导入可信技能或配置外部集成。</p>
 
 <h2>概览</h2>
-<p>Utility 技能涵盖广泛的日常操作。一些是由 harness 直接加载的内置技能，另一些则以 MCP 服务器或外部工具集成的形式实现。其中五个技能默认激活（开箱即用）；其余七个可用但需要配置或外部依赖。</p>
+<p>请以 <code>skills_ref/registry.json</code> 作为捆绑能力的唯一事实来源。以下扩展名称仅为示例，不保证预装或存在对应软件包。</p>
 
 <table>
 <tr><th>技能</th><th>状态</th><th>类型</th><th>描述</th></tr>
 <tr><td><code>memory</code></td><td><strong>激活</strong></td><td>内置</td><td>支持自动保存和召回的持久化跨会话记忆</td></tr>
-<tr><td><code>pdf</code></td><td><strong>激活</strong></td><td>内置</td><td>读取、解析、提取文本并总结 PDF 文档</td></tr>
-<tr><td><code>pdf-vision</code></td><td><strong>激活</strong></td><td>内置</td><td>基于视觉模型的 PDF 阅读，适用于扫描文档和图片</td></tr>
-<tr><td><code>screen-capture</code></td><td><strong>激活</strong></td><td>内置</td><td>截取当前屏幕或指定区域的截图</td></tr>
-<tr><td><code>xlsx</code></td><td><strong>激活</strong></td><td>内置</td><td>读取、写入和操作 Excel 电子表格</td></tr>
-<tr><td><code>1password</code></td><td>可用</td><td>MCP</td><td>从 1Password 保险库中查找凭证和密钥</td></tr>
-<tr><td><code>goplaces</code></td><td>可用</td><td>MCP</td><td>位置搜索、导航和地点信息</td></tr>
-<tr><td><code>summarize</code></td><td>可用</td><td>内置</td><td>总结长文本、文章或记录</td></tr>
-<tr><td><code>tts</code></td><td>可用</td><td>外部</td><td>文字转语音，生成音频输出</td></tr>
-<tr><td><code>video-downloader</code></td><td>可用</td><td>外部</td><td>从 URL 下载视频（YouTube 等）</td></tr>
-<tr><td><code>video-frames</code></td><td>可用</td><td>外部</td><td>从视频文件中提取帧用于分析</td></tr>
-<tr><td><code>weather</code></td><td>可用</td><td>MCP</td><td>按位置查询当前天气和预报</td></tr>
+<tr><td><code>pdf</code></td><td><strong>可选导入</strong></td><td>扩展</td><td>读取、解析、提取文本并总结 PDF 文档</td></tr>
+<tr><td><code>pdf-vision</code></td><td><strong>可选导入</strong></td><td>扩展</td><td>基于视觉模型的 PDF 阅读，适用于扫描文档和图片</td></tr>
+<tr><td><code>screen-capture</code></td><td><strong>可选导入</strong></td><td>扩展</td><td>截取当前屏幕或指定区域的截图</td></tr>
+<tr><td><code>xlsx</code></td><td><strong>可选导入</strong></td><td>扩展</td><td>读取、写入和操作 Excel 电子表格</td></tr>
+<tr><td><code>1password</code></td><td>可选导入</td><td>MCP</td><td>从 1Password 保险库中查找凭证和密钥</td></tr>
+<tr><td><code>goplaces</code></td><td>可选导入</td><td>MCP</td><td>位置搜索、导航和地点信息</td></tr>
+<tr><td><code>summarize</code></td><td>可选导入</td><td>扩展</td><td>总结长文本、文章或记录</td></tr>
+<tr><td><code>tts</code></td><td>可选导入</td><td>外部</td><td>文字转语音，生成音频输出</td></tr>
+<tr><td><code>video-downloader</code></td><td>可选导入</td><td>外部</td><td>从 URL 下载视频（YouTube 等）</td></tr>
+<tr><td><code>video-frames</code></td><td>可选导入</td><td>外部</td><td>从视频文件中提取帧用于分析</td></tr>
+<tr><td><code>weather</code></td><td>可选导入</td><td>MCP</td><td>按位置查询当前天气和预报</td></tr>
 </table>
 
 <!-- ================================================================== -->
@@ -115,14 +114,14 @@
 <!-- ================================================================== -->
 
 <h2 id="memory">memory</h2>
-<p>跨会话持久化记忆。memory 技能会自动保存重要上下文——决策、偏好、项目笔记、反馈——并在相关时自动召回。记忆以 Markdown 文件形式存储在 <code>~/.podex/memory/</code> 下，并通过 SQLite 索引实现快速检索。</p>
+<p>跨会话持久化记忆。memory 技能会自动保存重要上下文——决策、偏好、项目笔记、反馈——并在相关时自动召回。记忆以 Markdown 文件形式存储在 <code>~/.weasley/podex/memory/</code> 下，并通过 SQLite 索引实现快速检索。</p>
 
 <table>
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>memory</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
 <tr><td><strong>状态</strong></td><td>激活（内置）</td></tr>
-<tr><td><strong>存储</strong></td><td><code>~/.podex/memory/</code>（Markdown + SQLite 索引）</td></tr>
+<tr><td><strong>存储</strong></td><td><code>~/.weasley/podex/memory/</code>（Markdown + SQLite 索引）</td></tr>
 <tr><td><strong>触发词</strong></td><td>Remember, recall, note, preference, feedback</td></tr>
 </table>
 
@@ -160,7 +159,7 @@
 
 <h3>记忆结构</h3>
 <p>记忆被组织为命名空间化的 Markdown 文件。自动记忆系统将 <code>MEMORY.md</code> 作为索引，详细条目存储在特定主题的文件中。</p>
-<pre><code>~/.podex/memory/
+<pre><code>~/.weasley/podex/memory/
   MEMORY.md                    # Index with links to detailed files
   feedback_goal_done_method.md # Specific feedback entry
   feedback_poll_dont_wait.md   # Another feedback entry
@@ -179,7 +178,7 @@
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>pdf</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
-<tr><td><strong>状态</strong></td><td>激活（内置）</td></tr>
+<tr><td><strong>状态</strong></td><td>可选导入</td></tr>
 <tr><td><strong>输入</strong></td><td>本地文件路径或 URL</td></tr>
 <tr><td><strong>最适用于</strong></td><td>包含可选中文本的数字化 PDF</td></tr>
 </table>
@@ -226,7 +225,7 @@
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>pdf-vision</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
-<tr><td><strong>状态</strong></td><td>激活（内置）</td></tr>
+<tr><td><strong>状态</strong></td><td>可选导入</td></tr>
 <tr><td><strong>模型</strong></td><td>支持视觉的 LLM（Claude、GPT-4V）</td></tr>
 <tr><td><strong>最适用于</strong></td><td>扫描文档、手写文本、图片密集的 PDF</td></tr>
 </table>
@@ -271,7 +270,7 @@
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>screen-capture</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
-<tr><td><strong>状态</strong></td><td>激活（内置）</td></tr>
+<tr><td><strong>状态</strong></td><td>可选导入</td></tr>
 <tr><td><strong>输出</strong></td><td>PNG 图像（文件或内联）</td></tr>
 <tr><td><strong>平台</strong></td><td>macOS（screencapture）、Linux（scrot/gnome-screenshot）</td></tr>
 </table>
@@ -317,7 +316,7 @@
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>xlsx</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
-<tr><td><strong>状态</strong></td><td>激活（内置）</td></tr>
+<tr><td><strong>状态</strong></td><td>可选导入</td></tr>
 <tr><td><strong>格式</strong></td><td><code>.xlsx</code>、<code>.xls</code>、<code>.csv</code>（读写）</td></tr>
 <tr><td><strong>库</strong></td><td>SheetJS (xlsx)</td></tr>
 </table>
@@ -364,7 +363,7 @@
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>1password</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
-<tr><td><strong>状态</strong></td><td>可用（需要 1Password CLI）</td></tr>
+<tr><td><strong>状态</strong></td><td>可选导入（需要 1Password CLI）</td></tr>
 <tr><td><strong>前置条件</strong></td><td>已安装并登录 <code>op</code> CLI</td></tr>
 <tr><td><strong>认证</strong></td><td>通过 <code>op</code> 进行生物识别或主密码认证</td></tr>
 </table>
@@ -386,7 +385,7 @@
 /1password get "AWS Production" --field password
 
 # Inject a secret into a command
-op run --env-file=.env -- jaw serve
+op run --env-file=.env -- weasley-podex serve
 
 # List all vaults
 /1password vaults</code></pre>
@@ -414,7 +413,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>goplaces</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
-<tr><td><strong>状态</strong></td><td>可用（MCP 服务器）</td></tr>
+<tr><td><strong>状态</strong></td><td>可选导入（MCP 服务器）</td></tr>
 <tr><td><strong>API</strong></td><td>Google Maps / Apple Maps</td></tr>
 <tr><td><strong>前置条件</strong></td><td>已配置 Maps API 密钥</td></tr>
 </table>
@@ -460,7 +459,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>summarize</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
-<tr><td><strong>状态</strong></td><td>可用</td></tr>
+<tr><td><strong>状态</strong></td><td>可选导入</td></tr>
 <tr><td><strong>输入</strong></td><td>文本、文件路径或 URL</td></tr>
 <tr><td><strong>样式</strong></td><td>要点列表、段落、执行摘要、关键要点</td></tr>
 </table>
@@ -497,7 +496,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>tts</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
-<tr><td><strong>状态</strong></td><td>可用（外部）</td></tr>
+<tr><td><strong>状态</strong></td><td>可选导入（外部）</td></tr>
 <tr><td><strong>引擎</strong></td><td>macOS <code>say</code>、OpenAI TTS、ElevenLabs</td></tr>
 <tr><td><strong>输出</strong></td><td>直接播放或音频文件（MP3、WAV）</td></tr>
 </table>
@@ -534,7 +533,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>video-downloader</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
-<tr><td><strong>状态</strong></td><td>可用（外部）</td></tr>
+<tr><td><strong>状态</strong></td><td>可选导入（外部）</td></tr>
 <tr><td><strong>前置条件</strong></td><td>已安装 <code>yt-dlp</code></td></tr>
 <tr><td><strong>平台</strong></td><td>YouTube、Vimeo、Twitter 以及 1000+ 个站点</td></tr>
 </table>
@@ -581,7 +580,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>video-frames</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
-<tr><td><strong>状态</strong></td><td>可用（外部）</td></tr>
+<tr><td><strong>状态</strong></td><td>可选导入（外部）</td></tr>
 <tr><td><strong>前置条件</strong></td><td>已安装 <code>ffmpeg</code></td></tr>
 <tr><td><strong>输出</strong></td><td>PNG/JPEG 帧图像</td></tr>
 </table>
@@ -618,7 +617,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>属性</th><th>值</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>weather</code></td></tr>
 <tr><td><strong>分类</strong></td><td>Utility</td></tr>
-<tr><td><strong>状态</strong></td><td>可用（MCP 服务器）</td></tr>
+<tr><td><strong>状态</strong></td><td>可选导入（MCP 服务器）</td></tr>
 <tr><td><strong>API</strong></td><td>OpenWeatherMap / WeatherAPI</td></tr>
 <tr><td><strong>数据</strong></td><td>当前状况、逐小时、每日预报</td></tr>
 </table>

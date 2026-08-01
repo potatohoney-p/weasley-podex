@@ -11,7 +11,7 @@ const indexSrc = fs.readFileSync(join(root, 'src/browser/index.ts'), 'utf8');
 
 test('browser fetch CLI and API surfaces are wired', () => {
     assert.match(cliSrc, /case 'fetch'/);
-    assert.match(cliSrc, /podex browser fetch <url>/);
+    assert.match(cliSrc, /weasley-podex browser fetch <url>/);
     assert.match(routesSrc, /\/api\/browser\/fetch', requireAuth/);
     assert.match(indexSrc, /adaptiveFetch/);
 });

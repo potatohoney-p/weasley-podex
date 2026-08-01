@@ -21,7 +21,7 @@ const FALLBACK_CLI_REGISTRY: CliRegistry = {
         efforts: [],
         effortNote: 'AGY has no separate effort flag',
         // These strings are passed to `agy --model` verbatim (src/agent/args.ts
-        // case 'agy'), and podex never sends --effort for AGY. The bare slug
+        // case 'agy'), and Weasley Podex never sends --effort for AGY. The bare slug
         // form is rejected in that shape — AGY 1.1.4 answers
         // `--model gemini-3.5-flash` with "requires --effort" — so the offline
         // fallback must use the tier-bearing label form that `agy --model`
@@ -123,7 +123,7 @@ const FALLBACK_CLI_REGISTRY: CliRegistry = {
     cursor: {
         label: 'Cursor',
         efforts: ['none', 'none-fast', 'low', 'low-fast', 'medium', 'medium-fast', 'high', 'high-fast', 'xhigh', 'xhigh-fast', 'max', 'max-fast'],
-        effortNote: 'Cursor effort resolves to model IDs; podex never passes --effort',
+        effortNote: 'Cursor effort resolves to model IDs; Weasley Podex never passes --effort',
         models: [
             'auto', 'composer-2.5',
             'gpt-5.5', 'gpt-5.6-sol', 'gpt-5.6-terra', 'gpt-5.6-luna', 'gpt-5.4', 'gpt-5.4-mini', 'gpt-5.4-nano',
@@ -142,7 +142,7 @@ const FALLBACK_CLI_REGISTRY: CliRegistry = {
     'kiro-code': {
         label: 'Kiro',
         efforts: ['low', 'medium', 'high', 'xhigh'],
-        effortNote: 'Kiro CLI forwards --effort; podex maps xhigh to Kiro max on the wire',
+        effortNote: 'Kiro CLI forwards --effort; Weasley Podex maps xhigh to Kiro max on the wire',
         models: [
             'auto',
             'gpt-5.6-sol',

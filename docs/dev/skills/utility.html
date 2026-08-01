@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Utility Skills — podex Docs</title>
+<title>Utility Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -35,7 +34,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -84,32 +83,32 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Utility Skills</h1>
-<p class="lead">General-purpose helper skills for everyday tasks: document processing (PDF, XLSX), memory management, screen capture, passwords, weather, text-to-speech, video downloading, and more. These skills handle the miscellaneous but essential operations that do not fit neatly into other categories.</p>
+<p class="lead">The bundled <code>memory</code> skill plus optional utility-extension recipes. Only <code>memory</code> on this page ships in the eight-skill core catalog; every other entry requires an explicit trusted import or external integration.</p>
 
 <h2>Overview</h2>
-<p>Utility skills cover a broad range of day-to-day operations. Some are built-in skills loaded directly by the harness, while others are implemented as MCP servers or external tool integrations. Five of these skills ship as active (enabled by default); the remaining seven are available but require configuration or external dependencies.</p>
+<p>Use <code>skills_ref/registry.json</code> as the bundled source of truth. Extension names below are recipes, not guaranteed packages or preinstalled capabilities.</p>
 
 <table>
 <tr><th>Skill</th><th>Status</th><th>Type</th><th>Description</th></tr>
 <tr><td><code>memory</code></td><td><strong>Active</strong></td><td>Built-in</td><td>Persistent cross-session memory with auto-save and recall</td></tr>
-<tr><td><code>pdf</code></td><td><strong>Active</strong></td><td>Built-in</td><td>Read, parse, extract text, and summarize PDF documents</td></tr>
-<tr><td><code>pdf-vision</code></td><td><strong>Active</strong></td><td>Built-in</td><td>Vision-based PDF reading for scanned documents and images</td></tr>
-<tr><td><code>screen-capture</code></td><td><strong>Active</strong></td><td>Built-in</td><td>Capture screenshots of the current screen or specific regions</td></tr>
-<tr><td><code>xlsx</code></td><td><strong>Active</strong></td><td>Built-in</td><td>Read, write, and manipulate Excel spreadsheets</td></tr>
-<tr><td><code>1password</code></td><td>Available</td><td>MCP</td><td>Look up credentials and secrets from 1Password vaults</td></tr>
-<tr><td><code>goplaces</code></td><td>Available</td><td>MCP</td><td>Location search, directions, and place information</td></tr>
-<tr><td><code>summarize</code></td><td>Available</td><td>Built-in</td><td>Summarize long text, articles, or transcripts</td></tr>
-<tr><td><code>tts</code></td><td>Available</td><td>External</td><td>Text-to-speech conversion for audio output</td></tr>
-<tr><td><code>video-downloader</code></td><td>Available</td><td>External</td><td>Download videos from URLs (YouTube, etc.)</td></tr>
-<tr><td><code>video-frames</code></td><td>Available</td><td>External</td><td>Extract frames from video files for analysis</td></tr>
-<tr><td><code>weather</code></td><td>Available</td><td>MCP</td><td>Current weather and forecasts by location</td></tr>
+<tr><td><code>pdf</code></td><td><strong>Optional import</strong></td><td>Extension</td><td>Read, parse, extract text, and summarize PDF documents</td></tr>
+<tr><td><code>pdf-vision</code></td><td><strong>Optional import</strong></td><td>Extension</td><td>Vision-based PDF reading for scanned documents and images</td></tr>
+<tr><td><code>screen-capture</code></td><td><strong>Optional import</strong></td><td>Extension</td><td>Capture screenshots of the current screen or specific regions</td></tr>
+<tr><td><code>xlsx</code></td><td><strong>Optional import</strong></td><td>Extension</td><td>Read, write, and manipulate Excel spreadsheets</td></tr>
+<tr><td><code>1password</code></td><td>Optional import</td><td>MCP</td><td>Look up credentials and secrets from 1Password vaults</td></tr>
+<tr><td><code>goplaces</code></td><td>Optional import</td><td>MCP</td><td>Location search, directions, and place information</td></tr>
+<tr><td><code>summarize</code></td><td>Optional import</td><td>Extension</td><td>Summarize long text, articles, or transcripts</td></tr>
+<tr><td><code>tts</code></td><td>Optional import</td><td>External</td><td>Text-to-speech conversion for audio output</td></tr>
+<tr><td><code>video-downloader</code></td><td>Optional import</td><td>External</td><td>Download videos from URLs (YouTube, etc.)</td></tr>
+<tr><td><code>video-frames</code></td><td>Optional import</td><td>External</td><td>Extract frames from video files for analysis</td></tr>
+<tr><td><code>weather</code></td><td>Optional import</td><td>MCP</td><td>Current weather and forecasts by location</td></tr>
 </table>
 
 <!-- ================================================================== -->
@@ -117,14 +116,14 @@
 <!-- ================================================================== -->
 
 <h2 id="memory">memory</h2>
-<p>Persistent memory that survives across sessions. The memory skill automatically saves important context -- decisions, preferences, project notes, feedback -- and recalls them when relevant. Memory is stored in Markdown files under <code>~/.podex/memory/</code> and indexed in SQLite for fast retrieval.</p>
+<p>Persistent memory that survives across sessions. The memory skill automatically saves important context -- decisions, preferences, project notes, feedback -- and recalls them when relevant. Memory is stored in Markdown files under <code>~/.weasley/podex/memory/</code> and indexed in SQLite for fast retrieval.</p>
 
 <table>
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>memory</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
 <tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
-<tr><td><strong>Storage</strong></td><td><code>~/.podex/memory/</code> (Markdown + SQLite index)</td></tr>
+<tr><td><strong>Storage</strong></td><td><code>~/.weasley/podex/memory/</code> (Markdown + SQLite index)</td></tr>
 <tr><td><strong>Trigger</strong></td><td>Remember, recall, note, preference, feedback</td></tr>
 </table>
 
@@ -162,7 +161,7 @@
 
 <h3>Memory Structure</h3>
 <p>Memories are organized into namespaced Markdown files. The auto-memory system writes to <code>MEMORY.md</code> as an index, with detailed entries in topic-specific files.</p>
-<pre><code>~/.podex/memory/
+<pre><code>~/.weasley/podex/memory/
   MEMORY.md                    # Index with links to detailed files
   feedback_goal_done_method.md # Specific feedback entry
   feedback_poll_dont_wait.md   # Another feedback entry
@@ -181,7 +180,7 @@
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>pdf</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Status</strong></td><td>Optional import</td></tr>
 <tr><td><strong>Input</strong></td><td>Local file path or URL</td></tr>
 <tr><td><strong>Best for</strong></td><td>Digital PDFs with selectable text</td></tr>
 </table>
@@ -228,7 +227,7 @@
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>pdf-vision</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Status</strong></td><td>Optional import</td></tr>
 <tr><td><strong>Model</strong></td><td>Vision-capable LLM (Claude, GPT-4V)</td></tr>
 <tr><td><strong>Best for</strong></td><td>Scanned docs, handwritten text, image-heavy PDFs</td></tr>
 </table>
@@ -273,7 +272,7 @@
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>screen-capture</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Status</strong></td><td>Optional import</td></tr>
 <tr><td><strong>Output</strong></td><td>PNG image (file or inline)</td></tr>
 <tr><td><strong>Platform</strong></td><td>macOS (screencapture), Linux (scrot/gnome-screenshot)</td></tr>
 </table>
@@ -319,7 +318,7 @@
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>xlsx</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Active (built-in)</td></tr>
+<tr><td><strong>Status</strong></td><td>Optional import</td></tr>
 <tr><td><strong>Formats</strong></td><td><code>.xlsx</code>, <code>.xls</code>, <code>.csv</code> (read/write)</td></tr>
 <tr><td><strong>Library</strong></td><td>SheetJS (xlsx)</td></tr>
 </table>
@@ -366,7 +365,7 @@
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>1password</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (requires 1Password CLI)</td></tr>
+<tr><td><strong>Status</strong></td><td>Optional import (requires 1Password CLI)</td></tr>
 <tr><td><strong>Prerequisite</strong></td><td><code>op</code> CLI installed and signed in</td></tr>
 <tr><td><strong>Auth</strong></td><td>Biometric or master password via <code>op</code></td></tr>
 </table>
@@ -388,7 +387,7 @@
 /1password get "AWS Production" --field password
 
 # Inject a secret into a command
-op run --env-file=.env -- jaw serve
+op run --env-file=.env -- weasley-podex serve
 
 # List all vaults
 /1password vaults</code></pre>
@@ -416,7 +415,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>goplaces</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (MCP server)</td></tr>
+<tr><td><strong>Status</strong></td><td>Optional import (MCP server)</td></tr>
 <tr><td><strong>API</strong></td><td>Google Maps / Apple Maps</td></tr>
 <tr><td><strong>Prerequisite</strong></td><td>Maps API key configured</td></tr>
 </table>
@@ -462,7 +461,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>summarize</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available</td></tr>
+<tr><td><strong>Status</strong></td><td>Optional import</td></tr>
 <tr><td><strong>Input</strong></td><td>Text, file path, or URL</td></tr>
 <tr><td><strong>Styles</strong></td><td>Bullets, paragraph, executive, key-takeaways</td></tr>
 </table>
@@ -499,7 +498,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>tts</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (external)</td></tr>
+<tr><td><strong>Status</strong></td><td>Optional import (external)</td></tr>
 <tr><td><strong>Engines</strong></td><td>macOS <code>say</code>, OpenAI TTS, ElevenLabs</td></tr>
 <tr><td><strong>Output</strong></td><td>Direct playback or audio file (MP3, WAV)</td></tr>
 </table>
@@ -536,7 +535,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>video-downloader</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (external)</td></tr>
+<tr><td><strong>Status</strong></td><td>Optional import (external)</td></tr>
 <tr><td><strong>Prerequisite</strong></td><td><code>yt-dlp</code> installed</td></tr>
 <tr><td><strong>Platforms</strong></td><td>YouTube, Vimeo, Twitter, and 1000+ sites</td></tr>
 </table>
@@ -583,7 +582,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>video-frames</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (external)</td></tr>
+<tr><td><strong>Status</strong></td><td>Optional import (external)</td></tr>
 <tr><td><strong>Prerequisite</strong></td><td><code>ffmpeg</code> installed</td></tr>
 <tr><td><strong>Output</strong></td><td>PNG/JPEG frame images</td></tr>
 </table>
@@ -620,7 +619,7 @@ op run --env-file=.env -- jaw serve
 <tr><th>Property</th><th>Value</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>weather</code></td></tr>
 <tr><td><strong>Category</strong></td><td>Utility</td></tr>
-<tr><td><strong>Status</strong></td><td>Available (MCP server)</td></tr>
+<tr><td><strong>Status</strong></td><td>Optional import (MCP server)</td></tr>
 <tr><td><strong>API</strong></td><td>OpenWeatherMap / WeatherAPI</td></tr>
 <tr><td><strong>Data</strong></td><td>Current conditions, hourly, daily forecast</td></tr>
 </table>

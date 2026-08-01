@@ -1,8 +1,9 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 /**
  * 10.7.1 — Health history ring buffer.
  *
  * Memory-only by default. Disk persistence is opt-in via
- * `JAW_DASHBOARD_HEALTH_PERSIST=1` (resolved at construction). Bytes never
+ * `WEASLEY_PODEX_DASHBOARD_HEALTH_PERSIST=1` (resolved at construction). Bytes never
  * land in `manager-instances.json` — the registry stays UI/persistence
  * focused per 10.6 design.
  */
@@ -38,12 +39,13 @@ export type HealthHistory = {
 };
 
 function managerHome(): string {
-    const home = process.env["podex_HOME"] || join(homedir(), '.podex');
+    const home = getWeasleyPodexEnv('HOME')
+        || join(homedir(), '.weasley', 'podex');
     return resolveHomePath(home, homedir());
 }
 
 function defaultPersistPath(): string | null {
-    if (process.env["JAW_DASHBOARD_HEALTH_PERSIST"] === '1') {
+    if (getWeasleyPodexEnv('DASHBOARD_HEALTH_PERSIST') === '1') {
         return join(managerHome(), DEFAULT_FILENAME);
     }
     return null;

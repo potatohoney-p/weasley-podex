@@ -1,4 +1,4 @@
-// Builds WorkflowRunContext from existing jaw state.
+// Builds WorkflowRunContext from existing Weasley Podex state.
 // Does NOT import provider SDKs.
 
 import { getState, getCtx } from '../orchestrator/state-machine.js';

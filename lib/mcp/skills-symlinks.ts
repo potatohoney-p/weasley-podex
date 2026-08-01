@@ -6,7 +6,7 @@
 import fs from 'fs';
 import os from 'os';
 import { join, dirname, resolve, isAbsolute } from 'path';
-import { JAW_HOME } from './skills-utils.js';
+import { WEASLEY_PODEX_HOME } from './skills-utils.js';
 
 // ─── Types ─────────────────────────────────────────
 
@@ -15,7 +15,7 @@ interface SkillsLinkOpts {
     includeClaude?: boolean;
     allowReplaceManaged?: boolean;
     _homedir?: string;   // test DI — default os.homedir()
-    _jawHome?: string;   // test DI — default JAW_HOME
+    _jawHome?: string;   // test DI — default WEASLEY_PODEX_HOME
 }
 
 type BackupContext = {
@@ -67,7 +67,7 @@ export interface SharedPathHealthReport {
 
 export function createBackupContext(jawHome?: string) {
     const stamp = new Date().toISOString().replace(/[:.]/g, '-');
-    return { root: join(jawHome ?? JAW_HOME, 'backups', 'skills-conflicts', stamp) };
+    return { root: join(jawHome ?? WEASLEY_PODEX_HOME, 'backups', 'skills-conflicts', stamp) };
 }
 
 function resolveSymlinkTarget(linkPath: string, rawTarget: string) {
@@ -120,7 +120,7 @@ export function ensureSymlinkSafe(target: string, linkPath: string, opts: Ensure
                 return { ...baseResult, status: 'ok', action: 'noop' };
             }
 
-            // Stale symlink: only replace if managed by podex AND caller opts in
+            // Stale symlink: only replace if managed by Weasley Podex AND caller opts in
             const managed = isPODEXManaged(linkPath, jawHome);
             if (managed && allowReplaceManaged) {
                 fs.unlinkSync(linkPath);
@@ -146,7 +146,7 @@ export function ensureSymlinkSafe(target: string, linkPath: string, opts: Ensure
 
         if (onConflict === 'skip') {
             // Non-symlink path: check if allowReplaceManaged applies
-            // (real dirs are never "managed" — only symlinks can be reliably attributed to podex)
+            // (real dirs are never "managed" — only symlinks can be reliably attributed to Weasley Podex)
             console.warn(`[skills] conflict(skip): ${linkPath} (existing path preserved)`);
             return { ...baseResult, status: 'skip', action: 'conflict_skip' };
         }
@@ -214,7 +214,7 @@ export function movePathToBackup(pathToMove: string, context: BackupContext) {
  * NEVER touches home shared paths (~/.agents, ~/.agent, ~/.claude).
  */
 export function ensureWorkingDirSkillsLinks(workingDir: string, opts: SkillsLinkOpts = {}) {
-    const { _homedir = os.homedir(), _jawHome = JAW_HOME, onConflict = 'skip', includeClaude = false } = opts;
+    const { _homedir = os.homedir(), _jawHome = WEASLEY_PODEX_HOME, onConflict = 'skip', includeClaude = false } = opts;
     const skillsSource = join(_jawHome, 'skills');
     fs.mkdirSync(skillsSource, { recursive: true });
 
@@ -265,7 +265,7 @@ export function ensureSharedHomeSkillsLinks(opts: {
 } = {}) {
     const {
         _homedir = os.homedir(),
-        _jawHome = JAW_HOME,
+        _jawHome = WEASLEY_PODEX_HOME,
         onConflict = 'backup',
         includeAgents = true,
         includeCompatAgent = true,
@@ -298,14 +298,14 @@ export function ensureSharedHomeSkillsLinks(opts: {
 }
 
 /**
- * Detect shared path contamination: check if podex has taken over home shared paths.
+ * Detect shared path contamination: check if Weasley Podex has taken over home shared paths.
  */
 export function detectSharedPathContamination(opts?: {
     _homedir?: string;
     _jawHome?: string;
 }): SharedPathHealthReport {
     const homedir = opts?._homedir ?? os.homedir();
-    const jawHome = opts?._jawHome ?? JAW_HOME;
+    const jawHome = opts?._jawHome ?? WEASLEY_PODEX_HOME;
     const skillsTarget = join(jawHome, 'skills');
 
     const sharedPaths = [
@@ -350,7 +350,7 @@ export function detectSharedPathContamination(opts?: {
     if (contaminated.length > 0) {
         status = 'contaminated';
         const pathList = contaminated.map(p => p.path).join(', ');
-        summary = `podex symlinks found at shared paths: ${pathList}`;
+        summary = `Weasley Podex symlinks found at shared paths: ${pathList}`;
     } else if (backupTraces.length > 0) {
         // Backup traces without active symlinks = previously resolved, not active contamination
         status = 'resolved';

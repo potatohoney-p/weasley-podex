@@ -1,4 +1,4 @@
-﻿import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { basename, extname, join, relative, resolve } from 'node:path';
 
 export type RepoMapDefinitionKind = 'function' | 'class' | 'interface' | 'type' | 'enum' | 'const' | 'method';
@@ -133,7 +133,7 @@ export function buildRepoMap(targetPath: string, options: BuildRepoMapOptions = 
     const sourceFiles = findSourceFiles(root, options.maxDepth ?? DEFAULT_MAX_DEPTH);
     const fileTexts = sourceFiles.map((file) => ({
         file,
-        rel: sourceFiles.length === 1 ? basename(file) : relative(root, file),
+        rel: (sourceFiles.length === 1 ? basename(file) : relative(root, file)).replace(/\\/g, '/'),
         text: readFileSync(file, 'utf8'),
     }));
     const corpus = fileTexts.map(({ text }) => text).join('\n');
@@ -170,7 +170,7 @@ export function buildRepoMap(targetPath: string, options: BuildRepoMapOptions = 
 export function renderRepoMap(repoMap: RepoMap): string {
     const maxChars = Math.max(repoMap.budgetTokens, 1) * 4;
     const lines = [
-        `podex map: ${repoMap.root} (budget ${repoMap.budgetTokens} tokens; scanned ${repoMap.scannedFiles} files; ${repoMap.totalDefinitions} defs)`,
+        `weasley-podex map: ${repoMap.root} (budget ${repoMap.budgetTokens} tokens; scanned ${repoMap.scannedFiles} files; ${repoMap.totalDefinitions} defs)`,
     ];
 
     for (const file of repoMap.files) {

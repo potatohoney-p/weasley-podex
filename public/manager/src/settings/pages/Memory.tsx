@@ -193,7 +193,7 @@ export default function Memory({ port, client, dirty, registerSave }: SettingsPa
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `jaw-memory-${port}-${Date.now()}.json`;
+        a.download = `weasley-podex-memory-${port}-${Date.now()}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

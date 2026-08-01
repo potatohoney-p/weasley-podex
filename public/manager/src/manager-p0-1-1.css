@@ -21,7 +21,7 @@
 
 .command-primary {
     gap: 8px;
-    grid-template-columns: minmax(112px, 148px) max-content minmax(max-content, 1fr);
+    grid-template-columns: minmax(194px, 224px) max-content minmax(max-content, 1fr);
 }
 
 .command-title {
@@ -37,7 +37,7 @@
 
 .command-title h1,
 .command-title .manager-brand-heading {
-    max-width: 136px;
+    max-width: 216px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -52,10 +52,19 @@
 
 .manager-brand-heading {
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
     gap: 6px;
     margin: 0;
     min-width: 0;
+}
+
+.manager-brand-mark {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    border-radius: 7px;
+    object-fit: cover;
+    box-shadow: 0 0 14px color-mix(in srgb, var(--manager-brand-cyan) 24%, transparent);
 }
 
 .manager-brand-wordmark {

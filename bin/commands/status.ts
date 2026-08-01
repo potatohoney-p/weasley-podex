@@ -1,5 +1,5 @@
-﻿/**
- * podex status — Phase 9.1
+/**
+ * weasley-podex status — Phase 9.1
  * Checks if the server is running by pinging the API.
  */
 import { parseArgs } from 'node:util';
@@ -9,9 +9,9 @@ import { shouldShowHelp, printAndExit } from '../helpers/help.js';
 import { asArray, asRecord } from '../_http-client.js';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw status — check server health
+  weasley-podex status — check server health
 
-  Usage: jaw status [--port <3457>] [--json] [--dashboard]
+  Usage: weasley-podex status [--port <3457>] [--json] [--dashboard]
 
   Options:
     --port <N>      Target port (default: 3457)
@@ -42,7 +42,7 @@ try {
         if (values.json) {
             console.log(JSON.stringify({ status: 'running', port: values.port, cli: data["cli"] }));
         } else {
-            console.log(`  🦈 Server is running on port ${values.port}`);
+            console.log(`  ◆ Server is running on port ${values.port}`);
             console.log(`  CLI: ${data["cli"]}`);
             console.log(`  Working dir: ${data["workingDir"] || '~'}`);
 

@@ -51,7 +51,7 @@ test('SM-006: tui deep merge preserves sibling keys', () => {
             pasteCollapseChars: 160,
             keymapPreset: 'default',
             diffStyle: 'summary',
-            themeSeed: 'jaw-default',
+            themeSeed: 'weasley-podex-default',
         },
     };
     const next = mergeSettingsPatch(current, { tui: { keymapPreset: 'vim' } });

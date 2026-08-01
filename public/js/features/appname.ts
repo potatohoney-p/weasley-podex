@@ -1,9 +1,10 @@
 // ── Agent Name Customization ──
 // localStorage-based agent display name (message label only)
-// Logo, header, title remain "podex" (immutable)
+// Product logo, header, and title remain branded independently.
 
 const STORAGE_KEY = 'agentName';
-const DEFAULT_NAME = 'podex';
+const DEFAULT_NAME = 'Weasley Podex';
+const LEGACY_DEFAULT_NAME = 'podex';
 
 let currentName: string = DEFAULT_NAME;
 
@@ -20,7 +21,9 @@ export function setAppName(name: string): void {
 }
 
 export function initAppName(): void {
-    currentName = localStorage.getItem(STORAGE_KEY) || DEFAULT_NAME;
+    const storedName = localStorage.getItem(STORAGE_KEY);
+    currentName = !storedName || storedName === LEGACY_DEFAULT_NAME ? DEFAULT_NAME : storedName;
+    if (storedName === LEGACY_DEFAULT_NAME) localStorage.setItem(STORAGE_KEY, DEFAULT_NAME);
 
     // Sync input
     const input = document.getElementById('appNameInput') as HTMLInputElement | null;

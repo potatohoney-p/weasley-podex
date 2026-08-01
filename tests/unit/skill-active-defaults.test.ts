@@ -35,10 +35,10 @@ test('active defaults include search, structured-renderers, and goal', () => {
 test('propagation activates defaults from instance skills_ref and preserves custom active skills', () => {
     const home = fs.mkdtempSync(join(os.tmpdir(), 'jaw-active-defaults-home-'));
     try {
-        const base = join(home, '.podex');
+        const base = join(home, '.weasley', 'podex');
         const baseRef = join(base, 'skills_ref');
         const baseActive = join(base, 'skills');
-        const inst = join(home, '.podex-3458');
+        const inst = join(home, '.weasley', 'podex-3458');
         const instActive = join(inst, 'skills');
 
         fs.mkdirSync(baseRef, { recursive: true });
@@ -61,9 +61,10 @@ test('propagation activates defaults from instance skills_ref and preserves cust
             propagateSkillsToInstances();
         `, {
             HOME: home,
-            podex_HOME: base,
-            JAW_FORCE_CLONE: '1',
-            JAW_SKILLS_SOURCE: 'local',
+            USERPROFILE: home,
+            WEASLEY_PODEX_HOME: base,
+            WEASLEY_PODEX_FORCE_CLONE: '1',
+            WEASLEY_PODEX_SKILLS_SOURCE: 'local',
         });
 
         for (const id of refIds) {
@@ -80,17 +81,19 @@ test('propagation activates defaults from instance skills_ref and preserves cust
 test('skill read falls back to skills_ref when active skill is missing', () => {
     const home = fs.mkdtempSync(join(os.tmpdir(), 'jaw-skill-read-home-'));
     try {
-        const jawHome = join(home, '.podex-test');
-        makeSkill(join(jawHome, 'skills_ref'), 'only-ref', 'only-ref-content\n');
-        fs.mkdirSync(join(jawHome, 'skills'), { recursive: true });
+        const weasleyPodexHome = join(home, '.weasley', 'podex-test');
+        makeSkill(join(weasleyPodexHome, 'skills_ref'), 'only-ref', 'only-ref-content\n');
+        fs.mkdirSync(join(weasleyPodexHome, 'skills'), { recursive: true });
 
-        const output = execFileSync('npx', ['tsx', 'bin/commands/skill.ts', 'skill', 'read', 'only-ref'], {
+        const output = execFileSync(process.execPath, [
+            '--import', 'tsx', 'bin/commands/skill.ts', 'skill', 'read', 'only-ref',
+        ], {
             cwd: join(import.meta.dirname, '..', '..'),
             env: {
                 ...process.env,
-                podex_HOME: jawHome,
-                JAW_FORCE_CLONE: '1',
-                JAW_SKILLS_SOURCE: 'local',
+                WEASLEY_PODEX_HOME: weasleyPodexHome,
+                WEASLEY_PODEX_FORCE_CLONE: '1',
+                WEASLEY_PODEX_SKILLS_SOURCE: 'local',
             },
             encoding: 'utf8',
             stdio: ['ignore', 'pipe', 'pipe'],

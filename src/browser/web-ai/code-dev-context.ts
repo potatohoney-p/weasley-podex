@@ -1,4 +1,5 @@
-﻿import { createHash } from 'node:crypto';
+import { getWeasleyPodexEnv } from '../../core/weasley-podex-env.js';
+import { createHash } from 'node:crypto';
 import { promises as fs } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -23,14 +24,14 @@ export interface CodeDevContextResult {
 
 export function resolveCodeDevContextPaths(options: { packageRoot?: string; jawHome?: string } = {}) {
     const packageRoot = options.packageRoot || PACKAGE_ROOT;
-    const jawHome = options.jawHome || process.env["JAW_HOME"] || '';
+    const jawHome = options.jawHome || getWeasleyPodexEnv('HOME') || '';
     return {
         packageRoot,
         installedMarkdownPath: jawHome ? join(jawHome, 'skills', 'web-ai', 'modules', 'gpt-dev-agent-context.md') : '',
         installedZipPath: jawHome ? join(jawHome, 'skills', 'web-ai', 'modules', GPT_DEV_AGENT_CONTEXT_BASENAME) : '',
         sourceMarkdownPath: join(packageRoot, 'skills_ref', 'web-ai', 'modules', 'gpt-dev-agent-context.md'),
         sourceZipPath: join(packageRoot, 'skills_ref', 'web-ai', 'modules', GPT_DEV_AGENT_CONTEXT_BASENAME),
-        fallbackZipPath: join(process.env["BROWSER_AGENT_HOME"] || jawHome || join(homedir(), '.podex-3460'), 'web-ai-context-packages', GPT_DEV_AGENT_CONTEXT_BASENAME),
+        fallbackZipPath: join(process.env["BROWSER_AGENT_HOME"] || jawHome || join(homedir(), '.weasley', 'podex-3460'), 'web-ai-context-packages', GPT_DEV_AGENT_CONTEXT_BASENAME),
     };
 }
 
@@ -59,7 +60,7 @@ function buildManifest(markdown: string): Record<string, unknown> {
     return {
         name: 'gpt-dev-agent-context',
         version: GPT_DEV_AGENT_CONTEXT_VERSION,
-        createdBy: 'podex browser web-ai code',
+        createdBy: 'weasley-podex browser web-ai code',
         entries: [GPT_DEV_AGENT_CONTEXT_MARKDOWN_ENTRY],
         sha256: createHash('sha256').update(markdown).digest('hex'),
     };

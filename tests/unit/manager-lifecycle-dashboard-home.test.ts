@@ -56,15 +56,15 @@ function writeLegacyRegistry(root: string, entries: PersistedEntry[]): string {
     return path;
 }
 
-test('default store path uses podex_DASHBOARD_HOME lifecycle path', (t) => {
+test('default store path uses WEASLEY_PODEX_DASHBOARD_HOME lifecycle path', (t) => {
     const root = tmpRoot();
-    const previous = process.env.podex_DASHBOARD_HOME;
+    const previous = process.env.WEASLEY_PODEX_DASHBOARD_HOME;
     t.after(() => {
-        if (previous === undefined) delete process.env.podex_DASHBOARD_HOME;
-        else process.env.podex_DASHBOARD_HOME = previous;
+        if (previous === undefined) delete process.env.WEASLEY_PODEX_DASHBOARD_HOME;
+        else process.env.WEASLEY_PODEX_DASHBOARD_HOME = previous;
         rmSync(root, { recursive: true, force: true });
     });
-    process.env.podex_DASHBOARD_HOME = root;
+    process.env.WEASLEY_PODEX_DASHBOARD_HOME = root;
     const store = new LifecycleStore({ managerPort: MGR });
     assert.equal(store.path(), join(root, 'lifecycle', 'managers', String(MGR), 'dashboard-managed.json'));
 });

@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notion — podex Docs</title>
+<title>Notion — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -73,7 +72,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -96,7 +95,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">使用指南</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -145,17 +144,17 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">首页</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Notion</h1>
-<p class="lead">通过 API 对 Notion 页面和数据库进行增删改查 &mdash; 使用 Notion API 直接在 podex 中创建、读取、更新和查询 Notion 页面、数据源（数据库）和块。</p>
+<p class="lead">通过 API 对 Notion 页面和数据库进行增删改查 &mdash; 使用 Notion API 直接在 Weasley Podex 中创建、读取、更新和查询 Notion 页面、数据源（数据库）和块。</p>
 
 <div class="skill-meta">
-  <span class="badge badge-active">默认启用：是</span>
+  <span class="badge badge-planned">可选导入</span>
   <span class="badge badge-scope">分类：生产力</span>
   <span class="badge badge-env">依赖：NOTION_API_KEY</span>
 </div>
@@ -163,20 +162,20 @@
 <h2>快速参考</h2>
 <table class="quick-ref">
 <tr><td>技能名称</td><td><code>notion</code></td></tr>
-<tr><td>状态</td><td>已激活（自动注入每个会话）</td></tr>
+<tr><td>状态</td><td>可选导入；不随核心包捆绑</td></tr>
 <tr><td>分类</td><td>生产力</td></tr>
-<tr><td>SKILL.md 路径</td><td><code>~/.podex/skills/notion/SKILL.md</code></td></tr>
+<tr><td>SKILL.md 路径</td><td><code>~/.weasley/podex/skills/notion/SKILL.md</code></td></tr>
 <tr><td>官方网站</td><td><a href="https://developers.notion.com">developers.notion.com</a></td></tr>
 <tr><td>API 版本</td><td><code>2025-09-03</code>（最新）</td></tr>
 <tr><td>依赖</td><td><code>NOTION_API_KEY</code> 环境变量（以 <code>ntn_</code> 为前缀的密钥）</td></tr>
 <tr><td>密钥存储位置</td><td><code>~/.config/notion/api_key</code></td></tr>
 <tr><td>OAuth 配置</td><td><code>~/.config/notion/oauth.env</code></td></tr>
 <tr><td>速率限制</td><td>约 3 次请求/秒（批量操作时使用 <code>time.sleep(0.35)</code>）</td></tr>
-<tr><td>安装</td><td>已预装（随 podex 一起提供）</td></tr>
+<tr><td>安装</td><td>从已安装的 Codex 目录或显式可信仓库导入</td></tr>
 </table>
 
 <h2>概述</h2>
-<p><code>notion</code> 技能通过 Notion API 提供对 Notion 工作区的完整增删改查访问。它使 podex 能够搜索页面、创建和更新内容、查询数据库（数据源）、管理块以及应用视觉设计模式 &mdash; 所有操作均无需离开终端。</p>
+<p><code>notion</code> 技能通过 Notion API 提供对 Notion 工作区的完整增删改查访问。它使 Weasley Podex 能够搜索页面、创建和更新内容、查询数据库（数据源）、管理块以及应用视觉设计模式 &mdash; 所有操作均无需离开终端。</p>
 
 <p>核心功能：</p>
 <ul>
@@ -211,7 +210,7 @@ chmod 600 ~/.config/notion/api_key</code></pre>
 <div class="callout callout-warn"><strong>重要：</strong>目标页面和数据库必须在 Notion 中显式与您的集成共享。未共享的页面即使 API 密钥有效也会返回 404 错误。</div>
 
 <h2>API 辅助函数</h2>
-<p>该技能定义了一个可复用的 Shell 辅助函数，所有操作均基于此构建。podex 在执行 Notion 命令时内部使用此函数：</p>
+<p>该技能定义了一个可复用的 Shell 辅助函数，所有操作均基于此构建。Weasley Podex 在执行 Notion 命令时内部使用此函数：</p>
 
 <pre><code>NOTION_KEY=$(cat ~/.config/notion/api_key)
 
@@ -370,7 +369,7 @@ notion_api POST /data_sources '{
 <div class="callout callout-info"><strong>双 ID 模式：</strong>操作数据库时，使用 <code>database_id</code> 进行 <code>POST /pages</code>（创建条目），使用 <code>data_source_id</code> 进行 <code>POST /data_sources/{id}/query</code>（查询条目）。混用会导致 404 错误。</div>
 
 <h2>视觉设计规则</h2>
-<p>该技能包含一组视觉设计规则（称为"美学指南"），确保 podex 创建的 Notion 页面外观精美并遵循 Notion 原生模式。</p>
+<p>该技能包含一组视觉设计规则（称为"美学指南"），确保 Weasley Podex 创建的 Notion 页面外观精美并遵循 Notion 原生模式。</p>
 
 <div class="design-rule">
   <h4>1. 使用提及链接引用页面</h4>
@@ -456,7 +455,7 @@ bulleted_list_item (提及 &rarr; 描述)
 notion_api POST /search '{"query": "page name"}'</code></pre>
 
 <h2>使用示例</h2>
-<p>以 podex 能理解的自然韩语风格展示的实际使用模式。</p>
+<p>以 Weasley Podex 能理解的自然韩语风格展示的实际使用模式。</p>
 
 <div class="example-card">
   <div class="example-prompt">"&#45432;&#49496;&#50640; &#49352; &#54168;&#51060;&#51648; &#47564;&#46308;&#50612;&#51468; &mdash; &#51228;&#47785; '&#51452;&#44036; &#54924;&#51032;&#47197;', &#49345;&#53468;&#45716; '&#51652;&#54665; &#51473;'&#51004;&#47196;"</div>
@@ -500,7 +499,7 @@ notion_api POST /search '{"query": "page name"}'</code></pre>
   <li><a href="../productivity.html">生产力技能</a> &mdash; Notion 及相关生产力技能的分类页面</li>
   <li><a href="memory.html">记忆</a> &mdash; 跨会话的持久知识存储</li>
   <li><a href="../index.html">技能目录</a> &mdash; 浏览所有技能</li>
-  <li><a href="../../reference/cli.html">CLI 命令</a> &mdash; 完整的 podex 命令参考</li>
+  <li><a href="../../reference/cli.html">CLI 命令</a> &mdash; 完整的 Weasley Podex 命令参考</li>
 </ul>
 
 <div class="page-nav">

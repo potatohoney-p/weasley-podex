@@ -30,7 +30,7 @@ test('worker command exposes explicit raw output read by runId only', () => {
     assert.match(workerSrc, /\/api\/orchestrate\/worker-runs\/\$\{encodeURIComponent\(runId\)\}\/output/);
     assert.match(workerSrc, /\/api\/orchestrate\/worker-runs\/\$\{encodeURIComponent\(runId\)\}/);
     assert.match(workerSrc, /const offset = Math\.max\(0, run\.outputBytes - tail\)/);
-    assert.match(workerSrc, /More output available: podex worker read/);
+    assert.match(workerSrc, /More output available: weasley-podex worker read/);
 });
 
 test('worker command keeps status/watch on safe-summary surfaces', () => {

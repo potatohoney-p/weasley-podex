@@ -34,7 +34,7 @@ export const CLI_META: Record<string, CliMeta> = {
     agy: {
         label: 'Antigravity',
         // Label form is what `agy --model` accepts when no --effort is sent
-        // (podex never sends one for AGY); the bare slug is rejected by
+        // (Weasley Podex never sends one for AGY); the bare slug is rejected by
         // AGY 1.1.4 with "requires --effort", so it is not offered at all.
         // A persisted legacy value still renders: optionList() prepends the
         // current value even when it is absent from this catalog.
@@ -43,7 +43,7 @@ export const CLI_META: Record<string, CliMeta> = {
             'Gemini 3.5 Flash (Medium)',
         ],
         efforts: [],
-        modelNote: 'AGY model override is version-dependent. Observed AGY 1.1.4 supports --model; podex probes the installed binary and emits this field only when supported. Leave empty to use native AGY selection.',
+        modelNote: 'AGY model override is version-dependent. Observed AGY 1.1.4 supports --model; Weasley Podex probes the installed binary and emits this field only when supported. Leave empty to use native AGY selection.',
         effortNote: 'AGY has no separate effort flag.',
     },
     pi: {
@@ -194,7 +194,7 @@ export const CLI_META: Record<string, CliMeta> = {
             'qwen3-coder-next',
         ],
         efforts: ['low', 'medium', 'high', 'xhigh'],
-        effortNote: 'Kiro CLI forwards --effort; podex maps xhigh to Kiro max on the wire',
+        effortNote: 'Kiro CLI forwards --effort; Weasley Podex maps xhigh to Kiro max on the wire',
     },
     gemini: {
         label: 'Gemini',

@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>First Run — podex Docs</title>
+<title>First Run — Weasley Podex Docs</title>
 <link rel="stylesheet" href="_shell.css">
-<link rel="icon" type="image/png" href="../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../">podex</a></div>
+  <div class="docs-logo"><a href="../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="./guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="./guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="./guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="./guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="./guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="./guides/discord.html">Discord</a>
@@ -83,7 +82,7 @@
     <a href="./zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../">Landing Page</a>
   </div>
 </nav>
@@ -95,17 +94,17 @@
 <h2>Two Ways to Run</h2>
 <table>
 <tr><th>Command</th><th>Mode</th><th>Best For</th></tr>
-<tr><td><code>jaw serve</code></td><td>Single instance</td><td>Quick one-off tasks, simple setup</td></tr>
-<tr><td><code>jaw dashboard</code></td><td>Multi-instance manager</td><td>Running multiple agents, full dashboard</td></tr>
+<tr><td><code>weasley-podex serve</code></td><td>Single instance</td><td>Quick one-off tasks, simple setup</td></tr>
+<tr><td><code>weasley-podex dashboard</code></td><td>Multi-instance manager</td><td>Running multiple agents, full dashboard</td></tr>
 </table>
 
-<h2>Single Instance: jaw serve</h2>
-<pre><code>jaw serve
+<h2>Single Instance: weasley-podex serve</h2>
+<pre><code>weasley-podex serve
 # Opens browser at http://localhost:3457</code></pre>
 <p>You get a chat interface immediately. Type a message and your AI agent responds.</p>
 
-<h2>Multi-Instance: jaw dashboard</h2>
-<pre><code>jaw dashboard
+<h2>Multi-Instance: weasley-podex dashboard</h2>
+<pre><code>weasley-podex dashboard
 # Opens browser at http://localhost:24576</code></pre>
 <p>The dashboard shows all your instances. Click <strong>Start</strong> to launch an instance, or <strong>Perm</strong> to make it persist across reboots.</p>
 
@@ -136,7 +135,7 @@
 <div class="callout callout-info">
 <strong>Try it:</strong>
 <ul>
-<li>jaw dashboard 치고 start 누르면 됨</li>
+<li>weasley-podex dashboard 치고 start 누르면 됨</li>
 <li>클로드로 바꿔줘</li>
 </ul>
 </div>

@@ -49,7 +49,7 @@ test('cli: help explains L2 read-only scope and embedding default-off behavior',
         await handleMemory([]);
     });
     assert.match(captured.output, /L2 cross-instance memory search \(read-only\)/);
-    assert.match(captured.output, /Companion to `jaw memory` \(L1, instance-local r\/w\)/);
+    assert.match(captured.output, /Companion to `weasley-podex memory` \(L1, instance-local r\/w\)/);
     assert.match(captured.output, /Embedding commands manage an optional dashboard add-on; default OFF unless configured/);
 });
 

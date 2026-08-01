@@ -25,8 +25,8 @@ const { pathToFileURL } = require('url');
 // ─── 1. Node version fail-fast ──────────────────────
 const major = parseInt(process.versions.node.split('.')[0], 10);
 if (major < 22) {
-    console.error(`[jaw:init] ❌ Node.js >= 22 required (current: ${process.version})`);
-    console.error(`[jaw:init]    Install: https://nodejs.org or nvm install 22`);
+    console.error(`[weasley-podex:init] ❌ Node.js >= 22 required (current: ${process.version})`);
+    console.error(`[weasley-podex:init]    Install: https://nodejs.org or nvm install 22`);
     process.exit(1);
 }
 
@@ -42,7 +42,7 @@ function ensurePackageBinExecutable(rootDir) {
         fs.chmodSync(binPath, 0o755);
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        console.warn(`[jaw:init] ⚠️  could not repair podex executable bit: ${message}`);
+        console.warn(`[weasley-podex:init] ⚠️  could not repair CLI executable bit: ${message}`);
     }
 }
 
@@ -50,15 +50,13 @@ ensurePackageBinExecutable(root);
 
 // ─── 3. Safe mode: no build/install work ────────────
 const safeMode =
-    process.env.JAW_SAFE === '1'
-    || process.env.JAW_SAFE === 'true'
-    || process.env.podex_SAFE === '1'
-    || process.env.podex_SAFE === 'true'
-    || process.env.npm_config_jaw_safe === '1'
-    || process.env.npm_config_jaw_safe === 'true';
+    process.env.WEASLEY_PODEX_SAFE === '1'
+    || process.env.WEASLEY_PODEX_SAFE === 'true'
+    || process.env.npm_config_weasley_podex_safe === '1'
+    || process.env.npm_config_weasley_podex_safe === 'true';
 
 if (safeMode) {
-    console.log('[jaw:init] safe mode — skipping postinstall build and installers');
+    console.log('[weasley-podex:init] safe mode — skipping postinstall build and installers');
     process.exit(0);
 }
 
@@ -81,30 +79,30 @@ if (!fs.existsSync(target)) {
     ].find(p => fs.existsSync(p));
 
     if (!localTsc) {
-        console.error('[jaw:init] ❌ dist/ not found and typescript not installed locally');
+        console.error('[weasley-podex:init] ❌ dist/ not found and typescript not installed locally');
         console.error('           Run: npm install --ignore-scripts && npm run build && node dist/bin/postinstall.js');
         process.exit(1);
     }
 
-    console.log('[jaw:init] dist/ not found, building...');
+    console.log('[weasley-podex:init] dist/ not found, building...');
     try {
         // execFileSync avoids shell parsing issues with spaces in paths
         execFileSync(localTsc, [], { stdio: 'inherit', cwd: root, timeout: 60000 });
     } catch {
-        console.error('[jaw:init] ❌ build failed — run manually:');
+        console.error('[weasley-podex:init] ❌ build failed — run manually:');
         console.error('           npm run build && node dist/bin/postinstall.js');
         process.exit(1);
     }
 
     if (!fs.existsSync(target)) {
-        console.error('[jaw:init] ❌ tsc completed but dist/bin/postinstall.js not found');
+        console.error('[weasley-podex:init] ❌ tsc completed but dist/bin/postinstall.js not found');
         process.exit(1);
     }
     ensurePackageBinExecutable(root);
 }
 
 runCompiledPostinstall().catch((error) => {
-    console.error('[jaw:init] ⚠️  postinstall error (non-fatal):');
+    console.error('[weasley-podex:init] ⚠️  postinstall error (non-fatal):');
     console.error(error instanceof Error ? error.message : String(error));
     process.exit(0);
 });

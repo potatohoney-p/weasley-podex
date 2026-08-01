@@ -22,12 +22,13 @@ const DASHBOARD = path.join(ROOT, 'bin/commands/dashboard.ts');
 
 test('SRH-001: buildServicePath augments minimal PATH with common service-safe directories', () => {
     const built = buildServicePath('/usr/bin:/bin', []);
-    assert.match(built, /\/usr\/local\/bin/);
-    assert.match(built, /\/opt\/homebrew\/bin/);
-    assert.match(built, /\.claude\/local\/bin/);
-    assert.match(built, /\/usr\/bin/);
-    assert.match(built, /\.deno\/bin/, 'should include deno bin');
-    assert.match(built, /\/opt\/homebrew\/opt\/node@22\/bin/, 'should include keg-only node@22');
+    const normalized = built.replace(/\\/g, '/');
+    assert.match(normalized, /\/usr\/local\/bin/);
+    assert.match(normalized, /\/opt\/homebrew\/bin/);
+    assert.match(normalized, /\.claude\/local\/bin/);
+    assert.match(normalized, /\/usr\/bin/);
+    assert.match(normalized, /\.deno\/bin/, 'should include deno bin');
+    assert.match(normalized, /\/opt\/homebrew\/opt\/node@22\/bin/, 'should include keg-only node@22');
 });
 
 test('SRH-002: buildServicePath discovers managed node bins from a custom home', () => {
@@ -85,9 +86,9 @@ test('SRH-004b: dist-mode service commands prefer sidecar Node over process.exec
     assert.match(instanceSrc, /resolveBundledNodePath\(\)/,
         'service installers must resolve sidecar Node before PATH node');
     assert.match(serveSrc, /resolveBundledNodePath\(serverPath\) \?\? process\.execPath/,
-        'jaw serve must use sidecar Node for dist server startup');
+        'weasley-podex serve must use sidecar Node for dist server startup');
     assert.match(dashboardSrc, /resolveBundledNodePath\(serverJs\) \?\? process\.execPath/,
-        'jaw dashboard serve must use sidecar Node for dist manager startup');
+        'weasley-podex dashboard serve must use sidecar Node for dist manager startup');
 });
 
 test('SRH-005: spawn path and detectCli logic use service-safe PATH handling', () => {
@@ -117,7 +118,7 @@ test('SRH-005: spawn path and detectCli logic use service-safe PATH handling', (
 test('SRH-006: loadSettings warns and backs up unreadable settings instead of silently overwriting them', () => {
     const src = readSource(CONFIG, 'utf8');
     assert.match(src, /if \(err\?\.code === 'ENOENT'\)/);
-    assert.match(src, /console\.warn\(`\[jaw:settings\] failed to load/);
+    assert.match(src, /console\.warn\(`\[weasley-podex:settings\] failed to load/);
     assert.match(src, /copyFileSync\(SETTINGS_PATH, backupPath\)/);
     assert.ok(
         src.indexOf("if (err?.code === 'ENOENT')") < src.indexOf('copyFileSync(SETTINGS_PATH, backupPath)'),
@@ -170,8 +171,10 @@ test('SRH-009: message queue is persisted to DB', () => {
 
 test('SRH-010: orphaned employee tmp dirs are cleaned on startup', () => {
     const src = readSource(SERVER, 'utf8');
+    assert.match(src, /weasley-podex-employee-/,
+        'startup must reference the branded employee temp prefix for cleanup');
     assert.match(src, /jaw-emp-/,
-        'startup must reference jaw-emp- prefix for cleanup');
+        'startup must still clean the exact legacy employee temp prefix');
     assert.match(src, /orphaned employee tmp dir/,
         'startup must log cleanup of orphaned dirs');
 });
@@ -218,7 +221,7 @@ test('SRH-014: install.sh handles network failure gracefully', () => {
 
 test('SRH-015: install.sh detects package manager from install path', () => {
     const src = readSource(INSTALL_SH, 'utf8');
-    assert.ok(src.includes('bun add -g podex'),
+    assert.ok(src.includes('bun add -g weasley-podex'),
         'install.sh must use bun for bun-managed installs');
     assert.ok(src.includes('Detected bun-managed install'),
         'install.sh must inform about bun detection');
@@ -228,7 +231,7 @@ test('SRH-016: install.sh verifies binary after install', () => {
     const src = readSource(INSTALL_SH, 'utf8');
     assert.ok(src.includes('binary not responding'),
         'install.sh must warn if post-install verification fails');
-    assert.ok(src.includes('get_installed_jaw_binary') && src.includes('get_binary_version'),
+    assert.ok(src.includes('get_installed_weasley_podex_binary') && src.includes('get_binary_version'),
         'install.sh must re-resolve binary after install');
 });
 

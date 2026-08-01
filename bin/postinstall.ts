@@ -1,10 +1,11 @@
 #!/usr/bin/env node
+import { getWeasleyPodexEnv } from '../src/core/weasley-podex-env.js';
 
 // ─── Node version guard ─────────────────────────────
 const [major] = process.versions.node.split('.').map(Number);
 if (major! < 22) {
-    console.error(`[jaw:init] ❌ Node.js >= 22 required (current: ${process.version})`);
-    console.error(`[jaw:init]    Install: https://nodejs.org or nvm install 22`);
+    console.error(`[weasley-podex:init] ❌ Node.js >= 22 required (current: ${process.version})`);
+    console.error(`[weasley-podex:init]    Install: https://nodejs.org or nvm install 22`);
     process.exit(1);
 }
 
@@ -13,13 +14,13 @@ if (major! < 22) {
  * Sets up symlink structure and MCP config for agent tool compatibility.
  *
  * Created structure (isolated-by-default):
- *   ~/.podex/           (config dir)
- *   ~/.podex/skills/    (default skills source)
- *   ~/.podex/uploads/   (media uploads)
- *   ~/.podex/mcp.json   (unified MCP config)
+ *   ~/.weasley/podex/           (config dir)
+ *   ~/.weasley/podex/skills/    (default skills source)
+ *   ~/.weasley/podex/uploads/   (media uploads)
+ *   ~/.weasley/podex/mcp.json   (unified MCP config)
  *
  * Shared home paths (~/.agents, ~/.agent, ~/.claude) are NOT modified by default.
- * Opt-in: podex_MIGRATE_SHARED_PATHS=1 npm install -g podex
+ * Opt-in: WEASLEY_PODEX_MIGRATE_SHARED_PATHS=1 npm install -g weasley-podex
  */
 
 import fs from 'fs';
@@ -37,25 +38,24 @@ import {
 } from '../src/core/cli-detect.js';
 import { asArray, asRecord, errString, fieldString } from './_http-client.js';
 
-// ─── JAW_HOME inline (config.ts → registry.ts import 체인 제거) ───
-const JAW_HOME = (() => {
-    if (!process.env["podex_HOME"]) return path.join(os.homedir(), '.podex');
-    const resolved = resolveHomePath(process.env["podex_HOME"]);
+// ─── WEASLEY_PODEX_HOME inline (config.ts → registry.ts import 체인 제거) ───
+const configuredHome = getWeasleyPodexEnv('HOME');
+const WEASLEY_PODEX_HOME = (() => {
+    if (!configuredHome) return path.join(os.homedir(), '.weasley', 'podex');
+    const resolved = resolveHomePath(configuredHome);
     const userHome = os.homedir();
     if (process.env["NODE_ENV"] !== 'test' && !resolved.startsWith(userHome + path.sep) && resolved !== userHome) {
-        console.error(`[jaw:init] ❌ podex_HOME must be under user home (${userHome}): ${resolved}`);
+        console.error(`[weasley-podex:init] ❌ WEASLEY_PODEX_HOME must be under user home (${userHome}): ${resolved}`);
         process.exit(1);
     }
     return resolved;
 })();
 
 const home = os.homedir();
-const jawHome = JAW_HOME;
+const jawHome = WEASLEY_PODEX_HOME;
 const PATH_LOOKUP_CMD = process.platform === 'win32' ? 'where' : 'which';
-const MCP_SERVERS_SKIP = process.env["podex_SKIP_MCP_SERVERS"] === '1'
-    || process.env["podex_SKIP_MCP_SERVERS"] === 'true';
-const SKILL_DEPS_SKIP = process.env["podex_SKIP_SKILL_DEPS"] === '1'
-    || process.env["podex_SKIP_SKILL_DEPS"] === 'true';
+const MCP_SERVERS_SKIP = truthyEnv(getWeasleyPodexEnv('SKIP_MCP_SERVERS'));
+const SKILL_DEPS_SKIP = truthyEnv(getWeasleyPodexEnv('SKIP_SKILL_DEPS'));
 const CLAUDE_NATIVE_INSTALL_URL = 'https://claude.ai/install.sh';
 const CLAUDE_NATIVE_INSTALL_PS_URL = 'https://claude.ai/install.ps1';
 
@@ -84,7 +84,7 @@ function postinstallExecEnv(env: NodeJS.ProcessEnv = process.env): NodeJS.Proces
 function ensureDir(dir: string) {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
-        console.log(`[jaw:init] created ${dir}`);
+        console.log(`[weasley-podex:init] created ${dir}`);
     }
 }
 
@@ -102,10 +102,10 @@ export function removeJawHomeClaudeInstructionFile(baseDir = jawHome): ClaudeIns
             const resolvedAgents = path.resolve(agentsMd);
             if (resolvedTarget === resolvedAgents || path.basename(linkTarget) === 'AGENTS.md') {
                 fs.unlinkSync(claudeMd);
-                console.log(`[jaw:init] removed deprecated CLAUDE.md symlink: ${claudeMd}`);
+                console.log(`[weasley-podex:init] removed deprecated CLAUDE.md symlink: ${claudeMd}`);
                 return 'removed-symlink';
             }
-            console.warn(`[jaw:init] keeping custom CLAUDE.md symlink: ${claudeMd} -> ${linkTarget}`);
+            console.warn(`[weasley-podex:init] keeping custom CLAUDE.md symlink: ${claudeMd} -> ${linkTarget}`);
             return 'kept-custom';
         }
 
@@ -114,15 +114,15 @@ export function removeJawHomeClaudeInstructionFile(baseDir = jawHome): ClaudeIns
             const agentsText = fs.readFileSync(agentsMd, 'utf8');
             if (claudeText === agentsText) {
                 fs.unlinkSync(claudeMd);
-                console.log(`[jaw:init] removed deprecated CLAUDE.md mirror: ${claudeMd}`);
+                console.log(`[weasley-podex:init] removed deprecated CLAUDE.md mirror: ${claudeMd}`);
                 return 'removed-mirror';
             }
         }
 
-        console.warn(`[jaw:init] keeping custom CLAUDE.md: ${claudeMd}`);
+        console.warn(`[weasley-podex:init] keeping custom CLAUDE.md: ${claudeMd}`);
         return 'kept-custom';
     } catch (e: unknown) {
-        console.warn(`[jaw:init] CLAUDE.md cleanup failed: ${claudeMd} (${errString(e) || 'unknown'})`);
+        console.warn(`[weasley-podex:init] CLAUDE.md cleanup failed: ${claudeMd} (${errString(e) || 'unknown'})`);
         return 'error';
     }
 }
@@ -193,7 +193,7 @@ if (-not ($entries -contains $dir)) {
         return true;
     } catch (e: unknown) {
         const message = errString(e);
-        console.warn(`[jaw:init] ⚠️  could not persist npm global bin on user PATH: ${message || dir}`);
+        console.warn(`[weasley-podex:init] ⚠️  could not persist npm global bin on user PATH: ${message || dir}`);
         return false;
     }
 }
@@ -208,17 +208,17 @@ function ensureNpmGlobalBinOnUserPath(): void {
 
     if (process.platform === 'win32') {
         if (persistWindowsUserPathDir(binDir)) {
-            console.log(`[jaw:init] ✅ added npm global bin to the Windows user PATH: ${binDir}`);
-            console.log('[jaw:init]    Open a new PowerShell, then run: jaw --version');
+            console.log(`[weasley-podex:init] ✅ added npm global bin to the Windows user PATH: ${binDir}`);
+            console.log('[weasley-podex:init]    Open a new PowerShell, then run: weasley-podex --version');
         } else {
-            console.warn(`[jaw:init] ⚠️  npm global bin is not on PATH: ${binDir}`);
-            console.warn('[jaw:init]    Add it to the Windows user PATH, then open a new PowerShell.');
+            console.warn(`[weasley-podex:init] ⚠️  npm global bin is not on PATH: ${binDir}`);
+            console.warn('[weasley-podex:init]    Add it to the Windows user PATH, then open a new PowerShell.');
         }
         return;
     }
 
-    console.warn(`[jaw:init] ⚠️  npm global bin is not on PATH: ${binDir}`);
-    console.warn('[jaw:init]    Add it to your shell profile if `jaw` is not found after install.');
+    console.warn(`[weasley-podex:init] ⚠️  npm global bin is not on PATH: ${binDir}`);
+    console.warn('[weasley-podex:init]    Add it to your shell profile if `weasley-podex` is not found after install.');
 }
 
 
@@ -240,25 +240,25 @@ function logSkillsSymlinkReport(report: SkillsSymlinkReport) {
 
     const moved = links.filter((x) => x.action === 'backup_replace');
     if (moved.length) {
-        console.log(`[jaw:init] skills conflicts moved to backup: ${moved.length}`);
+        console.log(`[weasley-podex:init] skills conflicts moved to backup: ${moved.length}`);
         for (const item of moved) {
             const backupPath = fieldString(item.backupPath);
             if (backupPath) {
-                console.log(`[jaw:init]   - ${fieldString(item.linkPath)} -> ${backupPath}`);
+                console.log(`[weasley-podex:init]   - ${fieldString(item.linkPath)} -> ${backupPath}`);
             }
         }
     }
 
     const errors = links.filter((x) => x.status === 'error');
     for (const item of errors) {
-        console.log(`[jaw:init] ⚠️ symlink error: ${fieldString(item.linkPath)} (${fieldString(item.message, 'unknown')})`);
+        console.log(`[weasley-podex:init] ⚠️ symlink error: ${fieldString(item.linkPath)} (${fieldString(item.message, 'unknown')})`);
     }
 }
 
 
 /**
  * 업그레이드 유저의 launchd plist가 ProcessType 키 없으면 새 format으로 재등록.
- * Fresh install(plist 없음)은 skip — jaw launchd 명시 실행 시점에 생성됨.
+ * Fresh install(plist 없음)은 skip — weasley-podex launchd 명시 실행 시점에 생성됨.
  */
 async function maybeReregisterLaunchd() {
     if (process.platform !== 'darwin') return;
@@ -269,23 +269,23 @@ async function maybeReregisterLaunchd() {
     try {
         const content = fs.readFileSync(plistPath, 'utf8');
         if (content.includes('<key>ProcessType</key>')) {
-            console.log('[jaw:init] ⏭️  launchd plist 이미 최신 포맷');
+            console.log('[weasley-podex:init] ⏭️  launchd plist 이미 최신 포맷');
             return;
         }
     } catch {
         return;
     }
 
-    console.log('[jaw:init] 🔄 launchd plist 구 포맷 감지 — 새 포맷으로 재등록 시도');
-    const jawBin = findBinaryPath('jaw') || findBinaryPath('podex');
-    if (!jawBin) {
-        console.warn('[jaw:init] ⚠️  jaw 바이너리 탐색 실패 — 수동: jaw launchd');
+    console.log('[weasley-podex:init] 🔄 launchd plist 구 포맷 감지 — 새 포맷으로 재등록 시도');
+    const cliBin = findBinaryPath('weasley-podex');
+    if (!cliBin) {
+        console.warn('[weasley-podex:init] ⚠️  Weasley Podex CLI 탐색 실패 — 수동: weasley-podex launchd');
         return;
     }
     try {
-        execFileSync(jawBin, ['launchd'], { stdio: 'inherit', timeout: 30000, env: postinstallExecEnv() });
+        execFileSync(cliBin, ['launchd'], { stdio: 'inherit', timeout: 30000, env: postinstallExecEnv() });
     } catch (e: unknown) {
-        console.warn(`[jaw:init] ⚠️  launchd 재등록 실패 — 수동: jaw launchd`);
+        console.warn(`[weasley-podex:init] ⚠️  launchd 재등록 실패 — 수동: weasley-podex launchd`);
         const message = errString(e);
         if (message) console.warn(`   ${message.slice(0, 120)}`);
     }
@@ -319,27 +319,28 @@ function truthyEnv(value: string | undefined): boolean {
 }
 
 export function shouldInstallCliToolsDuringPostinstall(env: NodeJS.ProcessEnv = process.env): boolean {
-    return truthyEnv(env["podex_INSTALL_CLI_TOOLS"]) || truthyEnv(env["npm_config_jaw_install_cli_tools"]);
+    return truthyEnv(getWeasleyPodexEnv('INSTALL_CLI_TOOLS', env))
+        || truthyEnv(env["npm_config_weasley_podex_install_cli_tools"]);
 }
 
 export function shouldRequireCliToolsDuringPostinstall(env: NodeJS.ProcessEnv = process.env): boolean {
-    return truthyEnv(env["podex_REQUIRE_CLI_TOOLS"]) || truthyEnv(env["npm_config_jaw_require_cli_tools"]);
+    return truthyEnv(getWeasleyPodexEnv('REQUIRE_CLI_TOOLS', env))
+        || truthyEnv(env["npm_config_weasley_podex_require_cli_tools"]);
 }
 
 export function shouldInstallClaudeDuringPostinstall(env: NodeJS.ProcessEnv = process.env): boolean {
-    return !truthyEnv(env["podex_SKIP_CLAUDE"]) && !truthyEnv(env["npm_config_jaw_skip_claude"]);
+    return !truthyEnv(getWeasleyPodexEnv('SKIP_CLAUDE', env))
+        && !truthyEnv(env["npm_config_weasley_podex_skip_claude"]);
 }
 
 export function shouldForceClaudeDuringPostinstall(env: NodeJS.ProcessEnv = process.env): boolean {
-    return truthyEnv(env["podex_FORCE_CLAUDE"]) || truthyEnv(env["npm_config_jaw_force_claude"]);
+    return truthyEnv(getWeasleyPodexEnv('FORCE_CLAUDE', env))
+        || truthyEnv(env["npm_config_weasley_podex_force_claude"]);
 }
 
 export function shouldDedupeCliTools(env: NodeJS.ProcessEnv = process.env): boolean {
-    return truthyEnv(env["podex_DEDUPE_CLI_TOOLS"]) || truthyEnv(env["npm_config_jaw_dedupe_cli_tools"]);
-}
-
-function shouldMigrateLegacyHome(env: NodeJS.ProcessEnv = process.env): boolean {
-    return truthyEnv(env["podex_MIGRATE_LEGACY_HOME"]) || truthyEnv(env["npm_config_jaw_migrate_legacy_home"]);
+    return truthyEnv(getWeasleyPodexEnv('DEDUPE_CLI_TOOLS', env))
+        || truthyEnv(env["npm_config_weasley_podex_dedupe_cli_tools"]);
 }
 
 function npmPrefixGlobal(): string | null {
@@ -490,17 +491,17 @@ function runGrokNativeInstall(): void {
 
 function installGrokCli(): boolean {
     if (process.platform === 'win32') {
-        console.warn('[jaw:init] ⚠️  grok: native PowerShell podex install is unsupported');
-        console.warn(`[jaw:init]    install Grok inside WSL instead: ${buildGrokNativeInstallCmd()}`);
+        console.warn('[weasley-podex:init] ⚠️  grok: native PowerShell Weasley Podex install is unsupported');
+        console.warn(`[weasley-podex:init]    install Grok inside WSL instead: ${buildGrokNativeInstallCmd()}`);
         return false;
     }
 
     const cmd = buildGrokNativeInstallCmd();
-    console.log(`[jaw:init] 📦 grok (xAI native installer): ${cmd}`);
+    console.log(`[weasley-podex:init] 📦 grok (xAI native installer): ${cmd}`);
     try {
         runGrokNativeInstall();
     } catch (e: unknown) {
-        console.error(`[jaw:init] ⚠️  grok: auto-install failed — install manually: ${cmd}`);
+        console.error(`[weasley-podex:init] ⚠️  grok: auto-install failed — install manually: ${cmd}`);
         const message = errString(e);
         if (message) console.error(`             ${message.slice(0, 160)}`);
         return false;
@@ -508,11 +509,11 @@ function installGrokCli(): boolean {
 
     const existingPath = findRunnableCliBinary('grok');
     if (existingPath) {
-        console.log(`[jaw:init] ✅ grok native binary verified → ${existingPath}`);
+        console.log(`[weasley-podex:init] ✅ grok native binary verified → ${existingPath}`);
         return true;
     }
 
-    console.error('[jaw:init] ⚠️  grok: installer completed but binary was not found or not runnable');
+    console.error('[weasley-podex:init] ⚠️  grok: installer completed but binary was not found or not runnable');
     return false;
 }
 
@@ -553,7 +554,7 @@ export function findRunnableCliBinary(name: string): string | null {
     const scan = listCliBinaryCandidates(name, readProcessPath());
     for (const candidate of scan.candidates) {
         if (!candidate.spawnable) {
-            console.log(`[jaw:init] ⚠️  ${name} candidate is not spawnable → ${candidate.path}`);
+            console.log(`[weasley-podex:init] ⚠️  ${name} candidate is not spawnable → ${candidate.path}`);
             continue;
         }
         if (isRunnableCliBinary(name, candidate.path)) return candidate.path;
@@ -583,20 +584,26 @@ function childFailureOutput(error: unknown): string {
 }
 
 function runCliVersionCheck(binaryPath: string): void {
-    const common = {
+    const common: Parameters<typeof execFileSync>[2] = {
         encoding: 'utf8' as const,
         stdio: 'pipe' as const,
         timeout: 5000,
         env: postinstallExecEnv(),
     };
     if (process.platform === 'win32') {
+        // powershell.exe joins tokens after -Command into source text instead of
+        // exposing them through $args. Bind the candidate through the child-only
+        // environment so paths with spaces or shell metacharacters stay data.
+        common.env = {
+            ...common.env,
+            WEASLEY_PODEX_CLI_PROBE_PATH: binaryPath,
+        };
         execFileSync('powershell', [
             '-NoProfile',
             '-ExecutionPolicy',
             'Bypass',
             '-Command',
-            '& $args[0] --version',
-            binaryPath,
+            '& $env:WEASLEY_PODEX_CLI_PROBE_PATH --version',
         ], common);
         return;
     }
@@ -609,7 +616,7 @@ function isRunnableCliBinary(name: string, binaryPath: string): boolean {
         return true;
     } catch (e: unknown) {
         const output = childFailureOutput(e);
-        console.log(`[jaw:init] ⚠️  ${name} exists but failed --version → ${binaryPath}`);
+        console.log(`[weasley-podex:init] ⚠️  ${name} exists but failed --version → ${binaryPath}`);
         if (output) console.log(`             ${output.slice(0, 160)}`);
         return false;
     }
@@ -622,17 +629,17 @@ function isRunnableClaudeBinary(binaryPath: string): boolean {
 function installClaudeCli(options: { force?: boolean } = {}): boolean {
     const existingPath = findExistingClaudeBinary();
     if (existingPath && !options.force) {
-        console.log(`[jaw:init] ⏭️  claude already works → ${existingPath}`);
+        console.log(`[weasley-podex:init] ⏭️  claude already works → ${existingPath}`);
         return true;
     }
 
     const cmd = buildClaudeNativeInstallCmd();
     const label = process.platform === 'win32' ? 'native PowerShell installer' : 'native installer';
-    console.log(`[jaw:init] 📦 claude (${label}): ${cmd}`);
+    console.log(`[weasley-podex:init] 📦 claude (${label}): ${cmd}`);
     try {
         runClaudeNativeInstall(cmd);
     } catch (e: unknown) {
-        console.error(`[jaw:init] ⚠️  claude: auto-install failed — install manually: ${cmd}`);
+        console.error(`[weasley-podex:init] ⚠️  claude: auto-install failed — install manually: ${cmd}`);
         const message = errString(e);
         if (message) console.error(`             ${message.slice(0, 160)}`);
         return false;
@@ -640,16 +647,16 @@ function installClaudeCli(options: { force?: boolean } = {}): boolean {
 
     const nativePath = findClaudeNativeBinary();
     if (nativePath && isRunnableClaudeBinary(nativePath)) {
-        console.log(`[jaw:init] ✅ claude native binary verified → ${nativePath}`);
+        console.log(`[weasley-podex:init] ✅ claude native binary verified → ${nativePath}`);
         return true;
     }
 
     if (nativePath) {
-        console.error(`[jaw:init] ⚠️  claude native binary exists but failed --version → ${nativePath}`);
+        console.error(`[weasley-podex:init] ⚠️  claude native binary exists but failed --version → ${nativePath}`);
     }
 
-    console.error('[jaw:init] ⚠️  claude: installer completed but native binary was not found or not runnable');
-    console.error('[jaw:init]    expected a working native claude binary under ~/.local/bin, ~/.claude, %USERPROFILE%\\.local\\bin, or %LOCALAPPDATA%');
+    console.error('[weasley-podex:init] ⚠️  claude: installer completed but native binary was not found or not runnable');
+    console.error('[weasley-podex:init]    expected a working native claude binary under ~/.local/bin, ~/.claude, %USERPROFILE%\\.local\\bin, or %LOCALAPPDATA%');
     return false;
 }
 
@@ -690,20 +697,20 @@ function deduplicateCliTool(bin: string, pkg: string, brew?: string, preferredAc
     const duplicates = others.filter(mgr => isInstalledVia(mgr, pkg, brew));
     if (!duplicates.length) return;
     if (!shouldDedupeCliTools()) {
-        console.log(`[jaw:init] ℹ️  ${bin}: duplicate install(s) detected via ${duplicates.join(', ')}; not removing automatically`);
-        console.log('[jaw:init]    set podex_DEDUPE_CLI_TOOLS=1 to allow automatic duplicate removal');
+        console.log(`[weasley-podex:init] ℹ️  ${bin}: duplicate install(s) detected via ${duplicates.join(', ')}; not removing automatically`);
+        console.log('[weasley-podex:init]    set WEASLEY_PODEX_DEDUPE_CLI_TOOLS=1 to allow automatic duplicate removal');
         return;
     }
     for (const mgr of duplicates) {
-        console.log(`[jaw:init] 🧹 ${bin}: removing duplicate from ${mgr} (active: ${active})`);
+        console.log(`[weasley-podex:init] 🧹 ${bin}: removing duplicate from ${mgr} (active: ${active})`);
         try {
             const env = postinstallExecEnv();
             if (mgr === 'npm') execFileSync('npm', ['uninstall', '-g', pkg], { stdio: 'pipe', timeout: 30000, env });
             else if (mgr === 'bun') execFileSync('bun', ['remove', '-g', pkg], { stdio: 'pipe', timeout: 30000, env });
             else execFileSync('brew', ['uninstall', brew || pkg], { stdio: 'pipe', timeout: 30000, env });
-            console.log(`[jaw:init]    removed ${pkg} from ${mgr}`);
+            console.log(`[weasley-podex:init]    removed ${pkg} from ${mgr}`);
         } catch {
-            console.warn(`[jaw:init]    ⚠️  failed to remove ${pkg} from ${mgr} — remove manually: ${buildUninstallCmd(mgr, pkg, brew)}`);
+            console.warn(`[weasley-podex:init]    ⚠️  failed to remove ${pkg} from ${mgr} — remove manually: ${buildUninstallCmd(mgr, pkg, brew)}`);
         }
     }
 }
@@ -711,16 +718,16 @@ function deduplicateCliTool(bin: string, pkg: string, brew?: string, preferredAc
 export async function installCliTools(opts: InstallOpts = {}) {
     const failed: string[] = [];
 
-    console.log('[jaw:init] installing CLI tools @latest...');
+    console.log('[weasley-podex:init] installing CLI tools @latest...');
     for (const { bin, pkg, brew, installer } of CLI_PACKAGES) {
         if (bin === 'claude') {
             if (!shouldInstallClaudeDuringPostinstall()) {
-                console.log('[jaw:init] claude install skipped (podex_SKIP_CLAUDE)');
+                console.log('[weasley-podex:init] claude install skipped (WEASLEY_PODEX_SKIP_CLAUDE)');
                 continue;
             }
             const existingPath = findRunnableCliBinary('claude');
             if (existingPath && !shouldForceClaudeDuringPostinstall()) {
-                console.log(`[jaw:init] ⏭️  claude already works → ${existingPath}`);
+                console.log(`[weasley-podex:init] ⏭️  claude already works → ${existingPath}`);
                 continue;
             }
             if (opts.dryRun) { console.log(`  [dry-run] would run ${buildClaudeNativeInstallCmd()}`); continue; }
@@ -733,7 +740,7 @@ export async function installCliTools(opts: InstallOpts = {}) {
         }
         const existingPath = findExistingCliBinary(bin);
         if (existingPath) {
-            console.log(`[jaw:init] ⏭️  ${bin} already works → ${existingPath}`);
+            console.log(`[weasley-podex:init] ⏭️  ${bin} already works → ${existingPath}`);
             continue;
         }
         if (installer === 'xai-native') {
@@ -754,20 +761,20 @@ export async function installCliTools(opts: InstallOpts = {}) {
             if (answer.toLowerCase() !== 'y') { console.log(`  ⏭️  skipped ${bin}`); continue; }
         }
         const tag = existingPath ? 'repair via npm' : 'fresh install via npm';
-        console.log(`[jaw:init] 📦 ${bin} (${tag}): npm i -g ${pkg}@latest`);
+        console.log(`[weasley-podex:init] 📦 ${bin} (${tag}): npm i -g ${pkg}@latest`);
         try {
             runInstallCmd('npm', pkg, postinstallExecEnv(), brew);
-            console.log(`[jaw:init] ✅ ${bin} installed`);
+            console.log(`[weasley-podex:init] ✅ ${bin} installed`);
         } catch {
             failed.push(`${bin} (${pkg})`);
-            console.error(`[jaw:init] ⚠️  ${bin}: auto-install failed — install manually: npm i -g ${pkg}`);
+            console.error(`[weasley-podex:init] ⚠️  ${bin}: auto-install failed — install manually: npm i -g ${pkg}`);
         }
-        // Clean up duplicate installations from other package managers only after podex installs npm.
+        // Clean up duplicate installations from other package managers only after Weasley Podex installs npm.
         deduplicateCliTool(bin, pkg, brew, 'npm');
     }
 
     if (failed.length > 0) {
-        console.error(`[jaw:init] ⚠️  CLI tool install failed: ${failed.join(', ')} — install manually later`);
+        console.error(`[weasley-podex:init] ⚠️  CLI tool install failed: ${failed.join(', ')} — install manually later`);
     }
 }
 
@@ -776,7 +783,7 @@ const MCP_PACKAGES = [
 ];
 
 export async function installMcpServers(opts: InstallOpts = {}) {
-    console.log('[jaw:init] installing MCP servers globally...');
+    console.log('[weasley-podex:init] installing MCP servers globally...');
     const config = loadUnifiedMcp();
     let updated = false;
 
@@ -786,13 +793,13 @@ export async function installMcpServers(opts: InstallOpts = {}) {
         try {
             const server = asRecord(servers[name]);
             if (typeof server["url"] === 'string' && server["url"]) {
-                console.log(`[jaw:init] ⏭️  ${name} MCP (remote URL, no local install needed)`);
+                console.log(`[weasley-podex:init] ⏭️  ${name} MCP (remote URL, no local install needed)`);
                 continue;
             }
 
             const installedPath = findBinaryPath(bin);
             if (installedPath) {
-                console.log(`[jaw:init] ⏭️  ${bin} (already installed)`);
+                console.log(`[weasley-podex:init] ⏭️  ${bin} (already installed)`);
                 continue;
             }
             if (opts.dryRun) { console.log(`  [dry-run] would install ${pkg}`); continue; }
@@ -801,11 +808,11 @@ export async function installMcpServers(opts: InstallOpts = {}) {
                 if (answer.toLowerCase() !== 'y') { console.log(`  ⏭️  skipped ${bin}`); continue; }
             }
 
-            console.log(`[jaw:init] 📦 npm i -g ${pkg} ...`);
+            console.log(`[weasley-podex:init] 📦 npm i -g ${pkg} ...`);
             execFileSync('npm', ['i', '-g', pkg], { stdio: 'pipe', timeout: 120000, env: postinstallExecEnv() });
 
             const binPath = findBinaryPath(bin) || bin;
-            console.log(`[jaw:init] ✅ ${bin} → ${binPath}`);
+            console.log(`[weasley-podex:init] ✅ ${bin} → ${binPath}`);
 
             for (const srv of Object.values(servers).map(asRecord)) {
                 const args = asArray(srv["args"]);
@@ -816,7 +823,7 @@ export async function installMcpServers(opts: InstallOpts = {}) {
                 }
             }
         } catch (e) {
-            console.error(`[jaw:init] ⚠️  ${pkg}: ${(e as Error).message?.slice(0, 80)}`);
+            console.error(`[weasley-podex:init] ⚠️  ${pkg}: ${(e as Error).message?.slice(0, 80)}`);
         }
     }
 
@@ -836,7 +843,7 @@ const SKILL_DEPS = [
         name: 'playwright-core',
         check: ['node', ['-e', "require.resolve('playwright-core')"]] as [string, string[]],
         install: { type: 'npm' as const, pkg: 'playwright-core' },
-        why: 'Browser control skill (podex browser)',
+        why: 'Browser control skill (weasley-podex browser)',
     },
 ];
 
@@ -845,7 +852,7 @@ function runSkillDepInstall(install: (typeof SKILL_DEPS)[number]['install'], env
         execFileSync('npm', ['i', '-g', install.pkg], { stdio: 'pipe', timeout: 120000, env });
         return;
     }
-    const tmpScript = path.join(os.tmpdir(), `jaw-dep-${Date.now()}.sh`);
+    const tmpScript = path.join(os.tmpdir(), `weasley-podex-dep-${Date.now()}.sh`);
     try {
         execFileSync('curl', ['-fsSL', '-o', tmpScript, install.url], { stdio: 'pipe', timeout: 30000, env });
         if (install.shell === 'powershell') {
@@ -859,24 +866,24 @@ function runSkillDepInstall(install: (typeof SKILL_DEPS)[number]['install'], env
 }
 
 export async function installSkillDeps(opts: InstallOpts = {}) {
-    console.log('[jaw:init] checking skill dependencies...');
+    console.log('[weasley-podex:init] checking skill dependencies...');
     for (const dep of SKILL_DEPS) {
         const [checkBin, checkArgs] = dep.check;
         try {
             execFileSync(checkBin, checkArgs, { stdio: 'pipe', timeout: 10000, env: postinstallExecEnv() });
-            console.log(`[jaw:init] ⏭️  ${dep.name} (already installed)`);
+            console.log(`[weasley-podex:init] ⏭️  ${dep.name} (already installed)`);
         } catch {
             if (opts.dryRun) { console.log(`  [dry-run] would install ${dep.name} (${dep.why})`); continue; }
             if (opts.interactive && opts.ask) {
                 const answer = await opts.ask(`Install ${dep.name} (${dep.why})? [y/N]`, 'n');
                 if (answer.toLowerCase() !== 'y') { console.log(`  ⏭️  skipped ${dep.name}`); continue; }
             }
-            console.log(`[jaw:init] 📦 installing ${dep.name} (${dep.why})...`);
+            console.log(`[weasley-podex:init] 📦 installing ${dep.name} (${dep.why})...`);
             try {
                 runSkillDepInstall(dep.install, postinstallExecEnv());
-                console.log(`[jaw:init] ✅ ${dep.name} installed`);
+                console.log(`[weasley-podex:init] ✅ ${dep.name} installed`);
             } catch {
-                console.error(`[jaw:init] ⚠️  ${dep.name}: auto-install failed — install manually`);
+                console.error(`[weasley-podex:init] ⚠️  ${dep.name}: auto-install failed — install manually`);
             }
         }
     }
@@ -887,15 +894,13 @@ export async function installSkillDeps(opts: InstallOpts = {}) {
 // Dynamic import from init.ts gets clean library exports only.
 export async function runPostinstall() {
     // ── Safe mode guard (before ANY side effects) ──
-    const isSafeMode = process.env["npm_config_jaw_safe"] === '1'
-        || process.env["npm_config_jaw_safe"] === 'true'
-        || process.env["JAW_SAFE"] === '1'
-        || process.env["JAW_SAFE"] === 'true';
+    const isSafeMode = truthyEnv(getWeasleyPodexEnv('SAFE'))
+        || truthyEnv(process.env["npm_config_weasley_podex_safe"]);
 
     if (isSafeMode) {
         ensureDir(jawHome);
-        console.log('[jaw:postinstall] 🔒 safe mode — home directory created only');
-        console.log('[jaw:postinstall] Run `jaw init` to configure interactively');
+        console.log('[weasley-podex:postinstall] 🔒 safe mode — home directory created only');
+        console.log('[weasley-podex:postinstall] Run `weasley-podex init` to configure interactively');
         return;
     }
 
@@ -913,29 +918,26 @@ export async function runPostinstall() {
             || /^[A-Z]:\//i.test(execPath)
             || execPath.startsWith('/mnt/');
         if (isWindowsNode) {
-            console.warn('[jaw:init] ⚠️  Running with Windows Node.js inside WSL');
-            console.warn('[jaw:init]    npm -g packages will install to Windows, not WSL');
-            console.warn('[jaw:init]    Recommended: install Node inside WSL (fnm install 22 or nvm install 22)');
+            console.warn('[weasley-podex:init] ⚠️  Running with Windows Node.js inside WSL');
+            console.warn('[weasley-podex:init]    npm -g packages will install to Windows, not WSL');
+            console.warn('[weasley-podex:init]    Recommended: install Node inside WSL (fnm install 22 or nvm install 22)');
         }
     }
 
-    // ── Legacy migration (only in normal mode, NOT safe mode) ──
+    // ── Legacy default-home migration (normal mode only) ──
     const legacyHome = path.join(home, '.podex');
-    const isCustomHome = jawHome !== legacyHome;
-    if (isCustomHome && fs.existsSync(legacyHome)) {
-        if (fs.existsSync(jawHome)) {
-            console.log(`[jaw:init] ⚠️ both ~/.podex and ${jawHome} exist — using ${jawHome}`);
-        } else if (shouldMigrateLegacyHome()) {
-            console.log(`[jaw:init] migrating ~/.podex → ${jawHome} ...`);
-            fs.renameSync(legacyHome, jawHome);
-            console.log(`[jaw:init] ✅ migration complete`);
+    if (!configuredHome && fs.existsSync(legacyHome)) {
+        const destinationPopulated = fs.existsSync(jawHome) && fs.readdirSync(jawHome).length > 0;
+        if (destinationPopulated) {
+            console.log(`[weasley-podex:init] legacy ${legacyHome} retained; ${jawHome} is already populated`);
         } else {
-            console.log(`[jaw:init] legacy ~/.podex detected; not migrating to ${jawHome} automatically`);
-            console.log('[jaw:init] to opt in: podex_MIGRATE_LEGACY_HOME=1 npm install -g podex');
+            fs.mkdirSync(path.dirname(jawHome), { recursive: true });
+            fs.cpSync(legacyHome, jawHome, { recursive: true, force: false, errorOnExist: false });
+            console.log(`[weasley-podex:init] copied legacy data ${legacyHome} → ${jawHome}`);
         }
     }
 
-    // 1. Ensure ~/.podex/ home directory
+    // 1. Ensure ~/.weasley/podex/ home directory
     ensureDir(jawHome);
 
     // 2. Ensure sub-directories (only in normal mode)
@@ -944,12 +946,10 @@ export async function runPostinstall() {
 
     // 2. Skills symlinks — isolated-by-default (Issue #58)
     // No workingDir compat links in postinstall.
-    // Postinstall must remain isolated to ~/.podex/* only.
+    // Postinstall must remain isolated to the configured Weasley Podex home.
     const shouldMigrateSharedPaths =
-        process.env["podex_MIGRATE_SHARED_PATHS"] === '1'
-        || process.env["podex_MIGRATE_SHARED_PATHS"] === 'true'
-        || process.env["npm_config_jaw_migrate_shared_paths"] === '1'
-        || process.env["npm_config_jaw_migrate_shared_paths"] === 'true';
+        truthyEnv(getWeasleyPodexEnv('MIGRATE_SHARED_PATHS'))
+        || truthyEnv(process.env["npm_config_weasley_podex_migrate_shared_paths"]);
 
     if (shouldMigrateSharedPaths) {
         const sharedReport = ensureSharedHomeSkillsLinks({
@@ -960,11 +960,11 @@ export async function runPostinstall() {
         });
         logSkillsSymlinkReport(sharedReport);
     } else {
-        console.log('[jaw:init] shared path migration skipped (isolated-by-default)');
-        console.log('[jaw:init] to opt in: podex_MIGRATE_SHARED_PATHS=1 npm install -g podex');
+        console.log('[weasley-podex:init] shared path migration skipped (isolated-by-default)');
+        console.log('[weasley-podex:init] to opt in: WEASLEY_PODEX_MIGRATE_SHARED_PATHS=1 npm install -g weasley-podex');
     }
 
-    // 3. Remove deprecated Jaw-home CLAUDE.md mirrors.
+    // 3. Remove deprecated legacy-home CLAUDE.md mirrors.
     // Boss prompts are already passed through append/system-prompt paths.
     removeJawHomeClaudeInstructionFile(jawHome);
 
@@ -972,7 +972,7 @@ export async function runPostinstall() {
     const heartbeatPath = path.join(jawHome, 'heartbeat.json');
     if (!fs.existsSync(heartbeatPath)) {
         fs.writeFileSync(heartbeatPath, JSON.stringify({ jobs: [] }, null, 2), { mode: 0o600 });
-        console.log(`[jaw:init] created ${heartbeatPath}`);
+        console.log(`[weasley-podex:init] created ${heartbeatPath}`);
     }
 
     // 5. MCP config
@@ -993,16 +993,16 @@ export async function runPostinstall() {
                 const ok = installClaudeCli({ force: shouldForceClaudeDuringPostinstall() });
                 if (!ok) warnings.push('claude install failed — install manually: https://docs.anthropic.com/claude-code');
             } else {
-                console.log('[jaw:init] claude install skipped (podex_SKIP_CLAUDE)');
+                console.log('[weasley-podex:init] claude install skipped (WEASLEY_PODEX_SKIP_CLAUDE)');
             }
-            console.log('[jaw:init] additional CLI tool install/update skipped by default');
-            console.log('[jaw:init] to opt in: podex_INSTALL_CLI_TOOLS=1 npm install -g podex');
+            console.log('[weasley-podex:init] additional CLI tool install/update skipped by default');
+            console.log('[weasley-podex:init] to opt in: WEASLEY_PODEX_INSTALL_CLI_TOOLS=1 npm install -g weasley-podex');
         }
     } catch (e) { warnings.push(`CLI tools: ${e instanceof Error ? e.message : e}`); }
 
     try {
         if (MCP_SERVERS_SKIP) {
-            console.log('[jaw:init] MCP server install skipped (podex_SKIP_MCP_SERVERS)');
+            console.log('[weasley-podex:init] MCP server install skipped (WEASLEY_PODEX_SKIP_MCP_SERVERS)');
         } else {
             await installMcpServers();
         }
@@ -1010,7 +1010,7 @@ export async function runPostinstall() {
 
     try {
         if (SKILL_DEPS_SKIP) {
-            console.log('[jaw:init] skill dependency install skipped (podex_SKIP_SKILL_DEPS)');
+            console.log('[weasley-podex:init] skill dependency install skipped (WEASLEY_PODEX_SKIP_SKILL_DEPS)');
         } else {
             await installSkillDeps();
         }
@@ -1020,11 +1020,11 @@ export async function runPostinstall() {
     catch (e) { warnings.push(`launchd: ${e instanceof Error ? e.message : e}`); }
 
     if (warnings.length > 0) {
-        console.error('\n[jaw:init] ⚠️  setup completed with warnings:');
+        console.error('\n[weasley-podex:init] ⚠️  setup completed with warnings:');
         for (const w of warnings) console.error(`  - ${w}`);
-        console.error('[jaw:init] podex is installed and functional. Fix the above manually if needed.\n');
+        console.error('[weasley-podex:init] Weasley Podex is installed and functional. Fix the above manually if needed.\n');
     } else {
-        console.log('[jaw:init] setup complete ✅');
+        console.log('[weasley-podex:init] setup complete ✅');
     }
 }
 
@@ -1032,6 +1032,6 @@ export async function runPostinstall() {
 const isEntryPoint = process.argv[1]?.endsWith('postinstall.js')
     || process.argv[1]?.endsWith('postinstall.ts');
 if (isEntryPoint) {
-    runPostinstall().catch(e => { console.error('[jaw:init] ⚠️  postinstall error (non-fatal):', e instanceof Error ? e.message : e); process.exit(0); });
+    runPostinstall().catch(e => { console.error('[weasley-podex:init] ⚠️  postinstall error (non-fatal):', e instanceof Error ? e.message : e); process.exit(0); });
 }
 

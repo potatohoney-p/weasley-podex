@@ -4,6 +4,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { dirname, join } from 'node:path';
 import { createServer } from 'node:net';
 import { randomBytes } from 'node:crypto';
+import { getWeasleyPodexEnv, setWeasleyPodexEnv } from '../../../src/core/weasley-podex-env.js';
 import type { ChildProcess } from 'node:child_process';
 import { findJawBinary, spawnJawDashboard, gracefulShutdown } from './lib/jaw-spawn.js';
 import { promptInstallCli } from './lib/install-cli.js';
@@ -33,10 +34,10 @@ import {
   showSpawnFailedDialog,
 } from './lib/dialog.js';
 import {
-  extractJawUrlArg,
+  extractWeasleyPodexUrlArg,
   focusWindow,
-  registerJawProtocol,
-  routeJawDeepLink,
+  registerWeasleyPodexProtocol,
+  routeWeasleyPodexDeepLink,
 } from './lib/deep-link.js';
 import { RingBuffer } from './lib/ring-buffer.js';
 import { startAppMetricsCollector, type MetricsCollectorHandle } from './lib/app-metrics.js';
@@ -75,27 +76,30 @@ function assertLoopbackManagerUrl(raw: string): void {
   try {
     parsed = new URL(raw);
   } catch (err) {
-    throw new Error(`[jaw-electron] invalid manager URL: ${raw}`);
+    throw new Error(`[weasley-podex-electron] invalid manager URL: ${raw}`);
   }
   if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
     throw new Error(
-      `[jaw-electron] manager URL must use http: or https:. Got: ${parsed.protocol}`,
+      `[weasley-podex-electron] manager URL must use http: or https:. Got: ${parsed.protocol}`,
     );
   }
   const host = parsed.hostname.replace(/^\[|\]$/g, '').toLowerCase();
   if (!LOOPBACK_HOSTS.has(host)) {
     throw new Error(
-      `[jaw-electron] manager URL must be loopback (127.0.0.1, localhost, ::1). Got: ${parsed.hostname}`,
+      `[weasley-podex-electron] manager URL must be loopback (127.0.0.1, localhost, ::1). Got: ${parsed.hostname}`,
     );
   }
 }
 
 function parseArgs(argv: string[]): CliFlags {
-  let port = Number(process.env.JAW_MANAGER_PORT ?? DEFAULT_MANAGER_PORT);
+  let port = Number(
+    getWeasleyPodexEnv('MANAGER_PORT') ??
+    DEFAULT_MANAGER_PORT,
+  );
   let attachOnly = false;
   let spawn = false;
   let background = false;
-  let managerUrl = process.env.JAW_MANAGER_URL ?? '';
+  let managerUrl = getWeasleyPodexEnv('MANAGER_URL') ?? '';
   let managerUrlExplicit = managerUrl.trim().length > 0;
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -135,7 +139,9 @@ setAllowedOrigin(MANAGER_ORIGIN);
 let PREVIEW_FRAME_POLICY = resolvePreviewFramePolicyForManager(getManagerUrlPort(MANAGER_URL));
 
 const DEV_TOOLS_ENABLED =
-  process.env.NODE_ENV === 'development' || process.env.JAW_ELECTRON_DEVTOOLS === '1';
+  process.env.NODE_ENV === 'development' ||
+  getWeasleyPodexEnv('ELECTRON_DEVTOOLS') === '1' ||
+  getWeasleyPodexEnv('ELECTRON_DEVTOOLS') === '1';
 const DEFAULT_WINDOW_WIDTH = 1440;
 const DEFAULT_WINDOW_HEIGHT = 960;
 const WINDOW_WORK_AREA_MARGIN = 80;
@@ -207,11 +213,11 @@ const DESKTOP_USER_AGENT_TOKEN = 'podex-desktop';
 const EMBEDDED_BROWSER_PARTITION = 'persist:podex-browser';
 const ELECTRON_RENDERER_TOKEN = randomBytes(32).toString('hex');
 
-process.env.podex_ELECTRON_RENDERER_TOKEN = ELECTRON_RENDERER_TOKEN;
+setWeasleyPodexEnv('ELECTRON_RENDERER_TOKEN', ELECTRON_RENDERER_TOKEN);
 
 // #229: the webview tag sets a clean per-webview UA, but service workers and other
 // background requests in the partition fall back to the session UA, which carries the
-// Electron/podex tokens that search providers flag. Pin the whole session to a plain
+// Electron/desktop tokens that search providers flag. Pin the whole session to a plain
 // Chrome UA (same shape the renderer builds) plus real Accept-Language so the embedded
 // browser presents one consistent, ordinary-browser fingerprint.
 function embeddedBrowserUserAgent(): string {
@@ -253,10 +259,10 @@ if (!gotLock) {
   app.quit();
 } else {
   app.enableSandbox();
-  registerJawProtocol(app);
+  registerWeasleyPodexProtocol(app);
 
   app.on('second-instance', (_event, argv) => {
-    const deepLink = extractJawUrlArg(argv);
+    const deepLink = extractWeasleyPodexUrlArg(argv);
     if (deepLink) {
       void handleDeepLink(deepLink);
       return;
@@ -296,8 +302,8 @@ if (!gotLock) {
       }
     });
   }).catch((err) => {
-    console.error('[jaw-electron] bootstrap failed', err);
-    dialog.showErrorBox('jaw Electron', String(err?.stack ?? err));
+    console.error('[weasley-podex-electron] bootstrap failed', err);
+    dialog.showErrorBox('Weasley Podex', String(err?.stack ?? err));
     app.quit();
   });
 }
@@ -582,14 +588,14 @@ async function bootstrap(): Promise<void> {
 function showAutomationPermissionDialog(reason: string): void {
   void dialog.showMessageBox({
     type: 'warning',
-    title: 'podex Automation permission',
+    title: 'Weasley Podex Automation permission',
     message: 'macOS Automation permission is not ready.',
     detail: [
-      'podex tried to request Automation access for Computer Use, but macOS did not complete the prompt.',
+      'Weasley Podex tried to request Automation access for Computer Use, but macOS did not complete the prompt.',
       '',
       `Reason: ${reason}`,
       '',
-      'Open System Settings > Privacy & Security > Automation and enable podex for System Events and Google Chrome when it appears.',
+      'Open System Settings > Privacy & Security > Automation and enable Weasley Podex for System Events and Google Chrome when it appears.',
     ].join('\n'),
     buttons: ['Open Automation Settings', 'OK'],
     defaultId: 0,
@@ -618,7 +624,7 @@ async function handleDeepLink(raw: string): Promise<void> {
     return;
   }
   try {
-    const routed = await routeJawDeepLink(raw, {
+    const routed = await routeWeasleyPodexDeepLink(raw, {
       managerUrl: MANAGER_URL,
       getWindow: () => mainWindow,
       ensureReady: bootstrapOnce,
@@ -979,7 +985,7 @@ function getManagerUrlPort(url: string): number {
       ? 443
       : 80;
   if (!Number.isFinite(port) || port <= 0) {
-    throw new Error(`[jaw-electron] invalid manager URL port: ${url}`);
+    throw new Error(`[weasley-podex-electron] invalid manager URL port: ${url}`);
   }
   return port;
 }
@@ -1019,7 +1025,7 @@ async function findAvailableManagerPort(preferredPort: number): Promise<number> 
     if (await isTcpPortAvailable(candidate)) return candidate;
   }
   throw new Error(
-    `[jaw-electron] no free manager port from ${start} to ${ELECTRON_MANAGER_PORT_END}`,
+    `[weasley-podex-electron] no free manager port from ${start} to ${ELECTRON_MANAGER_PORT_END}`,
   );
 }
 
@@ -1066,11 +1072,11 @@ async function spawnAndWait(): Promise<void> {
     const choice = await showJawNotFoundDialog(found.searched);
     if (choice === 'pick') {
       const picked = await dialog.showOpenDialog({
-        title: 'jaw 실행 파일 선택',
+        title: 'Weasley Podex CLI 실행 파일 선택',
         properties: ['openFile'],
       });
       if (!picked.canceled && picked.filePaths[0]) {
-        process.env.JAW_BIN = picked.filePaths[0];
+        setWeasleyPodexEnv('BIN', picked.filePaths[0]);
         return spawnAndWait();
       }
     }
@@ -1085,7 +1091,7 @@ async function spawnAndWait(): Promise<void> {
     ringBuffer,
     env: {
       ...previewSpawnEnvForManager(managerPort),
-      podex_ELECTRON_RENDERER_TOKEN: ELECTRON_RENDERER_TOKEN,
+      WEASLEY_PODEX_ELECTRON_RENDERER_TOKEN: ELECTRON_RENDERER_TOKEN,
     },
   });
 
@@ -1187,9 +1193,10 @@ async function createWindow(): Promise<void> {
     show: true,
     titleBarStyle: 'hiddenInset',
     trafficLightPosition: { x: 16, y: 16 },
+    title: 'Weasley Podex',
     icon: app.isPackaged
-      ? join(process.resourcesPath, 'icon.png')
-      : join(__dirname, '..', '..', 'build', 'icon.png'),
+      ? join(process.resourcesPath, 'weasley-podex-mark.png')
+      : join(__dirname, '..', '..', 'build', 'weasley-podex-mark.png'),
     webPreferences: {
       contextIsolation: true,
       sandbox: true,

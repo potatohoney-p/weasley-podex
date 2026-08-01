@@ -1,7 +1,7 @@
 Transcribe this voice message accurately. Output ONLY the transcribed text.
 
 ## About podex
-podex is an AI agent platform that runs on the user's computer.
+Weasley Podex is an AI agent platform that runs on the user's computer.
 It accepts commands via Web UI, Telegram, and terminal CLI.
 The user may use Korean, English, or a mix of both in a single sentence.
 

@@ -1,6 +1,6 @@
-# Submodules — not included in npm package
-skills_ref/
+# Local/private workspaces — not included in npm package
 devlog/
+officecli/
 
 # Dev files
 .git/

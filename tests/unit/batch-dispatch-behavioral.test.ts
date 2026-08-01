@@ -1,5 +1,5 @@
 // Behavioral harness for batch async dispatch (WP6, 260703).
-// Real singletons: worker-registry, state-machine/core-db (temp podex_HOME),
+// Real singletons: worker-registry, state-machine/core-db (temp WEASLEY_PODEX_HOME),
 // boss-auth (real token via initBossToken). Mocked: distribute.runSingleAgent
 // (the only external effect) and pipeline.drainPendingReplays (would otherwise
 // try to re-invoke a real boss agent from inside the test).
@@ -54,7 +54,7 @@ registerOrchestrateRoutes(fakeApp as never, ((_req: unknown, _res: unknown, next
 const batchHandler = routes.get('POST /api/orchestrate/dispatch/batch');
 
 function fakeReq(body: Record<string, unknown>) {
-    return { body, headers: { 'x-jaw-boss-token': bossToken }, ip: '127.0.0.1' };
+    return { body, headers: { 'x-weasley-podex-boss-token': bossToken }, ip: '127.0.0.1' };
 }
 function fakeRes() {
     const state: { status: number; body: Record<string, unknown> | null } = { status: 200, body: null };

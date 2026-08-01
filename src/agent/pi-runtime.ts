@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import { join } from 'node:path';
 import { spawn, spawnSync, type ChildProcess } from 'node:child_process';
 import { StringDecoder } from 'node:string_decoder';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 
 export type PiProfileMode = 'basic' | 'openai' | 'anthropic' | 'vertex';
 export type PiApiKind = 'openai-completions' | 'openai-responses' | 'anthropic-messages' | 'google-vertex';
@@ -203,7 +203,7 @@ export function buildPiAgentSettings(profile: PiProfile, effort = ''): Record<st
     };
 }
 
-export function ensurePiRuntimeConfig(piInput: unknown, profileId: string, effort = '', root = join(JAW_HOME, 'pi', 'runtime')): string {
+export function ensurePiRuntimeConfig(piInput: unknown, profileId: string, effort = '', root = join(WEASLEY_PODEX_HOME, 'pi', 'runtime')): string {
     const pi = normalizePiSettings(piInput);
     const profile = pi.profiles.find((entry) => entry.id === profileId) || pi.profiles[0] || DEFAULT_PI_PROFILE;
     const dir = join(root, profile.id);
@@ -418,7 +418,7 @@ export function spawnPiRpc(profile: PiProfile, pi: PiSettings, options: {
             try { parsed = JSON.parse(line); }
             catch {
                 parseFailures++;
-                console.warn(`[jaw:pi] JSON parse failed (${parseFailures}): ${line.slice(0, 200)}`);
+                console.warn(`[weasley-podex:pi] JSON parse failed (${parseFailures}): ${line.slice(0, 200)}`);
                 return;
             }
             const event = parsePiRpcRecord(parsed);
@@ -454,7 +454,7 @@ export function spawnPiRpc(profile: PiProfile, pi: PiSettings, options: {
     if (options.effort) write('set_thinking_level', { level: options.effort });
     const fullPrompt = options.sysPrompt ? `${options.sysPrompt}\n\n${options.prompt}` : options.prompt;
     const hasHistory = fullPrompt.includes('[Recent Context]');
-    console.log(`[jaw:pi] prompt len=${fullPrompt.length}, hasHistory=${hasHistory}, effort=${options.effort || 'none'}, sessionId=${options.sessionId || 'new'}`);
+    console.log(`[weasley-podex:pi] prompt len=${fullPrompt.length}, hasHistory=${hasHistory}, effort=${options.effort || 'none'}, sessionId=${options.sessionId || 'new'}`);
     write('prompt', { message: fullPrompt });
     return { child, done };
 }

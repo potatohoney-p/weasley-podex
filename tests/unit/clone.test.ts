@@ -1,9 +1,9 @@
-﻿// Multi-Instance Phase 3: jaw clone command 검증 (fixture-based, CI-safe)
+﻿// Multi-Instance Phase 3: weasley-podex clone command 검증 (fixture-based, CI-safe)
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execSync } from 'node:child_process';
 import { existsSync, readFileSync, mkdirSync, writeFileSync, rmSync, lstatSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -51,25 +51,23 @@ test('P3-002: clone sets workingDir to target path', () => {
     try {
         execSync(`${JAW} clone ${target} --from ${source}`, { cwd: projectRoot, stdio: 'pipe' });
         const settings = JSON.parse(readFileSync(join(target, 'settings.json'), 'utf8'));
-        assert.equal(settings.workingDir, target);
+        assert.equal(settings.workingDir, resolve(target));
     } finally {
         cleanup(source); cleanup(target);
     }
 });
 
-test('P3-003: clone does NOT copy jaw.db from source', () => {
+test('P3-003: clone does not copy current or legacy databases from source', () => {
     const source = '/tmp/test-clone-src-003';
     const target = '/tmp/test-clone-p3-003';
     cleanup(source); cleanup(target);
     createFixtureSource(source);
-    writeFileSync(join(source, 'jaw.db'), 'fake-db-data-should-not-be-copied');
+    writeFileSync(join(source, 'weasley-podex.db'), 'fake-db-data-should-not-be-copied');
+    writeFileSync(join(source, 'jaw.db'), 'fake-legacy-db-data-should-not-be-copied');
     try {
         execSync(`${JAW} clone ${target} --from ${source}`, { cwd: projectRoot, stdio: 'pipe' });
-        if (existsSync(join(target, 'jaw.db'))) {
-            const content = readFileSync(join(target, 'jaw.db'), 'utf8');
-            assert.notEqual(content, 'fake-db-data-should-not-be-copied', 'jaw.db should not be copied from source');
-        }
-        assert.ok(true);
+        assert.equal(existsSync(join(target, 'weasley-podex.db')), false, 'current database should not be copied from source');
+        assert.equal(existsSync(join(target, 'jaw.db')), false, 'legacy database should not be copied from source');
     } finally {
         cleanup(source); cleanup(target);
     }
@@ -139,7 +137,7 @@ test('P3-008: clone from invalid source (no settings.json) fails', () => {
     const target = '/tmp/test-clone-p3-008';
     cleanup(source); cleanup(target);
     mkdirSync(source, { recursive: true });
-    // No settings.json → not a valid podex instance
+    // No settings.json → not a valid Weasley Podex instance
     try {
         assert.throws(
             () => execSync(`${JAW} clone ${target} --from ${source}`, { cwd: projectRoot, stdio: 'pipe' }),

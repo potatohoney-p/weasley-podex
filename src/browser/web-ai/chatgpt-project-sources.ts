@@ -3,7 +3,7 @@ import { resolve, basename } from 'node:path';
 
 // Parity catalog 102 (chatgpt-project-sources). Strict-TS port of agbrowse
 // web-ai/chatgpt-project-sources.mjs. Reader+writer for ChatGPT project (/g/<id>)
-// source files — distinct from podex product-surfaces.ts (read-only detection).
+// source files — distinct from Weasley Podex product-surfaces.ts (read-only detection).
 // URL/file validation (validateProjectSourcesUrl / validateProjectSourceFiles) and
 // the page-side expression builders are pure/testable; list/add drive CDP.
 

@@ -1,11 +1,11 @@
-﻿/**
- * podex browser — Phase 7
+/**
+ * weasley-podex browser — Phase 7
  * Browser control via HTTP API to the server.
  */
 import { parseArgs } from 'node:util';
 import { rmSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { getServerUrl, JAW_HOME, deriveCdpPort, loadSettings } from '../../src/core/config.js';
+import { getServerUrl, WEASLEY_PODEX_HOME, deriveCdpPort, loadSettings } from '../../src/core/config.js';
 import { getCliAuthToken, authHeaders } from '../../src/cli/api-auth.js';
 import { runWebAiCommand } from './browser-web-ai.js';
 import { asArray, asRecord, fieldString, type JsonRecord } from '../_http-client.js';
@@ -112,7 +112,7 @@ function decorateTab(tab: BrowserTabSummary, now = Date.now()): BrowserTabSummar
 function formatAdaptiveFetchHelp(): string {
     return `
   Usage:
-    podex browser fetch <url> [--json] [--trace] [--browser auto|never|required]
+    weasley-podex browser fetch <url> [--json] [--trace] [--browser auto|never|required]
 
   Reads one URL or search-result URL through known public endpoints, direct fetch,
   optional public reader services, and browser rendering. This is not generic search.
@@ -207,7 +207,7 @@ try {
             } else {
                 const runtime = asRecord(r["runtime"]);
                 console.log(`❌ Failed to start Chrome (CDP: ${r["cdpUrl"] || 'n/a'}, owner: ${runtime["ownership"] || 'none'}, tabs: ${r["tabs"] ?? 0})`);
-                console.log('Hint: run "podex browser status"; if owner is jaw-owned but CDP is n/a, retry start once or restart podex serve.');
+                console.log('Hint: run "weasley-podex browser status"; if owner is Weasley Podex-owned but CDP is n/a, retry start once or restart weasley-podex serve.');
             }
             break;
         }
@@ -310,7 +310,7 @@ try {
                 console.log(`- pid=${candidate["pid"] || 'n/a'} port=${candidate["port"] || 'n/a'} action=${candidate["action"]} reason=${candidate["reason"]}`);
             }
             if (r["dryRun"]) {
-                console.log('\nDry-run only. Add --close --force to close durable jaw-owned orphan candidates.');
+                console.log('\nDry-run only. Add --close --force to close durable Weasley Podex-owned orphan candidates.');
             }
             break;
         }
@@ -355,7 +355,7 @@ try {
         }
         case 'click': {
             const ref = process.argv[4];
-            if (!ref) { console.error('Usage: podex browser click <ref>'); process.exit(1); }
+            if (!ref) { console.error('Usage: weasley-podex browser click <ref>'); process.exit(1); }
             const opts: Record<string, unknown> = {};
             if (process.argv.includes('--double')) opts["doubleClick"] = true;
             if (process.argv.includes('--right')) opts["button"] = 'right';
@@ -385,7 +385,7 @@ try {
             const x = parseInt(process.argv[4]!);
             const y = parseInt(process.argv[5]!);
             if (isNaN(x) || isNaN(y)) {
-                console.error('Usage: podex browser mouse-click <x> <y> [--double]');
+                console.error('Usage: weasley-podex browser mouse-click <x> <y> [--double]');
                 process.exit(1);
             }
             const opts: Record<string, unknown> = {};
@@ -409,7 +409,7 @@ try {
             });
             const target = positionals.join(' ');
             if (!target) {
-                console.error('Usage: podex browser vision-click "<target>" [--provider codex] [--double]');
+                console.error('Usage: weasley-podex browser vision-click "<target>" [--provider codex] [--double]');
                 process.exit(1);
             }
             const opts: Record<string, unknown> = {
@@ -475,7 +475,7 @@ try {
                 console.log(`   ${t.url}`);
                 console.log(`   targetId: ${t.targetId}`);
             });
-            console.log('\nTip: run "podex browser tab-cleanup" to close idle/overflow tabs.');
+            console.log('\nTip: run "weasley-podex browser tab-cleanup" to close idle/overflow tabs.');
             break;
         }
         case 'active-tab': {
@@ -485,7 +485,7 @@ try {
         }
         case 'tab-switch': {
             const target = process.argv[4];
-            if (!target) { console.error('Usage: podex browser tab-switch <index-or-targetId>'); process.exit(1); }
+            if (!target) { console.error('Usage: weasley-podex browser tab-switch <index-or-targetId>'); process.exit(1); }
             const r = await api('POST', '/tab-switch', { target }) as Record<string, unknown>;
             console.log(JSON.stringify(r, null, 2));
             break;
@@ -499,7 +499,7 @@ try {
         }
         case 'tab-close': {
             const target = process.argv[4];
-            if (!target) { console.error('Usage: podex browser tab-close <targetId>'); process.exit(1); }
+            if (!target) { console.error('Usage: weasley-podex browser tab-close <targetId>'); process.exit(1); }
             const r = await api('POST', '/tab-close', { targetId: target }) as Record<string, unknown>;
             console.log(`closed tab: ${r["targetId"]}`);
             break;
@@ -679,14 +679,14 @@ try {
             }
 
             // 2. Clear browser profile
-            const profileDir = join(JAW_HOME, 'browser-profile');
+            const profileDir = join(WEASLEY_PODEX_HOME, 'browser-profile');
             if (existsSync(profileDir)) {
                 rmSync(profileDir, { recursive: true, force: true });
                 console.log(`  ${c.dim}✓ cleared ${profileDir}${c.reset}`);
             }
 
             // 3. Clear screenshots
-            const screenshotsDir = join(JAW_HOME, 'screenshots');
+            const screenshotsDir = join(WEASLEY_PODEX_HOME, 'screenshots');
             if (existsSync(screenshotsDir)) {
                 rmSync(screenshotsDir, { recursive: true, force: true });
                 console.log(`  ${c.dim}✓ cleared ${screenshotsDir}${c.reset}`);
@@ -697,22 +697,22 @@ try {
         }
         default:
             console.log(`
-  🌐 podex browser — CDP browser control and web-ai workflows
+  🌐 weasley-podex browser — CDP browser control and web-ai workflows
 
   Usage:
-    podex browser <command> [args] [--flags]
+    weasley-podex browser <command> [args] [--flags]
 
   Quick start:
-    podex browser status
-    podex browser start --agent
-    podex browser navigate "https://example.com"
-    podex browser snapshot --interactive
-    podex browser click e3
-    podex browser fetch "https://example.com" --json --trace
+    weasley-podex browser status
+    weasley-podex browser start --agent
+    weasley-podex browser navigate "https://example.com"
+    weasley-podex browser snapshot --interactive
+    weasley-podex browser click e3
+    weasley-podex browser fetch "https://example.com" --json --trace
 
   Runtime model:
-    podex browser talks to the podex server browser API.
-    Browser profile, screenshots, web-ai sessions, and state live under JAW_HOME.
+    weasley-podex browser talks to the Weasley Podex server browser API.
+    Browser profile, screenshots, web-ai sessions, and state live under WEASLEY_PODEX_HOME.
     Default automation mode uses a stable CDP browser unless --port overrides it.
 
   Lifecycle:
@@ -725,7 +725,7 @@ try {
     doctor [--json]
       Diagnose CDP/runtime ownership mismatch and cleanup scope.
     cleanup-runtimes [--json] [--close --force]
-      Dry-run or close durable jaw-owned orphan browser runtime records.
+      Dry-run or close durable Weasley Podex-owned orphan browser runtime records.
     reset [--force]
       Clear browser profile, screenshots, and CDP cache.
 
@@ -850,7 +850,7 @@ try {
       --reuse-tab
       --json
 
-    Full web-ai docs: podex skill read web-ai
+    Full web-ai docs: weasley-podex skill read web-ai
     Code artifact extraction is an agbrowse-owned surface:
       agbrowse web-ai code-extract --vendor chatgpt --url "https://chatgpt.com/c/<conversation-id>" --output-zip ./result.zip
 
@@ -860,10 +860,10 @@ try {
       expired or overflow targets. Use tab-cleanup --json to inspect leaseClosedTabs.
 
     Examples:
-      podex browser web-ai render --vendor chatgpt --prompt "hello" --json
-      podex browser web-ai query --vendor grok --inline-only --prompt "Reply OK"
-      podex browser web-ai query --vendor gemini --model thinking --inline-only --prompt "Reply OK"
-      podex browser web-ai query --vendor chatgpt --context-from-files "src/**/*.ts" --context-transport upload --prompt "Review this"
+      weasley-podex browser web-ai render --vendor chatgpt --prompt "hello" --json
+      weasley-podex browser web-ai query --vendor grok --inline-only --prompt "Reply OK"
+      weasley-podex browser web-ai query --vendor gemini --model thinking --inline-only --prompt "Reply OK"
+      weasley-podex browser web-ai query --vendor chatgpt --context-from-files "src/**/*.ts" --context-transport upload --prompt "Review this"
 
   Notes:
     - Re-run snapshot after navigation; ref ids are snapshot-local.

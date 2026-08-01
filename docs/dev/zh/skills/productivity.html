@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Productivity Skills — podex Docs</title>
+<title>Productivity Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,26 +81,25 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Productivity Skills</h1>
-<p class="lead">文档创建、知识管理、任务跟踪、笔记和韩语内容写作技能。这 17 项技能将 podex 连接到办公套件、项目管理工具、个人生产力应用和编辑工作流，让您可以完全通过聊天界面创建、阅读、编辑和组织文档、任务与内容。</p>
+<p class="lead">面向文档、知识管理、任务和笔记的可选生产力扩展示例。这些条目不属于捆绑的八项技能注册表；仅应从已安装的 Codex 环境或显式可信仓库导入经过审查的技能。</p>
 
 <h2>概述</h2>
-<p>生产力技能分为五组：<strong>文档格式</strong>（Office 和 HWP 文件读写）、<strong>知识管理</strong>（Notion、Obsidian、Apple Notes）、<strong>任务管理</strong>（Things、Reminders、Trello、Linear）、<strong>协作工具</strong>（协同编辑、HTML 转 PPTX 转换）以及<strong>内容写作</strong>（通过 <code>k-writing</code> 生成韩语推广/编辑内容）。</p>
+<p>扩展示例分为四组：<strong>文档格式</strong>、<strong>知识管理</strong>、<strong>任务管理</strong>和<strong>协作工具</strong>。可用性取决于导入的技能及其外部提供方。</p>
 
 <table>
 <tr><th>技能</th><th>状态</th><th>类别</th><th>描述</th></tr>
-<tr><td><code>docx</code></td><td>已激活</td><td>文档</td><td>创建、阅读和编辑 Word (.docx) 文件</td></tr>
-<tr><td><code>pptx</code></td><td>已激活</td><td>文档</td><td>创建、阅读和编辑 PowerPoint (.pptx) 演示文稿</td></tr>
-<tr><td><code>xlsx</code></td><td>已激活</td><td>文档</td><td>创建、阅读和编辑 Excel (.xlsx) 电子表格</td></tr>
-<tr><td><code>hwp</code></td><td>已激活</td><td>文档</td><td>创建、阅读和编辑韩文 HWP/HWPX 文档</td></tr>
-<tr><td><code>k-writing</code></td><td>已激活</td><td>内容</td><td>韩语推广/内容写作，包含渠道路由、强制预搜索、3 候选钩子评分以及去 AI 痕迹/拟人化校验</td></tr>
-<tr><td><code>notion</code></td><td>已激活</td><td>知识</td><td>阅读、创建和更新 Notion 页面和数据库</td></tr>
+<tr><td><code>docx</code></td><td>可选导入</td><td>文档</td><td>创建、阅读和编辑 Word (.docx) 文件</td></tr>
+<tr><td><code>pptx</code></td><td>可选导入</td><td>文档</td><td>创建、阅读和编辑 PowerPoint (.pptx) 演示文稿</td></tr>
+<tr><td><code>xlsx</code></td><td>可选导入</td><td>文档</td><td>创建、阅读和编辑 Excel (.xlsx) 电子表格</td></tr>
+<tr><td><code>hwp</code></td><td>可选导入</td><td>文档</td><td>创建、阅读和编辑韩文 HWP/HWPX 文档</td></tr>
+<tr><td><code>notion</code></td><td>可选导入</td><td>知识</td><td>阅读、创建和更新 Notion 页面和数据库</td></tr>
 <tr><td><code>notion-knowledge-capture</code></td><td>计划中</td><td>知识</td><td>自动将对话洞察捕获到 Notion</td></tr>
 <tr><td><code>notion-meeting</code></td><td>计划中</td><td>知识</td><td>含待办事项的会议记录模板，同步到 Notion</td></tr>
 <tr><td><code>notion-research</code></td><td>计划中</td><td>知识</td><td>将研究发现汇总到 Notion 数据库</td></tr>
@@ -117,7 +115,7 @@
 </table>
 
 <h2>文档技能</h2>
-<p>四项文档技能（<code>docx</code>、<code>pptx</code>、<code>xlsx</code>、<code>hwp</code>）目前均已激活，并为各自的格式提供完整的读取/写入/编辑功能。</p>
+<p>四项文档示例（<code>docx</code>、<code>pptx</code>、<code>xlsx</code>、<code>hwp</code>）需要显式导入的技能，实际能力取决于该扩展。</p>
 
 <h3>docx -- Word Documents</h3>
 <p>使用结构化内容块创建和编辑 <code>.docx</code> 文件。支持标题、段落、表格、项目符号列表、图片和自定义样式。</p>
@@ -171,7 +169,7 @@
 <p>这些技能与笔记和知识库平台集成，用于捕获、组织和检索信息。</p>
 
 <h3>notion</h3>
-<p>核心 Notion 集成技能，目前已激活。连接 Notion API 以读取页面、创建新页面、更新内容和查询数据库。</p>
+<p>可选 Notion 集成示例。导入经过审查的技能后，可连接 Notion API 读取或创建页面、更新内容并查询数据库。</p>
 <pre><code># Create a page in Notion
 "노션에 정리해줘 -- 오늘 회의 내용"
 
@@ -206,7 +204,7 @@
 "옵시디언 볼트에서 API 관련 노트 찾아줘"</code></pre>
 
 <h2>任务管理</h2>
-<p>任务管理技能将 podex 连接到流行的待办事项和项目跟踪工具。目前均为计划中。</p>
+<p>任务管理技能将 Weasley Podex 连接到流行的待办事项和项目跟踪工具。目前均为计划中。</p>
 
 <h3>apple-reminders（计划中）</h3>
 <p>通过 AppleScript 在 Apple Reminders 中创建和管理提醒。支持截止日期、优先级、列表和循环提醒。</p>
@@ -266,15 +264,15 @@
 <li>"노션에 정리해줘" 触发 <code>notion</code> 技能</li>
 <li>"한글 문서 읽어줘" 触发 <code>hwp</code> 技能</li>
 <li>"엑셀로 정리해줘" 触发 <code>xlsx</code> 技能</li>
-<li>"이거 홍보 쓰레드로 써줘" 触发活跃的 <code>k-writing</code> 技能</li>
+<li>若用户未导入匹配扩展，内容写作请求使用所选模型的一般写作流程</li>
 <li>"리마인더에 추가해줘" 将触发 <code>apple-reminders</code></li>
 <li>"트렐로에 카드 만들어줘" 将触发 <code>trello</code></li>
 </ul>
-podex 会自动将您的意图匹配到相应的技能。
+Weasley Podex 会自动将您的意图匹配到相应的技能。
 </div>
 
 <h2>配置</h2>
-<p>部分生产力技能需要 API 令牌或特定于应用的设置。请在 podex 设置或环境变量中进行配置。</p>
+<p>部分生产力技能需要 API 令牌或特定于应用的设置。请在 Weasley Podex 设置或环境变量中进行配置。</p>
 
 <table>
 <tr><th>技能</th><th>要求</th><th>配置</th></tr>
@@ -288,12 +286,12 @@ podex 会自动将您的意图匹配到相应的技能。
 </table>
 
 <h2>技能交互</h2>
-<p>生产力技能可以与 podex 的其他功能自然组合：</p>
+<p>生产力技能可以与 Weasley Podex 的其他功能自然组合：</p>
 <ul>
 <li><strong>deep-research + notion</strong>：研究某个主题并将发现保存到 Notion 数据库</li>
 <li><strong>xlsx + pptx</strong>：分析电子表格数据并生成带图表的演示文稿</li>
 <li><strong>hwp + docx</strong>：在韩文 HWP 和 Word 格式之间转换</li>
-<li><strong>k-writing + search</strong>：结合最新来源检查、钩子评分和去 AI 痕迹审查来生成韩语推广文案</li>
+<li><strong>导入的写作扩展 + search</strong>：安装经审查的扩展后生成带来源核验的文案</li>
 <li><strong>notion-meeting + telegram</strong>：捕获会议记录并通过 Telegram 发送摘要</li>
 <li><strong>html2pptx + web-ai</strong>：抓取网页并将其转换为幻灯片</li>
 <li><strong>linear + trello</strong>：跨项目管理工具同步问题状态</li>

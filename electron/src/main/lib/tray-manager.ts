@@ -62,12 +62,17 @@ export function createTray(cb: TrayCallbacks): Tray {
   syncLoginItemSetting();
 
   const iconPath = app.isPackaged
-    ? join(process.resourcesPath, 'trayTemplate.png')
-    : join(__dirname, '..', '..', 'build', 'trayTemplate.png');
-  const icon = nativeImage.createFromPath(iconPath);
-  icon.setTemplateImage(true);
+    ? join(process.resourcesPath, 'weasley-podex-mark.png')
+    : join(__dirname, '..', '..', 'build', 'weasley-podex-mark.png');
+  const iconSize = process.platform === 'darwin' ? 18 : 16;
+  const icon = nativeImage.createFromPath(iconPath).resize({
+    width: iconSize,
+    height: iconSize,
+    quality: 'best',
+  });
+  icon.setTemplateImage(false);
   tray = new Tray(icon);
-  tray.setToolTip('podex');
+  tray.setToolTip('Weasley Podex');
   rebuildMenu();
   tray.on('click', () => (onTrayClick ? onTrayClick() : cb.onOpenDashboard()));
   tray.on('right-click', () => popUpTrayMenu());
@@ -88,7 +93,7 @@ export function notifyServerCrash(): void {
   setTrayBadge(1);
   if (Notification.isSupported()) {
     const n = new Notification({
-      title: 'podex',
+      title: 'Weasley Podex',
       body: 'Server crashed. Use Restart Server from the menu bar.',
       silent: false,
     });
@@ -179,7 +184,7 @@ function rebuildMenu(): void {
       },
     },
     { type: 'separator' },
-    { label: 'Quit podex', click: cb.onQuit },
+    { label: 'Quit Weasley Podex', click: cb.onQuit },
   ]);
   currentMenu = menu;
 }

@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>首次运行 — podex 文档</title>
+<title>首次运行 — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../">podex</a></div>
+  <div class="docs-logo"><a href="../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="./guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="./guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="./guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="./guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="./guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="./guides/discord.html">Discord</a>
@@ -59,7 +58,7 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
@@ -71,17 +70,17 @@
 <h2>两种运行方式</h2>
 <table>
 <tr><th>命令</th><th>模式</th><th>适用场景</th></tr>
-<tr><td><code>jaw serve</code></td><td>单实例</td><td>快速一次性任务，简单设置</td></tr>
-<tr><td><code>jaw dashboard</code></td><td>多实例管理器</td><td>运行多个代理，完整仪表盘</td></tr>
+<tr><td><code>weasley-podex serve</code></td><td>单实例</td><td>快速一次性任务，简单设置</td></tr>
+<tr><td><code>weasley-podex dashboard</code></td><td>多实例管理器</td><td>运行多个代理，完整仪表盘</td></tr>
 </table>
 
-<h2>单实例：jaw serve</h2>
-<pre><code>jaw serve
+<h2>单实例：weasley-podex serve</h2>
+<pre><code>weasley-podex serve
 # Opens browser at http://localhost:3457</code></pre>
 <p>你将立即获得一个聊天界面。输入消息，你的 AI 代理就会回复。</p>
 
-<h2>多实例：jaw dashboard</h2>
-<pre><code>jaw dashboard
+<h2>多实例：weasley-podex dashboard</h2>
+<pre><code>weasley-podex dashboard
 # Opens browser at http://localhost:24576</code></pre>
 <p>仪表盘会显示你的所有实例。点击 <strong>Start</strong> 启动一个实例，或点击 <strong>Perm</strong> 使其在重启后持续运行。</p>
 

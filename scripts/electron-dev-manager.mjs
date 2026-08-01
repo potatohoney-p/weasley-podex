@@ -1,11 +1,11 @@
-﻿#!/usr/bin/env node
+#!/usr/bin/env node
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
-const port = Number(process.env.JAW_DASHBOARD_PORT || '24576');
+const port = Number(process.env.WEASLEY_PODEX_DASHBOARD_PORT || '24576');
 const healthUrl = `http://127.0.0.1:${port}/api/dashboard/health`;
 
 function waitUntilTerminated() {
@@ -29,7 +29,7 @@ async function isExistingManagerOnline() {
 
 async function main() {
   if (await isExistingManagerOnline()) {
-    console.log(`Jaw Manager already running on ${healthUrl}; attaching Electron dev shell.`);
+    console.log(`Weasley Podex Manager already running on ${healthUrl}; attaching Electron dev shell.`);
     await waitUntilTerminated();
     return;
   }

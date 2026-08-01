@@ -1,5 +1,5 @@
 /**
- * podex clone — Create independent agent instance
+ * Weasley Podex clone — create an independent agent instance
  * Copies config + skills, creates fresh DB, regenerates AGENTS.md
  */
 import fs from 'node:fs';
@@ -9,20 +9,20 @@ import { execSync } from 'node:child_process';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
-import { JAW_HOME } from '../../src/core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../src/core/config.js';
 import { resolveHomePath } from '../../src/core/path-expand.js';
 import { shouldShowHelp, printAndExit } from '../helpers/help.js';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw clone — clone instance as independent agent
+  weasley-podex clone — clone instance as independent agent
 
-  Usage: jaw clone <port> [--home <path>] [--link-skills]
+  Usage: weasley-podex clone <target-dir> [--from <source>] [--with-memory] [--link-ref]
 
-  Creates a new jaw instance with its own data directory.
+  Creates a new Weasley Podex instance with its own data directory.
   Copies config + skills, creates fresh DB.
 
   Options:
-    --home <path>     Target directory (default: ~/.podex-<port>)
+    --from <path>     Source data directory (default: ~/.weasley/podex)
     --link-skills     Symlink skills from source instead of copying
 `);
 
@@ -44,13 +44,13 @@ const target = positionals[0]
     : null;
 
 if (!target) {
-    console.error('Usage: jaw clone <target-dir> [--from <source>] [--with-memory] [--link-ref]');
+    console.error('Usage: weasley-podex clone <target-dir> [--from <source>] [--with-memory] [--link-ref]');
     process.exit(1);
 }
 
 const source = values.from
     ? resolveHomePath(values.from as string, os.homedir())
-    : JAW_HOME;
+    : WEASLEY_PODEX_HOME;
 const withMemory = values['with-memory'] as boolean;
 const linkRef = values['link-ref'] as boolean;
 
@@ -64,7 +64,7 @@ if (!fs.existsSync(source)) {
     process.exit(1);
 }
 if (!fs.existsSync(path.join(source, 'settings.json'))) {
-    console.error(`❌ Source is not a valid podex instance (missing settings.json): ${source}`);
+    console.error(`❌ Source is not a valid Weasley Podex instance (missing settings.json): ${source}`);
     process.exit(1);
 }
 
@@ -121,10 +121,10 @@ if (withMemory) {
     }
 }
 
-// ── 7. jaw.db — NOT copied (fresh DB on first access) ──
+// ── 7. weasley-podex.db — NOT copied (fresh DB on first access) ──
 
 // ── 8. Regenerate AGENTS.md + B.md via subprocess ──
-// Must use subprocess: JAW_HOME is const at module load, re-import returns cached value.
+// Must use subprocess: WEASLEY_PODEX_HOME is const at module load, re-import returns cached value.
 const projectRoot = path.join(__dirname, '..', '..');
 try {
     execSync(
@@ -135,12 +135,19 @@ try {
         `regenerateB();"`,
         {
             cwd: projectRoot,
-            env: { ...process.env, podex_HOME: target },
+            env: { ...process.env, WEASLEY_PODEX_HOME: target },
             stdio: 'pipe',
         }
     );
 } catch {
-    console.log('  ⚠️ AGENTS.md regeneration skipped (run jaw --home <target> init to fix)');
+    console.log('  ⚠️ AGENTS.md regeneration skipped (run weasley-podex --home <target> init to fix)');
+} finally {
+    // Prompt generation imports the database module, which initializes SQLite
+    // as a side effect. A clone must still begin without source database state;
+    // the runtime will create its own fresh database on first real access.
+    for (const suffix of ['', '-wal', '-shm']) {
+        fs.rmSync(path.join(target, `weasley-podex.db${suffix}`), { force: true });
+    }
 }
 
 // ── 9. Summary ──
@@ -155,13 +162,13 @@ console.log(`
     ${withMemory ? '✅' : '⏭️'} memory/MEMORY.md
 
   Fresh:
-    🆕 jaw.db (created on first access)
+    🆕 weasley-podex.db (created on first access)
     🆕 worklogs/
     🔄 AGENTS.md (regenerated)
 
   Launch:
-    jaw serve --home ${target}
-    jaw serve --home ${target} --port 3458
+    weasley-podex serve --home ${target}
+    weasley-podex serve --home ${target} --port 3458
 `);
 
 // ── Helper: recursive directory copy ──

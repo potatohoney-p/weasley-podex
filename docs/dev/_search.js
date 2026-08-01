@@ -1,4 +1,4 @@
-// podex Docs — Client-side search
+// Weasley Podex Docs — Client-side search
 (function() {
   const input = document.querySelector('.docs-search-input');
   if (!input) return;

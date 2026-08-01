@@ -184,20 +184,20 @@ requireIncludes('00-before.txt', before, `target=${target}`);
 requireIncludes('10-after.txt', after, `target=${target}`);
 requireIncludes('20-verify.log', verifier, 'ALL PASS');
 requireIncludes('20-verify.log', verifier, 'node version is >=22');
-requireIncludes('20-verify.log', verifier, 'jaw works:');
+requireIncludes('20-verify.log', verifier, 'weasley-podex works:');
 requireIncludes('20-verify.log', verifier, 'npm global bin is on PATH:');
 
 if (skipDoctor === '1') {
-  if (!options.allowSkipDoctor) fail('verifier skipped jaw doctor');
+  if (!options.allowSkipDoctor) fail('verifier skipped weasley-podex doctor');
 } else {
-  requireIncludes('20-verify.log', verifier, 'jaw doctor completed');
+  requireIncludes('20-verify.log', verifier, 'weasley-podex doctor completed');
 }
 
 if (!options.allowPreexistingNode && /^node=(?!missing$).+/m.test(before)) {
   fail('00-before.txt shows preexisting Node.js; expected a fresh no-Node machine');
 }
 
-for (const cmd of ['node', 'npm', 'jaw', 'podex']) {
+for (const cmd of ['node', 'npm', 'weasley-podex', 'jaw', 'podex']) {
   requireMatch('10-after.txt', after, new RegExp(`^${cmd}=(?!missing$).+`, 'm'));
 }
 
@@ -207,7 +207,7 @@ if (skipInstall !== '1') {
   readRequired('01-install.log');
   requireArchivedScript('installer', '02-installer-script.sh');
   requireInstallerForTarget('02-installer-script.sh', target);
-  requireIncludes('summary.txt', summary, 'DONE label="podex one-click installer" status=0');
+  requireIncludes('summary.txt', summary, 'DONE label="Weasley Podex one-click installer" status=0');
 }
 
 requireArchivedScript('verifier', '21-verifier-script.sh');
@@ -216,8 +216,8 @@ function requireSuccessfulShellProbe(file) {
   const probe = readRequired(file);
   requireIncludes(file, probe, 'node_path=');
   requireIncludes(file, probe, 'npm_path=');
-  requireIncludes(file, probe, 'jaw_path=');
-  requireMatch(file, probe, /podex v\d+\./);
+  requireIncludes(file, probe, 'weasley_podex_path=');
+  requireMatch(file, probe, /Weasley Podex v\d+\./i);
 }
 
 function requireInstallerForTarget(file, expectedTarget) {
@@ -248,19 +248,19 @@ if (target === 'macos') {
 }
 
 if (target === 'wsl') {
-  requireIncludes('20-verify.log', verifier, 'WSL bash login shell resolves node/npm/jaw');
+  requireIncludes('20-verify.log', verifier, 'WSL bash login shell resolves node\/npm\/weasley-podex');
   requireMatch('00-before.txt', before, /microsoft|WSL|Ubuntu|Debian/i);
   if (hasFile('33-powershell-to-wsl-probe.log')) {
     const psProbe = readOptional('33-powershell-to-wsl-probe.log');
-    requireMatch('33-powershell-to-wsl-probe.log', psProbe, /podex v\d+\./);
-    const summaryHasHostProbeCommand = /RUN label="PowerShell-to-WSL jaw probe"[^\n]*\bwsl\.exe -d\b[^\n]*\bbash -lc\b/.test(summary);
-    if (summary.includes('DONE label="PowerShell-to-WSL jaw probe" status=0')) {
+    requireMatch('33-powershell-to-wsl-probe.log', psProbe, /Weasley Podex v\d+\./i);
+    const summaryHasHostProbeCommand = /RUN label="PowerShell-to-WSL Weasley Podex probe"[^\n]*\bwsl\.exe -d\b[^\n]*\bbash -lc\b/.test(summary);
+    if (summary.includes('DONE label="PowerShell-to-WSL Weasley Podex probe" status=0')) {
       if (!summaryHasHostProbeCommand) {
         fail('summary.txt must record the PowerShell-to-WSL wsl.exe -d ... bash -lc command');
       }
     } else {
       requireIncludes('33-powershell-to-wsl-probe.log', psProbe, 'command=wsl.exe -d');
-      requireIncludes('33-powershell-to-wsl-probe.log', psProbe, 'bash -lc jaw --version');
+      requireIncludes('33-powershell-to-wsl-probe.log', psProbe, 'bash -lc weasley-podex --version');
     }
   } else if (!options.allowMissingPowerShellProbe) {
     fail('missing 33-powershell-to-wsl-probe.log for WSL evidence');

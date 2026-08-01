@@ -1,12 +1,12 @@
 ﻿import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { JAW_HOME } from '../../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../core/config.js';
 import { WebAiError } from './errors.js';
 
 /**
  * Cross-process watcher session lock (parity catalog 104.3). podex's watcher used an
  * in-process Map only, so two separate processes could both watch (and double-finalize) the
- * same session. This adds an atomic `mkdir` lock dir under JAW_HOME with a heartbeat +
+ * same session. This adds an atomic `mkdir` lock dir under WEASLEY_PODEX_HOME with a heartbeat +
  * PID-liveness staleness check. Strict-TS port of agbrowse watcher.mjs lock helpers.
  */
 
@@ -27,7 +27,7 @@ export interface WatcherSessionLock {
 }
 
 function watcherHome(): string {
-    return join(JAW_HOME, 'web-ai-watchers');
+    return join(WEASLEY_PODEX_HOME, 'web-ai-watchers');
 }
 
 function watcherLockPath(sessionId: string): string {

@@ -121,8 +121,8 @@ test('notes image URL resolver maps only safe asset paths and blocks dangerous U
     assert.equal(notesImageSrc('.assets/project__meeting/file.png').startsWith('/api/dashboard/notes/asset?path='), true);
     assert.equal(notesImageSrc('javascript:alert(1)'), '');
     assert.equal(notesImageSrc('data:image/png;base64,abc'), '');
-    assert.equal(notesImageSrc('file:///Users/jun/image.png'), '');
-    assert.equal(notesImageSrc('/Users/jun/image.png'), '');
+    assert.equal(notesImageSrc('file:///Users/example/image.png'), '');
+    assert.equal(notesImageSrc('/Users/example/image.png'), '');
 });
 
 test('notes image paste is wired through JSON upload and all authoring surfaces', () => {

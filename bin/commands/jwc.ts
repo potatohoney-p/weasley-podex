@@ -1,39 +1,39 @@
 /**
- * podex jwc - external-only JWC runtime helper.
+ * weasley-podex jwc - external-only JWC runtime helper.
  *
- * JWC is intentionally not bundled in podex npm installs or Electron
+ * JWC is intentionally not bundled in Weasley Podex npm installs or Electron
  * sidecars. This command installs/removes the optional jawcode runtime under a
- * podex_HOME-owned prefix and prints the JWC_SDK_PATH users must opt into.
+ * WEASLEY_PODEX_HOME-owned prefix and prints the JWC_SDK_PATH users must opt into.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, rmSync, unlinkSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join, parse, resolve } from 'node:path';
 import { parseArgs } from 'node:util';
-import { JAW_HOME } from '../../src/core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../src/core/config.js';
 import { resolveHomePath } from '../../src/core/path-expand.js';
 import { shouldShowHelp, printAndExit } from '../helpers/help.js';
 
 const DEFAULT_PACKAGE = 'jawcode@latest';
-const DEFAULT_PREFIX = join(JAW_HOME, 'jwc-runtime');
+const DEFAULT_PREFIX = join(WEASLEY_PODEX_HOME, 'jwc-runtime');
 const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 
 function usage(): string {
     return `
-  jaw jwc - optional external JWC runtime helper
+  weasley-podex jwc - optional external JWC runtime helper
 
   Usage:
-    jaw jwc install [--prefix <dir>] [--package <pkg>] [--dry-run] [--json]
-    jaw jwc clean   [--prefix <dir>] [--dry-run] [--json]
-    jaw jwc doctor  [--prefix <dir>] [--json]
+    weasley-podex jwc install [--prefix <dir>] [--package <pkg>] [--dry-run] [--json]
+    weasley-podex jwc clean   [--prefix <dir>] [--dry-run] [--json]
+    weasley-podex jwc doctor  [--prefix <dir>] [--json]
 
   Examples:
-    jaw jwc install
-    jaw jwc doctor
-    jaw jwc clean
+    weasley-podex jwc install
+    weasley-podex jwc doctor
+    weasley-podex jwc clean
 
   Notes:
-    - podex does not bundle JWC in npm or Electron installs.
+    - Weasley Podex does not bundle JWC in npm or Electron installs.
     - install uses an external prefix: ${DEFAULT_PREFIX}
     - use the printed JWC_SDK_PATH before selecting JWC for chat.
 `;
@@ -56,7 +56,7 @@ function normalizePrefix(value: unknown): string {
 function assertSafePrefix(prefix: string): void {
     const root = parse(prefix).root;
     const home = resolve(homedir());
-    const jawHome = resolve(JAW_HOME);
+    const jawHome = resolve(WEASLEY_PODEX_HOME);
     if (!prefix || prefix === root || prefix === home || prefix === jawHome || dirname(prefix) === root) {
         throw new Error(`Refusing unsafe JWC prefix: ${prefix}`);
     }
@@ -108,10 +108,10 @@ function printGuidance(prefix: string, sdkPath: string): void {
     console.log(`    ${powershellExport(sdkPath)}`);
     console.log('');
     console.log('  Check:');
-    console.log('    jaw jwc doctor');
+    console.log('    weasley-podex jwc doctor');
     console.log('');
     console.log('  Remove external JWC dependencies:');
-    console.log('    jaw jwc clean');
+    console.log('    weasley-podex jwc clean');
 }
 
 function commandArgs(): { command: string; values: Record<string, unknown> } {
@@ -179,7 +179,7 @@ function runClean(values: Record<string, unknown>): void {
     if (json) console.log(JSON.stringify({ ok: true, prefix, removed: true }, null, 2));
     else {
         console.log(`  Removed external JWC runtime: ${prefix}`);
-        console.log('  podex npm/Electron bundles were not modified.');
+        console.log('  Weasley Podex npm/Electron bundles were not modified.');
     }
 }
 
@@ -197,8 +197,8 @@ function runDoctor(values: Record<string, unknown>): void {
         envSdkExists: envSdk ? existsSync(envSdk) : false,
         prefixSdkPath: prefixSdk,
         prefixSdkExists: existsSync(prefixSdk),
-        installCommand: 'jaw jwc install',
-        cleanCommand: 'jaw jwc clean',
+        installCommand: 'weasley-podex jwc install',
+        cleanCommand: 'weasley-podex jwc clean',
     };
     if (json) {
         console.log(JSON.stringify(payload, null, 2));
@@ -209,8 +209,8 @@ function runDoctor(values: Record<string, unknown>): void {
     console.log(`  JWC_SDK_PATH: ${envSdk || '(not set)'} ${payload.envSdkExists ? '(exists)' : ''}`.trimEnd());
     console.log(`  Prefix SDK: ${prefixSdk} ${payload.prefixSdkExists ? '(exists)' : '(missing)'}`);
     console.log('');
-    console.log('  Install: jaw jwc install');
-    console.log('  Clean:   jaw jwc clean');
+    console.log('  Install: weasley-podex jwc install');
+    console.log('  Clean:   weasley-podex jwc clean');
 }
 
 if (shouldShowHelp(process.argv)) printAndExit(usage());

@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Model &amp; CLI Commands — podex Docs</title>
+<title>Model &amp; CLI Commands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,7 +81,7 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
@@ -91,7 +90,7 @@
 <h1>Model &amp; CLI Commands</h1>
 <p class="lead">用于切换 AI 模型、切换 CLI 提供商、配置回退链、跨提供商转发请求、切换 Gemini 思考模式以及刷新模型分配的命令。这些命令允许您在会话中动态重新配置 AI 后端，无需重启。</p>
 
-<div class="callout callout-info">本页上的所有命令均可通过聊天输入框中的斜杠命令调用，也可以使用韩语或英语的自然语言调用。podex 能理解类似"클로드로 바꿔줘"的短语，并自动将其映射到相应的命令。</div>
+<div class="callout callout-info">本页上的所有命令均可通过聊天输入框中的斜杠命令调用，也可以使用韩语或英语的自然语言调用。Weasley Podex 能理解类似"클로드로 바꿔줘"的短语，并自动将其映射到相应的命令。</div>
 
 <h2>命令摘要</h2>
 <table>
@@ -138,7 +137,7 @@
 # Switch to Gemini 2.5 Pro
 /model gemini-3-flash-preview</code></pre>
 
-<div class="callout callout-info"><strong>"~해줘" 提示：</strong>说"오퍼스로 바꿔줘"或"소넷으로 전환해줘"，podex 会将其映射到正确的 <code>/model</code> 调用。您也可以说"더 똑똑한 모델로 바꿔줘"，编排器会选择最强的可用模型。</div>
+<div class="callout callout-info"><strong>"~해줘" 提示：</strong>说"오퍼스로 바꿔줘"或"소넷으로 전환해줘"，Weasley Podex 会将其映射到正确的 <code>/model</code> 调用。您也可以说"더 똑똑한 모델로 바꿔줘"，编排器会选择最强的可用模型。</div>
 
 <!-- ================================================================== -->
 <h2 id="cli">/cli [name]</h2>
@@ -182,7 +181,7 @@
 <div class="callout callout-info"><strong>"~해줘" 提示：</strong>说"클로드로 바꿔줘"切换到 Claude，"제미나이로 전환해줘"切换到 Gemini，或"코덱스 써줘"切换到 Codex。您也可以说"다른 AI로 바꿔줘"，编排器会询问您偏好哪个提供商。</div>
 
 <h3>切换时会发生什么</h3>
-<p>当您切换 CLI 时，podex 会：</p>
+<p>当您切换 CLI 时，Weasley Podex 会：</p>
 <ul>
 <li>优雅地断开与当前提供商的连接</li>
 <li>使用默认模型初始化新提供商（除非存在 <code>/flush</code> 固定配置）</li>
@@ -192,7 +191,7 @@
 
 <!-- ================================================================== -->
 <h2 id="fallback">/fallback [cli1 cli2 ...|off]</h2>
-<p>配置 CLI 提供商的回退链。如果主 CLI 失败（速率限制、网络错误、API 故障），podex 会自动尝试链中的下一个提供商。这确保了即使单个提供商宕机，也能保持不间断的服务。</p>
+<p>配置 CLI 提供商的回退链。如果主 CLI 失败（速率限制、网络错误、API 故障），Weasley Podex 会自动尝试链中的下一个提供商。这确保了即使单个提供商宕机，也能保持不间断的服务。</p>
 
 <h3>参数</h3>
 <table>
@@ -324,7 +323,7 @@
 
 <!-- ================================================================== -->
 <h2>自然语言映射</h2>
-<p>podex 的命令解析器能理解韩语和英语的自然语言。以下是常用短语及其命令映射：</p>
+<p>Weasley Podex 的命令解析器能理解韩语和英语的自然语言。以下是常用短语及其命令映射：</p>
 
 <table>
 <tr><th>自然语言</th><th>映射的命令</th></tr>

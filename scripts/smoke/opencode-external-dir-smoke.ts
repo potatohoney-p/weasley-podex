@@ -59,7 +59,7 @@ const RUNS = Number.parseInt(readArg('--runs') || '12', 10);
 const TIMEOUT_MS = Number.parseInt(readArg('--timeout-ms') || '180000', 10);
 const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\..+/, '');
 const baseFixtureDir = join(process.cwd(), 'devlog', '_plan', 'parse', 'fixtures', 'opencode-smoke-260426', stamp);
-const tempRoot = join(os.tmpdir(), `jaw-opencode-smoke-${stamp}`);
+const tempRoot = join(os.tmpdir(), `weasley-podex-opencode-smoke-${stamp}`);
 
 const cases: SmokeCase[] = [
     createCase('run-01', 'temp-external', 'note.txt', 'create', 'text'),

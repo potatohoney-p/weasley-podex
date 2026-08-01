@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Desktop Control — podex Docs</title>
+<title>Desktop Control — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -30,7 +29,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -52,7 +51,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -101,24 +100,24 @@
     <a href="../../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
-<h1>Desktop Control <span class="badge badge-active">Default Active</span></h1>
+<h1>Desktop Control <span class="badge badge-active">Browser capability</span></h1>
 <p class="lead">Computer Use 데스크톱 자동화 &mdash; <code>get_app_state</code>, <code>click</code>, <code>set_value</code>, 키보드/포인터 액션. 대상에 따라 CDP(브라우저 DOM)와 Computer Use(데스크톱 앱) 사이를 라우팅하는 통합 UI 자동화 스킬입니다.</p>
 
 <div class="skill-meta">
   <div class="skill-meta-item"><strong>스킬 ID:</strong> <code>desktop-control</code></div>
   <div class="skill-meta-item"><strong>유형:</strong> 자동 활성</div>
   <div class="skill-meta-item"><strong>플랫폼:</strong> macOS</div>
-  <div class="skill-meta-item"><strong>필수:</strong> podex, Google Chrome</div>
+  <div class="skill-meta-item"><strong>필수:</strong> Weasley Podex, Google Chrome</div>
   <div class="skill-meta-item"><strong>선택:</strong> cliclick (brew)</div>
 </div>
 
-<div class="callout callout-info">이 스킬은 시스템 프롬프트에 <strong>항상 주입</strong>됩니다. 수동으로 로드할 필요가 없습니다. 독립적이었던 <code>browser</code> 및 <code>vision-click</code> 스킬을 대체하며, 해당 기능들을 통합 라우팅 시스템으로 흡수합니다.</div>
+<div class="callout callout-info">이 페이지는 번들된 <code>browser</code> 스킬과 CLI로 구현하는 데스크톱 제어 예시를 설명합니다. 별도의 <code>desktop-control</code> 스킬은 번들되지 않으며 네이티브 제어 확장은 명시적으로 가져와야 합니다.</div>
 
 <!-- ────────────────────────── Quick Reference ────────────────────────── -->
 
@@ -169,7 +168,7 @@
 <h3>해석 우선순위</h3>
 <ol>
 <li><strong>명시적 선택:</strong> 메시지에 <code>$computer-use</code> 또는 <code>/computer-use</code>가 포함되면 &rarr; 즉시 Computer Use 경로. 도구를 사용할 수 없으면 <code>precondition failed: computer-use unavailable</code>로 중단.</li>
-<li><code>podex browser snapshot --interactive</code> 참조로 대상을 지정할 수 있는가? &rarr; <strong>CDP</strong>.</li>
+<li><code>weasley-podex browser snapshot --interactive</code> 참조로 대상을 지정할 수 있는가? &rarr; <strong>CDP</strong>.</li>
 <li>비DOM 웹 위젯(Canvas, WebGL, iframe)이 <code>get_app_state</code> 스크린샷에 보이는가? &rarr; <strong>Computer Use</strong> <code>click(x, y)</code>.</li>
 <li>대상이 웹페이지 밖(앱 창, 메뉴 바, OS 대화상자)에 있는가? &rarr; <strong>Computer Use</strong>.</li>
 <li>사용자가 직접 지정한 픽셀 좌표인가? &rarr; <strong>Computer Use</strong> pointer-action.</li>
@@ -222,25 +221,25 @@
 
 <!-- ────────────────────────── CDP Commands ────────────────────────── -->
 
-<h2>CDP 경로 &mdash; <code>podex browser</code></h2>
+<h2>CDP 경로 &mdash; <code>weasley-podex browser</code></h2>
 <p>Chrome DOM으로 접근 가능한 모든 것에 사용: 페이지 텍스트, 폼 필드, 페이지 내 버튼. 웹 콘텐츠에서 Computer Use보다 10배 빠릅니다.</p>
 
 <h3>세션 명령어</h3>
-<pre><code>podex browser status                         # 세션이 활성 상태인가?
-podex browser start --agent                  # 헤드리스 자동화 세션
-podex browser start --headless               # 수동 헤드리스 (WSL/CI/Docker)
-podex browser start                          # 가시 창 (사용자 요청 시에만)
-podex browser navigate "https://example.com" # URL로 이동
-podex browser open "https://example.com"     # 새 탭에서 열기
-podex browser tabs                           # 탭 목록</code></pre>
+<pre><code>weasley-podex browser status                         # 세션이 활성 상태인가?
+weasley-podex browser start --agent                  # 헤드리스 자동화 세션
+weasley-podex browser start --headless               # 수동 헤드리스 (WSL/CI/Docker)
+weasley-podex browser start                          # 가시 창 (사용자 요청 시에만)
+weasley-podex browser navigate "https://example.com" # URL로 이동
+weasley-podex browser open "https://example.com"     # 새 탭에서 열기
+weasley-podex browser tabs                           # 탭 목록</code></pre>
 
 <h3>스냅샷 + 액션</h3>
-<pre><code>podex browser snapshot --interactive   # 클릭 가능한 요소 목록 (e1, e2, ...)
-podex browser click e3                 # 참조로 클릭
-podex browser type e5 "query" --submit # 입력 + Enter
-podex browser press Enter              # 폴백 키 입력
-podex browser screenshot               # PNG 저장
-podex browser text                     # 화면 텍스트 덤프</code></pre>
+<pre><code>weasley-podex browser snapshot --interactive   # 클릭 가능한 요소 목록 (e1, e2, ...)
+weasley-podex browser click e3                 # 참조로 클릭
+weasley-podex browser type e5 "query" --submit # 입력 + Enter
+weasley-podex browser press Enter              # 폴백 키 입력
+weasley-podex browser screenshot               # PNG 저장
+weasley-podex browser text                     # 화면 텍스트 덤프</code></pre>
 
 <div class="callout callout-warn"><strong>참조 ID는 매 navigate 후 초기화됩니다.</strong> 새 페이지로 이동한 후에는 반드시 스냅샷을 다시 찍으세요.</div>
 
@@ -262,14 +261,14 @@ podex browser text                     # 화면 텍스트 덤프</code></pre>
 <li><strong>플랫폼:</strong> macOS 전용.</li>
 <li>활성 에이전트 런타임이 모든 Computer Use 도구를 노출해야 합니다 (<code>list_apps</code>, <code>get_app_state</code>, <code>click</code>, <code>drag</code>, <code>press_key</code>, <code>scroll</code>, <code>set_value</code>, <code>type_text</code>, <code>perform_secondary_action</code>).</li>
 <li>제어 앱에 TCC Accessibility 및 AppleEvents 권한이 부여되어야 합니다.</li>
-<li>패키지 설치에서는 TCC 귀속을 위해 <code>/Applications/Jaw.app</code> 및 <code>/Applications/Codex Computer Use.app</code>이 필요할 수 있습니다.</li>
+<li>패키지 설치에서는 TCC 귀속을 위해 <code>/Applications/Weasley Podex.app</code> 및 <code>/Applications/Codex Computer Use.app</code>이 필요할 수 있습니다.</li>
 <li>앱 이름을 모르면 먼저 <code>list_apps()</code>를 호출하세요.</li>
 </ul>
 
 <h3>CDP 경로</h3>
 <ul>
-<li><code>podex serve</code>가 실행 중이어야 합니다 (<code>podex browser status</code>로 확인).</li>
-<li>브라우저 세션이 활성 상태여야 합니다 (<code>podex browser start --agent</code>로 시작).</li>
+<li><code>weasley-podex serve</code>가 실행 중이어야 합니다 (<code>weasley-podex browser status</code>로 확인).</li>
+<li>브라우저 세션이 활성 상태여야 합니다 (<code>weasley-podex browser start --agent</code>로 시작).</li>
 </ul>
 
 <div class="callout callout-info">차단 조건이 실패하면 <code>precondition failed: &lt;name&gt;</code>을 보고하고 중단합니다. 절대 경로를 무단으로 전환하지 마세요.</div>
@@ -295,7 +294,7 @@ result=ok</code></pre>
 
 <h3>하이브리드 트랜스크립트</h3>
 <pre><code>path=cdp+cu
-lookup=podex browser snapshot -> bbox of "Play"
+lookup=weasley-podex browser snapshot -> bbox of "Play"
 action_class=pointer-action
 action=click(x=812, y=514)
 result=ok</code></pre>
@@ -343,14 +342,14 @@ result=ok</code></pre>
 
 <h3>결정 순서</h3>
 <ol>
-<li><code>podex browser snapshot --interactive</code>가 참조를 반환했는가? &rarr; CDP <code>click</code>.</li>
+<li><code>weasley-podex browser snapshot --interactive</code>가 참조를 반환했는가? &rarr; CDP <code>click</code>.</li>
 <li>Computer Use를 사용할 수 있고 대상이 스크린샷에 보이는가? &rarr; <code>click(x, y)</code> pointer-action 직접 실행 (권장).</li>
-<li>참조 없고 직접 좌표가 부적합 &rarr; <code>podex browser vision-click</code> (Codex 전용, 레거시).</li>
+<li>참조 없고 직접 좌표가 부적합 &rarr; <code>weasley-podex browser vision-click</code> (Codex 전용, 레거시).</li>
 </ol>
 
 <pre><code># CDP vision-click (Chrome 내부, Codex 전용)
-podex browser vision-click "Submit button"
-podex browser vision-click "Play button" --double
+weasley-podex browser vision-click "Submit button"
+weasley-podex browser vision-click "Play button" --double
 
 # 데스크톱 vision-click (CU-05)
 # 1. get_app_state(app)로 스크린샷 캡처
@@ -416,7 +415,7 @@ result=ok</code></pre>
 <pre><code># 모든 대상이 DOM 노드임을 인식 -- CDP로 전환
 path=cdp
 url=https://open.spotify.com
-action=podex browser snapshot --interactive
+action=weasley-podex browser snapshot --interactive
 result=ok (ref IDs: e1..e89)
 
 path=cdp
@@ -432,9 +431,9 @@ result=ok</code></pre>
 <table>
 <tr><th>증상</th><th>올바른 보고</th></tr>
 <tr><td>"커서가 안 보여요"</td><td><code>cursor overlay is best-effort in the current build -- action=click(...) succeeded; visible cursor not guaranteed</code></td></tr>
-<tr><td>CDP 서버 미실행</td><td><code>precondition failed: podex serve not running. Start with 'jaw serve' and retry.</code></td></tr>
+<tr><td>CDP 서버 미실행</td><td><code>precondition failed: weasley-podex serve not running. Start with 'weasley-podex serve' and retry.</code></td></tr>
 <tr><td>Computer Use 도구 누락</td><td><code>precondition failed: computer-use unavailable</code></td></tr>
-<tr><td>podex CU 앱 누락 (패키지 설치)</td><td><code>precondition failed: /Applications/Codex Computer Use.app missing. Recover: jaw doctor --tcc --fix</code></td></tr>
+<tr><td>Weasley Podex CU 앱 누락 (패키지 설치)</td><td><code>precondition failed: /Applications/Codex Computer Use.app missing. Recover: weasley-podex doctor --tcc --fix</code></td></tr>
 <tr><td>액션 시 stale 경고</td><td><code>get_app_state(app)</code>를 재호출한 후 재시도; <code>stale_warning=yes</code> 기록</td></tr>
 <tr><td>대상에 대한 참조 없음</td><td>스크린샷에 보이면 Computer Use <code>click(x, y)</code> 사용. 그렇지 않으면 갭 보고.</td></tr>
 <tr><td>스냅샷과 클릭 사이 탐색 드리프트</td><td>스냅샷을 다시 찍고 한 번 재시도; 여전히 어긋나면 보고.</td></tr>
@@ -531,7 +530,7 @@ result=ok</code></pre>
 <tr><th>스킬</th><th>관계</th></tr>
 <tr><td><code>browser</code></td><td>CDP 명령어 참조 &mdash; 이 스킬이 해당 범위를 대체합니다</td></tr>
 <tr><td><code>screen-capture</code></td><td>일반 macOS 스크린샷 / 웹캠 / 비디오 녹화 (변경 없음, 별도 관심사)</td></tr>
-<tr><td><code>vision-click</code></td><td>더 이상 자동 활성화되지 않음; 전술로 흡수됨. 저수준 레시피(NDJSON 파싱, DPR 보정)는 <code>podex skill install vision-click</code>으로 설치</td></tr>
+<tr><td><code>vision-click</code></td><td>더 이상 자동 활성화되지 않음; 전술로 흡수됨. 저수준 레시피(NDJSON 파싱, DPR 보정)는 <code>weasley-podex skill install vision-click</code>으로 설치</td></tr>
 </table>
 
 <!-- ────────────────────────── Page Nav ────────────────────────── -->

@@ -143,7 +143,7 @@ test('ctrl-o expanded frame remains width safe after agent_done toolLog backfill
         handleWsMessage(ctx, msg({
             type: 'agent_done',
             text: 'Done.',
-            toolLog: [{ label: 'Bash', detail: 'long final detail /Users/jun/Developer/new/700_projects/podex/src/cli/tui/ws-handler.ts', status: 'done', stepRef: 's1' }],
+            toolLog: [{ label: 'Bash', detail: 'long final detail /Users/example/src/weasley-podex/src/cli/tui/ws-handler.ts', status: 'done', stepRef: 's1' }],
         }));
         assert.equal(toggleToolExpansion(ctx.store.transcript), true);
 

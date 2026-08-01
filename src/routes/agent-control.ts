@@ -1,4 +1,4 @@
-﻿// ─── Agent control routes (stop/clear/reset) ─────────
+// ─── Agent control routes (stop/clear/reset) ─────────
 // Extracted from server.ts in Phase 2 (devlog 260609, 07 §3.7).
 
 import type { Router, RequestHandler } from 'express';
@@ -19,7 +19,7 @@ export function registerAgentControlRoutes(app: Router, requireAuth: RequestHand
         ok(res, { uiOnly: true });
     });
 
-    // Explicit session reset — deletes messages (used by /reset confirm, podex reset)
+    // Explicit session reset — deletes messages (used by /reset confirm, weasley-podex reset)
     app.post('/api/session/reset', requireAuth, async (_, res) => {
         await clearSessionState();
         ok(res, null);

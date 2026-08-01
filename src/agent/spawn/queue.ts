@@ -126,7 +126,7 @@ export function createQueueController(deps: QueueDeps): QueueController {
         if (retryPendingTimer) {
             clearTimeout(retryPendingTimer);
             retryPendingTimer = null;
-            console.log('[jaw:retry] timer cancelled');
+            console.log('[weasley-podex:retry] timer cancelled');
 
             if (retryPendingResolve) {
                 deps.broadcast('agent_done', {
@@ -147,7 +147,7 @@ export function createQueueController(deps: QueueDeps): QueueController {
     function resetFallbackState() {
         clearRetryTimer(true);
         fallbackState.clear();
-        console.log('[jaw:fallback] state reset');
+        console.log('[weasley-podex:fallback] state reset');
     }
 
     function getFallbackState() {
@@ -345,7 +345,7 @@ export function createQueueController(deps: QueueDeps): QueueController {
         for (const item of messageQueue.splice(0)) {
             try { deps.deleteQueuedMessage.run(item.id); } catch { /* best-effort */ }
         }
-        console.log(`[jaw:stop] cleared ${dropped} pending message(s) (reason=${reason})`);
+        console.log(`[weasley-podex:stop] cleared ${dropped} pending message(s) (reason=${reason})`);
         deps.broadcast('queue_update', queueUpdatePayload());
     }
 

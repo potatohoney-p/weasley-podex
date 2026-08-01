@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import os from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import Database from 'better-sqlite3';
 
 export interface KiroProfile {
@@ -31,7 +31,10 @@ export function resolveKiroDataPath(homedir = os.homedir()): string {
         return join(homedir, 'Library', 'Application Support', 'kiro-cli', 'data.sqlite3');
     }
     if (process.platform === 'win32') {
-        const appData = process.env['APPDATA'] || join(homedir, 'AppData', 'Roaming');
+        const isRuntimeHome = resolve(homedir) === resolve(os.homedir());
+        const appData = isRuntimeHome && process.env['APPDATA']
+            ? process.env['APPDATA']
+            : join(homedir, 'AppData', 'Roaming');
         return join(appData, 'kiro-cli', 'data.sqlite3');
     }
     return join(homedir, '.local', 'share', 'kiro-cli', 'data.sqlite3');

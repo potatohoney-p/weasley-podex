@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from './weasley-podex-env.js';
 // ─── Config: paths, settings, CLI detection ──────────
 
 import os from 'os';
@@ -29,18 +30,44 @@ export const APP_VERSION: string = pkg.version;
 
 // ─── Paths ───────────────────────────────────────────
 
-export const JAW_HOME = process.env["podex_HOME"]
-    ? resolveHomePath(process.env["podex_HOME"])
-    : join(os.homedir(), '.podex');
-export const PROMPTS_DIR = join(JAW_HOME, 'prompts');
-export const DB_PATH = join(JAW_HOME, 'jaw.db');
-export const SETTINGS_PATH = join(JAW_HOME, 'settings.json');
-export const HEARTBEAT_JOBS_PATH = join(JAW_HOME, 'heartbeat.json');
-export const UPLOADS_DIR = join(JAW_HOME, 'uploads');
-export const WIDGETS_DIR = join(JAW_HOME, 'widgets');
-export const MIGRATION_MARKER = join(JAW_HOME, '.migrated-v1');
-export const SKILLS_DIR = join(JAW_HOME, 'skills');
-export const SKILLS_REF_DIR = join(JAW_HOME, 'skills_ref');
+export const DEFAULT_WEASLEY_PODEX_HOME = join(os.homedir(), '.weasley', 'podex');
+export const LEGACY_PODEX_HOME = join(os.homedir(), '.podex');
+
+const configuredHome = getWeasleyPodexEnv('HOME');
+
+/** Primary data home for settings, state, memory, and runtime artifacts. */
+export const WEASLEY_PODEX_HOME = configuredHome
+    ? resolveHomePath(configuredHome)
+    : DEFAULT_WEASLEY_PODEX_HOME;
+export const PROMPTS_DIR = join(WEASLEY_PODEX_HOME, 'prompts');
+export const DB_PATH = join(WEASLEY_PODEX_HOME, 'weasley-podex.db');
+export const SETTINGS_PATH = join(WEASLEY_PODEX_HOME, 'settings.json');
+export const HEARTBEAT_JOBS_PATH = join(WEASLEY_PODEX_HOME, 'heartbeat.json');
+export const UPLOADS_DIR = join(WEASLEY_PODEX_HOME, 'uploads');
+export const WIDGETS_DIR = join(WEASLEY_PODEX_HOME, 'widgets');
+export const MIGRATION_MARKER = join(WEASLEY_PODEX_HOME, '.migrated-v1');
+export const SKILLS_DIR = join(WEASLEY_PODEX_HOME, 'skills');
+export const SKILLS_REF_DIR = join(WEASLEY_PODEX_HOME, 'skills_ref');
+
+/**
+ * Copy a legacy default home into the new default location exactly once.
+ * Explicit home overrides never trigger automatic migration, and a populated
+ * destination is never merged or overwritten.
+ */
+export function migrateLegacyPodexHome(): boolean {
+    if (configuredHome || WEASLEY_PODEX_HOME !== DEFAULT_WEASLEY_PODEX_HOME) return false;
+    if (!fs.existsSync(LEGACY_PODEX_HOME)) return false;
+    if (fs.existsSync(WEASLEY_PODEX_HOME) && fs.readdirSync(WEASLEY_PODEX_HOME).length > 0) return false;
+
+    fs.mkdirSync(dirname(WEASLEY_PODEX_HOME), { recursive: true });
+    fs.cpSync(LEGACY_PODEX_HOME, WEASLEY_PODEX_HOME, {
+        recursive: true,
+        errorOnExist: false,
+        force: false,
+    });
+    log.info(`[migrate] copied legacy data home ${LEGACY_PODEX_HOME} → ${WEASLEY_PODEX_HOME}`);
+    return true;
+}
 
 // ─── Server URLs ────────────────────────────────────
 export const DEFAULT_PORT = '3457';
@@ -50,7 +77,7 @@ export const CDP_PORT_OFFSET = 5783;  // 9240 - 3457
 // finished message's tool cards from trace_events (durable, uncapped) instead of the
 // messages.tool_log blob. Default OFF — flip per-surface after parity is verified.
 export const HYDRATE_TOOL_CARDS_FROM_TRACE =
-    ['1', 'true', 'yes'].includes(String(process.env["JAW_HYDRATE_TOOL_CARDS_FROM_TRACE"] || '').toLowerCase());
+    ['1', 'true', 'yes'].includes(String(getWeasleyPodexEnv('HYDRATE_TOOL_CARDS_FROM_TRACE') || '').toLowerCase());
 
 export function deriveCdpPort(serverPort?: number | string): number {
     const port = Number(serverPort || process.env["PORT"] || DEFAULT_PORT);
@@ -68,7 +95,7 @@ export function getWsUrl(port?: string | number) {
     return `ws://127.0.0.1:${port || process.env["PORT"] || settings["port"] || DEFAULT_PORT}`;
 }
 
-/** Locate the podex package root (for bundled skills_ref/) */
+/** Locate the Weasley Podex package root (for bundled skills_ref/) */
 export function getProjectDir() {
     return dirname(findPackageJson());
 }
@@ -136,6 +163,9 @@ export function normalizeProjectDirs(dirs: unknown): string[] | null {
 // ─── Ensure directories ─────────────────────────────
 
 export function ensureDirs() {
+    migrateLegacyPodexHome();
+    fs.mkdirSync(WEASLEY_PODEX_HOME, { recursive: true });
+    migrateLegacyDatabaseFile();
     fs.mkdirSync(PROMPTS_DIR, { recursive: true });
     fs.mkdirSync(UPLOADS_DIR, { recursive: true });
     fs.mkdirSync(WIDGETS_DIR, { recursive: true });
@@ -143,28 +173,36 @@ export function ensureDirs() {
     fs.mkdirSync(SKILLS_REF_DIR, { recursive: true });
 }
 
+/**
+ * Move an exact legacy database filename to the Weasley filename, including
+ * SQLite sidecars. Existing Weasley data is never overwritten.
+ */
+export function migrateLegacyDatabaseFile(): boolean {
+    if (fs.existsSync(DB_PATH)) return false;
+    for (const legacyName of ['jaw.db', 'claw.db']) {
+        const legacyPath = join(WEASLEY_PODEX_HOME, legacyName);
+        if (!fs.existsSync(legacyPath)) continue;
+        fs.renameSync(legacyPath, DB_PATH);
+        for (const ext of ['-wal', '-shm']) {
+            const src = legacyPath + ext;
+            if (fs.existsSync(src)) fs.renameSync(src, DB_PATH + ext);
+        }
+        log.info(`[migrate] ${legacyName} → weasley-podex.db`);
+        return true;
+    }
+    return false;
+}
+
 // ─── 1-time migration (Phase 9.2) ───────────────────
 
 export function runMigration(projectDir: string) {
     if (fs.existsSync(MIGRATION_MARKER)) return;
 
-    // Legacy claw.db → jaw.db rename (in-place)
-    const legacyClaw = join(JAW_HOME, 'claw.db');
-    if (fs.existsSync(legacyClaw) && !fs.existsSync(DB_PATH)) {
-        fs.renameSync(legacyClaw, DB_PATH);
-        for (const ext of ['-wal', '-shm']) {
-            const src = legacyClaw + ext;
-            const dst = DB_PATH + ext;
-            if (fs.existsSync(src)) fs.renameSync(src, dst);
-        }
-        log.info('[migrate] claw.db → jaw.db');
-    }
-
     const legacySettings = join(projectDir, 'settings.json');
     const legacyDb = join(projectDir, 'jaw.db');
     if (fs.existsSync(legacySettings) && !fs.existsSync(SETTINGS_PATH)) {
         fs.copyFileSync(legacySettings, SETTINGS_PATH);
-        log.info('[migrate] settings.json → ~/.podex/');
+        log.info(`[migrate] settings.json → ${WEASLEY_PODEX_HOME}/`);
     }
     if (fs.existsSync(legacyDb) && !fs.existsSync(DB_PATH)) {
         fs.copyFileSync(legacyDb, DB_PATH);
@@ -172,7 +210,7 @@ export function runMigration(projectDir: string) {
             const src = legacyDb + ext;
             if (fs.existsSync(src)) fs.copyFileSync(src, DB_PATH + ext);
         }
-        log.info('[migrate] jaw.db → ~/.podex/');
+        log.info(`[migrate] project jaw.db → ${DB_PATH}`);
     }
     fs.writeFileSync(MIGRATION_MARKER, JSON.stringify({ migratedAt: new Date().toISOString() }));
 }
@@ -186,7 +224,7 @@ function createDefaultSettings() {
         fallbackOrder: [],
         showReasoning: false,
         permissions: 'auto',
-        workingDir: JAW_HOME,
+        workingDir: WEASLEY_PODEX_HOME,
         perCli: buildDefaultPerCli(),
         pi: {
             defaultProfileId: 'progrok',
@@ -256,7 +294,7 @@ function createDefaultSettings() {
             pasteCollapseChars: 160,
             keymapPreset: 'default',
             diffStyle: 'summary',
-            themeSeed: 'jaw-default',
+            themeSeed: 'weasley-podex-default',
         },
         employees: [],
         projectDirs: null as string[] | null,
@@ -360,6 +398,16 @@ export function migrateSettings(s: Record<string, any>) {
         s["memory"].model = normalizeModelForCli(s["memory"].cli, s["memory"].model);
     }
 
+    const legacyThemeSeeds: Record<string, string> = {
+        'jaw-default': 'weasley-podex-default',
+        'jaw-dark': 'weasley-podex-dark',
+        'jaw-light': 'weasley-podex-light',
+        'jaw-contrast': 'weasley-podex-contrast',
+    };
+    if (typeof s["tui"]?.themeSeed === 'string' && legacyThemeSeeds[s["tui"].themeSeed]) {
+        s["tui"].themeSeed = legacyThemeSeeds[s["tui"].themeSeed];
+    }
+
     // Discord/channel migration
     if (!s["channel"]) s["channel"] = 'telegram';
     if (!s["discord"]) {
@@ -426,6 +474,8 @@ function applyEnvOverrides(s: Record<string, any>) {
 export let settings: Record<string, any> = createDefaultSettings();
 
 export function loadSettings() {
+    migrateLegacyPodexHome();
+    fs.mkdirSync(WEASLEY_PODEX_HOME, { recursive: true });
     try {
         const raw = JSON.parse(fs.readFileSync(SETTINGS_PATH, 'utf8'));
         const defaults = createDefaultSettings();
@@ -460,9 +510,9 @@ export function loadSettings() {
         });
         // #64 safety: auto-correct stale workingDir (e.g. copied instance)
         // but allow valid paths to persist (dynamic project targeting)
-        if (typeof merged["workingDir"] === 'string' && merged["workingDir"] !== JAW_HOME && !fs.existsSync(merged["workingDir"])) {
-            console.warn(`[jaw:workingDir] stale path ${merged["workingDir"]}, resetting to JAW_HOME`);
-            merged["workingDir"] = JAW_HOME;
+        if (typeof merged["workingDir"] === 'string' && merged["workingDir"] !== WEASLEY_PODEX_HOME && !fs.existsSync(merged["workingDir"])) {
+            console.warn(`[weasley-podex:workingDir] stale path ${merged["workingDir"]}, resetting to WEASLEY_PODEX_HOME`);
+            merged["workingDir"] = WEASLEY_PODEX_HOME;
             saveSettings(merged);
         }
         if (raw.planning) saveSettings(merged);
@@ -487,14 +537,14 @@ export function loadSettings() {
             return next;
         }
 
-        console.warn(`[jaw:settings] failed to load ${SETTINGS_PATH}: ${err?.message || String(error)}`);
+        console.warn(`[weasley-podex:settings] failed to load ${SETTINGS_PATH}: ${err?.message || String(error)}`);
         if (fs.existsSync(SETTINGS_PATH)) {
             const backupPath = `${SETTINGS_PATH}.corrupt-${Date.now()}.bak`;
             try {
                 fs.copyFileSync(SETTINGS_PATH, backupPath);
-                console.warn(`[jaw:settings] backed up unreadable settings to ${backupPath}`);
+                console.warn(`[weasley-podex:settings] backed up unreadable settings to ${backupPath}`);
             } catch (backupErr) {
-                console.warn(`[jaw:settings] backup failed: ${(backupErr as Error).message}`);
+                console.warn(`[weasley-podex:settings] backup failed: ${(backupErr as Error).message}`);
             }
         }
         return next;
@@ -502,7 +552,7 @@ export function loadSettings() {
 }
 
 // Self-write fingerprint for the settings watcher: external writers (a separate
-// `podex project set` process) produce content that won't match this string.
+// `weasley-podex project set` process) produce content that won't match this string.
 let lastSavedSettingsRaw: string | null = null;
 
 export function saveSettings(s: Record<string, any>) {

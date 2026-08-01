@@ -87,7 +87,7 @@ test('applySettingsSelection saves editable rows and reports read-only rows', as
         assert.ok(put);
         assert.equal(put.init?.body, JSON.stringify({ tui: { theme: 'light' } }));
         assert.equal(ctx.tuiConfig.theme, 'light');
-        assert.equal(process.env['JAW_TUI_THEME'], 'light');
+        assert.equal(process.env['WEASLEY_PODEX_TUI_THEME'], 'light');
         assert.match(ctx.store.overlay.settingsMessage, /Saved Theme/);
 
         ctx.store.overlay.settingsSelected = 8;

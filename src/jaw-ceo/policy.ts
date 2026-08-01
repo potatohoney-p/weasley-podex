@@ -82,7 +82,7 @@ export function assertDocsOnlyEdit(args: {
             return { ok: true };
         }
     }
-    return { ok: false, code: 'docs_edit_root_denied', message: 'path is outside the Jaw CEO docs-edit allowlist' };
+    return { ok: false, code: 'docs_edit_root_denied', message: 'path is outside the Weasley Podex CEO docs-edit allowlist' };
 }
 
 export function isReadonlyCliQueryAllowed(command: string): boolean {

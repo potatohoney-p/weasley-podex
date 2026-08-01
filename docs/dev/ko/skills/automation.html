@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Automation Skills — podex Docs</title>
+<title>Automation Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,28 +81,28 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Automation Skills</h1>
-<p class="lead">브라우저 자동화, 스크린샷 기반 상호작용, 요청 라우팅 기능을 제공하는 스킬입니다. 이 스킬들은 podex가 CDP를 통해 Chrome을 제어하고, 스크린샷에서 UI 요소를 클릭하며, 웹 요청을 프로그래밍 방식으로 라우팅할 수 있게 합니다.</p>
+<p class="lead">브라우저 자동화, 스크린샷 기반 상호작용, 요청 라우팅 기능을 제공하는 스킬입니다. 이 스킬들은 Weasley Podex가 CDP를 통해 Chrome을 제어하고, 스크린샷에서 UI 요소를 클릭하며, 웹 요청을 프로그래밍 방식으로 라우팅할 수 있게 합니다.</p>
 
 <!-- ================================================================== -->
 <!-- browser -->
 <!-- ================================================================== -->
 
 <h2 id="browser">browser</h2>
-<p>Chrome DevTools Protocol(CDP)을 통한 Chrome 브라우저 제어 스킬입니다. 페이지 열기, 탐색, 참조 스냅샷 촬영, 요소 클릭, 텍스트 입력, 콘텐츠 추출, 스크린샷 캡처 기능을 제공합니다. <code>podex</code> 브라우저 서버가 실행 중이어야 합니다.</p>
+<p>Chrome DevTools Protocol(CDP)을 통한 Chrome 브라우저 제어 스킬입니다. 페이지 열기, 탐색, 참조 스냅샷 촬영, 요소 클릭, 텍스트 입력, 콘텐츠 추출, 스크린샷 캡처 기능을 제공합니다. <code>weasley-podex</code> 브라우저 서버가 실행 중이어야 합니다.</p>
 
 <table>
 <tr><th>속성</th><th>값</th></tr>
 <tr><td><strong>Skill ID</strong></td><td><code>browser</code></td></tr>
 <tr><td><strong>카테고리</strong></td><td>Automation</td></tr>
 <tr><td><strong>프로토콜</strong></td><td>CDP (Chrome DevTools Protocol)</td></tr>
-<tr><td><strong>사전 요구사항</strong></td><td><code>podex</code> 브라우저 서버 실행 중</td></tr>
+<tr><td><strong>사전 요구사항</strong></td><td><code>weasley-podex</code> 브라우저 서버 실행 중</td></tr>
 <tr><td><strong>트리거</strong></td><td>페이지 열기, 스크린샷, 클릭, 입력, 스크래핑, 탐색</td></tr>
 </table>
 
@@ -129,7 +128,7 @@
 /browser click "#submit-btn"
 
 # Type into an input field
-/browser type "#search-input" "podex documentation"
+/browser type "#search-input" "weasley-podex documentation"
 
 # Extract text content from an element
 /browser extract ".main-content" text
@@ -146,9 +145,9 @@
 </div>
 
 <h3>CDP 연결</h3>
-<p>browser 스킬은 CDP WebSocket 연결을 관리하는 <code>podex</code> 브라우저 서버를 통해 Chrome에 연결됩니다. 브라우저 명령을 사용하기 전에 서버를 먼저 시작해야 합니다.</p>
+<p>browser 스킬은 CDP WebSocket 연결을 관리하는 <code>weasley-podex</code> 브라우저 서버를 통해 Chrome에 연결됩니다. 브라우저 명령을 사용하기 전에 서버를 먼저 시작해야 합니다.</p>
 <pre><code># Start the browser server (runs on a dedicated port)
-jaw browser serve
+weasley-podex browser serve
 
 # The skill auto-connects when invoked
 # Connection is reused across commands in the same session</code></pre>

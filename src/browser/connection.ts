@@ -1,4 +1,4 @@
-﻿import { JAW_HOME, deriveCdpPort, settings } from '../core/config.js';
+import { WEASLEY_PODEX_HOME, deriveCdpPort, settings } from '../core/config.js';
 import { stripUndefined } from '../core/strip-undefined.js';
 import { execFile, spawn, type ChildProcess } from 'node:child_process';
 import { join, basename } from 'path';
@@ -18,7 +18,7 @@ import {
     browserReaperIntervalMs,
     createEmptyBrowserRuntime,
     createExternalBrowserRuntime,
-    createJawOwnedBrowserRuntime,
+    createWeasleyPodexOwnedBrowserRuntime,
     decideBrowserCloseAction,
     shouldCloseIdleRuntime,
     type BrowserRuntimeOwner,
@@ -26,8 +26,8 @@ import {
 } from './runtime-owner.js';
 import { clearDurableBrowserRuntimeOwner, writeDurableBrowserRuntimeOwner } from './runtime-owner-store.js';
 
-const PROFILE_DIR = join(JAW_HOME, 'browser-profile');
-const TAB_ACTIVITY_FILE = join(JAW_HOME, 'browser-tab-activity.json');
+const PROFILE_DIR = join(WEASLEY_PODEX_HOME, 'browser-profile');
+const TAB_ACTIVITY_FILE = join(WEASLEY_PODEX_HOME, 'browser-tab-activity.json');
 type BrowserConnectionCache = { browser: Browser; cdpUrl: string };
 type JsonRecord = Record<string, unknown>;
 type BrowserCdpSession = Pick<CDPSession, 'send' | 'detach'> | RawBrowserCdpSession;
@@ -113,7 +113,7 @@ function loadTabActivity(): void {
 }
 
 function saveTabActivity(): void {
-    fs.mkdirSync(JAW_HOME, { recursive: true });
+    fs.mkdirSync(WEASLEY_PODEX_HOME, { recursive: true });
     fs.writeFileSync(TAB_ACTIVITY_FILE, `${JSON.stringify({ tabs: Object.fromEntries(tabActivity.entries()) }, null, 2)}\n`);
 }
 
@@ -172,7 +172,7 @@ async function resetStaleChromeProcIfCdpUnavailable(port: number): Promise<boole
         // The process may have already exited between the killed check and SIGTERM.
     }
     chromeProc = null;
-    if (runtimeOwner?.ownership === 'jaw-owned') {
+    if (runtimeOwner?.ownership === 'weasley-podex-owned') {
         clearDurableBrowserRuntimeOwner(runtimeOwner);
         runtimeOwner = null;
         activePort = null;
@@ -201,7 +201,7 @@ function validateProfileDir(dir: string): void {
         throw new Error(
             `Profile directory is not writable: ${dir}\n` +
             `Chrome will silently fall back to the default profile and singleton-absorb.\n` +
-            `Fix: ensure the directory exists and is writable, or set JAW_HOME to a writable path.\n` +
+            `Fix: ensure the directory exists and is writable, or set WEASLEY_PODEX_HOME to a writable path.\n` +
             `Original error: ${(err as Error).message}`
         );
     }
@@ -341,7 +341,7 @@ function readProcessCommandLine(pid: number): Promise<string | null> {
 }
 
 async function isRecordedChromeStillOwned(owner: BrowserRuntimeOwner | null): Promise<boolean> {
-    if (!owner || owner.ownership !== 'jaw-owned') return false;
+    if (!owner || owner.ownership !== 'weasley-podex-owned') return false;
     if (!owner.pid || !owner.port || !owner.userDataDir) return false;
     const command = await readProcessCommandLine(owner.pid);
     if (!command) return false;
@@ -411,7 +411,7 @@ export async function launchChrome(
                 signal: AbortSignal.timeout(2000),
             });
             if (resp.ok) {
-                console.warn(`[browser] warning: CDP port ${port} appears foreign — podex is attaching to an existing Chrome it did not start; verify --user-data-dir matches if you depend on profile state, and avoid sharing the same userDataDir between two CDP-controlled processes.`);
+                console.warn(`[browser] warning: CDP port ${port} appears foreign — Weasley Podex is attaching to an existing Chrome it did not start; verify --user-data-dir matches if you depend on profile state, and avoid sharing the same userDataDir between two CDP-controlled processes.`);
                 console.log(`[browser] CDP already listening on port ${port} — reusing existing instance`);
                 activePort = port;
                 runtimeOwner = createExternalBrowserRuntime(port);
@@ -451,7 +451,7 @@ export async function launchChrome(
     const minWidth = 1280;
     const minHeight = 720;
 
-    const stderrPath = join(JAW_HOME, 'chrome-stderr.log');
+    const stderrPath = join(WEASLEY_PODEX_HOME, 'chrome-stderr.log');
     const stderrFd = fs.openSync(stderrPath, 'w');
     console.error(`[browser] launching: ${chrome}`);
     console.error(`[browser] user-data-dir: ${PROFILE_DIR}`);
@@ -474,7 +474,7 @@ export async function launchChrome(
     const ready = await waitForCdpReady(port);
     if (ready) {
         activePort = port;
-        const owner = createJawOwnedBrowserRuntime({
+        const owner = createWeasleyPodexOwnedBrowserRuntime({
             port,
             pid: chromeProc.pid ?? null,
             userDataDir: PROFILE_DIR,
@@ -509,17 +509,17 @@ export async function launchChrome(
         throw new Error(
             `Chrome CDP not responding on port ${port} after 10s.\n` +
             `\n` +
-            `Diagnose: podex browser doctor\n` +
+            `Diagnose: weasley-podex browser doctor\n` +
             (stderr ? `Chrome stderr: ${stderr.slice(0, 200)}\n` : '') +
             `\n` +
             `Likely causes (most common first):\n` +
             `  1. Chrome singleton absorbed the launch.\n` +
-            `       → Close all Chrome windows, then: podex browser start\n` +
+            `       → Close all Chrome windows, then: weasley-podex browser start\n` +
             (canaryHint ? `       → Or: ${canaryHint}\n` : '') +
             `  2. Port ${port} held by another process.\n` +
-            `       → podex browser start --port ${port + 1}\n` +
+            `       → weasley-podex browser start --port ${port + 1}\n` +
             `  3. No display available.\n` +
-            `       → podex browser start --headless\n`
+            `       → weasley-podex browser start --headless\n`
         );
     }
 }

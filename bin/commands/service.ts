@@ -1,18 +1,19 @@
 /**
- * podex service — 크로스 플랫폼 서비스 관리
+ * weasley-podex service — 크로스 플랫폼 서비스 관리
  * Usage:
- *   jaw service              — OS 감지 → 설치 + 시작 (원스텝)
- *   jaw service --port 3458  — 커스텀 포트로 등록
- *   jaw service status       — 현재 상태 확인
- *   jaw service unset        — 서비스 제거
- *   jaw service logs         — 로그 보기
+ *   weasley-podex service              — OS 감지 → 설치 + 시작 (원스텝)
+ *   weasley-podex service --port 3458  — 커스텀 포트로 등록
+ *   weasley-podex service status       — 현재 상태 확인
+ *   weasley-podex service unset        — 서비스 제거
+ *   weasley-podex service logs         — 로그 보기
  */
 import { execFileSync, spawn as nodeSpawn } from 'node:child_process';
 import { existsSync, writeFileSync, readFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { parseArgs } from 'node:util';
-import { JAW_HOME } from '../../src/core/config.js';
+import { WEASLEY_PODEX_HOME } from '../../src/core/config.js';
 import { instanceId, getNodePath, getJawPath, sanitizeUnitName, buildServicePath } from '../../src/core/instance.js';
+import { setWeasleyPodexEnv } from '../../src/core/weasley-podex-env.js';
 
 // ─── Args ────────────────────────────────────────────
 const { values: opts, positionals: pos } = parseArgs({
@@ -30,7 +31,7 @@ const knownKeys = new Set(['port', 'backend']);
 for (const key of Object.keys(opts)) {
     if (!knownKeys.has(key)) {
         console.error(`❌ Unknown option: --${key}`);
-        console.error('   Usage: jaw service [--port PORT] [--backend launchd|systemd|docker] [status|unset|logs]');
+        console.error('   Usage: weasley-podex service [--port PORT] [--backend launchd|systemd|docker] [status|unset|logs]');
         process.exit(1);
     }
 }
@@ -54,7 +55,7 @@ if (!Number.isInteger(portNum) || portNum < 1 || portNum > 65535) {
 }
 
 const INSTANCE = instanceId();
-const LOG_DIR = join(JAW_HOME, 'logs');
+const LOG_DIR = join(WEASLEY_PODEX_HOME, 'logs');
 
 // ─── Backend detection ───────────────────────────────
 
@@ -81,7 +82,7 @@ function detectBackend(): Backend {
 
     console.error('❌ 지원되지 않는 환경입니다.');
     console.error('   지원: macOS (launchd), Linux (systemd), Docker');
-    console.error('   수동 설정은 jaw serve를 tmux/screen에서 실행하세요.');
+    console.error('   수동 설정은 weasley-podex serve를 tmux/screen에서 실행하세요.');
     process.exit(1);
 }
 
@@ -95,11 +96,11 @@ if (backend === 'launchd') {
     const subcommand = pos[0];
     if (subcommand === 'logs') {
         // launchd doesn't have 'logs' → show log file path directly
-        const logDir = join(JAW_HOME, 'logs');
+        const logDir = join(WEASLEY_PODEX_HOME, 'logs');
         console.log(`📋 macOS launchd logs:\n`);
-        console.log(`   stdout: ${logDir}/jaw-serve.log`);
-        console.log(`   stderr: ${logDir}/jaw-serve.err\n`);
-        console.log(`   tail -f ${logDir}/jaw-serve.log`);
+        console.log(`   stdout: ${logDir}/weasley-podex-serve.log`);
+        console.log(`   stderr: ${logDir}/weasley-podex-serve.err\n`);
+        console.log(`   tail -f ${logDir}/weasley-podex-serve.log`);
         process.exit(0);
     }
     // Rebuild argv from parsed values — eliminates all --backend variants
@@ -112,7 +113,7 @@ if (backend === 'launchd') {
         ...(subcommand ? [subcommand] : []),
         ...portArgs,
     ];
-    process.env["_podex_SERVICE_DELEGATE"] = '1';
+    setWeasleyPodexEnv('SERVICE_DELEGATE', '1');
     await import('./launchd.js');
     process.exit(0);
 }
@@ -122,8 +123,8 @@ if (backend === 'docker') {
     console.log('🐳 Docker 컨테이너 내부에서 실행 중입니다.\n');
     console.log('   컨테이너 자체가 restart policy로 관리됩니다.');
     console.log('   docker-compose.yml의 restart: unless-stopped 설정을 확인하세요.\n');
-    console.log('   상태 확인: docker ps | grep podex');
-    console.log('   로그 확인: docker logs -f podex');
+    console.log('   상태 확인: docker ps --filter name=weasley-podex');
+    console.log('   로그 확인: docker logs -f weasley-podex');
     process.exit(0);
 }
 
@@ -132,16 +133,18 @@ if (backend === 'docker') {
 // ═══════════════════════════════════════════════════════
 
 const SAFE_INSTANCE = sanitizeUnitName(INSTANCE);
-const UNIT_NAME = `jaw-${SAFE_INSTANCE}`;
+const UNIT_NAME = `weasley-podex-${SAFE_INSTANCE}`;
 const UNIT_PATH = `/etc/systemd/system/${UNIT_NAME}.service`;
+const LEGACY_UNIT_NAME = `jaw-${SAFE_INSTANCE}`;
+const LEGACY_UNIT_PATH = `/etc/systemd/system/${LEGACY_UNIT_NAME}.service`;
 
 /** Create secure temp file for unit generation. */
 function makeTmpUnit(): string {
     try {
-        return execFileSync('mktemp', ['/tmp/jaw-unit-XXXXXX.service'], { encoding: 'utf8' }).trim();
+        return execFileSync('mktemp', ['/tmp/weasley-podex-unit-XXXXXX.service'], { encoding: 'utf8' }).trim();
     } catch {
         // fallback if mktemp unavailable
-        const fallback = `/tmp/jaw-unit-${Date.now()}-${process.pid}.service`;
+        const fallback = `/tmp/weasley-podex-unit-${Date.now()}-${process.pid}.service`;
         return fallback;
     }
 }
@@ -164,19 +167,19 @@ function generateUnit(): string {
     const q = (s: string) => s.includes(' ') ? `"${s}"` : s;
 
     return `[Unit]
-Description=podex Server (${SAFE_INSTANCE})
+Description=Weasley Podex Server (${SAFE_INSTANCE})
 After=network.target
 
 [Service]
 Type=simple
 User=${user}
-WorkingDirectory=${q(JAW_HOME)}
-ExecStart=${q(nodePath)} ${q(jawPath)} --home ${q(JAW_HOME)} serve --port ${PORT} --no-open
+WorkingDirectory=${q(WEASLEY_PODEX_HOME)}
+ExecStart=${q(nodePath)} ${q(jawPath)} --home ${q(WEASLEY_PODEX_HOME)} serve --port ${PORT} --no-open
 Restart=always
 RestartSec=5
 Environment=NODE_ENV=production
 Environment="PATH=${servicePath}"
-Environment=podex_HOME=${q(JAW_HOME)}
+Environment=WEASLEY_PODEX_HOME=${q(WEASLEY_PODEX_HOME)}
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=${UNIT_NAME}
@@ -185,9 +188,9 @@ SyslogIdentifier=${UNIT_NAME}
 WantedBy=multi-user.target`;
 }
 
-function isActive(): string {
+function isActive(unitName = UNIT_NAME): string {
     try {
-        return execFileSync('systemctl', ['is-active', UNIT_NAME], { encoding: 'utf8' }).trim();
+        return execFileSync('systemctl', ['is-active', unitName], { encoding: 'utf8' }).trim();
     } catch { return 'inactive'; }
 }
 
@@ -195,46 +198,62 @@ const sub = pos[0];
 
 switch (sub) {
     case 'unset': {
-        if (!existsSync(UNIT_PATH)) {
-            console.log('⚠️  jaw serve가 systemd에 등록되어 있지 않습니다');
+        const registered = [
+            { name: UNIT_NAME, path: UNIT_PATH },
+            { name: LEGACY_UNIT_NAME, path: LEGACY_UNIT_PATH },
+        ].filter(unit => existsSync(unit.path));
+        if (registered.length === 0) {
+            console.log('⚠️  weasley-podex serve가 systemd에 등록되어 있지 않습니다');
             break;
         }
-        try { sudo(['systemctl', 'stop', UNIT_NAME]); } catch { /* ok if already stopped */ }
-        try { sudo(['systemctl', 'disable', UNIT_NAME]); } catch { /* ok */ }
-        sudo(['rm', '-f', UNIT_PATH]);
+        for (const unit of registered) {
+            try { sudo(['systemctl', 'stop', unit.name]); } catch { /* ok if already stopped */ }
+            try { sudo(['systemctl', 'disable', unit.name]); } catch { /* ok */ }
+            sudo(['rm', '-f', unit.path]);
+        }
         sudo(['systemctl', 'daemon-reload']);
-        console.log('✅ jaw serve 자동 실행 해제 완료');
+        console.log('✅ weasley-podex serve 자동 실행 해제 완료');
         break;
     }
 
     case 'status': {
-        if (!existsSync(UNIT_PATH)) {
-            console.log('\u26a0\ufe0f  jaw serve\uac00 systemd\uc5d0 \ub4f1\ub85d\ub418\uc5b4 \uc788\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4');
-            console.log('   \ub4f1\ub85d: jaw service');
+        const hasCurrent = existsSync(UNIT_PATH);
+        const hasLegacy = existsSync(LEGACY_UNIT_PATH);
+        if (!hasCurrent && !hasLegacy) {
+            console.log('\u26a0\ufe0f  weasley-podex serve\uac00 systemd\uc5d0 \ub4f1\ub85d\ub418\uc5b4 \uc788\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4');
+            console.log('   \ub4f1\ub85d: weasley-podex service');
             break;
         }
+        const statusUnitName = hasCurrent ? UNIT_NAME : LEGACY_UNIT_NAME;
+        const statusUnitPath = hasCurrent ? UNIT_PATH : LEGACY_UNIT_PATH;
         // Read actual port from unit file if possible
         let displayPort = PORT;
         try {
-            const unitContent = readFileSync(UNIT_PATH, 'utf8');
+            const unitContent = readFileSync(statusUnitPath, 'utf8');
             const portMatch = unitContent.match(/--port\s+(\d+)/);
             if (portMatch) displayPort = portMatch[1]!;
         } catch { /* use CLI port as fallback */ }
-        const state = isActive();
+        const state = isActive(statusUnitName);
         const icon = state === 'active' ? '\ud83d\udfe2' : state === 'failed' ? '\ud83d\udd34' : '\u26aa';
-        console.log(`\ud83e\udd88 jaw serve \u2014 ${icon} ${state}`);
+        console.log(`◆ weasley-podex serve \u2014 ${icon} ${state}`);
         console.log(`   instance: ${INSTANCE}`);
-        console.log(`   unit:     ${UNIT_NAME}`);
+        console.log(`   unit:     ${statusUnitName}`);
         console.log(`   port:     ${displayPort}`);
-        console.log(`   unit file: ${UNIT_PATH}`);
-        console.log(`\n   \ub85c\uadf8: jaw service logs`);
-        console.log(`   \uc911\uc9c0: jaw service unset`);
+        console.log(`   unit file: ${statusUnitPath}`);
+        if (!hasCurrent && hasLegacy) {
+            console.log('   ⚠️  legacy 서비스 이름입니다. `weasley-podex service`를 실행하면 안전하게 이전됩니다.');
+        }
+        console.log(`\n   \ub85c\uadf8: weasley-podex service logs`);
+        console.log(`   \uc911\uc9c0: weasley-podex service unset`);
         break;
     }
 
     case 'logs': {
-        console.log(`📋 journalctl -u ${UNIT_NAME} -f\n`);
-        const child = nodeSpawn('journalctl', ['-u', UNIT_NAME, '-f', '--no-pager', '-n', '50'], {
+        const logUnitName = !existsSync(UNIT_PATH) && existsSync(LEGACY_UNIT_PATH)
+            ? LEGACY_UNIT_NAME
+            : UNIT_NAME;
+        console.log(`📋 journalctl -u ${logUnitName} -f\n`);
+        const child = nodeSpawn('journalctl', ['-u', logUnitName, '-f', '--no-pager', '-n', '50'], {
             stdio: 'inherit',
         });
         // Clean exit on Ctrl+C
@@ -247,13 +266,21 @@ switch (sub) {
 
     default: {
         // 원스텝: 유닛 생성 → daemon-reload → enable --now
-        console.log('🦈 jaw service setup (systemd)\n');
+        console.log('◆ weasley-podex service setup (systemd)\n');
 
         if (existsSync(UNIT_PATH)) {
             console.log('📄 기존 유닛 발견 — 재생성합니다');
             try { sudo(['systemctl', 'stop', UNIT_NAME]); } catch { /* ok */ }
         } else {
             console.log('📄 유닛 없음 — 새로 생성합니다');
+        }
+
+        // 이전 jaw-* 유닛은 정확히 같은 인스턴스만 중지·제거하여 중복 실행을 막는다.
+        if (existsSync(LEGACY_UNIT_PATH)) {
+            console.log(`🧹 legacy 유닛 이전: ${LEGACY_UNIT_NAME} → ${UNIT_NAME}`);
+            try { sudo(['systemctl', 'stop', LEGACY_UNIT_NAME]); } catch { /* ok */ }
+            try { sudo(['systemctl', 'disable', LEGACY_UNIT_NAME]); } catch { /* ok */ }
+            sudo(['rm', '-f', LEGACY_UNIT_PATH]);
         }
 
         // 1. 유닛 파일 생성 (mktemp → sudo cp)
@@ -273,11 +300,11 @@ switch (sub) {
         setTimeout(() => {
             const state = isActive();
             if (state === 'active') {
-                console.log('🦈 jaw serve가 백그라운드에서 실행 중입니다');
+                console.log('Weasley Podex serve가 백그라운드에서 실행 중입니다');
                 console.log(`   instance: ${INSTANCE}`);
                 console.log(`   http://localhost:${PORT}`);
-                console.log(`   로그: jaw service logs`);
-                console.log('\n   해제: jaw service unset');
+                console.log(`   로그: weasley-podex service logs`);
+                console.log('\n   해제: weasley-podex service unset');
             } else {
                 console.log('⚠️  시작되지 않았습니다. 상태를 확인하세요:');
                 console.log(`   systemctl status ${UNIT_NAME}`);

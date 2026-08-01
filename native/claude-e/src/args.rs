@@ -3,7 +3,7 @@ use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
 #[command(
-    name = "jaw-claude-i",
+    name = "claude-e",
     version,
     about = "PTY wrapper for interactive Claude Code"
 )]

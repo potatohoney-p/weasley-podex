@@ -160,7 +160,7 @@ export function searchChatFederated(
             warnings.push({
                 instanceId: ref.instanceId,
                 code: 'missing_db',
-                message: `No jaw.db at ${ref.chatDbPath}`,
+                message: `No Weasley Podex database at ${ref.chatDbPath}`,
             });
             continue;
         }

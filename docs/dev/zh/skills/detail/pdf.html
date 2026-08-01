@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF &mdash; podex Docs</title>
+<title>PDF &mdash; Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
 .badge-ref { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
@@ -30,7 +29,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -53,7 +52,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">使用指南</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -102,7 +101,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">落地页</a>
   </div>
 </nav>
@@ -112,25 +111,25 @@
 <p class="lead">PDF 读取、创建、编辑、审查以及基于视觉的内容提取。该技能涵盖 PDF 文档的完整生命周期 &mdash; 从使用 <code>reportlab</code> 生成新文件，到使用 <code>pdfplumber</code> 提取文本，使用 Poppler 将页面渲染为图片，以及在每次编辑后执行视觉质量验证。</p>
 
 <p>
-  <span class="badge badge-ref">Reference</span>
+  <span class="badge badge-ref">可选导入</span>
   <span class="badge badge-category">AI &amp; Media</span>
 </p>
 
 <div class="callout callout-info">
-  <strong>参考技能：</strong> <code>pdf</code> 默认未启用。使用 <code>jaw skill install pdf</code> 安装，或在聊天中输入"PDF 스킬 설치해줘"。启用后，该技能会注入系统提示词，当检测到 PDF 相关任务时，智能体会自动遵循其工作流程。
+  <strong>可选工作流：</strong><code>pdf</code> 不属于八个内置技能。必须先从已安装的 Codex 目录或用户明确指定的可信仓库导入，之后才能用 <code>weasley-podex skill install pdf</code> 激活。以下内容仅为工作流参考，并不表示这些文件随本包发布。
 </div>
 
 <h2>快速参考</h2>
 <table class="quick-ref">
 <tr><td>技能名称</td><td><code>pdf</code></td></tr>
 <tr><td>分类</td><td>AI 与媒体</td></tr>
-<tr><td>默认启用</td><td>否 &mdash; 需要执行 <code>jaw skill install pdf</code></td></tr>
-<tr><td>SKILL.md 路径</td><td><code>~/.podex/skills/pdf/SKILL.md</code>（已激活）或 <code>~/.podex/skills_ref/pdf/SKILL.md</code>（参考）</td></tr>
+<tr><td>内置</td><td>否 &mdash; 从可信来源导入后再激活</td></tr>
+<tr><td>SKILL.md 路径</td><td>由导入目录决定；使用 <code>weasley-podex skill info pdf</code> 验证</td></tr>
 <tr><td>Python 包</td><td><code>reportlab</code>、<code>pdfplumber</code>、<code>pypdf</code></td></tr>
 <tr><td>系统工具</td><td><code>pdftoppm</code>（来自 Poppler）</td></tr>
 <tr><td>临时目录</td><td><code>tmp/pdfs/</code></td></tr>
 <tr><td>输出目录</td><td><code>output/pdf/</code></td></tr>
-<tr><td>相关技能</td><td><code>pdf-vision</code>、<code>docx</code>、<code>pptx</code>、<code>xlsx</code></td></tr>
+<tr><td>相关工作流</td><td>文档提取、视觉 QA 与办公格式转换（需另行安装）</td></tr>
 </table>
 
 <h2>工作流程</h2>
@@ -294,7 +293,7 @@ soffice --headless --convert-to pdf input.docx --outdir output/pdf/</code></pre>
 </div>
 
 <h2>与 pdf-vision 的对比</h2>
-<p>podex 提供两个 PDF 相关技能。它们是互补的，而非冗余的：</p>
+<p>Weasley Podex 提供两个 PDF 相关技能。它们是互补的，而非冗余的：</p>
 
 <table>
 <thead>
@@ -309,7 +308,7 @@ soffice --headless --convert-to pdf input.docx --outdir output/pdf/</code></pre>
 </table>
 
 <div class="callout callout-info">
-  <strong>提示：</strong> 使用 <code>jaw skill install pdf pdf-vision</code> 同时安装两者，或输入"PDF 스킬이랑 pdf-vision 둘 다 설치해줘"。当两者都处于激活状态时，它们可以无缝协作。
+  <strong>提示：</strong> 使用 <code>weasley-podex skill install pdf pdf-vision</code> 同时安装两者，或输入"PDF 스킬이랑 pdf-vision 둘 다 설치해줘"。当两者都处于激活状态时，它们可以无缝协作。
 </div>
 
 <h2>故障排除</h2>
@@ -341,7 +340,7 @@ sudo apt-get install -y libreoffice</code></pre>
 
 <h2>安装</h2>
 <pre><code># CLI
-jaw skill install pdf
+weasley-podex skill install pdf
 
 # 聊天中（韩语）
 "PDF 스킬 설치해줘"
@@ -350,13 +349,13 @@ jaw skill install pdf
 "Install the PDF skill"
 
 # 验证安装
-jaw skill info pdf</code></pre>
+weasley-podex skill info pdf</code></pre>
 
-<pre><code># jaw skill info pdf 的预期输出：
+<pre><code># weasley-podex skill info pdf 的预期输出：
 #   Name:     pdf
 #   Status:   active
 #   Category: AI &amp; Media
-#   Path:     ~/.podex/skills/pdf/SKILL.md
+#   Path:     ~/.weasley/podex/skills/pdf/SKILL.md
 #   Description: PDF creation, reading, editing, merging, and text extraction</code></pre>
 
 <div class="page-nav">

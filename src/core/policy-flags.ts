@@ -1,13 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { JAW_HOME } from './config.js';
+import { WEASLEY_PODEX_HOME } from './config.js';
 import { compilePolicyPattern, loadPolicyHooksConfig, POLICY_LIMITS, type PolicyOptions } from './policy-hooks.js';
 
 type RecordPendingFlag = { set: boolean; evidence: string; setAt: string; consumedAt?: string };
 type PolicyFlagsFile = { flags: { record_pending?: RecordPendingFlag } };
 
 function flagsPath(options: PolicyOptions): string {
-    return path.join(options.jawHome || JAW_HOME, 'policy-flags.json');
+    return path.join(options.jawHome || WEASLEY_PODEX_HOME, 'policy-flags.json');
 }
 
 function readFlags(options: PolicyOptions): PolicyFlagsFile {

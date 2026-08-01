@@ -28,10 +28,10 @@ const readmeSrc = fs.readFileSync(join(projectRoot, 'README.md'), 'utf8');
 
 // ── SPI-001: postinstall is isolated by default ──
 
-test('SPI-001: postinstall has podex_MIGRATE_SHARED_PATHS guard', () => {
+test('SPI-001: postinstall has WEASLEY_PODEX_MIGRATE_SHARED_PATHS guard', () => {
     assert.ok(
-        postinstallSrc.includes('podex_MIGRATE_SHARED_PATHS'),
-        'postinstall must check podex_MIGRATE_SHARED_PATHS env var',
+        postinstallSrc.includes("getWeasleyPodexEnv('MIGRATE_SHARED_PATHS'"),
+        'postinstall must check WEASLEY_PODEX_MIGRATE_SHARED_PATHS through the compatibility boundary',
     );
 });
 
@@ -39,13 +39,14 @@ test('SPI-001: postinstall has podex_MIGRATE_SHARED_PATHS guard', () => {
 
 test('SPI-002: postinstall migration is opt-in via env', () => {
     assert.ok(
-        postinstallSrc.includes('podex_MIGRATE_SHARED_PATHS'),
+        postinstallSrc.includes("getWeasleyPodexEnv('MIGRATE_SHARED_PATHS'"),
         'env guard for shared path migration',
     );
     assert.ok(
-        postinstallSrc.includes('npm_config_jaw_migrate_shared_paths'),
-        'npm config alias for shared path migration',
+        postinstallSrc.includes('npm_config_weasley_podex_migrate_shared_paths'),
+        'primary npm config for shared path migration',
     );
+    assert.equal(postinstallSrc.includes('npm_config_jaw_migrate_shared_paths'), false);
 });
 
 // ── SPI-003: postinstall default log says migration skipped ──

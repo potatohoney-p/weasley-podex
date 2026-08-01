@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../../core/weasley-podex-env.js';
 /**
  * TUI theme tokens + color-capability ladder (Phase 3, devlog 260529_tui_parity, doc 14).
  * Colors aligned to public/manager/src/manager-tokens.css. Four tiers:
@@ -37,7 +38,7 @@ export function colorLevel(): ColorLevel {
 }
 
 export function activeTheme(): ThemeName {
-    return process.env['JAW_TUI_THEME'] === 'light' ? 'light' : 'dark';
+    return getWeasleyPodexEnv('TUI_THEME') === 'light' ? 'light' : 'dark';
 }
 
 const DARK = {

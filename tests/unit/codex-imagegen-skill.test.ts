@@ -23,7 +23,7 @@ test('codex-imagegen declares Codex-only native generation and delivery contract
 });
 
 test('codex-imagegen registry entry has no dependency requirements', {
-    skip: !fs.existsSync(registryPath) && 'skills_ref submodule not checked out',
+    skip: !fs.existsSync(skillPath) && 'optional codex-imagegen skill is not bundled',
 }, () => {
     const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
     const entry = registry.skills['codex-imagegen'];

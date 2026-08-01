@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PABCD Workflow — podex Docs</title>
+<title>PABCD Workflow — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.3); }
@@ -29,7 +28,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -51,7 +50,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -100,7 +99,7 @@
     <a href="../../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
@@ -109,7 +108,7 @@
 <h1>PABCD Workflow <span class="badge badge-active">Default Active</span></h1>
 <p class="lead">Structured Plan &rarr; Audit &rarr; Build &rarr; Check &rarr; Done development workflow with mandatory user checkpoints at each gate.</p>
 
-<div class="callout callout-info"><strong>Auto-active skill.</strong> <code>dev-pabcd</code> is one of the 10 development skills injected into every session automatically. It activates during orchestration mode and provides the structured 5-phase workflow that ensures nothing gets built without a reviewed plan.</div>
+<div class="callout callout-info"><strong>Bundled core skill.</strong> <code>dev-pabcd</code> is one of the eight audited skills in <code>skills_ref/registry.json</code>. It activates for structured orchestration and provides the five-phase delivery workflow.</div>
 
 <h2>Quick Reference</h2>
 <table>
@@ -121,7 +120,7 @@
 <tr><td>Phases</td><td>P (Plan) &rarr; A (Audit) &rarr; B (Build) &rarr; C (Check) &rarr; D (Done)</td></tr>
 <tr><td>User gates</td><td>P, A, B require approval &mdash; C, D auto-advance</td></tr>
 <tr><td>Worker role</td><td>Read-only verifiers (never write code)</td></tr>
-<tr><td>Reset command</td><td><code>podex orchestrate reset</code></td></tr>
+<tr><td>Reset command</td><td><code>weasley-podex orchestrate reset</code></td></tr>
 </table>
 
 <h2>State Machine</h2>
@@ -139,12 +138,12 @@
 <h3>Transition Commands</h3>
 <table>
 <tr><th>Command</th><th>Transition</th><th>Prerequisite</th></tr>
-<tr><td><code>podex orchestrate P</code></td><td>Enter Planning</td><td>Must be in IDLE</td></tr>
-<tr><td><code>podex orchestrate A</code></td><td>Enter Plan Audit</td><td>Must be in P (plan approved)</td></tr>
-<tr><td><code>podex orchestrate B</code></td><td>Enter Build</td><td>Must be in A (audit passed)</td></tr>
-<tr><td><code>podex orchestrate C</code></td><td>Enter Check</td><td>Must be in B (build approved)</td></tr>
-<tr><td><code>podex orchestrate D</code></td><td>Enter Done</td><td>Must be in C (check complete)</td></tr>
-<tr><td><code>podex orchestrate reset</code></td><td>Return to IDLE</td><td>Any state</td></tr>
+<tr><td><code>weasley-podex orchestrate P</code></td><td>Enter Planning</td><td>Must be in IDLE</td></tr>
+<tr><td><code>weasley-podex orchestrate A</code></td><td>Enter Plan Audit</td><td>Must be in P (plan approved)</td></tr>
+<tr><td><code>weasley-podex orchestrate B</code></td><td>Enter Build</td><td>Must be in A (audit passed)</td></tr>
+<tr><td><code>weasley-podex orchestrate C</code></td><td>Enter Check</td><td>Must be in B (build approved)</td></tr>
+<tr><td><code>weasley-podex orchestrate D</code></td><td>Enter Done</td><td>Must be in C (check complete)</td></tr>
+<tr><td><code>weasley-podex orchestrate reset</code></td><td>Return to IDLE</td><td>Any state</td></tr>
 </table>
 
 <h2>Phase Details</h2>
@@ -175,7 +174,7 @@
 </ul>
 
 <h4>Devlog Naming Convention</h4>
-<p>If PABCD work creates or updates <code>devlog/</code> plan artifacts, the plan MUST list exact numbered Jawdev filenames:</p>
+<p>If PABCD work creates or updates <code>devlog/</code> plan artifacts, the plan MUST list exact numbered Weasley Podex devlog filenames:</p>
 <pre><code>00_overview.md
 01_phase1_&lt;slug&gt;.md
 02_phase2_&lt;slug&gt;.md</code></pre>
@@ -187,7 +186,7 @@
 <li>"Any business logic I shouldn't decide alone?"</li>
 <li>"Does Part 1 match your intent?"</li>
 </ol>
-<p>The plan is presented and revised on feedback. When the user approves, transition with <code>podex orchestrate A</code>.</p>
+<p>The plan is presented and revised on feedback. When the user approves, transition with <code>weasley-podex orchestrate A</code>.</p>
 </div>
 
 <div class="phase-card">
@@ -201,14 +200,14 @@
 <li>No new <code>structure/</code>, <code>devlog/</code>, docs, or AGENTS files are introduced without user approval</li>
 <li>New JS/TS files follow TypeScript preference rules unless the plan states why JS is required</li>
 <li>New TypeScript is strict-compatible or limitations are stated</li>
-<li>New devlog phase documents use the numbered Jawdev filename convention</li>
+<li>New devlog phase documents use the numbered Weasley Podex devlog filename convention</li>
 </ul>
 <p>Worker outputs JSON for the audit. Results are reviewed:</p>
 <ul>
 <li><strong>FAIL</strong> &rarr; Fix the plan, re-audit</li>
 <li><strong>PASS</strong> &rarr; Report results to the user</li>
 </ul>
-<p>When the user approves, transition with <code>podex orchestrate B</code>.</p>
+<p>When the user approves, transition with <code>weasley-podex orchestrate B</code>.</p>
 </div>
 
 <div class="phase-card">
@@ -220,7 +219,7 @@
 <li><strong>DONE</strong> &rarr; Report results to the user</li>
 </ul>
 <p>Does not create <code>structure/</code> or <code>devlog/</code> unless approved in P or explicitly requested.</p>
-<p>When the user approves, transition with <code>podex orchestrate C</code>.</p>
+<p>When the user approves, transition with <code>weasley-podex orchestrate C</code>.</p>
 </div>
 
 <div class="phase-card">
@@ -232,7 +231,7 @@
 <li>Update project structure docs if applicable</li>
 <li>Report completion summary</li>
 </ol>
-<p>When done, automatically transitions to D via <code>podex orchestrate D</code>.</p>
+<p>When done, automatically transitions to D via <code>weasley-podex orchestrate D</code>.</p>
 </div>
 
 <div class="phase-card">
@@ -250,20 +249,20 @@
 <table>
 <tr><th>#</th><th>Rule</th><th>Details</th></tr>
 <tr><td>1</td><td>One phase per response</td><td>Present work, then wait for user approval at P, A, B gates. Never skip ahead.</td></tr>
-<tr><td>2</td><td>Strict sequence</td><td>P &rarr; A &rarr; B &rarr; C &rarr; D. Use <code>podex orchestrate reset</code> to restart from IDLE.</td></tr>
+<tr><td>2</td><td>Strict sequence</td><td>P &rarr; A &rarr; B &rarr; C &rarr; D. Use <code>weasley-podex orchestrate reset</code> to restart from IDLE.</td></tr>
 <tr><td>3</td><td>Workers verify, boss writes</td><td>Workers are read-only. All code is written directly by the boss in B phase.</td></tr>
 </table>
 
 <h2>Repository Root Contract</h2>
 <p>Before writing a PABCD plan or dispatching a worker, determine the actual working repository root with <code>pwd -P</code> from the target repo.</p>
 
-<p>Every A/B phase <code>podex dispatch</code> task body <strong>MUST</strong> begin with:</p>
+<p>Every A/B phase <code>weasley-podex dispatch</code> task body <strong>MUST</strong> begin with:</p>
 <pre><code>Project root: /absolute/path/to/current/repo</code></pre>
 
 <table>
 <tr><th>Rule</th><th>Description</th></tr>
-<tr><td><code>Project root</code> = working repo</td><td>Must be the current working repository, not <code>JAW_HOME</code></td></tr>
-<tr><td>No inference</td><td>Never let workers infer the repo root from <code>~/.podex*</code>, <code>process.cwd()</code>, or an employee temp directory</td></tr>
+<tr><td><code>Project root</code> = working repo</td><td>Must be the current working repository, not <code>WEASLEY_PODEX_HOME</code></td></tr>
+<tr><td>No inference</td><td>Never let workers infer the repo root from <code>~/.weasley/podex*</code>, <code>process.cwd()</code>, or an employee temp directory</td></tr>
 <tr><td>Absolute paths</td><td>Resolve all relative repo paths (<code>src/</code>, <code>tests/</code>, <code>structure/</code>, <code>skills_ref/</code>) against <code>Project root</code></td></tr>
 <tr><td>Unknown root = STOP</td><td>If <code>Project root</code> is unknown, stop and ask before dispatching</td></tr>
 </table>
@@ -271,10 +270,10 @@
 <h2>Shared Plan Injection</h2>
 <p>When P completes, the plan is saved to the <strong>worklog <code>## Plan</code> section</strong> (single source of truth) and kept in <code>ctx.plan</code>. No project-root file is created.</p>
 
-<div class="callout callout-info"><strong>Auto-injection:</strong> In A and B phases, the orchestrator automatically injects the full plan body at the top of every <code>podex dispatch</code> task under <code>## Approved Plan</code>. Workers never need to read a plan file &mdash; it is prepended for them.</div>
+<div class="callout callout-info"><strong>Auto-injection:</strong> In A and B phases, the orchestrator automatically injects the full plan body at the top of every <code>weasley-podex dispatch</code> task under <code>## Approved Plan</code>. Workers never need to read a plan file &mdash; it is prepended for them.</div>
 
 <p>Your dispatch task body should contain only the actual audit/verify instruction. Example:</p>
-<pre><code>podex dispatch --agent "Backend" --task "Project root: /path/to/repo
+<pre><code>weasley-podex dispatch --agent "Backend" --task "Project root: /path/to/repo
 
 Audit: verify the imports in src/routes/auth.ts..."</code></pre>
 <p>No "read the plan" line is needed &mdash; the plan is already injected.</p>

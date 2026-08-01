@@ -154,7 +154,7 @@ function parseBreadcrumb(filePath: string | null | undefined): string[] {
 }
 
 test('breadcrumb segments parse from a unix path', () => {
-    const segments = parseBreadcrumb('/Users/jun/devlog/_plan/260705/plan.md');
+    const segments = parseBreadcrumb('/Users/example/devlog/_plan/260705/plan.md');
     assert.ok(segments.length > 0);
     assert.equal(segments[segments.length - 1], 'plan.md');
 });

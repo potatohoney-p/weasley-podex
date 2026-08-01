@@ -1,19 +1,19 @@
-﻿#!/usr/bin/env node
-// bin/commands/bgtask.ts — CLI: jaw bgtask [add|list|show|cancel]
+#!/usr/bin/env node
+// bin/commands/bgtask.ts — CLI: weasley-podex bgtask [add|list|show|cancel]
 // Server-owned background tasks: register long-running work, end the boss
-// turn, and let the jaw server re-invoke the boss when the work completes.
+// turn, and let the Weasley Podex server re-invoke the boss when the work completes.
 import { loadSettings, getServerUrl } from '../../src/core/config.js';
 import { cliFetch } from '../../src/cli/api-auth.js';
 import { shouldShowHelp, printAndExit } from '../helpers/help.js';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw bgtask — Server-owned background tasks (background runtime hook)
+  weasley-podex bgtask — Server-owned background tasks (background runtime hook)
 
-  Usage: jaw bgtask <subcommand> [args...]
+  Usage: weasley-podex bgtask <subcommand> [args...]
 
   Subcommands:
     add --preset web-ai --session <sessionId> [--prompt <template>] [--deadline <ISO>] [--stall-after-ms <ms>]
-                          Watch a NATIVE podex web-ai session; boss re-invoked on completion.
+                          Watch a NATIVE Weasley Podex web-ai session; boss re-invoked on completion.
                           For a standalone agbrowse session use the explicit generic form:
                             --cmd '["agbrowse","web-ai","watch","<sessionId>"]'
     add --cmd '<json-argv>' [--kind <kind>] [--completion exit|'<json>'] [--prompt <template>] [--stall-after-ms <ms>]
@@ -25,9 +25,9 @@ if (shouldShowHelp(process.argv)) printAndExit(`
   Prompt template placeholders: {{result}} {{taskId}} {{status}}
 
   Examples:
-    jaw bgtask add --preset web-ai --session "$SID" --prompt "Summarize: {{result}}"
-    jaw bgtask add --cmd '["gh","run","watch","123","--exit-status"]' --kind ci --prompt "CI done: {{result}}"
-    jaw bgtask list --status running
+    weasley-podex bgtask add --preset web-ai --session "$SID" --prompt "Summarize: {{result}}"
+    weasley-podex bgtask add --cmd '["gh","run","watch","123","--exit-status"]' --kind ci --prompt "CI done: {{result}}"
+    weasley-podex bgtask list --status running
 `);
 
 loadSettings();
@@ -75,7 +75,7 @@ if (sub === 'list') {
 
 if (sub === 'show') {
     const id = args[1];
-    if (!id) { console.error('Usage: jaw bgtask show <taskId>'); process.exit(1); }
+    if (!id) { console.error('Usage: weasley-podex bgtask show <taskId>'); process.exit(1); }
     const res = await cliFetch(`${BASE}/api/bgtask/${encodeURIComponent(id)}`);
     const body = await readBody(res);
     console.log(JSON.stringify(body['task'], null, 2));
@@ -84,7 +84,7 @@ if (sub === 'show') {
 
 if (sub === 'cancel') {
     const id = args[1];
-    if (!id) { console.error('Usage: jaw bgtask cancel <taskId>'); process.exit(1); }
+    if (!id) { console.error('Usage: weasley-podex bgtask cancel <taskId>'); process.exit(1); }
     const res = await cliFetch(`${BASE}/api/bgtask/${encodeURIComponent(id)}`, { method: 'DELETE' });
     const body = await readBody(res);
     console.log(body['cancelled'] ? `✅ cancelled ${id}` : `task ${id} was not running (no-op)`);
@@ -101,7 +101,7 @@ if (sub === 'add') {
 
     if (preset === 'web-ai') {
         const sessionId = flagValue('--session');
-        if (!sessionId) { console.error('Usage: jaw bgtask add --preset web-ai --session <sessionId>'); process.exit(1); }
+        if (!sessionId) { console.error('Usage: weasley-podex bgtask add --preset web-ai --session <sessionId>'); process.exit(1); }
         payload['preset'] = 'web-ai';
         payload['sessionId'] = sessionId;
         if (prompt) payload['prompt'] = prompt;
@@ -113,7 +113,7 @@ if (sub === 'add') {
     } else {
         const cmdRaw = flagValue('--cmd');
         if (!cmdRaw || !prompt) {
-            console.error('Usage: jaw bgtask add --cmd \'<json-argv>\' --prompt <template> [--kind <kind>] [--completion exit|\'<json>\'] [--deadline <ISO>]');
+            console.error('Usage: weasley-podex bgtask add --cmd \'<json-argv>\' --prompt <template> [--kind <kind>] [--completion exit|\'<json>\'] [--deadline <ISO>]');
             process.exit(1);
         }
         let command: unknown;

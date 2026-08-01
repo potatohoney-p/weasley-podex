@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Browser Automation — podex Docs</title>
+<title>Browser Automation — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -60,7 +59,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -82,7 +81,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -131,7 +130,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
@@ -144,9 +143,9 @@
     <span class="badge badge-category">自动化</span>
   </div>
 </div>
-<p class="lead">CDP Chrome 自动化 &mdash; 快照、点击、导航、截图、标签页。通过基于 ref 的元素定位，使用 <code>podex browser</code> 命令控制 Chrome。</p>
+<p class="lead">CDP Chrome 自动化 &mdash; 快照、点击、导航、截图、标签页。通过基于 ref 的元素定位，使用 <code>weasley-podex browser</code> 命令控制 Chrome。</p>
 
-<div class="callout callout-info">此技能<strong>默认启用</strong>，会在每个会话中自动注入。它需要 <code>podex serve</code> 正在运行，并且已安装 Google Chrome。</div>
+<div class="callout callout-info">此技能<strong>默认启用</strong>，会在每个会话中自动注入。它需要 <code>weasley-podex serve</code> 正在运行，并且已安装 Google Chrome。</div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>快速参考</h2>
@@ -156,11 +155,11 @@
 <tr><td>技能名称</td><td><code>browser</code></td></tr>
 <tr><td>分类</td><td>自动化</td></tr>
 <tr><td>状态</td><td><span class="badge badge-active">启用</span>（默认加载）</td></tr>
-<tr><td>依赖</td><td><code>podex</code> 二进制文件、Google Chrome</td></tr>
+<tr><td>依赖</td><td><code>weasley-podex</code> 二进制文件、Google Chrome</td></tr>
 <tr><td>可选</td><td><code>cliclick</code>（Homebrew，用于基于坐标的点击）</td></tr>
-<tr><td>截图保存路径</td><td><code>~/.podex/screenshots/</code></td></tr>
+<tr><td>截图保存路径</td><td><code>~/.weasley/podex/screenshots/</code></td></tr>
 <tr><td>相关技能</td><td><code>desktop-control</code>、<code>web-ai</code>、<code>vision-click</code></td></tr>
-<tr><td>技能文件</td><td><code>~/.podex/skills/browser/SKILL.md</code></td></tr>
+<tr><td>技能文件</td><td><code>~/.weasley/podex/skills/browser/SKILL.md</code></td></tr>
 </tbody>
 </table>
 
@@ -168,9 +167,9 @@
 <h2>前置条件</h2>
 
 <ul>
-<li><strong><code>podex serve</code></strong> 必须正在运行 &mdash; 浏览器技能通过 podex 服务器进行通信。</li>
+<li><strong><code>weasley-podex serve</code></strong> 必须正在运行 &mdash; 浏览器技能通过 Weasley Podex 服务器进行通信。</li>
 <li>必须安装 <strong>Google Chrome</strong>。</li>
-<li>必须在 podex 项目中安装 <strong><code>playwright-core</code></strong>（用于 CDP 通信）。</li>
+<li>必须在 Weasley Podex 项目中安装 <strong><code>playwright-core</code></strong>（用于 CDP 通信）。</li>
 <li><em>可选：</em> <code>brew install cliclick</code>，用于基于坐标的鼠标操作。</li>
 </ul>
 
@@ -189,25 +188,25 @@
 <h2>快速开始</h2>
 
 <pre><code># 启动自动化会话（无头模式，无可见窗口）
-podex browser start --agent
+weasley-podex browser start --agent
 
 # 启动交互式浏览器（手动模式，可见窗口）
-podex browser start
+weasley-podex browser start
 
 # 导航到 URL
-podex browser navigate "https://example.com"
+weasley-podex browser navigate "https://example.com"
 
 # 获取交互式快照（显示 ref ID）
-podex browser snapshot --interactive
+weasley-podex browser snapshot --interactive
 
 # 点击一个 ref
-podex browser click e3
+weasley-podex browser click e3
 
 # 输入文本并提交
-podex browser type e5 "hello" --submit
+weasley-podex browser type e5 "hello" --submit
 
 # 截图
-podex browser screenshot</code></pre>
+weasley-podex browser screenshot</code></pre>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>快照输出</h2>
@@ -232,12 +231,12 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>命令</th><th>描述</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser start [--port &lt;auto&gt;] [--headless] [--agent]</code></td><td>启动 Chrome。<code>--agent</code> = 无头自动化模式；不加参数 = 可见交互模式。</td></tr>
-<tr><td><code>podex browser stop</code></td><td>关闭浏览器会话。</td></tr>
-<tr><td><code>podex browser status</code></td><td>报告当前 CDP 连接状态和端口。</td></tr>
-<tr><td><code>podex browser doctor [--json]</code></td><td>诊断 CDP/运行时所有权不匹配和孤儿进程清理范围。</td></tr>
-<tr><td><code>podex browser cleanup-runtimes [--json] [--close --force]</code></td><td>默认执行试运行。仅在使用 <code>--close --force</code> 时关闭 jaw 拥有的孤儿运行时。</td></tr>
-<tr><td><code>podex browser reset [--force]</code></td><td>清除浏览器配置文件和截图。仅在用户明确请求时使用。</td></tr>
+<tr><td><code>weasley-podex browser start [--port &lt;auto&gt;] [--headless] [--agent]</code></td><td>启动 Chrome。<code>--agent</code> = 无头自动化模式；不加参数 = 可见交互模式。</td></tr>
+<tr><td><code>weasley-podex browser stop</code></td><td>关闭浏览器会话。</td></tr>
+<tr><td><code>weasley-podex browser status</code></td><td>报告当前 CDP 连接状态和端口。</td></tr>
+<tr><td><code>weasley-podex browser doctor [--json]</code></td><td>诊断 CDP/运行时所有权不匹配和孤儿进程清理范围。</td></tr>
+<tr><td><code>weasley-podex browser cleanup-runtimes [--json] [--close --force]</code></td><td>默认执行试运行。仅在使用 <code>--close --force</code> 时关闭 Weasley Podex 拥有的孤儿运行时。</td></tr>
+<tr><td><code>weasley-podex browser reset [--force]</code></td><td>清除浏览器配置文件和截图。仅在用户明确请求时使用。</td></tr>
 </tbody>
 </table>
 </div>
@@ -247,18 +246,18 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>命令</th><th>描述</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser snapshot</code></td><td>完整页面快照（所有节点）。</td></tr>
-<tr><td><code>podex browser snapshot --interactive</code></td><td>仅显示可交互元素及其 ref ID。推荐使用以节省 token 预算。</td></tr>
-<tr><td><code>podex browser snapshot --interactive --max-nodes 30 --json</code></td><td>限制节点数量并以 JSON 格式输出。</td></tr>
-<tr><td><code>podex browser screenshot</code></td><td>捕获当前视口。保存至 <code>~/.podex/screenshots/</code>。</td></tr>
-<tr><td><code>podex browser screenshot --full-page</code></td><td>全页面截图（滚动捕获）。</td></tr>
-<tr><td><code>podex browser screenshot --ref e5</code></td><td>通过 ref ID 截取特定元素。</td></tr>
-<tr><td><code>podex browser screenshot --clip 0 0 320 180 --json</code></td><td>裁剪区域截图，JSON 输出路径。</td></tr>
-<tr><td><code>podex browser text</code></td><td>提取页面所有可见文本。</td></tr>
-<tr><td><code>podex browser text --format html</code></td><td>以 HTML 格式提取页面内容。</td></tr>
-<tr><td><code>podex browser get-dom --selector ".card" --max-chars 2000 --json</code></td><td>获取匹配 CSS 选择器的 DOM 子树。</td></tr>
-<tr><td><code>podex browser console --json --limit 20</code></td><td>获取控制台日志条目。</td></tr>
-<tr><td><code>podex browser network --json --limit 20</code></td><td>获取网络请求日志。</td></tr>
+<tr><td><code>weasley-podex browser snapshot</code></td><td>完整页面快照（所有节点）。</td></tr>
+<tr><td><code>weasley-podex browser snapshot --interactive</code></td><td>仅显示可交互元素及其 ref ID。推荐使用以节省 token 预算。</td></tr>
+<tr><td><code>weasley-podex browser snapshot --interactive --max-nodes 30 --json</code></td><td>限制节点数量并以 JSON 格式输出。</td></tr>
+<tr><td><code>weasley-podex browser screenshot</code></td><td>捕获当前视口。保存至 <code>~/.weasley/podex/screenshots/</code>。</td></tr>
+<tr><td><code>weasley-podex browser screenshot --full-page</code></td><td>全页面截图（滚动捕获）。</td></tr>
+<tr><td><code>weasley-podex browser screenshot --ref e5</code></td><td>通过 ref ID 截取特定元素。</td></tr>
+<tr><td><code>weasley-podex browser screenshot --clip 0 0 320 180 --json</code></td><td>裁剪区域截图，JSON 输出路径。</td></tr>
+<tr><td><code>weasley-podex browser text</code></td><td>提取页面所有可见文本。</td></tr>
+<tr><td><code>weasley-podex browser text --format html</code></td><td>以 HTML 格式提取页面内容。</td></tr>
+<tr><td><code>weasley-podex browser get-dom --selector ".card" --max-chars 2000 --json</code></td><td>获取匹配 CSS 选择器的 DOM 子树。</td></tr>
+<tr><td><code>weasley-podex browser console --json --limit 20</code></td><td>获取控制台日志条目。</td></tr>
+<tr><td><code>weasley-podex browser network --json --limit 20</code></td><td>获取网络请求日志。</td></tr>
 </tbody>
 </table>
 </div>
@@ -268,20 +267,20 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>命令</th><th>描述</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser click e3</code></td><td>通过 ref ID 点击元素。</td></tr>
-<tr><td><code>podex browser click e3 --double</code></td><td>双击元素。</td></tr>
-<tr><td><code>podex browser click e3 --right</code></td><td>右键点击（上下文菜单）。</td></tr>
-<tr><td><code>podex browser type e3 "hello"</code></td><td>在输入框中输入文本。</td></tr>
-<tr><td><code>podex browser type e3 "hello" --submit</code></td><td>输入文本后按回车。</td></tr>
-<tr><td><code>podex browser press Enter</code></td><td>按下键盘按键（Enter、Escape、Tab 等）。</td></tr>
-<tr><td><code>podex browser hover e5</code></td><td>悬停在元素上。</td></tr>
-<tr><td><code>podex browser select e7 "option1"</code></td><td>在下拉菜单中选择选项。</td></tr>
-<tr><td><code>podex browser drag e3 e5</code></td><td>从一个元素拖拽到另一个元素。</td></tr>
-<tr><td><code>podex browser mouse-click 400 300</code></td><td>在绝对坐标处点击。</td></tr>
-<tr><td><code>podex browser mouse-click 400 300 --double</code></td><td>在坐标处双击。</td></tr>
-<tr><td><code>podex browser move-mouse 400 300</code></td><td>将鼠标移动到坐标处（不点击）。</td></tr>
-<tr><td><code>podex browser mouse-down</code></td><td>按下鼠标按钮。</td></tr>
-<tr><td><code>podex browser mouse-up --right</code></td><td>释放鼠标按钮（可选右键）。</td></tr>
+<tr><td><code>weasley-podex browser click e3</code></td><td>通过 ref ID 点击元素。</td></tr>
+<tr><td><code>weasley-podex browser click e3 --double</code></td><td>双击元素。</td></tr>
+<tr><td><code>weasley-podex browser click e3 --right</code></td><td>右键点击（上下文菜单）。</td></tr>
+<tr><td><code>weasley-podex browser type e3 "hello"</code></td><td>在输入框中输入文本。</td></tr>
+<tr><td><code>weasley-podex browser type e3 "hello" --submit</code></td><td>输入文本后按回车。</td></tr>
+<tr><td><code>weasley-podex browser press Enter</code></td><td>按下键盘按键（Enter、Escape、Tab 等）。</td></tr>
+<tr><td><code>weasley-podex browser hover e5</code></td><td>悬停在元素上。</td></tr>
+<tr><td><code>weasley-podex browser select e7 "option1"</code></td><td>在下拉菜单中选择选项。</td></tr>
+<tr><td><code>weasley-podex browser drag e3 e5</code></td><td>从一个元素拖拽到另一个元素。</td></tr>
+<tr><td><code>weasley-podex browser mouse-click 400 300</code></td><td>在绝对坐标处点击。</td></tr>
+<tr><td><code>weasley-podex browser mouse-click 400 300 --double</code></td><td>在坐标处双击。</td></tr>
+<tr><td><code>weasley-podex browser move-mouse 400 300</code></td><td>将鼠标移动到坐标处（不点击）。</td></tr>
+<tr><td><code>weasley-podex browser mouse-down</code></td><td>按下鼠标按钮。</td></tr>
+<tr><td><code>weasley-podex browser mouse-up --right</code></td><td>释放鼠标按钮（可选右键）。</td></tr>
 </tbody>
 </table>
 </div>
@@ -291,18 +290,18 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>命令</th><th>描述</th></tr></thead>
 <tbody>
-<tr><td><code>podex browser navigate "https://example.com"</code></td><td>跳转到 URL。</td></tr>
-<tr><td><code>podex browser open "https://example.com"</code></td><td><code>navigate</code> 的别名。</td></tr>
-<tr><td><code>podex browser tabs</code></td><td>列出所有已打开的标签页。</td></tr>
-<tr><td><code>podex browser tabs --json</code></td><td>以 JSON 格式列出标签页。</td></tr>
-<tr><td><code>podex browser active-tab --json</code></td><td>以 JSON 格式获取当前活动标签页信息。</td></tr>
-<tr><td><code>podex browser tab-switch 2</code></td><td>按索引切换标签页。</td></tr>
-<tr><td><code>podex browser reload</code></td><td>刷新当前页面。</td></tr>
-<tr><td><code>podex browser resize 1440 900</code></td><td>调整视口大小。</td></tr>
-<tr><td><code>podex browser scroll --x 0 --y 1000</code></td><td>滚动到绝对位置。</td></tr>
-<tr><td><code>podex browser wait-for-selector ".toast-success" --timeout 30000</code></td><td>等待 CSS 选择器出现。</td></tr>
-<tr><td><code>podex browser wait-for-text "Dashboard" --timeout 30000</code></td><td>等待页面上出现指定文本。</td></tr>
-<tr><td><code>podex browser evaluate "document.title"</code></td><td>在页面上下文中执行 JavaScript。</td></tr>
+<tr><td><code>weasley-podex browser navigate "https://example.com"</code></td><td>跳转到 URL。</td></tr>
+<tr><td><code>weasley-podex browser open "https://example.com"</code></td><td><code>navigate</code> 的别名。</td></tr>
+<tr><td><code>weasley-podex browser tabs</code></td><td>列出所有已打开的标签页。</td></tr>
+<tr><td><code>weasley-podex browser tabs --json</code></td><td>以 JSON 格式列出标签页。</td></tr>
+<tr><td><code>weasley-podex browser active-tab --json</code></td><td>以 JSON 格式获取当前活动标签页信息。</td></tr>
+<tr><td><code>weasley-podex browser tab-switch 2</code></td><td>按索引切换标签页。</td></tr>
+<tr><td><code>weasley-podex browser reload</code></td><td>刷新当前页面。</td></tr>
+<tr><td><code>weasley-podex browser resize 1440 900</code></td><td>调整视口大小。</td></tr>
+<tr><td><code>weasley-podex browser scroll --x 0 --y 1000</code></td><td>滚动到绝对位置。</td></tr>
+<tr><td><code>weasley-podex browser wait-for-selector ".toast-success" --timeout 30000</code></td><td>等待 CSS 选择器出现。</td></tr>
+<tr><td><code>weasley-podex browser wait-for-text "Dashboard" --timeout 30000</code></td><td>等待页面上出现指定文本。</td></tr>
+<tr><td><code>weasley-podex browser evaluate "document.title"</code></td><td>在页面上下文中执行 JavaScript。</td></tr>
 </tbody>
 </table>
 <div class="callout callout-warn"><code>evaluate</code> 是诊断命令。请勿在更高级别的供应商工作流（如 web-ai）中通过它执行任意用户提供的 JavaScript。</div>
@@ -314,7 +313,7 @@ podex browser screenshot</code></pre>
 <table>
 <thead><tr><th>场景</th><th>标签</th><th>说明</th></tr></thead>
 <tbody>
-<tr><td>本地 <code>podex browser</code> 原语</td><td><span class="badge badge-active">就绪</span></td><td>仅支持服务器驱动的本地 Chrome/CDP</td></tr>
+<tr><td>本地 <code>weasley-podex browser</code> 原语</td><td><span class="badge badge-active">就绪</span></td><td>仅支持服务器驱动的本地 Chrome/CDP</td></tr>
 <tr><td><code>doctor</code> 和 <code>cleanup-runtimes</code></td><td><span class="badge badge-active">就绪</span></td><td>默认试运行；关闭需要 <code>--force</code></td></tr>
 <tr><td>仪表盘可见/无头启动分离</td><td><span class="badge badge-active">就绪</span></td><td>可见手动模式和无头代理模式是分开的</td></tr>
 <tr><td>web-ai 供应商工作流</td><td><span class="badge badge-category">测试版</span></td><td>请使用 <code>web-ai</code> 技能和供应商特定的门控</td></tr>
@@ -329,7 +328,7 @@ podex browser screenshot</code></pre>
 <li><strong>Ref ID 是临时的。</strong>它们的作用域仅限于最近一次快照。在导航、刷新、切换标签页或任何页面变化后，请务必重新运行 <code>snapshot --interactive</code>。</li>
 <li><strong>快照优先使用 <code>--interactive</code></strong> 以节省 token 预算 &mdash; 完整快照包含非交互节点，数据量可能很大。</li>
 <li><strong>自动化会话请使用 <code>--agent</code></strong>。它以无头模式启动，避免弹出可见浏览器窗口。</li>
-<li><strong>切勿关闭通过 <code>ps</code> 找到的 Chrome 进程。</strong>只能使用 <code>cleanup-runtimes --close --force</code>，它会通过持久运行时记录验证 jaw 拥有的进程。</li>
+<li><strong>切勿关闭通过 <code>ps</code> 找到的 Chrome 进程。</strong>只能使用 <code>cleanup-runtimes --close --force</code>，它会通过持久运行时记录验证 Weasley Podex 拥有的进程。</li>
 <li><strong>执行 <code>reset</code> 前请先询问。</strong><code>reset</code> 命令会清除浏览器配置文件和截图。仅在用户明确请求时使用。</li>
 <li><strong><code>evaluate</code> 仅用于诊断。</strong>请勿在更高级别的工作流中通过 <code>evaluate</code> 传递任意用户提供的 JavaScript。</li>
 <li><strong>非 DOM 元素</strong>（Canvas、WebGL、跨域 iframe、自定义 UI）应在确认没有可用 ref 后，才回退到 <code>vision-click</code> 技能。</li>
@@ -339,25 +338,25 @@ podex browser screenshot</code></pre>
 <h2>常见工作流</h2>
 
 <h3>网页搜索</h3>
-<pre><code>podex browser start --agent
-podex browser navigate "https://www.google.com"
-podex browser snapshot --interactive
-podex browser type e3 "search query" --submit
-podex browser snapshot --interactive
-podex browser click e7</code></pre>
+<pre><code>weasley-podex browser start --agent
+weasley-podex browser navigate "https://www.google.com"
+weasley-podex browser snapshot --interactive
+weasley-podex browser type e3 "search query" --submit
+weasley-podex browser snapshot --interactive
+weasley-podex browser click e7</code></pre>
 
 <h3>表单填写</h3>
-<pre><code>podex browser snapshot --interactive
-podex browser type e1 "John Doe"
-podex browser type e2 "john@example.com"
-podex browser click e3           # 提交按钮
-podex browser snapshot           # 验证提交结果</code></pre>
+<pre><code>weasley-podex browser snapshot --interactive
+weasley-podex browser type e1 "John Doe"
+weasley-podex browser type e2 "john@example.com"
+weasley-podex browser click e3           # 提交按钮
+weasley-podex browser snapshot           # 验证提交结果</code></pre>
 
 <h3>读取页面内容</h3>
-<pre><code>podex browser navigate "https://news.ycombinator.com"
-podex browser text               # 纯文本提取
-podex browser text --format html # HTML 内容
-podex browser snapshot --interactive</code></pre>
+<pre><code>weasley-podex browser navigate "https://news.ycombinator.com"
+weasley-podex browser text               # 纯文本提取
+weasley-podex browser text --format html # HTML 内容
+weasley-podex browser snapshot --interactive</code></pre>
 
 <h3>AI 网页工作流</h3>
 <p>对于 ChatGPT 或其他 web-ai 工作流，请使用 <code>web-ai</code> 技能。浏览器技能负责底层页面控制；<code>web-ai</code> 负责结构化问题渲染、活动标签页安全性和响应基线处理。</p>
@@ -369,7 +368,7 @@ podex browser snapshot --interactive</code></pre>
 
 <div class="example-callout">
   <div class="example-label">示例 1</div>
-  <code>"&#44396;&#44544; &#44160;&#49353;&#54644;&#51468; &mdash; podex &#49444;&#52824; &#48169;&#48277;"</code>
+  <code>"&#44396;&#44544; &#44160;&#49353;&#54644;&#51468; &mdash; weasley-podex &#49444;&#52824; &#48169;&#48277;"</code>
   <div class="example-desc">启动无头浏览器，导航到 Google，输入搜索查询并返回结果。触发 <code>browser start --agent</code> + <code>navigate</code> + <code>type --submit</code> + <code>snapshot</code>。</div>
 </div>
 
@@ -403,13 +402,13 @@ podex browser snapshot --interactive</code></pre>
 <p>三种运行 Chrome 无头模式的方式：</p>
 
 <pre><code># 推荐用于自动化
-podex browser start --agent
+weasley-podex browser start --agent
 
 # 手动模式显式指定无头
-podex browser start --headless
+weasley-podex browser start --headless
 
 # 通过环境变量
-CHROME_HEADLESS=1 podex browser start</code></pre>
+CHROME_HEADLESS=1 weasley-podex browser start</code></pre>
 
 <p>所有代理自动化请使用 <code>--agent</code>。它避免弹出可见浏览器窗口，是自动化会话的预期默认值。</p>
 
@@ -424,49 +423,49 @@ CHROME_HEADLESS=1 podex browser start</code></pre>
 </tbody>
 </table>
 
-<p>默认 CDP 端口从 <code>podex</code> 服务器端口派生。仅在需要显式覆盖时使用 <code>podex browser start --port &lt;port&gt;</code>。</p>
+<p>默认 CDP 端口从 <code>weasley-podex</code> 服务器端口派生。仅在需要显式覆盖时使用 <code>weasley-podex browser start --port &lt;port&gt;</code>。</p>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>独立 agbrowse 替代方案</h2>
 
-<p>当你明确需要驱动<strong>单个 Chrome 实例</strong>（例如，保持一个已登录的配置文件打开，避免同时运行 <code>podex serve</code> 和第二个 CDP 会话）时，相同的浏览器命令可通过独立的 <code>agbrowse</code> CLI（<code>npm install -g agbrowse</code>）使用。命令参数完全相同；仅二进制前缀不同。</p>
+<p>当你明确需要驱动<strong>单个 Chrome 实例</strong>（例如，保持一个已登录的配置文件打开，避免同时运行 <code>weasley-podex serve</code> 和第二个 CDP 会话）时，相同的浏览器命令可通过独立的 <code>agbrowse</code> CLI（<code>npm install -g agbrowse</code>）使用。命令参数完全相同；仅二进制前缀不同。</p>
 
 <div class="comparison-grid">
-  <div class="col-header">podex browser 形式</div>
+  <div class="col-header">weasley-podex browser 形式</div>
   <div class="col-header">agbrowse 形式</div>
-  <div class="col-cell">podex browser start --agent</div>
+  <div class="col-cell">weasley-podex browser start --agent</div>
   <div class="col-cell">agbrowse start</div>
-  <div class="col-cell">podex browser status</div>
+  <div class="col-cell">weasley-podex browser status</div>
   <div class="col-cell">agbrowse status</div>
-  <div class="col-cell">podex browser navigate "&lt;url&gt;"</div>
+  <div class="col-cell">weasley-podex browser navigate "&lt;url&gt;"</div>
   <div class="col-cell">agbrowse navigate "&lt;url&gt;"</div>
-  <div class="col-cell">podex browser snapshot --interactive</div>
+  <div class="col-cell">weasley-podex browser snapshot --interactive</div>
   <div class="col-cell">agbrowse snapshot --interactive</div>
-  <div class="col-cell">podex browser click e3</div>
+  <div class="col-cell">weasley-podex browser click e3</div>
   <div class="col-cell">agbrowse click e3</div>
-  <div class="col-cell">podex browser type e5 "hello" --submit</div>
+  <div class="col-cell">weasley-podex browser type e5 "hello" --submit</div>
   <div class="col-cell">agbrowse type e5 "hello" --submit</div>
-  <div class="col-cell">podex browser screenshot</div>
+  <div class="col-cell">weasley-podex browser screenshot</div>
   <div class="col-cell">agbrowse screenshot</div>
-  <div class="col-cell">podex browser stop</div>
+  <div class="col-cell">weasley-podex browser stop</div>
   <div class="col-cell">agbrowse stop</div>
 </div>
 
-<div class="callout callout-warn">请勿同时对同一个 <code>--port</code> 运行 <code>podex browser</code> 和 <code>agbrowse</code> &mdash; 第二个启动会复用第一个 CDP，持久化状态文件可能会冲突。</div>
+<div class="callout callout-warn">请勿同时对同一个 <code>--port</code> 运行 <code>weasley-podex browser</code> 和 <code>agbrowse</code> &mdash; 第二个启动会复用第一个 CDP，持久化状态文件可能会冲突。</div>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>运行时清理</h2>
 
 <pre><code># 诊断运行时状态
-podex browser doctor --json
+weasley-podex browser doctor --json
 
 # 试运行：查看将被清理的内容
-podex browser cleanup-runtimes
+weasley-podex browser cleanup-runtimes
 
-# 实际关闭 jaw 拥有的孤儿运行时
-podex browser cleanup-runtimes --close --force</code></pre>
+# 实际关闭 weasley-podex 拥有的孤儿运行时
+weasley-podex browser cleanup-runtimes --close --force</code></pre>
 
-<p><code>cleanup-runtimes</code> 设计上是保守的。它仅作用于 jaw 拥有的 Chrome 启动时写入的持久 <code>browser-runtime-owner.json</code> 记录。进程命令行必须仍然匹配记录的 PID、CDP 端口和配置文件。包含 <code>--type=</code> 的 Chrome 辅助进程会被拒绝。切勿将通用 <code>ps</code> 输出作为 Chrome 进程可安全关闭的依据。</p>
+<p><code>cleanup-runtimes</code> 设计上是保守的。它仅作用于 Weasley Podex 拥有的 Chrome 启动时写入的持久 <code>browser-runtime-owner.json</code> 记录。进程命令行必须仍然匹配记录的 PID、CDP 端口和配置文件。包含 <code>--type=</code> 的 Chrome 辅助进程会被拒绝。切勿将通用 <code>ps</code> 输出作为 Chrome 进程可安全关闭的依据。</p>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <h2>恢复策略</h2>
@@ -504,9 +503,9 @@ podex browser cleanup-runtimes --close --force</code></pre>
 <table>
 <thead><tr><th>症状</th><th>原因</th><th>解决方法</th></tr></thead>
 <tbody>
-<tr><td>CDP 连接被拒绝</td><td>Chrome 未启动或端口错误</td><td><code>podex browser status</code>，然后使用预期端口启动</td></tr>
-<tr><td><code>running:false</code> 且 <code>owner:jaw-owned</code></td><td>运行时元数据过时或 CDP 已断开</td><td><code>podex browser doctor</code>，然后重试 <code>browser start</code></td></tr>
-<tr><td>旧的无头 jaw Chrome 仍在运行</td><td>持久 jaw 拥有的孤儿候选进程</td><td><code>podex browser cleanup-runtimes</code> 试运行，然后 <code>--close --force</code></td></tr>
+<tr><td>CDP 连接被拒绝</td><td>Chrome 未启动或端口错误</td><td><code>weasley-podex browser status</code>，然后使用预期端口启动</td></tr>
+<tr><td><code>running:false</code> 且 <code>owner:weasley-podex-owned</code></td><td>运行时元数据过时或 CDP 已断开</td><td><code>weasley-podex browser doctor</code>，然后重试 <code>browser start</code></td></tr>
+<tr><td>旧的无头 Weasley Podex Chrome 仍在运行</td><td>持久 Weasley Podex 拥有的孤儿候选进程</td><td><code>weasley-podex browser cleanup-runtimes</code> 试运行，然后 <code>--close --force</code></td></tr>
 <tr><td>窗口只打开测试浏览器</td><td>Chrome 单例吸收了启动请求</td><td>关闭所有 Chrome 窗口，然后使用 <code>start --agent</code></td></tr>
 <tr><td>无头 CDP 未打开</td><td>在无 GUI 环境中未请求无头模式</td><td>添加 <code>--headless</code> 或使用 <code>--agent</code></td></tr>
 <tr><td>端口冲突</td><td>另一个进程占用了 CDP 端口</td><td>选择不同的 <code>--port</code></td></tr>
@@ -520,14 +519,14 @@ podex browser cleanup-runtimes --close --force</code></pre>
 <p>以下命令是来自 <code>30_browser</code> 参考设计的计划对等目标。除非在后续 PRD 中明确升级，否则它们在当前运行时中<strong>不可用</strong>。</p>
 
 <h3>计划中的观察和诊断命令</h3>
-<pre><code>podex browser console --clear --reload --duration 3000
-podex browser network --reload --duration 1000
-podex browser wait 2000</code></pre>
+<pre><code>weasley-podex browser console --clear --reload --duration 3000
+weasley-podex browser network --reload --duration 1000
+weasley-podex browser wait 2000</code></pre>
 
 <h3>计划中的操作命令</h3>
-<pre><code>podex browser resize 0 0 --fullscreen
-podex browser scroll down
-podex browser scroll up --amount 1000</code></pre>
+<pre><code>weasley-podex browser resize 0 0 --fullscreen
+weasley-podex browser scroll down
+weasley-podex browser scroll up --amount 1000</code></pre>
 
 <div class="callout callout-info"><code>wait-for &lt;ref&gt;</code> 在参考设计中已弃用，因为 ref 的作用域仅限于快照。请优先使用基于选择器或基于文本的等待。</div>
 
@@ -551,7 +550,7 @@ podex browser scroll up --amount 1000</code></pre>
 <li>Ref ID 是短期有效的，应视为仅限最近一次快照的作用域。</li>
 <li>在导航或重大页面变化后，请务必重新运行 <code>snapshot --interactive</code>。</li>
 <li>优先使用 <code>--interactive</code> 以节省 token 预算。</li>
-<li>截图保存至 <code>~/.podex/screenshots/</code>。</li>
+<li>截图保存至 <code>~/.weasley/podex/screenshots/</code>。</li>
 <li><code>start --agent</code> 应作为代理自动化的默认选择。</li>
 <li>Canvas、WebGL、跨域 iframe 和自定义 UI 等非 DOM 元素，应仅在作为显式回退时使用 <code>vision-click</code> 技能。</li>
 </ul>

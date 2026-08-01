@@ -2,7 +2,7 @@ import { ipcRenderer } from 'electron';
 
 const METRICS_IPC_CHANNEL = 'podex:metrics:get-latest';
 const POST_PATH = '/api/dashboard/electron-metrics';
-const HEADER = 'X-podex-Electron';
+const HEADER = 'X-Weasley-Podex-Electron';
 const POLL_INTERVAL_MS = 5000;
 
 interface MetricsProcessSample {

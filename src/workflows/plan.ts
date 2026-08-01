@@ -26,7 +26,7 @@ export function buildPlanCompatArtifact(
     const pabcdText = tr(
         'cmd.workflow.plan.pabcdEquivalent',
         locale,
-        'In podex, /plan maps to PABCD P: clarify the plan first, then audit, build, check, and close.',
+        'In Weasley Podex, /plan maps to PABCD P: clarify the plan first, then audit, build, check, and close.',
     );
     const sourceText = request || tr(
         'cmd.workflow.plan.noRequest',
@@ -54,7 +54,7 @@ export function buildPlanCompatArtifact(
         authoritative: false,
         storage: createWorkflowStorage(projectKey),
         sections: [
-            { id: 'pabcd-equivalent', title: tr('cmd.workflow.plan.section.pabcd', locale, 'podex planning'), body: pabcdText, format: 'plain', required: true },
+            { id: 'pabcd-equivalent', title: tr('cmd.workflow.plan.section.pabcd', locale, 'Weasley Podex planning'), body: pabcdText, format: 'plain', required: true },
             { id: 'source-request', title: tr('cmd.workflow.plan.section.source', locale, 'Original request'), body: sourceText, format: 'plain', required: true },
             { id: 'next-actions', title: tr('cmd.workflow.plan.section.next', locale, 'Next actions'), body: nextText, format: 'plain', required: true },
         ],

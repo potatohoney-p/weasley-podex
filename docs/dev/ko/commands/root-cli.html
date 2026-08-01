@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Root CLI Subcommands — podex Docs</title>
+<title>Root CLI Subcommands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .cmd-section { margin-bottom: 40px; }
 .cmd-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
@@ -31,7 +30,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -52,7 +51,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -101,75 +100,75 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Root CLI 서브커맨드</h1>
-<p class="lead"><code>jaw</code> 바이너리는 26개의 루트 라우터 케이스와 chat search, browser web-ai, dashboard memory/chat search, connector board, reminders, project, goal, task, lock 같은 그룹형 표면을 제공합니다. 이 명령들은 터미널에서 직접 실행되며, 다른 커맨드 페이지에서 설명하는 채팅 내 슬래시 커맨드와는 별개입니다.</p>
+<p class="lead"><code>weasley-podex</code> 바이너리는 26개의 루트 라우터 케이스와 chat search, browser web-ai, dashboard memory/chat search, connector board, reminders, project, goal, task, lock 같은 그룹형 표면을 제공합니다. 이 명령들은 터미널에서 직접 실행되며, 다른 커맨드 페이지에서 설명하는 채팅 내 슬래시 커맨드와는 별개입니다.</p>
 
 <div class="callout callout-info">
-  <strong>글로벌 플래그:</strong> 모든 서브커맨드는 <code>--help</code> / <code>-h</code> 플래그로 개별 도움말을 확인할 수 있습니다. 서브커맨드 앞에 <code>--home &lt;path&gt;</code>를 사용하면 다른 데이터 디렉토리를 지정할 수 있습니다 (기본값: <code>~/.podex</code>). 대부분의 명령에서 <code>--json</code> 플래그를 통해 기계 판독 가능한 JSON 출력을 사용할 수 있습니다.
+  <strong>글로벌 플래그:</strong> 모든 서브커맨드는 <code>--help</code> / <code>-h</code> 플래그로 개별 도움말을 확인할 수 있습니다. 서브커맨드 앞에 <code>--home &lt;path&gt;</code>를 사용하면 다른 데이터 디렉토리를 지정할 수 있습니다 (기본값: <code>~/.weasley/podex</code>). 대부분의 명령에서 <code>--json</code> 플래그를 통해 기계 판독 가능한 JSON 출력을 사용할 수 있습니다.
 </div>
 
-<pre><code>jaw &lt;command&gt; [args] [--flags]
-jaw --home &lt;path&gt; &lt;command&gt;
-jaw --version
-jaw --help</code></pre>
+<pre><code>weasley-podex &lt;command&gt; [args] [--flags]
+weasley-podex --home &lt;path&gt; &lt;command&gt;
+weasley-podex --version
+weasley-podex --help</code></pre>
 
 <h2>현재 루트 표면</h2>
-<pre><code>jaw serve | init | doctor | status | reset
-jaw chat | chat search | dispatch | dispatch --watch | employee | worker
-jaw orchestrate | goal | task | project | lock | unlock | history
-jaw memory | dashboard memory | dashboard chat search
-jaw browser | browser web-ai | skill | mcp
-jaw connector board | reminders
-jaw launchd | service | clone</code></pre>
+<pre><code>weasley-podex serve | init | doctor | status | reset
+weasley-podex chat | chat search | dispatch | dispatch --watch | employee | worker
+weasley-podex orchestrate | goal | task | project | lock | unlock | history
+weasley-podex memory | dashboard memory | dashboard chat search
+weasley-podex browser | browser web-ai | skill | mcp
+weasley-podex connector board | reminders
+weasley-podex launchd | service | clone</code></pre>
 
 <h2>목차</h2>
 <div class="toc-grid">
   <div class="toc-cat">Server &amp; Dashboard</div>
-  <a href="#serve">jaw serve</a>
-  <a href="#dashboard">jaw dashboard</a>
-  <a href="#status">jaw status</a>
+  <a href="#serve">weasley-podex serve</a>
+  <a href="#dashboard">weasley-podex dashboard</a>
+  <a href="#status">weasley-podex status</a>
   <div class="toc-cat">Setup &amp; Diagnostics</div>
-  <a href="#init">jaw init</a>
-  <a href="#doctor">jaw doctor</a>
-  <a href="#reset">jaw reset</a>
+  <a href="#init">weasley-podex init</a>
+  <a href="#doctor">weasley-podex doctor</a>
+  <a href="#reset">weasley-podex reset</a>
   <div class="toc-cat">Orchestration</div>
-  <a href="#chat">jaw chat</a>
-  <a href="#dispatch">jaw dispatch</a>
-  <a href="#employee">jaw employee</a>
-  <a href="#orchestrate">jaw orchestrate</a>
-  <a href="#goal">jaw goal</a>
+  <a href="#chat">weasley-podex chat</a>
+  <a href="#dispatch">weasley-podex dispatch</a>
+  <a href="#employee">weasley-podex employee</a>
+  <a href="#orchestrate">weasley-podex orchestrate</a>
+  <a href="#goal">weasley-podex goal</a>
   <div class="toc-cat">Automation &amp; Tools</div>
-  <a href="#memory">jaw memory</a>
-  <a href="#browser">jaw browser</a>
-  <a href="#skill">jaw skill</a>
-  <a href="#mcp">jaw mcp</a>
-  <a href="#connector">jaw connector</a>
-  <a href="#reminders">jaw reminders</a>
-  <a href="#project">jaw project</a>
+  <a href="#memory">weasley-podex memory</a>
+  <a href="#browser">weasley-podex browser</a>
+  <a href="#skill">weasley-podex skill</a>
+  <a href="#mcp">weasley-podex mcp</a>
+  <a href="#connector">weasley-podex connector</a>
+  <a href="#reminders">weasley-podex reminders</a>
+  <a href="#project">weasley-podex project</a>
   <div class="toc-cat">Service Management</div>
-  <a href="#service">jaw service</a>
-  <a href="#clone">jaw clone</a>
-  <a href="#launchd">jaw launchd</a>
+  <a href="#service">weasley-podex service</a>
+  <a href="#clone">weasley-podex clone</a>
+  <a href="#launchd">weasley-podex launchd</a>
 </div>
 
 <!-- ================================================================== -->
 <h2>Server &amp; Dashboard</h2>
 <!-- ================================================================== -->
 
-<!-- jaw serve -->
+<!-- weasley-podex serve -->
 <div class="cmd-section" id="serve">
 <div class="cmd-header">
-  <h3><code>jaw serve</code></h3>
+  <h3><code>weasley-podex serve</code></h3>
   <span class="cmd-badge cmd-badge-server">Server</span>
 </div>
-<p class="cmd-desc">podex 서버를 포그라운드에서 시작합니다. <code>chat</code>, <code>dispatch</code>, <code>browser</code> 및 대부분의 다른 명령이 작동하려면 서버가 먼저 실행 중이어야 합니다.</p>
-<pre><code>jaw serve [--port &lt;N&gt;] [--no-open] [--lan] [--remote]</code></pre>
+<p class="cmd-desc">Weasley Podex 서버를 포그라운드에서 시작합니다. <code>chat</code>, <code>dispatch</code>, <code>browser</code> 및 대부분의 다른 명령이 작동하려면 서버가 먼저 실행 중이어야 합니다.</p>
+<pre><code>weasley-podex serve [--port &lt;N&gt;] [--no-open] [--lan] [--remote]</code></pre>
 <table>
 <tr><th>옵션</th><th>기본값</th><th>설명</th></tr>
 <tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>서버 포트 (<code>PORT</code> 환경변수도 인식)</td></tr>
@@ -182,29 +181,29 @@ jaw launchd | service | clone</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 기본값으로 시작 (포트 3457, 브라우저 자동 열기)
-jaw serve
+weasley-podex serve
 
 # 커스텀 포트, 브라우저 열기 비활성화
-jaw serve --port 3458 --no-open
+weasley-podex serve --port 3458 --no-open
 
 # 로컬 네트워크 접근을 위한 LAN 모드
-jaw serve --lan --port 3460
+weasley-podex serve --lan --port 3460
 
 # 별도의 데이터 디렉토리 사용
-jaw --home ~/.podex-work serve --port 3458</code></pre>
+weasley-podex --home ~/.weasley/podex-work serve --port 3458</code></pre>
 <div class="tip-kr">
-  <strong>~해줘 Tip:</strong> "서버 시작해줘" -- 에이전트는 jaw serve를 대신 실행할 수 없습니다 (포그라운드 프로세스가 필요하기 때문). 수동으로 실행하거나 <code>jaw service install</code>을 사용하여 백그라운드 자동 시작을 설정하세요.
+  <strong>~해줘 Tip:</strong> "서버 시작해줘" -- 에이전트는 weasley-podex serve를 대신 실행할 수 없습니다 (포그라운드 프로세스가 필요하기 때문). 수동으로 실행하거나 <code>weasley-podex service install</code>을 사용하여 백그라운드 자동 시작을 설정하세요.
 </div>
 </div>
 
-<!-- jaw dashboard -->
+<!-- weasley-podex dashboard -->
 <div class="cmd-section" id="dashboard">
 <div class="cmd-header">
-  <h3><code>jaw dashboard</code></h3>
+  <h3><code>weasley-podex dashboard</code></h3>
   <span class="cmd-badge cmd-badge-server">Server</span>
 </div>
 <p class="cmd-desc">멀티 인스턴스 관리자입니다. 대시보드 서버를 시작하고, 인스턴스를 조회/시작/중지하며, 영구 서비스를 관리하고, L2 크로스 인스턴스 메모리 페더레이션 검색을 수행합니다.</p>
-<pre><code>jaw dashboard &lt;command&gt; [options] [--json]</code></pre>
+<pre><code>weasley-podex dashboard &lt;command&gt; [options] [--json]</code></pre>
 <table>
 <tr><th>서브커맨드</th><th>설명</th></tr>
 <tr><td><code>serve [--port] [--from] [--count] [--no-open]</code></td><td>대시보드 서버 시작 (기본 포트 24576, 3457부터 스캔)</td></tr>
@@ -229,38 +228,38 @@ jaw --home ~/.podex-work serve --port 3458</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 대시보드 시작
-jaw dashboard serve
+weasley-podex dashboard serve
 
 # 온라인 인스턴스를 JSON으로 조회
-jaw dashboard ls --json | jq '.[] | select(.status == "online")'
+weasley-podex dashboard ls --json | jq '.[] | select(.status == "online")'
 
 # 포트 3458에 새 인스턴스 시작
-jaw dashboard start 3458 --home ~/.jaw-work
+weasley-podex dashboard start 3458 --home ~/.weasley/podex-work
 
 # 인스턴스 중지
-jaw dashboard stop 3457
+weasley-podex dashboard stop 3457
 
 # 크로스 인스턴스 메모리 검색
-jaw dashboard memory search "JWT authentication"
+weasley-podex dashboard memory search "JWT authentication"
 
 # 모든 메모리 인스턴스 조회
-jaw dashboard memory instances
+weasley-podex dashboard memory instances
 
 # 영구 자동 시작 등록
-jaw dashboard perm 3458 --home ~/.jaw-work</code></pre>
+weasley-podex dashboard perm 3458 --home ~/.weasley/podex-work</code></pre>
 <div class="tip-kr">
-  <strong>~해줘 Tip:</strong> "대시보드 상태 확인해줘" -- 에이전트가 <code>jaw dashboard status --json</code>을 실행하고 어떤 인스턴스가 온라인인지 보고합니다.
+  <strong>~해줘 Tip:</strong> "대시보드 상태 확인해줘" -- 에이전트가 <code>weasley-podex dashboard status --json</code>을 실행하고 어떤 인스턴스가 온라인인지 보고합니다.
 </div>
 </div>
 
-<!-- jaw status -->
+<!-- weasley-podex status -->
 <div class="cmd-section" id="status">
 <div class="cmd-header">
-  <h3><code>jaw status</code></h3>
+  <h3><code>weasley-podex status</code></h3>
   <span class="cmd-badge cmd-badge-server">Server</span>
 </div>
-<p class="cmd-desc">API 핑을 통해 jaw 서버가 실행 중인지 확인합니다. 선택적으로 대시보드 서버도 함께 확인할 수 있습니다.</p>
-<pre><code>jaw status [--port &lt;N&gt;] [--json] [--dashboard]</code></pre>
+<p class="cmd-desc">API 핑을 통해 Weasley Podex 서버가 실행 중인지 확인합니다. 선택적으로 대시보드 서버도 함께 확인할 수 있습니다.</p>
+<pre><code>weasley-podex status [--port &lt;N&gt;] [--json] [--dashboard]</code></pre>
 <table>
 <tr><th>옵션</th><th>기본값</th><th>설명</th></tr>
 <tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>대상 서버 포트</td></tr>
@@ -270,19 +269,19 @@ jaw dashboard perm 3458 --home ~/.jaw-work</code></pre>
 <p>종료 코드 0 = 서버 실행 중, 1 = 서버 미실행 또는 오류.</p>
 <h4>예제</h4>
 <pre><code># 빠른 상태 확인
-jaw status
+weasley-podex status
 
 # 스크립팅용 JSON 출력
-jaw status --json
+weasley-podex status --json
 # → {"status":"running","port":"3457","cli":"claude"}
 
 # 서버와 대시보드 모두 확인
-jaw status --dashboard
+weasley-podex status --dashboard
 
 # 특정 포트 확인
-jaw status --port 3458</code></pre>
+weasley-podex status --port 3458</code></pre>
 <div class="tip-kr">
-  <strong>~해줘 Tip:</strong> "서버 상태 확인해줘" -- 에이전트가 <code>jaw status --json</code>을 실행하여 서버 정상 여부를 확인하고 CLI, 포트, 활성 하트비트 작업을 보고합니다.
+  <strong>~해줘 Tip:</strong> "서버 상태 확인해줘" -- 에이전트가 <code>weasley-podex status --json</code>을 실행하여 서버 정상 여부를 확인하고 CLI, 포트, 활성 하트비트 작업을 보고합니다.
 </div>
 </div>
 
@@ -290,14 +289,14 @@ jaw status --port 3458</code></pre>
 <h2>Setup &amp; Diagnostics</h2>
 <!-- ================================================================== -->
 
-<!-- jaw init -->
+<!-- weasley-podex init -->
 <div class="cmd-section" id="init">
 <div class="cmd-header">
-  <h3><code>jaw init</code></h3>
+  <h3><code>weasley-podex init</code></h3>
   <span class="cmd-badge cmd-badge-setup">Setup</span>
 </div>
-<p class="cmd-desc">최초 설정을 위한 대화형 설정 마법사입니다. <code>~/.podex/settings.json</code>을 생성하고, 기본 CLI 백엔드, 메시징 채널, 스킬 디렉토리를 구성합니다.</p>
-<pre><code>jaw init [options]</code></pre>
+<p class="cmd-desc">최초 설정을 위한 대화형 설정 마법사입니다. <code>~/.weasley/podex/settings.json</code>을 생성하고, 기본 CLI 백엔드, 메시징 채널, 스킬 디렉토리를 구성합니다.</p>
+<pre><code>weasley-podex init [options]</code></pre>
 <table>
 <tr><th>옵션</th><th>설명</th></tr>
 <tr><td><code>--non-interactive</code></td><td>프롬프트 건너뛰기, 기본값 사용</td></tr>
@@ -316,29 +315,29 @@ jaw status --port 3458</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 대화형 마법사 (첫 실행 시 권장)
-jaw init
+weasley-podex init
 
 # 기본값으로 비대화형 실행
-jaw init --non-interactive --cli claude
+weasley-podex init --non-interactive --cli claude
 
 # 강제 재초기화
-jaw init --force --cli gemini --channel telegram
+weasley-podex init --force --cli gemini --channel telegram
 
 # 실제 변경 없이 미리보기
-jaw init --dry-run</code></pre>
+weasley-podex init --dry-run</code></pre>
 <div class="tip-kr">
-  <strong>~해줘 Tip:</strong> "초기 설정 해줘" -- <code>jaw init</code>을 대화형으로 실행하세요. 마법사가 질문을 하고 설정을 저장합니다. CI/CD 환경에서는 <code>--non-interactive</code>를 사용하세요.
+  <strong>~해줘 Tip:</strong> "초기 설정 해줘" -- <code>weasley-podex init</code>을 대화형으로 실행하세요. 마법사가 질문을 하고 설정을 저장합니다. CI/CD 환경에서는 <code>--non-interactive</code>를 사용하세요.
 </div>
 </div>
 
-<!-- jaw doctor -->
+<!-- weasley-podex doctor -->
 <div class="cmd-section" id="doctor">
 <div class="cmd-header">
-  <h3><code>jaw doctor</code></h3>
+  <h3><code>weasley-podex doctor</code></h3>
   <span class="cmd-badge cmd-badge-setup">Setup</span>
 </div>
 <p class="cmd-desc">설치 및 구성 상태를 진단합니다. Node.js 버전, CLI 바이너리 해석, 설정 파일 유효성, MCP 서버 연결, 직원 CLI 가용성, 포트 가용성을 검사합니다.</p>
-<pre><code>jaw doctor [--json] [--fix] [--tcc] [--prime]</code></pre>
+<pre><code>weasley-podex doctor [--json] [--fix] [--tcc] [--prime]</code></pre>
 <table>
 <tr><th>옵션</th><th>설명</th></tr>
 <tr><td><code>--json</code></td><td>기계 판독 가능한 진단 출력</td></tr>
@@ -349,29 +348,29 @@ jaw init --dry-run</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 진단 실행
-jaw doctor
+weasley-podex doctor
 
 # 기계 판독 가능한 출력
-jaw doctor --json
+weasley-podex doctor --json
 
 # 감지된 문제 자동 수정
-jaw doctor --fix
+weasley-podex doctor --fix
 
 # macOS 접근성 권한 확인
-jaw doctor --tcc</code></pre>
+weasley-podex doctor --tcc</code></pre>
 <div class="tip-kr">
-  <strong>~해줘 Tip:</strong> "설치 상태 진단해줘" -- 에이전트가 <code>jaw doctor --json</code>을 실행하고 결과를 해석하여, 실패한 검사 항목과 권장 수정 방법을 안내합니다.
+  <strong>~해줘 Tip:</strong> "설치 상태 진단해줘" -- 에이전트가 <code>weasley-podex doctor --json</code>을 실행하고 결과를 해석하여, 실패한 검사 항목과 권장 수정 방법을 안내합니다.
 </div>
 </div>
 
-<!-- jaw reset -->
+<!-- weasley-podex reset -->
 <div class="cmd-section" id="reset">
 <div class="cmd-header">
-  <h3><code>jaw reset</code></h3>
+  <h3><code>weasley-podex reset</code></h3>
   <span class="cmd-badge cmd-badge-setup">Setup</span>
 </div>
 <p class="cmd-desc">공장 초기화: MCP 동기화, 스킬 초기화, 직원 초기화, 세션 클리어를 수행합니다. <code>--yes</code>를 전달하지 않으면 확인을 요청합니다. 실행 중인 서버가 필요합니다.</p>
-<pre><code>jaw reset [--yes] [--port &lt;N&gt;]</code></pre>
+<pre><code>weasley-podex reset [--yes] [--port &lt;N&gt;]</code></pre>
 <table>
 <tr><th>옵션</th><th>기본값</th><th>설명</th></tr>
 <tr><td><code>--yes</code>, <code>-y</code></td><td>false</td><td>확인 프롬프트 건너뛰기</td></tr>
@@ -379,18 +378,18 @@ jaw doctor --tcc</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 확인 프롬프트와 함께 초기화
-jaw reset
+weasley-podex reset
 
 # 확인 건너뛰기 (스크립팅용)
-jaw reset --yes
+weasley-podex reset --yes
 
 # 특정 인스턴스 초기화
-jaw reset --port 3458 --yes</code></pre>
+weasley-podex reset --port 3458 --yes</code></pre>
 <div class="callout callout-warn">
   <strong>경고:</strong> 이 명령은 MCP 서버, 스킬(기본 25개로 복원), 직원, 현재 세션을 초기화합니다. 메모리 파일은 보존됩니다.
 </div>
 <div class="tip-kr">
-  <strong>~해줘 Tip:</strong> "전부 초기화해줘" -- 에이전트가 권한이 있을 때 서버 API를 통해 <code>jaw reset --yes</code>를 실행할 수 있습니다.
+  <strong>~해줘 Tip:</strong> "전부 초기화해줘" -- 에이전트가 권한이 있을 때 서버 API를 통해 <code>weasley-podex reset --yes</code>를 실행할 수 있습니다.
 </div>
 </div>
 
@@ -398,14 +397,14 @@ jaw reset --port 3458 --yes</code></pre>
 <h2>Orchestration</h2>
 <!-- ================================================================== -->
 
-<!-- jaw chat -->
+<!-- weasley-podex chat -->
 <div class="cmd-section" id="chat">
 <div class="cmd-header">
-  <h3><code>jaw chat</code></h3>
+  <h3><code>weasley-podex chat</code></h3>
   <span class="cmd-badge cmd-badge-orch">Orchestration</span>
 </div>
 <p class="cmd-desc">대화형 터미널 REPL입니다. SSE-first TUI 채널로 실행 중인 서버에 연결하고, 오래된 서버에서는 legacy WebSocket fallback을 사용합니다. 영구 푸터가 있는 리치 TUI 모드, UI 통합을 위한 원시 JSON 프로토콜 모드, 최소한의 일반 readline 모드를 지원합니다.</p>
-<pre><code>jaw chat [--port &lt;N&gt;] [--raw] [--simple]</code></pre>
+<pre><code>weasley-podex chat [--port &lt;N&gt;] [--raw] [--simple]</code></pre>
 <table>
 <tr><th>옵션</th><th>기본값</th><th>설명</th></tr>
 <tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>연결할 서버 포트</td></tr>
@@ -414,29 +413,29 @@ jaw reset --port 3458 --yes</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 기본 리치 TUI
-jaw chat
+weasley-podex chat
 
 # 심플 모드 (단순 터미널에서 동작)
-jaw chat --simple
+weasley-podex chat --simple
 
 # 다른 인스턴스에 연결
-jaw chat --port 3458
+weasley-podex chat --port 3458
 
 # 파이프를 위한 원시 JSON 모드
-jaw chat --raw</code></pre>
+weasley-podex chat --raw</code></pre>
 <div class="tip-kr">
-  <strong>~해줘 Tip:</strong> "채팅 시작해줘" -- <code>jaw chat</code>은 포그라운드 터미널 프로세스입니다. 채팅 내에서 <code>/status</code>, <code>/model</code>, <code>/skill</code> 등의 슬래시 커맨드를 사용할 수 있습니다.
+  <strong>~해줘 Tip:</strong> "채팅 시작해줘" -- <code>weasley-podex chat</code>은 포그라운드 터미널 프로세스입니다. 채팅 내에서 <code>/status</code>, <code>/model</code>, <code>/skill</code> 등의 슬래시 커맨드를 사용할 수 있습니다.
 </div>
 </div>
 
-<!-- jaw dispatch -->
+<!-- weasley-podex dispatch -->
 <div class="cmd-section" id="dispatch">
 <div class="cmd-header">
-  <h3><code>jaw dispatch</code></h3>
+  <h3><code>weasley-podex dispatch</code></h3>
   <span class="cmd-badge cmd-badge-orch">Orchestration</span>
 </div>
-<p class="cmd-desc">직원 에이전트에게 작업을 전송합니다. 직원은 서버 API를 통해 비동기적으로 실행되며, 결과를 stdout으로 반환합니다. 스크립팅 워크플로우에서 파이프와 호환됩니다. <code>JAW_BOSS_TOKEN</code>이 필요합니다 (서버 프로세스에서 상속).</p>
-<pre><code>jaw dispatch --agent &lt;name&gt; --task &lt;text&gt; [--json] [--port &lt;N&gt;]</code></pre>
+<p class="cmd-desc">직원 에이전트에게 작업을 전송합니다. 직원은 서버 API를 통해 비동기적으로 실행되며, 결과를 stdout으로 반환합니다. 스크립팅 워크플로우에서 파이프와 호환됩니다. <code>WEASLEY_PODEX_BOSS_TOKEN</code>이 필요합니다 (서버 프로세스에서 상속).</p>
+<pre><code>weasley-podex dispatch --agent &lt;name&gt; --task &lt;text&gt; [--json] [--port &lt;N&gt;]</code></pre>
 <table>
 <tr><th>옵션</th><th>설명</th></tr>
 <tr><td><code>--agent &lt;name&gt;</code></td><td>직원 이름 (대소문자 구분, settings.json의 employees와 일치해야 함)</td></tr>
@@ -446,13 +445,13 @@ jaw chat --raw</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 프론트엔드 작업 디스패치
-jaw dispatch --agent "Frontend" --task "Fix CSS bug in the header component"
+weasley-podex dispatch --agent "Frontend" --task "Fix CSS bug in the header component"
 
 # 백엔드 작업 디스패치
-jaw dispatch --agent "Backend" --task "Add rate limiting to /api/chat endpoint"
+weasley-podex dispatch --agent "Backend" --task "Add rate limiting to /api/chat endpoint"
 
 # 파이프를 위한 JSON 출력
-jaw dispatch --agent "Data" --task "Optimize the slow query in reports" --json</code></pre>
+weasley-podex dispatch --agent "Data" --task "Optimize the slow query in reports" --json</code></pre>
 <div class="callout callout-info">
   <strong>참고:</strong> 직원 세션은 다른 직원을 디스패치할 수 없습니다 (중첩 디스패치 차단). 보스 세션만 디스패치 권한을 가집니다.
 </div>
@@ -461,37 +460,37 @@ jaw dispatch --agent "Data" --task "Optimize the slow query in reports" --json</
 </div>
 </div>
 
-<!-- jaw employee -->
+<!-- weasley-podex employee -->
 <div class="cmd-section" id="employee">
 <div class="cmd-header">
-  <h3><code>jaw employee</code></h3>
+  <h3><code>weasley-podex employee</code></h3>
   <span class="cmd-badge cmd-badge-orch">Orchestration</span>
 </div>
 <p class="cmd-desc">직원 관리 유틸리티입니다. 현재 직원을 기본 5개 프로필(Frontend, Backend, Data, Docs, QA)로 초기화하는 기능을 지원합니다.</p>
-<pre><code>jaw employee &lt;subcommand&gt; [--port &lt;N&gt;]</code></pre>
+<pre><code>weasley-podex employee &lt;subcommand&gt; [--port &lt;N&gt;]</code></pre>
 <table>
 <tr><th>서브커맨드</th><th>설명</th></tr>
 <tr><td><code>reset</code></td><td>직원을 기본 5개 프로필로 초기화</td></tr>
 </table>
 <h4>예제</h4>
 <pre><code># 모든 직원을 기본값으로 초기화
-jaw employee reset
+weasley-podex employee reset
 
 # 특정 인스턴스에서 초기화
-jaw employee reset --port 3458</code></pre>
+weasley-podex employee reset --port 3458</code></pre>
 <div class="tip-kr">
-  <strong>~해줘 Tip:</strong> "직원 초기화해줘" -- 에이전트가 채팅 내에서 <code>/employee reset</code>을 호출하거나 서버 API를 통해 <code>jaw employee reset</code>을 실행합니다.
+  <strong>~해줘 Tip:</strong> "직원 초기화해줘" -- 에이전트가 채팅 내에서 <code>/employee reset</code>을 호출하거나 서버 API를 통해 <code>weasley-podex employee reset</code>을 실행합니다.
 </div>
 </div>
 
-<!-- jaw orchestrate -->
+<!-- weasley-podex orchestrate -->
 <div class="cmd-section" id="orchestrate">
 <div class="cmd-header">
-  <h3><code>jaw orchestrate</code></h3>
+  <h3><code>weasley-podex orchestrate</code></h3>
   <span class="cmd-badge cmd-badge-orch">Orchestration</span>
 </div>
 <p class="cmd-desc">PABCD 상태 머신 전환입니다. Interview, Planning, Audit, Build, Check, Done 단계를 거쳐 워크플로우를 진행합니다. 실행 중인 서버의 API를 호출하므로 SSE-first 이벤트 업데이트가 연결된 클라이언트에 실시간으로 전달됩니다.</p>
-<pre><code>jaw orchestrate &lt;phase&gt; [--force] [--json] [--port &lt;N&gt;]</code></pre>
+<pre><code>weasley-podex orchestrate &lt;phase&gt; [--force] [--json] [--port &lt;N&gt;]</code></pre>
 <table>
 <tr><th>단계</th><th>설명</th></tr>
 <tr><td><code>I</code></td><td>Interview 진입 (IDLE에서)</td></tr>
@@ -506,32 +505,32 @@ jaw employee reset --port 3458</code></pre>
 <p>유효한 전환: <code>IDLE &rarr; I &rarr; P &rarr; A &rarr; B &rarr; C &rarr; D &rarr; IDLE</code>. Interview는 선택 사항이며 <code>IDLE &rarr; P</code>도 유효합니다.</p>
 <h4>예제</h4>
 <pre><code># 플래닝 단계 시작
-jaw orchestrate P
+weasley-podex orchestrate P
 
 # 강제 전환 (유효성 검사 건너뛰기)
-jaw orchestrate B --force
+weasley-podex orchestrate B --force
 
 # 현재 상태 확인
-jaw orchestrate status
+weasley-podex orchestrate status
 
 # IDLE로 초기화
-jaw orchestrate reset
+weasley-podex orchestrate reset
 
 # JSON 출력
-jaw orchestrate status --json</code></pre>
+weasley-podex orchestrate status --json</code></pre>
 <div class="tip-kr">
   <strong>~해줘 Tip:</strong> "PABCD 상태 확인해줘" 또는 "빌드 단계로 넘어가줘" -- 에이전트가 채팅 내 <code>/orchestrate</code> 커맨드 또는 API를 호출하여 단계를 전환합니다.
 </div>
 </div>
 
-<!-- jaw goal -->
+<!-- weasley-podex goal -->
 <div class="cmd-section" id="goal">
 <div class="cmd-header">
-  <h3><code>jaw goal</code></h3>
+  <h3><code>weasley-podex goal</code></h3>
   <span class="cmd-badge cmd-badge-orch">Orchestration</span>
 </div>
 <p class="cmd-desc">영구 목표 라이프사이클 관리입니다. 목표를 설정하고, 체크포인트로 진행 상황을 추적하며, 목표 상태(일시정지, 재개, 취소, 완료)를 관리합니다. 목표는 세션과 서버 재시작을 넘어 유지됩니다.</p>
-<pre><code>jaw goal &lt;subcommand&gt; [args...] [--port &lt;N&gt;]</code></pre>
+<pre><code>weasley-podex goal &lt;subcommand&gt; [args...] [--port &lt;N&gt;]</code></pre>
 <table>
 <tr><th>서브커맨드</th><th>설명</th></tr>
 <tr><td><code>set &lt;objective&gt;</code></td><td>새 목표 설정</td></tr>
@@ -547,26 +546,26 @@ jaw orchestrate status --json</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 새 목표 설정
-jaw goal set "Implement keyboard shortcuts for the editor"
+weasley-podex goal set "Implement keyboard shortcuts for the editor"
 
 # 현재 목표 확인
-jaw goal status
+weasley-podex goal status
 
 # 진행 체크포인트 추가
-jaw goal update "K0: shortcut registry done, K1: in progress"
+weasley-podex goal update "K0: shortcut registry done, K1: in progress"
 
 # 완료 처리
-jaw goal done "All phases complete, PR merged"
+weasley-podex goal done "All phases complete, PR merged"
 
 # 과거 목표 조회
-jaw goal history 5
+weasley-podex goal history 5
 
 # 일시정지 및 재개
-jaw goal pause
-jaw goal resume
+weasley-podex goal pause
+weasley-podex goal resume
 
 # 사유와 함께 취소
-jaw goal cancel "Deprioritized in favor of auth refactor"</code></pre>
+weasley-podex goal cancel "Deprioritized in favor of auth refactor"</code></pre>
 <div class="tip-kr">
   <strong>~해줘 Tip:</strong> "키보드 단축키 구현 목표 설정해줘" -- 에이전트가 목표 API를 호출하여 목표를 설정하고 추적합니다. "목표 완료해줘"로 완료 처리할 수 있습니다.
 </div>
@@ -576,14 +575,14 @@ jaw goal cancel "Deprioritized in favor of auth refactor"</code></pre>
 <h2>Automation &amp; Tools</h2>
 <!-- ================================================================== -->
 
-<!-- jaw memory -->
+<!-- weasley-podex memory -->
 <div class="cmd-section" id="memory">
 <div class="cmd-header">
-  <h3><code>jaw memory</code></h3>
+  <h3><code>weasley-podex memory</code></h3>
   <span class="cmd-badge cmd-badge-auto">Automation</span>
 </div>
-<p class="cmd-desc">영구 메모리 저장소 CLI입니다. 메모리 파일을 검색, 읽기, 저장, 목록 조회할 수 있습니다. 메모리는 <code>~/.podex/memory/</code>에 마크다운 파일로 저장되며 시맨틱 검색을 위해 인덱싱됩니다.</p>
-<pre><code>jaw memory &lt;subcommand&gt; [args...]</code></pre>
+<p class="cmd-desc">영구 메모리 저장소 CLI입니다. 메모리 파일을 검색, 읽기, 저장, 목록 조회할 수 있습니다. 메모리는 <code>~/.weasley/podex/memory/</code>에 마크다운 파일로 저장되며 시맨틱 검색을 위해 인덱싱됩니다.</p>
+<pre><code>weasley-podex memory &lt;subcommand&gt; [args...]</code></pre>
 <table>
 <tr><th>서브커맨드</th><th>설명</th></tr>
 <tr><td><code>search &lt;query&gt;</code></td><td>모든 메모리 파일에 대한 시맨틱 검색</td></tr>
@@ -593,32 +592,32 @@ jaw goal cancel "Deprioritized in favor of auth refactor"</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 메모리 검색
-jaw memory search "JWT authentication patterns"
+weasley-podex memory search "JWT authentication patterns"
 
 # 특정 파일 읽기
-jaw memory read structured/profile.md
+weasley-podex memory read structured/profile.md
 
 # 새 메모리 항목 저장
-jaw memory save structured/profile.md "- User prefers concise Korean summaries"
+weasley-podex memory save structured/profile.md "- User prefers concise Korean summaries"
 
 # 에피소드 로그 저장
-jaw memory save structured/episodes/live/2026-05-29.md "## 14:30\n- Completed CLI docs page"
+weasley-podex memory save structured/episodes/live/2026-05-29.md "## 14:30\n- Completed CLI docs page"
 
 # 모든 파일 목록 조회
-jaw memory list</code></pre>
+weasley-podex memory list</code></pre>
 <div class="tip-kr">
   <strong>~해줘 Tip:</strong> "JWT 관련 메모리 찾아줘" -- 에이전트가 API를 통해 메모리를 검색합니다. "프로필에 한국어 선호 추가해줘"라고 하면 structured/profile.md에 저장합니다.
 </div>
 </div>
 
-<!-- jaw browser -->
+<!-- weasley-podex browser -->
 <div class="cmd-section" id="browser">
 <div class="cmd-header">
-  <h3><code>jaw browser</code></h3>
+  <h3><code>weasley-podex browser</code></h3>
   <span class="cmd-badge cmd-badge-auto">Automation</span>
 </div>
 <p class="cmd-desc">CDP(Chrome DevTools Protocol)를 통한 Chrome 브라우저 제어입니다. 페이지 열기, 스크린샷 촬영, 요소 클릭, 텍스트 입력, 탭 관리, Web AI 기반 브라우징을 수행합니다. 서버가 실행 중이어야 합니다.</p>
-<pre><code>jaw browser &lt;subcommand&gt; [args...]</code></pre>
+<pre><code>weasley-podex browser &lt;subcommand&gt; [args...]</code></pre>
 <table>
 <tr><th>서브커맨드</th><th>설명</th></tr>
 <tr><td><code>status</code></td><td>브라우저 연결 상태 및 활성 탭 표시</td></tr>
@@ -635,34 +634,34 @@ jaw memory list</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 브라우저 상태 확인
-jaw browser status
+weasley-podex browser status
 
 # 페이지 열기 및 스크린샷 촬영
-jaw browser open https://example.com
-jaw browser screenshot
+weasley-podex browser open https://example.com
+weasley-podex browser screenshot
 
 # 요소 ref를 위한 페이지 스냅샷 가져오기
-jaw browser snapshot
+weasley-podex browser snapshot
 
 # ref를 사용한 클릭 및 입력
-jaw browser click ref:42
-jaw browser type ref:15 "search query"
+weasley-podex browser click ref:42
+weasley-podex browser type ref:15 "search query"
 
 # 적응형 페치
-jaw browser fetch https://example.com/api/data</code></pre>
+weasley-podex browser fetch https://example.com/api/data</code></pre>
 <div class="tip-kr">
   <strong>~해줘 Tip:</strong> "브라우저로 구글 열어줘" 또는 "스크린샷 찍어줘" -- 에이전트가 브라우저 스킬을 사용하여 CDP를 통해 Chrome을 제어합니다.
 </div>
 </div>
 
-<!-- jaw skill -->
+<!-- weasley-podex skill -->
 <div class="cmd-section" id="skill">
 <div class="cmd-header">
-  <h3><code>jaw skill</code></h3>
+  <h3><code>weasley-podex skill</code></h3>
   <span class="cmd-badge cmd-badge-auto">Automation</span>
 </div>
 <p class="cmd-desc">스킬 관리: 설치된 스킬 목록 조회, reference/Codex/GitHub에서 설치, 스킬 제거, 스킬 상세 정보 조회를 수행합니다. 스킬은 에이전트의 시스템 프롬프트에 주입됩니다.</p>
-<pre><code>jaw skill [subcommand] [name...]</code></pre>
+<pre><code>weasley-podex skill [subcommand] [name...]</code></pre>
 <table>
 <tr><th>서브커맨드</th><th>설명</th></tr>
 <tr><td>(없음) / <code>list</code></td><td>설치된(활성) 스킬 전체 목록 조회</td></tr>
@@ -673,33 +672,33 @@ jaw browser fetch https://example.com/api/data</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 설치된 스킬 목록 조회
-jaw skill
+weasley-podex skill
 
 # 스킬 설치
-jaw skill install cloudflare
-jaw skill install docker kubernetes terraform
+weasley-podex skill install cloudflare
+weasley-podex skill install docker kubernetes terraform
 
 # 스킬 제거
-jaw skill remove cloudflare
+weasley-podex skill remove cloudflare
 
 # 스킬 상세 정보 조회
-jaw skill info dev-frontend
+weasley-podex skill info dev-frontend
 
 # 기본값으로 초기화
-jaw skill reset</code></pre>
+weasley-podex skill reset</code></pre>
 <div class="tip-kr">
   <strong>~해줘 Tip:</strong> "cloudflare 스킬 설치해줘" 또는 "스킬 목록 보여줘" -- 에이전트가 채팅 내 <code>/skill</code> 또는 CLI 명령으로 스킬을 관리합니다.
 </div>
 </div>
 
-<!-- jaw mcp -->
+<!-- weasley-podex mcp -->
 <div class="cmd-section" id="mcp">
 <div class="cmd-header">
-  <h3><code>jaw mcp</code></h3>
+  <h3><code>weasley-podex mcp</code></h3>
   <span class="cmd-badge cmd-badge-auto">Automation</span>
 </div>
 <p class="cmd-desc">MCP (Model Context Protocol) 서버 관리입니다. npm/PyPI MCP 패키지를 설치하고, 6개 CLI 백엔드 전체에 구성을 동기화하며, 등록된 서버를 조회하거나 기본값으로 초기화합니다.</p>
-<pre><code>jaw mcp [subcommand] [package]</code></pre>
+<pre><code>weasley-podex mcp [subcommand] [package]</code></pre>
 <table>
 <tr><th>서브커맨드</th><th>설명</th></tr>
 <tr><td>(없음) / <code>list</code></td><td>등록된 MCP 서버 목록 조회</td></tr>
@@ -710,32 +709,32 @@ jaw skill reset</code></pre>
 <p>패키지 에코시스템은 자동 감지됩니다: <code>@scope/name</code>은 npm, <code>mcp-server-*</code>는 PyPI입니다. <code>--pypi</code> 또는 <code>--npm</code>으로 수동 지정할 수 있습니다.</p>
 <h4>예제</h4>
 <pre><code># 모든 MCP 서버 목록 조회
-jaw mcp
+weasley-podex mcp
 
 # npm MCP 패키지 설치
-jaw mcp install @anthropic/mcp-server-fetch
+weasley-podex mcp install @modelcontextprotocol/server-filesystem
 
 # PyPI MCP 패키지 설치
-jaw mcp install mcp-server-git
+weasley-podex mcp install mcp-server-git
 
 # 모든 CLI에 구성 동기화
-jaw mcp sync
+weasley-podex mcp sync
 
 # 기본 MCP 서버로 초기화
-jaw mcp reset --force</code></pre>
+weasley-podex mcp reset --force</code></pre>
 <div class="tip-kr">
   <strong>~해줘 Tip:</strong> "MCP 서버 목록 보여줘" 또는 "fetch MCP 서버 설치해줘" -- 에이전트가 채팅 내 <code>/mcp</code>를 통해 MCP 서버를 관리합니다.
 </div>
 </div>
 
-<!-- jaw connector -->
+<!-- weasley-podex connector -->
 <div class="cmd-section" id="connector">
 <div class="cmd-header">
-  <h3><code>jaw connector</code></h3>
+  <h3><code>weasley-podex connector</code></h3>
   <span class="cmd-badge cmd-badge-auto">Automation</span>
 </div>
 <p class="cmd-desc">대시보드 커넥터 CLI -- 칸반 보드, 노트, 리마인더, 감사 로그를 위한 통합 진입점입니다. 웹 UI 없이 대시보드 기능에 직접 CLI로 접근할 수 있습니다.</p>
-<pre><code>jaw connector &lt;surface&gt; &lt;subcommand&gt; [options]</code></pre>
+<pre><code>weasley-podex connector &lt;surface&gt; &lt;subcommand&gt; [options]</code></pre>
 <table>
 <tr><th>Surface</th><th>서브커맨드</th><th>설명</th></tr>
 <tr><td><code>board</code></td><td><code>add</code>, <code>update</code>, <code>list</code></td><td>칸반 보드 태스크 (backlog/ready/active/review/done)</td></tr>
@@ -756,35 +755,35 @@ jaw mcp reset --force</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 칸반 태스크 추가
-jaw connector board add --title "Implement auth flow" --lane backlog
+weasley-podex connector board add --title "Implement auth flow" --lane backlog
 
 # 태스크를 done으로 이동
-jaw connector board update task-id-123 --lane done
+weasley-podex connector board update task-id-123 --lane done
 
 # 보드 태스크 목록 조회
-jaw connector board list --json
+weasley-podex connector board list --json
 
 # 노트 작성
-jaw connector notes write --path "meeting/standup.md" --body "# Standup Notes\n- Auth PR merged"
+weasley-podex connector notes write --path "meeting/standup.md" --body "# Standup Notes\n- Auth PR merged"
 
 # 노트 목록 조회
-jaw connector notes list
+weasley-podex connector notes list
 
 # 리마인더 추가
-jaw connector reminders add --title "Review PR #42" --priority high --due 2026-06-01</code></pre>
+weasley-podex connector reminders add --title "Review PR #42" --priority high --due 2026-06-01</code></pre>
 <div class="tip-kr">
   <strong>~해줘 Tip:</strong> "보드에 인증 구현 태스크 추가해줘" 또는 "노트에 회의록 저장해줘" -- 에이전트가 커넥터 API를 사용하여 대시보드 surface를 관리합니다.
 </div>
 </div>
 
-<!-- jaw reminders -->
+<!-- weasley-podex reminders -->
 <div class="cmd-section" id="reminders">
 <div class="cmd-header">
-  <h3><code>jaw reminders</code></h3>
+  <h3><code>weasley-podex reminders</code></h3>
   <span class="cmd-badge cmd-badge-auto">Automation</span>
 </div>
-<p class="cmd-desc">아이젠하워 매트릭스 스타일의 우선순위 기반 리마인더입니다. <code>jaw connector reminders</code>의 단축 명령입니다.</p>
-<pre><code>jaw reminders &lt;subcommand&gt; [options]</code></pre>
+<p class="cmd-desc">아이젠하워 매트릭스 스타일의 우선순위 기반 리마인더입니다. <code>weasley-podex connector reminders</code>의 단축 명령입니다.</p>
+<pre><code>weasley-podex reminders &lt;subcommand&gt; [options]</code></pre>
 <table>
 <tr><th>서브커맨드</th><th>설명</th></tr>
 <tr><td><code>list</code> / <code>ls</code></td><td>모든 리마인더 목록 조회 (기본값)</td></tr>
@@ -802,32 +801,32 @@ jaw connector reminders add --title "Review PR #42" --priority high --due 2026-0
 </table>
 <h4>예제</h4>
 <pre><code># 리마인더 목록 조회
-jaw reminders list
+weasley-podex reminders list
 
 # 리마인더 추가
-jaw reminders add "Review PR #42" --priority high --due 2026-06-01
+weasley-podex reminders add "Review PR #42" --priority high --due 2026-06-01
 
 # 메모와 함께 추가
-jaw reminders add --title "Deploy staging" --notes "After QA sign-off" --priority normal
+weasley-podex reminders add --title "Deploy staging" --notes "After QA sign-off" --priority normal
 
 # 완료 처리
-jaw reminders done reminder-id-abc
+weasley-podex reminders done reminder-id-abc
 
 # JSON 출력
-jaw reminders list --json</code></pre>
+weasley-podex reminders list --json</code></pre>
 <div class="tip-kr">
   <strong>~해줘 Tip:</strong> "내일까지 PR 리뷰하라고 리마인더 추가해줘" -- 에이전트가 적절한 마감일과 우선순위로 리마인더를 생성합니다.
 </div>
 </div>
 
-<!-- jaw project -->
+<!-- weasley-podex project -->
 <div class="cmd-section" id="project">
 <div class="cmd-header">
-  <h3><code>jaw project</code></h3>
+  <h3><code>weasley-podex project</code></h3>
   <span class="cmd-badge cmd-badge-auto">Automation</span>
 </div>
 <p class="cmd-desc">프로젝트 워크스페이스 디렉토리를 관리합니다. 에이전트가 활성 프로젝트 루트로 인식할 디렉토리를 설정합니다. 변경 사항은 서버 API를 통해 적용되며 세션 간에 유지됩니다.</p>
-<pre><code>jaw project &lt;subcommand&gt; [paths...]</code></pre>
+<pre><code>weasley-podex project &lt;subcommand&gt; [paths...]</code></pre>
 <table>
 <tr><th>서브커맨드</th><th>설명</th></tr>
 <tr><td><code>set &lt;path&gt;[, &lt;path&gt;...]</code></td><td>활성 프로젝트 디렉토리 설정 (쉼표 구분)</td></tr>
@@ -837,16 +836,16 @@ jaw reminders list --json</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 프로젝트 디렉토리 설정
-jaw project set ~/Dev/frontend, ~/Dev/backend
+weasley-podex project set ~/Dev/frontend, ~/Dev/backend
 
 # 단일 절대 경로 설정
-jaw project set /Users/jun/projects/my-app
+weasley-podex project set /Users/example/projects/my-app
 
 # 현재 디렉토리 목록 조회
-jaw project list
+weasley-podex project list
 
 # 전체 클리어
-jaw project reset</code></pre>
+weasley-podex project reset</code></pre>
 <div class="tip-kr">
   <strong>~해줘 Tip:</strong> "프로젝트 디렉토리 설정해줘" 또는 "프로젝트 목록 보여줘" -- 에이전트가 채팅 내 <code>/project</code>를 사용하여 워크스페이스 디렉토리를 관리합니다.
 </div>
@@ -856,14 +855,14 @@ jaw project reset</code></pre>
 <h2>Service Management</h2>
 <!-- ================================================================== -->
 
-<!-- jaw service -->
+<!-- weasley-podex service -->
 <div class="cmd-section" id="service">
 <div class="cmd-header">
-  <h3><code>jaw service</code></h3>
+  <h3><code>weasley-podex service</code></h3>
   <span class="cmd-badge cmd-badge-svc">Service</span>
 </div>
 <p class="cmd-desc">크로스 플랫폼 자동 시작 관리입니다. OS를 감지하여 서버를 백그라운드 데몬으로 설치합니다 (macOS의 launchd, Linux의 systemd, 컨테이너의 Docker 엔트리포인트). 한 번의 명령으로 설치와 시작을 동시에 수행합니다.</p>
-<pre><code>jaw service [subcommand] [--port &lt;N&gt;] [--backend &lt;type&gt;]</code></pre>
+<pre><code>weasley-podex service [subcommand] [--port &lt;N&gt;] [--backend &lt;type&gt;]</code></pre>
 <table>
 <tr><th>서브커맨드</th><th>설명</th></tr>
 <tr><td>(없음)</td><td>OS 자동 감지, 설치 + 시작 (한 번에)</td></tr>
@@ -879,70 +878,70 @@ jaw project reset</code></pre>
 </table>
 <h4>예제</h4>
 <pre><code># 한 번에 설치 + 시작 (OS 자동 감지)
-jaw service
+weasley-podex service
 
 # 커스텀 포트
-jaw service --port 3458
+weasley-podex service --port 3458
 
 # 서비스 상태 확인
-jaw service status
+weasley-podex service status
 
 # 로그 조회
-jaw service logs
+weasley-podex service logs
 
 # 서비스 제거
-jaw service unset
+weasley-podex service unset
 
 # 특정 백엔드 강제 지정
-jaw service --backend systemd --port 3457</code></pre>
+weasley-podex service --backend systemd --port 3457</code></pre>
 <div class="tip-kr">
-  <strong>~해줘 Tip:</strong> "서비스로 등록해줘" 또는 "백그라운드에서 실행되게 해줘" -- 에이전트가 <code>jaw service</code>를 실행하여 영구 데몬을 설치합니다.
+  <strong>~해줘 Tip:</strong> "서비스로 등록해줘" 또는 "백그라운드에서 실행되게 해줘" -- 에이전트가 <code>weasley-podex service</code>를 실행하여 영구 데몬을 설치합니다.
 </div>
 </div>
 
-<!-- jaw clone -->
+<!-- weasley-podex clone -->
 <div class="cmd-section" id="clone">
 <div class="cmd-header">
-  <h3><code>jaw clone</code></h3>
+  <h3><code>weasley-podex clone</code></h3>
   <span class="cmd-badge cmd-badge-svc">Service</span>
 </div>
 <p class="cmd-desc">현재 구성을 복제하여 독립적인 에이전트 인스턴스를 생성합니다. 구성과 스킬을 복사하고, 새 데이터베이스를 생성하며, AGENTS.md를 재생성합니다. 여러 격리된 에이전트를 실행할 때 유용합니다.</p>
-<pre><code>jaw clone &lt;target-dir&gt; [--from &lt;source&gt;] [--with-memory] [--link-ref]</code></pre>
+<pre><code>weasley-podex clone &lt;target-dir&gt; [--from &lt;source&gt;] [--with-memory] [--link-ref]</code></pre>
 <table>
 <tr><th>옵션</th><th>설명</th></tr>
 <tr><td><code>&lt;target-dir&gt;</code></td><td>새 인스턴스의 대상 디렉토리 (필수)</td></tr>
-<tr><td><code>--from &lt;source&gt;</code></td><td>복제할 소스 디렉토리 (기본값: ~/.podex)</td></tr>
+<tr><td><code>--from &lt;source&gt;</code></td><td>복제할 소스 디렉토리 (기본값: ~/.weasley/podex)</td></tr>
 <tr><td><code>--with-memory</code></td><td>소스의 메모리 파일도 복사</td></tr>
 <tr><td><code>--link-ref</code></td><td>참조 스킬을 복사 대신 심볼릭 링크로 연결</td></tr>
 </table>
 <h4>예제</h4>
 <pre><code># 새 디렉토리로 복제
-jaw clone ~/.podex-work
+weasley-podex clone ~/.weasley/podex-work
 
 # 메모리와 함께 복제
-jaw clone ~/.podex-research --with-memory
+weasley-podex clone ~/.weasley/podex-research --with-memory
 
 # 특정 소스에서 복제
-jaw clone ~/.podex-staging --from ~/.podex-prod
+weasley-podex clone ~/.weasley/podex-staging --from ~/.weasley/podex-prod
 
 # 디스크 절약을 위해 참조 스킬 심볼릭 링크
-jaw clone ~/.podex-dev --link-ref</code></pre>
+weasley-podex clone ~/.weasley/podex-dev --link-ref</code></pre>
 <div class="callout callout-info">
-  <strong>복제 후:</strong> <code>jaw --home ~/.podex-work serve --port 3458</code>로 새 인스턴스를 시작하거나, <code>jaw dashboard perm 3458 --home ~/.podex-work</code>로 등록하세요.
+  <strong>복제 후:</strong> <code>weasley-podex --home ~/.weasley/podex-work serve --port 3458</code>로 새 인스턴스를 시작하거나, <code>weasley-podex dashboard perm 3458 --home ~/.weasley/podex-work</code>로 등록하세요.
 </div>
 <div class="tip-kr">
-  <strong>~해줘 Tip:</strong> "인스턴스 하나 복제해줘" -- 에이전트가 <code>jaw clone</code>을 실행하여 독립적인 복사본을 생성하고, 선택적으로 새 포트에서 시작합니다.
+  <strong>~해줘 Tip:</strong> "인스턴스 하나 복제해줘" -- 에이전트가 <code>weasley-podex clone</code>을 실행하여 독립적인 복사본을 생성하고, 선택적으로 새 포트에서 시작합니다.
 </div>
 </div>
 
-<!-- jaw launchd -->
+<!-- weasley-podex launchd -->
 <div class="cmd-section" id="launchd">
 <div class="cmd-header">
-  <h3><code>jaw launchd</code></h3>
+  <h3><code>weasley-podex launchd</code></h3>
   <span class="cmd-badge cmd-badge-svc">Service</span>
 </div>
-<p class="cmd-desc">macOS 전용 LaunchAgent 관리입니다 (지원 중단 -- 대신 <code>jaw service</code>를 사용하세요). 로그인 시 자동 시작을 위한 plist 파일을 관리합니다. 하위 호환성을 위해 유지됩니다.</p>
-<pre><code>jaw launchd [subcommand] [--port &lt;N&gt;]</code></pre>
+<p class="cmd-desc">macOS 전용 LaunchAgent 관리입니다 (지원 중단 -- 대신 <code>weasley-podex service</code>를 사용하세요). 로그인 시 자동 시작을 위한 plist 파일을 관리합니다. 하위 호환성을 위해 유지됩니다.</p>
+<pre><code>weasley-podex launchd [subcommand] [--port &lt;N&gt;]</code></pre>
 <table>
 <tr><th>서브커맨드</th><th>설명</th></tr>
 <tr><td>(없음)</td><td>plist 확인, 없으면 생성, 시작 (한 번에)</td></tr>
@@ -955,25 +954,25 @@ jaw clone ~/.podex-dev --link-ref</code></pre>
 <tr><td><code>--port &lt;N&gt;</code></td><td>3457</td><td>등록할 서버 포트</td></tr>
 </table>
 <div class="callout callout-warn">
-  <strong>지원 중단:</strong> <code>jaw launchd</code>는 <code>jaw service</code>로 대체되었습니다. <code>jaw service</code>는 macOS에서 launchd를 자동 감지하며, systemd(Linux)와 Docker도 지원합니다. 새로 설치할 때는 <code>jaw service</code>를 사용하세요.
+  <strong>지원 중단:</strong> <code>weasley-podex launchd</code>는 <code>weasley-podex service</code>로 대체되었습니다. <code>weasley-podex service</code>는 macOS에서 launchd를 자동 감지하며, systemd(Linux)와 Docker도 지원합니다. 새로 설치할 때는 <code>weasley-podex service</code>를 사용하세요.
 </div>
 <h4>예제</h4>
 <pre><code># 한 번에 설치 + 시작
-jaw launchd
+weasley-podex launchd
 
 # 커스텀 포트
-jaw launchd --port 3458
+weasley-podex launchd --port 3458
 
 # 상태 확인
-jaw launchd status
+weasley-podex launchd status
 
 # 제거
-jaw launchd unset
+weasley-podex launchd unset
 
 # 레거시 plist 정리
-jaw launchd cleanup</code></pre>
+weasley-podex launchd cleanup</code></pre>
 <div class="tip-kr">
-  <strong>~해줘 Tip:</strong> "launchd 상태 확인해줘" -- 크로스 플랫폼 버전인 <code>jaw service status</code>를 대신 사용하세요.
+  <strong>~해줘 Tip:</strong> "launchd 상태 확인해줘" -- 크로스 플랫폼 버전인 <code>weasley-podex service status</code>를 대신 사용하세요.
 </div>
 </div>
 
@@ -986,38 +985,38 @@ jaw launchd cleanup</code></pre>
 <tr><th>명령</th><th>카테고리</th><th>서버 필요</th><th>설명</th></tr>
 </thead>
 <tbody>
-<tr><td><code>jaw serve</code></td><td>Server</td><td>-</td><td>서버 시작 (포그라운드)</td></tr>
-<tr><td><code>jaw dashboard</code></td><td>Server</td><td>-</td><td>멀티 인스턴스 관리자</td></tr>
-<tr><td><code>jaw status</code></td><td>Server</td><td>아니오</td><td>상태 확인</td></tr>
-<tr><td><code>jaw init</code></td><td>Setup</td><td>아니오</td><td>대화형 설정 마법사</td></tr>
-<tr><td><code>jaw doctor</code></td><td>Setup</td><td>아니오</td><td>설치 진단</td></tr>
-<tr><td><code>jaw reset</code></td><td>Setup</td><td>예</td><td>공장 초기화</td></tr>
-<tr><td><code>jaw chat</code></td><td>Orchestration</td><td>예</td><td>터미널 REPL</td></tr>
-<tr><td><code>jaw dispatch</code></td><td>Orchestration</td><td>예</td><td>직원에게 작업 전송</td></tr>
-<tr><td><code>jaw employee</code></td><td>Orchestration</td><td>예</td><td>직원 관리</td></tr>
-<tr><td><code>jaw orchestrate</code></td><td>Orchestration</td><td>예</td><td>PABCD 상태 머신</td></tr>
-<tr><td><code>jaw goal</code></td><td>Orchestration</td><td>예</td><td>영구 목표 라이프사이클</td></tr>
-<tr><td><code>jaw memory</code></td><td>Automation</td><td>예</td><td>영구 메모리 저장소</td></tr>
-<tr><td><code>jaw browser</code></td><td>Automation</td><td>예</td><td>Chrome 브라우저 제어</td></tr>
-<tr><td><code>jaw skill</code></td><td>Automation</td><td>아니오</td><td>스킬 관리</td></tr>
-<tr><td><code>jaw mcp</code></td><td>Automation</td><td>아니오</td><td>MCP 서버 관리</td></tr>
-<tr><td><code>jaw connector</code></td><td>Automation</td><td>부분적</td><td>대시보드 커넥터 (보드/노트/리마인더)</td></tr>
-<tr><td><code>jaw reminders</code></td><td>Automation</td><td>아니오</td><td>우선순위 기반 리마인더</td></tr>
-<tr><td><code>jaw project</code></td><td>Automation</td><td>예</td><td>워크스페이스 디렉토리</td></tr>
-<tr><td><code>jaw service</code></td><td>Service</td><td>아니오</td><td>크로스 플랫폼 자동 시작</td></tr>
-<tr><td><code>jaw clone</code></td><td>Service</td><td>아니오</td><td>인스턴스 복제</td></tr>
-<tr><td><code>jaw launchd</code></td><td>Service</td><td>아니오</td><td>macOS LaunchAgent (지원 중단)</td></tr>
+<tr><td><code>weasley-podex serve</code></td><td>Server</td><td>-</td><td>서버 시작 (포그라운드)</td></tr>
+<tr><td><code>weasley-podex dashboard</code></td><td>Server</td><td>-</td><td>멀티 인스턴스 관리자</td></tr>
+<tr><td><code>weasley-podex status</code></td><td>Server</td><td>아니오</td><td>상태 확인</td></tr>
+<tr><td><code>weasley-podex init</code></td><td>Setup</td><td>아니오</td><td>대화형 설정 마법사</td></tr>
+<tr><td><code>weasley-podex doctor</code></td><td>Setup</td><td>아니오</td><td>설치 진단</td></tr>
+<tr><td><code>weasley-podex reset</code></td><td>Setup</td><td>예</td><td>공장 초기화</td></tr>
+<tr><td><code>weasley-podex chat</code></td><td>Orchestration</td><td>예</td><td>터미널 REPL</td></tr>
+<tr><td><code>weasley-podex dispatch</code></td><td>Orchestration</td><td>예</td><td>직원에게 작업 전송</td></tr>
+<tr><td><code>weasley-podex employee</code></td><td>Orchestration</td><td>예</td><td>직원 관리</td></tr>
+<tr><td><code>weasley-podex orchestrate</code></td><td>Orchestration</td><td>예</td><td>PABCD 상태 머신</td></tr>
+<tr><td><code>weasley-podex goal</code></td><td>Orchestration</td><td>예</td><td>영구 목표 라이프사이클</td></tr>
+<tr><td><code>weasley-podex memory</code></td><td>Automation</td><td>예</td><td>영구 메모리 저장소</td></tr>
+<tr><td><code>weasley-podex browser</code></td><td>Automation</td><td>예</td><td>Chrome 브라우저 제어</td></tr>
+<tr><td><code>weasley-podex skill</code></td><td>Automation</td><td>아니오</td><td>스킬 관리</td></tr>
+<tr><td><code>weasley-podex mcp</code></td><td>Automation</td><td>아니오</td><td>MCP 서버 관리</td></tr>
+<tr><td><code>weasley-podex connector</code></td><td>Automation</td><td>부분적</td><td>대시보드 커넥터 (보드/노트/리마인더)</td></tr>
+<tr><td><code>weasley-podex reminders</code></td><td>Automation</td><td>아니오</td><td>우선순위 기반 리마인더</td></tr>
+<tr><td><code>weasley-podex project</code></td><td>Automation</td><td>예</td><td>워크스페이스 디렉토리</td></tr>
+<tr><td><code>weasley-podex service</code></td><td>Service</td><td>아니오</td><td>크로스 플랫폼 자동 시작</td></tr>
+<tr><td><code>weasley-podex clone</code></td><td>Service</td><td>아니오</td><td>인스턴스 복제</td></tr>
+<tr><td><code>weasley-podex launchd</code></td><td>Service</td><td>아니오</td><td>macOS LaunchAgent (지원 중단)</td></tr>
 </tbody>
 </table>
 
 <h2>환경 변수</h2>
 <table>
 <tr><th>변수</th><th>기본값</th><th>설명</th></tr>
-<tr><td><code>podex_HOME</code></td><td><code>~/.podex</code></td><td>데이터 디렉토리 재정의 (<code>--home</code>과 동일)</td></tr>
+<tr><td><code>WEASLEY_PODEX_HOME</code></td><td><code>~/.weasley/podex</code></td><td>데이터 디렉토리 재정의 (<code>--home</code>과 동일)</td></tr>
 <tr><td><code>PORT</code></td><td>3457</td><td>기본 서버 포트</td></tr>
 <tr><td><code>DASHBOARD_PORT</code></td><td>24576</td><td>대시보드 서버 포트</td></tr>
-<tr><td><code>JAW_BOSS_TOKEN</code></td><td>-</td><td>직원 디스패치용 인증 토큰 (서버에서 상속)</td></tr>
-<tr><td><code>JAW_EMPLOYEE_MODE</code></td><td>-</td><td>직원 세션에서 <code>1</code>로 설정 (중첩 디스패치 방지)</td></tr>
+<tr><td><code>WEASLEY_PODEX_BOSS_TOKEN</code></td><td>-</td><td>직원 디스패치용 인증 토큰 (서버에서 상속)</td></tr>
+<tr><td><code>WEASLEY_PODEX_EMPLOYEE_MODE</code></td><td>-</td><td>직원 세션에서 <code>1</code>로 설정 (중첩 디스패치 방지)</td></tr>
 </table>
 
 <div class="page-nav">

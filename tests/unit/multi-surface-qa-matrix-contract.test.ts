@@ -26,7 +26,7 @@ test('055 multi-surface QA matrix covers every release gate without proxy passes
         'web-ai background task',
         'Background task monitor',
         'Worker monitor',
-        'Child Jaw instance 3465',
+        'Child Weasley Podex instance 3465',
         'installed-artifact-only',
     ]) {
         assert.ok(matrix.includes(required), `matrix must cover ${required}`);

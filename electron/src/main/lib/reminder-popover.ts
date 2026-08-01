@@ -37,7 +37,7 @@ export function createReminderPopover(opts: {
       resizable: false,
       fullscreenable: false,
       skipTaskbar: true,
-      title: 'podex Reminders',
+      title: 'Weasley Podex Reminders',
       webPreferences: {
         contextIsolation: true,
         sandbox: true,

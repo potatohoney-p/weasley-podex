@@ -69,7 +69,7 @@ test('badge poller logs failures and does not throw', async () => {
 
     await assert.doesNotReject(() => poller.refreshNow());
     assert.equal(logs.length, 1);
-    assert.match(logs[0] ?? '', /^\[jaw-tray\] badge refresh failed:/);
+    assert.match(logs[0] ?? '', /^\[weasley-podex-tray\] badge refresh failed:/);
 });
 
 test('badge poller coalesces overlapping refreshes', async () => {

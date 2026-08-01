@@ -23,7 +23,7 @@ import { bumpDesignStoreVersion, designStoreVersion, startDesignWatcher } from '
  * - GET surfaces are loopback-open (agents list/preview pages).
  * - Mutating surfaces require the Electron desktop identity header, matching
  *   the embedded-browser convention: local agents mutate through the
- *   file-first store (`jaw design` CLI / direct writes), not through HTTP.
+ *   file-first store (`weasley-podex design` CLI / direct writes), not through HTTP.
  * - Preview serves the artifact as sandboxed HTML with a DocPanel-parity CSP
  *   (no scripts in v1); the panel iframe additionally uses sandbox="".
  * - File writes carry multi-megabyte HTML: the manager's global 64kb parser
@@ -31,7 +31,7 @@ import { bumpDesignStoreVersion, designStoreVersion, startDesignWatcher } from '
  *   parser.
  */
 
-const DESKTOP_IDENTITY_HEADER = 'x-podex-electron';
+const DESKTOP_IDENTITY_HEADER = 'x-weasley-podex-electron';
 const PREVIEW_CSP = "default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; font-src data:; script-src 'none'";
 
 function requireDesktopRenderer(req: Request, res: Response, next: NextFunction): void {
@@ -39,7 +39,7 @@ function requireDesktopRenderer(req: Request, res: Response, next: NextFunction)
         next();
         return;
     }
-    res.status(403).json({ ok: false, error: 'desktop renderer only (agents use the jaw design CLI / direct file writes)' });
+    res.status(403).json({ ok: false, error: 'desktop renderer only (agents use the weasley-podex design CLI / direct file writes)' });
 }
 
 function fail(res: Response, error: unknown, code = 400): void {

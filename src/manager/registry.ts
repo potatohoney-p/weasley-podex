@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { homedir } from 'node:os';
@@ -108,7 +109,7 @@ type StatusOptions = {
 };
 
 function legacyManagerHome(): string {
-    const home = process.env["podex_HOME"] || join(homedir(), '.podex');
+    const home = getWeasleyPodexEnv('HOME') || join(homedir(), '.podex');
     return resolveHomePath(home, homedir());
 }
 

@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../../core/weasley-podex-env.js';
 import express from 'express';
 import type { Express, NextFunction, Request, Response } from 'express';
 import { randomBytes } from 'node:crypto';
@@ -388,12 +389,12 @@ function sanitizeSnapshot(input: unknown): SnapshotResultNode[] {
  * endpoints (list/screenshot request) by design, but only the Manager renderer
  * may push registry state or settle commands.
  */
-const DESKTOP_IDENTITY_HEADER = 'x-podex-electron';
+const DESKTOP_IDENTITY_HEADER = 'x-weasley-podex-electron';
 
 // Read lazily: the Electron-spawned manager receives the per-launch secret via
 // env; reading at call time keeps module-import order (and tests) simple.
 function desktopRendererToken(): string {
-    return process.env['podex_ELECTRON_RENDERER_TOKEN'] ?? '';
+    return getWeasleyPodexEnv('ELECTRON_RENDERER_TOKEN') ?? '';
 }
 
 function requireDesktopRenderer(req: Request, res: Response): boolean {

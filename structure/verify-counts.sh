@@ -34,7 +34,7 @@ declare -a CHECKS=(
   "server.ts.*clearAllEmployeeSessions startup|server.ts"
   "mcp-sync.ts|lib/mcp-sync.ts"
   "upload.ts|lib/upload.ts"
-  "config.ts.*JAW_HOME|src/core/config.ts"
+  "config.ts.*WEASLEY_PODEX_HOME|src/core/config.ts"
   "db.ts.*SQLite|src/core/db.ts"
   "bus.ts.*WS|src/core/bus.ts"
   "logger.ts|src/core/logger.ts"
@@ -128,7 +128,11 @@ for entry in "${CHECKS[@]}"; do
     if $FIX; then
       line_num=$(echo "$doc_line_matches" | head -1 | cut -d: -f1)
       if [[ -n "$line_num" ]]; then
-        sed -i '' "${line_num}s/${documented}L/${actual}L/" "$DOC"
+        if sed --version >/dev/null 2>&1; then
+          sed -i "${line_num}s/${documented}L/${actual}L/" "$DOC"
+        else
+          sed -i '' "${line_num}s/${documented}L/${actual}L/" "$DOC"
+        fi
         echo -e "     ${GREEN}🔧 수정: ${documented}L → ${actual}L (line ${line_num})${RESET}"
         FIXED=$((FIXED + 1))
       fi

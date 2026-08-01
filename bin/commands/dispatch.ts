@@ -1,6 +1,7 @@
-﻿#!/usr/bin/env node
-// bin/commands/dispatch.ts — CLI: jaw dispatch --agent <name> --task <task>
-// Dispatches a jaw employee via the server API (pipe-mode compatible).
+#!/usr/bin/env node
+import { getWeasleyPodexEnv } from '../../src/core/weasley-podex-env.js';
+// bin/commands/dispatch.ts — CLI: weasley-podex dispatch --agent <name> --task <task>
+// Dispatches a weasley-podex employee via the server API (pipe-mode compatible).
 
 import { loadSettings, getServerUrl } from '../../src/core/config.js';
 import { setTimeout as sleep } from 'node:timers/promises';
@@ -15,11 +16,11 @@ import {
 } from '../../src/shared/shell-command-display.js';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw dispatch — send task to an employee agent
+  weasley-podex dispatch — send task to an employee agent
 
-  Usage: jaw dispatch --agent "Name" (--task "instruction" | --task-file <path>) [--async] [--quiet]
-         jaw dispatch --virtual "security" --task "audit this change" [--role "security"]
-         jaw dispatch --batch (--agents '<JSON array>' | --agents-file <path>) [--async]
+  Usage: weasley-podex dispatch --agent "Name" (--task "instruction" | --task-file <path>) [--async] [--quiet]
+         weasley-podex dispatch --virtual "security" --task "audit this change" [--role "security"]
+         weasley-podex dispatch --batch (--agents '<JSON array>' | --agents-file <path>) [--async]
   Options:
     --agent <name>      Employee name (must match settings.json employees)
     --virtual <name>    Ephemeral virtual employee name or role preset (security, testing)
@@ -35,7 +36,7 @@ if (shouldShowHelp(process.argv)) printAndExit(`
     --async             Do not wait for the result: print runId + recovery commands
                         and exit. Recommended for work that may exceed 2 minutes —
                         omitting it blocks up to 10 minutes while polling.
-                        Retrieve later: podex worker status/read <runId>
+                        Retrieve later: weasley-podex worker status/read <runId>
     --watch             Print live sanitized employee progress until completion (default for human output)
     --quiet             Suppress live progress summaries
     --json              JSON output; suppresses human progress lines
@@ -46,24 +47,24 @@ if (shouldShowHelp(process.argv)) printAndExit(`
   Result is returned via stdout. Employee names are case-sensitive.
 
   Examples:
-    jaw dispatch --agent "Frontend" --task "Fix CSS bug in header"
-    jaw dispatch --agent "Backend" --task-file /tmp/brief.md --task-tags "tdd" --async
-    jaw dispatch --virtual "security" --task "Review this branch for auth and secret leaks" --watch
-    jaw dispatch --batch --agents-file /tmp/batch.json --async
+    weasley-podex dispatch --agent "Frontend" --task "Fix CSS bug in header"
+    weasley-podex dispatch --agent "Backend" --task-file /tmp/brief.md --task-tags "tdd" --async
+    weasley-podex dispatch --virtual "security" --task "Review this branch for auth and secret leaks" --watch
+    weasley-podex dispatch --batch --agents-file /tmp/batch.json --async
 `);
 
 loadSettings();
 
-if (process.env["JAW_EMPLOYEE_MODE"] === '1') {
-    console.error('❌ jaw employee sessions cannot dispatch other employees. Complete the assigned task directly.');
+if (getWeasleyPodexEnv('EMPLOYEE_MODE') === '1') {
+    console.error('❌ weasley-podex employee sessions cannot dispatch other employees. Complete the assigned task directly.');
     process.exit(2);
 }
 
 // Phase 8: boss-only dispatch. Token must be inherited from the server process.
-const bossToken = process.env["JAW_BOSS_TOKEN"] || '';
+const bossToken = getWeasleyPodexEnv('BOSS_TOKEN') || '';
 if (!bossToken) {
-    console.error('❌ JAW_BOSS_TOKEN missing. This session is not authorized to dispatch employees.');
-    console.error('   Employees cannot dispatch. If you are the boss, ensure podex serve is running and this process inherited its env.');
+    console.error('❌ WEASLEY_PODEX_BOSS_TOKEN missing. This session is not authorized to dispatch employees.');
+    console.error('   Employees cannot dispatch. If you are the boss, ensure weasley-podex serve is running and this process inherited its env.');
     process.exit(2);
 }
 
@@ -126,7 +127,7 @@ if (agentsFile) {
 
 if (isBatch) {
     if (!batchAgentsRaw) {
-        console.error('Usage: jaw dispatch --batch (--agents \'[{"agent":"Name","task":"..."}]\' | --agents-file <path>)');
+        console.error('Usage: weasley-podex dispatch --batch (--agents \'[{"agent":"Name","task":"..."}]\' | --agents-file <path>)');
         process.exit(1);
     }
     let batchAgents: BatchAgentRequest[];
@@ -143,7 +144,7 @@ if (isBatch) {
     try {
         const res = await cliFetch(`${BASE}/api/orchestrate/dispatch/batch`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'X-Jaw-Boss-Token': bossToken },
+            headers: { 'Content-Type': 'application/json', 'X-Weasley-Podex-Boss-Token': bossToken },
             // --async sends wait:false → server pre-claims slots, answers 202
             // with runIds, and executes detached (results via worker status/read
             // or the boss's pending-replay drain).
@@ -177,7 +178,7 @@ if (isBatch) {
 }
 
 if ((!agent && !virtual) || (agent && virtual) || !task) {
-    console.error('Usage: jaw dispatch (--agent <name> | --virtual <name>) (--task <task> | --task-file <path>)');
+    console.error('Usage: weasley-podex dispatch (--agent <name> | --virtual <name>) (--task <task> | --task-file <path>)');
     console.error('  --agent     Employee name (e.g., Frontend, Backend, Data, Docs)');
     console.error('  --virtual   Ephemeral virtual employee name or role preset (security, testing)');
     console.error('  --role      Virtual role preset or freeform role prompt');
@@ -226,8 +227,8 @@ function printBatchAsyncWorkers(workers: BatchAsyncWorker[]): void {
     for (const w of workers) {
         if (w.accepted && w.runId) {
             console.log(`  ✅ ${w.agent} — runId: ${w.runId}`);
-            console.log(`     status: podex worker status ${w.runId}`);
-            console.log(`     output: podex worker read ${w.runId} --tail 80`);
+            console.log(`     status: weasley-podex worker status ${w.runId}`);
+            console.log(`     output: weasley-podex worker read ${w.runId} --tail 80`);
         } else {
             console.log(`  ❌ ${w.agent} — ${w.error || 'not accepted'}`);
         }
@@ -454,8 +455,8 @@ function shouldPrintLiveProgress(): boolean {
 function printFetchErrorWithRecovery(message: string): void {
     console.error(`❌ Error: ${message}`);
     if (!message.includes('fetch failed')) return;
-    console.error(`  status:  podex worker status`);
-    console.error(`  target:  podex worker status "${targetName}"`);
+    console.error(`  status:  weasley-podex worker status`);
+    console.error(`  target:  weasley-podex worker status "${targetName}"`);
 }
 
 function printNonOkResponse(body: { error?: string; message?: string; hint?: string }, status: number): void {
@@ -470,9 +471,9 @@ function printPollErrorWithRecovery(e: DispatchPollError): void {
     if (e.runId) console.error(`  runId:    ${e.runId}`);
     console.error(`  agent:    ${e.agentName || targetName}`);
     if (e.runId) {
-        console.error(`  status:   podex worker status ${e.runId}`);
-        console.error(`  output:   podex worker read ${e.runId} --tail 80`);
-    } else console.error(`  status:   podex worker status "${e.agentName || targetName}"`);
+        console.error(`  status:   weasley-podex worker status ${e.runId}`);
+        console.error(`  output:   weasley-podex worker read ${e.runId} --tail 80`);
+    } else console.error(`  status:   weasley-podex worker status "${e.agentName || targetName}"`);
     console.error(`  poll:     curl -s ${BASE}/api/orchestrate/worker/${encodeURIComponent(e.agentId)}/result`);
 }
 
@@ -489,7 +490,7 @@ try {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-Jaw-Boss-Token': bossToken,
+                    'X-Weasley-Podex-Boss-Token': bossToken,
                 },
                 body: JSON.stringify({
                     ...(agent ? { agent } : { virtual }),
@@ -521,7 +522,7 @@ try {
         if (isConnRefused(lastError)) {
             console.error(
                 `❌ Cannot reach ${BASE}. If running as launchd/systemd, wait a few seconds after reboot. `
-                + 'For foreground mode: jaw serve',
+                + 'For foreground mode: weasley-podex serve',
             );
         } else {
             printFetchErrorWithRecovery(errString(lastError));
@@ -543,11 +544,11 @@ try {
             const w = body.worker;
             if (w?.runId) {
                 console.log(`  runId: ${w.runId}`);
-                console.log(`  status: podex worker status ${w.runId}`);
-                console.log(`  output: podex worker read ${w.runId} --tail 80`);
+                console.log(`  status: weasley-podex worker status ${w.runId}`);
+                console.log(`  output: weasley-podex worker read ${w.runId} --tail 80`);
             } else {
                 // Defensive: a 202 without worker metadata still leaves a handle.
-                console.log(`  status: podex worker status "${targetName}"`);
+                console.log(`  status: weasley-podex worker status "${targetName}"`);
             }
             process.exit(0);
         }
@@ -571,8 +572,8 @@ try {
                 if (json) { printJsonResult(body); process.exit(1); }
                 console.error(`⏳ ${targetName} is already running (agentId: ${pollAgentId}${pollRunId ? `, runId: ${pollRunId}` : ''})`);
                 if (pollRunId) {
-                    console.error(`  status: podex worker status ${pollRunId}`);
-                    console.error(`  output: podex worker read ${pollRunId} --tail 80`);
+                    console.error(`  status: weasley-podex worker status ${pollRunId}`);
+                    console.error(`  output: weasley-podex worker read ${pollRunId} --tail 80`);
                 }
                 process.exit(1);
             }

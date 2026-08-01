@@ -109,7 +109,7 @@ describe('Phase 53 — Context Continuity', () => {
         };
         const result = renderBootstrapPrompt(slots);
         assert.ok(result.includes('Continuation Instructions'));
-        assert.ok(result.includes('podex memory search'));
+        assert.ok(result.includes('weasley-podex memory search'));
     });
 });
 

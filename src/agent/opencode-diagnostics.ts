@@ -1,7 +1,7 @@
 import fs from 'fs';
 import os from 'os';
 import { spawnSync } from 'child_process';
-import { join } from 'path';
+import { delimiter, join } from 'path';
 import { stripUndefined } from '../core/strip-undefined.js';
 
 const DEFAULT_RAW_EVENT_LIMIT = 100;
@@ -37,7 +37,7 @@ export type OpencodeRuntimeSnapshot = {
 };
 
 function splitPathHead(pathValue: string | undefined, limit = 5): string[] {
-    return String(pathValue || '').split(':').filter(Boolean).slice(0, limit);
+    return String(pathValue || '').split(delimiter).filter(Boolean).slice(0, limit);
 }
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
@@ -80,16 +80,28 @@ export function resolveOpencodeBinary(
     env: NodeJS.ProcessEnv = process.env,
     fallback = 'opencode',
 ): string {
-    try {
-        const result = spawnSync('/usr/bin/which', ['opencode'], {
-            env,
-            encoding: 'utf8',
-        });
-        const resolved = String(result.stdout || '').trim().split(/\r?\n/)[0];
-        return resolved || fallback;
-    } catch {
-        return fallback;
+    const pathValue = env["PATH"] || env["Path"] || env["path"] || '';
+    const names = process.platform === 'win32'
+        ? String(env["PATHEXT"] || '.COM;.EXE;.BAT;.CMD')
+            .split(';')
+            .map((extension) => `opencode${extension.trim().toLowerCase()}`)
+            .filter((name) => name !== 'opencode')
+        : ['opencode'];
+
+    for (const rawDir of pathValue.split(delimiter)) {
+        const dir = rawDir.trim().replace(/^"(.*)"$/, '$1');
+        if (!dir) continue;
+        for (const name of names) {
+            const candidate = join(dir, name);
+            try {
+                fs.accessSync(candidate, fs.constants.X_OK);
+                if (fs.statSync(candidate).isFile()) return candidate;
+            } catch {
+                // Keep searching PATH entries.
+            }
+        }
     }
+    return fallback;
 }
 
 export function readOpencodeVersion(

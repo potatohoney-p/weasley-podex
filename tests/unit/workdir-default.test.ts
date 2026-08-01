@@ -4,17 +4,17 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { DEFAULT_SETTINGS, JAW_HOME } from '../../src/core/config.ts';
+import { DEFAULT_SETTINGS, WEASLEY_PODEX_HOME } from '../../src/core/config.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const builderSrc = readFileSync(join(__dirname, '..', '..', 'src', 'prompt', 'builder.ts'), 'utf8');
 
-test('P1-001: DEFAULT_SETTINGS.workingDir === JAW_HOME', () => {
-    assert.equal(DEFAULT_SETTINGS.workingDir, JAW_HOME);
+test('P1-001: DEFAULT_SETTINGS.workingDir === WEASLEY_PODEX_HOME', () => {
+    assert.equal(DEFAULT_SETTINGS.workingDir, WEASLEY_PODEX_HOME);
     assert.ok(DEFAULT_SETTINGS.workingDir.includes('podex'));
 });
 
-test('P1-002: A2_DEFAULT prompt contains ~/.podex not bare ~/', () => {
+test('P1-002: A2_DEFAULT prompt contains ~/.weasley/podex not bare ~/', () => {
     const a2Match = builderSrc.match(/const A2_DEFAULT = `([\s\S]*?)`;/);
     const templatePath = join(__dirname, '..', '..', 'src', 'prompt', 'templates', 'a2-default.md');
     let a2Content: string;
@@ -25,7 +25,8 @@ test('P1-002: A2_DEFAULT prompt contains ~/.podex not bare ~/', () => {
         a2Content = readFileSync(templatePath, 'utf8');
         assert.ok(a2Content.length > 0, 'a2-default.md template should exist');
     }
-    assert.ok(a2Content.includes('~/.podex'), 'Should reference ~/.podex');
+    assert.ok(a2Content.includes('~/.weasley/podex'), 'Should reference ~/.weasley/podex');
+    assert.ok(!a2Content.includes('~/.podex'), 'Should not reference the retired ~/.podex path');
     assert.ok(!a2Content.includes('- ~/\n'), 'Should NOT have bare "- ~/"');
 });
 

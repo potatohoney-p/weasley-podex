@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Communication Skills — podex Docs</title>
+<title>Communication Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,28 +81,28 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>커뮤니케이션 스킬</h1>
-<p class="lead">podex는 메시징, 이메일, 소셜 미디어를 위한 6가지 커뮤니케이션 스킬을 기본 제공합니다. 이 스킬들을 사용하면 텔레그램 메시지 전송, 이메일 초안 작성 및 다듬기, Gmail과 Google Drive 관리, 터미널 기반 이메일 읽기, WhatsApp 메시지 전송, Twitter/X 게시 등을 자연어 명령만으로 수행할 수 있습니다.</p>
+<p class="lead">메시징, 이메일, 소셜 미디어를 위한 선택적 확장 예시입니다. 이 페이지의 6개 항목은 번들되지 않으며, 제공자와 패키지를 검토한 뒤 신뢰할 수 있는 스킬을 명시적으로 가져와야 합니다.</p>
 
 <h2>스킬 개요</h2>
 <table>
 <tr><th>스킬</th><th>채널</th><th>트리거 예시</th><th>상태</th></tr>
-<tr><td><strong>telegram-send</strong></td><td>Telegram</td><td><code>텔레그램으로 보내줘</code>, <code>send via telegram</code></td><td>활성</td></tr>
-<tr><td><strong>email-draft-polish</strong></td><td>이메일 (초안/다듬기)</td><td><code>이메일 초안 써줘</code>, <code>polish this email</code></td><td>활성</td></tr>
-<tr><td><strong>gog</strong></td><td>Gmail / Google Drive</td><td><code>Gmail 확인해줘</code>, <code>search my drive</code></td><td>활성</td></tr>
-<tr><td><strong>himalaya</strong></td><td>터미널 이메일 (IMAP)</td><td><code>메일 읽어줘</code>, <code>check inbox</code></td><td>활성</td></tr>
-<tr><td><strong>whatsapp</strong></td><td>WhatsApp</td><td><code>왓츠앱 메시지 보내줘</code>, <code>send whatsapp</code></td><td>활성</td></tr>
-<tr><td><strong>xurl</strong></td><td>Twitter / X</td><td><code>트윗 올려줘</code>, <code>post to X</code></td><td>활성</td></tr>
+<tr><td><strong>telegram-send</strong></td><td>Telegram</td><td><code>텔레그램으로 보내줘</code>, <code>send via telegram</code></td><td>선택적 가져오기</td></tr>
+<tr><td><strong>email-draft-polish</strong></td><td>이메일 (초안/다듬기)</td><td><code>이메일 초안 써줘</code>, <code>polish this email</code></td><td>선택적 가져오기</td></tr>
+<tr><td><strong>gog</strong></td><td>Gmail / Google Drive</td><td><code>Gmail 확인해줘</code>, <code>search my drive</code></td><td>선택적 가져오기</td></tr>
+<tr><td><strong>himalaya</strong></td><td>터미널 이메일 (IMAP)</td><td><code>메일 읽어줘</code>, <code>check inbox</code></td><td>선택적 가져오기</td></tr>
+<tr><td><strong>whatsapp</strong></td><td>WhatsApp</td><td><code>왓츠앱 메시지 보내줘</code>, <code>send whatsapp</code></td><td>선택적 가져오기</td></tr>
+<tr><td><strong>xurl</strong></td><td>Twitter / X</td><td><code>트윗 올려줘</code>, <code>post to X</code></td><td>선택적 가져오기</td></tr>
 </table>
 
 <h2 id="telegram-send">telegram-send</h2>
-<p>podex에서 텔레그램 채팅으로 메시지, 사진, 문서, 스티커를 직접 보낼 수 있습니다. 이 스킬은 <code>telegram-send</code> CLI를 래핑하며, 채팅 ID 확인, 파일 업로드, Markdown 포맷팅을 자동으로 처리합니다.</p>
+<p>Weasley Podex에서 텔레그램 채팅으로 메시지, 사진, 문서, 스티커를 직접 보낼 수 있습니다. 이 스킬은 <code>telegram-send</code> CLI를 래핑하며, 채팅 ID 확인, 파일 업로드, Markdown 포맷팅을 자동으로 처리합니다.</p>
 
 <h3>기능</h3>
 <ul>
@@ -115,8 +114,8 @@
 </ul>
 
 <h3>설정</h3>
-<p>podex 환경에 Telegram Bot API 토큰을 설정해야 합니다:</p>
-<pre><code># In ~/.podex/config.json or env
+<p>Weasley Podex 환경에 Telegram Bot API 토큰을 설정해야 합니다:</p>
+<pre><code># In ~/.weasley/podex/config.json or env
 TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
 TELEGRAM_CHAT_ID=default_chat_id</code></pre>
 
@@ -275,7 +274,7 @@ message.send.backend.login = "you@example.com"</code></pre>
 </div>
 
 <h2 id="whatsapp">whatsapp</h2>
-<p>podex를 통해 WhatsApp 메시지를 보낼 수 있습니다. 이 스킬은 WhatsApp Web 또는 WhatsApp Business API와 연동하여 연락처 및 그룹에 텍스트 메시지, 미디어, 문서를 전달합니다.</p>
+<p>Weasley Podex를 통해 WhatsApp 메시지를 보낼 수 있습니다. 이 스킬은 WhatsApp Web 또는 WhatsApp Business API와 연동하여 연락처 및 그룹에 텍스트 메시지, 미디어, 문서를 전달합니다.</p>
 
 <h3>기능</h3>
 <ul>
@@ -289,10 +288,10 @@ message.send.backend.login = "you@example.com"</code></pre>
 <h3>설정</h3>
 <p>WhatsApp 연동은 활성 세션이 필요합니다. 초기 설정 시 QR 코드를 통해 WhatsApp Web과 페어링합니다:</p>
 <pre><code># Start WhatsApp pairing
-jaw whatsapp pair
+weasley-podex whatsapp pair
 
 # Verify connection
-jaw whatsapp status</code></pre>
+weasley-podex whatsapp status</code></pre>
 
 <h3>예시</h3>
 <pre><code># Send a message
@@ -330,7 +329,7 @@ jaw whatsapp status</code></pre>
 <h3>설정</h3>
 <p>Twitter/X API 자격 증명 또는 쿠키 기반 인증이 필요합니다:</p>
 <pre><code># Cookie-based auth (recommended)
-jaw x auth login
+weasley-podex x auth login
 
 # Or API key auth
 X_API_KEY=your_api_key
@@ -340,7 +339,7 @@ X_ACCESS_SECRET=your_access_secret</code></pre>
 
 <h3>예시</h3>
 <pre><code># Post a tweet
-"트윗 올려줘: podex v2.0 released!"
+"트윗 올려줘: weasley-podex v2.0 released!"
 
 # Thread creation
 "이 내용을 트윗 스레드로 올려줘"
@@ -397,7 +396,7 @@ X_ACCESS_SECRET=your_access_secret</code></pre>
 "Gmail로 팀 전체에 보내줘"</code></pre>
 
 <h3>예약 전송</h3>
-<p>podex의 스케줄링 기능을 사용하여 메시지 전송 시간을 지정할 수 있습니다:</p>
+<p>Weasley Podex의 스케줄링 기능을 사용하여 메시지 전송 시간을 지정할 수 있습니다:</p>
 <pre><code># Schedule a Telegram reminder
 "내일 오전 9시에 텔레그램으로 '스탠드업 미팅' 리마인더 보내줘"
 

@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
@@ -137,7 +138,7 @@ export const JWC_MODEL_PROFILE_APPLY_DEFERRED_REASON =
     'Profile activation is delegated to JWC runtime because it validates credentials and supports rollback.';
 
 export function resolveJwcAgentDir(): string {
-    return process.env['podex_JWC_AGENT_DIR'] || join(homedir(), '.jwc', 'agent');
+    return getWeasleyPodexEnv('JWC_AGENT_DIR') || join(homedir(), '.jwc', 'agent');
 }
 
 export function isJwcModelAssignmentRole(value: string): value is JwcModelAssignmentRole {

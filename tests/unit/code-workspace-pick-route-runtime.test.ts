@@ -2,6 +2,7 @@ import test, { mock } from 'node:test';
 import assert from 'node:assert/strict';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 // Slice 210a reinforcement (pre-220): the source-string contract in
 // code-workspace-pick-route-contract.test.ts locks the PickResult -> HTTP map
@@ -21,7 +22,7 @@ const pick: { next: () => Promise<PickResult> } = {
     next: async () => ({ status: 'cancelled' }),
 };
 
-const folderPickerPath = resolve(import.meta.dirname, '../../src/core/folder-picker.js');
+const folderPickerPath = pathToFileURL(resolve(import.meta.dirname, '../../src/core/folder-picker.js')).href;
 mock.module(folderPickerPath, {
     namedExports: {
         pickFolderNative: async () => pick.next(),
@@ -30,7 +31,7 @@ mock.module(folderPickerPath, {
 
 // registerCodeRoutes pulls in acp-host at module load; mock it the same way
 // code-routes.test.ts does so the route module imports without starting jwc.
-const acpHostPath = resolve(import.meta.dirname, '../../src/code-mode/acp-host.js');
+const acpHostPath = pathToFileURL(resolve(import.meta.dirname, '../../src/code-mode/acp-host.js')).href;
 mock.module(acpHostPath, {
     namedExports: {
         acpHost: {

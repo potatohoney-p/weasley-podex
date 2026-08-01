@@ -1,20 +1,13 @@
-import { sharkIcon } from './icons.js';
+import { productMarkIcon } from './icons.js';
 import { clipTextToCols, visualWidth } from './renderers.js';
 // jawcode bundle integration available via jawcode-render.js when needed
 
-const SHARK_ART = [
-    '            ▄▄▄▄▄▄            ',
-    '         ▄▀░░░░░░░▀▄          ',
-    '       ▄▀░░░░░░░░░░░▀▄       ',
-    '      █░░░░░░░░░░░░░░░█      ',
-    '     █░░░●░░░░░░░●░░░░░█     ',
-    '    █░░░░░░░▄▄▄░░░░░░░░░█    ',
-    '   █░░░░░░░░░▀▀░░░░░░░░░░█   ',
-    '  █░░░░╱░░░░░░░░░░░╲░░░░░░█  ',
-    ' █░░░╱░╱░░░░░░░░░╲░╲░░░░░░█ ',
-    '█░░░╱░╱░░░░░░░░░░░╲░╲░░░░░░█',
-    '▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀',
-    '≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈≈',
+const WEASLEY_MARK_ART = [
+    '        ╭────────────╮        ',
+    '        │ W  ╲  ╱  P │        ',
+    '        │     ◆      │        ',
+    '        │ ╲   │   ╱  │        ',
+    '        ╰──╲──┼──╱───╯        ',
 ];
 
 const BLUE_GRADIENT: ReadonlyArray<readonly [number, number, number]> = [
@@ -84,14 +77,14 @@ export function renderJawWelcome(opts: {
     const W = Math.min(width, 78);
 
     if (rows < 20) {
-        const icon = sharkIcon();
+        const icon = productMarkIcon();
         const BLUE = '\x1b[38;2;59;130;246m';
         const LTBLUE = '\x1b[38;2;96;165;250m';
         const MUTED = '\x1b[38;2;51;65;85m';
         const BOLD = '\x1b[1m';
         const RST = '\x1b[0m';
         const lines = [
-            `${BLUE}${BOLD}${icon} jaw${RST} ${MUTED}v${opts.version}${RST}  ${MUTED}bite anything!${RST}`,
+            `${BLUE}${BOLD}${icon} Weasley Podex${RST} ${MUTED}v${opts.version}${RST}`,
             `${LTBLUE}⬢${RST} ${opts.model}  ${MUTED}engine:${RST} ${LTBLUE}${opts.engine}${RST}`,
         ];
         if (opts.projectRoot) {
@@ -108,13 +101,13 @@ export function renderJawWelcome(opts: {
     const NAVY = '\x1b[38;2;30;64;175m';
     const MUTED = '\x1b[38;2;51;65;85m';
 
-    const icon = sharkIcon();
+    const icon = productMarkIcon();
     const borderH = '─';
     const bTL = '╭'; const bTR = '╮'; const bBL = '╰'; const bBR = '╯';
     const bV = '│';
 
     const innerW = W - 2;
-    const titleText = ` ${icon} jaw v${opts.version} `;
+    const titleText = ` ${icon} Weasley Podex v${opts.version} `;
     const titlePad = Math.max(0, innerW - visualWidth(titleText));
     const titleLeft = Math.floor(titlePad / 2);
     const titleRight = titlePad - titleLeft;
@@ -130,15 +123,15 @@ export function renderJawWelcome(opts: {
     const rightW = showRightPane ? Math.max(1, availableContentW - leftW) : 0;
 
     const leftLines: string[] = [
-        `${BOLD}${BLUE}${icon} jaw${RST}`,
-        `${DIM}${MUTED}bite anything!${RST}`,
+        `${BOLD}${BLUE}${icon} Weasley Podex${RST}`,
+        `${DIM}${MUTED}route work clearly${RST}`,
         `${MUTED}v${opts.version}${RST}`,
         '',
     ];
 
     const shinePos = opts.phase !== undefined ? (opts.phase % 1.0) : undefined;
-    for (let i = 0; i < SHARK_ART.length; i++) {
-        leftLines.push(gradientLine(SHARK_ART[i]!, i, SHARK_ART.length, shinePos));
+    for (let i = 0; i < WEASLEY_MARK_ART.length; i++) {
+        leftLines.push(gradientLine(WEASLEY_MARK_ART[i]!, i, WEASLEY_MARK_ART.length, shinePos));
     }
 
     leftLines.push('');

@@ -7,7 +7,7 @@ import {
     ACTION_MEMORY_SCHEMA_VERSION,
 } from '../../src/browser/web-ai/action-memory.js';
 
-describe('G07 action memory (podex mirror)', () => {
+describe('G07 action memory (Weasley Podex mirror)', () => {
     it('stores and retrieves by (origin,intent,signature)', () => {
         const m = createActionMemory();
         m.put({ origin: 'https://x.test', intentId: 'send.click', signature: 'sig-A', ref: '@e3', hits: 0, validations: { ok: 0, fail: 0 }, lastGoodAt: '' });

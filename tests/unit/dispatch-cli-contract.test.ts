@@ -85,11 +85,11 @@ test('dispatch CLI prints worker-status recovery hints for initial fetch failure
         'dispatch CLI should centralize fetch failure recovery guidance',
     );
     assert.ok(
-        dispatchSrc.includes('podex worker status'),
+        dispatchSrc.includes('weasley-podex worker status'),
         'dispatch CLI should tell users how to inspect possibly accepted workers after fetch failed',
     );
     assert.ok(
-        dispatchSrc.includes('podex worker status "${targetName}"'),
+        dispatchSrc.includes('weasley-podex worker status "${targetName}"'),
         'dispatch CLI should include a target-specific worker status command',
     );
     const noResponseIdx = dispatchSrc.indexOf('if (!res)');
@@ -111,11 +111,11 @@ test('dispatch CLI preserves runId in poll recovery hints without auto-inlining 
         'DispatchPollError should carry the per-run id when known',
     );
     assert.ok(
-        dispatchSrc.includes('podex worker status ${e.runId}'),
+        dispatchSrc.includes('weasley-podex worker status ${e.runId}'),
         'poll recovery should point directly at the runId status surface',
     );
     assert.ok(
-        dispatchSrc.includes('podex worker read ${e.runId} --tail 80'),
+        dispatchSrc.includes('weasley-podex worker read ${e.runId} --tail 80'),
         'poll recovery should expose raw output only as an explicit worker read command',
     );
     assert.ok(

@@ -1,6 +1,6 @@
-﻿// Parity catalog 102 (session-doctor). Strict-TS port of agbrowse web-ai/session-doctor.mjs.
+// Parity catalog 102 (session-doctor). Strict-TS port of agbrowse web-ai/session-doctor.mjs.
 // Read-only session diagnostic report: never reads prompt/answer text and redacts
-// conversation URLs to host + pathname. podex doctor.ts is a feature-capability prober —
+// conversation URLs to host + pathname. weasley-podex doctor.ts is a feature-capability prober —
 // it does NOT cover session-level reporting (lock PID/staleness + verifySessionTab). Deps
 // are injected (podex's session/lock/tab APIs are spread across modules) so the report
 // builder is fully unit-testable; sanitize/summarize/recommend helpers are pure.

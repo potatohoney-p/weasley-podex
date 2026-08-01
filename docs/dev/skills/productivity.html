@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Productivity Skills — podex Docs</title>
+<title>Productivity Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -35,7 +34,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -84,26 +83,25 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Productivity Skills</h1>
-<p class="lead">Document creation, knowledge management, task tracking, note-taking, and Korean content-writing skills. These 17 skills connect podex to office suites, project management tools, personal productivity apps, and editorial workflows so you can create, read, edit, and organize documents, tasks, and content entirely from the chat interface.</p>
+<p class="lead">Optional productivity-extension recipes for documents, knowledge management, tasks, and notes. These examples are not part of the bundled eight-skill registry; import only reviewed skills from an installed Codex environment or an explicit trusted repository.</p>
 
 <h2>Overview</h2>
-<p>Productivity skills fall into five groups: <strong>document formats</strong> (Office and HWP file I/O), <strong>knowledge management</strong> (Notion, Obsidian, Apple Notes), <strong>task management</strong> (Things, Reminders, Trello, Linear), <strong>collaboration utilities</strong> (co-authoring, HTML-to-PPTX conversion), and <strong>content writing</strong> (Korean promotional/editorial output through <code>k-writing</code>).</p>
+<p>The extension examples fall into four groups: <strong>document formats</strong>, <strong>knowledge management</strong>, <strong>task management</strong>, and <strong>collaboration utilities</strong>. Availability depends on the imported skill and its external provider.</p>
 
 <table>
 <tr><th>Skill</th><th>Status</th><th>Category</th><th>Description</th></tr>
-<tr><td><code>docx</code></td><td>Active</td><td>Documents</td><td>Create, read, and edit Word (.docx) files</td></tr>
-<tr><td><code>pptx</code></td><td>Active</td><td>Documents</td><td>Create, read, and edit PowerPoint (.pptx) presentations</td></tr>
-<tr><td><code>xlsx</code></td><td>Active</td><td>Documents</td><td>Create, read, and edit Excel (.xlsx) spreadsheets</td></tr>
-<tr><td><code>hwp</code></td><td>Active</td><td>Documents</td><td>Create, read, and edit Korean HWP/HWPX documents</td></tr>
-<tr><td><code>k-writing</code></td><td>Active</td><td>Content</td><td>Korean promotional/content writing with channel routing, mandatory pre-search, 3-candidate hook scoring, and anti-AI/humanness checks</td></tr>
-<tr><td><code>notion</code></td><td>Active</td><td>Knowledge</td><td>Read, create, and update Notion pages and databases</td></tr>
+<tr><td><code>docx</code></td><td>Optional import</td><td>Documents</td><td>Create, read, and edit Word (.docx) files</td></tr>
+<tr><td><code>pptx</code></td><td>Optional import</td><td>Documents</td><td>Create, read, and edit PowerPoint (.pptx) presentations</td></tr>
+<tr><td><code>xlsx</code></td><td>Optional import</td><td>Documents</td><td>Create, read, and edit Excel (.xlsx) spreadsheets</td></tr>
+<tr><td><code>hwp</code></td><td>Optional import</td><td>Documents</td><td>Create, read, and edit Korean HWP/HWPX documents</td></tr>
+<tr><td><code>notion</code></td><td>Optional import</td><td>Knowledge</td><td>Read, create, and update Notion pages and databases</td></tr>
 <tr><td><code>notion-knowledge-capture</code></td><td>Planned</td><td>Knowledge</td><td>Auto-capture conversation insights into Notion</td></tr>
 <tr><td><code>notion-meeting</code></td><td>Planned</td><td>Knowledge</td><td>Meeting notes template with action items to Notion</td></tr>
 <tr><td><code>notion-research</code></td><td>Planned</td><td>Knowledge</td><td>Research findings aggregation into Notion databases</td></tr>
@@ -119,7 +117,7 @@
 </table>
 
 <h2>Document Skills</h2>
-<p>The four document skills (<code>docx</code>, <code>pptx</code>, <code>xlsx</code>, <code>hwp</code>) are all currently active and provide full read/write/edit capabilities for their respective formats.</p>
+<p>The four document recipes (<code>docx</code>, <code>pptx</code>, <code>xlsx</code>, <code>hwp</code>) require an explicitly imported skill; capabilities depend on that extension and are not guaranteed by the core package.</p>
 
 <h3>docx -- Word Documents</h3>
 <p>Creates and edits <code>.docx</code> files using structured content blocks. Supports headings, paragraphs, tables, bullet lists, images, and custom styles.</p>
@@ -173,7 +171,7 @@
 <p>These skills integrate with note-taking and knowledge base platforms to capture, organize, and retrieve information.</p>
 
 <h3>notion</h3>
-<p>The core Notion integration skill. Currently active. Connects to the Notion API to read pages, create new pages, update content, and query databases.</p>
+<p>An optional Notion integration recipe. After importing a reviewed skill, it can connect to the Notion API to read pages, create pages, update content, and query databases.</p>
 <pre><code># Create a page in Notion
 "노션에 정리해줘 -- 오늘 회의 내용"
 
@@ -208,7 +206,7 @@
 "옵시디언 볼트에서 API 관련 노트 찾아줘"</code></pre>
 
 <h2>Task Management</h2>
-<p>Task management skills connect podex to popular to-do and project tracking tools. All are currently planned.</p>
+<p>Task management skills connect Weasley Podex to popular to-do and project tracking tools. All are currently planned.</p>
 
 <h3>apple-reminders (Planned)</h3>
 <p>Creates and manages reminders in Apple Reminders via AppleScript. Supports due dates, priorities, lists, and recurring reminders.</p>
@@ -268,15 +266,15 @@
 <li>"노션에 정리해줘" triggers the <code>notion</code> skill</li>
 <li>"한글 문서 읽어줘" triggers the <code>hwp</code> skill</li>
 <li>"엑셀로 정리해줘" triggers the <code>xlsx</code> skill</li>
-<li>"이거 홍보 쓰레드로 써줘" triggers the active <code>k-writing</code> skill</li>
+<li>Content-writing requests use the selected model unless the user has imported a matching extension</li>
 <li>"리마인더에 추가해줘" will trigger <code>apple-reminders</code></li>
 <li>"트렐로에 카드 만들어줘" will trigger <code>trello</code></li>
 </ul>
-podex matches your intent to the appropriate skill automatically.
+Weasley Podex matches your intent to the appropriate skill automatically.
 </div>
 
 <h2>Configuration</h2>
-<p>Some productivity skills require API tokens or app-specific setup. Configure these in your podex settings or environment variables.</p>
+<p>Some productivity skills require API tokens or app-specific setup. Configure these in your Weasley Podex settings or environment variables.</p>
 
 <table>
 <tr><th>Skill</th><th>Requirement</th><th>Configuration</th></tr>
@@ -290,12 +288,12 @@ podex matches your intent to the appropriate skill automatically.
 </table>
 
 <h2>Skill Interactions</h2>
-<p>Productivity skills combine naturally with other podex capabilities:</p>
+<p>Productivity skills combine naturally with other Weasley Podex capabilities:</p>
 <ul>
 <li><strong>deep-research + notion</strong>: Research a topic and save findings to a Notion database</li>
 <li><strong>xlsx + pptx</strong>: Analyze spreadsheet data and generate a presentation with charts</li>
 <li><strong>hwp + docx</strong>: Convert between Korean HWP and Word formats</li>
-<li><strong>k-writing + search</strong>: Produce Korean promo copy with current-source checks, hook scoring, and anti-AI review</li>
+<li><strong>Imported writing extension + search</strong>: Produce sourced copy when a reviewed extension is installed</li>
 <li><strong>notion-meeting + telegram</strong>: Capture meeting notes and send a summary via Telegram</li>
 <li><strong>html2pptx + web-ai</strong>: Scrape a web page and convert it to a slide deck</li>
 <li><strong>linear + trello</strong>: Sync issue status across project management tools</li>

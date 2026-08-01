@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 ﻿import { closeTab, listTabs, type BrowserTabInfo } from './connection.js';
 import { listSessions } from './web-ai/session.js';
 import { listLeases, type TabLease } from './web-ai/tab-lease-store.js';
@@ -176,8 +177,8 @@ export async function cleanupIdleTabs(port: number, opts: TabCleanupOptions = {}
         activeSessionTargetIds,
         pinnedTargetIds: pinnedTabs,
         now: opts.now || Date.now(),
-        idleTimeoutMs: opts.idleTimeoutMs || parseTabDuration(process.env["JAW_BROWSER_TAB_IDLE"] || '30m'),
-        maxTabs: opts.maxTabs ?? Number(process.env["JAW_BROWSER_MAX_TABS"] || DEFAULT_MAX_TABS),
+        idleTimeoutMs: opts.idleTimeoutMs || parseTabDuration(getWeasleyPodexEnv('BROWSER_TAB_IDLE') || '30m'),
+        maxTabs: opts.maxTabs ?? Number(getWeasleyPodexEnv('BROWSER_MAX_TABS') || DEFAULT_MAX_TABS),
         includeUntracked: opts.includeUntracked === true,
         leaseByTargetId,
     });

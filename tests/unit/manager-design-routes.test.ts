@@ -13,7 +13,7 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-process.env['podex_DASHBOARD_HOME'] = mkdtempSync(join(tmpdir(), 'jaw-design-routes-'));
+process.env['WEASLEY_PODEX_DASHBOARD_HOME'] = mkdtempSync(join(tmpdir(), 'jaw-design-routes-'));
 
 const { createDashboardDesignRouter } = await import('../../src/manager/routes/dashboard-design.js');
 const router = createDashboardDesignRouter();
@@ -23,7 +23,7 @@ type FakeResult = { code: number; body: unknown; headers: Record<string, string>
 function request(method: string, url: string, options: { body?: unknown; desktop?: boolean } = {}): Promise<FakeResult> {
     return new Promise((resolve, reject) => {
         const headers: Record<string, string> = {};
-        if (options.desktop) headers['x-podex-electron'] = '1';
+        if (options.desktop) headers['x-weasley-podex-electron'] = '1';
         const req = {
             method,
             url,

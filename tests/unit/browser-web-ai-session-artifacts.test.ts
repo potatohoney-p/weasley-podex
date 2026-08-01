@@ -5,15 +5,15 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 // Strict-TS port of agbrowse session-artifacts (catalog 101 #7). Uses a fresh temp
-// podex_HOME so writes land under an isolated artifacts dir.
-test('BWAI-ARTIFACTS-001: save helpers write under JAW_HOME with sanitized paths', async () => {
+// WEASLEY_PODEX_HOME so writes land under an isolated artifacts dir.
+test('BWAI-ARTIFACTS-001: save helpers write under WEASLEY_PODEX_HOME with sanitized paths', async () => {
     const home = mkdtempSync(join(tmpdir(), 'cjwa-'));
-    process.env.podex_HOME = home;
+    process.env.WEASLEY_PODEX_HOME = home;
     const art = await import('../../src/browser/web-ai/session-artifacts.js');
 
     // resolveArtifactsDir sanitizes the session id (no traversal) and roots under home
     const dir = art.resolveArtifactsDir('webai/../../evil id');
-    assert.ok(dir.startsWith(home), 'artifacts dir must be under JAW_HOME');
+    assert.ok(dir.startsWith(home), 'artifacts dir must be under WEASLEY_PODEX_HOME');
     assert.ok(!dir.includes('..'), 'session id traversal must be sanitized');
 
     // transcript round-trips to disk

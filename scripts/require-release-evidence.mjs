@@ -49,8 +49,8 @@ Options:
   -h, --help        Show this help.
 
 If installer-sensitive files changed, this script requires:
-  podex_MACOS_EVIDENCE_DIR=/path/to/macos-evidence
-  podex_WSL_EVIDENCE_DIR=/path/to/wsl-evidence
+  WEASLEY_PODEX_MACOS_EVIDENCE_DIR=/path/to/macos-evidence
+  WEASLEY_PODEX_WSL_EVIDENCE_DIR=/path/to/wsl-evidence
 
 Then it runs scripts/verify-release-evidence.mjs before publish/release can continue.
 `);
@@ -196,8 +196,12 @@ if (!changed.length) {
   process.exit(0);
 }
 
-const macosEvidence = process.env.podex_MACOS_EVIDENCE_DIR || process.env.MACOS_EVIDENCE_DIR || '';
-const wslEvidence = process.env.podex_WSL_EVIDENCE_DIR || process.env.WSL_EVIDENCE_DIR || '';
+const macosEvidence = process.env.WEASLEY_PODEX_MACOS_EVIDENCE_DIR
+  || process.env.MACOS_EVIDENCE_DIR
+  || '';
+const wslEvidence = process.env.WEASLEY_PODEX_WSL_EVIDENCE_DIR
+  || process.env.WSL_EVIDENCE_DIR
+  || '';
 
 console.error(`[release-evidence-required] installer-sensitive changes detected since ${ref || '(initial release)'} (${changed.length}, ${shortHash(changed)})`);
 for (const file of changed.slice(0, 30)) {
@@ -211,10 +215,10 @@ if (!macosEvidence || !wslEvidence) {
   console.error('[release-evidence-required] FAIL');
   console.error('Strict fresh-machine evidence is required before git push or npm publish.');
   console.error('Set both variables and rerun:');
-  console.error('  podex_MACOS_EVIDENCE_DIR=/path/to/macos-evidence');
-  console.error('  podex_WSL_EVIDENCE_DIR=/path/to/wsl-evidence');
+  console.error('  WEASLEY_PODEX_MACOS_EVIDENCE_DIR=/path/to/macos-evidence');
+  console.error('  WEASLEY_PODEX_WSL_EVIDENCE_DIR=/path/to/wsl-evidence');
   console.error('Then verify with:');
-  console.error('  node scripts/verify-release-evidence.mjs --macos "$podex_MACOS_EVIDENCE_DIR" --wsl "$podex_WSL_EVIDENCE_DIR"');
+  console.error('  node scripts/verify-release-evidence.mjs --macos "$WEASLEY_PODEX_MACOS_EVIDENCE_DIR" --wsl "$WEASLEY_PODEX_WSL_EVIDENCE_DIR"');
   process.exit(1);
 }
 

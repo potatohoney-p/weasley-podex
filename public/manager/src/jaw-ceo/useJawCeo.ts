@@ -185,7 +185,7 @@ export function useJawCeo(args: UseJawCeoArgs): JawCeoController {
                 selectedPort: args.selectedPort,
                 ...(stateRef.current.session.sessionId === 'pending' ? {} : { sessionId: stateRef.current.session.sessionId }),
             });
-            const response = result.data?.response || result.error?.message || result.message || 'Jaw CEO message completed.';
+            const response = result.data?.response || result.error?.message || result.message || 'Weasley Podex CEO message completed.';
             setLastResponse(response);
             await refresh();
             return result;

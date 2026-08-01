@@ -63,7 +63,7 @@ test('electron external open policy keeps app origins internal and opens safe we
     assert.equal(isAppInternalNavigation('http://127.0.0.1:24602/', options), true);
     assert.equal(externalOpenUrlForNavigation('http://127.0.0.1:24576/manager', options), null);
     assert.equal(externalOpenUrlForNavigation('http://127.0.0.1:24602/', options), null);
-    assert.equal(externalOpenUrlForNavigation('https://github.com/potatohoney-p/podex', options), 'https://github.com/potatohoney-p/podex');
+    assert.equal(externalOpenUrlForNavigation('https://github.com/potatohoney-p/weasley-podex', options), 'https://github.com/potatohoney-p/weasley-podex');
     assert.equal(externalOpenUrlForNavigation('http://127.0.0.1:3000/', options), 'http://127.0.0.1:3000/');
 });
 

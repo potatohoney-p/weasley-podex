@@ -1360,7 +1360,7 @@ test('grok trace backfill recovers omitted headless tool calls from chat history
         JSON.stringify({
             type: 'tool_result',
             tool_call_id: 'call-1',
-            content: 'exit: 0\n/Users/jun\n',
+            content: 'exit: 0\n/Users/example\n',
         }),
     ].join('\n');
 
@@ -1370,7 +1370,7 @@ test('grok trace backfill recovers omitted headless tool calls from chat history
     assert.equal(entries[0].label, 'run_terminal_command');
     assert.equal(entries[0].status, 'done');
     assert.match(entries[0].detail || '', /"command":"pwd"/);
-    assert.match(entries[0].detail || '', /\/Users\/jun/);
+    assert.match(entries[0].detail || '', /\/Users\/example/);
 });
 
 test('grok trace backfill marks non-zero terminal result as error', () => {
@@ -1657,7 +1657,7 @@ test('opencode keeps post-tool text during tool-calls steps', () => {
         part: {
             tool: 'read',
             callID: 'read:0',
-            state: { status: 'error', input: { filePath: '/Users/jun/.config/opencode/config.json' } },
+            state: { status: 'error', input: { filePath: '/Users/example/.config/opencode/config.json' } },
         },
     }, ctx, 'oc');
     extractFromEvent('opencode', {

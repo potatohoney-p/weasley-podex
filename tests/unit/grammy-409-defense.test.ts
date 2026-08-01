@@ -7,8 +7,8 @@ import fs from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const BOT_PATH = new URL('../../src/telegram/bot.ts', import.meta.url).pathname;
-const SERVER_PATH = new URL('../../server.ts', import.meta.url).pathname;
+const BOT_PATH = fileURLToPath(new URL('../../src/telegram/bot.ts', import.meta.url));
+const SERVER_PATH = fileURLToPath(new URL('../../server.ts', import.meta.url));
 const botSrc = fs.readFileSync(BOT_PATH, 'utf8');
 const serverSrc = fs.readFileSync(SERVER_PATH, 'utf8');
 

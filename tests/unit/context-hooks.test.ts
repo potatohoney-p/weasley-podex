@@ -33,7 +33,7 @@ test('kill switch disables configured hooks', () => {
         jawHome: home,
         configPath,
         log: false,
-        env: { podex_PRE_PROMPT_HOOKS: '0' },
+        env: { WEASLEY_PODEX_PRE_PROMPT_HOOKS: '0' },
     });
     assert.equal(result.block, '');
     assert.equal(result.report.status, 'disabled');
@@ -101,7 +101,7 @@ test('skips stale files and malformed JSON without failing the prompt build', ()
     assert.deepEqual(result.report.sources.map(source => source.status), ['stale', 'invalid']);
 });
 
-test('rejects traversal and symlink escapes from podex_HOME', () => {
+test('rejects traversal and symlink escapes from WEASLEY_PODEX_HOME', () => {
     const { home, configPath } = fixture({
         sources: [
             { id: 'traversal', path: '../outside.json', fields: ['value'] },

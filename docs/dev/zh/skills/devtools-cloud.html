@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cloud & Deploy Skills — podex Docs</title>
+<title>Cloud & Deploy Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,20 +81,20 @@
     <a class="active" href="./">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Cloud & Deploy Skills</h1>
-<p class="lead">云基础设施配置、无服务器部署、边缘计算以及平台即服务集成。通过一条自然语言命令，即可从 podex 直接部署到任何主流云服务商。</p>
+<p class="lead">云基础设施配置、无服务器部署、边缘计算以及平台即服务集成。通过一条自然语言命令，即可从 Weasley Podex 直接部署到任何主流云服务商。</p>
 
 <h2>概述</h2>
-<p>Cloud & Deploy 技能将 podex 转变为统一的部署控制平面。无需记忆各平台的 CLI 参数，只需用自然语言描述你的需求，相应的技能就会处理特定于服务商的配置、构建步骤和部署编排。</p>
+<p>Cloud & Deploy 技能将 Weasley Podex 转变为统一的部署控制平面。无需记忆各平台的 CLI 参数，只需用自然语言描述你的需求，相应的技能就会处理特定于服务商的配置、构建步骤和部署编排。</p>
 
 <div class="callout callout-info">
-  <strong>自然语言部署</strong> &mdash; 只需说 <code>"Vercel에 배포해줘"</code> 或 <code>"Deploy this to Cloudflare Workers"</code>，podex 就会选择正确的技能、检测你的框架并运行完整的部署流程。
+  <strong>自然语言部署</strong> &mdash; 只需说 <code>"Vercel에 배포해줘"</code> 或 <code>"Deploy this to Cloudflare Workers"</code>，Weasley Podex 就会选择正确的技能、检测你的框架并运行完整的部署流程。
 </div>
 
 <h2>技能目录</h2>
@@ -164,7 +163,7 @@
 <p><code>aws-skills</code> 模块通过自然语言命令覆盖最常用的 AWS 服务。</p>
 
 <div class="callout callout-info">
-  <strong>IAM 策略生成</strong> &mdash; 只需说 <code>"Lambda에 S3 읽기 권한 추가해줘"</code>，podex 就会生成最小权限的 IAM 策略文档、将其附加到执行角色并验证变更。
+  <strong>IAM 策略生成</strong> &mdash; 只需说 <code>"Lambda에 S3 읽기 권한 추가해줘"</code>，Weasley Podex 就会生成最小权限的 IAM 策略文档、将其附加到执行角色并验证变更。
 </div>
 
 <pre><code># Create a Lambda function
@@ -263,7 +262,7 @@
 "노트북을 HTML 보고서로 변환해줘"</code></pre>
 
 <h2>配置</h2>
-<p>Cloud 技能使用各服务商标准配置中的凭据。如果你已经设置好了服务商的 CLI 工具，则无需额外的 podex 配置。</p>
+<p>Cloud 技能使用各服务商标准配置中的凭据。如果你已经设置好了服务商的 CLI 工具，则无需额外的 Weasley Podex 配置。</p>
 
 <table>
 <tr><th>服务商</th><th>凭据来源</th><th>所需设置</th></tr>
@@ -276,13 +275,13 @@
 </table>
 
 <div class="callout callout-info">
-  <strong>凭据安全</strong> &mdash; podex 自身不存储任何凭据。它委托给各服务商的标准凭据链。密钥永远不会被写入记忆、日志或对话历史中。
+  <strong>凭据安全</strong> &mdash; Weasley Podex 自身不存储任何凭据。它委托给各服务商的标准凭据链。密钥永远不会被写入记忆、日志或对话历史中。
 </div>
 
 <h2>常见模式</h2>
 
 <h3>多阶段部署</h3>
-<p>组合多个技能实现复杂工作流。podex 会自动串联各个步骤：</p>
+<p>组合多个技能实现复杂工作流。Weasley Podex 会自动串联各个步骤：</p>
 <pre><code># Build, test, and deploy
 "테스트 돌리고 통과하면 Vercel에 배포해줘"
 

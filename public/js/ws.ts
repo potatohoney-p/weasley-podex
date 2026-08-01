@@ -11,21 +11,20 @@ import { escapeHtml, cancelPostRender } from './render.js';
 import type { HeartbeatRuntimeState, OrcStateName, ResolvedSelectionState } from './state.js';
 import { notifyUnreadResponse } from './features/attention-badge.js';
 import { shouldApplyOrcStateEvent } from './features/orchestrate-scope.js';
-import { providerLabel } from './provider-icons.js';
 
 const ROADMAP_PHASES = ['I', 'P', 'A', 'B', 'C'] as const;
 
-/** Track current phase for resize recalculation */
-let currentSharkPhase: string | null = null;
+/** Track current phase for resize recalculation. */
+let currentRunnerPhase: string | null = null;
 
-/** Position shark midway between active dot and next dot.
+/** Position the activity marker midway between the active dot and next dot.
  *  For C (last phase), center on the C dot itself.
  *  Uses dot midpoints to avoid CENTER brand element skewing connector index mapping. */
-function positionShark(roadmap: HTMLElement, shark: HTMLElement, phase: string): void {
+function positionPhaseRunner(roadmap: HTMLElement, runner: HTMLElement, phase: string): void {
     const idx = ROADMAP_PHASES.indexOf(phase as typeof ROADMAP_PHASES[number]);
     if (idx < 0) return;
     const barRect = roadmap.getBoundingClientRect();
-    const sharkW = shark.offsetWidth || 36;
+    const runnerWidth = runner.offsetWidth || 12;
     const dot = document.getElementById(`dot-${phase}`);
     if (!dot) return;
 
@@ -35,10 +34,10 @@ function positionShark(roadmap: HTMLElement, shark: HTMLElement, phase: string):
         const dotRect = dot.getBoundingClientRect();
         const nextRect = nextDot.getBoundingClientRect();
         const mid = (dotRect.right + nextRect.left) / 2;
-        shark.style.transform = `translateX(${mid - barRect.left - sharkW / 2}px)`;
+        runner.style.transform = `translateX(${mid - barRect.left - runnerWidth / 2}px)`;
     } else {
         const dotRect = dot.getBoundingClientRect();
-        shark.style.transform = `translateX(${dotRect.left - barRect.left + dotRect.width / 2 - sharkW / 2}px)`;
+        runner.style.transform = `translateX(${dotRect.left - barRect.left + dotRect.width / 2 - runnerWidth / 2}px)`;
     }
 }
 
@@ -671,23 +670,23 @@ function applyOrcState(orcState: string, title?: string) {
 
     // ─── Roadmap Bar ───
     const roadmap = document.getElementById('pabcRoadmap');
-    const shark = document.getElementById('sharkRunner');
+    const runner = document.getElementById('phaseRunner');
     const brand = document.getElementById('pabcBrand');
 
-    if (roadmap && shark) {
+    if (roadmap && runner) {
         if (!roadmap.dataset['resizeObserved']) {
             roadmap.dataset['resizeObserved'] = '1';
             new ResizeObserver(() => {
-                if (currentSharkPhase && shark.classList.contains('running')) {
-                    positionShark(roadmap, shark, currentSharkPhase);
+                if (currentRunnerPhase && runner.classList.contains('running')) {
+                    positionPhaseRunner(roadmap, runner, currentRunnerPhase);
                 }
             }).observe(roadmap);
             let rafId = 0;
             window.addEventListener('resize', () => {
                 cancelAnimationFrame(rafId);
                 rafId = requestAnimationFrame(() => {
-                    if (currentSharkPhase && shark.classList.contains('running')) {
-                        positionShark(roadmap, shark, currentSharkPhase);
+                    if (currentRunnerPhase && runner.classList.contains('running')) {
+                        positionPhaseRunner(roadmap, runner, currentRunnerPhase);
                     }
                 });
             });
@@ -695,8 +694,8 @@ function applyOrcState(orcState: string, title?: string) {
 
         if (nextState === 'IDLE') {
             roadmap.classList.remove('visible', 'shimmer-out');
-            shark.classList.remove('running');
-            currentSharkPhase = null;
+            runner.classList.remove('running');
+            currentRunnerPhase = null;
         } else if (nextState === 'D') {
             ROADMAP_PHASES.forEach(p => {
                 const dot = document.getElementById(`dot-${p}`);
@@ -706,14 +705,14 @@ function applyOrcState(orcState: string, title?: string) {
                 const c = document.getElementById(`pabc-conn-${i}`);
                 if (c) c.className = 'pabc-connector done';
             }
-            shark.classList.remove('running');
-            currentSharkPhase = null;
+            runner.classList.remove('running');
+            currentRunnerPhase = null;
             roadmap.classList.add('shimmer-out');
             setTimeout(() => roadmap.classList.remove('visible', 'shimmer-out'), 1000);
         } else {
             roadmap.classList.remove('shimmer-out');
             roadmap.classList.add('visible');
-            shark.classList.add('running');
+            runner.classList.add('running');
 
             const idx = ROADMAP_PHASES.indexOf(nextState as typeof ROADMAP_PHASES[number]);
             ROADMAP_PHASES.forEach((p, pi) => {
@@ -728,8 +727,8 @@ function applyOrcState(orcState: string, title?: string) {
                 if (c) c.className = `pabc-connector ${i < idx ? 'done' : ''}`;
             }
 
-            currentSharkPhase = nextState;
-            requestAnimationFrame(() => positionShark(roadmap, shark, nextState));
+            currentRunnerPhase = nextState;
+            requestAnimationFrame(() => positionPhaseRunner(roadmap, runner, nextState));
         }
 
         if (brand && title) {

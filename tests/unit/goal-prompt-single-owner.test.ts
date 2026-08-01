@@ -84,6 +84,6 @@ test('GSO-005: orchestration.md defers transition rules to the PABCD guide owner
     assert.ok(!orcSrc.includes('How to transition phases'),
         'transition command table is owned by the builder PABCD guide');
     assert.ok(orcSrc.includes('PABCD Orchestration Guide'), 'stub must point at the guide section');
-    assert.ok(orcSrc.includes('podex orchestrate I|P|A|B|C|D'), 'transition entrypoint summary stays');
+    assert.ok(orcSrc.includes('weasley-podex orchestrate I|P|A|B|C|D'), 'transition entrypoint summary stays');
 });
 

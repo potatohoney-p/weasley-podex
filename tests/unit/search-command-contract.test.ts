@@ -35,7 +35,7 @@ test('/search steer prompt routes through search skill and browser-command bound
     assert.match(searchWorkflowSrc, /skills\/browser\/SKILL\.md/);
     assert.match(searchWorkflowSrc, /Known URL Reader/);
     assert.match(searchWorkflowSrc, /Adaptive-fetch ladder/);
-    assert.match(searchWorkflowSrc, /podex browser fetch <url>/);
+    assert.match(searchWorkflowSrc, /weasley-podex browser fetch <url>/);
     assert.match(searchWorkflowSrc, /Report format/);
     assert.match(searchWorkflowSrc, /focused_queries/);
     assert.match(searchWorkflowSrc, /evidence_status/);

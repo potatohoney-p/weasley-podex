@@ -9,8 +9,8 @@ import {
     parseReviewFlags,
 } from '../../src/workflows/review.ts';
 
-const repoRoot = '/Users/jun/Developer/new/700_projects/podex';
-const jawHome = '/Users/jun/.podex';
+const repoRoot = '/Users/weasley/Developer/weasley-podex';
+const weasleyPodexHome = '/Users/weasley/.weasley/podex';
 
 function sectionBody(artifact: ReturnType<typeof buildReviewArtifact>, id: string): string {
     const section = artifact.sections.find(s => s.id === id);
@@ -20,19 +20,19 @@ function sectionBody(artifact: ReturnType<typeof buildReviewArtifact>, id: strin
 
 test('/review artifact prefers projectDirs over workingDir', () => {
     const artifact = buildReviewArtifact(parseReviewFlags([]), 'en', {
-        workingDir: jawHome,
+        workingDir: weasleyPodexHome,
         projectDirs: [repoRoot],
     });
 
     assert.equal(sectionBody(artifact, 'review-target'), repoRoot);
     assert.equal(sectionBody(artifact, 'configured-project-dirs'), repoRoot);
-    assert.match(sectionBody(artifact, 'markdown-report'), /review-reports\/podex-/);
-    assert.equal(artifact.storage.projectKey.startsWith('podex-'), true);
+    assert.match(sectionBody(artifact, 'markdown-report'), /review-reports[\\/]weasley-podex-/);
+    assert.equal(artifact.storage.projectKey.startsWith('weasley-podex-'), true);
 });
 
-test('/review artifact does not turn JAW_HOME or process cwd into a project target', () => {
+test('/review artifact does not turn WEASLEY_PODEX_HOME or process cwd into a project target', () => {
     const artifact = buildReviewArtifact(parseReviewFlags([]), 'en', {
-        workingDir: jawHome,
+        workingDir: weasleyPodexHome,
         projectDirs: null,
     });
 
@@ -45,22 +45,22 @@ test('/review artifact does not turn JAW_HOME or process cwd into a project targ
 
 test('/review steer prompt contains project-dir validation and markdown report contract', () => {
     const context = buildReviewTargetContext({
-        workingDir: jawHome,
+        workingDir: weasleyPodexHome,
         projectDirs: null,
     }, '20260608110000-reviewReport-test');
     const prompt = buildReviewSteerPrompt(parseReviewFlags([]), context);
 
-    assert.match(prompt, /Never use JAW_HOME, ~\/\.podex\*, settings\.workingDir, or process\.cwd\(\) as a fallback review target/);
+    assert.match(prompt, /Never use WEASLEY_PODEX_HOME, ~\/\.weasley\/podex\*, legacy ~\/\.podex\*, settings\.workingDir, or process\.cwd\(\) as a fallback review target/);
     assert.match(prompt, /infer the most likely repository from recent conversation\/context/i);
     assert.match(prompt, /git rev-parse --show-toplevel/);
     assert.match(prompt, /Save the final human-readable report as Markdown at the exact Markdown report path/);
     assert.match(prompt, new RegExp(context.reportPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-    assert.doesNotMatch(prompt, new RegExp(`Project root: ${jawHome.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
+    assert.doesNotMatch(prompt, new RegExp(`Project root: ${weasleyPodexHome.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
 });
 
 test('/review steer prompt resolves recent-context scope beyond uncommitted diff', () => {
     const context = buildReviewTargetContext({
-        workingDir: jawHome,
+        workingDir: weasleyPodexHome,
         projectDirs: [repoRoot],
     }, '20260609000000-reviewReport-scope');
     const prompt = buildReviewSteerPrompt(parseReviewFlags([]), context);
@@ -70,9 +70,9 @@ test('/review steer prompt resolves recent-context scope beyond uncommitted diff
     assert.match(prompt, /recent relevant project changes/,
         'review should be framed around recent project changes');
     assert.match(prompt, /current conversation focus first/);
-    assert.match(prompt, /podex goal status/);
-    assert.match(prompt, /podex goal history/);
-    assert.match(prompt, /podex chat search .*--recent N/);
+    assert.match(prompt, /weasley-podex goal status/);
+    assert.match(prompt, /weasley-podex goal history/);
+    assert.match(prompt, /weasley-podex chat search .*--recent N/);
     assert.match(prompt, /--days N/);
     assert.match(prompt, /git log --oneline --decorate --max-count=20/);
     assert.match(prompt, /git reflog --date=iso --max-count=20/);
@@ -91,7 +91,7 @@ test('/review preserves user-provided focus text as the highest-priority scope s
     const flags = parseReviewFlags(args);
     const focus = parseReviewFocus(args);
     const artifact = buildReviewArtifact(flags, 'en', {
-        workingDir: jawHome,
+        workingDir: weasleyPodexHome,
         projectDirs: [repoRoot],
     }, focus);
     const context = buildReviewTargetContext({ projectDirs: [repoRoot] }, '20260609000000-reviewReport-focus');
@@ -107,7 +107,7 @@ test('/review preserves user-provided focus text as the highest-priority scope s
     const result = await executeCommand(parsed, {
         interface: 'telegram',
         locale: 'en',
-        getSettings: () => ({ workingDir: jawHome, projectDirs: [repoRoot] }),
+        getSettings: () => ({ workingDir: weasleyPodexHome, projectDirs: [repoRoot] }),
     });
 
     assert.equal(result?.artifact?.sections.find(s => s.id === 'review-focus')?.body, '프롬프트 scope');
@@ -131,7 +131,7 @@ test('/review command result carries project-dir artifact without workingDir fal
     const result = await executeCommand(parsed, {
         interface: 'telegram',
         locale: 'en',
-        getSettings: () => ({ workingDir: jawHome, projectDirs: null }),
+        getSettings: () => ({ workingDir: weasleyPodexHome, projectDirs: null }),
     });
 
     assert.equal(result?.ok, true);

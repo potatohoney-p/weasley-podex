@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, readFile, writeFile, symlink } from 'node:fs/promises';
-import { basename, join } from 'node:path';
+import { basename, join, relative } from 'node:path';
 import { tmpdir } from 'node:os';
 import {
     buildContextPackageResult,
@@ -35,7 +35,7 @@ test('web-ai context pack expands directories and globs deterministically', asyn
 
     const paths = await expandContextPaths(['src'], ['**/*.test.ts'], dir);
 
-    assert.deepEqual(paths.map(path => path.replace(`${dir}/`, '')), ['src/a.ts', 'src/b.ts']);
+    assert.deepEqual(paths.map(path => relative(dir, path).replace(/\\/g, '/')), ['src/a.ts', 'src/b.ts']);
 });
 
 test('web-ai context pack rejects symlink traversal', async () => {

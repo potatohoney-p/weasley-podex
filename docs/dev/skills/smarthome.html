@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Home Skills — podex Docs</title>
+<title>Smart Home Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -35,7 +34,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -84,17 +83,17 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Smart Home Skills</h1>
-<p class="lead">Control your physical environment directly from podex. Smart Home skills bridge the gap between your AI assistant and IoT devices, letting you manage Philips Hue lighting and Spotify playback with natural language commands.</p>
+<p class="lead">Optional smart-home extension recipes for connecting an AI assistant to IoT providers. No smart-home skill is bundled in the core eight-skill catalog.</p>
 
 <h2>Overview</h2>
-<p>podex ships with two smart home skills that connect to popular device ecosystems via their respective APIs. Both skills are implemented as MCP (Model Context Protocol) servers and are loaded on demand when the agent detects a relevant request.</p>
+<p>The two examples use external MCP servers and provider credentials. Review and install them explicitly before following the recipes below.</p>
 
 <table>
 <tr><th>Skill</th><th>Target</th><th>Protocol</th><th>Auth</th><th>Description</th></tr>
@@ -117,7 +116,7 @@
 </table>
 
 <h3>Configuration</h3>
-<p>Add the openhue MCP server to your podex settings. The bridge IP and API key are required.</p>
+<p>Add the openhue MCP server to your Weasley Podex settings. The bridge IP and API key are required.</p>
 <pre><code>{
   "mcpServers": {
     "openhue": {
@@ -133,7 +132,7 @@
 
 <p>To obtain your Hue API key, press the physical link button on your Hue Bridge and then run:</p>
 <pre><code>curl -X POST http://192.168.1.100/api \
-  -d '{"devicetype":"podex#instance"}'</code></pre>
+  -d '{"devicetype":"weasley-podex#instance"}'</code></pre>
 
 <h3>Natural Language Examples</h3>
 <div class="callout-info">
@@ -160,7 +159,7 @@
 </div>
 
 <h3>How It Works</h3>
-<p>When you say something like "불 켜줘", podex routes the request through its skill matching system:</p>
+<p>When you say something like "불 켜줘", Weasley Podex routes the request through its skill matching system:</p>
 <ol>
 <li>The agent recognizes the intent as a smart home command</li>
 <li>The <code>openhue</code> MCP server is loaded (if not already running)</li>
@@ -170,7 +169,7 @@
 </ol>
 
 <h2 id="spotify-player">spotify-player &mdash; Spotify Control</h2>
-<p>The <code>spotify-player</code> skill connects to the Spotify Web API, giving podex full control over music playback. It supports searching tracks, managing queues, controlling playback, and browsing playlists.</p>
+<p>The <code>spotify-player</code> skill connects to the Spotify Web API, giving Weasley Podex full control over music playback. It supports searching tracks, managing queues, controlling playback, and browsing playlists.</p>
 
 <h3>Capabilities</h3>
 <table>
@@ -209,7 +208,7 @@
 <li>Go to the <a href="https://developer.spotify.com/dashboard" target="_blank">Spotify Developer Dashboard</a></li>
 <li>Create a new app with redirect URI <code>http://localhost:8888/callback</code></li>
 <li>Copy the Client ID and Client Secret into your config</li>
-<li>On first use, podex will open a browser window for Spotify authorization</li>
+<li>On first use, Weasley Podex will open a browser window for Spotify authorization</li>
 <li>After approval, the refresh token is cached locally for subsequent sessions</li>
 </ol>
 
@@ -241,7 +240,7 @@
 </div>
 
 <h2 id="combined">Combined Workflows</h2>
-<p>Smart home skills become powerful when combined with each other or with other podex capabilities. Because the agent understands context, you can issue compound commands naturally.</p>
+<p>Smart home skills become powerful when combined with each other or with other Weasley Podex capabilities. Because the agent understands context, you can issue compound commands naturally.</p>
 
 <div class="callout-info">
 <strong>Multi-skill examples</strong>

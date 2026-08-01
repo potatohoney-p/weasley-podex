@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tool Commands — podex Docs</title>
+<title>Tool Commands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,14 +81,14 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Tool Commands</h1>
-<p class="lead">Tool 명령어는 podex의 내부 하위 시스템 &mdash; 스킬, 직원, MCP 서버, 메모리, 브라우저, 오케스트레이션, 프로젝트 디렉토리를 관리합니다. 이 슬래시 명령어들은 모든 podex 세션 내에서 사용할 수 있습니다.</p>
+<p class="lead">Tool 명령어는 Weasley Podex의 내부 하위 시스템 &mdash; 스킬, 직원, MCP 서버, 메모리, 브라우저, 오케스트레이션, 프로젝트 디렉토리를 관리합니다. 이 슬래시 명령어들은 모든 Weasley Podex 세션 내에서 사용할 수 있습니다.</p>
 
 <div class="callout callout-info">모든 tool 명령어는 <code>/</code>로 시작하며, 자연어로도 실행할 수 있습니다. 한국어 "~해줘" 패턴은 자동으로 매핑됩니다 &mdash; 각 명령어 아래의 팁 박스를 참고하세요.</div>
 
@@ -146,7 +145,7 @@
 
 <!-- ───────────────────────────── /mcp ───────────────────────────── -->
 <h2 id="mcp">/mcp</h2>
-<p>MCP(Model Context Protocol) 서버를 관리합니다. MCP 서버는 추가 도구, 리소스, 컨텍스트를 제공하여 podex의 기능을 확장합니다. sync는 사용 가능한 서버를 탐색하고, install은 새 서버를 추가합니다.</p>
+<p>MCP(Model Context Protocol) 서버를 관리합니다. MCP 서버는 추가 도구, 리소스, 컨텍스트를 제공하여 Weasley Podex의 기능을 확장합니다. sync는 사용 가능한 서버를 탐색하고, install은 새 서버를 추가합니다.</p>
 
 <h3>하위 명령어</h3>
 <table>
@@ -170,7 +169,7 @@
 
 <!-- ───────────────────────────── /memory ───────────────────────────── -->
 <h2 id="memory">/memory</h2>
-<p>podex의 영속 메모리 시스템을 검색합니다. 메모리는 세션 간에 결정 사항, 컨텍스트, 사실을 저장합니다. 이전 컨텍스트를 불러오거나 시스템이 기억하는 내용을 확인할 때 이 명령어를 사용하세요.</p>
+<p>Weasley Podex의 영속 메모리 시스템을 검색합니다. 메모리는 세션 간에 결정 사항, 컨텍스트, 사실을 저장합니다. 이전 컨텍스트를 불러오거나 시스템이 기억하는 내용을 확인할 때 이 명령어를 사용하세요.</p>
 
 <h3>구문</h3>
 <table>
@@ -204,12 +203,12 @@
 
 <!-- ───────────────────────────── /browser ───────────────────────────── -->
 <h2 id="browser">/browser</h2>
-<p>podex가 관리하는 헤드리스 Chrome 브라우저 인스턴스를 제어합니다. 브라우저 상태를 확인하고, 열린 탭을 나열하며, 웹 자동화 및 스크린샷에 사용되는 브라우저 세션을 관리합니다.</p>
+<p>Weasley Podex가 관리하는 헤드리스 Chrome 브라우저 인스턴스를 제어합니다. 브라우저 상태를 확인하고, 열린 탭을 나열하며, 웹 자동화 및 스크린샷에 사용되는 브라우저 세션을 관리합니다.</p>
 
 <h3>하위 명령어</h3>
 <table>
 <tr><th>하위 명령어</th><th>인자</th><th>설명</th></tr>
-<tr><td><code>/browser status</code></td><td>&mdash;</td><td>현재 브라우저 상태를 표시합니다: podex 브라우저 서버 실행 여부, Chrome DevTools Protocol(CDP) 연결 상태, 뷰포트 크기, 활성 페이지 URL을 보여줍니다.</td></tr>
+<tr><td><code>/browser status</code></td><td>&mdash;</td><td>현재 브라우저 상태를 표시합니다: Weasley Podex 브라우저 서버 실행 여부, Chrome DevTools Protocol(CDP) 연결 상태, 뷰포트 크기, 활성 페이지 URL을 보여줍니다.</td></tr>
 <tr><td><code>/browser tabs</code></td><td>&mdash;</td><td>열려 있는 모든 브라우저 탭의 제목, URL, 활성/비활성 상태를 나열합니다. 다중 탭 자동화 워크플로우를 디버깅할 때 유용합니다.</td></tr>
 </table>
 
@@ -279,7 +278,7 @@
 
 <!-- ───────────────────────────── /project ───────────────────────────── -->
 <h2 id="project">/project</h2>
-<p>프로젝트 디렉토리를 관리합니다. podex는 어떤 디렉토리가 등록된 프로젝트인지 추적하며, 이 컨텍스트를 메모리 범위 지정, 스킬 선택, 파일 작업에 활용합니다. 프로젝트 간 전환하거나 새 프로젝트를 등록할 수 있습니다.</p>
+<p>프로젝트 디렉토리를 관리합니다. Weasley Podex는 어떤 디렉토리가 등록된 프로젝트인지 추적하며, 이 컨텍스트를 메모리 범위 지정, 스킬 선택, 파일 작업에 활용합니다. 프로젝트 간 전환하거나 새 프로젝트를 등록할 수 있습니다.</p>
 
 <h3>하위 명령어</h3>
 <table>
@@ -303,7 +302,7 @@
 /project reset
 
 # Typical workflow: switch project before starting work
-/project set ~/Developer/podex
+/project set ~/Developer/weasley-podex
 "이 프로젝트의 TODO 보여줘"</code></pre>
 
 <h3>프로젝트를 설정하면 달라지는 것들</h3>
@@ -345,10 +344,10 @@
 </table>
 
 <h2>자연어 매핑</h2>
-<p>슬래시 명령어를 외울 필요가 없습니다. podex는 자연스러운 한국어와 영어 표현을 적절한 tool 명령어로 매핑합니다.</p>
+<p>슬래시 명령어를 외울 필요가 없습니다. Weasley Podex는 자연스러운 한국어와 영어 표현을 적절한 tool 명령어로 매핑합니다.</p>
 
 <table>
-<tr><th>사용자 발화</th><th>podex 실행 결과</th></tr>
+<tr><th>사용자 발화</th><th>Weasley Podex 실행 결과</th></tr>
 <tr><td>"메모리 검색해줘"</td><td><code>/memory</code></td></tr>
 <tr><td>"JWT 관련 메모리 찾아줘"</td><td><code>/memory JWT</code></td></tr>
 <tr><td>"PABCD 시작해줘"</td><td><code>/orchestrate P</code></td></tr>

@@ -8,18 +8,18 @@ const chatSource = readFileSync(join(root, 'bin/commands/chat.ts'), 'utf8');
 const fullscreenSource = readFileSync(join(root, 'bin/commands/tui/fullscreen-mode.ts'), 'utf8');
 const frameSource = readFileSync(join(root, 'src/cli/tui/render/frame.ts'), 'utf8');
 
-test('fullscreen jaw chat does not hydrate persisted message history at launch', () => {
+test('fullscreen Weasley Podex chat does not hydrate persisted message history at launch', () => {
     assert.equal(chatSource.includes('/api/messages?limit='), false);
     assert.equal(chatSource.includes('hydrateFullscreenHistory'), false);
     assert.equal(chatSource.includes('hydrateTranscriptFromHistory'), false);
 });
 
-test('fullscreen jaw chat still starts from welcome prelude and live renderer', () => {
+test('fullscreen Weasley Podex chat still starts from welcome prelude and live renderer', () => {
     assert.ok(chatSource.includes('ctx.welcomeLines = welcomeLines'));
     assert.ok(chatSource.includes('await runFullscreenMode(ctx)'));
 });
 
-test('fullscreen jaw chat defaults to native mouse behavior', () => {
+test('fullscreen Weasley Podex chat defaults to native mouse behavior', () => {
     assert.doesNotMatch(chatSource, /mouseTracking:\s*true/);
 });
 

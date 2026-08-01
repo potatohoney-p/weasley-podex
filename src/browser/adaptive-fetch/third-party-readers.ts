@@ -1,4 +1,4 @@
-﻿// Mirrored from agbrowse adaptive-fetch v2; keep runtime behavior aligned while podex mirror remains experimental.
+﻿// Mirrored from agbrowse adaptive-fetch v2; keep runtime behavior aligned while Weasley Podex mirror remains experimental.
 
 import type { FetchTextCandidateOptions, ReaderCandidate } from './types.js';
 import { fetchTextCandidate } from './fetcher.js';

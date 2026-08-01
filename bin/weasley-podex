@@ -1,0 +1,23 @@
+#!/bin/sh
+# Weasley Podex development launcher — rebuilds native modules when Node changes.
+REAL="$(readlink -f "$0" 2>/dev/null || python3 -c "import os,sys;print(os.path.realpath(sys.argv[1]))" "$0")"
+DIR="$(cd "$(dirname "$REAL")/.." && pwd)"
+if [ -n "$NVM_BIN" ] && [ -x "$NVM_BIN/node" ]; then
+    NODE="$NVM_BIN/node"
+else
+    NODE="$(command -v node)"
+fi
+if [ -z "$NODE" ]; then echo "node not found in PATH" >&2; exit 1; fi
+NPM="$(dirname "$NODE")/npm"
+if [ ! -x "$NPM" ]; then NPM="$(command -v npm)"; fi
+if [ -z "$NPM" ]; then echo "npm not found in PATH" >&2; exit 1; fi
+NODE_BIN="$(dirname "$NODE")"
+export PATH="$NODE_BIN:$PATH"
+
+"$NODE" -e "require('$DIR/node_modules/better-sqlite3')" 2>/dev/null
+if [ $? -ne 0 ]; then
+    echo "[weasley-podex] Rebuilding native modules for Node $($NODE --version)..." >&2
+    cd "$DIR" && "$NPM" rebuild --silent 2>/dev/null
+fi
+
+exec "$NODE" "$DIR/dist/bin/podex.js" "$@"

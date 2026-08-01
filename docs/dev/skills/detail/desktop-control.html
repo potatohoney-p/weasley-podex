@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Desktop Control — podex Docs</title>
+<title>Desktop Control — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -30,7 +29,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -52,7 +51,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -101,24 +100,24 @@
     <a href="../../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
-<h1>Desktop Control <span class="badge badge-active">Default Active</span></h1>
+<h1>Desktop Control <span class="badge badge-active">Browser capability</span></h1>
 <p class="lead">Computer Use desktop automation &mdash; <code>get_app_state</code>, <code>click</code>, <code>set_value</code>, <code>select_text</code>, keyboard/pointer actions. Unified skill for all UI automation that routes between CDP (browser DOM) and Computer Use (desktop apps) based on the target.</p>
 
 <div class="skill-meta">
   <div class="skill-meta-item"><strong>Skill ID:</strong> <code>desktop-control</code></div>
   <div class="skill-meta-item"><strong>Type:</strong> Auto-active</div>
   <div class="skill-meta-item"><strong>Platform:</strong> macOS</div>
-  <div class="skill-meta-item"><strong>Requires:</strong> podex, Google Chrome</div>
+  <div class="skill-meta-item"><strong>Requires:</strong> Weasley Podex, Google Chrome</div>
   <div class="skill-meta-item"><strong>Optional:</strong> cliclick (brew)</div>
 </div>
 
-<div class="callout callout-info">This skill is <strong>always injected</strong> into the system prompt. You never need to load it manually. It supersedes the standalone <code>browser</code> and <code>vision-click</code> skills, absorbing their functionality into a unified routing system.</div>
+<div class="callout callout-info">This page documents desktop-control recipes implemented by the bundled <code>browser</code> skill and CLI. There is no separate bundled <code>desktop-control</code> skill; optional native-control extensions must be imported explicitly.</div>
 
 <!-- ────────────────────────── Quick Reference ────────────────────────── -->
 
@@ -169,7 +168,7 @@
 <h3>Resolution Order</h3>
 <ol>
 <li><strong>Explicit opt-in:</strong> Message contains <code>$computer-use</code> or <code>/computer-use</code> &rarr; Computer Use path immediately. If tools unavailable, stop with <code>precondition failed: computer-use unavailable</code>.</li>
-<li>Can the target be addressed by <code>podex browser snapshot --interactive</code> ref? &rarr; <strong>CDP</strong>.</li>
+<li>Can the target be addressed by <code>weasley-podex browser snapshot --interactive</code> ref? &rarr; <strong>CDP</strong>.</li>
 <li>Non-DOM web widget (Canvas, WebGL, iframe) visible in <code>get_app_state</code> screenshot? &rarr; <strong>Computer Use</strong> <code>click(x, y)</code>.</li>
 <li>Target outside any webpage (app window, menu bar, OS dialog)? &rarr; <strong>Computer Use</strong>.</li>
 <li>Pixel coordinate the user gave verbatim? &rarr; <strong>Computer Use</strong> pointer-action.</li>
@@ -223,25 +222,25 @@ Target visible in screenshot?
 
 <!-- ────────────────────────── CDP Commands ────────────────────────── -->
 
-<h2>CDP Path &mdash; <code>podex browser</code></h2>
+<h2>CDP Path &mdash; <code>weasley-podex browser</code></h2>
 <p>For anything addressable by Chrome DOM: page text, form fields, buttons inside the page. 10x faster than Computer Use for web content.</p>
 
 <h3>Session Commands</h3>
-<pre><code>podex browser status                         # is a session active?
-podex browser start --agent                  # headless automation session
-podex browser start --headless               # manual headless (WSL/CI/Docker)
-podex browser start                          # visible window (only if user asks)
-podex browser navigate "https://example.com" # go to URL
-podex browser open "https://example.com"     # open in new tab
-podex browser tabs                           # list tabs</code></pre>
+<pre><code>weasley-podex browser status                         # is a session active?
+weasley-podex browser start --agent                  # headless automation session
+weasley-podex browser start --headless               # manual headless (WSL/CI/Docker)
+weasley-podex browser start                          # visible window (only if user asks)
+weasley-podex browser navigate "https://example.com" # go to URL
+weasley-podex browser open "https://example.com"     # open in new tab
+weasley-podex browser tabs                           # list tabs</code></pre>
 
 <h3>Snapshot + Act</h3>
-<pre><code>podex browser snapshot --interactive   # list clickable elements (e1, e2, ...)
-podex browser click e3                 # click by ref
-podex browser type e5 "query" --submit # type + Enter
-podex browser press Enter              # fallback key press
-podex browser screenshot               # save a PNG
-podex browser text                     # dump visible text</code></pre>
+<pre><code>weasley-podex browser snapshot --interactive   # list clickable elements (e1, e2, ...)
+weasley-podex browser click e3                 # click by ref
+weasley-podex browser type e5 "query" --submit # type + Enter
+weasley-podex browser press Enter              # fallback key press
+weasley-podex browser screenshot               # save a PNG
+weasley-podex browser text                     # dump visible text</code></pre>
 
 <div class="callout callout-warn"><strong>Ref IDs reset after every navigate.</strong> Always re-snapshot after navigating to a new page.</div>
 
@@ -263,14 +262,14 @@ podex browser text                     # dump visible text</code></pre>
 <li><strong>Platform:</strong> macOS only.</li>
 <li>Active agent runtime must expose all Computer Use tools (<code>list_apps</code>, <code>get_app_state</code>, <code>click</code>, <code>drag</code>, <code>press_key</code>, <code>scroll</code>, <code>select_text</code>, <code>set_value</code>, <code>type_text</code>, <code>perform_secondary_action</code>).</li>
 <li>TCC Accessibility and AppleEvents must be granted to the controlling app.</li>
-<li>In packaged installs, <code>/Applications/Jaw.app</code> and <code>/Applications/Codex Computer Use.app</code> may be required for TCC attribution.</li>
+<li>In packaged installs, <code>/Applications/Weasley Podex.app</code> and <code>/Applications/Codex Computer Use.app</code> may be required for TCC attribution.</li>
 <li>If app name is unknown, call <code>list_apps()</code> first.</li>
 </ul>
 
 <h3>CDP Path</h3>
 <ul>
-<li><code>podex serve</code> must be running (check with <code>podex browser status</code>).</li>
-<li>A browser session must be active (start with <code>podex browser start --agent</code>).</li>
+<li><code>weasley-podex serve</code> must be running (check with <code>weasley-podex browser status</code>).</li>
+<li>A browser session must be active (start with <code>weasley-podex browser start --agent</code>).</li>
 </ul>
 
 <div class="callout callout-info">If any blocker fails, report <code>precondition failed: &lt;name&gt;</code> and stop. Never silently switch paths.</div>
@@ -296,7 +295,7 @@ result=ok</code></pre>
 
 <h3>Hybrid Transcript</h3>
 <pre><code>path=cdp+cu
-lookup=podex browser snapshot -> bbox of "Play"
+lookup=weasley-podex browser snapshot -> bbox of "Play"
 action_class=pointer-action
 action=click(x=812, y=514)
 result=ok</code></pre>
@@ -344,14 +343,14 @@ result=ok</code></pre>
 
 <h3>Decision Order</h3>
 <ol>
-<li>Did <code>podex browser snapshot --interactive</code> return a ref? &rarr; CDP <code>click</code>.</li>
+<li>Did <code>weasley-podex browser snapshot --interactive</code> return a ref? &rarr; CDP <code>click</code>.</li>
 <li>Is Computer Use available and target visible in screenshot? &rarr; <code>click(x, y)</code> pointer-action directly (preferred).</li>
-<li>No ref and direct coordinate unsuitable &rarr; <code>podex browser vision-click</code> (Codex-only, legacy).</li>
+<li>No ref and direct coordinate unsuitable &rarr; <code>weasley-podex browser vision-click</code> (Codex-only, legacy).</li>
 </ol>
 
 <pre><code># CDP vision-click (inside Chrome, Codex-only)
-podex browser vision-click "Submit button"
-podex browser vision-click "Play button" --double
+weasley-podex browser vision-click "Submit button"
+weasley-podex browser vision-click "Play button" --double
 
 # Desktop vision-click (CU-05)
 # 1. get_app_state(app) to capture screenshot
@@ -417,7 +416,7 @@ result=ok</code></pre>
 <pre><code># Realize all targets are DOM nodes -- swap to CDP
 path=cdp
 url=https://open.spotify.com
-action=podex browser snapshot --interactive
+action=weasley-podex browser snapshot --interactive
 result=ok (ref IDs: e1..e89)
 
 path=cdp
@@ -433,9 +432,9 @@ result=ok</code></pre>
 <table>
 <tr><th>Symptom</th><th>Correct Report</th></tr>
 <tr><td>"I don't see a cursor"</td><td><code>cursor overlay is best-effort in the current build -- action=click(...) succeeded; visible cursor not guaranteed</code></td></tr>
-<tr><td>CDP server not running</td><td><code>precondition failed: podex serve not running. Start with 'jaw serve' and retry.</code></td></tr>
+<tr><td>CDP server not running</td><td><code>precondition failed: weasley-podex serve not running. Start with 'weasley-podex serve' and retry.</code></td></tr>
 <tr><td>Computer Use tools missing</td><td><code>precondition failed: computer-use unavailable</code></td></tr>
-<tr><td>podex CU app missing (packaged install)</td><td><code>precondition failed: /Applications/Codex Computer Use.app missing. Recover: jaw doctor --tcc --fix</code></td></tr>
+<tr><td>Weasley Podex CU app missing (packaged install)</td><td><code>precondition failed: /Applications/Codex Computer Use.app missing. Recover: weasley-podex doctor --tcc --fix</code></td></tr>
 <tr><td>Stale warning on action</td><td>Re-call <code>get_app_state(app)</code> then retry; log <code>stale_warning=yes</code></td></tr>
 <tr><td>No ref found for target</td><td>If visible in screenshot, use Computer Use <code>click(x, y)</code>. Otherwise report gap.</td></tr>
 <tr><td>Navigation drift between snapshot and click</td><td>Re-snapshot and retry once; if still off, report.</td></tr>
@@ -532,7 +531,7 @@ result=ok</code></pre>
 <tr><th>Skill</th><th>Relationship</th></tr>
 <tr><td><code>browser</code></td><td>CDP command reference &mdash; this skill supersedes its coverage</td></tr>
 <tr><td><code>screen-capture</code></td><td>Generic macOS screenshot / webcam / video recording (unchanged, separate concern)</td></tr>
-<tr><td><code>vision-click</code></td><td>No longer auto-active; absorbed as a tactic. Install with <code>podex skill install vision-click</code> for the low-level recipe (NDJSON parsing, DPR correction)</td></tr>
+<tr><td><code>vision-click</code></td><td>No longer auto-active; absorbed as a tactic. Install with <code>weasley-podex skill install vision-click</code> for the low-level recipe (NDJSON parsing, DPR correction)</td></tr>
 </table>
 
 <!-- ────────────────────────── Page Nav ────────────────────────── -->

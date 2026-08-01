@@ -1,7 +1,7 @@
 import fs from 'fs';
 import os from 'os';
 import { join, relative } from 'path';
-import { JAW_HOME, settings } from '../core/config.js';
+import { WEASLEY_PODEX_HOME, settings } from '../core/config.js';
 import { expandHomePath } from '../core/path-expand.js';
 import { instanceId } from '../core/instance.js';
 import { getMemory, getRecentMessagesLite } from '../core/db.js';
@@ -286,8 +286,8 @@ export function ensureIntegratedMemoryReady() {
     const meta = readMeta();
     const alreadyBootstrapped = meta?.bootstrapStatus === 'done';
     if (status.indexState === 'ready' && alreadyBootstrapped) return { created, bootstrapped: false, status };
-    const hasLegacy = fs.existsSync(join(JAW_HOME, 'memory', 'MEMORY.md'))
-        || fs.existsSync(join(JAW_HOME, 'memory', 'daily'))
+    const hasLegacy = fs.existsSync(join(WEASLEY_PODEX_HOME, 'memory', 'MEMORY.md'))
+        || fs.existsSync(join(WEASLEY_PODEX_HOME, 'memory', 'daily'))
         || fs.existsSync(getLegacyClaudeMemoryDir())
         || (getMemory.all() as unknown[]).length > 0
         || fs.existsSync(getLegacyAdvancedMemoryDir());
@@ -311,7 +311,7 @@ export function ensureIntegratedMemoryReady() {
                 updated_at: new Date().toISOString(),
             });
             writeText(profilePath, fm + `# Profile\n\n${systemInfo}\n`);
-            log.info('[jaw:bootstrap] seeded profile from system scan (no legacy data found)');
+            log.info('[weasley-podex:bootstrap] seeded profile from system scan (no legacy data found)');
         }
         const result = reindexAll(root);
         writeMeta({ bootstrapStatus: 'done', lastBootstrapAt: new Date().toISOString() });
@@ -340,7 +340,7 @@ export function getLastReflectedAt(): string | null {
         return raw.lastReflectedAt || null;
     } catch (err) {
         if (fs.existsSync(metaPath)) {
-            log.warn('[jaw:reflect-meta] failed to read', (err as Error).message);
+            log.warn('[weasley-podex:reflect-meta] failed to read', (err as Error).message);
         }
         return null;
     }

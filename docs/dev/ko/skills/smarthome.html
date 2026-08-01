@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Home Skills — podex Docs</title>
+<title>Smart Home Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -82,17 +81,17 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Smart Home Skills</h1>
-<p class="lead">podex에서 직접 물리적 환경을 제어하세요. Smart Home 스킬은 AI 어시스턴트와 IoT 기기 사이의 간극을 연결하여, 자연어 명령으로 Philips Hue 조명과 Spotify 재생을 관리할 수 있게 해줍니다.</p>
+<p class="lead">AI 어시스턴트를 IoT 제공자와 연결하기 위한 선택적 스마트홈 확장 예시입니다. 코어 8개 스킬 카탈로그에는 스마트홈 스킬이 번들되지 않습니다.</p>
 
 <h2>개요</h2>
-<p>podex에는 인기 있는 기기 생태계에 각각의 API를 통해 연결하는 두 가지 Smart Home 스킬이 기본 탑재되어 있습니다. 두 스킬 모두 MCP(Model Context Protocol) 서버로 구현되어 있으며, 에이전트가 관련 요청을 감지하면 필요 시 로드됩니다.</p>
+<p>두 예시는 외부 MCP 서버와 제공자 자격 증명을 사용합니다. 아래 절차를 따르기 전에 검토 후 명시적으로 설치하세요.</p>
 
 <table>
 <tr><th>스킬</th><th>대상</th><th>프로토콜</th><th>인증</th><th>설명</th></tr>
@@ -115,7 +114,7 @@
 </table>
 
 <h3>설정</h3>
-<p>podex 설정에 openhue MCP 서버를 추가하세요. Bridge IP와 API 키가 필요합니다.</p>
+<p>Weasley Podex 설정에 openhue MCP 서버를 추가하세요. Bridge IP와 API 키가 필요합니다.</p>
 <pre><code>{
   "mcpServers": {
     "openhue": {
@@ -131,7 +130,7 @@
 
 <p>Hue API 키를 얻으려면 Hue Bridge의 물리적 링크 버튼을 누른 다음 아래 명령을 실행하세요:</p>
 <pre><code>curl -X POST http://192.168.1.100/api \
-  -d '{"devicetype":"podex#instance"}'</code></pre>
+  -d '{"devicetype":"weasley-podex#instance"}'</code></pre>
 
 <h3>자연어 예시</h3>
 <div class="callout-info">
@@ -158,7 +157,7 @@
 </div>
 
 <h3>동작 원리</h3>
-<p>"불 켜줘"와 같이 말하면, podex는 스킬 매칭 시스템을 통해 요청을 라우팅합니다:</p>
+<p>"불 켜줘"와 같이 말하면, Weasley Podex는 스킬 매칭 시스템을 통해 요청을 라우팅합니다:</p>
 <ol>
 <li>에이전트가 해당 의도를 Smart Home 명령으로 인식합니다</li>
 <li><code>openhue</code> MCP 서버가 로드됩니다 (아직 실행 중이 아닌 경우)</li>
@@ -168,7 +167,7 @@
 </ol>
 
 <h2 id="spotify-player">spotify-player &mdash; Spotify 제어</h2>
-<p><code>spotify-player</code> 스킬은 Spotify Web API에 연결하여 podex가 음악 재생을 완전히 제어할 수 있게 합니다. 트랙 검색, 대기열 관리, 재생 제어, 플레이리스트 탐색을 지원합니다.</p>
+<p><code>spotify-player</code> 스킬은 Spotify Web API에 연결하여 Weasley Podex가 음악 재생을 완전히 제어할 수 있게 합니다. 트랙 검색, 대기열 관리, 재생 제어, 플레이리스트 탐색을 지원합니다.</p>
 
 <h3>기능</h3>
 <table>
@@ -207,7 +206,7 @@
 <li><a href="https://developer.spotify.com/dashboard" target="_blank">Spotify Developer Dashboard</a>에 접속하세요</li>
 <li>리다이렉트 URI를 <code>http://localhost:8888/callback</code>으로 설정하여 새 앱을 만드세요</li>
 <li>Client ID와 Client Secret을 설정 파일에 복사하세요</li>
-<li>처음 사용할 때 podex가 Spotify 인증을 위한 브라우저 창을 엽니다</li>
+<li>처음 사용할 때 Weasley Podex가 Spotify 인증을 위한 브라우저 창을 엽니다</li>
 <li>승인 후 리프레시 토큰이 로컬에 캐시되어 이후 세션에서 사용됩니다</li>
 </ol>
 
@@ -239,7 +238,7 @@
 </div>
 
 <h2 id="combined">복합 워크플로우</h2>
-<p>Smart Home 스킬은 서로 결합하거나 다른 podex 기능과 함께 사용할 때 더욱 강력해집니다. 에이전트가 맥락을 이해하기 때문에 복합 명령을 자연스럽게 내릴 수 있습니다.</p>
+<p>Smart Home 스킬은 서로 결합하거나 다른 Weasley Podex 기능과 함께 사용할 때 더욱 강력해집니다. 에이전트가 맥락을 이해하기 때문에 복합 명령을 자연스럽게 내릴 수 있습니다.</p>
 
 <div class="callout-info">
 <strong>다중 스킬 예시</strong>

@@ -1,6 +1,6 @@
-﻿#!/usr/bin/env node
+#!/usr/bin/env node
 /**
- * Phase 22 named release gates for podex.
+ * Phase 22 named release gates for Weasley Podex.
  *
  * Each gate has a NAME, a CHECK function, and prints PASS / FAIL.
  * Usage:
@@ -103,9 +103,9 @@ const GATES = {
         },
     },
     'mcp-scope-frozen': {
-        description: 'podex exposes no browser MCP tool surface (agbrowse owns 2 frozen tools)',
+        description: 'Weasley Podex exposes no browser MCP tool surface (agbrowse owns 2 frozen tools)',
         check() {
-            // podex must NOT register browser_* MCP tools — agbrowse is the
+            // Weasley Podex must NOT register browser_* MCP tools — agbrowse is the
             // sole source. Scan src/ for any new declarative MCP tool entries
             // named browser_*.
             const offenders = [];
@@ -128,9 +128,9 @@ const GATES = {
                 }
             }
             if (offenders.length > 0) {
-                return { ok: false, detail: `podex must not register browser MCP tools; offenders:\n${offenders.join('\n')}` };
+                return { ok: false, detail: `Weasley Podex must not register browser MCP tools; offenders:\n${offenders.join('\n')}` };
             }
-            return { ok: true, detail: 'podex registers no browser MCP tools (agbrowse owns the frozen scope)' };
+            return { ok: true, detail: 'Weasley Podex registers no browser MCP tools (agbrowse owns the frozen scope)' };
         },
     },
     'no-experimental-in-readme-ready-section': {
@@ -243,7 +243,7 @@ const GATES = {
         },
     },
     'model-adapter-frozen': {
-        description: 'G09 mirror: podex must not implement an API model adapter or claim parity (negative-parity)',
+        description: 'G09 mirror: Weasley Podex must not implement an API model adapter or claim parity (negative-parity)',
         async check() {
             try {
                 // Truth-table must declare the deferred (frozen) row.
@@ -266,7 +266,7 @@ const GATES = {
                     }
                 }
 
-                // Source scan limited to browser/web-ai surface (podex's
+                // Source scan limited to browser/web-ai surface (Weasley Podex's
                 // broader memory/quota system has unrelated OpenAI integration
                 // that pre-dates and is independent of the agbrowse G09 freeze).
                 const scanRoots = ['src/browser'];
@@ -304,7 +304,7 @@ const GATES = {
                     return { ok: false, detail: `${violations.length} negative-parity violation(s): ${sample}` };
                 }
 
-                return { ok: true, detail: 'podex mirror clean: deferred row present, no SDK deps, no api-* drift' };
+                return { ok: true, detail: 'Weasley Podex mirror clean: deferred row present, no SDK deps, no api-* drift' };
             } catch (err) {
                 return { ok: false, detail: `model-adapter-frozen mirror gate threw: ${(err && err.message) || err}` };
             }

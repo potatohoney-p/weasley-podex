@@ -1,10 +1,10 @@
 import { getActivePage, getCdpSession, getBrowserStateVersion, markBrowserStateChanged, getActiveTab } from './connection.js';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 import { join } from 'path';
 import fs from 'fs';
 import type { ConsoleMessage, Locator, Page, Request } from 'playwright-core';
 
-const SCREENSHOTS_DIR = join(JAW_HOME, 'screenshots');
+const SCREENSHOTS_DIR = join(WEASLEY_PODEX_HOME, 'screenshots');
 const DEFAULT_DOM_MAX_CHARS = 20000;
 const TOKEN_PATTERNS = [
     /authorization\s*[:=]\s*[^,\s]+/ig,

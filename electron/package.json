@@ -1,7 +1,9 @@
-﻿{
-    "name":  "podex-electron",
+{
+    "name":  "weasley-podex-electron",
     "version":  "0.1.0",
-    "description":  "Electron desktop shell for podex manager dashboard",
+    "description":  "Electron desktop shell for the Weasley Podex manager dashboard",
+    "author":  "Weasley Contributors",
+    "license":  "Apache-2.0",
     "private":  true,
     "main":  "out/main/index.js",
     "type":  "module",

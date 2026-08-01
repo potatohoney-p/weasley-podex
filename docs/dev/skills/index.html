@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skill Catalog — podex Docs</title>
+<title>Skill Catalog — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 <style>
 /* Skill Catalog page styles */
 .skill-controls { display: flex; gap: 12px; margin: 16px 0 20px; flex-wrap: wrap; }
@@ -51,7 +50,7 @@ tr.hidden-row { display: none; }
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -74,7 +73,7 @@ tr.hidden-row { display: none; }
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -123,456 +122,98 @@ tr.hidden-row { display: none; }
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Skill Catalog</h1>
-<p class="lead">podex ships 230 skills across 11 categories. 30 are active by default (injected into the system prompt); the remaining 200 are reference skills available on demand via <code>jaw skill install</code>.</p>
+<p class="lead">The npm package bundles exactly eight audited core skills. This page uses the same names and categories as <code>skills_ref/registry.json</code>. Additional skills appear only after import from an installed Codex environment or a trusted repository you explicitly configure. Run <code>weasley-podex skill list</code> for the live installed set.</p>
 
 <div class="callout callout-info">
-  <strong>Natural language:</strong> "스킬 목록 보여줘", "cloudflare 스킬 설치해줘", "프론트엔드 스킬 켜줘" -- these all work in-chat. Use <code>/skill list</code> for the slash-command version.
+  <strong>Natural language:</strong> “Show the skill list”, “show info for the browser skill”, and “enable the goal skill” work in chat. Use <code>/skill list</code> for the slash-command version.
 </div>
 
-<h2>Quick Commands</h2>
-
-<div class="cmd-grid">
-  <div class="cmd-card">
-    <code>jaw skill list</code>
-    <div class="cmd-desc">Show all active + reference skills with status</div>
-  </div>
-  <div class="cmd-card">
-    <code>jaw skill install &lt;name&gt;</code>
-    <div class="cmd-desc">Activate a reference skill (copies to active dir)</div>
-  </div>
-  <div class="cmd-card">
-    <code>jaw skill remove &lt;name&gt;</code>
-    <div class="cmd-desc">Deactivate a skill (moves back to reference)</div>
-  </div>
-  <div class="cmd-card">
-    <code>jaw skill info &lt;name&gt;</code>
-    <div class="cmd-desc">Print skill description, triggers, and file path</div>
-  </div>
-  <div class="cmd-card">
-    <code>jaw skill reset</code>
-    <div class="cmd-desc">Reset all skills to the 30 defaults</div>
-  </div>
-  <div class="cmd-card">
-    <code>/skill list</code>
-    <div class="cmd-desc">In-chat slash command: show skill counts</div>
-  </div>
-</div>
-
-<h2>How Skills Work</h2>
-<p>Each skill lives in a directory with a <code>SKILL.md</code> file. Active skills are injected into the agent's system prompt via <code>getSystemPrompt()</code>. Reference skills appear in the "available skills" list so the agent knows they exist but does not load their content until activated.</p>
-<pre><code># Active skills directory
-~/.podex/skills/
-  dev/SKILL.md
-  browser/SKILL.md
-  memory/SKILL.md
-  ...
-
-# Reference skills directory
-~/.podex/skills_ref/
-  registry.json
-  cloudflare/SKILL.md
-  docker/SKILL.md
-  ...</code></pre>
-
-<p>Employee prompts (<code>getEmployeePromptV2()</code>) inject role-specific and phase-specific skills automatically. A "Frontend" employee gets <code>dev-frontend</code>; during the Check phase, employees get <code>dev-testing</code>.</p>
-
-<h2>Skill Directory</h2>
-<p>Search by name, description, or category. Use the dropdown to filter by category or status.</p>
-
+<h2>Bundled Core Catalog</h2>
+<p>Search the eight bundled entries by name, description, or category.</p>
 <div class="skill-controls">
-  <input type="text" id="skillSearch" placeholder="Search skills... (e.g. frontend, cloudflare, pdf)" autocomplete="off">
+  <input type="text" id="skillSearch" placeholder="Search core skills... (e.g. browser, goal, memory)" autocomplete="off">
   <select id="categoryFilter">
     <option value="all">All Categories</option>
-    <option value="Development">Development</option>
-    <option value="Dev Tools">Dev Tools</option>
-    <option value="AI &amp; Media">AI &amp; Media</option>
-    <option value="Productivity">Productivity</option>
-    <option value="Automation">Automation</option>
-    <option value="Communication">Communication</option>
-    <option value="Research">Research</option>
-    <option value="Visualization">Visualization</option>
-    <option value="Media">Media</option>
-    <option value="Smart Home">Smart Home</option>
-    <option value="Utility">Utility</option>
+    <option value="automation">automation</option>
+    <option value="development">development</option>
+    <option value="documentation">documentation</option>
+    <option value="orchestration">orchestration</option>
+    <option value="productivity">productivity</option>
+    <option value="research">research</option>
   </select>
   <select id="statusFilter">
     <option value="all">All Status</option>
-    <option value="active">Active Only</option>
-    <option value="ref">Reference Only</option>
+    <option value="active">Active by Default</option>
   </select>
 </div>
-<p class="skill-count">Showing <strong id="visibleCount">230</strong> of 230 skills</p>
-
+<p class="skill-count">Showing <strong id="visibleCount">8</strong> of 8 bundled skills</p>
 <table class="skill-table" id="skillTable">
-<thead>
-<tr><th></th><th>Skill Name</th><th>Category</th><th>Description</th><th>Status</th></tr>
-</thead>
+<thead><tr><th></th><th>Skill</th><th>Category</th><th>Description</th><th>Status</th></tr></thead>
 <tbody>
-<!-- Development (13: 13 active) -->
-<tr data-cat="Development" data-status="active"><td>🔧</td><td>dev</td><td>Development</td><td>Common development guide. Modular dev, self-reference patterns, skills_ref exploration, changelog.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>🏗️</td><td>dev-architecture</td><td>Development</td><td>Canonical owner of module boundary rules, circular dependency detection/prevention, implicit coupling taxonomy, barrel/re-export discipline, and boundary-only defensive programming. Referenced by dev, dev-code-reviewer, dev-backend, dev-frontend stubs.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>⚙️</td><td>dev-backend</td><td>Development</td><td>Backend role guide. Express.js patterns, SQLite, error handling, security basics.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>🔍</td><td>dev-code-reviewer</td><td>Development</td><td>Code review guide. Review process, quality thresholds, antipatterns, giving/receiving feedback. Available to all agents.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>📊</td><td>dev-data</td><td>Development</td><td>Data role guide. ETL pipelines, CSV/JSON processing, SQL queries, analysis.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>🐛</td><td>dev-debugging</td><td>Development</td><td>This skill is the thinking process for fixing bugs. It enforces a structured</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>🚀</td><td>dev-devops</td><td>Development</td><td>Container builds, deploy pipelines, Kubernetes, IaC, SRE foundations, edge/serverless, ML infra.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>🎨</td><td>dev-frontend</td><td>Development</td><td>Frontend role guide. Unique UI/UX implementation, component design, aesthetic standards.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>🎯</td><td>dev-pabcd</td><td>Development</td><td>PABCD orchestration workflow for structured multi-step development with human checkpoints between phases.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>🏗️</td><td>dev-scaffolding</td><td>Development</td><td>Scaffold projects following the Lidge Standard: feature-based layout, colocation, barrel exports, devlog structure.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>🛡️</td><td>dev-security</td><td>Development</td><td>Treat security as a build constraint, not a cleanup step.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>🧪</td><td>dev-testing</td><td>Development</td><td>Debugging phase only. Playwright web app testing, recon-action pattern.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Development" data-status="active"><td>🎯</td><td>dev-uiux-design</td><td>Development</td><td>UI/UX intent discovery, design vocabulary, product personalities, and UX state patterns. Use when user design direction is vague, when building onboarding/empty/error states, or when referencing a product aesthetic.</td><td><span class="badge badge-active">Active</span></td></tr>
-<!-- Dev Tools (145: 3 active) -->
-<tr data-cat="Dev Tools" data-status="active"><td>🐙</td><td>github</td><td>Dev Tools</td><td>GitHub gh CLI integration: issues, PRs, CI, code review, API + PR comments, CI debugging, auto-fix.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Dev Tools" data-status="active"><td>🎯</td><td>goal</td><td>Dev Tools</td><td>Goal execution guidelines: PABCD integration, verification tiers, documentation workflow, AI-driven planning.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Dev Tools" data-status="active"><td>🧩</td><td>structured-renderers</td><td>Dev Tools</td><td>Native Web UI structured renderer schemas for compose-block drafts, search-results cards, dataframe tables, chart-json charts, and diff output.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📊</td><td>agent-eval</td><td>Dev Tools</td><td>A lightweight CLI tool for comparing coding agents head-to-head on reproducible tasks. Every "which coding agent is best?" comparison runs on vibes...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🏗️</td><td>agent-harness-construction</td><td>Dev Tools</td><td>Use this skill when you are improving how an agent plans, calls tools, recovers from errors, and converges on completion.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>💻</td><td>agent-repl</td><td>Dev Tools</td><td>Manage persistent REPL sessions for multi-turn agent conversations.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧙</td><td>agent-setup-wizard</td><td>Dev Tools</td><td>An interactive, step-by-step installation wizard for skill and rule libraries. Guides users through selective installation of skills and rules, ver...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🤖</td><td>agentic-engineering</td><td>Dev Tools</td><td>Use this skill for engineering workflows where AI agents perform most implementation work and humans enforce quality and risk controls.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🤖</td><td>agents-sdk</td><td>Dev Tools</td><td>Cloudflare Workers AI Agents SDK usage guide.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧠</td><td>ai-first-engineering</td><td>Dev Tools</td><td>Use this skill when designing process, reviews, and architecture for teams shipping with AI-assisted code generation.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📱</td><td>android-clean-architecture</td><td>Dev Tools</td><td>Clean Architecture patterns for Android and KMP projects. Covers module boundaries, dependency inversion, UseCase/Repository patterns, and data lay...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📐</td><td>api-design-reviewer</td><td>Dev Tools</td><td>REST API design review: naming conventions, HTTP methods, pagination, error formats, versioning, breaking changes, rate limiting.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📐</td><td>architecture-decision-records</td><td>Dev Tools</td><td>Capture architectural decisions as they happen during coding sessions. Instead of decisions living only in Slack threads, PR comments, or someone's...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔄</td><td>autonomous-loops</td><td>Dev Tools</td><td>Patterns, architectures, and reference implementations for running Claude Code autonomously in loops. Covers everything from simple `claude -p` pip...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📘</td><td>blueprint</td><td>Dev Tools</td><td>Turn a one-line objective into a step-by-step construction plan that any coding agent can execute cold.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>💡</td><td>brainstorming</td><td>Dev Tools</td><td>Pre-coding idea refinement → design document creation (obra/superpowers).</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔥</td><td>bun-runtime</td><td>Dev Tools</td><td>Bun is a fast all-in-one JavaScript runtime and toolkit: runtime, package manager, bundler, and test runner.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🚚</td><td>carrier-relationship-management</td><td>Dev Tools</td><td>You are a senior transportation manager with 15+ years managing carrier portfolios ranging from 40 to 200+ active carriers across truckload, LTL, i...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📰</td><td>changelog-generator</td><td>Dev Tools</td><td>git commit → changelog/release notes generation.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🤖</td><td>claude-api</td><td>Dev Tools</td><td>Build applications with the Anthropic Claude API and SDKs.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>⚓</td><td>claude-devfleet</td><td>Dev Tools</td><td>Use this skill when you need to dispatch multiple Claude Code agents to work on coding tasks in parallel. Each agent runs in an isolated git worktr...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🗄️</td><td>clickhouse-io</td><td>Dev Tools</td><td>ClickHouse-specific patterns for high-performance analytics and data engineering.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>☁️</td><td>cloudflare-deploy</td><td>Dev Tools</td><td>Deploy to Cloudflare Workers/Pages. wrangler CLI.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🗺️</td><td>codebase-onboarding</td><td>Dev Tools</td><td>Systematically analyze an unfamiliar codebase and produce a structured onboarding guide. Designed for developers joining a new project or setting u...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🗺️</td><td>codebase-orientation</td><td>Dev Tools</td><td>Project entrypoint/module/build mapping. Onboarding guide.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📱</td><td>compose-multiplatform-patterns</td><td>Dev Tools</td><td>Patterns for building shared UI across Android, iOS, Desktop, and Web using Compose Multiplatform and Jetpack Compose. Covers state management, nav...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>⚙️</td><td>config-file-explainer</td><td>Dev Tools</td><td>Config file structure/keys/defaults explanation.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔑</td><td>content-hash-cache-pattern</td><td>Dev Tools</td><td>Cache expensive file processing results (PDF parsing, text extraction, image analysis) using SHA-256 content hashes as cache keys. Unlike path-base...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📏</td><td>context-budget</td><td>Dev Tools</td><td>Analyze token overhead across every loaded component in an agent session and surface actionable optimizations to reclaim context space.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🗜️</td><td>context-compression</td><td>Dev Tools</td><td>Context compression strategies. Long session optimization.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>♾️</td><td>continuous-agent-loop</td><td>Dev Tools</td><td>Patterns for structuring long-running agent workflows with loop selection, quality gates, and failure recovery.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📚</td><td>continuous-learning</td><td>Dev Tools</td><td>Evaluate agent sessions on completion to extract reusable patterns saved as learned skills.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📚</td><td>continuous-learning-v2</td><td>Dev Tools</td><td>An advanced learning system that turns agent sessions into reusable knowledge through atomic "instincts" — small learned behaviors with confidence ...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>💰</td><td>cost-aware-llm-pipeline</td><td>Dev Tools</td><td>Patterns for controlling LLM API costs while maintaining quality. Combines model routing, budget tracking, retry logic, and prompt caching into a c...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔷</td><td>cpp-coding-standards</td><td>Dev Tools</td><td>Coding standards for modern C++ (C++17/20/23) derived from the C++ Core Guidelines. Enforces type safety, resource safety, immutability, and clarity.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧪</td><td>cpp-testing</td><td>Dev Tools</td><td>Agent-focused testing workflow for modern C++ (C++17/20) using GoogleTest/GoogleMock with CMake/CTest.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🛃</td><td>customs-trade-compliance</td><td>Dev Tools</td><td>You are a senior trade compliance specialist with 15+ years managing customs operations across US, EU, UK, and Asia-Pacific jurisdictions. You sit ...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🕷️</td><td>data-scraper-agent</td><td>Dev Tools</td><td>Build a production-ready, AI-powered data collection agent for any public data source.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🏗️</td><td>data-structure-chooser</td><td>Dev Tools</td><td>Data structure time/space tradeoff recommendations.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🗃️</td><td>database-designer</td><td>Dev Tools</td><td>Schema design, normalization (1NF–BCNF), index optimization, migration strategies, partitioning, database selection guide.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔀</td><td>database-migrations</td><td>Dev Tools</td><td>Safe, reversible database schema changes for production systems.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>✅</td><td>debugging-checklist</td><td>Dev Tools</td><td>Reproduce → isolate → log → hypothesis verification debugging checklist.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🐛</td><td>debugging-helpers</td><td>Dev Tools</td><td>Systematic debugging helpers.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔬</td><td>deep-research</td><td>Dev Tools</td><td>Multi-step research agent. Search → analyze → summarize.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📦</td><td>dependency-install-helper</td><td>Dev Tools</td><td>Platform-specific dependency installation steps + verification commands.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🚀</td><td>deployment-patterns</td><td>Dev Tools</td><td>Production deployment workflows and CI/CD best practices.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🎮</td><td>develop-web-game</td><td>Dev Tools</td><td>Web game development + Playwright test loop.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔎</td><td>differential-review</td><td>Dev Tools</td><td>Security-focused diff review. Analyze security impact of code changes.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔀</td><td>dispatching-parallel-agents</td><td>Dev Tools</td><td>Parallel sub-agent dispatch patterns.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🐍</td><td>django-patterns</td><td>Dev Tools</td><td>Production-grade Django architecture patterns for scalable, maintainable applications.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔒</td><td>django-security</td><td>Dev Tools</td><td>Security guidelines for Django applications covering common vulnerabilities and hardening practices.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔴</td><td>django-tdd</td><td>Dev Tools</td><td>Test-driven development for Django applications using pytest, factory_boy, and Django REST Framework.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>✅</td><td>django-verification</td><td>Dev Tools</td><td>Run a structured verification pipeline before PRs, after major changes, or pre-deploy. Catches migration, quality, security, and config issues.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🐳</td><td>docker-patterns</td><td>Dev Tools</td><td>Docker and Docker Compose best practices for containerized development.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📖</td><td>documentation-lookup</td><td>Dev Tools</td><td>When the user asks about libraries, frameworks, or APIs, fetch current documentation via the Context7 MCP (tools `resolve-library-id` and `query-do...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>💾</td><td>durable-objects</td><td>Dev Tools</td><td>Cloudflare Durable Objects (RPC+SQLite+WebSocket) stateful workers.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>⚡</td><td>energy-procurement</td><td>Dev Tools</td><td>You are a senior energy procurement manager at a large commercial and industrial (C&amp;I) consumer with multiple facilities across regulated and dereg...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🏢</td><td>enterprise-agent-ops</td><td>Dev Tools</td><td>Use this skill for cloud-hosted or continuously running agent systems that need operational controls beyond single CLI sessions.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>💬</td><td>error-message-explainer</td><td>Dev Tools</td><td>Compiler/runtime error → cause + fix suggestions.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📊</td><td>eval-harness</td><td>Dev Tools</td><td>Evaluation framework for agent-assisted workflows. Define expected behavior before implementation, run evals continuously, and track regressions wi...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔍</td><td>exa-search</td><td>Dev Tools</td><td>Neural search for web content, code, companies, and people via the Exa MCP server.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🎨</td><td>figma-implement-design</td><td>Dev Tools</td><td>Convert Figma designs to 1:1 code. Requires Figma MCP.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🦋</td><td>flutter-dart-code-review</td><td>Dev Tools</td><td>Comprehensive, library-agnostic checklist for reviewing Flutter/Dart applications. These principles apply regardless of which state management solu...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📲</td><td>foundation-models-on-device</td><td>Dev Tools</td><td>Patterns for integrating Apple's on-device language model into apps using the FoundationModels framework. Covers text generation, structured output...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🖥️</td><td>frontend-slides</td><td>Dev Tools</td><td>Create zero-dependency, animation-rich HTML presentations that run entirely in the browser.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🌲</td><td>git-worktrees</td><td>Dev Tools</td><td>git worktree-based isolated branch workflow.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🐹</td><td>golang-patterns</td><td>Dev Tools</td><td>Idiomatic Go patterns and best practices for building robust, efficient, and maintainable applications.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧪</td><td>golang-testing</td><td>Dev Tools</td><td>Comprehensive Go testing patterns for writing reliable, maintainable tests following TDD methodology.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔒</td><td>insecure-defaults</td><td>Dev Tools</td><td>Detect hardcoded secrets, weak crypto, and insecure defaults.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📦</td><td>inventory-demand-planning</td><td>Dev Tools</td><td>You are a senior demand planner at a multi-location retailer operating 40–200 stores with regional distribution centers. You manage 300–800 active ...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔁</td><td>iterative-retrieval</td><td>Dev Tools</td><td>Solves the "context problem" in multi-agent workflows where sub-agents cannot predict what context they need until they start working.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>☕</td><td>java-coding-standards</td><td>Dev Tools</td><td>Standards for readable, maintainable Java (17+) code in Spring Boot services.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🗃️</td><td>jpa-patterns</td><td>Dev Tools</td><td>Use for data modeling, repositories, and performance tuning in Spring Boot.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📓</td><td>jupyter-notebook</td><td>Dev Tools</td><td>.ipynb create/edit. Bundled Python script.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🌊</td><td>kotlin-coroutines-flows</td><td>Dev Tools</td><td>Patterns for structured concurrency, Flow-based reactive streams, and coroutine testing in Android and Kotlin Multiplatform projects.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📊</td><td>kotlin-exposed-patterns</td><td>Dev Tools</td><td>Comprehensive patterns for database access with JetBrains Exposed ORM, including DSL queries, DAO, transactions, and production-ready configuration.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🌐</td><td>kotlin-ktor-patterns</td><td>Dev Tools</td><td>Comprehensive Ktor patterns for building robust, maintainable HTTP servers with Kotlin coroutines.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🟣</td><td>kotlin-patterns</td><td>Dev Tools</td><td>Idiomatic Kotlin patterns and best practices for building robust, efficient, and maintainable applications.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧪</td><td>kotlin-testing</td><td>Dev Tools</td><td>Comprehensive Kotlin testing patterns for writing reliable, maintainable tests following TDD methodology with Kotest and MockK.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔴</td><td>laravel-patterns</td><td>Dev Tools</td><td>Production-grade Laravel architecture patterns for scalable, maintainable applications.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔒</td><td>laravel-security</td><td>Dev Tools</td><td>Comprehensive security guidance for Laravel applications to protect against common vulnerabilities.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔴</td><td>laravel-tdd</td><td>Dev Tools</td><td>Test-driven development for Laravel applications using PHPUnit and Pest with 80%+ coverage (unit + feature).</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>✅</td><td>laravel-verification</td><td>Dev Tools</td><td>Run before PRs, after major changes, and pre-deploy.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧹</td><td>linter-fix-guide</td><td>Dev Tools</td><td>Lint rule explanation + pattern examples + minimal fix suggestions.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>💎</td><td>liquid-glass-design</td><td>Dev Tools</td><td>Patterns for implementing Apple's Liquid Glass — a dynamic material that blurs content behind it, reflects color and light from surrounding content...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📄</td><td>log-summarizer</td><td>Dev Tools</td><td>Log grouping + first failure identification + action suggestions.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🚨</td><td>logistics-exception-management</td><td>Dev Tools</td><td>Freight exceptions across all modes (LTL, FTL, parcel, intermodal, ocean, air). Covers TMS, WMS, carrier portals, claims management, and ERP order ...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔌</td><td>mcp-builder</td><td>Dev Tools</td><td>Design/implement MCP servers for external API integration.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🐍</td><td>modern-python</td><td>Dev Tools</td><td>uv+ruff+ty+pytest Python best practices.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔺</td><td>netlify-deploy</td><td>Dev Tools</td><td>Deploy Netlify sites. netlify CLI.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>▲</td><td>nextjs-turbopack</td><td>Dev Tools</td><td>Next.js 16+ uses Turbopack by default for local development: an incremental bundler written in Rust that significantly speeds up dev startup and ho...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>💚</td><td>nuxt4-patterns</td><td>Dev Tools</td><td>Use when building or debugging Nuxt 4 apps with SSR, hybrid rendering, route rules, or page-level data fetching.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📖</td><td>openai-docs</td><td>Dev Tools</td><td>OpenAI product/API official documentation reference. Build guides.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🐪</td><td>perl-patterns</td><td>Dev Tools</td><td>Idiomatic Perl 5.36+ patterns and best practices for building robust, maintainable applications.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔒</td><td>perl-security</td><td>Dev Tools</td><td>Comprehensive security guidelines for Perl applications covering input validation, injection prevention, and secure coding practices.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧪</td><td>perl-testing</td><td>Dev Tools</td><td>Comprehensive testing strategies for Perl applications using Test2::V0, Test::More, prove, and TDD methodology.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🦠</td><td>plankton-code-quality</td><td>Dev Tools</td><td>Integration reference for Plankton (credit: @alxfazio), a write-time code quality enforcement system. Plankton runs formatters and linters on every...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🐘</td><td>postgres</td><td>Dev Tools</td><td>PostgreSQL read-only queries. Schema exploration.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🐘</td><td>postgres-patterns</td><td>Dev Tools</td><td>Quick reference for PostgreSQL best practices.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🏭</td><td>production-scheduling</td><td>Dev Tools</td><td>Discrete and batch manufacturing scheduling across machining, assembly, finishing, and packaging work centers. Integrates with ERP (SAP PP, Oracle ...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📋</td><td>project-guidelines-example</td><td>Dev Tools</td><td>Template for creating project-specific skills. Adapt the sections below to your own project.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🎯</td><td>prompt-engineering</td><td>Dev Tools</td><td>Analyze a draft prompt, identify gaps, map it to available agent components,</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧪</td><td>property-based-testing</td><td>Dev Tools</td><td>Multi-language property-based testing (Hypothesis/fast-check etc.).</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🐍</td><td>python-patterns</td><td>Dev Tools</td><td>Idiomatic Python patterns and best practices for building robust, efficient, and maintainable applications.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧪</td><td>python-testing</td><td>Dev Tools</td><td>Comprehensive testing strategies for Python applications using pytest, TDD methodology, and best practices.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔥</td><td>pytorch-patterns</td><td>Dev Tools</td><td>Idiomatic PyTorch patterns and best practices for building robust, efficient, and reproducible deep learning applications.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>⚠️</td><td>quality-nonconformance</td><td>Dev Tools</td><td>Non-conformance lifecycle management in regulated manufacturing (FDA 21 CFR 820, IATF 16949, AS9100, ISO 13485). Integrates with QMS (MasterControl...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📄</td><td>ralphinho-rfc-pipeline</td><td>Dev Tools</td><td>Use this skill when a feature is too large for a single agent pass and must be split into independently verifiable work units.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>⚛️</td><td>react-best-practices</td><td>Dev Tools</td><td>React code patterns, performance optimization, component design best practices.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📩</td><td>receiving-code-review</td><td>Dev Tools</td><td>Code review feedback reception and response patterns.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔤</td><td>regex-vs-llm-structured-text</td><td>Dev Tools</td><td>A practical decision framework for parsing structured text (quizzes, forms, invoices, documents). The key insight: regex handles 95-98% of cases ch...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🚀</td><td>render-deploy</td><td>Dev Tools</td><td>Deploy Render services. Blueprint YAML.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📝</td><td>requesting-code-review</td><td>Dev Tools</td><td>Internal agent code review. Severity-based blocking.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📦</td><td>returns-reverse-logistics</td><td>Dev Tools</td><td>Full returns lifecycle across retail, e-commerce, and omnichannel. Covers RMA, condition grading, disposition routing, refund processing, fraud det...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📏</td><td>rules-distill</td><td>Dev Tools</td><td>Scan installed skills, extract cross-cutting principles that appear in multiple skills, and distill them into rules — appending to existing rule fi...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🦀</td><td>rust-patterns</td><td>Dev Tools</td><td>Idiomatic Rust patterns and best practices for building safe, performant, and maintainable applications.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧪</td><td>rust-testing</td><td>Dev Tools</td><td>Comprehensive Rust testing patterns for writing reliable, maintainable tests following TDD methodology.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🛡️</td><td>security-best-practices</td><td>Dev Tools</td><td>Language-specific security vulnerability pattern review.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>👥</td><td>security-ownership-map</td><td>Dev Tools</td><td>Codebase owner/bus-factor mapping.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>⚠️</td><td>security-threat-model</td><td>Dev Tools</td><td>Per-repo threat model generation (STRIDE/DREAD).</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🏛️</td><td>senior-architect</td><td>Dev Tools</td><td>Architecture decision records (ADR), pattern selection (monolith, microservices, CQRS, event sourcing), dependency analysis, tech stack decisions.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🐛</td><td>sentry</td><td>Dev Tools</td><td>Sentry issue/event lookup. Bundled Python script.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🏗️</td><td>skill-creator</td><td>Dev Tools</td><td>Auto-generate new SKILL.md. Template + guidelines provided.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📋</td><td>skill-stocktake</td><td>Dev Tools</td><td>Audits all installed skills and commands using a quality checklist + AI holistic judgment. Supports two modes: Quick Scan for recently changed skil...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🍃</td><td>springboot-patterns</td><td>Dev Tools</td><td>Spring Boot architecture and API patterns for scalable, production-grade services.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔒</td><td>springboot-security</td><td>Dev Tools</td><td>Use when adding auth, handling input, creating endpoints, or dealing with secrets.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔴</td><td>springboot-tdd</td><td>Dev Tools</td><td>TDD guidance for Spring Boot services with 80%+ coverage (unit + integration).</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>✅</td><td>springboot-verification</td><td>Dev Tools</td><td>Run before PRs, after major changes, and pre-deploy.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔍</td><td>static-analysis</td><td>Dev Tools</td><td>CodeQL+Semgrep+SARIF static security analysis.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧠</td><td>strategic-compact</td><td>Dev Tools</td><td>Suggests manual compaction at strategic points rather than relying on arbitrary auto-compaction.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🍎</td><td>swift-actor-persistence</td><td>Dev Tools</td><td>Patterns for building thread-safe data persistence layers using Swift actors. Combines in-memory caching with file-backed storage, leveraging the a...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🍎</td><td>swift-concurrency-6-2</td><td>Dev Tools</td><td>Patterns for adopting Swift 6.2's concurrency model where code runs single-threaded by default and concurrency is introduced explicitly. Eliminates...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🍎</td><td>swift-protocol-di-testing</td><td>Dev Tools</td><td>Patterns for making Swift code testable by abstracting external dependencies (file system, network, iCloud) behind small, focused protocols. Enable...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🍎</td><td>swiftui-patterns</td><td>Dev Tools</td><td>Modern SwiftUI patterns for building declarative, performant user interfaces on Apple platforms. Covers the Observation framework, view composition...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔴</td><td>tdd</td><td>Dev Tools</td><td>RED-GREEN-REFACTOR TDD cycle enforcement.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>👥</td><td>team-builder</td><td>Dev Tools</td><td>Interactive menu for browsing and composing agent teams on demand. Works with flat or domain-subdirectory agent collections.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🏗️</td><td>terraform</td><td>Dev Tools</td><td>HashiCorp Terraform HCL/modules/providers IaC.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧵</td><td>tmux</td><td>Dev Tools</td><td>tmux session remote control. Send keystrokes + read output.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🎨</td><td>ui-design-system</td><td>Dev Tools</td><td>Design token generation, color palettes, typography scales, component architecture, WCAG accessibility, developer handoff.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🔬</td><td>ux-researcher</td><td>Dev Tools</td><td>User persona generation, journey mapping, usability testing frameworks, research synthesis. Data-driven UX research toolkit.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>▲</td><td>vercel-deploy</td><td>Dev Tools</td><td>Vercel project deployment.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>✅</td><td>verification-loop</td><td>Dev Tools</td><td>Systematic quality check for code changes across six phases.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>🧱</td><td>web-artifacts-builder</td><td>Dev Tools</td><td>React/Tailwind complex web artifact creation skill.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>⚡</td><td>web-perf</td><td>Dev Tools</td><td>Core Web Vitals audit. Lighthouse/CrUX-based performance analysis.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Dev Tools" data-status="ref"><td>📋</td><td>writing-plans</td><td>Dev Tools</td><td>2-5 minute task decomposition. File paths/code/verification included.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<!-- AI & Media (16: 0 active) -->
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🎨</td><td>algorithmic-art</td><td>AI &amp; Media</td><td>p5.js generative art. Algorithm-based visual artwork creation.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🌍</td><td>atlas</td><td>AI &amp; Media</td><td>Control ChatGPT Atlas app. macOS only.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🖼️</td><td>canvas-design</td><td>AI &amp; Media</td><td>Create PNG/PDF visual designs via Canvas API.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>📝</td><td>content-engine</td><td>AI &amp; Media</td><td>Turn one idea into strong, platform-native content instead of posting the same thing everywhere.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>✏️</td><td>fal-image-edit</td><td>AI &amp; Media</td><td>fal.ai AI image editing (style transfer, object removal).</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🤗</td><td>hugging-face-cli</td><td>AI &amp; Media</td><td>HF Hub CLI for model/dataset/space management.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>📊</td><td>hugging-face-evaluation</td><td>AI &amp; Media</td><td>vLLM/lighteval model evaluation and benchmarks.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🏋️</td><td>hugging-face-model-trainer</td><td>AI &amp; Media</td><td>TRL: SFT/DPO/GRPO model training.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🖼️</td><td>imagegen</td><td>AI &amp; Media</td><td>Generate/edit images via OpenAI Images API.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🖼️</td><td>nano-banana-pro</td><td>AI &amp; Media</td><td>Generate/edit images with Gemini 3 Pro. Different model from Codex imagegen.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🎥</td><td>sora</td><td>AI &amp; Media</td><td>Sora video generation/management. OpenAI API.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🗣️</td><td>speech</td><td>AI &amp; Media</td><td>OpenAI TTS voice synthesis. Bundled Python script.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🎭</td><td>theme-factory</td><td>AI &amp; Media</td><td>Apply reusable themes to document/slide/HTML outputs.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🎤</td><td>transcribe</td><td>AI &amp; Media</td><td>OpenAI Whisper speech-to-text + speaker diarization.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🎥</td><td>videodb</td><td>AI &amp; Media</td><td>Perception + memory + actions for video, live streams, and desktop sessions.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="AI &amp; Media" data-status="ref"><td>🤖</td><td>web-ai</td><td>AI &amp; Media</td><td>Structured browser web-ai workflow for ChatGPT, Gemini, and Grok.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<!-- Productivity (25: 3 active) -->
-<tr data-cat="Productivity" data-status="active"><td>📄</td><td>docx</td><td>Productivity</td><td>.docx document create/edit/read. Visual verification (soffice→PDF→PNG), tracked changes, python-docx.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Productivity" data-status="active"><td>🇰🇷</td><td>hwp</td><td>Productivity</td><td>HWP/HWPX document create/read/edit/convert. OfficeCLI + rhwp sidecars, OWPML XML editing, Python fallback.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Productivity" data-status="active"><td>📽️</td><td>pptx</td><td>Productivity</td><td>Presentation (.pptx) create/edit/analyze skill.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>🍎</td><td>apple-notes</td><td>Productivity</td><td>Apple Notes create/search. AppleScript-based.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>🔔</td><td>apple-reminders</td><td>Productivity</td><td>Apple Reminders add/complete/list management. AppleScript-based.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>✍️</td><td>article-writing</td><td>Productivity</td><td>Write long-form content that sounds like a real person or brand, not generic AI output.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>✍️</td><td>doc-coauthoring</td><td>Productivity</td><td>Structured planning/spec/document co-authoring workflow skill.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>🔄</td><td>html2pptx</td><td>Productivity</td><td>Convert HTML slides to native PowerPoint elements. Playwright DOM parsing → PptxGenJS.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>💼</td><td>investor-materials</td><td>Productivity</td><td>Build investor-facing materials that are consistent, credible, and easy to defend.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>🤝</td><td>investor-outreach</td><td>Productivity</td><td>Write investor communication that is short, personalized, and easy to act on.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>📐</td><td>linear</td><td>Productivity</td><td>Linear issue/project/cycle management via GraphQL API.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>📊</td><td>market-research</td><td>Productivity</td><td>Produce research that supports decisions, not research theater.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>📝</td><td>notion</td><td>Productivity</td><td>Notion page/DB CRUD via curl API calls. Complements Codex notion-* skills.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>📚</td><td>notion-knowledge-capture</td><td>Productivity</td><td>Conversation → Notion wiki/FAQ/HOW-TO capture. Notion MCP.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>📊</td><td>notion-meeting-intelligence</td><td>Productivity</td><td>Meeting prep (per-attendee context, agenda). Notion MCP.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>🔬</td><td>notion-research-documentation</td><td>Productivity</td><td>Notion multi-source → report/comparison synthesis. Notion MCP.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>📋</td><td>notion-spec-to-implementation</td><td>Productivity</td><td>PRD/spec → implementation plan + auto task creation. Notion MCP.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>📄</td><td>nutrient-document-processing</td><td>Productivity</td><td>Process documents with the Nutrient DWS Processor API. Convert formats, extract text and tables, OCR scanned documents, redact PII, add watermarks,...</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>🗃️</td><td>obsidian</td><td>Productivity</td><td>Obsidian vault note creation, search, and tag management.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>♿</td><td>officecli-accessibility</td><td>Productivity</td><td>Accessibility checks and remediation for Office documents. WCAG 2.1 AA compliance.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>🇰🇷</td><td>officecli-cjk</td><td>Productivity</td><td>CJK text handling for OfficeCLI. Fonts, language tags, line-break rules.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>📊</td><td>officecli-data-pipeline</td><td>Productivity</td><td>Pandas DataFrame to Excel pipeline. CSV/TSV export, formatting, charts.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>✅</td><td>things-mac</td><td>Productivity</td><td>Things 3 todo add/complete/search. AppleScript + URL scheme.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>📋</td><td>trello</td><td>Productivity</td><td>Trello board/list/card management via curl REST API.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Productivity" data-status="ref"><td>🛂</td><td>visa-doc-translate</td><td>Productivity</td><td>When the user provides an image file path, execute the following steps automatically:</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<!-- Automation (5: 2 active) -->
-<tr data-cat="Automation" data-status="active"><td>🌐</td><td>browser</td><td>Automation</td><td>Chrome browser automation. Identify elements via ref snapshots → click/type.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Automation" data-status="active"><td>🖥️</td><td>desktop-control</td><td>Automation</td><td>Unified CDP + Computer Use automation. Routes DOM to podex browser, desktop apps to mcp__computer_use__, hybrid to both. Requires Codex CLI + macOS.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Automation" data-status="ref"><td>🧵</td><td>dmux-workflows</td><td>Automation</td><td>Orchestrate parallel AI agent sessions using dmux, a tmux pane manager for agent harnesses.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Automation" data-status="ref"><td>👁️</td><td>vision-click</td><td>Automation</td><td>Vision-based coordinate clicking. Codex CLI only. Screenshot → AI coordinate → pixel click.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Automation" data-status="ref"><td>🧭</td><td>web-routing</td><td>Automation</td><td>Guide skill for routing browser requests to browser/webapp-testing.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<!-- Communication (8: 1 active) -->
-<tr data-cat="Communication" data-status="active"><td>📨</td><td>telegram-send</td><td>Communication</td><td>Send voice/photo/document directly via Telegram local API.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Communication" data-status="ref"><td>📢</td><td>crosspost</td><td>Communication</td><td>Distribute content across multiple social platforms with platform-native adaptation.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Communication" data-status="ref"><td>✉️</td><td>email-draft-polish</td><td>Communication</td><td>Email draft tone adjustment/formatting.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Communication" data-status="ref"><td>🌐</td><td>gog</td><td>Communication</td><td>Gmail, Calendar, Drive, Sheets, Docs integrated management.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Communication" data-status="ref"><td>📧</td><td>himalaya</td><td>Communication</td><td>Terminal email read/write/reply/search. Gmail/Outlook supported.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Communication" data-status="ref"><td>💬</td><td>whatsapp</td><td>Communication</td><td>WhatsApp message automation (automate-whatsapp).</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Communication" data-status="ref"><td>🐦</td><td>x-api</td><td>Communication</td><td>Programmatic interaction with X (Twitter) for posting, reading, searching, and analytics.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Communication" data-status="ref"><td>🐦</td><td>xurl</td><td>Communication</td><td>Tweet post/search/reply/DM/media upload.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<!-- Research (2: 1 active) -->
-<tr data-cat="Research" data-status="active"><td>🔎</td><td>search</td><td>Research</td><td>Unified search hub for web, real-time, X/Twitter, Korean source-sensitive lookup, and deep research routing.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Research" data-status="ref"><td>🔍</td><td>research-worker</td><td>Research</td><td>Search guidance and output contract for the Research employee.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<!-- Visualization (1: 1 active) -->
-<tr data-cat="Visualization" data-status="active"><td>📊</td><td>diagram</td><td>Visualization</td><td>SVG diagrams, charts, and interactive visualizations</td><td><span class="badge badge-active">Active</span></td></tr>
-<!-- Media (1: 1 active) -->
-<tr data-cat="Media" data-status="active"><td>🎬</td><td>video</td><td>Media</td><td>Code-based video create, edit, render, preview, validate, and caption. Defaults to Remotion for JSON/React timelines; routes HyperFrames HTML video, script-first TTS captions, progrok STT captions, FFmpeg transforms, existing-footage editing, and docs-first provider/video-understanding workflows.</td><td><span class="badge badge-active">Active</span></td></tr>
-<!-- Smart Home (2: 0 active) -->
-<tr data-cat="Smart Home" data-status="ref"><td>💡</td><td>openhue</td><td>Smart Home</td><td>Hue light/scene control. "Dim living room to 50%"</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Smart Home" data-status="ref"><td>🎵</td><td>spotify-player</td><td>Smart Home</td><td>Spotify play/pause/search/playlist management.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<!-- Utility (12: 5 active) -->
-<tr data-cat="Utility" data-status="active"><td>🧠</td><td>memory</td><td>Utility</td><td>Long-term memory across sessions. Stored in markdown files, grep search.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Utility" data-status="active"><td>📄</td><td>pdf</td><td>Utility</td><td>PDF read/create/edit/review. reportlab/pdfplumber/pypdf + nano-pdf natural language editing.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Utility" data-status="active"><td>📄</td><td>pdf-vision</td><td>Utility</td><td>Hybrid PDF extraction: image rendering (pypdfium2) + text extraction (pypdf). Optimized for exams, tables, and formulas.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Utility" data-status="active"><td>📸</td><td>screen-capture</td><td>Utility</td><td>macOS screenshot/webcam/recording. Full/region/window/multi-monitor. Default fallback when tool-specific capture unavailable.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Utility" data-status="active"><td>📊</td><td>xlsx</td><td>Utility</td><td>.xlsx/.xlsm/.csv/.tsv file create/edit/analyze/format. Includes pandas data analysis.</td><td><span class="badge badge-active">Active</span></td></tr>
-<tr data-cat="Utility" data-status="ref"><td>🔐</td><td>1password</td><td>Utility</td><td>1Password CLI for password/document/OTP lookup.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Utility" data-status="ref"><td>📍</td><td>goplaces</td><td>Utility</td><td>Google Places API for location, reviews, and business hours search.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Utility" data-status="ref"><td>📑</td><td>summarize</td><td>Utility</td><td>Summarize URLs, YouTube videos, and files to text.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Utility" data-status="ref"><td>🔊</td><td>tts</td><td>Utility</td><td>macOS say command text-to-speech. Multi-language, file output.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Utility" data-status="ref"><td>🎬</td><td>video-downloader</td><td>Utility</td><td>yt-dlp wrapper. YouTube/media download.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Utility" data-status="ref"><td>🎬</td><td>video-frames</td><td>Utility</td><td>Extract video frames/segments with ffmpeg.</td><td><span class="badge badge-ref">Reference</span></td></tr>
-<tr data-cat="Utility" data-status="ref"><td>🌤️</td><td>weather</td><td>Utility</td><td>wttr.in weather/forecast lookup. No API key needed.</td><td><span class="badge badge-ref">Reference</span></td></tr></tbody>
-</table>
-
-<h2>Default Active Skills (30)</h2>
-<p>These skills are loaded into the system prompt out of the box. They cover the most common development and workflow scenarios.</p>
-
-<table>
-<thead>
-<tr><th>#</th><th>Skill</th><th>Category</th><th>Purpose</th></tr>
-</thead>
-<tbody>
-<tr><td>1</td><td><code>browser</code></td><td>Automation</td><td>Chrome browser automation</td></tr>
-<tr><td>2</td><td><code>desktop-control</code></td><td>Automation</td><td>Unified CDP + Computer Use automation</td></tr>
-<tr><td>3</td><td><code>dev</code></td><td>Development</td><td>Common development guide</td></tr>
-<tr><td>4</td><td><code>dev-architecture</code></td><td>Development</td><td>Canonical owner of module boundary rules, circular dependency detection/prevention, imp...</td></tr>
-<tr><td>5</td><td><code>dev-backend</code></td><td>Development</td><td>Backend role guide</td></tr>
-<tr><td>6</td><td><code>dev-code-reviewer</code></td><td>Development</td><td>Code review guide</td></tr>
-<tr><td>7</td><td><code>dev-data</code></td><td>Development</td><td>Data role guide</td></tr>
-<tr><td>8</td><td><code>dev-debugging</code></td><td>Development</td><td>This skill is the thinking process for fixing bugs</td></tr>
-<tr><td>9</td><td><code>dev-devops</code></td><td>Development</td><td>Container builds, deploy pipelines, Kubernetes, IaC, SRE foundations, edge/serverless, ...</td></tr>
-<tr><td>10</td><td><code>dev-frontend</code></td><td>Development</td><td>Frontend role guide</td></tr>
-<tr><td>11</td><td><code>dev-pabcd</code></td><td>Development</td><td>PABCD orchestration workflow for structured multi-step development with human checkpoin...</td></tr>
-<tr><td>12</td><td><code>dev-scaffolding</code></td><td>Development</td><td>Scaffold projects following the Lidge Standard: feature-based layout, colocation, barre...</td></tr>
-<tr><td>13</td><td><code>dev-security</code></td><td>Development</td><td>Treat security as a build constraint, not a cleanup step</td></tr>
-<tr><td>14</td><td><code>dev-testing</code></td><td>Development</td><td>Debugging phase only</td></tr>
-<tr><td>15</td><td><code>dev-uiux-design</code></td><td>Development</td><td>UI/UX intent discovery, design vocabulary, product personalities, and UX state patterns</td></tr>
-<tr><td>16</td><td><code>diagram</code></td><td>Visualization</td><td>SVG diagrams, charts, and interactive visualizations</td></tr>
-<tr><td>17</td><td><code>docx</code></td><td>Productivity</td><td>DOCX document create, edit, and read</td></tr>
-<tr><td>18</td><td><code>github</code></td><td>Dev Tools</td><td>GitHub gh CLI integration: issues, PRs, CI, code review, API + PR comments, CI debuggin...</td></tr>
-<tr><td>19</td><td><code>goal</code></td><td>Dev Tools</td><td>Goal execution guidelines: PABCD integration, verification tiers, documentation workflo...</td></tr>
-<tr><td>20</td><td><code>hwp</code></td><td>Productivity</td><td>HWP/HWPX document create/read/edit/convert</td></tr>
-<tr><td>21</td><td><code>memory</code></td><td>Utility</td><td>Long-term memory across sessions</td></tr>
-<tr><td>22</td><td><code>pdf</code></td><td>Utility</td><td>PDF read/create/edit/review</td></tr>
-<tr><td>23</td><td><code>pdf-vision</code></td><td>Utility</td><td>Hybrid PDF extraction: image rendering (pypdfium2) + text extraction (pypdf)</td></tr>
-<tr><td>24</td><td><code>pptx</code></td><td>Productivity</td><td>Presentation create, edit, and analyze</td></tr>
-<tr><td>25</td><td><code>screen-capture</code></td><td>Utility</td><td>macOS screenshot/webcam/recording</td></tr>
-<tr><td>26</td><td><code>search</code></td><td>Research</td><td>Unified search hub for web, real-time, X/Twitter, Korean source-sensitive lookup, and d...</td></tr>
-<tr><td>27</td><td><code>structured-renderers</code></td><td>Dev Tools</td><td>Native Web UI structured renderer schemas for compose-block drafts, search-results card...</td></tr>
-<tr><td>28</td><td><code>telegram-send</code></td><td>Communication</td><td>Send voice/photo/document directly via Telegram local API</td></tr>
-<tr><td>29</td><td><code>video</code></td><td>Media</td><td>Code-based video create, edit, render, preview, validate, and caption</td></tr>
-<tr><td>30</td><td><code>xlsx</code></td><td>Utility</td><td>Spreadsheet create, edit, analyze, and format</td></tr>
+<tr data-cat="automation" data-status="active"><td>🌐</td><td>browser</td><td>automation</td><td>Operate and verify browser sessions through the Weasley Podex CLI.</td><td><span class="badge badge-active">Active</span></td></tr>
+<tr data-cat="development" data-status="active"><td>🔧</td><td>dev</td><td>development</td><td>Shared engineering workflow for safe, tested repository changes.</td><td><span class="badge badge-active">Active</span></td></tr>
+<tr data-cat="orchestration" data-status="active"><td>🎯</td><td>dev-pabcd</td><td>orchestration</td><td>PABCD planning, audit, build, check, and delivery gates.</td><td><span class="badge badge-active">Active</span></td></tr>
+<tr data-cat="documentation" data-status="active"><td>📊</td><td>diagram</td><td>documentation</td><td>Create small, accurate diagrams from verified system relationships.</td><td><span class="badge badge-active">Active</span></td></tr>
+<tr data-cat="orchestration" data-status="active"><td>🏁</td><td>goal</td><td>orchestration</td><td>Run persistent goals with explicit progress, verification, and stop conditions.</td><td><span class="badge badge-active">Active</span></td></tr>
+<tr data-cat="productivity" data-status="active"><td>🧠</td><td>memory</td><td>productivity</td><td>Use instance-local and cross-instance memory without leaking private context.</td><td><span class="badge badge-active">Active</span></td></tr>
+<tr data-cat="research" data-status="active"><td>🔎</td><td>search</td><td>research</td><td>Unified search hub with source-first evidence verification.</td><td><span class="badge badge-active">Active</span></td></tr>
+<tr data-cat="automation" data-status="active"><td>🤖</td><td>web-ai</td><td>automation</td><td>Use supported web AI sessions with bounded context and artifact capture.</td><td><span class="badge badge-active">Active</span></td></tr>
 </tbody>
 </table>
 
-<p>Two more skills — <code>k-writing</code> and <code>lecture-stt</code> — are also active by default but ship as private runtime skills outside the public registry.</p>
+<h2>Default Active Skills (8)</h2>
+<p>Every bundled registry entry has <code>defaultActive: true</code>.</p>
+<table>
+<thead><tr><th>#</th><th>Skill</th><th>Category</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>browser</code></td><td>automation</td></tr>
+<tr><td>2</td><td><code>dev</code></td><td>development</td></tr>
+<tr><td>3</td><td><code>dev-pabcd</code></td><td>orchestration</td></tr>
+<tr><td>4</td><td><code>diagram</code></td><td>documentation</td></tr>
+<tr><td>5</td><td><code>goal</code></td><td>orchestration</td></tr>
+<tr><td>6</td><td><code>memory</code></td><td>productivity</td></tr>
+<tr><td>7</td><td><code>search</code></td><td>research</td></tr>
+<tr><td>8</td><td><code>web-ai</code></td><td>automation</td></tr>
+</tbody>
+</table>
 
 <h2>Installing and Managing Skills</h2>
-
-<h3>Install a Reference Skill</h3>
-<pre><code># Install a single skill
-jaw skill install cloudflare
-
-# Install multiple skills at once
-jaw skill install docker kubernetes terraform
-
-# Install all skills in a category
-jaw skill install --category "Cloud &amp; Deploy"</code></pre>
-
-<div class="callout callout-info">
-  <strong>In-chat:</strong> "cloudflare 스킬 설치해줘" or "Docker랑 Kubernetes 스킬 켜줘" -- the agent will run the install command for you.
-</div>
-
-<h3>Remove a Skill</h3>
-<pre><code># Remove a skill (moves back to reference)
-jaw skill remove cloudflare
-
-# Remove multiple
-jaw skill remove docker kubernetes</code></pre>
-
-<h3>Check Skill Info</h3>
-<pre><code># Detailed info about a skill
-jaw skill info dev-frontend
-
-# Output:
-#   Name:     dev-frontend
-#   Status:   active
-#   Category: Development
-#   Path:     ~/.podex/skills/dev-frontend/SKILL.md
-#   Size:     4.2 KB
-#   Lines:    127</code></pre>
-
-<h3>Reset to Defaults</h3>
-<pre><code># Reset all skills to the 30 defaults
-jaw skill reset
-
-# Force reset (no confirmation prompt)
-jaw skill reset --force</code></pre>
-
-<div class="callout callout-warn">
-  <strong>Warning:</strong> <code>jaw skill reset</code> will deactivate all custom skills and restore the default 30. Your custom skill files are preserved in <code>~/.podex/skills_ref/</code>.
-</div>
+<p>Use actual bundled names for local operations:</p>
+<pre><code>weasley-podex skill info browser
+weasley-podex skill install goal
+weasley-podex skill list</code></pre>
+<h3>Imported skills</h3>
+<p>Additional skills appear only after discovery from an installed Codex environment or explicit configuration of a trusted Git repository. Imported names are not bundled capabilities.</p>
+<pre><code>export WEASLEY_PODEX_SKILLS_REPO=https://github.com/your-org/trusted-skills.git
+weasley-podex skill reset
+weasley-podex skill install imported-skill-name
+weasley-podex skill info imported-skill-name</code></pre>
+<div class="callout callout-warn"><strong>Trust boundary:</strong> Only configure a repository whose instructions you have reviewed. Without an installed Codex catalog or <code>WEASLEY_PODEX_SKILLS_REPO</code>, reset uses these eight bundled skills and performs no remote skill fetch.</div>
 
 <h2>Category Breakdown</h2>
-
 <table>
-<thead>
-<tr><th>Category</th><th>Active</th><th>Reference</th><th>Total</th><th>Description</th></tr>
-</thead>
+<thead><tr><th>Category</th><th>Bundled</th><th>Active by Default</th></tr></thead>
 <tbody>
-<tr><td><strong>Development</strong></td><td>13</td><td>0</td><td>13</td><td>Core dev guides: architecture, frontend, backend, data, testing, security, debugging, PABCD, scaffolding, UI/UX</td></tr>
-<tr><td><strong>Dev Tools</strong></td><td>3</td><td>142</td><td>145</td><td>GitHub, goals, structured renderers, plus language/framework patterns, deployment, testing, and agent tooling</td></tr>
-<tr><td><strong>AI &amp; Media</strong></td><td>0</td><td>16</td><td>16</td><td>Image/video generation, web AI, Hugging Face, speech, and creative media skills</td></tr>
-<tr><td><strong>Productivity</strong></td><td>3</td><td>22</td><td>25</td><td>DOCX, HWP, PPTX, Notion, Obsidian, office workflows, and productivity integrations</td></tr>
-<tr><td><strong>Automation</strong></td><td>2</td><td>3</td><td>5</td><td>Browser control, desktop automation, vision click, and workflow routing</td></tr>
-<tr><td><strong>Communication</strong></td><td>1</td><td>7</td><td>8</td><td>Telegram, email, X/Twitter, WhatsApp, and cross-posting</td></tr>
-<tr><td><strong>Research</strong></td><td>1</td><td>1</td><td>2</td><td>Unified search hub and research worker guidance</td></tr>
-<tr><td><strong>Visualization</strong></td><td>1</td><td>0</td><td>1</td><td>SVG diagrams, charts, and interactive visualizations</td></tr>
-<tr><td><strong>Media</strong></td><td>1</td><td>0</td><td>1</td><td>Code-based video create, edit, render, and caption</td></tr>
-<tr><td><strong>Smart Home</strong></td><td>0</td><td>2</td><td>2</td><td>Philips Hue and Spotify player control</td></tr>
-<tr><td><strong>Utility</strong></td><td>5</td><td>7</td><td>12</td><td>Memory, PDF, screen capture, spreadsheets, weather, and misc utilities</td></tr>
-<tr><td><strong>Total</strong></td><td>30</td><td>200</td><td><strong>230</strong></td><td></td></tr>
+<tr><td>automation</td><td>2</td><td>2</td></tr>
+<tr><td>development</td><td>1</td><td>1</td></tr>
+<tr><td>documentation</td><td>1</td><td>1</td></tr>
+<tr><td>orchestration</td><td>2</td><td>2</td></tr>
+<tr><td>productivity</td><td>1</td><td>1</td></tr>
+<tr><td>research</td><td>1</td><td>1</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>8</strong></td><td><strong>8</strong></td></tr>
 </tbody>
 </table>
-
 <h2>Creating Custom Skills</h2>
 <p>Add your own domain knowledge by creating a skill directory:</p>
-<pre><code>mkdir -p ~/.podex/skills/my-company
-cat &gt; ~/.podex/skills/my-company/SKILL.md &lt;&lt; 'EOF'
+<pre><code>mkdir -p ~/.weasley/podex/skills/my-company
+cat &gt; ~/.weasley/podex/skills/my-company/SKILL.md &lt;&lt; 'EOF'
 # My Company Standards
 
 Internal coding standards and domain knowledge.
@@ -606,7 +247,7 @@ EOF</code></pre>
 
 <h2>Skill File Structure</h2>
 <p>Every skill is a directory containing at minimum a <code>SKILL.md</code> file. Complex skills may include reference subdirectories:</p>
-<pre><code>~/.podex/skills/dev-frontend/
+<pre><code>~/.weasley/podex/skills/imported-skill-name/
   SKILL.md              # Main skill prompt (injected into system prompt)
   references/
     react.md            # Deep guidance for React
@@ -677,4 +318,3 @@ EOF</code></pre>
 </script>
 </body>
 </html>
-

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { chmodSync, mkdtempSync, writeFileSync } from 'fs';
 import { tmpdir } from 'os';
-import { join } from 'path';
+import { delimiter, join } from 'path';
 import {
     buildOpencodeRuntimeSnapshot,
     pushOpencodeRawEvent,
@@ -68,11 +68,15 @@ test('buildOpencodeRuntimeSnapshot reports pending state', () => {
 
 test('resolveOpencodeBinary finds fake opencode from PATH', () => {
     const dir = mkdtempSync(join(tmpdir(), 'jaw-opencode-bin-'));
-    const binary = join(dir, 'opencode');
-    writeFileSync(binary, '#!/bin/sh\necho fake-opencode\n');
+    const binaryName = process.platform === 'win32' ? 'opencode.cmd' : 'opencode';
+    const binary = join(dir, binaryName);
+    const script = process.platform === 'win32'
+        ? '@echo fake-opencode\r\n'
+        : '#!/bin/sh\necho fake-opencode\n';
+    writeFileSync(binary, script);
     chmodSync(binary, 0o755);
 
-    const resolved = resolveOpencodeBinary({ PATH: `${dir}:/usr/bin:/bin` }, '');
+    const resolved = resolveOpencodeBinary({ PATH: [dir, '/usr/bin', '/bin'].join(delimiter) }, '');
     assert.equal(resolved, binary);
 });
 

@@ -75,7 +75,7 @@ export function registerGoalRoutes(app: Router, requireAuth: RequestHandler): vo
                     const evidence = Array.isArray(ev) ? ev.map(String) : (typeof ev === 'string' && ev ? [ev] : []);
                     const active = getActiveGoal();
                     if (active?.goalMode === 'plan') {
-                        res.status(409).json({ ok: false, error: 'Goal plan must be refined before checkpoints. Run `podex goal refine "<specific objective>"` first.' });
+                        res.status(409).json({ ok: false, error: 'Goal plan must be refined before checkpoints. Run `weasley-podex goal refine "<specific objective>"` first.' });
                         return;
                     }
                     const goal = updateGoal(summary, String(body?.['nextAction'] || ''), evidence);
@@ -97,7 +97,7 @@ export function registerGoalRoutes(app: Router, requireAuth: RequestHandler): vo
                 case 'done': {
                     const force = body?.['force'] === true;
                     if (!force && !goalHasCompletionEvidence(getActiveGoal())) {
-                        res.status(409).json({ ok: false, error: 'Goal completion requires verification evidence on the latest checkpoint. Log it via `podex goal update "<summary>" --evidence "<test result / changed file>"`, then retry — or pass --force for an explicit manual override.' });
+                        res.status(409).json({ ok: false, error: 'Goal completion requires verification evidence on the latest checkpoint. Log it via `weasley-podex goal update "<summary>" --evidence "<test result / changed file>"`, then retry — or pass --force for an explicit manual override.' });
                         return;
                     }
                     const goal = completeGoal(body?.['note'] as string | undefined);
@@ -117,7 +117,7 @@ export function registerGoalRoutes(app: Router, requireAuth: RequestHandler): vo
                     const actor = body?.['actor'] === 'agent' ? 'agent' : 'human';
                     const auditEvidence = String(body?.['audit'] || '').trim();
                     if (actor === 'agent' && !auditEvidence) {
-                        res.status(409).json({ ok: false, error: 'Agent-initiated goal pause requires independent audit evidence. Run an independent reviewer first, then retry with `podex goal pause --agent --audit "<review summary>"`.' });
+                        res.status(409).json({ ok: false, error: 'Agent-initiated goal pause requires independent audit evidence. Run an independent reviewer first, then retry with `weasley-podex goal pause --agent --audit "<review summary>"`.' });
                         return;
                     }
                     if (actor === 'agent' && getAgentPauseCount() < 1) {
@@ -128,7 +128,7 @@ export function registerGoalRoutes(app: Router, requireAuth: RequestHandler): vo
                             pauseGate: describeGoalPauseGate(armedGoal),
                             error: 'First agent pause attempt recorded (1/2). Pause NOT executed. '
                                 + 'Complete the dev-skill audit checklist injected in the next goal continuation, '
-                                + 'then call `podex goal pause --agent --audit "<evidence>"` again to pause. '
+                                + 'then call `weasley-podex goal pause --agent --audit "<evidence>"` again to pause. '
                                 + 'A productive checkpoint clears the pending pause gate.',
                         });
                         return;

@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const wsPathTs = join(__dirname, '../../public/js/ws.ts');
@@ -35,7 +35,7 @@ test('OSR-003: ws source tracks current orc scope and ignores foreign orc_state 
 });
 
 test('OSR-003b: orc_state scope predicate accepts global scope and rejects foreign concrete scopes', { skip: !hasScopeHelper && 'orchestrate scope helper source not found' }, async () => {
-    const { shouldApplyOrcStateEvent } = await import(scopeHelperPath);
+    const { shouldApplyOrcStateEvent } = await import(pathToFileURL(scopeHelperPath).href);
     assert.equal(shouldApplyOrcStateEvent('other', 'default'), false, 'foreign concrete scope should be ignored');
     assert.equal(shouldApplyOrcStateEvent('default', 'default'), true, 'matching concrete scope should apply');
     assert.equal(shouldApplyOrcStateEvent('all', 'default'), true, 'global scope should apply');

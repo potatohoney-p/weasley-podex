@@ -1,8 +1,8 @@
 import fs from 'node:fs';
-import { join, resolve } from 'node:path';
-import { JAW_HOME } from '../core/config.js';
+import { dirname, join, resolve } from 'node:path';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 
-export const WORKER_RUNS_DIR = join(JAW_HOME, 'worker-runs');
+export const WORKER_RUNS_DIR = join(WEASLEY_PODEX_HOME, 'worker-runs');
 export const DEFAULT_WORKER_OUTPUT_LIMIT = 64 * 1024;
 export const MAX_WORKER_OUTPUT_LIMIT = 256 * 1024;
 
@@ -32,7 +32,7 @@ export function workerRunDir(runId: string): string {
     const safeRunId = assertWorkerRunId(runId);
     const base = resolve(WORKER_RUNS_DIR);
     const dir = resolve(base, safeRunId);
-    if (!dir.startsWith(base + '/') && dir !== base) throw new Error(`unsafe worker run path: ${runId}`);
+    if (dirname(dir) !== base) throw new Error(`unsafe worker run path: ${runId}`);
     return dir;
 }
 

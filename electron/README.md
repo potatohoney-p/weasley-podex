@@ -1,8 +1,11 @@
-﻿# podex Electron Desktop Shell
+﻿# Weasley Podex Electron Desktop Shell
 
-Electron wrapper around the jaw manager dashboard. In development it attaches to
-or spawns `jaw dashboard serve`; in packaged builds it prefers the bundled
+Electron wrapper around the Weasley Podex manager dashboard. In development it attaches to
+or spawns `weasley-podex dashboard serve`; in packaged builds it prefers the bundled
 Node.js sidecar server shipped under `extraResources/server`.
+
+The npm/CLI identity is `weasley-podex`. The source helper filename
+`jaw-spawn.ts` is retained only as a historical internal filename.
 
 Default manager lanes:
 
@@ -69,12 +72,14 @@ npm run sidecar:bundle
   select JWC must install/build jawcode separately and set `JWC_SDK_PATH`,
 - prunes frontend-only packages,
 - rebuilds `better-sqlite3`,
-- creates `bin/jaw` or `bin/jaw.cmd` to launch `dist/bin/podex.js`,
+- creates `bin/weasley-podex` or `bin/weasley-podex.cmd` to launch the internal
+  entrypoint `dist/bin/podex.js`,
 - verifies the staging sidecar contains no bundled JWC payload,
-- optionally copies the native `jaw-claude-i` helper when available.
+- optionally copies the native `claude-e` helper when available (with an exact legacy build-path fallback).
 
-`electron/src/main/lib/jaw-spawn.ts` searches the bundled sidecar first in
-packaged apps, then falls back to `JAW_BIN` and the global `jaw` binary.
+`electron/src/main/lib/jaw-spawn.ts` keeps its historical filename. It searches
+the bundled `weasley-podex` sidecar first in packaged apps, then the configured
+`WEASLEY_PODEX_BIN` and global `weasley-podex` command.
 
 ## Package
 
@@ -94,7 +99,7 @@ npm run check:app-icons
 ```
 
 The dist checks validate the packaged `.app` under `electron/dist/mac-arm64`.
-They do not replace `/Applications/podex.app`; app replacement remains a
+They do not replace `/Applications/Weasley Podex.app`; app replacement remains a
 manual step after build verification.
 
 Current `electron-builder.yml` targets:
@@ -129,7 +134,7 @@ For each platform matrix entry it:
 
 Recent desktop surfaces include:
 
-- sidecar-first `jaw` detection,
+- sidecar-first `weasley-podex` detection,
 - first-launch and tray menu CLI install flow,
 - background tray mode,
 - browser webview panel and URL controls,
@@ -142,10 +147,10 @@ Recent desktop surfaces include:
 
 | Var | Default | Description |
 |---|---|---|
-| `JAW_MANAGER_URL` | `http://127.0.0.1:24577/` | Manager URL to attach to |
-| `JAW_MANAGER_PORT` | `24577` | Port used when URL is not set; implicit spawn falls back through `24590` |
-| `JAW_BIN` | auto-detected | Path to a `jaw` CLI binary when not using the bundled sidecar |
-| `JAW_ELECTRON_DEVTOOLS` | unset | Set to `1` to open DevTools |
+| `WEASLEY_PODEX_MANAGER_URL` | `http://127.0.0.1:24577/` | Manager URL to attach to |
+| `WEASLEY_PODEX_MANAGER_PORT` | `24577` | Port used when URL is not set; implicit spawn falls back through `24590` |
+| `WEASLEY_PODEX_BIN` | auto-detected | Explicit CLI path; normal installs use bundled/global `weasley-podex` |
+| `WEASLEY_PODEX_ELECTRON_DEVTOOLS` | unset | Set to `1` to open DevTools |
 | `NODE_ENV` | unset | `development` enables DevTools |
 
 ## CLI Flags
@@ -153,7 +158,7 @@ Recent desktop surfaces include:
 ```text
 --port <n>           Override manager port (implicit spawn uses 24577-24590)
 --manager-url <url>  Override full manager URL
---attach-only        Never spawn jaw dashboard serve; only attach
+--attach-only        Never spawn weasley-podex dashboard serve; only attach
 --spawn              Force spawn even if no health probe is required
 ```
 
@@ -162,8 +167,8 @@ Recent desktop surfaces include:
 1. Health-check `${MANAGER_URL}api/dashboard/health` with backoff
    `200/400/800/1600/3000/5000ms` for up to 60 seconds.
 2. Healthy manager loads immediately.
-3. Unhealthy and not `--attach-only`: discover sidecar/global `jaw`, spawn
-   `jaw dashboard serve --port <port> --no-open`, then re-check.
+3. Unhealthy and not `--attach-only`: discover sidecar/global `weasley-podex`, spawn
+   `weasley-podex dashboard serve --port <port> --no-open`, then re-check.
 4. Binary missing: show native install/pick-path/quit dialog.
 5. Crash loop guard: more than 3 manager exits within 60 seconds stops
    auto-restart and shows a dialog.

@@ -87,7 +87,7 @@ export function syncMainSessionToSettings(prevCli: string | null = null): MainSe
     const session = getSession() as MainSessionRecord;
     const row = buildSelectedSessionRow(settings, session, prevCli);
     if (prevCli && row.cli !== prevCli && session?.session_id) {
-        log.info(`[jaw:session] invalidated — CLI changed ${prevCli} → ${row.cli}`);
+        log.info(`[weasley-podex:session] invalidated — CLI changed ${prevCli} → ${row.cli}`);
     }
     writeMainSessionRow(row);
     return row;
@@ -147,7 +147,7 @@ function readBootstrapRow(): string | null {
         const row = rows.find(r => r.key === BOOTSTRAP_KEY && r.source === BOOTSTRAP_SOURCE);
         return row?.value && row.value.trim() ? row.value : null;
     } catch (e) {
-        console.warn('[jaw:bootstrap] readBootstrapRow failed:', (e as Error).message);
+        console.warn('[weasley-podex:bootstrap] readBootstrapRow failed:', (e as Error).message);
         return null;
     }
 }
@@ -160,7 +160,7 @@ export function setPendingBootstrapPrompt(text: string | null): void {
             deleteMemory.run(BOOTSTRAP_KEY);
         }
     } catch (e) {
-        console.warn('[jaw:bootstrap] setPendingBootstrapPrompt failed:', (e as Error).message);
+        console.warn('[weasley-podex:bootstrap] setPendingBootstrapPrompt failed:', (e as Error).message);
     }
 }
 
@@ -178,7 +178,7 @@ export function consumePendingBootstrapPrompt(): string | null {
     const out = readBootstrapRow();
     if (out) {
         try { deleteMemory.run(BOOTSTRAP_KEY); }
-        catch (e) { console.warn('[jaw:bootstrap] consume delete failed:', (e as Error).message); }
+        catch (e) { console.warn('[weasley-podex:bootstrap] consume delete failed:', (e as Error).message); }
     }
     return out;
 }

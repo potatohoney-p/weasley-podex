@@ -25,7 +25,7 @@ function makeTmpRepo(): string {
     return dir;
 }
 
-describe('claim-audit (podex mirror)', () => {
+describe('claim-audit (Weasley Podex mirror)', () => {
     it('passes on a clean local-only README', async () => {
         const dir = makeTmpRepo();
         try {

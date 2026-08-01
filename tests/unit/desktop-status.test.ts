@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import express from 'express';
 import http from 'node:http';
 import {
-    podex_DESKTOP_DOWNLOAD_URL,
+    WEASLEY_PODEX_DESKTOP_DOWNLOAD_URL,
     createDesktopStatusRouter,
 } from '../../src/manager/routes/desktop-status.js';
 
@@ -35,20 +35,20 @@ test('desktop status reports plain browser requests as not in desktop', async ()
 
         assert.equal(body.inDesktop, false);
         assert.equal(typeof body.version, 'string');
-        assert.equal(body.downloadUrl, podex_DESKTOP_DOWNLOAD_URL);
+        assert.equal(body.downloadUrl, WEASLEY_PODEX_DESKTOP_DOWNLOAD_URL);
     });
 });
 
 test('desktop status detects Electron preload identity header', async () => {
     await withDesktopStatusServer(async (baseUrl) => {
         const response = await fetch(`${baseUrl}/api/dashboard/desktop-status`, {
-            headers: { 'X-podex-Electron': '1' },
+            headers: { 'X-Weasley-Podex-Electron': '1' },
         });
         assert.equal(response.status, 200);
         const body = await response.json() as Record<string, unknown>;
 
         assert.equal(body.inDesktop, true);
         assert.equal(typeof body.version, 'string');
-        assert.equal(body.downloadUrl, podex_DESKTOP_DOWNLOAD_URL);
+        assert.equal(body.downloadUrl, WEASLEY_PODEX_DESKTOP_DOWNLOAD_URL);
     });
 });

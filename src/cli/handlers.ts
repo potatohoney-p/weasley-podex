@@ -1,4 +1,4 @@
-﻿// ─── Slash Command Handlers ─────────────────────────
+// ─── Slash Command Handlers ─────────────────────────
 // Extracted from commands.js for 500-line compliance.
 
 import path from 'path';
@@ -6,7 +6,7 @@ import fs from 'fs/promises';
 import { CLI_KEYS } from './registry.js';
 import { resolveAiEProvider } from '../agent/args.js';
 import { t } from '../core/i18n.js';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 import type { CliCommandContext } from './command-context.js';
 import type { SlashCommand, SlashResult, UnknownCommandRecovery } from './types.js';
 export { compactHandler } from './compact.js';
@@ -131,7 +131,7 @@ export async function statusHandler(_args: string[], ctx: CliCommandContext): Pr
         ok: true,
         type: 'info',
         text: [
-            `🦈 podex v${(ctx as { version?: string }).version || 'unknown'}`,
+            `◆ Weasley Podex v${(ctx as { version?: string }).version || 'unknown'}`,
             `CLI:      ${cli}`,
             `Model:    ${model}`,
             `Effort:   ${effort || '-'}`,
@@ -223,9 +223,9 @@ export async function modelHandler(args: string[], ctx: CliCommandContext): Prom
 
 function jwcExternalRuntimeReminder(): string {
     return [
-        'JWC is external-only: podex npm and Electron installs do not bundle JWC.',
-        'Run jaw jwc install, set the printed JWC_SDK_PATH, then check readiness with jaw jwc doctor.',
-        'Remove optional JWC dependencies with jaw jwc clean.',
+        'JWC is external-only: Weasley Podex npm and Electron installs do not bundle JWC.',
+        'Run weasley-podex jwc install, set the printed JWC_SDK_PATH, then check readiness with weasley-podex jwc doctor.',
+        'Remove optional JWC dependencies with weasley-podex jwc clean.',
     ].join('\n');
 }
 
@@ -373,7 +373,7 @@ export async function purgeHandler(_args: string[], ctx: CliCommandContext): Pro
         await ctx.clearSession();
     }
 
-    const memoryDir = path.join(JAW_HOME, 'memory', 'structured');
+    const memoryDir = path.join(WEASLEY_PODEX_HOME, 'memory', 'structured');
     await fs.rm(memoryDir, { recursive: true, force: true });
     await fs.mkdir(memoryDir, { recursive: true });
 
@@ -396,7 +396,7 @@ export async function resetHandler(args: string[], ctx: CliCommandContext): Prom
         results.push(t('cmd.reset.sessions', {}, L));
     }
 
-    const memoryDir = path.join(JAW_HOME, 'memory', 'structured');
+    const memoryDir = path.join(WEASLEY_PODEX_HOME, 'memory', 'structured');
     await fs.rm(memoryDir, { recursive: true, force: true });
     await fs.mkdir(memoryDir, { recursive: true });
     results.push(t('cmd.reset.memory', {}, L));
@@ -422,7 +422,7 @@ export async function resetHandler(args: string[], ctx: CliCommandContext): Prom
 
 export async function versionHandler(_args: string[], ctx: CliCommandContext): Promise<SlashResult> {
     const status = await safeCall(ctx.getCliStatus, null) as Record<string, { available?: boolean; path?: string }> | null;
-    const lines = [`podex v${(ctx as { version?: string }).version || 'unknown'}`];
+    const lines = [`Weasley Podex v${(ctx as { version?: string }).version || 'unknown'}`];
     if (status && typeof status === 'object') {
         for (const key of DEFAULT_CLI_CHOICES) {
             if (!status[key]) continue;

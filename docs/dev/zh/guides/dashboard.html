@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>仪表盘 — podex 文档</title>
+<title>仪表盘 — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
       <div class="docs-nav-title">Getting Started</div>
@@ -33,7 +32,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link active" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -59,18 +58,18 @@
     <a class="active" href="../">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>仪表盘</h1>
-<p class="lead">多实例仪表盘允许您同时运行 7 个以上的 podex 实例，并通过一个基于 React 的统一界面进行管理。它包含笔记、看板、日程安排、提醒、设置和记忆联邦搜索等功能。</p>
+<p class="lead">多实例仪表盘允许您同时运行 7 个以上的 Weasley Podex 实例，并通过一个基于 React 的统一界面进行管理。它包含笔记、看板、日程安排、提醒、设置和记忆联邦搜索等功能。</p>
 
 <h2>启动仪表盘</h2>
-<pre><code>jaw dashboard serve</code></pre>
-<p>此命令在端口 24576（默认）上启动管理服务器，并从端口 3457 开始扫描 podex 实例。</p>
+<pre><code>weasley-podex dashboard serve</code></pre>
+<p>此命令在端口 24576（默认）上启动管理服务器，并从端口 3457 开始扫描 Weasley Podex 实例。</p>
 <table>
 <tr><th>选项</th><th>默认值</th><th>描述</th></tr>
 <tr><td><code>--port</code></td><td>24576</td><td>仪表盘服务器端口</td></tr>
@@ -82,7 +81,7 @@
 <h2>实例管理</h2>
 <p>仪表盘会扫描正在运行的实例并以列表形式展示。每个实例显示其端口、状态、活跃 CLI、模型和工作目录。</p>
 <ul>
-<li><strong>启动</strong>：在可用端口上启动一个新的 podex 实例</li>
+<li><strong>启动</strong>：在可用端口上启动一个新的 Weasley Podex 实例</li>
 <li><strong>停止</strong>：优雅地关闭一个实例</li>
 <li><strong>预览</strong>：通过 iframe 在仪表盘中嵌入实例的 Web 界面</li>
 <li><strong>权限</strong>：管理实例级别的设置</li>
@@ -92,7 +91,7 @@
 <table>
 <tr><th>选项卡</th><th>描述</th></tr>
 <tr><td><strong>Instances</strong></td><td>实例列表，包含启动/停止/预览控件</td></tr>
-<tr><td><strong>Notes</strong></td><td>Jawsidian Markdown 笔记，支持所见即所得编辑</td></tr>
+<tr><td><strong>Notes</strong></td><td>Weasley Podex Notes Markdown 笔记，支持所见即所得编辑</td></tr>
 <tr><td><strong>Board</strong></td><td>看板任务面板，包含工作流泳道</td></tr>
 <tr><td><strong>Schedule</strong></td><td>心跳任务调度</td></tr>
 <tr><td><strong>Reminders</strong></td><td>艾森豪威尔优先级矩阵，支持拖放操作</td></tr>
@@ -103,15 +102,15 @@
 <p>实例列表支持按状态、CLI 类型进行筛选，以及跨实例元数据的文本搜索。</p>
 
 <h2>记忆联邦</h2>
-<p>仪表盘提供 L2 跨实例记忆搜索功能。它会将查询扇出到所有 <code>~/.podex-*</code> 实例的 SQLite 索引中。</p>
+<p>仪表盘提供 L2 跨实例记忆搜索功能。它会将查询扇出到所有 <code>~/.weasley/podex-*</code> 实例的 SQLite 索引中。</p>
 <pre><code># Search across all instances
-jaw dashboard memory search "JWT authentication"
+weasley-podex dashboard memory search "JWT authentication"
 
 # List discovered instances
-jaw dashboard memory instances
+weasley-podex dashboard memory instances
 
 # Read from a specific instance
-jaw dashboard memory read 3457:shared/decisions.md</code></pre>
+weasley-podex dashboard memory read 3457:shared/decisions.md</code></pre>
 
 <h2>桌面端集成</h2>
 <p>在 Electron 桌面应用中，仪表盘会获得额外的面板：</p>
@@ -122,7 +121,7 @@ jaw dashboard memory read 3457:shared/decisions.md</code></pre>
 
 <div class="page-nav">
 <a class="prev" href="../concepts/prompts.html">Prompts</a>
-<a class="next" href="notes.html">Notes (Jawsidian)</a>
+<a class="next" href="notes.html">Weasley Podex Notes</a>
 </div>
 </main>
 </div>

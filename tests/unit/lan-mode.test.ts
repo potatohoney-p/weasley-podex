@@ -15,11 +15,11 @@ test('LM-001: serve.ts parseArgs includes --lan option', () => {
         'serve.ts must have --lan boolean option in parseArgs');
 });
 
-test('LM-002: server.ts checks JAW_LAN_MODE env', () => {
-    assert.ok(serverSrc.includes("JAW_LAN_MODE"),
-        'server.ts must check JAW_LAN_MODE environment variable');
-    assert.ok(serverSrc.includes("process.env.JAW_LAN_MODE === '1'"),
-        'lanMode must compare JAW_LAN_MODE to string 1');
+test('LM-002: server.ts checks WEASLEY_PODEX_LAN_MODE env', () => {
+    assert.ok(serverSrc.includes("import { getWeasleyPodexEnv }"),
+        'server.ts must use the centralized environment compatibility boundary');
+    assert.ok(serverSrc.includes("getWeasleyPodexEnv('LAN_MODE') === '1'"),
+        'lanMode must compare the centrally resolved primary knob to string 1');
 });
 
 test('LM-003: lanAllowed() integrates lanMode || settings.network.lanBypass', () => {
@@ -33,7 +33,7 @@ test('LM-003: lanAllowed() integrates lanMode || settings.network.lanBypass', ()
 test('LM-004: misconfiguration warning for lanBypass=true + bindHost=127.0.0.1', () => {
     assert.ok(serverSrc.includes('lanBypass is enabled but bindHost is 127.0.0.1'),
         'server.ts must warn about lanBypass + loopback mismatch');
-    assert.ok(serverSrc.includes('podex serve --lan'),
+    assert.ok(serverSrc.includes('weasley-podex serve --lan'),
         'warning must suggest --lan flag as fix');
 });
 
@@ -44,15 +44,15 @@ test('LM-005: doctor.ts has Network section', () => {
         'doctor.ts must check bindHost');
     assert.ok(doctorSrc.includes('lanBypass'),
         'doctor.ts must check lanBypass');
-    assert.ok(doctorSrc.includes('JAW_AUTH_TOKEN'),
+    assert.ok(doctorSrc.includes('WEASLEY_PODEX_AUTH_TOKEN'),
         'doctor.ts must check auth token env');
     assert.ok(doctorSrc.includes('LAN devices cannot connect'),
         'doctor.ts must warn about misconfiguration');
 });
 
-test('LM-006: serve.ts passes JAW_LAN_MODE env to child process', () => {
-    assert.ok(serveSrc.includes('JAW_LAN_MODE'),
-        'serve.ts must pass JAW_LAN_MODE to child env');
+test('LM-006: serve.ts passes WEASLEY_PODEX_LAN_MODE env to child process', () => {
+    assert.ok(serveSrc.includes('WEASLEY_PODEX_LAN_MODE'),
+        'serve.ts must pass WEASLEY_PODEX_LAN_MODE to child env');
 });
 
 test('LM-007: serve.ts shows LAN mode in console output', () => {

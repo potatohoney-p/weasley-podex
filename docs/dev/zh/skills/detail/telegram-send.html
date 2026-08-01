@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Telegram Send &#8212; podex Docs</title>
+<title>Telegram Send &#8212; Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; }
 .badge-active { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
@@ -34,7 +33,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -57,7 +56,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">指南</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -106,7 +105,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">首页</a>
   </div>
 </nav>
@@ -116,22 +115,22 @@
 <p class="lead">通过 Telegram 机器人发送语音、图片和文档文件 &mdash; 采用 Bot API 优先的投递策略，支持自动聊天 ID 解析，并提供本地端点回退机制用于文本通知和重试。</p>
 
 <p>
-  <span class="badge badge-active">默认启用</span>
+  <span class="badge badge-planned">可选导入</span>
   <span class="badge badge-category">通信</span>
 </p>
 
 <div class="callout callout-info">
-  <strong>默认启用：</strong> <code>telegram-send</code> 会自动注入到每个会话中，无需手动加载。当你说 "send via Telegram" 或 "&#53588;&#47112;&#44536;&#47016;&#51004;&#47196; &#48372;&#45236;&#51468;" 时，技能将激活，代理会按照本页描述的投递策略执行操作。
+  <strong>可选工作流：</strong><code>telegram-send</code> 不属于八项捆绑技能。请先从可信来源导入经过审查的技能，再使用本页投递策略。
 </div>
 
 <h2>快速参考</h2>
 <table class="quick-ref">
 <tr><td>技能名称</td><td><code>telegram-send</code></td></tr>
 <tr><td>分类</td><td>通信</td></tr>
-<tr><td>默认启用</td><td>是 &mdash; 会话启动时自动注入</td></tr>
-<tr><td>SKILL.md 路径</td><td><code>~/.podex/skills/telegram-send/SKILL.md</code></td></tr>
+<tr><td>捆绑</td><td>否 &mdash; 激活前需导入经过审查的技能</td></tr>
+<tr><td>SKILL.md 路径</td><td><code>~/.weasley/podex/skills/telegram-send/SKILL.md</code></td></tr>
 <tr><td>系统工具</td><td><code>curl</code>, <code>jq</code></td></tr>
-<tr><td>配置来源</td><td><code>~/.podex/settings.json</code> (<code>telegram.token</code>, <code>telegram.allowedChatIds</code>)</td></tr>
+<tr><td>配置来源</td><td><code>~/.weasley/podex/settings.json</code> (<code>telegram.token</code>, <code>telegram.allowedChatIds</code>)</td></tr>
 <tr><td>主要 API</td><td>Telegram Bot API (<code>https://api.telegram.org/bot&lt;TOKEN&gt;/...</code>)</td></tr>
 <tr><td>回退 API</td><td>本地端点 (<code>http://localhost:3457/api/telegram/send</code>)</td></tr>
 <tr><td>支持的类型</td><td><code>photo</code>, <code>voice</code>, <code>document</code>, <code>text</code></td></tr>
@@ -140,7 +139,7 @@
 </table>
 
 <h2>投递策略（Bot 优先）</h2>
-<p>该技能遵循严格的两级投递策略。始终优先尝试 Telegram Bot API。本地 podex 端点作为文本消息的便捷通道，以及 Bot API 失败时的回退方案。</p>
+<p>该技能遵循严格的两级投递策略。始终优先尝试 Telegram Bot API。本地 Weasley Podex 端点作为文本消息的便捷通道，以及 Bot API 失败时的回退方案。</p>
 
 <table>
 <thead>
@@ -165,8 +164,8 @@
 <tr><th>输入项</th><th>来源</th><th>适用场景</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>Bot 令牌</strong></td><td><code>~/.podex/settings.json</code> &rarr; <code>telegram.token</code></td><td>所有 Bot API 调用</td></tr>
-<tr><td><strong>聊天 ID</strong></td><td><code>~/.podex/settings.json</code> &rarr; <code>telegram.allowedChatIds[-1]</code></td><td>所有 Bot API 调用</td></tr>
+<tr><td><strong>Bot 令牌</strong></td><td><code>~/.weasley/podex/settings.json</code> &rarr; <code>telegram.token</code></td><td>所有 Bot API 调用</td></tr>
+<tr><td><strong>聊天 ID</strong></td><td><code>~/.weasley/podex/settings.json</code> &rarr; <code>telegram.allowedChatIds[-1]</code></td><td>所有 Bot API 调用</td></tr>
 <tr><td><strong>文件路径</strong></td><td>由用户提供或由前序任务生成</td><td><code>photo</code>, <code>voice</code>, <code>document</code></td></tr>
 <tr><td><strong>标题/文本</strong></td><td>由用户提供（媒体类型可选）</td><td><code>text</code>；媒体的可选标题</td></tr>
 </tbody>
@@ -175,10 +174,10 @@
 <h2>分步工作流</h2>
 
 <h3>步骤 1：读取令牌和聊天 ID</h3>
-<p>代理从 podex 设置文件中读取凭据。令牌仅保存在 shell 变量中 &mdash; 不会打印到标准输出或日志。</p>
+<p>代理从 Weasley Podex 设置文件中读取凭据。令牌仅保存在 shell 变量中 &mdash; 不会打印到标准输出或日志。</p>
 
-<pre><code>TOKEN=$(jq -r '.telegram.token' ~/.podex/settings.json)
-CHAT_ID=$(jq -r '.telegram.allowedChatIds[-1]' ~/.podex/settings.json)</code></pre>
+<pre><code>TOKEN=$(jq -r '.telegram.token' ~/.weasley/podex/settings.json)
+CHAT_ID=$(jq -r '.telegram.allowedChatIds[-1]' ~/.weasley/podex/settings.json)</code></pre>
 
 <p>如果 <code>CHAT_ID</code> 解析为 <code>null</code>（没有之前的 Telegram 消息记录），代理会通过 ping 本地端点来恢复：</p>
 
@@ -212,7 +211,7 @@ CHAT_ID=$(jq -r '.telegram.allowedChatIds[-1]' ~/.podex/settings.json)</code></p
   -F "caption=Weekly report"</code></pre>
 
 <h3>步骤 3：本地端点（备用/回退）</h3>
-<p>本地 podex 服务器在以下地址暴露了 Telegram 发送端点：</p>
+<p>本地 Weasley Podex 服务器在以下地址暴露了 Telegram 发送端点：</p>
 
 <div class="api-box">
   <h4>POST http://localhost:3457/api/telegram/send</h4>
@@ -250,9 +249,9 @@ CHAT_ID=$(jq -r '.telegram.allowedChatIds[-1]' ~/.podex/settings.json)</code></p
 </table>
 
 <h2>配置</h2>
-<p>该技能从 <code>~/.podex/settings.json</code> 读取所有配置，无需单独的配置文件。</p>
+<p>该技能从 <code>~/.weasley/podex/settings.json</code> 读取所有配置，无需单独的配置文件。</p>
 
-<pre><code>// ~/.podex/settings.json (相关键)
+<pre><code>// ~/.weasley/podex/settings.json (相关键)
 {
   "telegram": {
     "token": "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11",
@@ -331,8 +330,8 @@ sudo apt-get install -y jq</code></pre>
 
 <p>如果收到错误，请检查：</p>
 <ol>
-<li>podex 服务器是否正在运行（<code>jaw server status</code>）</li>
-<li>Bot 令牌是否已在 <code>~/.podex/settings.json</code> 中配置</li>
+<li>Weasley Podex 服务器是否正在运行（<code>weasley-podex server status</code>）</li>
+<li>Bot 令牌是否已在 <code>~/.weasley/podex/settings.json</code> 中配置</li>
 <li>你是否已在 Telegram 上向机器人发送过至少一条消息（以建立聊天）</li>
 </ol>
 
@@ -419,7 +418,7 @@ sudo apt-get install -y jq</code></pre>
 <p>如果 <code>jq -r '.telegram.allowedChatIds[-1]'</code> 返回 <code>null</code>，说明机器人尚未收到你的任何消息。请先在 Telegram 上向机器人发送任意消息，然后聊天 ID 将被记录到设置中。或者，代理将通过探测本地端点自动恢复。</p>
 
 <h3>Bot API 返回 401 Unauthorized</h3>
-<p>Bot 令牌无效或已过期。请从 <a href="https://t.me/BotFather">@BotFather</a> 生成新令牌并更新 <code>~/.podex/settings.json</code>。</p>
+<p>Bot 令牌无效或已过期。请从 <a href="https://t.me/BotFather">@BotFather</a> 生成新令牌并更新 <code>~/.weasley/podex/settings.json</code>。</p>
 
 <h3>Bot API 返回 400 Bad Request</h3>
 <p>常见原因：</p>
@@ -430,11 +429,11 @@ sudo apt-get install -y jq</code></pre>
 </ul>
 
 <h3>本地端点连接被拒绝</h3>
-<p>podex 服务器未运行。请使用以下命令启动：</p>
-<pre><code>jaw server start
+<p>Weasley Podex 服务器未运行。请使用以下命令启动：</p>
+<pre><code>weasley-podex server start
 
 # 或检查状态
-jaw server status</code></pre>
+weasley-podex server status</code></pre>
 
 <h3>找不到 jq</h3>
 <p>安装 jq 以解析设置文件：</p>
@@ -448,14 +447,14 @@ sudo apt-get install -y jq
 jq --version</code></pre>
 
 <h2>与 Telegram 指南的对比</h2>
-<p>podex 文档在两个地方涵盖了 Telegram 相关内容。它们用途不同：</p>
+<p>Weasley Podex 文档在两个地方涵盖了 Telegram 相关内容。它们用途不同：</p>
 
 <table>
 <thead>
 <tr><th></th><th>本页（技能参考）</th><th><a href="../../guides/telegram.html">Telegram 指南</a></th></tr>
 </thead>
 <tbody>
-<tr><td><strong>侧重点</strong></td><td><code>telegram-send</code> 技能的技术细节 &mdash; API 命令、投递策略、安全规则</td><td>将 Telegram 连接到 podex 的端到端设置指南</td></tr>
+<tr><td><strong>侧重点</strong></td><td><code>telegram-send</code> 技能的技术细节 &mdash; API 命令、投递策略、安全规则</td><td>将 Telegram 连接到 Weasley Podex 的端到端设置指南</td></tr>
 <tr><td><strong>目标读者</strong></td><td>希望了解代理发送 Telegram 消息时具体执行了什么操作的用户</td><td>首次设置 Telegram 集成的新用户</td></tr>
 <tr><td><strong>涵盖内容</strong></td><td>SKILL.md 内部机制、Bot API 调用、回退逻辑、故障排除</td><td>机器人创建、令牌设置、初始消息配对、仪表盘配置</td></tr>
 </tbody>

@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Architecture — podex Docs</title>
+<title>Architecture — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -60,14 +59,14 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Architecture</h1>
-<p class="lead">podex is a Node.js 22 orchestration runtime with CLI, TUI, Web, Telegram, Discord, Dashboard, and Electron desktop surfaces. The canonical internal map lives in <code>structure/</code>; this page is a public overview.</p>
+<p class="lead">Weasley Podex is a Node.js 22 orchestration runtime with CLI, TUI, Web, Telegram, Discord, Dashboard, and Electron desktop surfaces. The canonical internal map lives in <code>structure/</code>; this page is a public overview.</p>
 
 <h2>System Overview</h2>
 <p>The core server is a small Express glue layer. <code>server.ts</code> is 593 lines and delegates to extracted route modules plus mounted sub-routers. The current surface is 201 handlers including the root page, with 200 API/media endpoints.</p>
@@ -87,7 +86,7 @@ server.ts → src/routes/*
         ├─ src/messaging/     channel send and transport registry
         └─ src/jaw-ceo/       OpenAI Realtime CEO channel
 
-jaw dashboard serve → src/manager/ → public/manager/</code></pre>
+weasley-podex dashboard serve → src/manager/ → public/manager/</code></pre>
 
 <h2>Runtime Surfaces</h2>
 <table>
@@ -96,7 +95,7 @@ jaw dashboard serve → src/manager/ → public/manager/</code></pre>
 <tr><td>Slash commands</td><td><code>src/cli/commands.ts</code></td><td>40 commands; CLI/Web/Telegram/Discord visibility is policy-driven.</td></tr>
 <tr><td>Web UI</td><td><code>public/index.html</code></td><td>Vanilla TypeScript modules, Vite 8, SSE-first event channel.</td></tr>
 <tr><td>Manager dashboard</td><td><code>public/manager/</code></td><td>React 19 dashboard for instances, notes, board, reminders, schedule, diff, memory, and CEO panels.</td></tr>
-<tr><td>Electron desktop</td><td><code>electron/</code></td><td>Packages a Node.js 22 sidecar and prefers bundled <code>server/bin/jaw</code> before global CLI discovery.</td></tr>
+<tr><td>Electron desktop</td><td><code>electron/</code></td><td>Packages a Node.js 22 sidecar and prefers bundled <code>server/bin/weasley-podex</code> before global CLI discovery.</td></tr>
 <tr><td>Telegram / Discord</td><td><code>src/telegram/</code>, <code>src/discord/</code></td><td>Both use the shared messaging runtime and canonical <code>/api/channel/send</code>.</td></tr>
 </table>
 

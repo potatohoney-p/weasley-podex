@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Employee System — podex Docs</title>
+<title>Employee System — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -83,22 +82,22 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Employee System</h1>
-<p class="lead">The boss agent dispatches tasks to CLI employees -- other AI runtimes that execute work in parallel. podex supports 12 runtimes and manages employee sessions, isolation, and result collection.</p>
+<p class="lead">The boss agent dispatches tasks to CLI employees -- other AI runtimes that execute work in parallel. Weasley Podex supports 12 runtimes and manages employee sessions, isolation, and result collection.</p>
 
 <h2>How It Works</h2>
-<p>Your main agent (the "boss") can delegate specific tasks to employee agents using the <code>jaw dispatch</code> command. Each employee runs in an isolated temporary working directory with injected context files.</p>
-<pre><code>jaw dispatch --agent "Frontend" --task "Implement the login page"</code></pre>
-<p>The boss prompt includes delegation rules that guide the agent to use <code>podex dispatch</code> for employee work, while CLI-native sub-agents (Task/Agent tools) are allowed for internal parallelization.</p>
+<p>Your main agent (the "boss") can delegate specific tasks to employee agents using the <code>weasley-podex dispatch</code> command. Each employee runs in an isolated temporary working directory with injected context files.</p>
+<pre><code>weasley-podex dispatch --agent "Frontend" --task "Implement the login page"</code></pre>
+<p>The boss prompt includes delegation rules that guide the agent to use <code>weasley-podex dispatch</code> for employee work, while CLI-native sub-agents (Task/Agent tools) are allowed for internal parallelization.</p>
 
 <h2>12 CLI Runtimes</h2>
-<p>podex's registry (<code>src/cli/registry.ts</code>) defines 11 top-level runtimes. Each employee can be assigned any runtime.</p>
+<p>Weasley Podex's registry (<code>src/cli/registry.ts</code>) defines 11 top-level runtimes. Each employee can be assigned any runtime.</p>
 <table>
 <tr><th>Runtime</th><th>Binary</th><th>Default Model</th><th>Default Effort</th></tr>
 <tr><td>agy</td><td><code>agy</code></td><td>gemini-3.5-flash</td><td>-</td></tr>
@@ -117,7 +116,7 @@
 <h2>Employee vs Sub-Agent</h2>
 <div class="callout callout-warn">Employees and CLI sub-agents serve different purposes. Do not confuse them.</div>
 <table>
-<tr><th></th><th>Employee (jaw dispatch)</th><th>CLI Sub-Agent (Task/Agent tool)</th></tr>
+<tr><th></th><th>Employee (weasley-podex dispatch)</th><th>CLI Sub-Agent (Task/Agent tool)</th></tr>
 <tr><td><strong>Scope</strong></td><td>Cross-CLI delegation</td><td>Internal parallelization within the same CLI</td></tr>
 <tr><td><strong>Isolation</strong></td><td>Separate tmp directory, injected AGENTS.md</td><td>Same process/session</td></tr>
 <tr><td><strong>Auth</strong></td><td>Boss token required (employees cannot re-dispatch)</td><td>No extra auth needed</td></tr>
@@ -126,11 +125,11 @@
 
 <h2>Dispatch Command</h2>
 <pre><code># From the boss prompt:
-podex dispatch --agent "Backend" --task "Add rate limiting to /api/upload"
+weasley-podex dispatch --agent "Backend" --task "Add rate limiting to /api/upload"
 
 # From the CLI:
-jaw dispatch --agent "Frontend" --task "Fix responsive layout" --port 3457</code></pre>
-<p>The dispatch endpoint (<code>POST /api/orchestrate/dispatch</code>) requires a boss-scoped <code>x-jaw-boss-token</code>. This token is stripped from employee spawn environments, preventing employees from dispatching further.</p>
+weasley-podex dispatch --agent "Frontend" --task "Fix responsive layout" --port 3457</code></pre>
+<p>The dispatch endpoint (<code>POST /api/orchestrate/dispatch</code>) requires a boss-scoped <code>x-weasley-podex-boss-token</code>. This token is stripped from employee spawn environments, preventing employees from dispatching further.</p>
 
 <h2>Employee Prompt</h2>
 <p>Employee prompts are built by <code>getEmployeePromptV2()</code> and include:</p>
@@ -146,17 +145,17 @@ jaw dispatch --agent "Frontend" --task "Fix responsive layout" --port 3457</code
 
 <h2>Managing Employees</h2>
 <pre><code># List employees
-jaw employee help
+weasley-podex employee help
 
 # Reset to defaults
-jaw employee reset
+weasley-podex employee reset
 
 # Via slash command
 /employee reset</code></pre>
 <p>The Web UI provides full CRUD for employees under the sidebar settings panel. You can set each employee's name, CLI runtime, model, and role.</p>
 
 <h2>Default Employees</h2>
-<p>On first run, podex seeds a default set of employees (Frontend, Backend, Documentation, etc.). The <code>/employee reset</code> command re-seeds these defaults.</p>
+<p>On first run, Weasley Podex seeds a default set of employees (Frontend, Backend, Documentation, etc.). The <code>/employee reset</code> command re-seeds these defaults.</p>
 
 <div class="callout callout-info">
 <strong>Try it:</strong>

@@ -18,21 +18,21 @@ test('BAO-001: serve --open defaults through headless-aware browser policy', () 
     );
 });
 
-test('BAO-002: serve enables JAW_OPEN_BROWSER only when --open is set', () => {
+test('BAO-002: serve enables WEASLEY_PODEX_OPEN_BROWSER only when --open is set', () => {
     const src = readSource(join(root, 'bin', 'commands', 'serve.ts'), 'utf8');
     assert.match(
         src,
-        /values\.open\s*\?\s*\{\s*JAW_OPEN_BROWSER:\s*'1'\s*\}\s*:\s*\{\s*\}/,
-        'serve.ts should conditionally inject JAW_OPEN_BROWSER based on values.open',
+        /values\.open\s*\?\s*\{\s*WEASLEY_PODEX_OPEN_BROWSER:\s*'1'\s*\}\s*:\s*\{\s*\}/,
+        'serve.ts should conditionally inject WEASLEY_PODEX_OPEN_BROWSER based on values.open',
     );
 });
 
-test('BAO-003: server auto-open is guarded by JAW_OPEN_BROWSER env', () => {
+test('BAO-003: server auto-open is guarded by the canonical Weasley Podex env resolver', () => {
     const src = readSource(join(root, 'server.ts'), 'utf8');
     assert.match(
         src,
-        /process\.env\.JAW_OPEN_BROWSER\s*===\s*'1'/,
-        'server.ts should only auto-open when JAW_OPEN_BROWSER is explicitly enabled',
+        /getWeasleyPodexEnv\(\s*['"]OPEN_BROWSER['"]\s*\)\s*===\s*['"]1['"]/,
+        'server.ts should resolve the WEASLEY_PODEX_OPEN_BROWSER setting through the migration-safe accessor',
     );
 });
 

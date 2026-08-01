@@ -1,4 +1,4 @@
-﻿import test from 'node:test';
+import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -38,7 +38,7 @@ test('AGY-TR-006: Korean PLANNER_RESPONSE status prose is not a thinking tool', 
         source: 'MODEL',
         type: 'PLANNER_RESPONSE',
         status: 'DONE',
-        content: '서버 정상! 이제 Swiss Style에 맞는 이미지 4장을 동시에 생성한다. 🦈',
+        content: '서버 정상! 이제 Swiss Style에 맞는 이미지 4장을 동시에 생성한다. ◆',
     }));
     assert.equal(tool, null);
 });
@@ -233,7 +233,7 @@ test('AGY-TR-018: malformed ERROR_MESSAGE rows classify safely', () => {
 test('AGY-TR-014: transcriptContainsPrompt matches JSON-escaped multiline prompts', () => {
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'agy-tr14-'));
     const p = path.join(tmp, 'transcript.jsonl');
-    const prompt = '[Current podex task]\n260611-12:59AM.\n반드시 웹 검색 도구(search_web)를 사용해서 "Anthropic Claude 최신 모델"을 검색해. 검색 시작 전에 진행 상황을 말해.';
+    const prompt = '[Current weasley-podex task]\n260611-12:59AM.\n반드시 웹 검색 도구(search_web)를 사용해서 "Anthropic Claude 최신 모델"을 검색해. 검색 시작 전에 진행 상황을 말해.';
     fs.writeFileSync(p, JSON.stringify({
         step_index: 0,
         type: 'USER_INPUT',

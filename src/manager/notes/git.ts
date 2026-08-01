@@ -54,8 +54,8 @@ export class NoteGitManager {
         const gitDir = join(this.root, '.git');
         if (!existsSync(gitDir)) {
             await this.git(['init']);
-            await this.git(['config', 'user.name', 'Jawsidian']);
-            await this.git(['config', 'user.email', 'jawsidian@local']);
+            await this.git(['config', 'user.name', 'Weasley Podex']);
+            await this.git(['config', 'user.email', 'weasley-podex@localhost']);
             await writeFile(join(this.root, '.gitignore'), [
                 '.assets/', '_plugins/', '_snippets/', '_templates/',
                 '*.pdf', '*.png', '*.jpg', '*.jpeg', '*.gif', '*.webp',

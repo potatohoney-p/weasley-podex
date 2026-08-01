@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Server API — podex Docs</title>
+  <title>Server API — Weasley Podex Docs</title>
   <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <main class="docs-main">
   <h1>Server API</h1>
-  <p class="lead">podex exposes 201 route handlers including the root page, with 200 API/media endpoints across extracted route modules and mounted sub-routers.</p>
+  <p class="lead">Weasley Podex exposes 201 route handlers including the root page, with 200 API/media endpoints across extracted route modules and mounted sub-routers.</p>
 
   <h2>Base URLs</h2>
-  <pre><code>http://localhost:3457    # Core server (jaw serve)
-http://localhost:24576   # Manager dashboard (jaw dashboard serve)</code></pre>
+  <pre><code>http://localhost:3457    # Core server (weasley-podex serve)
+http://localhost:24576   # Manager dashboard (weasley-podex dashboard serve)</code></pre>
 
   <h2>Authentication</h2>
   <p>Loopback requests are accepted without a Bearer token for local use. Remote/private-network requests need a Bearer token unless trusted LAN bypass is explicitly enabled. Bootstrap a token with <code>GET /api/auth/token</code> from same-origin or CLI contexts.</p>
@@ -35,7 +34,7 @@ http://localhost:24576   # Manager dashboard (jaw dashboard serve)</code></pre>
     <tr><td>Browser/CDP</td><td><code>POST /api/browser/start</code>, <code>GET /api/browser/status</code>, <code>GET /api/browser/snapshot</code>, <code>POST /api/browser/act</code>, <code>POST /api/browser/fetch</code>, tab/debug endpoints, <code>POST /api/browser/web-ai/code</code>, <code>POST /api/browser/web-ai/code-extract</code>, and other <code>/api/browser/web-ai/*</code> routes</td></tr>
     <tr><td>Messaging/media</td><td><code>POST /api/upload</code>, <code>POST /api/voice</code>, <code>POST /api/channel/send</code>, <code>POST /api/telegram/send</code>, <code>POST /api/discord/send</code>, <code>GET /media/:filename</code></td></tr>
     <tr><td>Traces/security</td><td><code>GET /api/traces/:runId</code>, <code>GET /api/traces/:runId/events</code>, <code>GET /api/security-audit/entries</code>, <code>GET /api/security-audit/verify</code></td></tr>
-    <tr><td>Jaw CEO</td><td><code>GET /api/jaw-ceo/state</code>, message/query/docs edit, settings, events, pending, watch/audit, voice, confirmations</td></tr>
+    <tr><td>Weasley Podex CEO</td><td><code>GET /api/jaw-ceo/state</code>, message/query/docs edit, settings, events, pending, watch/audit, voice, confirmations</td></tr>
     <tr><td>Dashboard sub-routes</td><td><code>/api/dashboard/board/*</code>, <code>/api/dashboard/schedule/*</code>, dashboard memory/chat/git/connector routes on the manager server</td></tr>
   </table>
 

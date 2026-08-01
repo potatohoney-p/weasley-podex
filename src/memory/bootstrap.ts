@@ -2,7 +2,7 @@
 import os from 'os';
 import { join, relative, basename } from 'path';
 import { execFileSync } from 'child_process';
-import { JAW_HOME, settings } from '../core/config.js';
+import { WEASLEY_PODEX_HOME, settings } from '../core/config.js';
 import { expandHomePath } from '../core/path-expand.js';
 import { instanceId } from '../core/instance.js';
 import { getMemory } from '../core/db.js';
@@ -117,7 +117,7 @@ function getLegacyClaudeMemoryDir() {
 }
 
 function importCoreMemory(root: string) {
-    const corePath = join(JAW_HOME, 'memory', 'MEMORY.md');
+    const corePath = join(WEASLEY_PODEX_HOME, 'memory', 'MEMORY.md');
     if (!fs.existsSync(corePath)) return 0;
     const profilePath = join(root, 'profile.md');
     if (fs.existsSync(profilePath)) {
@@ -158,7 +158,7 @@ ${parsed.activeProjects || ''}
 
 // Phase 1: idempotent core sync (replaces one-shot importCoreMemory for ongoing changes)
 export function syncCoreProfile(root: string, opts: { force?: boolean } = {}) {
-    const corePath = join(JAW_HOME, 'memory', 'MEMORY.md');
+    const corePath = join(WEASLEY_PODEX_HOME, 'memory', 'MEMORY.md');
     if (!fs.existsSync(corePath)) return { updated: false, reason: 'missing_core' as const };
 
     const profilePath = join(root, 'profile.md');
@@ -216,7 +216,7 @@ ${parsed.activeProjects || ''}
 }
 
 function importMarkdownMemory(root: string) {
-    const legacyDir = join(JAW_HOME, 'memory');
+    const legacyDir = join(WEASLEY_PODEX_HOME, 'memory');
     if (!fs.existsSync(legacyDir)) return 0;
     const files = listMarkdownFiles(legacyDir).filter(f => f !== join(legacyDir, 'MEMORY.md'));
     let imported = 0;
@@ -291,9 +291,9 @@ function importClaudeSessionMemory(root: string) {
 }
 
 function backupLegacyMemory() {
-    const backupRoot = join(JAW_HOME, 'backup-memory-v1');
+    const backupRoot = join(WEASLEY_PODEX_HOME, 'backup-memory-v1');
     ensureDir(backupRoot);
-    const legacyMemoryDir = join(JAW_HOME, 'memory');
+    const legacyMemoryDir = join(WEASLEY_PODEX_HOME, 'memory');
     const backupMemoryDir = join(backupRoot, 'memory');
     if (fs.existsSync(legacyMemoryDir)) {
         fs.rmSync(backupMemoryDir, { recursive: true, force: true });
@@ -305,7 +305,7 @@ function backupLegacyMemory() {
 }
 
 function importSingleMarkdownFile(root: string, file: string) {
-    const legacyDir = join(JAW_HOME, 'memory');
+    const legacyDir = join(WEASLEY_PODEX_HOME, 'memory');
     if (!file.startsWith(legacyDir)) return null;
     const rel = relative(legacyDir, file).replace(/\\/g, '/');
     if (!rel || rel === 'MEMORY.md') return null;
@@ -348,7 +348,7 @@ function updateImportedCount(kind: keyof NonNullable<AdvancedMeta['importedCount
 export function syncLegacyMarkdownShadowImport(file: string) {
     if (!isAdvancedShadowEnabled()) return { ok: false, reason: 'advanced_not_ready' };
     const root = getAdvancedMemoryDir();
-    if (file === join(JAW_HOME, 'memory', 'MEMORY.md')) {
+    if (file === join(WEASLEY_PODEX_HOME, 'memory', 'MEMORY.md')) {
         const count = importCoreMemory(root);
         updateImportedCount('core', count);
         if (count > 0) reindexSingleFile(root, join(root, 'profile.md'));
@@ -458,7 +458,7 @@ export function ensureAdvancedMemoryStructure() {
             schemaVersion: 1,
             phase: '10',
             homeId: instanceId(),
-            jawHome: JAW_HOME,
+            jawHome: WEASLEY_PODEX_HOME,
             initializedAt: readMeta()?.initializedAt || new Date().toISOString(),
             migrationVersion: 1,
             migrationState: 'done',

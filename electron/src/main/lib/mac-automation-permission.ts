@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../../../../src/core/weasley-podex-env.js';
 import { spawn } from 'node:child_process';
 
 type LogSink = {
@@ -36,7 +37,7 @@ function reportBlocked(opts: PrimeMacAutomationPermissionOptions, message: strin
 
 export function primeMacAutomationPermission(opts: PrimeMacAutomationPermissionOptions = {}): void {
   if (process.platform !== 'darwin') return;
-  if (process.env.podex_SKIP_AUTOMATION_PRIME === '1') return;
+  if (getWeasleyPodexEnv('SKIP_AUTOMATION_PRIME') === '1') return;
 
   try {
     const args = AUTOMATION_PRIME_SCRIPT.flatMap((line) => ['-e', line]);

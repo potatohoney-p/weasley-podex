@@ -69,14 +69,14 @@ function makeRes(): { res: FakeResponse; get: () => { code: number; body: unknow
 // The renderer gate requires exact equality with the per-launch secret the
 // Electron main process passes via env; simulate that launch wiring here.
 const RENDERER_TOKEN = 'test-renderer-token';
-process.env['podex_ELECTRON_RENDERER_TOKEN'] = RENDERER_TOKEN;
+process.env['WEASLEY_PODEX_ELECTRON_RENDERER_TOKEN'] = RENDERER_TOKEN;
 
 /** Fake request from the Electron Manager renderer (desktop identity token present). */
 function rendererReq(req: Record<string, unknown>): Record<string, unknown> {
     return {
         headers: {},
         ...req,
-        get: (name: string) => (name.toLowerCase() === 'x-podex-electron' ? RENDERER_TOKEN : undefined),
+        get: (name: string) => (name.toLowerCase() === 'x-weasley-podex-electron' ? RENDERER_TOKEN : undefined),
     };
 }
 
@@ -85,7 +85,7 @@ function spoofedReq(req: Record<string, unknown>): Record<string, unknown> {
     return {
         headers: {},
         ...req,
-        get: (name: string) => (name.toLowerCase() === 'x-podex-electron' ? '1' : undefined),
+        get: (name: string) => (name.toLowerCase() === 'x-weasley-podex-electron' ? '1' : undefined),
     };
 }
 

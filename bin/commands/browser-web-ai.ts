@@ -1,4 +1,4 @@
-﻿import { parseArgs } from 'node:util';
+import { parseArgs } from 'node:util';
 import { renderContextDryRunReport } from '../../src/browser/web-ai/context-pack/index.js';
 import type { ContextDryRunMode, ContextPackResult } from '../../src/browser/web-ai/context-pack/index.js';
 
@@ -13,7 +13,7 @@ function parseContextDryRunMode(value: unknown): ContextDryRunMode {
 
 export const WEB_AI_USAGE = `
 Usage:
-  podex browser web-ai <command> --vendor <chatgpt|gemini|grok> [options]
+  weasley-podex browser web-ai <command> --vendor <chatgpt|gemini|grok> [options]
 
 Commands:
   render              Render the prompt envelope without opening a browser
@@ -103,16 +103,16 @@ Code artifacts:
                       Existing ChatGPT conversation for code-extract
 
 Examples:
-  podex browser web-ai render --vendor chatgpt --prompt "hello" --json
-  podex browser web-ai query --vendor chatgpt --model pro --effort extended --inline-only --prompt "Reply OK"
-  podex browser web-ai code --vendor chatgpt --model thinking --effort standard --prompt "Build an MVP" --output-zip ./result.zip
-  podex browser web-ai code-extract --vendor chatgpt --conversation "https://chatgpt.com/c/<conversation-id>" --output-zip ./result.zip
-  podex browser web-ai query --vendor grok --inline-only --prompt "Reply OK"
+  weasley-podex browser web-ai render --vendor chatgpt --prompt "hello" --json
+  weasley-podex browser web-ai query --vendor chatgpt --model pro --effort extended --inline-only --prompt "Reply OK"
+  weasley-podex browser web-ai code --vendor chatgpt --model thinking --effort standard --prompt "Build an MVP" --output-zip ./result.zip
+  weasley-podex browser web-ai code-extract --vendor chatgpt --conversation "https://chatgpt.com/c/<conversation-id>" --output-zip ./result.zip
+  weasley-podex browser web-ai query --vendor grok --inline-only --prompt "Reply OK"
 `;
 
 export const WEB_AI_CODE_USAGE = `
 Usage:
-  podex browser web-ai code --vendor chatgpt --prompt <build-spec> [options]
+  weasley-podex browser web-ai code --vendor chatgpt --prompt <build-spec> [options]
 
 What it does:
   ChatGPT-only code generation through the browser web-ai runtime. This is a
@@ -147,18 +147,18 @@ Behavior:
   transient; the plan file inside the zip is the durable checklist.
 
 Examples:
-  podex browser web-ai code --vendor chatgpt --model thinking --effort standard \\
+  weasley-podex browser web-ai code --vendor chatgpt --model thinking --effort standard \\
           --prompt "Create a Flask hello-world MVP." \\
           --output-zip ./result.zip
 
-  podex browser web-ai code --vendor chatgpt --model thinking --effort heavy \\
+  weasley-podex browser web-ai code --vendor chatgpt --model thinking --effort heavy \\
           --multi-zip --output-dir ./artifacts \\
           --prompt "Create backend.zip and frontend.zip as separate deliverables."
 `;
 
 export const WEB_AI_CODE_EXTRACT_USAGE = `
 Usage:
-  podex browser web-ai code-extract --vendor chatgpt [conversation selector] [options]
+  weasley-podex browser web-ai code-extract --vendor chatgpt [conversation selector] [options]
 
 What it does:
   ChatGPT-only artifact re-extraction. It does not send a new prompt. It scans
@@ -181,11 +181,11 @@ Requirements:
   browser profile. A copied /mnt/data/result.zip text line alone is not enough.
 
 Examples:
-  podex browser web-ai code-extract --vendor chatgpt \\
+  weasley-podex browser web-ai code-extract --vendor chatgpt \\
           --conversation "https://chatgpt.com/c/<conversation-id>" \\
           --output-zip ./result.zip
 
-  podex browser web-ai code-extract --vendor chatgpt \\
+  weasley-podex browser web-ai code-extract --vendor chatgpt \\
           --conversation "https://chatgpt.com/c/<conversation-id>" \\
           --multi-zip --output-dir ./artifacts
 `;

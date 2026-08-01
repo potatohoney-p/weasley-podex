@@ -1,10 +1,10 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 import type { GoalState, GoalHistory, GoalCheckpoint, GoalBudget, GoalPauseAudit, GoalMode } from './types.js';
 
-const GOAL_DIR = path.join(JAW_HOME, 'goal');
+const GOAL_DIR = path.join(WEASLEY_PODEX_HOME, 'goal');
 const ACTIVE_PATH = path.join(GOAL_DIR, 'active.json');
 const HISTORY_PATH = path.join(GOAL_DIR, 'history.json');
 export const MAX_GOAL_OBJECTIVE_CHARS = 10000;

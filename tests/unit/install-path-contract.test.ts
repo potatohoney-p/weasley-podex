@@ -26,15 +26,15 @@ test('install path scripts preserve executable podex entrypoint', () => {
 
 test('cli bin link checker enforces package bin metadata and POSIX execute bit', () => {
     const checker = read('scripts/check-cli-bin-links.cjs');
-    assert.ok(checker.includes("'podex': 'dist/bin/podex.js'"), 'checker should enforce podex bin target');
-    assert.ok(checker.includes("jaw: 'dist/bin/podex.js'"), 'checker should enforce jaw bin target');
+    assert.ok(checker.includes("'weasley-podex': 'dist/bin/podex.js'"), 'checker should enforce the primary Weasley Podex bin target');
+    assert.ok(checker.includes('must expose only the weasley-podex bin'), 'checker should reject public legacy bin aliases');
     assert.ok(checker.includes('#!/usr/bin/env node'), 'checker should enforce node shebang');
     assert.ok(checker.includes('CLI entry is not executable'), 'checker should fail with clear executable-bit error');
     assert.ok(checker.includes('npmPrefix()'), 'checker should inspect current npm global prefix when available');
 
     const pkg = JSON.parse(read('package.json')) as { scripts?: Record<string, string>; bin?: Record<string, string> };
     assert.equal(pkg.scripts?.['check:cli-bin-links'], 'node scripts/check-cli-bin-links.cjs');
-    assert.equal(pkg.bin?.['podex'], 'dist/bin/podex.js');
-    assert.equal(pkg.bin?.jaw, 'dist/bin/podex.js');
+    assert.equal(pkg.bin?.['weasley-podex'], 'dist/bin/podex.js');
+    assert.deepEqual(Object.keys(pkg.bin || {}), ['weasley-podex']);
 });
 

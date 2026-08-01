@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { isNotesVaultPath, normalizeNotesVaultPath } from '../../public/js/render/notes-vault-path.ts';
 
-const notesRoot = '/Users/jun/.podex-dashboard/notes';
+const notesRoot = '/Users/example/.podex-dashboard/notes';
 
 test('normalizeNotesVaultPath accepts relative markdown paths', () => {
     assert.equal(normalizeNotesVaultPath('daily/foo.md', notesRoot), 'daily/foo.md');
@@ -16,7 +16,7 @@ test('normalizeNotesVaultPath rejects reserved top-level segments', () => {
 
 test('normalizeNotesVaultPath accepts absolute paths under notesRoot', () => {
     assert.equal(
-        normalizeNotesVaultPath('/Users/jun/.podex-dashboard/notes/daily/foo.md', notesRoot),
+        normalizeNotesVaultPath('/Users/example/.podex-dashboard/notes/daily/foo.md', notesRoot),
         'daily/foo.md',
     );
 });
@@ -29,7 +29,7 @@ test('normalizeNotesVaultPath expands tilde paths under notesRoot', () => {
 });
 
 test('normalizeNotesVaultPath rejects paths outside notesRoot', () => {
-    assert.equal(normalizeNotesVaultPath('/Users/jun/project/foo.ts', notesRoot), null);
+    assert.equal(normalizeNotesVaultPath('/Users/example/project/foo.ts', notesRoot), null);
     assert.equal(normalizeNotesVaultPath('/tmp/other.md', notesRoot), null);
 });
 
@@ -41,6 +41,6 @@ test('normalizeNotesVaultPath rejects relative paths when notesRoot is null', ()
 
 test('isNotesVaultPath mirrors normalizeNotesVaultPath', () => {
     assert.equal(isNotesVaultPath('daily/foo.md', notesRoot), true);
-    assert.equal(isNotesVaultPath('/Users/jun/project/foo.ts', notesRoot), false);
+    assert.equal(isNotesVaultPath('/Users/example/project/foo.ts', notesRoot), false);
 });
 

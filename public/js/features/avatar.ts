@@ -17,8 +17,9 @@ type AvatarState = {
 
 const AGENT_KEY = 'agentAvatar';
 const USER_KEY = 'userAvatar';
-const DEFAULT_AGENT = ICONS.shark;
+const DEFAULT_AGENT = ICONS.robot;
 const DEFAULT_USER = ICONS.user;
+const LEGACY_AGENT_AVATAR_PATH = 'M2 12c0 0 2-4 6-4';
 
 const avatarState: Record<AvatarRole, AvatarState> = {
     agent: { emoji: DEFAULT_AGENT, imageUrl: '', updatedAt: null },
@@ -170,7 +171,11 @@ export function setUserAvatar(emoji: string): void {
 }
 
 export async function initAvatar(): Promise<void> {
-    stateFor('agent').emoji = localStorage.getItem(AGENT_KEY) || DEFAULT_AGENT;
+    const storedAgent = localStorage.getItem(AGENT_KEY);
+    const usesLegacyAgentAvatar = storedAgent?.includes(LEGACY_AGENT_AVATAR_PATH)
+        || storedAgent?.includes('\u{1F988}');
+    stateFor('agent').emoji = !storedAgent || usesLegacyAgentAvatar ? DEFAULT_AGENT : storedAgent;
+    if (usesLegacyAgentAvatar) localStorage.setItem(AGENT_KEY, DEFAULT_AGENT);
     stateFor('user').emoji = localStorage.getItem(USER_KEY) || DEFAULT_USER;
     syncPreview('agent');
     syncPreview('user');

@@ -294,7 +294,7 @@ function renderCliStatus(data: { cliStatus: Record<string, { available: boolean 
         gemini: { install: 'npm i -g @google/gemini-cli', auth: `gemini  (${t('cli.gemini.auth')})` },
         grok: { install: 'curl -fsSL https://x.ai/cli/install.sh | bash', auth: 'grok login --oauth' },
         opencode: { install: 'npm i -g opencode-ai', auth: 'opencode auth' },
-        copilot: { install: 'npm i -g copilot', auth: t('cli.copilot.authHint') },
+        copilot: { install: 'npm i -g @github/copilot', auth: t('cli.copilot.authHint') },
     };
 
     let html = '';

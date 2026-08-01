@@ -115,7 +115,7 @@ test('jaw-ceo routes expose state and server-owned pending completion flow', asy
         assert.equal(silent.ok, true);
         assert.equal(JSON.stringify(silent).includes('real final worker response'), false);
         assert.equal(silent.data.untrustedText, undefined);
-    }, ['[from: Jaw CEO]\nship it']);
+    }, ['[from: Weasley Podex CEO]\nship it']);
 });
 
 test('jaw-ceo voice route fails closed when API key is absent', async () => {

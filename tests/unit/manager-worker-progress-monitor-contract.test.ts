@@ -143,7 +143,7 @@ test('worker progress monitor remains Manager-local and separate from sessions/b
     ].join('\n');
 
     assert.equal(router.includes('<WorkerProgressMonitorPanel />'), false, 'jaw instance sidebar must not render worker progress monitor for end users');
-    assert.equal(combined.includes('selectedInstance'), false, 'monitor must not depend on selected child Jaw instance');
+    assert.equal(combined.includes('selectedInstance'), false, 'monitor must not depend on selected child Weasley Podex instance');
     assert.equal(combined.includes('CodeSession'), false, 'monitor must not model workers as Code sessions');
     assert.equal(combined.includes('/api/code'), false, 'monitor must not call Code session APIs');
     assert.equal(combined.includes('/api/bgtask'), false, 'worker monitor must not call background task APIs');

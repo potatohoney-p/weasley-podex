@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { parseWorklogPending, PHASES, upsertWorklogSection } from '../../src/memory/worklog.ts';
 
 // Note: createWorklog, appendToWorklog, updateMatrix write to ~/.podex/worklogs/
-// which requires JAW_HOME override. Testing only pure functions here.
+// which requires WEASLEY_PODEX_HOME override. Testing only pure functions here.
 // upsertWorklogSection takes an explicit wlPath, so it is safe to test with tmp files.
 // Full I/O tests belong in integration/ with tmp-home helper.
 

@@ -5,9 +5,10 @@
 import { describe, it, mock, before } from 'node:test';
 import assert from 'node:assert/strict';
 import { resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const ROOT = resolve(import.meta.dirname, '../..');
-const RENDER_PATH = resolve(ROOT, 'public/js/render.js');
+const RENDER_PATH = pathToFileURL(resolve(ROOT, 'public/js/render.js')).href;
 
 let buildToolGroupHtml: typeof import('../../public/js/features/tool-ui.ts').buildToolGroupHtml;
 

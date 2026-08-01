@@ -1,8 +1,8 @@
-﻿/**
- * podex memory — persistent memory CLI
+/**
+ * weasley-podex memory — persistent memory CLI
  */
 import { parseArgs } from 'node:util';
-import { getServerUrl, JAW_HOME, loadSettings } from '../../src/core/config.js';
+import { getServerUrl, WEASLEY_PODEX_HOME, loadSettings } from '../../src/core/config.js';
 import { getCliAuthToken, authHeaders } from '../../src/cli/api-auth.js';
 import { asArray, asRecord, fieldString, type JsonRecord } from '../_http-client.js';
 
@@ -34,7 +34,7 @@ try {
             const hasChat = process.argv.includes('--chat');
             const queryArgs = process.argv.slice(4).filter(a => a !== '--chat');
             const query = queryArgs.join(' ');
-            if (!query) { console.error('Usage: podex memory search <query> [--chat]'); process.exit(1); }
+            if (!query) { console.error('Usage: weasley-podex memory search <query> [--chat]'); process.exit(1); }
             const r = await api<{ result?: string }>('GET', `/search?q=${encodeURIComponent(query)}`);
             console.log(r.result);
             if (hasChat) {
@@ -59,7 +59,7 @@ try {
         }
         case 'read': {
             const file = process.argv[4];
-            if (!file) { console.error('Usage: podex memory read <file>'); process.exit(1); }
+            if (!file) { console.error('Usage: weasley-podex memory read <file>'); process.exit(1); }
             const { values } = parseArgs({
                 args: process.argv.slice(5),
                 options: { lines: { type: 'string' } }, strict: false
@@ -76,11 +76,11 @@ try {
             const content = process.argv.slice(5).join(' ');
             if (!file || !content) {
                 console.error([
-                    'Usage: podex memory save <file> <content>',
+                    'Usage: weasley-podex memory save <file> <content>',
                     'Examples:',
-                    '  podex memory save structured/profile.md "- User prefers concise Korean summaries"',
-                    '  podex memory save structured/semantic/podex.md "- podex memory save requires an explicit file path"',
-                    '  podex memory save structured/episodes/live/2026-04-26.md "## 10:20\\n- Completed help dialog refinement"',
+                    '  weasley-podex memory save structured/profile.md "- User prefers concise Korean summaries"',
+                    '  weasley-podex memory save structured/semantic/podex.md "- weasley-podex memory save requires an explicit file path"',
+                    '  weasley-podex memory save structured/episodes/live/2026-04-26.md "## 10:20\\n- Completed help dialog refinement"',
                 ].join('\n'));
                 process.exit(1);
             }
@@ -92,7 +92,7 @@ try {
             const r = await api<{ files?: MemoryFileEntry[] }>('GET', '/list');
             const files = asArray<MemoryFileEntry>(r.files);
             if (files.length === 0) {
-                console.log('(no memory files — run: podex memory init)');
+                console.log('(no memory files — run: weasley-podex memory init)');
             } else {
                 for (const f of files) {
                     const kb = (f.size / 1024).toFixed(1);
@@ -103,7 +103,7 @@ try {
         }
         case 'init': {
             await api('POST', '/init', {});
-            console.log(`🧠 Memory initialized at ${JAW_HOME}/memory/`);
+            console.log(`🧠 Memory initialized at ${WEASLEY_PODEX_HOME}/memory/`);
             break;
         }
         case 'reflect': {
@@ -129,7 +129,7 @@ try {
         }
         case 'context': {
             const file = process.argv[4];
-            if (!file) { console.error('Usage: podex memory context <file> [--window N]'); process.exit(1); }
+            if (!file) { console.error('Usage: weasley-podex memory context <file> [--window N]'); process.exit(1); }
             const { values: ctxValues } = parseArgs({
                 args: process.argv.slice(5),
                 options: { window: { type: 'string', default: '4' }, limit: { type: 'string', default: '10' } },
@@ -162,7 +162,7 @@ try {
         }
         default:
             console.log(`
-  🧠 podex memory
+  🧠 weasley-podex memory
 
   Commands:
     search <query>               Search all memory files (grep)
@@ -184,9 +184,9 @@ try {
     daily/<date>.md    Auto-generated session logs
 
   Cross-instance (L2):
-    podex dashboard memory search <query>   Search across all instances
-    podex dashboard memory read <file>      Read from a specific instance
-    podex dashboard memory instances        List available instances
+    weasley-podex dashboard memory search <query>   Search across all instances
+    weasley-podex dashboard memory read <file>      Read from a specific instance
+    weasley-podex dashboard memory instances        List available instances
 `);
     }
 } catch (e) {

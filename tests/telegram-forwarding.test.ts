@@ -169,8 +169,8 @@ test('forwarder does nothing when type is not agent_done or chatId is missing', 
 });
 
 test('image relay activation: agent_done broadcast sends text then sendPhoto', { timeout: 2000 }, async () => {
-    assert.ok(process.env["podex_HOME"], 'tests/run.mts must provide isolated podex_HOME');
-    const uploadDir = path.join(process.env["podex_HOME"]!, 'uploads');
+    assert.ok(process.env["WEASLEY_PODEX_HOME"], 'tests/run.mts must provide isolated WEASLEY_PODEX_HOME');
+    const uploadDir = path.join(process.env["WEASLEY_PODEX_HOME"]!, 'uploads');
     fs.mkdirSync(uploadDir, { recursive: true });
     const imagePath = path.join(uploadDir, 'relay-activation.png');
     fs.writeFileSync(imagePath, Buffer.from([0x89, 0x50, 0x4e, 0x47]));

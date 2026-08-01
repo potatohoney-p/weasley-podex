@@ -1,5 +1,5 @@
 // bgtask registry — state transitions, dedup, recovery set
-// Runs against the isolated podex_HOME temp DB (tests/setup/test-home.ts).
+// Runs against the isolated WEASLEY_PODEX_HOME temp DB (tests/setup/test-home.ts).
 
 import assert from 'node:assert/strict';
 import { test } from 'node:test';

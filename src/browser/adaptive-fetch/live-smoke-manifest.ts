@@ -12,7 +12,7 @@ export const LIVE_SMOKE_MANIFEST_VERSION = 1;
 export const LIVE_SMOKE_MANIFEST: LiveSmokeManifestEntry[] = [
     {
         id: 'npm-public-endpoint',
-        url: 'https://www.npmjs.com/package/podex',
+        url: 'https://www.npmjs.com/package/weasley-podex',
         expectedLabels: ['npm-registry', 'direct-fetch'],
         expectedEvidence: ['public-endpoint:npm-registry'],
         browserMode: 'auto',

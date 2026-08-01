@@ -1,4 +1,6 @@
 ﻿import assert from 'node:assert/strict';
+import { homedir } from 'node:os';
+import { join, sep } from 'node:path';
 import test from 'node:test';
 import {
     deriveProfile,
@@ -8,6 +10,10 @@ import {
     mergeProfiles,
 } from '../../src/manager/profiles.js';
 import type { DashboardInstance } from '../../src/manager/types.js';
+
+const DEFAULT_HOME = join(homedir(), '.weasley', 'podex');
+const WORK_HOME = join(homedir(), 'work');
+const SCHOOL_HOME = join(homedir(), 'school');
 
 function makeInstance(port: number, homeDisplay: string): DashboardInstance {
     return {
@@ -29,16 +35,17 @@ function makeInstance(port: number, homeDisplay: string): DashboardInstance {
 }
 
 test('manager profiles derive stable ids from canonical home paths', () => {
-    assert.equal(deriveProfileId('/Users/jun/.podex'), 'default');
+    const projectHome = join(homedir(), 'projects', 'work-weasley');
+    assert.equal(deriveProfileId(DEFAULT_HOME), 'default');
     assert.equal(
-        deriveProfileId('/Users/jun/projects/work-jaw'),
-        deriveProfileId('/Users/jun/projects/work-jaw/'),
+        deriveProfileId(projectHome),
+        deriveProfileId(`${projectHome}${sep}`),
     );
 });
 
 test('manager profiles attach profileId to instances and merge by home', () => {
-    const first = makeInstance(3457, '/Users/jun/work');
-    const second = makeInstance(3458, '/Users/jun/work');
+    const first = makeInstance(3457, WORK_HOME);
+    const second = makeInstance(3458, WORK_HOME);
     const derived = deriveProfiles([first, second]);
 
     assert.equal(derived.profiles.length, 1);
@@ -47,7 +54,7 @@ test('manager profiles attach profileId to instances and merge by home', () => {
 });
 
 test('manager profiles preserve user overrides while merging live data', () => {
-    const live = deriveProfile(makeInstance(3457, '/Users/jun/work'));
+    const live = deriveProfile(makeInstance(3457, WORK_HOME));
     assert.ok(live);
     const merged = mergeProfiles([{ ...live, label: 'Work', pinned: true, notes: 'daily' }], [live]);
 
@@ -58,10 +65,10 @@ test('manager profiles preserve user overrides while merging live data', () => {
 });
 
 test('manager profiles filter instances by active profile ids', () => {
-    const first = makeInstance(3457, '/Users/jun/work');
-    const second = makeInstance(3458, '/Users/jun/school');
+    const first = makeInstance(3457, WORK_HOME);
+    const second = makeInstance(3458, SCHOOL_HOME);
     const derived = deriveProfiles([first, second]);
-    const target = derived.profiles.find(profile => profile.homePath.endsWith('/work'));
+    const target = derived.profiles.find(profile => profile.profileId === deriveProfileId(WORK_HOME));
     assert.ok(target);
 
     assert.deepEqual(filterByProfile(derived.instances, [target.profileId]).map(row => row.port), [3457]);

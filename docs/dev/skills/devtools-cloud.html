@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cloud & Deploy Skills — podex Docs</title>
+<title>Cloud & Deploy Skills — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -35,7 +34,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -84,20 +83,20 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
 <main class="docs-main">
 
 <h1>Cloud & Deploy Skills</h1>
-<p class="lead">Cloud infrastructure provisioning, serverless deployment, edge computing, and platform-as-a-service integrations. Deploy to any major cloud provider directly from podex with a single natural-language command.</p>
+<p class="lead">Cloud infrastructure provisioning, serverless deployment, edge computing, and platform-as-a-service integrations. Deploy to any major cloud provider directly from Weasley Podex with a single natural-language command.</p>
 
 <h2>Overview</h2>
-<p>Cloud & Deploy skills transform podex into a unified deployment control plane. Instead of memorizing CLI flags for each platform, describe what you want in plain language and the appropriate skill handles provider-specific configuration, build steps, and deployment orchestration.</p>
+<p>Cloud & Deploy skills transform Weasley Podex into a unified deployment control plane. Instead of memorizing CLI flags for each platform, describe what you want in plain language and the appropriate skill handles provider-specific configuration, build steps, and deployment orchestration.</p>
 
 <div class="callout callout-info">
-  <strong>Natural language deploys</strong> &mdash; Say <code>"Vercel에 배포해줘"</code> or <code>"Deploy this to Cloudflare Workers"</code> and podex selects the right skill, detects your framework, and runs the full deployment pipeline.
+  <strong>Natural language deploys</strong> &mdash; Say <code>"Vercel에 배포해줘"</code> or <code>"Deploy this to Cloudflare Workers"</code> and Weasley Podex selects the right skill, detects your framework, and runs the full deployment pipeline.
 </div>
 
 <h2>Skill Catalog</h2>
@@ -166,7 +165,7 @@
 <p>The <code>aws-skills</code> module covers the most commonly used AWS services through natural-language commands.</p>
 
 <div class="callout callout-info">
-  <strong>IAM policy generation</strong> &mdash; Say <code>"Lambda에 S3 읽기 권한 추가해줘"</code> and podex generates the minimal IAM policy document, attaches it to the execution role, and validates the change.
+  <strong>IAM policy generation</strong> &mdash; Say <code>"Lambda에 S3 읽기 권한 추가해줘"</code> and Weasley Podex generates the minimal IAM policy document, attaches it to the execution role, and validates the change.
 </div>
 
 <pre><code># Create a Lambda function
@@ -265,7 +264,7 @@
 "노트북을 HTML 보고서로 변환해줘"</code></pre>
 
 <h2>Configuration</h2>
-<p>Cloud skills use credentials from standard provider configuration. No additional podex config is needed if you already have provider CLIs set up.</p>
+<p>Cloud skills use credentials from standard provider configuration. No additional Weasley Podex config is needed if you already have provider CLIs set up.</p>
 
 <table>
 <tr><th>Provider</th><th>Credential Source</th><th>Required Setup</th></tr>
@@ -278,13 +277,13 @@
 </table>
 
 <div class="callout callout-info">
-  <strong>Credential safety</strong> &mdash; podex never stores credentials itself. It delegates to each provider's standard credential chain. Secrets are never written to memory, logs, or conversation history.
+  <strong>Credential safety</strong> &mdash; Weasley Podex never stores credentials itself. It delegates to each provider's standard credential chain. Secrets are never written to memory, logs, or conversation history.
 </div>
 
 <h2>Common Patterns</h2>
 
 <h3>Multi-stage deployment</h3>
-<p>Combine skills for complex workflows. podex chains the steps automatically:</p>
+<p>Combine skills for complex workflows. Weasley Podex chains the steps automatically:</p>
 <pre><code># Build, test, and deploy
 "테스트 돌리고 통과하면 Vercel에 배포해줘"
 

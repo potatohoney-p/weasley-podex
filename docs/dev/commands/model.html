@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Model &amp; CLI Commands — podex Docs</title>
+<title>Model &amp; CLI Commands — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../">podex</a></div>
+  <div class="docs-logo"><a href="../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -35,7 +34,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../guides/discord.html">Discord</a>
@@ -84,7 +83,7 @@
     <a href="../zh/">中文</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../">Landing Page</a>
   </div>
 </nav>
@@ -93,7 +92,7 @@
 <h1>Model &amp; CLI Commands</h1>
 <p class="lead">Commands for switching AI models, switching between CLI providers, configuring fallback chains, forwarding requests across providers, toggling Gemini thinking mode, and flushing model assignments. These commands let you dynamically reconfigure your AI backend mid-session without restarting.</p>
 
-<div class="callout callout-info">All commands on this page can be invoked via slash command in the chat input, or via natural language in Korean or English. podex understands phrases like "클로드로 바꿔줘" and maps them to the appropriate command automatically.</div>
+<div class="callout callout-info">All commands on this page can be invoked via slash command in the chat input, or via natural language in Korean or English. Weasley Podex understands phrases like "클로드로 바꿔줘" and maps them to the appropriate command automatically.</div>
 
 <h2>Command Summary</h2>
 <table>
@@ -140,7 +139,7 @@
 # Switch to Gemini 2.5 Pro
 /model gemini-3-flash-preview</code></pre>
 
-<div class="callout callout-info"><strong>"~해줘" tip:</strong> Say "오퍼스로 바꿔줘" or "소넷으로 전환해줘" and podex maps it to the right <code>/model</code> call. You can also say "더 똑똑한 모델로 바꿔줘" and the orchestrator picks the strongest available model.</div>
+<div class="callout callout-info"><strong>"~해줘" tip:</strong> Say "오퍼스로 바꿔줘" or "소넷으로 전환해줘" and Weasley Podex maps it to the right <code>/model</code> call. You can also say "더 똑똑한 모델로 바꿔줘" and the orchestrator picks the strongest available model.</div>
 
 <!-- ================================================================== -->
 <h2 id="cli">/cli [name]</h2>
@@ -184,7 +183,7 @@
 <div class="callout callout-info"><strong>"~해줘" tip:</strong> Say "클로드로 바꿔줘" to switch to Claude, "제미나이로 전환해줘" for Gemini, or "코덱스 써줘" for Codex. You can also say "다른 AI로 바꿔줘" and the orchestrator will ask which provider you prefer.</div>
 
 <h3>What Happens on Switch</h3>
-<p>When you switch CLIs, podex:</p>
+<p>When you switch CLIs, Weasley Podex:</p>
 <ul>
 <li>Gracefully disconnects from the current provider</li>
 <li>Initializes the new provider with its default model (unless a <code>/flush</code> pin exists)</li>
@@ -194,7 +193,7 @@
 
 <!-- ================================================================== -->
 <h2 id="fallback">/fallback [cli1 cli2 ...|off]</h2>
-<p>Configure a fallback chain of CLI providers. If the primary CLI fails (rate limit, network error, API outage), podex automatically tries the next provider in the chain. This ensures uninterrupted operation even when a single provider is down.</p>
+<p>Configure a fallback chain of CLI providers. If the primary CLI fails (rate limit, network error, API outage), Weasley Podex automatically tries the next provider in the chain. This ensures uninterrupted operation even when a single provider is down.</p>
 
 <h3>Arguments</h3>
 <table>
@@ -326,7 +325,7 @@
 
 <!-- ================================================================== -->
 <h2>Natural Language Mapping</h2>
-<p>podex's command parser understands natural language in both Korean and English. Here are common phrases and their command mappings:</p>
+<p>Weasley Podex's command parser understands natural language in both Korean and English. Here are common phrases and their command mappings:</p>
 
 <table>
 <tr><th>Natural Language</th><th>Mapped Command</th></tr>

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # release.sh — 빌드 + 버전업 + GitHub Release stub + publish workflow trigger
 # Auto-detects npm latest and bumps patch only (minor/major via explicit arg).
 # Usage:
@@ -10,7 +10,7 @@
 # GitHub Release is published.
 set -e
 
-echo "🦈 podex release script"
+echo "Weasley Podex release script"
 echo "========================="
 
 cd "$(dirname "$0")/.."
@@ -47,7 +47,7 @@ run_electron_release_checks() {
 ELECTRON_RELEASE_NOTES_BASE="### Desktop / Electron
 - Electron shell validated with \`npm --prefix electron run typecheck\` and \`npm --prefix electron run build\`.
 - npm package boundary validated with \`npm run check:electron-no-native\`; Electron app artifacts remain outside the npm package.
-- Desktop app distribution remains separate from \`npm install -g podex\`.
+- Desktop app distribution remains separate from \`npm install -g weasley-podex\`.
 - macOS, Windows, and Linux desktop assets are built by GitHub Actions after this release is published, then attached to this GitHub Release."
 
 ELECTRON_RELEASE_NOTES_UNSIGNED="
@@ -56,16 +56,16 @@ The desktop assets attached by GitHub Actions are **unsigned** (no Apple Develop
 
 - macOS: Gatekeeper will block first launch. Either right-click → Open → Open, or remove the quarantine attribute:
   \`\`\`sh
-  xattr -d com.apple.quarantine /Applications/podex.app
+  xattr -d com.apple.quarantine "/Applications/Weasley Podex.app"
   \`\`\`
 - Windows: SmartScreen will warn on first run. Click \"More info\" → \"Run anyway\".
 - Linux: AppImage downloads may need execute permission before launch.
-- For trusted distribution, install via \`npm install -g podex\` instead."
+- For trusted distribution, install via \`npm install -g weasley-podex\` instead."
 
 ELECTRON_RELEASE_NOTES="$ELECTRON_RELEASE_NOTES_BASE$ELECTRON_RELEASE_NOTES_UNSIGNED"
 
 # ─── Version detection ─────────────────────────────────
-NPM_LATEST=$(npm view podex dist-tags.latest 2>/dev/null || echo "0.0.0")
+NPM_LATEST=$(npm view weasley-podex dist-tags.latest 2>/dev/null || echo "0.0.0")
 PKG_VERSION=$(node -p "require('./package.json').version")
 echo "📡 npm latest:   $NPM_LATEST"
 echo "📦 package.json: $PKG_VERSION"
@@ -201,13 +201,13 @@ fi
 
 # ─── npm publish ───────────────────────────────────────
 echo "🚀 npm publish is handled by .github/workflows/publish.yml after the main push."
-echo "   Workflow: https://github.com/potatohoney-p/podex/actions/workflows/publish.yml?query=branch%3Amain"
+echo "   Workflow: https://github.com/potatohoney-p/weasley-podex/actions/workflows/publish.yml?query=branch%3Amain"
 
 echo ""
-echo "✅ podex@$VERSION release queued!"
-echo "   Install: npm install -g podex"
+echo "✅ weasley-podex@$VERSION release queued!"
+echo "   Install: npm install -g weasley-podex"
 if [ "$RELEASE_CREATED" = true ]; then
-    echo "   Release: https://github.com/potatohoney-p/podex/releases/tag/v$VERSION"
+    echo "   Release: https://github.com/potatohoney-p/weasley-podex/releases/tag/v$VERSION"
 else
     echo "   ⚠️  GitHub Release for v$VERSION was NOT created — backfill it manually."
 fi

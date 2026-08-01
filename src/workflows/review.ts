@@ -1,6 +1,6 @@
-﻿import path from 'node:path';
+import path from 'node:path';
 import { settings } from '../core/config.js';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 import type { WorkflowArtifact } from '../cli/types.js';
 import {
     createWorkflowArtifactId,
@@ -51,7 +51,7 @@ function formatConfiguredProjectDirs(dirs: string[]): string {
 
 function reviewReportPath(projectKey: string, artifactId: string, now = new Date()): string {
     const day = now.toISOString().slice(0, 10);
-    return path.join(JAW_HOME, 'artifacts', 'workflows', 'review-reports', projectKey, day, `${artifactId}.md`);
+    return path.join(WEASLEY_PODEX_HOME, 'artifacts', 'workflows', 'review-reports', projectKey, day, `${artifactId}.md`);
 }
 
 export function buildReviewTargetContext(settingsOverride?: unknown, artifactId = createWorkflowArtifactId('reviewReport')): ReviewTargetContext {
@@ -65,7 +65,7 @@ export function buildReviewTargetContext(settingsOverride?: unknown, artifactId 
         fallbackInstruction: configuredProjectDirs.length
             ? 'Validate the first configured project directory as a git repository before reviewing.'
             : 'No projectDirs are configured. Infer the target repo from recent conversation/context, validate it as a git repository, and block if validation fails.',
-        jawHome: JAW_HOME,
+        jawHome: WEASLEY_PODEX_HOME,
         reportPath: reviewReportPath(projectKey, artifactId),
         projectKey,
     };
@@ -122,21 +122,21 @@ export function buildReviewSteerPrompt(flags: ReviewFlags, target: ReviewTargetC
         `[System] User invoked /review. Perform a one-shot project-dir code review of recent relevant project changes.`,
         '',
         'Target resolution contract:',
-        `- JAW_HOME: ${target.jawHome}`,
+        `- WEASLEY_PODEX_HOME: ${target.jawHome}`,
         `- Configured projectDirs:\n${formatConfiguredProjectDirs(target.configuredProjectDirs)}`,
         `- Markdown report path: ${target.reportPath}`,
-        '- Never use JAW_HOME, ~/.podex*, settings.workingDir, or process.cwd() as a fallback review target.',
+        '- Never use WEASLEY_PODEX_HOME, ~/.weasley/podex*, legacy ~/.podex*, settings.workingDir, or process.cwd() as a fallback review target.',
         '- If configured projectDirs are present, choose the first entry and validate it before review.',
         '- If projectDirs are empty, infer the most likely repository from recent conversation/context, then validate it before review.',
-        '- Validation requires: absolute path, path exists, `git rev-parse --show-toplevel` succeeds, and the resolved git root is not JAW_HOME.',
-        '- If no valid git project target can be resolved, output `BLOCKED: project directory required` with `podex project set /absolute/path/to/repo`, save that blocked report to the Markdown path, and stop.',
+        '- Validation requires: absolute path, path exists, `git rev-parse --show-toplevel` succeeds, and the resolved git root is not WEASLEY_PODEX_HOME.',
+        '- If no valid git project target can be resolved, output `BLOCKED: project directory required` with `weasley-podex project set /absolute/path/to/repo`, save that blocked report to the Markdown path, and stop.',
         `- User-requested review focus: ${reviewFocus || '(none provided)'}`,
         '- If a user-requested review focus is provided, treat it as the highest-priority scope signal and use conversation/goal/git evidence to resolve that focused scope before considering broader recent work.',
         '',
         'Steps:',
         '1. Resolve and validate the project repo using the contract above. Treat the validated git top-level as the only Project root.',
         '2. Resolve the review scope from recent work context before reviewing code:',
-        '   - Read the current conversation focus first, then recent goal/context signals such as `podex goal status`, `podex goal history`, and relevant `podex chat search ... --recent N` or `--days N` results when available.',
+        '   - Read the current conversation focus first, then recent goal/context signals such as `weasley-podex goal status`, `weasley-podex goal history`, and relevant `weasley-podex chat search ... --recent N` or `--days N` results when available.',
         '   - Inspect git signals such as `git status --short --ignore-submodules=none`, `git log --oneline --decorate --max-count=20`, `git reflog --date=iso --max-count=20`, upstream/merge-base ranges when useful, `git diff --stat HEAD`, `git diff HEAD`, and `git ls-files --others --exclude-standard`.',
         '   - Use git history/diffs as evidence for the conversation-selected work item; do not include unrelated commits merely because they are in `origin/master..HEAD`, a merge-base range, or the recent reflog.',
         '   - Select the important recent project changes to review from committed changes, uncommitted changes, and untracked files. Do not limit the review to `git diff HEAD` when recent context indicates relevant committed work.',

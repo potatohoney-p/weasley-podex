@@ -7,7 +7,7 @@
 /* Boundary (slice 211): monitor panel CSS (goal-status/background-tasks/workers) is
    NOT imported here — those panels are Manager-local and not mounted in Code mode. */
 
-/* Jaw/Code mode switch */
+/* Weasley Podex/Code mode switch */
 .mode-switch {
     display: flex;
     gap: 2px;

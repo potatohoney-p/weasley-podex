@@ -20,7 +20,7 @@ export function createReminderBadgePoller(opts: {
   const intervalMs = opts.intervalMs ?? DEFAULT_INTERVAL_MS;
 
   function logFailure(err: unknown): void {
-    opts.log?.(`[jaw-tray] badge refresh failed: ${(err as Error)?.message ?? err}`);
+    opts.log?.(`[weasley-podex-tray] badge refresh failed: ${(err as Error)?.message ?? err}`);
   }
 
   function schedule(): void {

@@ -3,7 +3,7 @@
 
 import fs from 'fs';
 import { join } from 'path';
-import { JAW_HOME } from '../core/config.js';
+import { WEASLEY_PODEX_HOME } from '../core/config.js';
 import { log } from '../core/logger.js';
 
 // ─── Write Lock (prevents race condition in parallel agent writes) ──
@@ -20,7 +20,7 @@ function withWriteLock(filePath: string, fn: () => void): Promise<void> {
     return next;
 }
 
-export const WORKLOG_DIR = join(JAW_HOME, 'worklogs');
+export const WORKLOG_DIR = join(WEASLEY_PODEX_HOME, 'worklogs');
 const LATEST_LINK = join(WORKLOG_DIR, 'latest.md');
 
 // Phase 번호 매핑 (orchestrator.js와 공유)

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env node
+#!/usr/bin/env node
 const childProcess = require("node:child_process");
 const crypto = require("node:crypto");
 const fs = require("node:fs");
@@ -46,7 +46,7 @@ function expandHome(value, homeDir) {
 }
 
 function resolvePODEXHome(env = process.env, homeDir = os.homedir()) {
-	const configured = env.podex_HOME?.trim();
+	const configured = env.WEASLEY_PODEX_HOME?.trim();
 	const raw = configured && configured.length > 0 ? configured : path.join(homeDir, ".podex");
 	return path.resolve(expandHome(raw, homeDir));
 }
@@ -244,7 +244,7 @@ function writeCloneMeta(success) {
 }
 
 function cloneCooldownActive() {
-	if (process.env.JWC_FORCE_podex_SKILLS === "1" || process.env.JAW_FORCE_CLONE === "1") return false;
+	if (process.env.JWC_FORCE_podex_SKILLS === "1" || process.env.WEASLEY_PODEX_FORCE_CLONE === "1") return false;
 	const meta = readCloneMeta();
 	return Boolean(meta && !meta.success && fs.existsSync(path.join(refDir, "registry.json")) && Date.now() - meta.lastAttempt < CLONE_COOLDOWN_MS);
 }

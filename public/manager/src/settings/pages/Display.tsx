@@ -26,10 +26,10 @@ type DisplaySnapshot = {
 };
 
 const THEME_OPTIONS = [
-    { value: 'jaw-default', label: 'Jaw default' },
-    { value: 'jaw-dark', label: 'Jaw dark' },
-    { value: 'jaw-light', label: 'Jaw light' },
-    { value: 'jaw-contrast', label: 'High contrast' },
+    { value: 'weasley-podex-default', label: 'Weasley Podex default' },
+    { value: 'weasley-podex-dark', label: 'Weasley Podex dark' },
+    { value: 'weasley-podex-light', label: 'Weasley Podex light' },
+    { value: 'weasley-podex-contrast', label: 'High contrast' },
 ];
 
 const KEYMAP_OPTIONS = [
@@ -112,13 +112,13 @@ export default function Display({ port, client, dirty, registerSave }: SettingsP
                 <SelectField
                     id="display-themeSeed"
                     label="Theme seed"
-                    value={draft.themeSeed ?? original.themeSeed ?? 'jaw-default'}
+                    value={draft.themeSeed ?? original.themeSeed ?? 'weasley-podex-default'}
                     options={THEME_OPTIONS}
                     onChange={(next) => {
                         setDraft({ ...draft, themeSeed: next });
                         setEntry('tui.themeSeed', {
                             value: next,
-                            original: original.themeSeed ?? 'jaw-default',
+                            original: original.themeSeed ?? 'weasley-podex-default',
                             valid: true,
                         });
                     }}

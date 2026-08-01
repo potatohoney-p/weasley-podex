@@ -94,7 +94,7 @@ async function resolveActiveChatId(force = false): Promise<string | null> {
     activeChatIdCache = { id: active, expiresAt: now + ACTIVE_CHAT_CACHE_MS };
     return active;
   } catch (err) {
-    console.warn('[jaw-diagram] Failed to resolve active chat session:', (err as Error).message);
+    console.warn('[weasley-podex-diagram] Failed to resolve active chat session:', (err as Error).message);
     return null;
   }
 }
@@ -141,7 +141,7 @@ function attachWidgetIframeLifecycle(input: {
       return;
     }
     revokeIframeTrust(input.iframe);
-    console.warn('[jaw-diagram] iframe navigated — postMessage channel revoked');
+    console.warn('[weasley-podex-diagram] iframe navigated — postMessage channel revoked');
   };
 
   const readyHandler = (e: MessageEvent) => {
@@ -483,7 +483,7 @@ async function activateFileWidget(el: HTMLElement, widgetId: string): Promise<vo
     const encoded = encodeWidgetHtml(htmlCode);
     renderWidgetIframe(el, htmlCode, encoded, widgetId, FILE_WIDGET_MAX_BYTES);
   } catch (err) {
-    console.warn('[jaw-diagram] Failed to load widget file:', (err as Error).message);
+    console.warn('[weasley-podex-diagram] Failed to load widget file:', (err as Error).message);
     showWidgetFilePending(el, widgetId, 'widget file pending');
   }
 }
@@ -516,7 +516,7 @@ export async function refreshFileWidget(chatId: string, widgetId: string): Promi
       renderWidgetIframe(target, htmlCode, encoded, widgetId, FILE_WIDGET_MAX_BYTES);
     } catch (err) {
       delete target.dataset['widgetLoading'];
-      console.warn('[jaw-diagram] Failed to refresh widget file:', (err as Error).message);
+      console.warn('[weasley-podex-diagram] Failed to refresh widget file:', (err as Error).message);
     }
   }));
 }
@@ -559,7 +559,7 @@ function renderWidgetIframe(
     return;
   }
   if (validation.warnings.length) {
-    console.warn('[jaw-diagram] Widget warnings:', validation.warnings);
+    console.warn('[weasley-podex-diagram] Widget warnings:', validation.warnings);
   }
 
   const wrapper = document.createElement('div');
@@ -585,7 +585,7 @@ function renderWidgetIframe(
       wrapper.innerHTML = `<div class="diagram-error" role="alert">
         Widget failed to load within 10 seconds.
       </div>`;
-      console.warn('[jaw-diagram] Widget timeout — iframe deregistered');
+      console.warn('[weasley-podex-diagram] Widget timeout — iframe deregistered');
     },
   });
 }

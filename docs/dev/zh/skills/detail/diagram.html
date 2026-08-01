@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>图表 — podex 文档</title>
+<title>图表 — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 <style>
 .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; vertical-align: middle; margin-left: 8px; }
 .badge-active { background: rgba(74, 222, 128, 0.15); color: var(--green); }
@@ -34,7 +33,7 @@
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -56,7 +55,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">使用指南</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -105,7 +104,7 @@
     <a href="../../zh/">&#20013;&#25991;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">着陆页</a>
   </div>
 </nav>
@@ -260,7 +259,7 @@ sequenceDiagram
 <div class="callout callout-info"><strong>样式优先，脚本最后：</strong>对于 <code>diagram-html</code> 组件，始终将 <code>&lt;style&gt;</code> 和 <code>&lt;link&gt;</code> 标签放在前面，然后是 HTML 结构，最后是 <code>&lt;script&gt;</code> 标签。这确保在流式传输期间视觉内容先于脚本执行呈现。</div>
 
 <h2>交付机制</h2>
-<p>所有三种格式 &mdash; 内联 SVG、<code>```mermaid</code>、<code>```diagram-html</code> &mdash; 都在聊天回复中内联渲染。jaw 前端解析回复文本并自动挂载它们。<code>diagram-html</code> 会被放入宿主创建的沙盒 <code>&lt;iframe&gt;</code> 中；此技能<strong>不会</strong>创建 iframe。</p>
+<p>所有三种格式 &mdash; 内联 SVG、<code>```mermaid</code>、<code>```diagram-html</code> &mdash; 都在聊天回复中内联渲染。Weasley Podex 前端解析回复文本并自动挂载它们。<code>diagram-html</code> 会被放入宿主创建的沙盒 <code>&lt;iframe&gt;</code> 中；此技能<strong>不会</strong>创建 iframe。</p>
 
 <div class="forbidden-grid">
 <div class="forbidden-card">
@@ -358,7 +357,7 @@ sequenceDiagram
 <h2>主题集成</h2>
 
 <h3>CSS 变量映射</h3>
-<p>podex 宿主为图表主题化公开以下 CSS 变量：</p>
+<p>Weasley Podex 宿主为图表主题化公开以下 CSS 变量：</p>
 <table>
 <tr><th>变量</th><th>用途</th></tr>
 <tr><td><code>--bg</code></td><td>页面背景</td></tr>
@@ -379,7 +378,7 @@ sequenceDiagram
 <tr><td>内联 SVG</td><td>CSS 类自动适配宿主主题</td></tr>
 <tr><td><code>diagram-html</code> iframe (JS)</td><td><code>window.__jawTheme.isDark</code>（布尔值）</td></tr>
 <tr><td><code>diagram-html</code> iframe (CSS 值)</td><td><code>window.__jawTokens['--bg']</code>、<code>['--text']</code> 等</td></tr>
-<tr><td>Mermaid</td><td>通过 podex <code>themeVariables</code> 自动适配</td></tr>
+<tr><td>Mermaid</td><td>通过 Weasley Podex <code>themeVariables</code> 自动适配</td></tr>
 </table>
 
 <div class="callout callout-danger"><strong>切勿</strong>在图表中使用 <code>matchMedia('prefers-color-scheme')</code>。主题由宿主控制，而非操作系统设置。</div>

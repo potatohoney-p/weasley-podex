@@ -17,7 +17,7 @@ if ($Upstream -and $env:OFFICECLI_REPO) {
 }
 
 if (-not $Repo) {
-  $Repo = "potatohoney-p/OfficeCLI"
+  $Repo = "iOfficeAI/OfficeCLI"
 }
 if ($Upstream) {
   $Repo = "iOfficeAI/OfficeCLI"
@@ -41,7 +41,7 @@ function Normalize-Version([string]$version) {
 }
 
 function Get-LatestTag([string]$repoName) {
-  $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$repoName/releases/latest" -Headers @{ "User-Agent" = "podex-postinstall" }
+  $release = Invoke-RestMethod -Uri "https://api.github.com/repos/$repoName/releases/latest" -Headers @{ "User-Agent" = "weasley-podex-postinstall" }
   return [string]$release.tag_name
 }
 

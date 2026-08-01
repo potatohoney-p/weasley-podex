@@ -4,7 +4,7 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-process.env.podex_HOME = mkdtempSync(join(tmpdir(), 'podex-goal-store-'));
+process.env.WEASLEY_PODEX_HOME = mkdtempSync(join(tmpdir(), 'podex-goal-store-'));
 
 const {
     getActiveGoal, getGoalHistory, setGoal, updateGoal,

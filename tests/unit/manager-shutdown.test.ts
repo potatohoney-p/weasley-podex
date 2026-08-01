@@ -10,9 +10,9 @@ function makeLifecycleResult(port: number, ok = true): DashboardLifecycleResult 
         port,
         status: ok ? 'stopped' : 'error',
         message: ok ? `Stopped ${port}` : `Failed ${port}`,
-        home: `/tmp/.podex-${port}`,
+        home: `/tmp/.weasley/podex-${port}`,
         pid: 1000 + port,
-        command: ['jaw', 'serve', '--port', String(port)],
+        command: ['weasley-podex', 'serve', '--port', String(port)],
         expectedStateAfter: ok ? 'offline' : undefined,
     };
 }
@@ -85,7 +85,7 @@ test('dashboard shutdown logs lifecycle failures and continues cleanup', async (
 
     assert.deepEqual(calls, ['stopAll:locked-skip', 'preview.close', 'server.close', 'exit:0']);
     assert.equal(warnings.length, 1);
-    assert.match(warnings[0]!, /failed to stop managed Jaw on port 3457/);
+    assert.match(warnings[0]!, /failed to stop managed Weasley Podex instance on port 3457/);
 });
 
 test('dashboard shutdown logs server close errors and still exits zero', async () => {
@@ -129,11 +129,11 @@ test('dashboard shutdown logs server close errors and still exits zero', async (
     assert.match(errors[0]!, /failed to close manager server: close failed/);
 });
 
-test('dashboard shutdown skips stopAll when podex_TEST_MODE is set', async () => {
+test('dashboard shutdown skips stopAll when WEASLEY_PODEX_TEST_MODE is set', async () => {
     const calls: string[] = [];
     const warnings: string[] = [];
-    const originalEnv = process.env['podex_TEST_MODE'];
-    process.env['podex_TEST_MODE'] = '1';
+    const originalEnv = process.env['WEASLEY_PODEX_TEST_MODE'];
+    process.env['WEASLEY_PODEX_TEST_MODE'] = '1';
     try {
         const shutdown = createDashboardShutdown({
             lifecycle: {
@@ -159,8 +159,8 @@ test('dashboard shutdown skips stopAll when podex_TEST_MODE is set', async () =>
         assert.equal(warnings.length, 1);
         assert.match(warnings[0]!, /test mode: skipping stopAll/);
     } finally {
-        if (originalEnv === undefined) delete process.env['podex_TEST_MODE'];
-        else process.env['podex_TEST_MODE'] = originalEnv;
+        if (originalEnv === undefined) delete process.env['WEASLEY_PODEX_TEST_MODE'];
+        else process.env['WEASLEY_PODEX_TEST_MODE'] = originalEnv;
     }
 });
 

@@ -4,20 +4,20 @@ import assert from 'node:assert/strict';
 import { findLegacyPODEXLabels } from '../../src/core/launchd-cleanup.js';
 
 test('P04C-010: detects com.podex.local as legacy', () => {
-    const files = ['com.podex.default.plist', 'com.podex.local.plist'];
+    const files = ['com.weasley.podex.default.plist', 'com.podex.default.plist', 'com.podex.local.plist'];
     assert.deepEqual(
-        findLegacyPODEXLabels(files, 'com.podex.default'),
-        ['com.podex.local']
+        findLegacyPODEXLabels(files, 'com.weasley.podex.default'),
+        ['com.podex.default', 'com.podex.local']
     );
 });
 
 test('P04C-011: detects hashless podex-<port> as legacy, preserves hashed multi-instance', () => {
     const files = [
-        'com.podex.default.plist',
+        'com.weasley.podex.default.plist',
         'com.podex.podex-3458-7ff0583f.plist',  // 현재 포맷 — 보존
         'com.podex.podex-3459.plist',           // 해시 없는 구버전 — legacy
     ];
-    const result = findLegacyPODEXLabels(files, 'com.podex.default').sort();
+    const result = findLegacyPODEXLabels(files, 'com.weasley.podex.default').sort();
     assert.deepEqual(result, [
         'com.podex.podex-3459',
     ]);
@@ -39,24 +39,24 @@ test('P04C-011b: multi-instance hashed labels do not clean up each other', () =>
 });
 
 test('P04C-012: preserves current label', () => {
-    const files = ['com.podex.default.plist'];
-    assert.deepEqual(findLegacyPODEXLabels(files, 'com.podex.default'), []);
+    const files = ['com.weasley.podex.default.plist'];
+    assert.deepEqual(findLegacyPODEXLabels(files, 'com.weasley.podex.default'), []);
 });
 
 test('P04C-013: ignores unrelated LaunchAgents', () => {
     const files = ['com.apple.dock.plist', 'com.google.keystone.plist'];
-    assert.deepEqual(findLegacyPODEXLabels(files, 'com.podex.default'), []);
+    assert.deepEqual(findLegacyPODEXLabels(files, 'com.weasley.podex.default'), []);
 });
 
 test('P04C-014: does not flag custom instance hash labels as legacy', () => {
-    // custom JAW_HOME → com.podex.<base>-<hash> (예: work-a1b2c3d4)
+    // custom WEASLEY_PODEX_HOME → com.podex.<base>-<hash> (예: work-a1b2c3d4)
     // legacy pattern은 podex-<port>-<hash> 전용이어야 함
     const files = ['com.podex.work-a1b2c3d4.plist'];
-    assert.deepEqual(findLegacyPODEXLabels(files, 'com.podex.default'), []);
+    assert.deepEqual(findLegacyPODEXLabels(files, 'com.weasley.podex.default'), []);
 });
 
 test('P04C-015: handles empty file list', () => {
-    assert.deepEqual(findLegacyPODEXLabels([], 'com.podex.default'), []);
+    assert.deepEqual(findLegacyPODEXLabels([], 'com.weasley.podex.default'), []);
 });
 
 

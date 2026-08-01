@@ -1,6 +1,6 @@
-﻿/**
- * podex chat search — search chat message history
- * Usage: podex chat search <query> [--days N] [--context N] [--limit N]
+/**
+ * weasley-podex chat search — search chat message history
+ * Usage: weasley-podex chat search <query> [--days N] [--context N] [--limit N]
  */
 import { parseArgs } from 'node:util';
 import { getServerUrl, loadSettings } from '../../src/core/config.js';
@@ -23,12 +23,12 @@ const { values, positionals } = parseArgs({
 
 const query = positionals.join(' ');
 if (!query) {
-    console.error('Usage: podex chat search <query> [--days N] [--context N] [--limit N] [--recent N]');
+    console.error('Usage: weasley-podex chat search <query> [--days N] [--context N] [--limit N] [--recent N]');
     console.error('Examples:');
-    console.error('  podex chat search "compact"');
-    console.error('  podex chat search "compact" --days 3');
-    console.error('  podex chat search "compact" --days 7 --context 2');
-    console.error('  podex chat search "compact" --recent 100');
+    console.error('  weasley-podex chat search "compact"');
+    console.error('  weasley-podex chat search "compact" --days 3');
+    console.error('  weasley-podex chat search "compact" --days 7 --context 2');
+    console.error('  weasley-podex chat search "compact" --recent 100');
     process.exit(1);
 }
 

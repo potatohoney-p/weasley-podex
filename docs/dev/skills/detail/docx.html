@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Word Documents — podex Docs</title>
+<title>Word Documents — Weasley Podex Docs</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="Search docs..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">Guides</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">Dashboard</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">Notes (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">Weasley Podex Notes</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">Kanban Board</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -83,7 +82,7 @@
     <a href="../../zh/">&#x4E2D;&#x6587;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">Landing Page</a>
   </div>
 </nav>
@@ -92,7 +91,7 @@
 <h1>Word Documents</h1>
 <p class="lead">.docx create, edit, read, and visual verification</p>
 
-<div class="callout callout-info"><strong>Default Active: Yes</strong> &mdash; The <code>docx</code> skill is available by default and triggers automatically when you mention Word documents, <code>.docx</code> files, reports, memos, letters, or templates. No manual loading required.</div>
+<div class="callout callout-info"><strong>Optional workflow:</strong> <code>docx</code> is not bundled. Import a reviewed copy from an installed Codex catalog or an explicit trusted repository before activating it.</div>
 
 <h2>Overview</h2>
 <p>The <code>docx</code> skill handles the full lifecycle of Word documents: creation from scratch, editing existing files, reading and analysis, template-based generation, tracked-change management, and mandatory visual QA verification. It is scoped exclusively to <code>.docx</code> files &mdash; not PDFs, spreadsheets, HWPX, or Google Docs.</p>

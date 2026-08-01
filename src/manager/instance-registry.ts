@@ -3,7 +3,7 @@
 // Replaces per-request full scans (50 ports × 3 endpoints = 150 loopback
 // fetches) with one background scan every 10s + an in-memory snapshot.
 // Status changes are published to the event-bus 'worker' topic — here
-// 'worker' means managed podex instances (09 §2 P1 semantics), NOT
+// 'worker' means managed Weasley Podex instances (09 §2 P1 semantics), NOT
 // employee/worker agents.
 
 import { publish } from '../core/event-bus.js';

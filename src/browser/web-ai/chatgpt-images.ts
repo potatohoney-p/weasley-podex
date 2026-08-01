@@ -5,7 +5,7 @@ import { appendSessionArtifact } from './session.js';
 import type { CdpSendSession } from './chatgpt-project-sources.js';
 
 // Parity catalog 102 (generated images, P1). Strict-TS port of agbrowse
-// web-ai/chatgpt-images.mjs. podex had image *tool-selection* but no output capture;
+// web-ai/chatgpt-images.mjs. Weasley Podex had image *tool-selection* but no output capture;
 // this detects DALL·E/estuary generated images in assistant turns and downloads them
 // (explicit --output paths or session artifacts). Pure detection-expression builder,
 // URL allowlist, output-path derivation, and chrome-text classifier are fully testable.

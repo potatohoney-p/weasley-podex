@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Events — podex Docs</title>
+  <title>Events — Weasley Podex Docs</title>
   <link rel="stylesheet" href="../_shell.css">
-<link rel="icon" type="image/png" href="../../assets/app-icon.png">
 </head>
 <body>
 <main class="docs-main">
   <h1>Events</h1>
-  <p class="lead">podex uses an SSE-first event channel for the Web UI, with legacy WebSocket fallback and provider-specific stream parsers behind it.</p>
+  <p class="lead">Weasley Podex uses an SSE-first event channel for the Web UI, with legacy WebSocket fallback and provider-specific stream parsers behind it.</p>
 
   <h2>SSE Event Channel</h2>
   <pre><code>GET http://localhost:3457/api/events</code></pre>
@@ -54,7 +53,7 @@
   <p>Provider CLIs still use their own stdout protocols internally. Claude, Codex, Cursor, Grok, and Copilot are normalized through <code>src/agent/events/*</code>. AGY uses plain-text print mode. The normalized events pass through <code>src/core/bus.ts</code>, which publishes public events to the SSE event bus and still fans out to internal collectors/forwarders.</p>
 
   <h2>Manager Worker SSE</h2>
-  <p>The <code>jaw dashboard serve</code> React manager app reads manager HTTP endpoints by polling. Worker instance live progress is bridged server-side: <code>src/manager/worker-events.ts</code> and <code>src/manager/worker-sse-client.ts</code> subscribe to each worker's <code>GET /api/events</code> stream and update the latest-message cache.</p>
+  <p>The <code>weasley-podex dashboard serve</code> React manager app reads manager HTTP endpoints by polling. Worker instance live progress is bridged server-side: <code>src/manager/worker-events.ts</code> and <code>src/manager/worker-sse-client.ts</code> subscribe to each worker's <code>GET /api/events</code> stream and update the latest-message cache.</p>
 
   <p>Detailed source-of-truth: <code>structure/stream-events.md</code> and <code>structure/server_api.md</code>.</p>
 </main>

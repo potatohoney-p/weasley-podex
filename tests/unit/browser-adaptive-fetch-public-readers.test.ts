@@ -205,17 +205,17 @@ test('unsupported public endpoint JSON falls back to generic text handling', () 
 test('browser network JSON candidates reuse public endpoint readers for known API URLs', () => {
     const npm = fromNetworkCandidate({
         ...fetched(JSON.stringify({
-            name: 'podex',
+            name: 'weasley-podex',
             version: '2.2.0',
             description: 'Agent runtime',
             'dist-tags': { latest: '2.2.0' },
         })),
-        finalUrl: 'https://registry.npmjs.org/podex/latest',
+        finalUrl: 'https://registry.npmjs.org/weasley-podex/latest',
         evidence: ['browser-network-json'],
     });
     assert.equal(npm.source, 'public_endpoint');
     assert.equal(npm.label, 'npm-registry-latest');
-    assert.match(npm.text, /Package: podex@2\.2\.0/);
+    assert.match(npm.text, /Package: weasley-podex@2\.2\.0/);
     assert.ok(npm.evidence.includes('public-endpoint:npm-registry-latest'));
 
     const hn = fromNetworkCandidate({
@@ -234,19 +234,19 @@ test('browser network JSON candidates reuse public endpoint readers for known AP
 
     const github = fromNetworkCandidate({
         ...fetched(JSON.stringify({
-            full_name: 'potatohoney-p/podex',
-            description: 'CLI Jaw',
+            full_name: 'potatohoney-p/weasley-podex',
+            description: 'Weasley Podex CLI',
             default_branch: 'dev',
             stargazers_count: 10,
             forks_count: 2,
             open_issues_count: 1,
-            html_url: 'https://github.com/potatohoney-p/podex',
+            html_url: 'https://github.com/potatohoney-p/weasley-podex',
         })),
-        finalUrl: 'https://api.github.com/repos/potatohoney-p/podex',
+        finalUrl: 'https://api.github.com/repos/potatohoney-p/weasley-podex',
         evidence: ['browser-network-json'],
     });
     assert.equal(github.label, 'github-repo-api');
-    assert.match(github.text, /Repository: potatohoney-p\/podex/);
+    assert.match(github.text, /Repository: potatohoney-p\/weasley-podex/);
 });
 
 test('ordinary browser network JSON candidates keep generic network API behavior', () => {

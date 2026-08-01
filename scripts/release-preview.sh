@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # release-preview.sh — build + preview semver bump + push preview branch
 # Auto-detects npm latest, bumps (default patch +1), then appends -preview.TIMESTAMP
 # Usage:
@@ -51,7 +51,7 @@ run_electron_release_checks() {
 ELECTRON_RELEASE_NOTES_BASE="### Desktop / Electron
 - Electron shell validated with \`npm --prefix electron run typecheck\` and \`npm --prefix electron run build\`.
 - npm package boundary validated with \`npm run check:electron-no-native\`; Electron app artifacts remain outside the npm package.
-- Desktop app distribution remains separate from \`npm install -g podex\`.
+- Desktop app distribution remains separate from \`npm install -g weasley-podex\`.
 - macOS, Windows, and Linux desktop assets are built by GitHub Actions after this prerelease is published, then attached to this GitHub Release."
 
 ELECTRON_RELEASE_NOTES_UNSIGNED="
@@ -60,16 +60,16 @@ The desktop assets attached by GitHub Actions are **unsigned** (no Apple Develop
 
 - macOS: Gatekeeper will block first launch. Either right-click → Open → Open, or remove the quarantine attribute:
   \`\`\`sh
-  xattr -d com.apple.quarantine /Applications/podex.app
+  xattr -d com.apple.quarantine "/Applications/Weasley Podex.app"
   \`\`\`
 - Windows: SmartScreen will warn on first run. Click \"More info\" → \"Run anyway\".
 - Linux: AppImage downloads may need execute permission before launch.
-- For trusted distribution, install via \`npm install -g podex\` instead."
+- For trusted distribution, install via \`npm install -g weasley-podex\` instead."
 
 ELECTRON_RELEASE_NOTES="$ELECTRON_RELEASE_NOTES_BASE$ELECTRON_RELEASE_NOTES_UNSIGNED"
 
 # ─── Version detection ─────────────────────────────────
-NPM_LATEST=$(npm view podex dist-tags.latest 2>/dev/null || echo "")
+NPM_LATEST=$(npm view weasley-podex dist-tags.latest 2>/dev/null || echo "")
 PKG_VERSION=$(node -p "require('./package.json').version")
 
 max_stable_version() {
@@ -119,7 +119,7 @@ fi
 
 PREVIEW_VERSION="${BASE_VERSION}-${PREID}.${STAMP}"
 
-echo "🦈 podex preview release script"
+echo "Weasley Podex preview release script"
 echo "================================="
 echo "npm latest:      ${NPM_LATEST:-'(not found)'}"
 echo "package.json:    $PKG_VERSION"
@@ -194,7 +194,7 @@ $CHANGELOG
 ### Publish
 - npm preview publish runs from \`.github/workflows/publish.yml\` on the \`preview\` branch.
 - npm dist-tag: \`preview\`
-- Install after the workflow succeeds: \`npm install -g podex@preview\`
+- Install after the workflow succeeds: \`npm install -g weasley-podex@preview\`
 
 $ELECTRON_RELEASE_NOTES"
 
@@ -219,9 +219,9 @@ else
 fi
 
 echo ""
-echo "✅ Preview release queued: podex@$VERSION"
-echo "   Install: npm install -g podex@preview"
-echo "   Exact:   npm install -g podex@$VERSION"
-echo "   Release: https://github.com/potatohoney-p/podex/releases/tag/v$VERSION"
-echo "   Workflow: https://github.com/potatohoney-p/podex/actions/workflows/publish.yml?query=branch%3Apreview"
+echo "✅ Preview release queued: weasley-podex@$VERSION"
+echo "   Install: npm install -g weasley-podex@preview"
+echo "   Exact:   npm install -g weasley-podex@$VERSION"
+echo "   Release: https://github.com/potatohoney-p/weasley-podex/releases/tag/v$VERSION"
+echo "   Workflow: https://github.com/potatohoney-p/weasley-podex/actions/workflows/publish.yml?query=branch%3Apreview"
 

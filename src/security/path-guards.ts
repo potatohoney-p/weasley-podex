@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 // ─── Security: Path Guards ───────────────────────────
 // Phase 9.1 — path traversal, id injection, filename abuse 방어
 import path from 'node:path';
@@ -85,7 +86,7 @@ export function safeResolveUnder(baseDir: string, unsafeName: string) {
 }
 
 /**
- * Send file path validation — only allow files under JAW_HOME or workingDir.
+ * Send file path validation — only allow files under WEASLEY_PODEX_HOME or workingDir.
  * Prevents arbitrary file exfiltration via /api/telegram/send, /api/channel/send, etc.
  * @throws 403 path_not_allowed
  */
@@ -104,8 +105,8 @@ export function assertSendFilePath(filePath: string, workingDir?: string, projec
     const canonical = safeRealpath(resolved);
     if (!canonical) throw forbidden('path_not_resolvable');
 
-    // Allow anything under JAW_HOME
-    const jawHome = resolveHomePath(process.env["podex_HOME"] || process.env["JAW_HOME"] || path.join(os.homedir(), '.podex'));
+    // Allow anything under the primary Weasley Podex home; legacy variables are fallbacks only.
+    const jawHome = resolveHomePath(getWeasleyPodexEnv('HOME') || path.join(os.homedir(), '.weasley', 'podex'));
     const canonJaw = safeRealpath(jawHome);
     if (canonJaw && isUnderRoot(canonical, canonJaw)) return canonical;
 

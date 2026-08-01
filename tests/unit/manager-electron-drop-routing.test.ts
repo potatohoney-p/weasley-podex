@@ -10,11 +10,11 @@ import {
 
 test('manager drop routing prefers directory entries for folder panel root', () => {
     const entries = [
-        { name: 'a.md', path: '/Users/jun/a.md', kind: 'file' as const },
-        { name: 'Octopus', path: '/Users/jun/Octopus', kind: 'directory' as const },
+        { name: 'a.md', path: '/Users/example/a.md', kind: 'file' as const },
+        { name: 'Octopus', path: '/Users/example/Octopus', kind: 'directory' as const },
     ];
-    assert.equal(firstDirectory(entries)?.path, '/Users/jun/Octopus');
-    assert.equal(firstFile(entries)?.path, '/Users/jun/a.md');
+    assert.equal(firstDirectory(entries)?.path, '/Users/example/Octopus');
+    assert.equal(firstFile(entries)?.path, '/Users/example/a.md');
 });
 
 test('drop routing does not consume preview frame drops', () => {
@@ -37,7 +37,7 @@ test('drop routing consumes manager surface drops', () => {
 test('drop routing describes opened folders and partial rejections', () => {
     const message = describeDroppedPathsEvent({
         source: 'manager',
-        entries: [{ name: 'Project', path: '/Users/jun/Project', kind: 'directory' }],
+        entries: [{ name: 'Project', path: '/Users/example/Project', kind: 'directory' }],
         rejected: [{ path: '/tmp/outside', reason: 'path not allowed' }],
     });
 
@@ -47,7 +47,7 @@ test('drop routing describes opened folders and partial rejections', () => {
 test('drop routing describes preview captures without routing panels', () => {
     const message = describeDroppedPathsEvent({
         source: 'preview',
-        entries: [{ name: 'asset.png', path: '/Users/jun/asset.png', kind: 'file' }],
+        entries: [{ name: 'asset.png', path: '/Users/example/asset.png', kind: 'file' }],
     });
 
     assert.equal(message, 'Captured 1 dropped item from preview.');
@@ -56,7 +56,7 @@ test('drop routing describes preview captures without routing panels', () => {
 test('preview drop status never implies manager routing success', () => {
     const message = describeDroppedPathsEvent({
         source: 'preview',
-        entries: [{ name: 'asset.png', path: '/Users/jun/asset.png', kind: 'file' }],
+        entries: [{ name: 'asset.png', path: '/Users/example/asset.png', kind: 'file' }],
         rejected: [{ path: '/tmp/outside', reason: 'path not allowed' }],
     });
 

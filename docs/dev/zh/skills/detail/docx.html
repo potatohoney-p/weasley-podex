@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Word 文档 — podex 文档</title>
+<title>Word 文档 — Weasley Podex 文档</title>
 <link rel="stylesheet" href="../../_shell.css">
-<link rel="icon" type="image/png" href="../../../assets/app-icon.png">
 </head>
 <body>
 <button class="docs-menu-toggle" aria-label="Open navigation" onclick="document.querySelector('.docs-sidebar').classList.toggle('is-open');document.querySelector('.docs-sidebar-backdrop').classList.toggle('is-open')">&#9776;</button>
 <div class="docs-sidebar-backdrop" onclick="document.querySelector('.docs-sidebar').classList.remove('is-open');this.classList.remove('is-open')"></div>
 <div class="docs-layout">
 <nav class="docs-sidebar">
-  <div class="docs-logo"><a href="../../../">podex</a></div>
+  <div class="docs-logo"><a href="../../../">Weasley Podex</a></div>
   <div class="docs-search"><input class="docs-search-input" type="text" placeholder="搜索文档..."></div>
   <div class="docs-nav">
     <div class="docs-nav-section">
@@ -34,7 +33,7 @@
     <div class="docs-nav-section">
       <div class="docs-nav-title">使用指南</div>
       <a class="docs-nav-link" href="../../guides/dashboard.html">仪表盘</a>
-      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Jawsidian)</a>
+      <a class="docs-nav-link" href="../../guides/notes.html">笔记 (Weasley Podex Notes)</a>
       <a class="docs-nav-link" href="../../guides/kanban.html">看板</a>
       <a class="docs-nav-link" href="../../guides/telegram.html">Telegram</a>
       <a class="docs-nav-link" href="../../guides/discord.html">Discord</a>
@@ -83,7 +82,7 @@
     <a href="../../zh/">&#x4E2D;&#x6587;</a>
   </div>
   <div class="docs-nav-footer">
-    <a href="https://github.com/potatohoney-p/podex">GitHub</a>
+    <a href="https://github.com/potatohoney-p/weasley-podex">GitHub</a>
     <a href="../../../">落地页</a>
   </div>
 </nav>
@@ -92,7 +91,7 @@
 <h1>Word 文档</h1>
 <p class="lead">.docx 创建、编辑、读取及视觉验证</p>
 
-<div class="callout callout-info"><strong>默认启用：是</strong> &mdash; <code>docx</code> 技能默认可用，当您提到 Word 文档、<code>.docx</code> 文件、报告、备忘录、信函或模板时会自动触发。无需手动加载。</div>
+<div class="callout callout-info"><strong>可选工作流：</strong><code>docx</code> 不随核心包捆绑。请先从已安装的 Codex 目录或显式可信仓库导入经过审查的技能。</div>
 
 <h2>概述</h2>
 <p><code>docx</code> 技能涵盖 Word 文档的完整生命周期：从零创建、编辑现有文件、读取与分析、基于模板生成、修订管理，以及强制性视觉 QA 验证。该技能仅适用于 <code>.docx</code> 文件 &mdash; 不包括 PDF、电子表格、HWPX 或 Google Docs。</p>

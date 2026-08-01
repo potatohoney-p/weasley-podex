@@ -18,9 +18,9 @@ function tempDir(prefix: string): string {
 
 function withHomes<T>(dashboardHome: string, jawHome: string, run: () => T): T {
     const previousDashboardHome = process.env[DASHBOARD_HOME_ENV];
-    const previousJawHome = process.env.podex_HOME;
+    const previousJawHome = process.env.WEASLEY_PODEX_HOME;
     process.env[DASHBOARD_HOME_ENV] = dashboardHome;
-    process.env.podex_HOME = jawHome;
+    process.env.WEASLEY_PODEX_HOME = jawHome;
     try {
         return run();
     } finally {
@@ -30,9 +30,9 @@ function withHomes<T>(dashboardHome: string, jawHome: string, run: () => T): T {
             process.env[DASHBOARD_HOME_ENV] = previousDashboardHome;
         }
         if (previousJawHome == null) {
-            delete process.env.podex_HOME;
+            delete process.env.WEASLEY_PODEX_HOME;
         } else {
-            process.env.podex_HOME = previousJawHome;
+            process.env.WEASLEY_PODEX_HOME = previousJawHome;
         }
     }
 }
@@ -47,7 +47,7 @@ function writeRegistry(path: string, selectedPort: number): void {
     }, null, 2));
 }
 
-test('dashboard registry path uses dashboard home, not podex_HOME', () => {
+test('dashboard registry path uses dashboard home, not WEASLEY_PODEX_HOME', () => {
     const dashboardHome = tempDir('jaw-dashboard-home-');
     const jawHome = tempDir('jaw-home-');
     try {
@@ -108,7 +108,7 @@ test('existing dashboard registry wins over legacy registry', () => {
     }
 });
 
-test('migration only considers current podex_HOME legacy registry', () => {
+test('migration only considers current WEASLEY_PODEX_HOME legacy registry', () => {
     const dashboardHome = tempDir('jaw-dashboard-home-');
     const jawHome = tempDir('jaw-home-current-');
     const otherJawHome = tempDir('jaw-home-other-');
@@ -178,7 +178,7 @@ test('explicit registry path bypasses dashboard migration', () => {
     }
 });
 
-test('patch writes to dashboard home and ignores podex_HOME', () => {
+test('patch writes to dashboard home and ignores WEASLEY_PODEX_HOME', () => {
     const dashboardHome = tempDir('jaw-dashboard-home-');
     const jawHome = tempDir('jaw-home-');
     try {

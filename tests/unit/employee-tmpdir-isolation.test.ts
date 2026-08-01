@@ -23,7 +23,7 @@ test('TMPISO-001: cleanupEmployeeTmpDir function exists in spawn.ts', () => {
 
 test('TMPISO-002: isolation block creates temp dir with all instruction files', () => {
     const src = readSrc('../../src/agent/spawn.ts');
-    assert.ok(src.includes("jaw-emp-"));
+    assert.ok(src.includes("weasley-podex-employee-"));
     assert.ok(src.includes('empPromptWithWorkspace'));
     assert.ok(src.includes("'AGENTS.md'"));
     assert.ok(src.includes("'CLAUDE.md'"));
@@ -93,7 +93,7 @@ test('TMPISO-008: distribute.ts passes sysPrompt unconditionally (not ternary)',
 test('TMPISO-010: temp dir creation and cleanup works end-to-end', () => {
     const label = 'test-emp';
     const workingDir = '/fake/working/dir';
-    const tmpDir = join(os.tmpdir(), `jaw-emp-${label}-${Date.now()}`);
+    const tmpDir = join(os.tmpdir(), `weasley-podex-employee-${label}-${Date.now()}`);
     const workspaceContext = '## Workspace Context (authoritative)\nProject root: /fake/working/dir';
     const promptWithWorkspace = `${workspaceContext}\n\nTEST_EMPLOYEE_PROMPT`;
 
@@ -129,7 +129,7 @@ test('TMPISO-010: temp dir creation and cleanup works end-to-end', () => {
 });
 
 test('TMPISO-011: cleanup is skipped when cwd === workingDir', () => {
-    const tmpDir = join(os.tmpdir(), `jaw-emp-test-noclean-${Date.now()}`);
+    const tmpDir = join(os.tmpdir(), `weasley-podex-employee-test-noclean-${Date.now()}`);
     fs.mkdirSync(tmpDir, { recursive: true });
     fs.writeFileSync(join(tmpDir, 'test.txt'), 'should survive');
 

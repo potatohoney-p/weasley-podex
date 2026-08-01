@@ -44,16 +44,16 @@ export function generateLaunchdPlist(o: PlistOptions): string {
     <key>WorkingDirectory</key>
     <string>${xmlEsc(o.jawHome)}</string>
     <key>StandardOutPath</key>
-    <string>${xmlEsc(o.logDir)}/jaw-serve.log</string>
+    <string>${xmlEsc(o.logDir)}/weasley-podex-serve.log</string>
     <key>StandardErrorPath</key>
-    <string>${xmlEsc(o.logDir)}/jaw-serve.err</string>
+    <string>${xmlEsc(o.logDir)}/weasley-podex-serve.err</string>
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
         <string>${xmlEsc(o.servicePath)}</string>
-        <key>podex_HOME</key>
+        <key>WEASLEY_PODEX_HOME</key>
         <string>${xmlEsc(o.jawHome)}</string>
-        <key>podex_RUNTIME</key>
+        <key>WEASLEY_PODEX_RUNTIME</key>
         <string>launchd</string>
     </dict>
 </dict>

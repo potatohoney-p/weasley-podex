@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { JAW_HOME, SKILLS_DIR, SKILLS_REF_DIR } from '../../src/core/config.ts';
+import { WEASLEY_PODEX_HOME, SKILLS_DIR, SKILLS_REF_DIR } from '../../src/core/config.ts';
 import { getBoundedLocalSearchContract, getEmployeePromptV2, getSystemPrompt } from '../../src/prompt/builder.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -50,9 +50,9 @@ test('system prompt documents Discord degraded mode', () => {
         'should explain degraded mode limitations');
 });
 
-test('system prompt mentions jaw doctor for Discord diagnosis', () => {
-    assert.ok(a1Src.includes('jaw doctor'),
-        'should reference jaw doctor for status checks');
+test('system prompt mentions weasley-podex doctor for Discord diagnosis', () => {
+    assert.ok(a1Src.includes('weasley-podex doctor'),
+        'should reference the primary doctor command for status checks');
 });
 
 // ─── Channel-generic delivery ────────────────────────
@@ -78,10 +78,10 @@ test('system prompt routes ambiguous Korean search intent away from default code
         'system prompt should include a Korean search intent guard');
     assert.ok(a1Src.includes('Rewrite it into 1-3 focused keyword queries'),
         'system prompt should require focused query rewrites for Korean external searches');
-    assert.ok(a1Src.includes('Native podex search is the default backend'),
-        'system prompt should keep podex search native-first');
+    assert.ok(a1Src.includes('Native Weasley Podex search is the default backend'),
+        'system prompt should keep Weasley Podex search native-first');
     assert.ok(a1Src.includes('active `search` skill or existing search/web/official-docs retrieval tools'),
-        'system prompt should route through existing podex search tools');
+        'system prompt should route through existing Weasley Podex search tools');
     assert.ok(a1Src.includes('agbrowse research plan --query "<request>" --json'),
         'system prompt should preserve optional agbrowse research planning');
     assert.ok(a1Src.includes('plan.atomicQueries'),
@@ -120,7 +120,7 @@ test('system prompt keeps Project root until explicit change and handles stale r
         'A1 should detect user intent that conflicts with the injected root');
     assert.ok(a1Src.includes('do not keep using the stale root'),
         'A1 should forbid silently using stale Project root context');
-    assert.ok(a1Src.includes('`podex project set` / `podex project clear`'),
+    assert.ok(a1Src.includes('`weasley-podex project set` / `weasley-podex project clear`'),
         'A1 should point to explicit project set/clear commands');
 });
 
@@ -131,8 +131,8 @@ test('skills prompt prefers active search skill for external search intent', () 
         'skills prompt should prefer active search/web retrieval before local grep');
     assert.ok(skillsSrc.includes('first rewrite the request into 1-3 focused keyword queries'),
         'skills prompt should require query rewrite for Korean external search intent');
-    assert.ok(skillsSrc.includes('Native podex search is the default backend'),
-        'skills prompt should make podex native search the default backend');
+    assert.ok(skillsSrc.includes('Native Weasley Podex search is the default backend'),
+        'skills prompt should make Weasley Podex native search the default backend');
     assert.ok(skillsSrc.includes('active `search` skill or existing search/web/official-docs tools'),
         'skills prompt should use active search or existing native search tools');
     assert.ok(skillsSrc.includes('agbrowse research plan --query "<request>" --json'),
@@ -169,10 +169,10 @@ test('rendered Boss prompt keeps skill matching guidance when only ref skills ex
         'ref-only Boss prompt should still include the skill matching prelude');
     assert.ok(prompt.includes('Match by intent, not exact words'),
         'ref-only Boss prompt should preserve semantic skill routing');
-    assert.ok(prompt.includes('podex skill list --inactive'),
+    assert.ok(prompt.includes('weasley-podex skill list --inactive'),
         'ref-only Boss prompt should point to CLI command for browsing ref skills');
-    assert.ok(prompt.includes(JAW_HOME),
-        'rendered prompt should still use the configured test JAW_HOME');
+    assert.ok(prompt.includes(WEASLEY_PODEX_HOME),
+        'rendered prompt should still use the configured test WEASLEY_PODEX_HOME');
 });
 
 test('rendered prompts include bounded local search contract', () => {
@@ -203,16 +203,16 @@ test('system prompt documents channel omission defaults to active', () => {
 
 // ─── Goal contract ───────────────────────────────────
 
-test('system prompt forbids runtime goal state and prefers podex goal pause', () => {
+test('system prompt forbids runtime goal state and prefers weasley-podex goal pause', () => {
     assert.ok(a1Src.includes('built-in/runtime goal feature'),
         'should explicitly ban host/runtime goal state while inside podex');
-    assert.ok(a1Src.includes('Use only `podex goal ...`'),
-        'should direct agents to podex goal commands only');
-    assert.ok(a1Src.includes('podex goal pause --agent --audit'),
+    assert.ok(a1Src.includes('Use only `weasley-podex goal ...`'),
+        'should direct agents to weasley-podex goal commands only');
+    assert.ok(a1Src.includes('weasley-podex goal pause --agent --audit'),
         'should make audited agent pause the AI stop command');
-    assert.ok(a1Src.includes('Plain `podex goal pause` is for human/manual use only'),
+    assert.ok(a1Src.includes('Plain `weasley-podex goal pause` is for human/manual use only'),
         'should keep plain pause as a manual-user path');
-    assert.ok(a1Src.includes('Do not run `podex goal done` unless the user explicitly asks'),
+    assert.ok(a1Src.includes('Do not run `weasley-podex goal done` unless the user explicitly asks'),
         'should reserve done for explicit user-requested final completion');
     assert.ok(!a1Src.includes('run `/goal done`'),
         'should not instruct agents to run slash goal done');

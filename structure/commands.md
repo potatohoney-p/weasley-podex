@@ -1,7 +1,7 @@
 ---
 created: 2026-03-28
-tags: [podex, slash-command, cli, discord]
-aliases: [podex Commands, slash commands registry, commands.md]
+tags: [weasley-podex, slash-command, cli, discord]
+aliases: [Weasley Podex Commands, slash commands registry, commands.md]
 ---
 
 > 📚 [INDEX](INDEX.md) · [체크리스트 ↗](AGENTS.md) · **슬래시 커맨드** · [서버 API](server_api.md)
@@ -65,7 +65,7 @@ effort, fast, context, tools, redraw, retry, export, resume, hotkeys
 - `skills`: dynamic — all active skills exposed as `/skill:<id>` (cli/web only, hidden on telegram/discord)
 - `cli`: `settings`, `version`, `quit`, `file`, `redraw`, `hotkeys`
 
-`/settings` is CLI-only. In fullscreen `jaw chat`, selecting it opens the
+`/settings` is CLI-only. In fullscreen `weasley-podex chat`, selecting it opens the
 Appearance MVP screen in the main content region; it does not expose unsupported
 JWC-only `Context` settings. Line-mode still returns the generic command result.
 
@@ -75,13 +75,20 @@ JWC-only `Context` settings. Line-mode still returns the generic command result.
 
 소스 기준 entrypoint는 `bin/podex.ts`(284L)다. 현재 소스 트리에서 root command router는 `provider`/`design`/`hooks`를 포함한 dynamic import branch를 가진다. 아래 표는 grouped subcommand(`chat search`, `browser web-ai`, dashboard federation 등)를 포함한 user-facing surface다. 파일 수 기준으로는 `browser-web-ai.ts`, `dashboard-memory.ts`, `dashboard-chat.ts`, `jwc.ts`, `dispatch-helpers.ts`, `dispatch-batch-summary.ts`, `task.ts`, `bgtask.ts` helper/command가 포함되어 `bin/commands/*.ts` top-level은 33개다.
 
+### Public CLI identity
+
+- npm package and sole public bin: `weasley-podex`
+- the bin routes to the historical internal source entrypoint `bin/podex.ts` /
+  `dist/bin/podex.js`; source filenames are not public naming guidance.
+- examples and generated recovery commands must emit `weasley-podex`.
+
 ### Global options
 
 | Option | 동작 |
 | --- | --- |
-| `--home <path>` / `--home=<path>` | command parsing 전에 `podex_HOME` 설정 |
+| `--home <path>` / `--home=<path>` | command parsing 전에 `WEASLEY_PODEX_HOME` 설정 |
 | `--help` / `-h` | root help 출력 |
-| `--version` / `-v` | `podex v{package.version}` 출력 |
+| `--version` / `-v` | `weasley-podex v{package.version}` 출력 |
 
 ### 실제 서브커맨드 / 옵션
 
@@ -123,9 +130,20 @@ JWC-only `Context` settings. Line-mode still returns the generic command result.
 
 ---
 
+### MCP sync targets
+
+`weasley-podex mcp sync` writes the unified config to eight concrete targets:
+Claude, Codex, Gemini, OpenCode, Copilot, Cursor, Antigravity, and Kiro. Grok
+reads Cursor's compatibility config and is not a ninth target. CLI output,
+confirmation text, and tests must derive target names and totals from the keys
+returned by `syncToAll()`; do not duplicate the number `8` as a user-facing
+hard-coded constant.
+
+---
+
 ### Optional JWC runtime helper
 
-JWC is not bundled with the default npm install or Electron sidecar. Use `jaw jwc install` to install the optional external runtime, `jaw jwc doctor` to inspect `JWC_SDK_PATH` readiness, and `jaw jwc clean` to remove the external runtime prefix.
+JWC is not bundled with the default npm install or Electron sidecar. Use `weasley-podex jwc install` to install the optional external runtime, `weasley-podex jwc doctor` to inspect `JWC_SDK_PATH` readiness, and `weasley-podex jwc clean` to remove the external runtime prefix.
 
 ## Command Behavior Notes
 
@@ -166,21 +184,21 @@ JWC is not bundled with the default npm install or Electron sidecar. Use `jaw jw
 - `/interview <request>`: IPABCD I(Interview) 상태 머신으로 진입.
 - `/deliberate <request-or-plan>`: Planner/Architect/Critic 관점으로 계획을 점검.
 - `/planaudit [plan]`: PABCD A에서 직원에게 보낼 읽기 전용 감사 task text를 만든다.
-- `/review [focus] [--fix] [--dispatch]`: `projectDirs` 또는 최근 맥락에서 검증한 git 프로젝트 디렉토리를 리뷰한다. JAW_HOME/`process.cwd()` fallback은 금지한다. 사용자가 `/review 프롬프트`처럼 focus text를 주면 이를 최우선 scope signal로 반영한다. 리뷰 범위는 현재 대화에서 논의 중인 작업 초점을 먼저 잡고, 최근 goal/chat context, 커밋 히스토리, diff, worktree, untracked 파일은 그 범위를 검증하는 근거로 사용한다. `origin/master..HEAD` 같은 git range에 있다는 이유만으로 무관한 최근 커밋을 포함하지 않는다. 결과 Markdown report에는 `Scope Resolution` 근거를 저장한다. `--fix`는 검증된 프로젝트 루트 안의 Critical/High만 현재 `HEAD` 위 새 working-tree patch로 자동 수정하며 기존 커밋을 rewrite하지 않는다.
+- `/review [focus] [--fix] [--dispatch]`: `projectDirs` 또는 최근 맥락에서 검증한 git 프로젝트 디렉토리를 리뷰한다. 내부 compatibility 상수 `WEASLEY_PODEX_HOME`/`process.cwd()` fallback은 금지한다. 사용자가 `/review 프롬프트`처럼 focus text를 주면 이를 최우선 scope signal로 반영한다. 리뷰 범위는 현재 대화에서 논의 중인 작업 초점을 먼저 잡고, 최근 goal/chat context, 커밋 히스토리, diff, worktree, untracked 파일은 그 범위를 검증하는 근거로 사용한다. `origin/master..HEAD` 같은 git range에 있다는 이유만으로 무관한 최근 커밋을 포함하지 않는다. 결과 Markdown report에는 `Scope Resolution` 근거를 저장한다. `--fix`는 검증된 프로젝트 루트 안의 Critical/High만 현재 `HEAD` 위 새 working-tree patch로 자동 수정하며 기존 커밋을 rewrite하지 않는다.
 - `/search <query>`: active search skill 정책을 강제하는 routing command다. local repository search와 external/current/public lookup을 먼저 분류하고, 외부 검색이면 1-3개 focused query로 재작성해 native search로 candidate URL을 찾는다. `browser fetch/open/text/get-dom/snapshot`은 candidate URL이 생긴 뒤 evidence verification에만 사용하며, natural-language query를 그대로 `browser fetch`에 넘기지 않는다.
-- `/goal [set|plan|refine|status|run|done|cancel|pause|resume|clear|reset|history] [args...]`: Persistent goal lifecycle management. `/goal plan [hint]` and `/goalplan [hint]` create a pending plan-mode goal, store the raw hint separately as `planHint`, and require `/goal refine <specific objective>` or `podex goal refine "<specific objective>"` before checkpoints/execution evidence are accepted. Agent pause remains a two-tap audited gate; after first tap, status output and `--json` show derived `pauseGate` while the persisted goal status stays `active`.
+- `/goal [set|plan|refine|status|run|done|cancel|pause|resume|clear|reset|history] [args...]`: Persistent goal lifecycle management. `/goal plan [hint]` and `/goalplan [hint]` create a pending plan-mode goal, store the raw hint separately as `planHint`, and require `/goal refine <specific objective>` or `weasley-podex goal refine "<specific objective>"` before checkpoints/execution evidence are accepted. Agent pause remains a two-tap audited gate; after first tap, status output and `--json` show derived `pauseGate` while the persisted goal status stays `active`.
 - `/gd [note]`: `/goal done --force [note]`의 축약어. `/goal done`의 completion evidence gate를 우회하는 명시적 quick-complete command다.
 - `/team [plan|audit|status|collect|stop] [args...]`: 여러 worker를 병렬로 쓰는 team orchestration helper.
 
-### `jaw dispatch`
+### `weasley-podex dispatch`
 
-- Named employees use `jaw dispatch --agent "Backend" --task "..."`.
-- Ephemeral virtual employees use `jaw dispatch --virtual "security" --task "..."` or `--virtual "Reviewer" --role "Review rollback gaps" --task "..."`.
-- Virtual employees are synthetic dispatch rows only; they do not appear in `jaw employee list` and do not write durable `employee_sessions`.
+- Named employees use `weasley-podex dispatch --agent "Backend" --task "..."`.
+- Ephemeral virtual employees use `weasley-podex dispatch --virtual "security" --task "..."` or `--virtual "Reviewer" --role "Review rollback gaps" --task "..."`.
+- Virtual employees are synthetic dispatch rows only; they do not appear in `weasley-podex employee list` and do not write durable `employee_sessions`.
 - If `--cli`/`--model` are omitted for virtual dispatch, the server resolves the current CLI and uses the registry default model for that CLI.
 - Human dispatch output follows live safe worker progress by default. Use `--quiet` for final-result-only output, or `--json` for parseable machine output without human progress lines.
-- On dispatch polling timeout/disconnect, recovery output is run-aware when possible: `podex worker status <runId>` for safe progress and `podex worker read <runId> --tail 80` only as an explicit raw-output follow-up.
-- Batch dispatch prints one bounded summary per worker. It does not inline full employee stdout; each row carries `runId`, status/preview, and an explicit `podex worker read <runId> --tail 120` recovery command when raw output is needed.
+- On dispatch polling timeout/disconnect, recovery output is run-aware when possible: `weasley-podex worker status <runId>` for safe progress and `weasley-podex worker read <runId> --tail 80` only as an explicit raw-output follow-up.
+- Batch dispatch prints one bounded summary per worker. It does not inline full employee stdout; each row carries `runId`, status/preview, and an explicit `weasley-podex worker read <runId> --tail 120` recovery command when raw output is needed.
 
 ### `/steer <prompt>`
 
@@ -194,7 +212,7 @@ JWC is not bundled with the default npm install or Electron sidecar. Use `jaw jw
 
 ### `/orchestrate` (alias: `/pabcd`)
 
-- PABCD explicit entry. `jaw orchestrate P|A|B|C|D|I|status|reset`는 root CLI transition/control surface.
+- PABCD explicit entry. `weasley-podex orchestrate P|A|B|C|D|I|status|reset`는 root CLI transition/control surface.
 - `I → P` 전환은 기존 orchestration ctx를 유지한다. 첫 Plan 생성 전에도 `interview.request`가 pinned `originalPrompt` fallback이 되므로, 사용자의 "진행/계속" 같은 짧은 승인 문구가 planning task를 덮어쓰지 않는다.
 
 ### `/memory`
@@ -299,7 +317,7 @@ Workflow category commands (`plan`, `interview`, `deliberate`, `planaudit`, `rev
 
 ---
 
-## `jaw dashboard memory` (federation search)
+## `weasley-podex dashboard memory` (federation search)
 
 L2 cross-instance read-only memory search.
 

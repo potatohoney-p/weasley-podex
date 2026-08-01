@@ -32,7 +32,7 @@ export type SaveUploadOptions = {
 };
 
 /**
- * Save a buffer to ~/.podex/uploads/ with a timestamped filename.
+ * Save a buffer to ~/.weasley/podex/uploads/ with a timestamped filename.
  * @param {string} uploadsDir - Absolute path to uploads directory
  * @param {Buffer} buffer - File content
  * @param {string} originalName - Original filename (for extension)

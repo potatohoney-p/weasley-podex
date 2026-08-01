@@ -1,13 +1,13 @@
-﻿import { parseArgs } from 'node:util';
+import { parseArgs } from 'node:util';
 import { existsSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { shouldShowHelp, printAndExit } from '../helpers/help.js';
 import { buildRepoMap, renderRepoMap } from '../../src/workflows/repo-map/index.js';
 
 if (shouldShowHelp(process.argv)) printAndExit(`
-  jaw map — print a ranked structure map
+  weasley-podex map — print a ranked structure map
 
-  Usage: jaw map <path> [--budget <tokens>]
+  Usage: weasley-podex map <path> [--budget <tokens>]
 
   Arguments:
     <path>          File or directory to scan (default: .)
@@ -33,25 +33,25 @@ const targetPath = resolve(positionals[0] ?? '.');
 const budget = Number.parseInt(String(values.budget), 10);
 
 if (!Number.isFinite(budget) || budget <= 0) {
-    console.error('podex map: --budget must be a positive integer.');
+    console.error('weasley-podex map: --budget must be a positive integer.');
     process.exit(1);
 }
 
 try {
     if (!existsSync(targetPath)) {
-        console.error(`podex map: cannot read ${targetPath}. Check the path and try again.`);
+        console.error(`weasley-podex map: cannot read ${targetPath}. Check the path and try again.`);
         process.exit(1);
     }
     const stat = statSync(targetPath);
     if (!stat.isDirectory() && !stat.isFile()) {
-        console.error(`podex map: cannot read ${targetPath}. Expected a file or directory.`);
+        console.error(`weasley-podex map: cannot read ${targetPath}. Expected a file or directory.`);
         process.exit(1);
     }
 
     const repoMap = buildRepoMap(targetPath, { budgetTokens: budget });
     console.log(renderRepoMap(repoMap));
 } catch {
-    console.error(`podex map: cannot read ${targetPath}. Check permissions and try again.`);
+    console.error(`weasley-podex map: cannot read ${targetPath}. Check permissions and try again.`);
     process.exit(1);
 }
 

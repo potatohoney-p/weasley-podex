@@ -1,3 +1,4 @@
+import { getWeasleyPodexEnv } from '../core/weasley-podex-env.js';
 import { readFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
@@ -35,7 +36,7 @@ function isCodexCli(cli: string): boolean {
 }
 
 function openCodexDir(): string {
-    return process.env['podex_OPENCODEX_DIR'] || join(homedir(), '.opencodex');
+    return getWeasleyPodexEnv('OPENCODEX_DIR') || join(homedir(), '.opencodex');
 }
 
 function openCodexRuntimePortPath(): string {

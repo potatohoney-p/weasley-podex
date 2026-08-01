@@ -1,14 +1,14 @@
-﻿# Memory Architecture
+# Memory Architecture
 
-> Internal reference for the podex memory runtime.
+> Internal reference for the weasley-podex memory runtime.
 > Source of truth: `src/memory/runtime.ts`
 
 ---
 
 ## 1. Overview
 
-podex uses a **structured, file-based memory system** backed by Markdown files and a
-SQLite FTS5 full-text index. Every JAW_HOME instance gets its own `memory/structured/`
+Weasley Podex uses a **structured, file-based memory system** backed by Markdown files and a
+SQLite FTS5 full-text index. Every WEASLEY_PODEX_HOME instance gets its own `memory/structured/`
 tree that is created on first use and persists across sessions.
 
 There are two layers:
@@ -26,12 +26,12 @@ initialization.
 
 ## 2. Storage Layout
 
-All paths are relative to `JAW_HOME` (e.g. `~/.podex-XXXX`).
+All paths are relative to the internal `WEASLEY_PODEX_HOME` constant (e.g. `~/.weasley/podex-XXXX`).
 
 ```
 memory/
 ├── MEMORY.md                        ← legacy core memory (User Preferences / Key Decisions / Active Projects)
-└── structured/                      ← getAdvancedMemoryDir()  →  JAW_HOME/memory/structured
+└── structured/                      ← getAdvancedMemoryDir()  →  WEASLEY_PODEX_HOME/memory/structured
     ├── meta.json                    ← AdvancedMeta — schema version, bootstrap status, import counts
     ├── index.sqlite                 ← FTS5 index (chunks + chunks_fts tables)
     ├── .migration.lock              ← transient lock file during migration
@@ -44,13 +44,13 @@ memory/
     │   └── legacy/                  ←   Claude session memory imports
     ├── semantic/                    ← concept-based memories (kind: semantic)
     │   ├── imported/                ←   non-dated legacy markdown imports
-    │   └── kv-imported.md           ←   KV table dump from jaw.db
+    │   └── kv-imported.md           ←   KV table dump from weasley-podex.db
     ├── procedures/                  ← how-to / runbook memories (kind: procedure)
     ├── sessions/                    ← session-scoped scratch (kind: session)
     ├── corrupted/                   ← quarantined files
     └── legacy-unmapped/             ← files that couldn't be classified
 
-backup-memory-v1/                    ← getAdvancedMemoryBackupDir()  →  JAW_HOME/backup-memory-v1
+backup-memory-v1/                    ← getAdvancedMemoryBackupDir()  →  WEASLEY_PODEX_HOME/backup-memory-v1
 ├── memory/                          ←   full copy of legacy memory/ tree
 └── memory-kv.json                   ←   JSON dump of the KV table
 ```
@@ -59,14 +59,14 @@ backup-memory-v1/                    ← getAdvancedMemoryBackupDir()  →  JAW_
 
 | Function                        | Returns                                                |
 |---------------------------------|--------------------------------------------------------|
-| `getAdvancedMemoryDir()`        | `JAW_HOME/memory/structured`                           |
-| `getAdvancedMemoryBackupDir()`  | `JAW_HOME/backup-memory-v1`                            |
-| `getAdvancedFlushFilePath(date)`| `JAW_HOME/memory/structured/episodes/live/<date>.md`   |
+| `getAdvancedMemoryDir()`        | `WEASLEY_PODEX_HOME/memory/structured`                           |
+| `getAdvancedMemoryBackupDir()`  | `WEASLEY_PODEX_HOME/backup-memory-v1`                            |
+| `getAdvancedFlushFilePath(date)`| `WEASLEY_PODEX_HOME/memory/structured/episodes/live/<date>.md`   |
 
 ### Legacy path (pre-migration)
 
 Before the structured layout existed, a standalone `memory-advanced/` directory sat at
-`JAW_HOME/memory-advanced`. `migrateLegacyAdvancedRoot()` copies it into
+`WEASLEY_PODEX_HOME/memory-advanced`. `migrateLegacyAdvancedRoot()` copies it into
 `memory/structured/` on first run if the new root is empty.
 
 ---
@@ -79,7 +79,7 @@ The `AdvancedMeta` type tracks runtime state:
 type AdvancedMeta = {
   schemaVersion: number;           // always 1
   phase: string;                   // "10" (current)
-  homeId: string;                  // instanceId() — unique per JAW_HOME
+  homeId: string;                  // instanceId() — unique per WEASLEY_PODEX_HOME
   jawHome: string;                 // absolute path
   initializedAt: string;           // ISO timestamp
   migrationVersion?: number;       // 1
@@ -92,7 +92,7 @@ type AdvancedMeta = {
   importedCounts?: {
     core: number;      // from MEMORY.md → profile.md
     markdown: number;  // from memory/*.md → episodes/ or semantic/
-    kv: number;        // from jaw.db memory table → semantic/kv-imported.md
+    kv: number;        // from weasley-podex.db memory table → semantic/kv-imported.md
     claude: number;    // from ~/.claude/projects/…/memory → episodes/legacy/
   };
 };
@@ -128,7 +128,7 @@ ensureIntegratedMemoryReady()
        ├─ backupLegacyMemory()               ← full copy to backup-memory-v1/
        ├─ importCoreMemory()                  ← MEMORY.md → profile.md
        ├─ importMarkdownMemory()              ← memory/*.md → episodes/imported or semantic/imported
-       ├─ importKvMemory()                    ← jaw.db KV rows → semantic/kv-imported.md
+       ├─ importKvMemory()                    ← weasley-podex.db KV rows → semantic/kv-imported.md
        ├─ importClaudeSessionMemory()         ← ~/.claude/projects/…/memory → episodes/legacy/
        ├─ reindexAll()                        ← chunk all files → index.sqlite
        └─ writeMeta(bootstrapStatus: 'done')
@@ -141,7 +141,7 @@ ensureIntegratedMemoryReady()
 | `memory/MEMORY.md`       | `importCoreMemory()`          | `structured/profile.md`            | `profile`  |
 | `memory/**/*.md` (dated) | `importMarkdownMemory()`      | `structured/episodes/imported/…`   | `episode`  |
 | `memory/**/*.md` (other) | `importMarkdownMemory()`      | `structured/semantic/imported/…`   | `semantic` |
-| jaw.db `memory` table    | `importKvMemory()`            | `structured/semantic/kv-imported.md`| `semantic` |
+| weasley-podex.db `memory` table | `importKvMemory()`       | `structured/semantic/kv-imported.md`| `semantic` |
 | `~/.claude/projects/…`   | `importClaudeSessionMemory()` | `structured/episodes/legacy/…`     | `episode`  |
 
 Each imported file gets YAML frontmatter with `id`, `home_id`, `kind`, `source`, `trust_level`,
@@ -282,7 +282,7 @@ for indexing:
 ```
 memory.save(filename, content)
   │
-  ├─ append content to JAW_HOME/memory/<filename>
+  ├─ append content to WEASLEY_PODEX_HOME/memory/<filename>
   │
   └─ async post-save hook:
        ├─ if filename starts with "structured/" → reindexIntegratedMemoryFile()
@@ -368,7 +368,7 @@ current user prompt and returns a budget-limited digest:
 ```
 
 This is exposed via:
-- `podex memory status` (CLI)
+- `weasley-podex memory status` (CLI)
 - `command-context.ts` → `getAdvancedMemoryStatus()`
 - `getMemoryStatus()` alias
 
@@ -380,8 +380,8 @@ This is exposed via:
 
 | Export                          | Signature                                             | Purpose                              |
 |---------------------------------|-------------------------------------------------------|--------------------------------------|
-| `getAdvancedMemoryDir`         | `() → string`                                         | `JAW_HOME/memory/structured`        |
-| `getAdvancedMemoryBackupDir`   | `() → string`                                         | `JAW_HOME/backup-memory-v1`         |
+| `getAdvancedMemoryDir`         | `() → string`                                         | `WEASLEY_PODEX_HOME/memory/structured`        |
+| `getAdvancedMemoryBackupDir`   | `() → string`                                         | `WEASLEY_PODEX_HOME/backup-memory-v1`         |
 | `getAdvancedFlushFilePath`     | `(date?: string) → string`                            | Today's live episode file           |
 
 ### Config & validation
@@ -512,19 +512,19 @@ Provider options (for keyword expansion only, not search):
 
 | Layer | Command surface | Scope | Write path |
 |------|-----------------|-------|------------|
-| **L1 instance-local** | `jaw memory search/read/save/context` | Current `JAW_HOME` structured memory | read/write |
-| **L2 dashboard federation (memory)** | `jaw dashboard memory search/read/instances` | Memory across dashboard-managed `~/.podex*` instances | read-only |
-| **L2 dashboard federation (chat)** | `jaw dashboard chat search` | Chat history in jaw.db across dashboard-managed instances | read-only |
+| **L1 instance-local** | `weasley-podex memory search/read/save/context` | Current `WEASLEY_PODEX_HOME` structured memory | read/write |
+| **L2 dashboard federation (memory)** | `weasley-podex dashboard memory search/read/instances` | Memory across dashboard-managed `~/.weasley/podex*` instances | read-only |
+| **L2 dashboard federation (chat)** | `weasley-podex dashboard chat search` | Chat history in weasley-podex.db across dashboard-managed instances | read-only |
 
 Operational rules:
 
-- **L1 is the default.** Search past decisions, preferences, and project facts with `jaw memory search` first.
+- **L1 is the default.** Search past decisions, preferences, and project facts with `weasley-podex memory search` first.
 - Use **L2** only when the user explicitly asks for dashboard memory, all instances, another instance/home, or cross-instance context.
 - L2 is broader, not safer — stale context from other instances can mix in.
-- **Writes always go to L1:** `jaw memory save <file> <content>` on the current instance only.
-- `jaw memory context <file>` finds chat messages in a time window around a memory file's creation (`created_at` frontmatter or mtime) plus name/description keywords — cross-session, not session-bound.
-- `jaw memory search <query> --chat` runs L1 memory search then best-effort `/api/messages/search` (recent 7 days) to merge chat history.
-- L2 chat uses `jaw dashboard chat search` with LIKE search over other instances' jaw.db; schema probe detects `tool_log` column presence; native module mismatch or missing DB surfaces as warnings.
+- **Writes always go to L1:** `weasley-podex memory save <file> <content>` on the current instance only.
+- `weasley-podex memory context <file>` finds chat messages in a time window around a memory file's creation (`created_at` frontmatter or mtime) plus name/description keywords — cross-session, not session-bound.
+- `weasley-podex memory search <query> --chat` runs L1 memory search then best-effort `/api/messages/search` (recent 7 days) to merge chat history.
+- L2 chat uses `weasley-podex dashboard chat search` with LIKE search over other instances' `weasley-podex.db`; schema probe detects `tool_log` column presence; native module mismatch or missing DB surfaces as warnings. Exact legacy `jaw.db` files remain readable during migration.
 - **Embedding is an L2 dashboard add-on and defaults OFF.** Until configured, FTS5/local search remains the default.
 
 See also: `structure/memory_architecture.md` (Korean operational reference, updated 2026-06-27).
@@ -578,7 +578,7 @@ OFF → CONFIGURED → INDEXING → ACTIVE_HYBRID / ACTIVE_EMBEDDING
 
 ### Config file
 
-`~/.podex-dashboard/embedding.json`:
+`~/.weasley/podex-dashboard/embedding.json`:
 
 | Key | Example | Description |
 |-----|---------|-------------|
@@ -589,5 +589,5 @@ OFF → CONFIGURED → INDEXING → ACTIVE_HYBRID / ACTIVE_EMBEDDING
 | `searchMode` | `"hybrid"` | `hybrid\|embedding\|fts5` |
 | `dimensions` | `1536` | Auto-set per provider |
 
-CLI inspection: `jaw dashboard memory state`, `jaw dashboard memory estimate`, `jaw dashboard memory config get`.
+CLI inspection: `weasley-podex dashboard memory state`, `weasley-podex dashboard memory estimate`, `weasley-podex dashboard memory config get`.
 

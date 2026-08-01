@@ -45,7 +45,7 @@ export function recordError(cli: string, type: string): void {
     if (recent.length >= cfg.threshold && (now - lastAlertAt) > cfg.cooldownMs) {
         lastAlertAt = now;
         const lastType = recent[recent.length - 1]?.type || 'unknown';
-        const msg = `🚨 jaw Alert: ${cli} 연속 실패\n` +
+        const msg = `🚨 Weasley Podex Alert: ${cli} 연속 실패\n` +
             `━━━━━━━━━━━━━━━━━\n` +
             `상태: ${lastType} ${recent.length}회 (${Math.round(cfg.windowMs / 60_000)}분)\n` +
             `━━━━━━━━━━━━━━━━━\n` +
@@ -75,11 +75,11 @@ export function initAlertDelivery(): void {
             void sendChannelOutput({ type: 'text', text, channel: ch as MessengerChannel })
                 .then((result) => {
                     if (!result.ok) {
-                        console.warn(`[jaw:alert] delivery to ${ch} failed:`, result.error);
+                        console.warn(`[weasley-podex:alert] delivery to ${ch} failed:`, result.error);
                     }
                 })
                 .catch((err) => {
-                    console.warn(`[jaw:alert] delivery to ${ch} threw:`, (err as Error).message);
+                    console.warn(`[weasley-podex:alert] delivery to ${ch} threw:`, (err as Error).message);
                 });
         }
     });

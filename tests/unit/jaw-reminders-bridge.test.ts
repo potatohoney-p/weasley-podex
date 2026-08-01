@@ -180,31 +180,31 @@ test('loadJawRemindersSnapshot returns ok with the snapshot', async () => {
 });
 
 test('resolveDefaultSnapshotPath honors env override', () => {
-  const original = process.env['JAW_REMINDERS_SNAPSHOT_PATH'];
-  process.env['JAW_REMINDERS_SNAPSHOT_PATH'] = '/tmp/custom-bridge.json';
+  const original = process.env['WEASLEY_PODEX_REMINDERS_SNAPSHOT_PATH'];
+  process.env['WEASLEY_PODEX_REMINDERS_SNAPSHOT_PATH'] = '/tmp/custom-bridge.json';
   try {
     assert.equal(resolveDefaultSnapshotPath(), '/tmp/custom-bridge.json');
   } finally {
     if (original === undefined) {
-      delete process.env['JAW_REMINDERS_SNAPSHOT_PATH'];
+      delete process.env['WEASLEY_PODEX_REMINDERS_SNAPSHOT_PATH'];
     } else {
-      process.env['JAW_REMINDERS_SNAPSHOT_PATH'] = original;
+      process.env['WEASLEY_PODEX_REMINDERS_SNAPSHOT_PATH'] = original;
     }
   }
 });
 
 test('resolveDefaultSnapshotPath uses Tauri identifier on darwin', () => {
-  const original = process.env['JAW_REMINDERS_SNAPSHOT_PATH'];
-  delete process.env['JAW_REMINDERS_SNAPSHOT_PATH'];
+  const original = process.env['WEASLEY_PODEX_REMINDERS_SNAPSHOT_PATH'];
+  delete process.env['WEASLEY_PODEX_REMINDERS_SNAPSHOT_PATH'];
   try {
     if (process.platform === 'darwin') {
       const path = resolveDefaultSnapshotPath();
       assert.ok(path);
-      assert.match(path!, /ai\.lidge\.jaw\.reminders\/reminders\.json$/);
+      assert.match(path!, /(?:com\.weasley\.podex\.reminders|ai\.lidge\.jaw\.reminders)\/reminders\.json$/);
     }
   } finally {
     if (original !== undefined) {
-      process.env['JAW_REMINDERS_SNAPSHOT_PATH'] = original;
+      process.env['WEASLEY_PODEX_REMINDERS_SNAPSHOT_PATH'] = original;
     }
   }
 });

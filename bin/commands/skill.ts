@@ -1,22 +1,22 @@
-﻿/**
- * podex skill — Phase 12.1.6
+/**
+ * weasley-podex skill — Phase 12.1.6
  * Skill management: list, install, remove, info.
  *
  * Usage:
- *   podex skill                    # list installed skills
- *   podex skill install <name>     # install from Codex or GitHub
- *   podex skill remove <name>      # delete a skill
- *   podex skill info <name>        # show SKILL.md content
+ *   weasley-podex skill                    # list installed skills
+ *   weasley-podex skill install <name>     # install from Codex or GitHub
+ *   weasley-podex skill remove <name>      # delete a skill
+ *   weasley-podex skill info <name>        # show SKILL.md content
  */
 import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, cpSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { execSync } from 'node:child_process';
-import { JAW_HOME, SKILLS_DIR } from '../../src/core/config.js';
+import { WEASLEY_PODEX_HOME, SKILLS_DIR } from '../../src/core/config.js';
 import { isDiscoverableSkillDirName } from '../../lib/mcp/skills-utils.js';
 
 const CODEX_SKILLS = join(homedir(), '.codex', 'skills');
-const REF_DIR = join(JAW_HOME, 'skills_ref');
+const REF_DIR = join(WEASLEY_PODEX_HOME, 'skills_ref');
 
 type RegistrySkill = {
     category?: string;
@@ -148,7 +148,7 @@ switch (sub) {
     case 'install': {
         const force = process.argv.includes('--force');
         if (!arg || arg === '--force') {
-            console.log(`\n  Usage: podex skill install <name>\n`);
+            console.log(`\n  Usage: weasley-podex skill install <name>\n`);
             console.log(`  Options:`);
             console.log(`    --force    Overwrite existing skill\n`);
             process.exit(1);
@@ -189,14 +189,14 @@ switch (sub) {
             console.log(`  ${c.dim}${ghResult.path}${c.reset}\n`);
         } else {
             console.log(`  ${c.red}❌ "${arg}" 스킬을 찾을 수 없습니다${c.reset}`);
-            console.log(`  ${c.dim}직접 생성: mkdir -p ~/.podex/skills/${arg} && touch ~/.podex/skills/${arg}/SKILL.md${c.reset}\n`);
+            console.log(`  ${c.dim}직접 생성: mkdir -p ~/.weasley/podex/skills/${arg} && touch ~/.weasley/podex/skills/${arg}/SKILL.md${c.reset}\n`);
         }
         break;
     }
 
     case 'remove': {
         if (!arg) {
-            console.log(`  Usage: podex skill remove <name>`);
+            console.log(`  Usage: weasley-podex skill remove <name>`);
             process.exit(1);
         }
         const target = join(SKILLS_DIR, arg);
@@ -212,7 +212,7 @@ switch (sub) {
     case 'read':
     case 'info': {
         if (!arg) {
-            console.log(`  Usage: podex skill info <name>`);
+            console.log(`  Usage: weasley-podex skill info <name>`);
             process.exit(1);
         }
         const resolved = resolveSkillReadPath(arg);
@@ -253,8 +253,8 @@ switch (sub) {
                     console.log(`    ${c.cyan}•${c.reset} ${c.bold}${s.name}${c.reset}${s.desc ? `  ${c.dim}${s.desc}${c.reset}` : ''}${registryHint(s.meta)}`);
                 }
             }
-            console.log(`\n  ${c.dim}podex skill install <name>  — 스킬 설치${c.reset}`);
-            console.log(`  ${c.dim}podex skill info <name>     — 상세 보기${c.reset}\n`);
+            console.log(`\n  ${c.dim}weasley-podex skill install <name>  — 스킬 설치${c.reset}`);
+            console.log(`  ${c.dim}weasley-podex skill info <name>     — 상세 보기${c.reset}\n`);
             break;
         }
         const skills = listSkills();
@@ -266,11 +266,11 @@ switch (sub) {
                 console.log(`  ${c.cyan}•${c.reset} ${c.bold}${s.name}${c.reset}${s.desc ? `  ${c.dim}${s.desc}${c.reset}` : ''}`);
             }
         }
-        console.log(`\n  ${c.dim}podex skill install <name>  — 스킬 설치${c.reset}`);
-        console.log(`  ${c.dim}podex skill info <name>     — 상세 보기${c.reset}`);
-        console.log(`  ${c.dim}podex skill remove <name>   — 삭제${c.reset}`);
-        console.log(`  ${c.dim}podex skill reset           — 초기화 (등록 스킬만 복원, 커스텀 보존)${c.reset}`);
-        console.log(`  ${c.dim}podex skill reset hard      — 전체 삭제 후 재설치${c.reset}\n`);
+        console.log(`\n  ${c.dim}weasley-podex skill install <name>  — 스킬 설치${c.reset}`);
+        console.log(`  ${c.dim}weasley-podex skill info <name>     — 상세 보기${c.reset}`);
+        console.log(`  ${c.dim}weasley-podex skill remove <name>   — 삭제${c.reset}`);
+        console.log(`  ${c.dim}weasley-podex skill reset           — 초기화 (등록 스킬만 복원, 커스텀 보존)${c.reset}`);
+        console.log(`  ${c.dim}weasley-podex skill reset hard      — 전체 삭제 후 재설치${c.reset}\n`);
         break;
     }
 
@@ -310,7 +310,7 @@ switch (sub) {
             console.log(`\n  ${c.green}✅ 초기화 완료!${c.reset}`);
             const activeCount = readdirSync(SKILLS_DIR, { withFileTypes: true })
                 .filter(d => d.isDirectory() && isDiscoverableSkillDirName(d.name)).length;
-            const REF_DIR = join(JAW_HOME, 'skills_ref');
+            const REF_DIR = join(WEASLEY_PODEX_HOME, 'skills_ref');
             const refCount = readdirSync(REF_DIR, { withFileTypes: true })
                 .filter(d => d.isDirectory() && isDiscoverableSkillDirName(d.name)).length;
             console.log(`  ${c.cyan}⚡ Active: ${activeCount}개${c.reset}`);

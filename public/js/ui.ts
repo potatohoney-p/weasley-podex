@@ -21,7 +21,6 @@ import { currentProcessBlockFromDom, hasAgentToolBlock, normalizeAgentToolBlocks
 import { mergeExplicitAndLiveToolLogs, normalizeMessageToolLog, parseToolLog, sanitizedToolLogEntries, sanitizedToolLogJson, sanitizedToolLogJsonFromEntries, toProcessSteps, type ActiveRunSnapshot, type MessageItem, type QueuedOverlayItem } from './features/process-log-adapter.js';
 import { setStatus, updateQueueBadge, updateStatMsgs, loadStats } from './features/ui-status.js';
 import { ICONS, resolveIcon, emojiToStatus, isCompletionEmoji } from './icons.js';
-import { providerIcon } from './provider-icons.js';
 import { findProcessStepByIdentity, findRunningProcessStepMatch, sameProcessStepIdentity } from './features/process-step-match.js';
 import {
     parseToolLogBounded,

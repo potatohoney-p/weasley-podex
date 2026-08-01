@@ -12,8 +12,8 @@ export const AGY_FULLTEXT_MAX_CHARS = 8_388_608;
 /** Live prefix-diff display freezes past this bound (per-chunk cost guard);
  * accumulation continues to AGY_FULLTEXT_MAX_CHARS and is promoted at close. */
 export const AGY_LIVE_DISPLAY_MAX_CHARS = 262_144;
-export const AGY_FULLTEXT_TRUNCATION_NOTICE = '\n\n[jaw:agy] stdout capture truncated at 8 MiB safety bound';
-export const AGY_PLANNER_ONLY_NOTICE = '[jaw:agy] Intermediate planner output was withheld; no final answer was produced.';
+export const AGY_FULLTEXT_TRUNCATION_NOTICE = '\n\n[weasley-podex:agy] stdout capture truncated at 8 MiB safety bound';
+export const AGY_PLANNER_ONLY_NOTICE = '[weasley-podex:agy] Intermediate planner output was withheld; no final answer was produced.';
 
 export function isAgyIntermediatePlannerText(text: string): boolean {
     const trimmed = text.trim();
@@ -110,7 +110,7 @@ export function describeAgyFinalSource(
     ctx: Pick<SpawnContext, 'agyFinalPlannerSeen' | 'agyFinalPlannerText' | 'agyFullTextTruncated' | 'fullText'>,
 ): string {
     const source = ctx.agyFinalPlannerSeen && ctx.agyFinalPlannerText ? 'transcript' : 'stdout-fallback';
-    return `[jaw:agy:final] source=${source} chars=${ctx.fullText.length} truncated=${ctx.agyFullTextTruncated ? 1 : 0}`;
+    return `[weasley-podex:agy:final] source=${source} chars=${ctx.fullText.length} truncated=${ctx.agyFullTextTruncated ? 1 : 0}`;
 }
 
 export type { AgyTranscriptMode };
@@ -145,10 +145,10 @@ function sanitizeWatchdogValue(value: unknown, fallback = 'none'): string {
 
 function sanitizeWatchdogToolLabel(value: unknown): string {
     const label = sanitizeWatchdogValue(value, 'tool');
-    if (/\[(?:Current podex task|Operational Context|Recent context|podex AGY BOOTSTRAP)\]/i.test(label)) {
+    if (/\[(?:Current weasley-podex task|Operational Context|Recent context|podex AGY BOOTSTRAP)\]/i.test(label)) {
         return 'transcript tool';
     }
-    if (/podex_BOOTSTRAP_SHA=|USER_REQUEST|SECRET|PROMPT/i.test(label)) {
+    if (/WEASLEY_PODEX_BOOTSTRAP_SHA=|USER_REQUEST|SECRET|PROMPT/i.test(label)) {
         return 'transcript tool';
     }
     return label;

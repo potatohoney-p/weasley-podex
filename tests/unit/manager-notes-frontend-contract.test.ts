@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..', '..');
 
 function read(path: string): string {
-    return readFileSync(join(projectRoot, path), 'utf8');
+    return readFileSync(join(projectRoot, path), 'utf8').replace(/\r\n/g, '\n');
 }
 
 test('Notes workspace frontend files and API wrapper exist', () => {

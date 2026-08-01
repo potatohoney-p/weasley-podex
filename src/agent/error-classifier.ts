@@ -25,7 +25,7 @@ export function classifyExitError(
         || combined.includes('RESOURCE_EXHAUSTED')
         || combined.includes('Too Many Requests');
     // Claude Code owns its own rate-limit wait/retry behavior. Treating these
-    // progress messages as Jaw-level 429 failures causes unnecessary retries or
+    // progress messages as Weasley Podex-level 429 failures causes unnecessary retries or
     // fallback away from a request that Claude may still complete.
     const isClaudeRateLimit = rawIs429 && isClaudeLikeCli(cli);
     const is429 = rawIs429 && !isClaudeRateLimit;

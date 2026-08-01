@@ -2,7 +2,7 @@
     package: 'podex',
     version: '1.7.37-preview.20260427171130',
     license: 'MIT',
-    note: 'Context packaging behavior is implemented locally by podex web-ai.',
+    note: 'Context packaging behavior is implemented locally by Weasley Podex web-ai.',
 } as const;
 
 export const DEFAULT_MAX_FILE_SIZE_BYTES = 1_000_000;
