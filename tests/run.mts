@@ -53,5 +53,13 @@ else files = [...list(TESTS_DIR, false), ...list(join(TESTS_DIR, 'unit'), false)
 if (files.length === 0) { console.error('[tests/run] no test files matched'); process.exit(1); }
 let failures = 0;
 console.error(`[tests/run] files=${files.length} concurrency=${concurrency === true ? 'auto' : concurrency}`);
-run({ files, concurrency, watch, isolation: 'process' }).on('test:fail', () => { failures += 1; }).compose(spec).pipe(process.stdout);
+run({
+    files,
+    concurrency,
+    watch,
+    isolation: 'process',
+    // Some integration tests intentionally open long-lived transports. Once
+    // every known test has finished, do not let those handles stall CI.
+    forceExit: !watch,
+}).on('test:fail', () => { failures += 1; }).compose(spec).pipe(process.stdout);
 if (!watch) process.on('beforeExit', () => { if (failures > 0 && !process.exitCode) process.exitCode = 1; });

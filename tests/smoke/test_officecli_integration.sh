@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ═══════════════════════════════════════════════════════════════
 #  OfficeCLI Integration Smoke Tests for podex
 #  Run from podex root: bash tests/smoke/test_officecli_integration.sh

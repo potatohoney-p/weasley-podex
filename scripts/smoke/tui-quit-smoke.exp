@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env expect -f
+#!/usr/bin/env expect -f
 
 if {[info exists env(WEASLEY_PODEX_TUI_SMOKE_TIMEOUT)]} {
     set timeout $env(WEASLEY_PODEX_TUI_SMOKE_TIMEOUT)

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ═══════════════════════════════════════════════════════════════
 #  install-officecli.sh — Install the Apache-2.0 OfficeCLI binary
 #  Default: iOfficeAI/OfficeCLI (verified public upstream releases)

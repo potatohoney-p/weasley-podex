@@ -141,6 +141,13 @@ try {
     );
 } catch {
     console.log('  ⚠️ AGENTS.md regeneration skipped (run weasley-podex --home <target> init to fix)');
+} finally {
+    // Prompt generation imports the database module, which initializes SQLite
+    // as a side effect. A clone must still begin without source database state;
+    // the runtime will create its own fresh database on first real access.
+    for (const suffix of ['', '-wal', '-shm']) {
+        fs.rmSync(path.join(target, `weasley-podex.db${suffix}`), { force: true });
+    }
 }
 
 // ── 9. Summary ──

@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 PLATFORM="${1:?Usage: bundle-sidecar.sh <platform> <arch>}"
