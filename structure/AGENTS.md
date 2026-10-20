@@ -4,7 +4,7 @@
 
 - Keep this folder aligned with the live `podex` tree. The current hub covers 19 Markdown docs plus 5 support files.
 - Update `INDEX.md` whenever a doc is added, removed, renamed, or re-scoped. Keep the doc map, tier list, and quick links in sync.
-- Update `str_func.md` and `verify-counts.sh` together when source counts, `server.ts`, `src/routes/*`, `src/cli/handlers*.ts`, `src/cli/api-auth.ts`, `src/manager/*` (multi-instance dashboard), `bin/commands/*`, `bin/star-prompt.ts`, `tests/`, `public/`, or generated-dist exclusions change. The verifier now checks every file-tree `(NNNL)` entry in `str_func.md`, not only curated hotspots.
+- Update `str_func.md` and `verify-counts.sh` together when source counts, `server.ts`, `src/routes/*`, `src/cli/handlers*.ts`, `src/cli/api-auth.ts`, `src/manager/*` (multi-instance dashboard), `bin/commands/*`, `bin/star-prompt.ts`, `tests/`, `public/`, or generated-dist exclusions change. The verifier checks every file-tree `(NNNL)` entry and uses `scripts/docs/count-inventory.mjs` for aggregates, without shell argument limits. Public source totals exclude generated `dist` trees and `.DS_Store`; absent optional build output counts as zero.
 - `stream-events.md` is the SSE/WS/event-trace companion for `frontend.md`, `server_api.md`, and the ProcessBlock pipeline. Keep `GET /api/events`, replay behavior, fallback WS, and `agent:claude-e:*` naming current.
 - `normalize-status.ts` and `status-scope.json` feed the fin-status audit flow. If their contract changes, update `audit-fin-status.sh` and any related docs in this folder.
 - When a command, API, UI, memory, or orchestration surface changes, sync the relevant doc(s) in this directory in the same change.
