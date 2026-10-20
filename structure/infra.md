@@ -75,7 +75,7 @@ aliases: [Weasley Podex Infra, infrastructure modules, core runtime]
 | `typecheck` | `tsc --noEmit` |
 | `typecheck:frontend` | `tsc --noEmit -p tsconfig.frontend.json` |
 | `gate:typecheck` / `gate:tests` / `gate:*` | `node scripts/release-gates.mjs <gate>` |
-| `gate:all` | `node scripts/release-gates.mjs` |
+| `gate:all` | `node scripts/release-gates.mjs` — current Node launches local npm/tsx JavaScript entrypoints on Windows and POSIX; no shell command interpolation |
 | `prepublishOnly` | `npm run build && npm run build:frontend && npm run check:frontend-build-output` |
 | `electron:dev` | `concurrently -k -n server,electron "node scripts/electron-dev-manager.mjs" "npm --prefix electron run dev"` |
 | `electron:build` | `npm --prefix electron run build` |

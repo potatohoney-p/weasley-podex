@@ -18,12 +18,31 @@ import { auditClaims, formatClaimAuditReport } from './claim-audit.mjs';
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 function run(cmd, args, opts = {}) {
-    return spawnSync(cmd, args, {
+    if (cmd === 'node') cmd = process.execPath;
+    if (cmd === 'npm') {
+        // npm.cmd cannot be spawned without a shell on Windows. Launch its JS
+        // entrypoint with this Node runtime; keep arguments out of shell text.
+        const nodeDir = path.dirname(process.execPath);
+        const candidates = [
+            process.env.npm_execpath,
+            path.join(nodeDir, 'node_modules/npm/bin/npm-cli.js'),
+            path.join(nodeDir, '../lib/node_modules/npm/bin/npm-cli.js'),
+        ];
+        const cli = candidates.find(p => p && path.basename(p) === 'npm-cli.js' && fs.existsSync(p));
+        if (cli) { cmd = process.execPath; args = [cli, ...args]; }
+    }
+    const result = spawnSync(cmd, args, {
         cwd: repoRoot,
         stdio: opts.stdio || 'pipe',
         encoding: 'utf8',
         ...opts,
     });
+    if (result.error && !result.stderr) result.stderr = result.error.message;
+    return result;
+}
+
+function runTsx(args, opts = {}) {
+    return run('node', [path.join(repoRoot, 'node_modules/tsx/dist/cli.mjs'), ...args], opts);
 }
 
 function readFile(rel) {
@@ -72,11 +91,11 @@ const GATES = {
                 return { ok: false, detail: 'no Phase 22 mirror tests found' };
             }
             const args = [
-                'tsx', '--import', './tests/setup/test-home.ts',
+                '--import', './tests/setup/test-home.ts',
                 '--experimental-test-module-mocks', '--test',
                 ...targets,
             ];
-            const r = run('npx', args);
+            const r = runTsx(args);
             if (r.status !== 0) {
                 return { ok: false, detail: `tests failed:\n${(r.stdout || r.stderr || '').slice(-2000)}` };
             }
@@ -171,11 +190,8 @@ const GATES = {
         description: 'observe-actions module loads and produces ranked candidates from a fixture snapshot (G02 mirror)',
         async check() {
             try {
-                const { spawnSync } = await import('node:child_process');
-                const path = await import('node:path');
-                const tsxBin = path.resolve(repoRoot, 'node_modules/.bin/tsx');
-                const fixtureScript = `import { buildObserveActions, formatObserveActions } from '${path.resolve(repoRoot, 'src/browser/web-ai/observe-actions.ts').replace(/\\\\/g, '/')}';\nconst r = buildObserveActions({ snapshotId: 'gate-fixture', url: null, refs: { '@e1': { role: 'button', name: 'Sign in' }, '@e2': { role: 'textbox', name: 'Email' }, '@e3': { role: 'link', name: 'Forgot password?' } } }, 'click sign in');\nif (!r || !Array.isArray(r.candidates) || r.candidates.length < 3) { console.error('candidates<3'); process.exit(2); }\nif (r.candidates[0].ref !== '@e1' || r.candidates[0].action !== 'click') { console.error('rank-fail'); process.exit(3); }\nif (!r.candidates.every(c => c.args.snapshotId === 'gate-fixture')) { console.error('snapId-missing'); process.exit(4); }\nconst t = formatObserveActions(r); if (!t || typeof t !== 'string') { console.error('format-fail'); process.exit(5); }\nconsole.log('OK ' + r.candidates.length);`;
-                const res = spawnSync(tsxBin, ['--eval', fixtureScript], { encoding: 'utf8' });
+                const fixtureScript = `import { buildObserveActions, formatObserveActions } from ${JSON.stringify(path.resolve(repoRoot, 'src/browser/web-ai/observe-actions.ts'))};\nconst r = buildObserveActions({ snapshotId: 'gate-fixture', url: null, refs: { '@e1': { role: 'button', name: 'Sign in' }, '@e2': { role: 'textbox', name: 'Email' }, '@e3': { role: 'link', name: 'Forgot password?' } } }, 'click sign in');\nif (!r || !Array.isArray(r.candidates) || r.candidates.length < 3) { console.error('candidates<3'); process.exit(2); }\nif (r.candidates[0].ref !== '@e1' || r.candidates[0].action !== 'click') { console.error('rank-fail'); process.exit(3); }\nif (!r.candidates.every(c => c.args.snapshotId === 'gate-fixture')) { console.error('snapId-missing'); process.exit(4); }\nconst t = formatObserveActions(r); if (!t || typeof t !== 'string') { console.error('format-fail'); process.exit(5); }\nconsole.log('OK ' + r.candidates.length);`;
+                const res = runTsx(['--eval', fixtureScript]);
                 if (res.status !== 0) {
                     return { ok: false, detail: `observe-actions fixture failed: status=${res.status} stderr=${(res.stderr || '').trim()} stdout=${(res.stdout || '').trim()}` };
                 }
@@ -189,12 +205,9 @@ const GATES = {
         description: 'observation-bundle module emits ObservationBundleV1 from a fixture (G06 mirror)',
         async check() {
             try {
-                const { spawnSync } = await import('node:child_process');
-                const path = await import('node:path');
-                const tsxBin = path.resolve(repoRoot, 'node_modules/.bin/tsx');
-                const modPath = path.resolve(repoRoot, 'src/browser/web-ai/observation-bundle.ts').replace(/\\\\/g, '/');
-                const fixtureScript = `import { buildObservationBundle, OBSERVATION_BUNDLE_SCHEMA_VERSION } from '${modPath}';\nconst b = buildObservationBundle({ url: 'https://x.test/', viewport: { width: 800, height: 600 }, snapshotNodes: [{ ref: '@e1', role: 'button', name: 'Go' }, { ref: '...', role: 'note', name: 't' }], boxes: { '@e1': { x: 1, y: 2, width: 10, height: 20 } }, textSummary: 'hello' });\nif (b.schemaVersion !== OBSERVATION_BUNDLE_SCHEMA_VERSION) { console.error('schema-mismatch'); process.exit(2); }\nif (b.refs.length !== 1) { console.error('ref-filter-fail'); process.exit(3); }\nif (!b.refs[0].box || b.refs[0].box.width !== 10) { console.error('box-attach-fail'); process.exit(4); }\nif (b.stats.refCount !== 1 || b.stats.boxCount !== 1 || b.stats.textChars !== 5) { console.error('stats-fail'); process.exit(5); }\nconsole.log('OK refs=' + b.stats.refCount + ' boxes=' + b.stats.boxCount + ' text=' + b.stats.textChars + 'ch');`;
-                const res = spawnSync(tsxBin, ['--eval', fixtureScript], { encoding: 'utf8' });
+                const modPath = JSON.stringify(path.resolve(repoRoot, 'src/browser/web-ai/observation-bundle.ts'));
+                const fixtureScript = `import { buildObservationBundle, OBSERVATION_BUNDLE_SCHEMA_VERSION } from ${modPath};\nconst b = buildObservationBundle({ url: 'https://x.test/', viewport: { width: 800, height: 600 }, snapshotNodes: [{ ref: '@e1', role: 'button', name: 'Go' }, { ref: '...', role: 'note', name: 't' }], boxes: { '@e1': { x: 1, y: 2, width: 10, height: 20 } }, textSummary: 'hello' });\nif (b.schemaVersion !== OBSERVATION_BUNDLE_SCHEMA_VERSION) { console.error('schema-mismatch'); process.exit(2); }\nif (b.refs.length !== 1) { console.error('ref-filter-fail'); process.exit(3); }\nif (!b.refs[0].box || b.refs[0].box.width !== 10) { console.error('box-attach-fail'); process.exit(4); }\nif (b.stats.refCount !== 1 || b.stats.boxCount !== 1 || b.stats.textChars !== 5) { console.error('stats-fail'); process.exit(5); }\nconsole.log('OK refs=' + b.stats.refCount + ' boxes=' + b.stats.boxCount + ' text=' + b.stats.textChars + 'ch');`;
+                const res = runTsx(['--eval', fixtureScript]);
                 if (res.status !== 0) {
                     return { ok: false, detail: `observation-bundle fixture failed: status=${res.status} stderr=${(res.stderr || '').trim()} stdout=${(res.stdout || '').trim()}` };
                 }
@@ -208,12 +221,9 @@ const GATES = {
         description: 'action-breadth catalog exposes the agreed primitive set (G03 mirror)',
         async check() {
             try {
-                const { spawnSync } = await import('node:child_process');
-                const path = await import('node:path');
-                const tsxBin = path.resolve(repoRoot, 'node_modules/.bin/tsx');
-                const modPath = path.resolve(repoRoot, 'src/browser/web-ai/action-breadth.ts').replace(/\\\\/g, '/');
-                const fixtureScript = `import { BROWSER_PRIMITIVES, listPrimitiveCommands, BROWSER_PRIMITIVE_SCHEMA_VERSION, auditPrimitiveCoverage } from '${modPath}';\nif (BROWSER_PRIMITIVE_SCHEMA_VERSION !== 'browser-primitives-v1') { console.error('schema-mismatch'); process.exit(2); }\nif (BROWSER_PRIMITIVES.length < 18) { console.error('too-few'); process.exit(3); }\nconst cmds = new Set(listPrimitiveCommands());\nfor (const c of ['select','check','uncheck','upload','drag','scroll','wait-for']) { if (!cmds.has(c)) { console.error('missing:'+c); process.exit(4); } }\nconst fake = [...BROWSER_PRIMITIVES].map(p => 'case ' + JSON.stringify(p.command) + ':').join('\\n');\nconst r = auditPrimitiveCoverage(fake);\nif (!r.ok || r.missing.length !== 0) { console.error('audit-fail'); process.exit(5); }\nconsole.log('OK ' + BROWSER_PRIMITIVES.length + ' primitives');`;
-                const res = spawnSync(tsxBin, ['--eval', fixtureScript], { encoding: 'utf8' });
+                const modPath = JSON.stringify(path.resolve(repoRoot, 'src/browser/web-ai/action-breadth.ts'));
+                const fixtureScript = `import { BROWSER_PRIMITIVES, listPrimitiveCommands, BROWSER_PRIMITIVE_SCHEMA_VERSION, auditPrimitiveCoverage } from ${modPath};\nif (BROWSER_PRIMITIVE_SCHEMA_VERSION !== 'browser-primitives-v1') { console.error('schema-mismatch'); process.exit(2); }\nif (BROWSER_PRIMITIVES.length < 18) { console.error('too-few'); process.exit(3); }\nconst cmds = new Set(listPrimitiveCommands());\nfor (const c of ['select','check','uncheck','upload','drag','scroll','wait-for']) { if (!cmds.has(c)) { console.error('missing:'+c); process.exit(4); } }\nconst fake = [...BROWSER_PRIMITIVES].map(p => 'case ' + JSON.stringify(p.command) + ':').join('\\n');\nconst r = auditPrimitiveCoverage(fake);\nif (!r.ok || r.missing.length !== 0) { console.error('audit-fail'); process.exit(5); }\nconsole.log('OK ' + BROWSER_PRIMITIVES.length + ' primitives');`;
+                const res = runTsx(['--eval', fixtureScript]);
                 if (res.status !== 0) {
                     return { ok: false, detail: `action-breadth fixture failed: status=${res.status} stderr=${(res.stderr || '').trim()} stdout=${(res.stdout || '').trim()}` };
                 }
@@ -227,12 +237,9 @@ const GATES = {
         description: 'action-memory cache returns hit only when DOM signature matches (G07 mirror)',
         async check() {
             try {
-                const { spawnSync } = await import('node:child_process');
-                const path = await import('node:path');
-                const tsxBin = path.resolve(repoRoot, 'node_modules/.bin/tsx');
-                const modPath = path.resolve(repoRoot, 'src/browser/web-ai/action-memory.ts').replace(/\\\\/g, '/');
-                const fixtureScript = `import { createActionMemory, validateMemoryHit, ACTION_MEMORY_SCHEMA_VERSION } from '${modPath}';\nif (ACTION_MEMORY_SCHEMA_VERSION !== 'action-memory-v1') { console.error('schema-mismatch'); process.exit(2); }\nconst m = createActionMemory();\nm.put({ origin: 'https://x.test', intentId: 'i', signature: 'sig-A', ref: '@e1', hits: 0, validations: { ok: 0, fail: 0 }, lastGoodAt: '' });\nconst hit = m.get('https://x.test', 'i', 'sig-A');\nif (!hit || hit.ref !== '@e1') { console.error('miss-on-match'); process.exit(3); }\nif (m.get('https://x.test', 'i', 'sig-B') !== null) { console.error('hit-on-drift'); process.exit(4); }\nif (validateMemoryHit(hit, 'sig-B') !== null) { console.error('validate-allowed-drift'); process.exit(5); }\nm.clear();\nif (m.size() !== 0) { console.error('clear-failed'); process.exit(6); }\nconsole.log('OK hit-on-match miss-on-drift clear');`;
-                const res = spawnSync(tsxBin, ['--eval', fixtureScript], { encoding: 'utf8' });
+                const modPath = JSON.stringify(path.resolve(repoRoot, 'src/browser/web-ai/action-memory.ts'));
+                const fixtureScript = `import { createActionMemory, validateMemoryHit, ACTION_MEMORY_SCHEMA_VERSION } from ${modPath};\nif (ACTION_MEMORY_SCHEMA_VERSION !== 'action-memory-v1') { console.error('schema-mismatch'); process.exit(2); }\nconst m = createActionMemory();\nm.put({ origin: 'https://x.test', intentId: 'i', signature: 'sig-A', ref: '@e1', hits: 0, validations: { ok: 0, fail: 0 }, lastGoodAt: '' });\nconst hit = m.get('https://x.test', 'i', 'sig-A');\nif (!hit || hit.ref !== '@e1') { console.error('miss-on-match'); process.exit(3); }\nif (m.get('https://x.test', 'i', 'sig-B') !== null) { console.error('hit-on-drift'); process.exit(4); }\nif (validateMemoryHit(hit, 'sig-B') !== null) { console.error('validate-allowed-drift'); process.exit(5); }\nm.clear();\nif (m.size() !== 0) { console.error('clear-failed'); process.exit(6); }\nconsole.log('OK hit-on-match miss-on-drift clear');`;
+                const res = runTsx(['--eval', fixtureScript]);
                 if (res.status !== 0) {
                     return { ok: false, detail: `action-memory fixture failed: status=${res.status} stderr=${(res.stderr || '').trim()} stdout=${(res.stdout || '').trim()}` };
                 }
