@@ -9,7 +9,7 @@ aliases: [Weasley Podex Source Structure, str_func, source structure reference]
 # Weasley Podex — Source Structure & Function Reference
 
 > 마지막 검증: 2026-07-10 (image inlay/channel relay SoT sync)
-> `server.ts` 644L / `src/routes/` 36 TS files (235 route handlers including `/`; 234 API endpoints; `src/routes/` subtotal 199 handlers) / `src/cli/handlers*.ts` 460L + 507L + 103L + search 34L + project 73L + workflow 494L / `src/cli/api-auth.ts` 45L / `src/workflows/` 20 root files + 3 subdirs / `src/agent/` 47 TS files (spawn.ts 2544L + events/ submodules + cursor/claude-e/agy/jwc runtimes + AGY capability probe) / `src/goal/` 5 files (+`pause-gate.ts`) / `src/goal-run/` 5 files / `src/trace/` 3 files / `src/team/` 5 files / `src/jaw-ceo/` 16 files / `src/shared/` 6 files + reminders helper / `src/manager/` 94 TS/TSX files (+`telegram-hub/` 3 files) / `src/browser/web-ai/` 96 TS files / `adaptive-fetch/` 34 files / `src/telegram/` 9 files (+`hub-callback.ts`) / `src/messaging/` 8 files (+`thread-target.ts`, `extract-images.ts`) / `bin/commands/` 30 top-level + `hooks.ts` / `electron/` sidecar packaging / `native/claude-e/` canonical embedded crate
+> `server.ts` 644L / `src/routes/` 36 TS files (235 route handlers including `/`; 234 API endpoints; `src/routes/` subtotal 199 handlers) / `src/cli/handlers*.ts` 460L + 507L + 103L + search 34L + project 73L + workflow 515L / `src/cli/api-auth.ts` 45L / `src/workflows/` 20 root files + 3 subdirs / `src/agent/` 47 TS files (spawn.ts 2544L + events/ submodules + cursor/claude-e/agy/jwc runtimes + AGY capability probe) / `src/goal/` 5 files (+`pause-gate.ts`) / `src/goal-run/` 6 files / `src/trace/` 3 files / `src/team/` 5 files / `src/jaw-ceo/` 16 files / `src/shared/` 6 files + reminders helper / `src/manager/` 94 TS/TSX files (+`telegram-hub/` 3 files) / `src/browser/web-ai/` 96 TS files / `adaptive-fetch/` 34 files / `src/telegram/` 9 files (+`hub-callback.ts`) / `src/messaging/` 8 files (+`thread-target.ts`, `extract-images.ts`) / `bin/commands/` 30 top-level + `hooks.ts` / `electron/` sidecar packaging / `native/claude-e/` canonical embedded crate
 >
 > 공개 식별자는 npm/기본 CLI `weasley-podex`, repository
 > `potatohoney-p/weasley-podex`, 기본 data home `~/.weasley/podex`, override
@@ -159,7 +159,7 @@ weasley-podex/
 │   │   ├── handlers.ts       ← core command handlers + runtime/completion re-export hub + compact re-export + unknown command recovery payload (461L)
 │   │   ├── handlers-runtime.ts ← memory/browser/prompt/quit/file/steer/forward/fallback/flush/ide/orchestrate 핸들러 + `LEGACY_MODEL_CLI_HINTS` (516L)
 │   │   ├── handlers-completions.ts ← `/model` `/cli` `/skill` `/employee` `/browser` `/fallback` `/flush` 인자 자동완성 헬퍼 (121L)
-│   │   ├── handlers-workflows.ts ← `/plan` PABCD P 안내 + `/interview` `/deliberate` `/planaudit` prompt handlers + `/review` project-dir workflow + `/goal` gated stub + `/goal run` preflight gate + `/gd` force-done alias (506L)
+│   │   ├── handlers-workflows.ts ← `/plan` PABCD P 안내 + `/interview` `/deliberate` `/planaudit` prompt handlers + `/review` project-dir workflow + `/goal` gated stub + `/goal run` preflight gate + `/gd` force-done alias (515L)
 │   │   ├── handlers-search.ts ← `/search` search-skill routing handler + steer prompt submit/remote-safe result split (34L)
 │   │   ├── handlers-skill-invoke.ts ← `/skill:<id>` handler — SKILL.md 전문을 steerPrompt로 주입, submitMessage 라우팅 (36L)
 │   │   ├── handlers-project.ts ← `/project` 커맨드 핸들러 (projectDirs 관리) (73L) ✨
@@ -268,7 +268,7 @@ weasley-podex/
 │   │   ├── quota-agy-reverse.ts ← AGY reverse quota reader (153L)
 │   │   ├── quota-cursor-dashboard.ts ← Cursor dashboard quota reader (204L)
 │   │   ├── goal.ts           ← goal CRUD + kickGoalContinuation route (registerGoalRoutes) (184L)
-│   │   ├── goal-run.ts       ← goal-run execution routes (84L)
+│   │   ├── goal-run.ts       ← goal-run execution routes (94L)
 │   │   ├── runtime-context.ts ← runtime context route helpers (46L)
 │   │   ├── security-audit.ts ← security audit route registrar (18L)
 │   │   ├── traces.ts         ← public trace summary/events read routes (80L)
@@ -296,10 +296,11 @@ weasley-podex/
 │   │   ├── runtime.ts        ← WorkflowRuntimeSnapshot + buildRuntimeSnapshot (goal + PABCD + worker registry 통합 스냅샷) (55L)
 │   │   ├── store.ts          ← GoalState CRUD (getActiveGoal, setGoal, updateGoal, completeGoal, cancelGoal, pauseGoal, resumeGoal, clearGoal, resetGoalStore, goalHasCompletionEvidence, getGoalHistory) (222L)
 │   │   └── types.ts          ← GoalStatus, GoalBudget, GoalCheckpoint, GoalState, GoalHistory, GoalEvent 타입 (62L)
-│   ├── goal-run/             ← Goal-run 실행 제어 (5 files, 361L)
-│   │   ├── controller.ts     ← goal-run execution controller (194L)
+│   ├── goal-run/             ← Goal-run 실행 제어 (6 files, 453L)
+│   │   ├── controller.ts     ← goal-run execution controller (231L)
 │   │   ├── events.ts         ← goal-run workflow event builders (38L)
 │   │   ├── failure-matrix.ts ← goal-run failure classification (37L)
+│   │   ├── persistence.ts    ← persisted-state validation + recoverable load errors (55L)
 │   │   ├── policy.ts         ← goal-run preflight gates + budget check (56L)
 │   │   └── types.ts          ← GoalRunMode, GoalRunBudget, GoalRunSafetyGate, GoalRunState 타입 (36L)
 │   ├── trace/                ← Trace 이벤트 영속화 (3 files, 279L)

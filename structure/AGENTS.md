@@ -11,6 +11,7 @@
 - Route refactors belong in `INDEX.md`, `server_api.md`, `infra.md`, and `str_func.md`. CLI handler splits and auth helper changes belong in `commands.md`, `memory_architecture.md`, `telegram.md`, and `str_func.md`.
 
 - Goal-run tracking lifecycle: commands recover the persisted run without a prior status read. Start refuses to overwrite an existing run; resume requires the original goal to be active and refined. Paused time is excluded from minute usage, and blocked API resumes return HTTP 400 with the persisted gate reasons. Budget enforcement remains a preview.
+- Goal-run saved-state recovery: invalid JSON, malformed fields, or unreadable `goal/active-run.json` block status and explicit mutations with an actionable diagnostic (HTTP 409 with `goal_run_state_invalid` or `goal_run_state_unreadable`; CLI blocked result). Preflight reports a failed `persisted-run-state` gate. Preserve a backup and repair the file before retrying; the application never resets or rewrites a rejected record. Tracking callbacks warn and skip that record without interrupting worker completion; a counter already at the maximum safe integer also skips its increment without changing saved bytes. A repaired file is retried without restarting. This validates disk loads; an already loaded valid run remains the process-local authority, without cross-process locking or detection of later external edits.
 
 ## Current sync hotspots (2026-06)
 

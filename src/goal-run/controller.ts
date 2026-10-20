@@ -10,11 +10,13 @@ import { getActiveGoal } from '../goal/store.js';
 import { getState } from '../orchestrator/state-machine.js';
 import { getActiveWorkers, hasPendingWorkerReplays } from '../orchestrator/worker-registry.js';
 import { WEASLEY_PODEX_HOME } from '../core/config.js';
+import { GoalRunStateError, parseGoalRunState } from './persistence.js';
 
 const GOAL_DIR = path.join(WEASLEY_PODEX_HOME, 'goal');
 const ACTIVE_RUN_PATH = path.join(GOAL_DIR, 'active-run.json');
 
 let activeRun: GoalRunState | null = null;
+let lastTrackingWarning: string | undefined;
 
 function persistRun(): void {
     if (!activeRun) return;
@@ -30,10 +32,37 @@ function deleteRunFile(): void {
 
 function loadRun(): void {
     if (activeRun) return;
+    let data: string;
     try {
-        const data = fs.readFileSync(ACTIVE_RUN_PATH, 'utf8');
-        activeRun = JSON.parse(data) as GoalRunState;
-    } catch { /* file doesn't exist or is corrupt — start fresh */ }
+        data = fs.readFileSync(ACTIVE_RUN_PATH, 'utf8');
+    } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+            try { fs.lstatSync(ACTIVE_RUN_PATH); }
+            catch (entryError) {
+                if ((entryError as NodeJS.ErrnoException).code === 'ENOENT') {
+                    lastTrackingWarning = undefined;
+                    return;
+                }
+            }
+        }
+        throw new GoalRunStateError('the file could not be read; check its type and read permissions', 'goal_run_state_unreadable');
+    }
+    activeRun = parseGoalRunState(data);
+    lastTrackingWarning = undefined;
+}
+
+function warnTracking(message: string): void {
+    if (lastTrackingWarning !== message) console.warn(`[goal-run] ${message}`);
+    lastTrackingWarning = message;
+}
+
+function loadRunForTracking(): boolean {
+    try { loadRun(); return true; }
+    catch (error) {
+        if (!(error instanceof GoalRunStateError)) throw error;
+        warnTracking(error.message);
+        return false;
+    }
 }
 
 const DEFAULT_BUDGET: GoalRunBudget = {
@@ -60,6 +89,11 @@ export function preflight(mode: GoalRunMode = 'assist'): GoalRunState {
     });
     const budgetGate = checkBudget(DEFAULT_BUDGET);
     gates.push(budgetGate);
+    try { loadRun(); }
+    catch (error) {
+        if (!(error instanceof GoalRunStateError)) throw error;
+        gates.push({ gate: 'persisted-run-state', passed: false, reason: error.message });
+    }
 
     return {
         goalId: goal?.id ?? '',
@@ -166,27 +200,30 @@ function accumulateMinutes(): void {
     activeRun.lastActiveAt = new Date().toISOString();
 }
 
-export function recordTurn(): void {
-    loadRun();
+function recordUsage(counter: 'turnsUsed' | 'dispatchesUsed'): void {
+    if (!loadRunForTracking()) return;
     if (activeRun?.status === 'running') {
+        if (activeRun.budget[counter] === Number.MAX_SAFE_INTEGER) {
+            warnTracking(`${counter} reached the safe integer limit; tracking skipped and saved state unchanged.`);
+            return;
+        }
         accumulateMinutes();
-        activeRun.budget.turnsUsed++;
+        activeRun.budget[counter]++;
         persistRun();
     }
+}
+
+export function recordTurn(): void {
+    recordUsage('turnsUsed');
 }
 
 export function recordDispatch(): void {
-    loadRun();
-    if (activeRun?.status === 'running') {
-        accumulateMinutes();
-        activeRun.budget.dispatchesUsed++;
-        persistRun();
-    }
+    recordUsage('dispatchesUsed');
 }
 
 export function handleFailure(phase: string, failureType: Parameters<typeof classifyFailure>[0]['failureType'], retryCount = 0) {
-    loadRun();
     const decision = classifyFailure({ phase, failureType, retryCount });
+    if (!loadRunForTracking()) return decision;
     if (decision.action === 'stop' && activeRun) {
         stopRun(decision.reason);
     }
