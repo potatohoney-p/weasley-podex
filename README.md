@@ -544,6 +544,17 @@ weasley-podex reminders add "Follow up tomorrow"
 weasley-podex reset                         # full reset
 ```
 
+`browser fetch` resolves GitHub repository URLs to the public repository REST
+endpoint and normalizes repository metadata. Invalid JSON or a missing repository
+name cannot be reported as successful API content; HTTP 404 and malformed responses
+may still fall back to the repository page. A resolved repository API HTTP 403 or
+429 stops that read before alternative transports or readers, including opted-in
+third-party readers. JSON output distinguishes `github-repo-forbidden` from
+`github-repo-rate-limited` and includes validated retry timing when available.
+The caller controls any later retry; no automatic wait or retry is scheduled.
+This policy applies to the repository resolver, not arbitrary direct API URLs or
+raw-file reads. The adaptive reader remains experimental.
+
 ---
 
 ## Multi-Instance

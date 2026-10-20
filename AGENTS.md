@@ -34,6 +34,8 @@ The public repository has no required submodules or private-repository dependenc
   Canonical: dev-pabcd §10, dev-testing §9.5; injected via orchestration template and goal continuation.
 - `structure/` reading map: start at `structure/INDEX.md`; depth — `telegram.md` (Hub), `prompt_flow.md` (attest/hooks/bounded search), `stream-events.md` (pause gate/SSE), `infra.md` (test scripts), `commands.md` + `server_api.md` (slash/API surfaces).
 
+- GitHub repository URL reads validate repository JSON. Resolved repository API 403/429 stops all reader escalation with safe forbidden/rate-limit diagnostics and optional validated retry timing; 404/malformed responses retain page fallback. No automatic retry is scheduled. See `structure/commands.md`; this is scoped to the repository resolver, not direct API/raw-file URLs.
+
 ### Optional Skill Routing
 
 Only the eight entries in `skills_ref/registry.json` are bundled. Imported skills are user-selected extensions from an installed Codex environment or an explicit trusted repository; never document them as bundled or required by the core runtime.

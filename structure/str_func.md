@@ -9,7 +9,7 @@ aliases: [Weasley Podex Source Structure, str_func, source structure reference]
 # Weasley Podex — Source Structure & Function Reference
 
 > 마지막 검증: 2026-07-10 (image inlay/channel relay SoT sync)
-> `server.ts` 644L / `src/routes/` 36 TS files (235 route handlers including `/`; 234 API endpoints; `src/routes/` subtotal 199 handlers) / `src/cli/handlers*.ts` 460L + 507L + 103L + search 34L + project 73L + workflow 494L / `src/cli/api-auth.ts` 45L / `src/workflows/` 20 root files + 3 subdirs / `src/agent/` 47 TS files (spawn.ts 2544L + events/ submodules + cursor/claude-e/agy/jwc runtimes + AGY capability probe) / `src/goal/` 5 files (+`pause-gate.ts`) / `src/goal-run/` 5 files / `src/trace/` 3 files / `src/team/` 5 files / `src/jaw-ceo/` 16 files / `src/shared/` 6 files + reminders helper / `src/manager/` 94 TS/TSX files (+`telegram-hub/` 3 files) / `src/browser/web-ai/` 96 TS files / `adaptive-fetch/` 34 files / `src/telegram/` 9 files (+`hub-callback.ts`) / `src/messaging/` 8 files (+`thread-target.ts`, `extract-images.ts`) / `bin/commands/` 30 top-level + `hooks.ts` / `electron/` sidecar packaging / `native/claude-e/` canonical embedded crate
+> `server.ts` 644L / `src/routes/` 36 TS files (235 route handlers including `/`; 234 API endpoints; `src/routes/` subtotal 199 handlers) / `src/cli/handlers*.ts` 460L + 507L + 103L + search 34L + project 73L + workflow 494L / `src/cli/api-auth.ts` 45L / `src/workflows/` 20 root files + 3 subdirs / `src/agent/` 47 TS files (spawn.ts 2544L + events/ submodules + cursor/claude-e/agy/jwc runtimes + AGY capability probe) / `src/goal/` 5 files (+`pause-gate.ts`) / `src/goal-run/` 5 files / `src/trace/` 3 files / `src/team/` 5 files / `src/jaw-ceo/` 16 files / `src/shared/` 6 files + reminders helper / `src/manager/` 94 TS/TSX files (+`telegram-hub/` 3 files) / `src/browser/web-ai/` 96 TS files / `adaptive-fetch/` 35 files / `src/telegram/` 9 files (+`hub-callback.ts`) / `src/messaging/` 8 files (+`thread-target.ts`, `extract-images.ts`) / `bin/commands/` 30 top-level + `hooks.ts` / `electron/` sidecar packaging / `native/claude-e/` canonical embedded crate
 >
 > 공개 식별자는 npm/기본 CLI `weasley-podex`, repository
 > `potatohoney-p/weasley-podex`, 기본 data home `~/.weasley/podex`, override
@@ -238,10 +238,14 @@ weasley-podex/
 │   │   ├── runtime-orphans.ts ← orphan process cleanup (150L)
 │   │   ├── tab-lifecycle.ts  ← tab lifecycle management (214L)
 │   │   ├── index.ts          ← re-export hub (34L)
-│   │   ├── adaptive-fetch/   ← Adaptive web fetch 서브모듈 (34 files; scheduler/stage-types P0 + browser pool/proxy/BM25/Camoufox/yt-dlp) ✨
+│   │   ├── adaptive-fetch/   ← Adaptive web fetch 서브모듈 (35 files; scheduler/stage-types P0 + browser pool/proxy/BM25/Camoufox/yt-dlp) ✨
 │   │   │   ├── index.ts      ← adaptive fetch orchestrator (152L)
 │   │   │   ├── safety.ts     ← URL/content safety checks (245L)
 │   │   │   ├── endpoint-resolvers.ts ← reader API endpoint resolution (365L)
+│   │   │   ├── github-repository.ts ← bounded repository API denial diagnostics (55L)
+│   │   │   ├── public-endpoint-normalizers.ts ← public API response normalization and repository validation (459L)
+│   │   │   ├── scheduler.ts ← staged reader selection and terminal repository API denials (530L)
+│   │   │   ├── fetcher.ts ← bounded transport and preserved HTTP response on stream failure (129L)
 │   │   │   ├── browser-escalation.ts ← fallback to browser fetch (315L)
 │   │   │   └── ... (14 more: fetcher, content-scorer, validators, metadata, transforms, trace, waf-profiles, browser-session, human-loop, output, browser-runtime, third-party-readers, reader-adapters, challenge-detector)
 │   │   └── web-ai/           ← Web AI 브라우저 자동화 (96 TS files; ChatGPT/Gemini/Grok + session-artifacts/capability-probe/tier-timeout/watcher-lock)
@@ -419,7 +423,7 @@ weasley-podex/
 │       ├── dispatch-helpers.ts ← dispatch output unwrap helper (60L)
 │       ├── dispatch-batch-summary.ts ← batch dispatch safe summary printer + recovery command fallback (42L)
 │       └── tui/              ← chat 터미널 TUI 분리 (10 files: api 89L, channel 115L, fullscreen-mode 500L, input-handler 470L, overlays 526L, renderer 135L, simple-mode 101L, tui-io 12L, types 145L, ws-handler 317L)
-├── tests/                    ← 회귀 방지 테스트 (588 files: root/unit/integration/browser/fixtures/smoke)
+├── tests/                    ← 회귀 방지 테스트 (895 files: root/unit/integration/browser/fixtures/smoke)
 ├── scripts/                  ← 도구 스크립트 (TypeScript + Shell + CJS; atomic build, sidecar bundle, release gates, install-risk evidence)
 ├── skills_ref/               ← npm에 포함되는 감사된 핵심 스킬 카탈로그
 ├── mcp-ref/                  ← npm에 포함되는 기본 MCP 서버 카탈로그
@@ -517,7 +521,7 @@ graph LR
 17. **Interview enhancement**: `orchestrator/friction.ts` (5-level clarity + oscillation detection) + `seed.ts` (evidence-ref ontology) + `sanitize.ts` (tracker strip) + pipeline.ts budget gate
 18. **TUI**: `src/cli/tui/` 26 files — event normalizer + transcript model + composer (paste collapse) + overlay (help/palette/selector) + slash-surface + settings-screen + text-buffer + theme + render/ sub-modules; `bin/commands/tui/` 10 files — SSE-first `channel.ts`, fullscreen/simple mode + input-handler + ws-handler
 19. **Electron tray**: `electron/` — sidecar-first packaged server spawn, tray CLI install flow, deep-link, terminal IPC, folder/drop path IPC, navigation policy, permission diagnostics
-20. **Adaptive fetch**: `src/browser/adaptive-fetch/` 19 files — multi-strategy web fetch (direct → reader API → browser escalation) with WAF detection + content scoring
+20. **Adaptive fetch**: `src/browser/adaptive-fetch/` 35 files — multi-strategy web fetch (direct → reader API → browser escalation) with WAF detection + content scoring
 21. **Team dispatch**: `src/team/` — planner/collector/dispatcher/preflight for structured multi-employee coordination
 22. **Realtime CEO channel**: `src/jaw-ceo/` — historical internal module name; OpenAI Realtime API sideband channel + coordinator (admin/workers/completions/realtime-tools)
 23. **SSE event channel**: `src/core/event-bus.ts` + `src/routes/events.ts` + `public/js/event-channel.ts` provide `GET /api/events` with replay; worker-run lifecycle publishes safe `worker_run_*` events through the same topic/replay path and bgtask/worker-run payloads share additive `statusCategory` vocabulary; `public/js/ws.ts` remains the legacy browser fallback dispatcher and `bin/commands/tui/channel.ts` provides the SSE-first terminal chat transport.

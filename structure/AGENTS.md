@@ -25,6 +25,7 @@ When refreshing docs from recent non-strict commits, check these first:
 - `src/core/event-bus.ts` + `src/routes/events.ts` + `public/js/event-channel.ts`: Web event delivery is SSE-first through `GET /api/events` with WebSocket fallback for legacy servers.
 - `src/browser/runtime-*`, `src/browser/tab-lifecycle.ts`, `src/browser/web-ai/session*.ts`: browser docs should mention runtime diagnostics, orphan cleanup, tab lifecycle, and web-ai session reattach.
 - `src/browser/adaptive-fetch/*`, `src/routes/browser.ts`, `bin/commands/browser.ts`: browser docs should keep `browser fetch <url>` scoped as an adaptive URL/search-result reader, not generic search, with browser escalation and third-party reader opt-in boundaries explicit.
+- GitHub repository resolver reads require valid repository JSON. Its API 403/429 is terminal for the read, with forbidden/rate-limit diagnostics and validated optional retry timing; 404/malformed responses keep page fallback. Direct API/raw-file URLs are outside this policy, and no automatic retry is scheduled.
 - `src/routes/traces.ts` / `src/trace/*`: server docs should include public trace read routes and related WebSocket/event surfaces such as `alert_escalation`.
 - `src/manager/notes/search.ts` / `src/manager/notes/routes.ts` / `public/manager/src/notes/NotesSearchSidebar.tsx`: Manager notes docs should include ripgrep-backed search, `/api/dashboard/notes/search`, typed errors, abortable sidebar search, and search CSS.
 - `src/manager/reminders/*` / `public/manager/src/dashboard-reminders/*`: Manager docs should include dashboard reminders API, notification scheduler, matrix buckets, top-priority strip, detail popover, and drag/drop bucket moves.
@@ -40,6 +41,6 @@ When refreshing docs from recent non-strict commits, check these first:
 - `tests/run.mts` / `package.json` test scripts: programmatic test driver — `infra.md` scripts table.
 - `src/orchestrator/attestation.ts`: PABCD `--attest` evidence gate — `prompt_flow.md`, `INDEX.md`.
 - `src/cli/handlers-skill-invoke.ts`: dynamic `/skill:<id>` — `commands.md`, `INDEX.md`.
-- `src/browser/adaptive-fetch/scheduler.ts` / `src/browser/web-ai/session-artifacts.ts`: adaptive-fetch P0 + web-ai parity wave — `infra.md`, `str_func.md` counts (web-ai 96, adaptive-fetch 34).
+- `src/browser/adaptive-fetch/scheduler.ts` / `src/browser/web-ai/session-artifacts.ts`: adaptive-fetch P0 + web-ai parity wave — `infra.md`, `str_func.md` counts (web-ai 96, adaptive-fetch 35).
 - Keep root `AGENTS.md`, `CLAUDE.md`, `README.md`, and public `docs/dev/` pages aligned with this folder when the architecture map changes.
 

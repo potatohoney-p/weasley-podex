@@ -341,6 +341,45 @@ L2 cross-instance read-only memory search.
 
 ---
 
+## Adaptive GitHub repository reads
+
+`weasley-podex browser fetch https://github.com/<owner>/<repo> --json --trace`
+uses the existing repository resolver to request
+`https://api.github.com/repos/<owner>/<repo>`. A successful repository response
+must be a JSON object with a nonempty string `full_name`; the output includes
+readable repository metadata and endpoint evidence. Invalid responses become
+failed API candidates instead of generic successful text.
+
+HTTP 404 and malformed responses preserve the existing page fallback. A resolved
+repository API HTTP 403 or 429 ends the read with `ok: false`, `verdict: blocked`,
+and a warning/metadata error code:
+
+- `github-repo-forbidden`: HTTP 403 without rate-limit evidence. Check repository access before retrying.
+- `github-repo-rate-limited`: HTTP 429, or HTTP 403 with valid `Retry-After`, zero remaining quota, or a recognized rate-limit message. Stop requests and respect the server timing before a later caller-controlled retry.
+- `github-repo-invalid-response`: unusable repository JSON; a readable page fallback may still be selected instead.
+
+No alternate HTML, TLS, browser/session, or third-party request follows a 403/429,
+even when those reader options are enabled or the response body subsequently fails
+or times out. Only a status actually received from the server establishes this
+denial; failures before headers retain existing transport-error behavior.
+Metadata may contain safe integer
+`retryAfterSeconds`, canonical HTTP-date `retryAfterAt` (ISO format), and valid
+epoch-seconds `rateLimitResetAt` (ISO format). Invalid/overflowing values are
+omitted; arbitrary response headers and denial bodies are not returned as diagnostics.
+No retry timer, automatic request, shared limiter, credential, or authorization
+mechanism is added. Existing byte limits and timeouts still apply.
+
+Scope: resolver-produced `github-repo-api` candidates. Direct API URL input,
+GitHub raw files, and other providers retain their existing behavior. Disabling
+public endpoints or requiring browser mode bypasses this resolver as before.
+Offline acceptance coverage is in `tests/unit/browser-adaptive-fetch-github.test.ts`;
+these tests do not establish live API availability.
+
+GitHub's [rate-limit documentation](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#exceeding-the-rate-limit)
+describes 403/429, remaining quota, and reset timestamps. Its
+[retry guidance](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api#handle-rate-limit-errors-appropriately)
+requires waiting after rate limits. This reader returns that decision to the caller.
+
 ## Root CLI release gates
 
 ```text
