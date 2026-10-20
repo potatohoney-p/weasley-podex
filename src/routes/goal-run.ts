@@ -57,7 +57,8 @@ export function registerGoalRunRoutes(app: Router, requireAuth: RequestHandler):
                 case 'resume': {
                     const run = resumeRun();
                     if (!run) { res.status(400).json({ ok: false, error: 'No paused goal-run to resume' }); return; }
-                    res.json({ ok: true, run });
+                    const ok = run.status === 'running';
+                    res.status(ok ? 200 : 400).json({ ok, run });
                     return;
                 }
                 case 'stop': {

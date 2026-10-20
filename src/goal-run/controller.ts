@@ -53,7 +53,7 @@ export function getActiveRun(): GoalRunState | null {
 export function preflight(mode: GoalRunMode = 'assist'): GoalRunState {
     const goal = getActiveGoal();
     const gates = checkPreflightGates({
-        hasGoal: !!goal,
+        hasGoal: goal?.status === 'active' && goal.goalMode !== 'plan',
         orcState: getState(),
         workerBusy: getActiveWorkers().length > 0,
         pendingReplay: hasPendingWorkerReplays(),
@@ -71,7 +71,15 @@ export function preflight(mode: GoalRunMode = 'assist'): GoalRunState {
 }
 
 export function startRun(mode: GoalRunMode = 'assist'): GoalRunState {
+    loadRun();
     const state = preflight(mode);
+    if (activeRun) {
+        state.gates.push({
+            gate: 'no-active-run',
+            passed: false,
+            reason: 'A goal run already exists. Resume it or stop it before starting another.',
+        });
+    }
     if (!allGatesPassed(state.gates)) {
         state.status = 'failed';
         state.lastError = state.gates.filter(g => !g.passed).map(g => g.reason).join('; ');
@@ -86,6 +94,7 @@ export function startRun(mode: GoalRunMode = 'assist'): GoalRunState {
 }
 
 export function pauseRun(): GoalRunState | null {
+    loadRun();
     if (!activeRun || activeRun.status !== 'running') return null;
     accumulateMinutes();
     activeRun.status = 'paused';
@@ -94,29 +103,39 @@ export function pauseRun(): GoalRunState | null {
 }
 
 export function resumeRun(): GoalRunState | null {
+    loadRun();
     if (!activeRun || activeRun.status !== 'paused') return null;
+    const goal = getActiveGoal();
     const gates = checkPreflightGates({
-        hasGoal: !!getActiveGoal(),
+        hasGoal: goal?.status === 'active' && goal.goalMode !== 'plan',
         orcState: getState(),
         workerBusy: getActiveWorkers().length > 0,
         pendingReplay: hasPendingWorkerReplays(),
     });
     const budgetGate = checkBudget(activeRun.budget);
     gates.push(budgetGate);
+    gates.push({
+        gate: 'same-goal',
+        passed: goal?.id === activeRun.goalId,
+        reason: goal?.id === activeRun.goalId ? undefined : 'The active goal has changed. Stop this run before starting one for the new goal.',
+    });
 
     if (!allGatesPassed(gates)) {
         activeRun.gates = gates;
         activeRun.lastError = gates.filter(g => !g.passed).map(g => g.reason).join('; ');
+        persistRun();
         return activeRun;
     }
     activeRun.status = 'running';
     activeRun.lastActiveAt = new Date().toISOString();
     activeRun.gates = gates;
+    delete activeRun.lastError;
     persistRun();
     return activeRun;
 }
 
 export function stopRun(reason?: string): GoalRunState | null {
+    loadRun();
     if (!activeRun) return null;
     accumulateMinutes();
     activeRun.status = 'stopped';
@@ -129,6 +148,7 @@ export function stopRun(reason?: string): GoalRunState | null {
 }
 
 export function completeRun(): GoalRunState | null {
+    loadRun();
     if (!activeRun) return null;
     accumulateMinutes();
     activeRun.status = 'completed';
@@ -140,13 +160,14 @@ export function completeRun(): GoalRunState | null {
 }
 
 function accumulateMinutes(): void {
-    if (!activeRun?.lastActiveAt) return;
+    if (activeRun?.status !== 'running' || !activeRun.lastActiveAt) return;
     const elapsed = (Date.now() - new Date(activeRun.lastActiveAt).getTime()) / 60_000;
     if (elapsed > 0) activeRun.budget.minutesUsed += elapsed;
     activeRun.lastActiveAt = new Date().toISOString();
 }
 
 export function recordTurn(): void {
+    loadRun();
     if (activeRun?.status === 'running') {
         accumulateMinutes();
         activeRun.budget.turnsUsed++;
@@ -155,13 +176,16 @@ export function recordTurn(): void {
 }
 
 export function recordDispatch(): void {
+    loadRun();
     if (activeRun?.status === 'running') {
+        accumulateMinutes();
         activeRun.budget.dispatchesUsed++;
         persistRun();
     }
 }
 
 export function handleFailure(phase: string, failureType: Parameters<typeof classifyFailure>[0]['failureType'], retryCount = 0) {
+    loadRun();
     const decision = classifyFailure({ phase, failureType, retryCount });
     if (decision.action === 'stop' && activeRun) {
         stopRun(decision.reason);

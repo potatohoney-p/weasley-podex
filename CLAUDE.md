@@ -77,3 +77,4 @@ bash structure/audit-fin-status.sh
 
 Doc-only changes should not modify `.mjs`, `.js`, or `.ts` source files unless explicitly requested.
 
+Goal-run tracking lifecycle: commands recover the persisted run without a prior status read. Start refuses to overwrite an existing run; resume requires the original goal to be active and refined. Paused time is excluded from minute usage, and blocked API resumes return HTTP 400 with the persisted gate reasons. Budget enforcement remains a preview.

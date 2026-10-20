@@ -323,3 +323,5 @@ static → employees → heartbeat → skills → jaw-memory → orchestrate
 | Memory embedding | `GET /api/dashboard/memory/embed-config` `POST /api/dashboard/memory/embed-config` `POST /api/dashboard/memory/reindex` `GET /api/dashboard/memory/embed-state` `GET /api/dashboard/memory/embed-estimate` `GET /api/dashboard/memory/reindex-stream` (SSE) |
 | Weasley Podex CEO (manager) | `/api/jaw-ceo/*` (same historical sub-router as core server) |
 
+
+Goal-run resume returns HTTP 400 with `ok: false` and the unchanged paused run when preflight, goal identity, or budget gates fail. Successful resume returns the running state and clears earlier gate errors. All lifecycle actions load persisted tracking state before mutating it.

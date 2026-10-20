@@ -10,6 +10,8 @@
 - When a command, API, UI, memory, or orchestration surface changes, sync the relevant doc(s) in this directory in the same change.
 - Route refactors belong in `INDEX.md`, `server_api.md`, `infra.md`, and `str_func.md`. CLI handler splits and auth helper changes belong in `commands.md`, `memory_architecture.md`, `telegram.md`, and `str_func.md`.
 
+- Goal-run tracking lifecycle: commands recover the persisted run without a prior status read. Start refuses to overwrite an existing run; resume requires the original goal to be active and refined. Paused time is excluded from minute usage, and blocked API resumes return HTTP 400 with the persisted gate reasons. Budget enforcement remains a preview.
+
 ## Current sync hotspots (2026-06)
 
 When refreshing docs from recent non-strict commits, check these first:
@@ -42,4 +44,3 @@ When refreshing docs from recent non-strict commits, check these first:
 - `src/cli/handlers-skill-invoke.ts`: dynamic `/skill:<id>` — `commands.md`, `INDEX.md`.
 - `src/browser/adaptive-fetch/scheduler.ts` / `src/browser/web-ai/session-artifacts.ts`: adaptive-fetch P0 + web-ai parity wave — `infra.md`, `str_func.md` counts (web-ai 96, adaptive-fetch 34).
 - Keep root `AGENTS.md`, `CLAUDE.md`, `README.md`, and public `docs/dev/` pages aligned with this folder when the architecture map changes.
-

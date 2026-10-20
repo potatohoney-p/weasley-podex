@@ -34,6 +34,8 @@ The public repository has no required submodules or private-repository dependenc
   Canonical: dev-pabcd §10, dev-testing §9.5; injected via orchestration template and goal continuation.
 - `structure/` reading map: start at `structure/INDEX.md`; depth — `telegram.md` (Hub), `prompt_flow.md` (attest/hooks/bounded search), `stream-events.md` (pause gate/SSE), `infra.md` (test scripts), `commands.md` + `server_api.md` (slash/API surfaces).
 
+Goal-run tracking lifecycle: commands recover the persisted run without a prior status read. Start refuses to overwrite an existing run; resume requires the original goal to be active and refined. Paused time is excluded from minute usage, and blocked API resumes return HTTP 400 with the persisted gate reasons. Budget enforcement remains a preview.
+
 ### Optional Skill Routing
 
 Only the eight entries in `skills_ref/registry.json` are bundled. Imported skills are user-selected extensions from an installed Codex environment or an explicit trusted repository; never document them as bundled or required by the core runtime.
