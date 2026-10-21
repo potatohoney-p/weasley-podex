@@ -1,6 +1,7 @@
 #!/usr/bin/env tsx
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const DEFAULT_DIST_DIR = 'public/dist';
 const DEFAULT_ENTRY_BUDGET_BYTES = 600_000;
@@ -112,7 +113,7 @@ export function checkWebUiBuildOutput(options: BuildOutputCheckOptions = {}): Bu
     return { ok: errors.length === 0, errors, appFiles, eagerBytes };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
     const result = checkWebUiBuildOutput();
     if (!result.ok) {
         console.error(result.errors.join('\n'));
