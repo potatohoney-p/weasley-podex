@@ -25,6 +25,7 @@ When refreshing docs from recent non-strict commits, check these first:
 - `src/core/event-bus.ts` + `src/routes/events.ts` + `public/js/event-channel.ts`: Web event delivery is SSE-first through `GET /api/events` with WebSocket fallback for legacy servers.
 - `src/browser/runtime-*`, `src/browser/tab-lifecycle.ts`, `src/browser/web-ai/session*.ts`: browser docs should mention runtime diagnostics, orphan cleanup, tab lifecycle, and web-ai session reattach.
 - `src/browser/adaptive-fetch/*`, `src/routes/browser.ts`, `bin/commands/browser.ts`: browser docs should keep `browser fetch <url>` scoped as an adaptive URL/search-result reader, not generic search, with browser escalation and third-party reader opt-in boundaries explicit.
+- GitHub repository metadata applies only to repository-root URLs; blob files use raw-file reads and other subpages retain their requested page reader path.
 - `src/routes/traces.ts` / `src/trace/*`: server docs should include public trace read routes and related WebSocket/event surfaces such as `alert_escalation`.
 - `src/manager/notes/search.ts` / `src/manager/notes/routes.ts` / `public/manager/src/notes/NotesSearchSidebar.tsx`: Manager notes docs should include ripgrep-backed search, `/api/dashboard/notes/search`, typed errors, abortable sidebar search, and search CSS.
 - `src/manager/reminders/*` / `public/manager/src/dashboard-reminders/*`: Manager docs should include dashboard reminders API, notification scheduler, matrix buckets, top-priority strip, detail popover, and drag/drop bucket moves.

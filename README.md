@@ -544,6 +544,8 @@ weasley-podex reminders add "Follow up tomorrow"
 weasley-podex reset                         # full reset
 ```
 
+`browser fetch` uses GitHub repository metadata only for repository-root URLs. Blob files use raw-file reads; issue, PR, release, directory, and other subpages are read at the requested page.
+
 ---
 
 ## Multi-Instance
