@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {
     claimWorker, finishWorker, failWorker,
     claimWorkerReplay, markWorkerReplayed, releaseWorkerReplay,
-    listPendingWorkerResults, getActiveWorkers,
+    listPendingWorkerResults, getActiveWorkers, getWorkerSlot,
 } from '../../src/orchestrator/worker-registry.js';
 
 // ─── Helpers ─────────────────────────────────────────
@@ -84,4 +84,77 @@ test('WRH-004: pending replay entries include run identity and safe metadata', (
     assert.equal(pending.employeeName, `test-${id}`);
     assert.equal(pending.taskPreview.includes('safe preview'), true);
     markWorkerReplayed(id);
+});
+
+test('WRH-005: stale replay claims cannot claim a replacement run', () => {
+    const id = `wrh5-${Date.now()}`;
+    const first = claimWorker(fakeEmp(id), 'first task');
+    finishWorker(id, 'first result');
+    const second = claimWorker(fakeEmp(id), 'second task');
+    finishWorker(id, 'second result');
+
+    assert.equal(claimWorkerReplay(id, first.runId), false);
+    assert.equal(second.replayClaimed, false);
+    assert.equal(claimWorkerReplay(id, second.runId), true);
+    markWorkerReplayed(id, second.runId);
+});
+
+for (const replacementState of ['running', 'done'] as const) {
+    test(`WRH-006: stale replay acknowledgement preserves a ${replacementState} replacement`, () => {
+        const id = `wrh6-${replacementState}-${Date.now()}`;
+        const first = claimWorker(fakeEmp(id), 'first task');
+        finishWorker(id, 'first result');
+        assert.equal(claimWorkerReplay(id, first.runId), true);
+        const second = claimWorker(fakeEmp(id), 'second task');
+        if (replacementState === 'done') {
+            finishWorker(id, 'second result');
+            assert.equal(claimWorkerReplay(id, second.runId), true);
+        }
+        const before = { ...second };
+
+        markWorkerReplayed(id, first.runId);
+
+        assert.equal(getWorkerSlot(id), second);
+        assert.deepEqual(second, before);
+        if (replacementState === 'running') finishWorker(id, 'second result');
+        markWorkerReplayed(id, second.runId);
+    });
+
+    test(`WRH-007: stale replay failures preserve a ${replacementState} replacement`, () => {
+        const id = `wrh7-${replacementState}-${Date.now()}`;
+        const first = claimWorker(fakeEmp(id), 'first task');
+        finishWorker(id, 'first result');
+        assert.equal(claimWorkerReplay(id, first.runId), true);
+        const second = claimWorker(fakeEmp(id), 'second task');
+        if (replacementState === 'done') {
+            finishWorker(id, 'second result');
+            assert.equal(claimWorkerReplay(id, second.runId), true);
+        }
+        const before = { ...second };
+
+        for (let attempt = 0; attempt < 3; attempt++) releaseWorkerReplay(id, first.runId);
+
+        assert.equal(getWorkerSlot(id), second);
+        assert.deepEqual(second, before);
+        if (replacementState === 'running') finishWorker(id, 'second result');
+        markWorkerReplayed(id, second.runId);
+    });
+}
+
+test('WRH-008: matching run identity preserves retry and acknowledgement behavior', () => {
+    const id = `wrh8-${Date.now()}`;
+    const slot = claimWorker(fakeEmp(id), 'test task');
+    finishWorker(id, 'test result');
+
+    assert.equal(claimWorkerReplay(id, ''), false);
+    assert.equal(claimWorkerReplay(id, slot.runId), true);
+    assert.equal(claimWorkerReplay(id, slot.runId), false);
+    releaseWorkerReplay(id, slot.runId);
+    assert.equal(slot.replayAttempts, 1);
+    assert.equal(slot.replayClaimed, false);
+    assert.equal(slot.pendingReplay, true);
+    assert.equal(claimWorkerReplay(id, slot.runId), true);
+    markWorkerReplayed(id, slot.runId);
+    assert.equal(getWorkerSlot(id), undefined);
+    assert.equal(claimWorkerReplay(id, slot.runId), false);
 });

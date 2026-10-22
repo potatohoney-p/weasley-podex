@@ -196,6 +196,7 @@ JWC is not bundled with the default npm install or Electron sidecar. Use `weasle
 - Ephemeral virtual employees use `weasley-podex dispatch --virtual "security" --task "..."` or `--virtual "Reviewer" --role "Review rollback gaps" --task "..."`.
 - Virtual employees are synthetic dispatch rows only; they do not appear in `weasley-podex employee list` and do not write durable `employee_sessions`.
 - If `--cli`/`--model` are omitted for virtual dispatch, the server resolves the current CLI and uses the registry default model for that CLI.
+- Worker result delivery and retry callbacks carry the captured `runId`, so a delayed callback cannot consume or fail a later run of the same employee.
 - Human dispatch output follows live safe worker progress by default. Use `--quiet` for final-result-only output, or `--json` for parseable machine output without human progress lines.
 - On dispatch polling timeout/disconnect, recovery output is run-aware when possible: `weasley-podex worker status <runId>` for safe progress and `weasley-podex worker read <runId> --tail 80` only as an explicit raw-output follow-up.
 - Batch dispatch prints one bounded summary per worker. It does not inline full employee stdout; each row carries `runId`, status/preview, and an explicit `weasley-podex worker read <runId> --tail 120` recovery command when raw output is needed.

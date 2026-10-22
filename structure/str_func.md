@@ -138,7 +138,7 @@ weasley-podex/
 │   │   ├── scope.ts          ← 현재 단일 'default' scope를 반환하는 stub (17L)
 │   │   ├── worker-monitor.ts ← Worker stall detection — activity timestamps + stall/disconnect/timeout callbacks (58L)
 │   │   ├── worker-progress.ts ← 직원 progress safe-summary sanitizer + runId-aware current/previous snapshot types
-│   │   ├── worker-registry.ts ← Worker 프로세스 레지스트리 + runId progress current/previous memory retention + pending replay metadata + durable worker-run hook (417L)
+│   │   ├── worker-registry.ts ← Worker 프로세스 레지스트리 + runId progress current/previous memory retention + pending replay metadata + durable worker-run hook (421L)
 │   │   ├── worker-replay-notice.ts ← delayed worker replay bounded notice builder + runId recovery command contract (62L)
 │   │   ├── worker-run-store.ts ← Worker run safe metadata/events JSONL store + worker_run_* SSE broadcast bridge + shared status category projection (202L)
 │   │   ├── worker-output-store.ts ← Worker raw output file store + bounded offset/limit read API (86L)

@@ -43,6 +43,7 @@ implementation details, not public command examples.
 - `/api/channel/send` is the canonical outbound Telegram/Discord delivery endpoint.
 - Heartbeat schedules support `{ kind: "every", minutes }` and `{ kind: "cron", cron, timeZone? }`.
 - Tool logs are capped by `src/shared/tool-log-sanitize.ts` before SSE/WebSocket, `agent_done`, and orchestration snapshot delivery. Web UI delivery is SSE-first through `GET /api/events`, with WebSocket as the legacy fallback dispatcher.
+- Worker result delivery and retry callbacks carry the captured `runId`, so a delayed callback cannot consume or fail a later run of the same employee.
 - Employee worker progress is query-first via `weasley-podex worker status [agent]`, watchable via `weasley-podex worker watch [agent]` or `weasley-podex dispatch --watch`, memory-only for current plus previous completed run, and safe-summary only with thinking detail hidden.
 - `weasley-podex employee list [--json]` lists DB and static employees, including Control. `weasley-podex dispatch` reads response bodies defensively and reports stale/missing server routes when an old manager returns HTML instead of JSON.
 - `npm run build` is a pure backend build/link operation and must not signal, kill, or restart live manager processes.
