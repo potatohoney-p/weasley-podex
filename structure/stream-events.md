@@ -543,3 +543,7 @@ running step과 done/error step이 같은 `stepRef`를 쓰면, parser/runtime이
 
 Claude의 `input_json_delta` flush, Gemini tool detail, ACP tool detail 생성이 이 함수를 공유한다.
 
+
+### Bounded SSE writes
+
+`GET /api/events` applies its existing 1 MB Node writable-buffer threshold to connected frames, replay-gap notices, each replayed event, live events and heartbeat pings. Crossing the threshold closes the stream and releases its listener/timer/capacity exactly once; replay stops without installing a live subscription. The check follows each write, so one frame can cross the threshold. This is not a maximum event size or a bound on the retained event ring. Clients retain the existing reconnect/replay-gap recovery contract.
