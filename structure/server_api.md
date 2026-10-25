@@ -59,6 +59,11 @@ aliases: [Weasley Podex Server API, server.ts reference, server_api]
 | `src/manager/board/routes.ts` | 99L / 5 | board tasks CRUD + from-message |
 | `src/manager/schedule/routes.ts` | 112L / 5 | scheduled work CRUD + dispatch |
 
+The manager schedule ticker isolates cron-evaluation failures per stored row:
+malformed rows are logged without marking a run, and later rows continue. Fixing
+a malformed cron permits evaluation on the next tick, including the same minute.
+This does not change dispatch delivery, persistence, or cron matching semantics.
+
 ### 등록 순서 (`server.ts`)
 
 ```text
