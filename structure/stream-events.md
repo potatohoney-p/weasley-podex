@@ -62,6 +62,8 @@ SSE behavior:
 
 `weasley-podex dashboard serve` does not make the React manager browser subscribe directly to every worker's EventSource. The manager server starts `src/manager/worker-events.ts`, which listens for worker lifecycle changes and uses `src/manager/worker-sse-client.ts` to subscribe to each live worker's `http://127.0.0.1:{port}/api/events` stream. Worker SSE updates feed a debounced latest-message cache used by manager/Weasley Podex CEO surfaces; the React manager still consumes manager HTTP polling endpoints such as `/api/manager/events` and `/api/dashboard/instances`.
 
+Each scheduled prefetch owns a request identity. New activity, worker removal/reconnection, or bridge shutdown invalidates older reads before either response-body completion or error handling can change the cache. This prevents stale reads from replacing or evicting the current connection's data; it does not cancel the underlying HTTP request or guarantee the newest server revision. Current read failures still invalidate the cache, and a valid `null` response remains a cache hit.
+
 ---
 
 ## 2. 실제 Broadcast / SSE / WebSocket 이벤트 Surface
