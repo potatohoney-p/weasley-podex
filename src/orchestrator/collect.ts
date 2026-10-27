@@ -27,14 +27,23 @@ export function orchestrateAndCollectData(
 ): Promise<CollectedOrchestrateResult> {
     return new Promise((resolve) => {
         let collected = '';
-        let timeout: ReturnType<typeof setTimeout>;
+        let timeout: ReturnType<typeof setTimeout> | undefined;
+        let settled = false;
         const IDLE_TIMEOUT = 1200000;
 
+        function finish(result: CollectedOrchestrateResult) {
+            if (settled) return;
+            settled = true;
+            clearTimeout(timeout);
+            removeBroadcastListener(handler);
+            resolve(result);
+        }
+
         function resetTimeout() {
+            if (settled) return;
             clearTimeout(timeout);
             timeout = setTimeout(() => {
-                removeBroadcastListener(handler);
-                resolve({ text: collected || t('tg.timeout', {}, locale), data: {} });
+                finish({ text: collected || t('tg.timeout', {}, locale), data: {} });
             }, IDLE_TIMEOUT);
         }
 
@@ -55,23 +64,29 @@ export function orchestrateAndCollectData(
                 if (meta?.["requestId"] && data?.["requestId"] && data["requestId"] !== meta["requestId"]) return;
                 if (meta?.["origin"] && data?.["origin"] && data["origin"] !== meta["origin"]) return;
                 if (!meta?.["requestId"] && meta?.["chatId"] && data?.["chatId"] && data["chatId"] !== meta["chatId"]) return;
-                clearTimeout(timeout);
-                removeBroadcastListener(handler);
-                resolve({ text: data["text"] || collected || t('tg.noResponse', {}, locale), data });
+                finish({ text: data["text"] || collected || t('tg.noResponse', {}, locale), data });
             }
         };
         addBroadcastListener(handler);
-        const run = isResetIntent(prompt)
-            ? orchestrateReset(meta)
-            : isContinueIntent(prompt)
-                ? orchestrateContinue(meta)
-                : orchestrate(prompt, meta);
-        Promise.resolve(run).catch(err => {
-            clearTimeout(timeout);
-            removeBroadcastListener(handler);
-            resolve({ text: `❌ ${err.message}`, data: {} });
-        });
+        // Arm before dispatch: /continue may complete synchronously while idle.
         resetTimeout();
+        const fail = (err: unknown) => {
+            let message = 'Unknown error';
+            try {
+                message = String(err instanceof Error ? err.message : err);
+            } catch { /* Unprintable rejection values must still release resources. */ }
+            finish({ text: `❌ ${message}`, data: {} });
+        };
+        try {
+            const run = isResetIntent(prompt)
+                ? orchestrateReset(meta)
+                : isContinueIntent(prompt)
+                    ? orchestrateContinue(meta)
+                    : orchestrate(prompt, meta);
+            Promise.resolve(run).catch(fail);
+        } catch (err) {
+            fail(err);
+        }
     });
 }
 

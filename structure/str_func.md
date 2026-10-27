@@ -134,7 +134,7 @@ weasley-podex/
 │   │   ├── distribute.ts     ← runSingleAgent + buildPlanPrompt + parallel helpers + tiered findEmployee + employee resume diagnostics + virtual employee session-skip (477L)
 │   │   ├── parser.ts         ← triage + subtask JSON + verdict 파싱 + isResetIntent (177L)
 │   │   ├── gateway.ts        ← submitMessage 통합 진입점 (WebUI+CLI+TG+Discord 공통) + working_dir scoped insertMessage (158L)
-│   │   ├── collect.ts        ← orchestrateAndCollect + orchestrateAndCollectData (84L)
+│   │   ├── collect.ts        ← orchestrateAndCollect + orchestrateAndCollectData (99L)
 │   │   ├── scope.ts          ← 현재 단일 'default' scope를 반환하는 stub (17L)
 │   │   ├── worker-monitor.ts ← Worker stall detection — activity timestamps + stall/disconnect/timeout callbacks (58L)
 │   │   ├── worker-progress.ts ← 직원 progress safe-summary sanitizer + runId-aware current/previous snapshot types
