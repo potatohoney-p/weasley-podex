@@ -62,6 +62,8 @@ SSE behavior:
 
 `weasley-podex dashboard serve` does not make the React manager browser subscribe directly to every worker's EventSource. The manager server starts `src/manager/worker-events.ts`, which listens for worker lifecycle changes and uses `src/manager/worker-sse-client.ts` to subscribe to each live worker's `http://127.0.0.1:{port}/api/events` stream. Worker SSE updates feed a debounced latest-message cache used by manager/Weasley Podex CEO surfaces; the React manager still consumes manager HTTP polling endpoints such as `/api/manager/events` and `/api/dashboard/instances`.
 
+Each scheduled prefetch owns a request identity. New activity, worker removal/reconnection, or bridge shutdown invalidates older reads before either response-body completion or error handling can change the cache. This prevents stale reads from replacing or evicting the current connection's data; it does not cancel the underlying HTTP request or guarantee the newest server revision. Current read failures still invalidate the cache, and a valid `null` response remains a cache hit.
+
 ---
 
 ## 2. 실제 Broadcast / SSE / WebSocket 이벤트 Surface
@@ -452,9 +454,16 @@ Final `agent_done` body도 `resolveSpawnOutputText()`에서 normalized display c
 - 최종 텍스트는 `src/agent/lifecycle-handler.ts`의 `broadcast('agent_done', { text, toolLog, origin })`가 기준이다.
 - Web UI도 주석대로 live stream은 preview-only이고, `agent_done`을 authoritative 결과로 취급한다.
 
-### collect.ts와의 drift
+### Collector completion and cleanup
 
-`src/orchestrator/collect.ts`에는 아직 "no broadcast emits agent_output" 주석이 남아 있지만, 현재 `spawn.ts`는 실제로 `agent_output`을 emit 한다. 즉 이 부분은 코드 주석이 stale이고, 동작 기준은 `spawn.ts` + `ws.ts`다.
+`src/orchestrator/collect.ts` refreshes its 20-minute idle timer on live activity
+(including `agent_output`). `orchestrate_done` remains the final result and keeps
+its existing request/origin/chat matching rules. The timer is armed before
+dispatch, so synchronous completion (for example `/continue` while idle) releases
+both the timer and listener. Completion, timeout, and synchronous or asynchronous
+dispatch failure settle once through the same cleanup path; late rejection cannot
+replace an already collected result. This does not cancel the underlying run or
+change activity-event correlation.
 
 ---
 
@@ -543,3 +552,7 @@ running step과 done/error step이 같은 `stepRef`를 쓰면, parser/runtime이
 
 Claude의 `input_json_delta` flush, Gemini tool detail, ACP tool detail 생성이 이 함수를 공유한다.
 
+
+### Bounded SSE writes
+
+`GET /api/events` applies its existing 1 MB Node writable-buffer threshold to connected frames, replay-gap notices, each replayed event, live events and heartbeat pings. Crossing the threshold closes the stream and releases its listener/timer/capacity exactly once; replay stops without installing a live subscription. The check follows each write, so one frame can cross the threshold. This is not a maximum event size or a bound on the retained event ring. Clients retain the existing reconnect/replay-gap recovery contract.

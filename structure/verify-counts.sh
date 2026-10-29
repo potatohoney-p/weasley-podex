@@ -67,6 +67,10 @@ declare -a CHECKS=(
   "actions.ts.*snapshot|src/browser/actions.ts"
   "vision.ts.*vision-click|src/browser/vision.ts"
   "index.ts.*re-export|src/browser/index.ts"
+  "github-repository.ts|src/browser/adaptive-fetch/github-repository.ts"
+  "public-endpoint-normalizers.ts|src/browser/adaptive-fetch/public-endpoint-normalizers.ts"
+  "scheduler.ts.*staged reader|src/browser/adaptive-fetch/scheduler.ts"
+  "fetcher.ts.*bounded transport|src/browser/adaptive-fetch/fetcher.ts"
   "quota.ts.*할당|src/routes/quota.ts"
   "browser.ts.*라우트|src/routes/browser.ts"
   "orchestrate.ts.*reset/state/workers|src/routes/orchestrate.ts"
@@ -253,8 +257,12 @@ echo ""
 echo -e "${BOLD}📊 집계 항목${RESET}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-# public/ total lines (source/assets only; exclude Vite build output)
-a_pub_total=$(find public -type f ! -path 'public/dist/*' ! -path 'public/public/dist/*' | xargs wc -l | tail -1 | awk '{print $1}')
+# Traverse once in Node: no xargs batches, whitespace splitting, or missing-dist
+# pipeline failures. A failed inventory read must fail this checker as well.
+inventory=$(node scripts/docs/count-inventory.mjs)
+IFS=$'\t' read -r a_pub_total a_pub_files a_src_files a_src_dirs a_tests_files a_bin_cmds a_pub_dist <<< "$inventory"
+
+# public/ total lines (source/assets only; exclude Vite build output and metadata)
 d_pub_total=$( (rg '^├── public/.*~[0-9]+L' "$DOC" || true) | head -1 | rg -o '~[0-9]+L' | rg -o '[0-9]+' | tail -1 || true)
 if [[ -n "${d_pub_total:-}" ]]; then
   diff_pub_total=$((a_pub_total - d_pub_total))
@@ -272,7 +280,6 @@ if [[ -n "${d_pub_total:-}" ]]; then
 fi
 
 # public/ file count (source/assets only; exclude Vite build output)
-a_pub_files=$(find public -type f ! -path 'public/dist/*' ! -path 'public/public/dist/*' ! -name '.DS_Store' | wc -l | tr -d ' ')
 d_pub_files=$( (rg '^├── public/.*[0-9]+ files' "$DOC" || true) | head -1 | rg -o '[0-9]+ files' | head -1 | rg -o '[0-9]+' || true)
 if [[ -n "${d_pub_files:-}" ]]; then
   if [[ "$a_pub_files" == "$d_pub_files" ]]; then
@@ -291,9 +298,6 @@ if [[ -n "$summary_line" ]]; then
   d_src_dirs=$(echo "$summary_line" | rg -o 'top-level module dirs [0-9]+' | rg -o '[0-9]+' | head -1)
   d_tests_files=$(echo "$summary_line" | rg -o 'tests [0-9]+ files' | rg -o '[0-9]+' | head -1)
   d_public_files=$(echo "$summary_line" | rg -o 'public tree [0-9]+ files' | rg -o '[0-9]+' | head -1)
-  a_src_files=$(find src -type f | wc -l | tr -d ' ')
-  a_src_dirs=$(find src -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')
-  a_tests_files=$(find tests -type f | wc -l | tr -d ' ')
 
   if [[ "$a_src_files" == "$d_src_files" ]]; then
     echo -e "  ${GREEN}✅ src files — ${a_src_files}개${RESET}"
@@ -329,7 +333,6 @@ if [[ -n "$summary_line" ]]; then
 fi
 
 # bin/commands total
-a_bin_cmds=$(find bin/commands -type f | wc -l | tr -d ' ')
 d_bin_cmds=$( (rg -n '^│   └── commands/.*[0-9]+ files' "$DOC" || true) | head -1 | rg -o '[0-9]+ files' | head -1 | rg -o '[0-9]+' || true)
 if [[ -n "${d_bin_cmds:-}" ]]; then
   if [[ "$a_bin_cmds" == "$d_bin_cmds" ]]; then
@@ -342,7 +345,6 @@ if [[ -n "${d_bin_cmds:-}" ]]; then
 fi
 
 # public/dist build output
-a_pub_dist=$(find public/dist -type f 2>/dev/null | wc -l | tr -d ' ')
 d_pub_dist=$( (rg -n 'public/dist build output [0-9]+ files' "$DOC" || true) | head -1 | rg -o 'build output [0-9]+ files' | rg -o '[0-9]+' | head -1 || true)
 if [[ -n "${d_pub_dist:-}" ]]; then
   if [[ "$a_pub_dist" == "$d_pub_dist" ]]; then

@@ -71,3 +71,39 @@ test('validateHeartbeatScheduleInput rejects invalid timezone', () => {
     if (result.ok) assert.fail('expected validation failure');
     assert.equal(result.code, 'invalid_timezone');
 });
+
+for (const [field, weekdays] of [
+    ['1-7', [0, 1, 2, 3, 4, 5, 6]],
+    ['0-7', [0, 1, 2, 3, 4, 5, 6]],
+    ['5-7', [0, 5, 6]],
+    ['1-7/2', [0, 1, 3, 5]],
+    ['0-7/2', [0, 2, 4, 6]],
+    ['1/2', [0, 1, 3, 5]],
+    ['7', [0]],
+    ['*/7', [0]],
+    ['7/2', [0]],
+    ['sun', [0]],
+    ['mon-fri', [1, 2, 3, 4, 5]],
+    ['0,7', [0]],
+] as Array<[string, number[]]>) {
+    test(`weekday cron ${field} preserves numeric range and step positions`, () => {
+        const cron = `0 9 * * ${field}`;
+        assert.equal(validateHeartbeatCron(cron), null);
+        for (let day = 0; day < 7; day++) {
+            const now = new Date(Date.UTC(2026, 2, 8 + day, 9));
+            assert.equal(matchesHeartbeatCron(cron, now, 'UTC'), weekdays.includes(day), `weekday ${day}`);
+        }
+    });
+}
+
+test('Sunday range matches the requested timezone rather than UTC weekday', () => {
+    const now = new Date('2026-03-08T00:00:00Z');
+    assert.equal(matchesHeartbeatCron('0 9 * * 7-7', now, 'Asia/Seoul'), true);
+    assert.equal(matchesHeartbeatCron('0 16 * * 7-7', now, 'America/Los_Angeles'), false);
+});
+
+test('weekday ranges still reject reversed and out-of-range endpoints', () => {
+    for (const field of ['7-1', 'fri-sun', '1-8', '-1', '8', '1-7/0']) {
+        assert.notEqual(validateHeartbeatCron(`0 9 * * ${field}`), null, field);
+    }
+});

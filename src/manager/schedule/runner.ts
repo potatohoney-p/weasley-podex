@@ -56,7 +56,15 @@ export function startScheduleRunner(
             return;
         }
         for (const item of items) {
-            if (!shouldFire(item, now)) continue;
+            try {
+                if (!shouldFire(item, now)) continue;
+            } catch (err) {
+                // Stored schedules may predate validation or be malformed. One
+                // bad row must not abort the shared ticker or consume a run.
+                const message = err instanceof Error ? err.message : String(err);
+                log(`[schedule-runner] evaluation failed for ${item.id}: ${message}`);
+                continue;
+            }
             const decision = dispatchScheduledWork(item, { busyPorts: [] });
             try {
                 store.markRun(item.id, `runner:${decision.status}`, null);

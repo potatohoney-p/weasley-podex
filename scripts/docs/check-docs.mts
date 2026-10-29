@@ -3,7 +3,7 @@
 // No generated JSON is committed; this computes live and compares.
 // Usage: npx tsx scripts/docs/check-docs.mts [--json]
 import { readFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import process from 'node:process';
 import { extractCommands } from './extract-commands.mts';
@@ -73,7 +73,7 @@ export async function checkDocs(): Promise<DriftIssue[]> {
     return issues;
 }
 
-if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split('/').pop() ?? '')) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
     const issues = await checkDocs();
     if (process.argv.includes('--json')) {
         console.log(JSON.stringify({ ok: issues.length === 0, issues }, null, 2));

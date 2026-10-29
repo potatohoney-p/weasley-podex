@@ -11,7 +11,7 @@ export function checkPreflightGates(ctx: {
     gates.push({
         gate: 'active-goal',
         passed: ctx.hasGoal,
-        reason: ctx.hasGoal ? undefined : 'No active goal. Use /goal set <objective> first.',
+        reason: ctx.hasGoal ? undefined : 'No executable active goal. Set or resume a goal and refine any pending plan first.',
     });
 
     gates.push({

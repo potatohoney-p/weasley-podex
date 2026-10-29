@@ -40,27 +40,32 @@ type BridgeState = {
     unsupported: Set<number>;
     cache: Map<number, WorkerLatestData>;
     timers: Map<number, ReturnType<typeof setTimeout>>;
+    prefetchRequests: Map<number, symbol>;
 };
 
 let state: BridgeState | null = null;
 
 function schedulePrefetch(s: BridgeState, port: number): void {
+    if (!s.conns.has(port)) return;
+    const request = Symbol();
+    s.prefetchRequests.set(port, request);
+    const isCurrent = () => state === s && s.conns.has(port) && s.prefetchRequests.get(port) === request;
     const existing = s.timers.get(port);
     if (existing) clearTimeout(existing);
     const timer = setTimeout(() => {
+        if (!isCurrent()) return;
         s.timers.delete(port);
         void (async () => {
             try {
                 const res = await s.deps.fetchImpl(`http://127.0.0.1:${port}/api/messages/latest?includeContent=1`);
-                // A drop() may have raced this in-flight fetch — a late cache.set
-                // would resurrect pre-disconnect data and get served as a hit
-                // after the next reconnect. Only live streams may populate.
-                if (!s.conns.has(port)) return;
+                // A newer activity signal or connection may supersede this read.
+                // Guard both awaits and failures, not just port membership.
+                if (!isCurrent()) return;
                 if (!res.ok) { s.cache.delete(port); return; }
                 const body = await res.json() as { data?: WorkerLatestData };
-                s.cache.set(port, body?.data ?? null);
+                if (isCurrent()) s.cache.set(port, body?.data ?? null);
             } catch {
-                s.cache.delete(port); // stale-cache risk > refetch cost — miss falls back to HTTP
+                if (isCurrent()) s.cache.delete(port); // only the current read may invalidate
             }
         })();
     }, s.deps.debounceMs);
@@ -99,6 +104,7 @@ function connect(s: BridgeState, port: number): void {
 function drop(s: BridgeState, port: number): void {
     const unsub = s.conns.get(port);
     s.conns.delete(port);
+    s.prefetchRequests.delete(port);
     unsub?.();
     const timer = s.timers.get(port);
     if (timer) { clearTimeout(timer); s.timers.delete(port); }
@@ -147,6 +153,7 @@ export function startWorkerEventBridge(deps: WorkerEventBridgeDeps = {}): void {
         unsupported: new Set(),
         cache: new Map(),
         timers: new Map(),
+        prefetchRequests: new Map(),
     };
     s.unsubBus = subscribeBus((entry) => {
         if (entry.topic !== 'worker' || entry.event !== 'instance-status-changed') return;
@@ -163,6 +170,7 @@ export function stopWorkerEventBridge(): void {
     for (const port of [...s.conns.keys()]) drop(s, port);
     for (const timer of s.timers.values()) clearTimeout(timer);
     s.timers.clear();
+    s.prefetchRequests.clear();
     s.cache.clear();
     s.unsupported.clear();
 }

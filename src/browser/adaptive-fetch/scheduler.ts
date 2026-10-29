@@ -4,7 +4,7 @@ import type { ScoredResult } from './content-scorer.js';
 import { validateFetchUrl } from './safety.js';
 import { appendAttempt, createAttemptTrace, summarizeAttempts } from './trace.js';
 import { resolvePublicEndpointCandidates } from './endpoint-resolvers.js';
-import { fetchTextCandidate } from './fetcher.js';
+import { fetchTextCandidate, FetchResponseBodyError } from './fetcher.js';
 import { tlsFetch } from './tls-fetch.js';
 import { ytdlpMetadata, ytdlpSubtitles, formatYtdlpEvidence } from './ytdlp-reader.js';
 import { fromFetchResult, fromUserSessionResult, fromHumanResolvedResult } from './reader-adapters.js';
@@ -70,7 +70,11 @@ export async function executeAdaptiveFetch(
 
     try {
         runEndpointStage(ctx);
-        if (!isPastDeadline(ctx)) await runDirectFetchStage(ctx);
+        if (!isPastDeadline(ctx)) {
+            const denied = await runDirectFetchStage(ctx);
+            // No browser/session stage ran; do not add session-use flags here.
+            if (denied) return buildFinalResult(resultFromScoredCandidate(scoreReaderCandidate(denied)), ctx);
+        }
         if (!isPastDeadline(ctx)) await runDiscoveredEndpointStage(ctx);
         if (!isPastDeadline(ctx)) await runJinaStage(ctx);
 
@@ -97,7 +101,7 @@ function runEndpointStage(ctx: StageContext): void {
     }
 }
 
-async function runDirectFetchStage(ctx: StageContext): Promise<void> {
+async function runDirectFetchStage(ctx: StageContext): Promise<ReaderCandidate | null> {
     const candidateUrls: CandidateUrl[] = [];
 
     if (ctx.options.browserMode !== 'required' && ctx.options.publicEndpoints) {
@@ -140,13 +144,20 @@ async function runDirectFetchStage(ctx: StageContext): Promise<void> {
                     ...ctx.fetchOpt,
                 }) as unknown as Record<string, unknown>;
             } catch (error: unknown) {
-                appendAttempt(ctx.trace, {
-                    source: candidate.source,
-                    verdict: 'error',
-                    url: candidate.url,
-                    reason: (error as Error).message || 'fetch-candidate-error',
-                });
-                continue;
+                if (candidate.label === 'github-repo-api' && error instanceof FetchResponseBodyError
+                    && (error.response.status === 403 || error.response.status === 429)) {
+                    // A failed/aborted body cannot turn a known denial into an alternate request.
+                    // The safe response excludes both body fragments and the stream exception.
+                    fetched = error.response;
+                } else {
+                    appendAttempt(ctx.trace, {
+                        source: candidate.source,
+                        verdict: 'error',
+                        url: candidate.url,
+                        reason: (error as Error).message || 'fetch-candidate-error',
+                    });
+                    continue;
+                }
             }
         }
         ctx.fetchedUrls.add((fetched['finalUrl'] as string) || candidate.url);
@@ -195,7 +206,12 @@ async function runDirectFetchStage(ctx: StageContext): Promise<void> {
             reason: `score:${scored.score}`,
         });
         if (readerCandidate.text || readerCandidate.title) ctx.candidates.push(readerCandidate);
+        if (candidate.label === 'github-repo-api'
+            && (fetched['status'] === 403 || fetched['status'] === 429)) {
+            return readerCandidate;
+        }
     }
+    return null;
 }
 
 async function runDiscoveredEndpointStage(ctx: StageContext): Promise<void> {

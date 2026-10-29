@@ -75,7 +75,7 @@ aliases: [Weasley Podex Infra, infrastructure modules, core runtime]
 | `typecheck` | `tsc --noEmit` |
 | `typecheck:frontend` | `tsc --noEmit -p tsconfig.frontend.json` |
 | `gate:typecheck` / `gate:tests` / `gate:*` | `node scripts/release-gates.mjs <gate>` |
-| `gate:all` | `node scripts/release-gates.mjs` |
+| `gate:all` | `node scripts/release-gates.mjs` — current Node launches local npm/tsx JavaScript entrypoints on Windows and POSIX; no shell command interpolation. Local doc-drift aggregates use a Node file traversal, preserving paths with spaces and excluding generated frontend trees. |
 | `prepublishOnly` | `npm run build && npm run build:frontend && npm run check:frontend-build-output` |
 | `electron:dev` | `concurrently -k -n server,electron "node scripts/electron-dev-manager.mjs" "npm --prefix electron run dev"` |
 | `electron:build` | `npm --prefix electron run build` |
@@ -449,6 +449,8 @@ Advanced memory runtime의 entry point. FTS5 인덱스, search routing, task sna
 ### heartbeat.ts / heartbeat-schedule.ts
 
 주기 작업과 스케줄 파싱/실행을 담당한다. 현재 소스 오브 트루스는 `${WEASLEY_PODEX_HOME:-~/.weasley/podex}/heartbeat.json`이며, schedule은 `every`/`cron` + `timeZone`을 지원한다. PABCD 활성, heartbeat 중첩, main agent busy 상태에서는 `pendingJobs` 큐로 밀어두고, user message queue가 먼저 비워진 뒤 heartbeat pending을 drain한다. 프롬프트 앞에는 memory search 지시를 자동 주입한다. (#252) job별 opt-in `runner: main|employee|script`(기본 main; employee는 `claimWorker`+`runSingleAgent`, busy 시 `skipped: employee busy` 경고 리포트; script는 argv `execFile` no-shell)와 `reportPolicy: always|anomaly_only|silent` + 구조화 리포트 계약(`heartbeat-report.ts`: status/changed/record_required/user_visible/summary/evidence/next_action)을 지원한다. `[SILENT]`/quiet marker는 정책과 무관하게 우선하며, silent 정책 anchor는 `delivered_at NULL` + "recorded (not sent)" 주입 문구로 구분된다. main runner는 `orchestrateAndCollectData`의 `agyPlannerOnly` 신호(#251)에 1회 한정 재시도한다. PUT `/api/heartbeat`는 UI가 모르는 runner 필드를 job id 기준 merge-by-id로 보존한다.
+
+Cron weekday ranges use the inclusive numeric domain 0–7 before mapping both 0 and 7 to Sunday. Thus `1-7` and `0-7` cover the whole week, while `1-7/2` selects Monday, Wednesday, Friday, and Sunday. Reversed ranges such as `7-1` remain invalid; named aliases and timezone selection are unchanged.
 
 ### indexing.ts / keyword-expand.ts / bootstrap.ts
 

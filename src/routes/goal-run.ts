@@ -9,13 +9,19 @@ import {
     completeRun,
 } from '../goal-run/controller.js';
 import type { GoalRunMode } from '../goal-run/types.js';
+import { GoalRunStateError } from '../goal-run/persistence.js';
 
 const VALID_MODES: GoalRunMode[] = ['dry-run', 'assist', 'bounded', 'supervised'];
 
 export function registerGoalRunRoutes(app: Router, requireAuth: RequestHandler): void {
     app.get('/api/goal-run', requireAuth, (_req, res) => {
-        const run = getActiveRun();
-        res.json({ ok: true, run });
+        try {
+            const run = getActiveRun();
+            res.json({ ok: true, run });
+        } catch (error) {
+            if (!(error instanceof GoalRunStateError)) throw error;
+            res.status(error.statusCode).json({ ok: false, error: error.message, code: error.code });
+        }
     });
 
     app.get('/api/goal-run/preflight', requireAuth, (req, res) => {
@@ -57,7 +63,8 @@ export function registerGoalRunRoutes(app: Router, requireAuth: RequestHandler):
                 case 'resume': {
                     const run = resumeRun();
                     if (!run) { res.status(400).json({ ok: false, error: 'No paused goal-run to resume' }); return; }
-                    res.json({ ok: true, run });
+                    const ok = run.status === 'running';
+                    res.status(ok ? 200 : 400).json({ ok, run });
                     return;
                 }
                 case 'stop': {
@@ -77,6 +84,10 @@ export function registerGoalRunRoutes(app: Router, requireAuth: RequestHandler):
                     res.status(400).json({ ok: false, error: `Unknown action: ${action}` });
             }
         } catch (err) {
+            if (err instanceof GoalRunStateError) {
+                res.status(err.statusCode).json({ ok: false, error: err.message, code: err.code });
+                return;
+            }
             res.status(500).json({ ok: false, error: (err as Error).message });
         }
     });

@@ -8,7 +8,7 @@ aliases: [Weasley Podex Commands, slash commands registry, commands.md]
 
 # src/cli/ — Slash Command Registry & Dispatcher
 
-> `commands.ts`(621L) + `handlers.ts`(448L) + `handlers-runtime.ts`(507L) + `handlers-completions.ts`(103L) + `handlers-workflows.ts`(505L) + `handlers-search.ts`(34L) + `handlers-skill-invoke.ts`(36L) + `api-auth.ts`(45L) + `command-context.ts`(144L) + `registry.ts`(254L) + `acp-client.ts`(382L) + `claude-models.ts`(84L) + `compact.ts`(143L)
+> `commands.ts`(621L) + `handlers.ts`(448L) + `handlers-runtime.ts`(507L) + `handlers-completions.ts`(103L) + `handlers-workflows.ts`(515L) + `handlers-search.ts`(34L) + `handlers-skill-invoke.ts`(36L) + `api-auth.ts`(45L) + `command-context.ts`(144L) + `registry.ts`(254L) + `acp-client.ts`(382L) + `claude-models.ts`(84L) + `compact.ts`(143L)
 > slash registry는 52개 커맨드이며 non-hidden은 51개다(`/file`만 hidden). interface별 가시성은 CLI 50 / Web 44 / Telegram 37 / Discord 37이고, root cmdline에는 workflow/interactive hidden set을 제외한 28개가 보인다. root CLI는 `bin/podex.ts` 기준 `provider`/`design`/`hooks`를 포함한 dynamic import branch를 가진다. `chat search`, `browser web-ai`, `dashboard memory`, `dashboard chat search`처럼 grouped subcommand까지 포함하면 28개 user-facing surface로 문서화한다. helper까지 포함한 `bin/commands/*.ts` top-level 파일은 33개다. `browser web-ai`는 `browser-web-ai.ts`, `dashboard memory`는 `dashboard-memory.ts`, dashboard chat federation은 `dashboard-chat.ts`, task root command는 `task.ts`, JWC external runtime helper는 `jwc.ts`, dispatch unwrap 보조는 `dispatch-helpers.ts`, batch summary 보조는 `dispatch-batch-summary.ts`로 분리되어 있다.
 > 모델/CLI 선택은 `registry.ts` 단일 소스를 따른다. 현재 registry 런타임은 `pi`, `agy`, `ai-e`, `claude`, `claude-e`, `codex`, `codex-app`, `cursor`, `grok`, `jwc`, `kiro-code`, `opencode`, `copilot` 13개다.
 
@@ -196,6 +196,7 @@ JWC is not bundled with the default npm install or Electron sidecar. Use `weasle
 - Ephemeral virtual employees use `weasley-podex dispatch --virtual "security" --task "..."` or `--virtual "Reviewer" --role "Review rollback gaps" --task "..."`.
 - Virtual employees are synthetic dispatch rows only; they do not appear in `weasley-podex employee list` and do not write durable `employee_sessions`.
 - If `--cli`/`--model` are omitted for virtual dispatch, the server resolves the current CLI and uses the registry default model for that CLI.
+- Worker result delivery and retry callbacks carry the captured `runId`, so a delayed callback cannot consume or fail a later run of the same employee.
 - Human dispatch output follows live safe worker progress by default. Use `--quiet` for final-result-only output, or `--json` for parseable machine output without human progress lines.
 - On dispatch polling timeout/disconnect, recovery output is run-aware when possible: `weasley-podex worker status <runId>` for safe progress and `weasley-podex worker read <runId> --tail 80` only as an explicit raw-output follow-up.
 - Batch dispatch prints one bounded summary per worker. It does not inline full employee stdout; each row carries `runId`, status/preview, and an explicit `weasley-podex worker read <runId> --tail 120` recovery command when raw output is needed.
@@ -341,6 +342,45 @@ L2 cross-instance read-only memory search.
 
 ---
 
+## Adaptive GitHub repository reads
+
+`weasley-podex browser fetch https://github.com/<owner>/<repo> --json --trace`
+uses the existing repository resolver to request
+`https://api.github.com/repos/<owner>/<repo>`. A successful repository response
+must be a JSON object with a nonempty string `full_name`; the output includes
+readable repository metadata and endpoint evidence. Invalid responses become
+failed API candidates instead of generic successful text.
+
+HTTP 404 and malformed responses preserve the existing page fallback. A resolved
+repository API HTTP 403 or 429 ends the read with `ok: false`, `verdict: blocked`,
+and a warning/metadata error code:
+
+- `github-repo-forbidden`: HTTP 403 without rate-limit evidence. Check repository access before retrying.
+- `github-repo-rate-limited`: HTTP 429, or HTTP 403 with valid `Retry-After`, zero remaining quota, or a recognized rate-limit message. Stop requests and respect the server timing before a later caller-controlled retry.
+- `github-repo-invalid-response`: unusable repository JSON; a readable page fallback may still be selected instead.
+
+No alternate HTML, TLS, browser/session, or third-party request follows a 403/429,
+even when those reader options are enabled or the response body subsequently fails
+or times out. Only a status actually received from the server establishes this
+denial; failures before headers retain existing transport-error behavior.
+Metadata may contain safe integer
+`retryAfterSeconds`, canonical HTTP-date `retryAfterAt` (ISO format), and valid
+epoch-seconds `rateLimitResetAt` (ISO format). Invalid/overflowing values are
+omitted; arbitrary response headers and denial bodies are not returned as diagnostics.
+No retry timer, automatic request, shared limiter, credential, or authorization
+mechanism is added. Existing byte limits and timeouts still apply.
+
+Scope: resolver-produced `github-repo-api` candidates. Direct API URL input,
+GitHub raw files, and other providers retain their existing behavior. Disabling
+public endpoints or requiring browser mode bypasses this resolver as before.
+Offline acceptance coverage is in `tests/unit/browser-adaptive-fetch-github.test.ts`;
+these tests do not establish live API availability.
+
+GitHub's [rate-limit documentation](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api#exceeding-the-rate-limit)
+describes 403/429, remaining quota, and reset timestamps. Its
+[retry guidance](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api#handle-rate-limit-errors-appropriately)
+requires waiting after rate limits. This reader returns that decision to the caller.
+
 ## Root CLI release gates
 
 ```text
@@ -350,3 +390,5 @@ gate:mcp-scope-frozen, gate:no-experimental-in-readme-ready-section, gate:all
 
 Use `npm run gate:all` as the broad docs/release sanity command.
 
+
+For `/goal run`, invalid saved state returns a blocked diagnostic with backup/repair/retry guidance. `/goal run preflight` reports NOT READY with the failed persisted-state gate; saved records remain untouched until the operator repairs them.

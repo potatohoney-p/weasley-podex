@@ -7,6 +7,7 @@ import type { SlashResult } from './types.js';
 import { clearGoalTimers } from '../agent/lifecycle-handler.js';
 import { GOAL_PLAN_PENDING_OBJECTIVE, type GoalState } from '../goal/types.js';
 import { describeGoalPauseGate } from '../goal/pause-gate.js';
+import { GoalRunStateError } from '../goal-run/persistence.js';
 
 function joinArgs(args: string[]): string {
     return args.join(' ').trim();
@@ -173,6 +174,14 @@ export async function goalWorkflowHandler(args: string[], ctx: CliCommandContext
     if (sub === 'run') {
         const runSub = (args[1] || '').toLowerCase();
         const { preflight: runPreflight, startRun, stopRun, getActiveRun } = await import('../goal-run/controller.js');
+
+        if (['start', 'stop', 'cancel', 'status'].includes(runSub)) {
+            try { getActiveRun(); }
+            catch (error) {
+                if (!(error instanceof GoalRunStateError)) throw error;
+                return blocked(error.message, error.code);
+            }
+        }
 
         if (runSub === 'preflight' || runSub === '' || !runSub) {
             const state = runPreflight();

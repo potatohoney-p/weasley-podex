@@ -374,23 +374,27 @@ export function listPendingWorkerResults(): Array<{ agentId: string; runId: stri
     return results;
 }
 
-export function claimWorkerReplay(agentId: string): boolean {
+// Async callers capture runId before delivery; agent-only calls retain legacy behavior.
+export function claimWorkerReplay(agentId: string, expectedRunId?: string): boolean {
     const slot = workers.get(agentId);
+    if (expectedRunId !== undefined && slot?.runId !== expectedRunId) return false;
     if (!slot || !slot.pendingReplay || slot.replayClaimed) return false;
     slot.replayClaimed = true;
     return true;
 }
 
-export function markWorkerReplayed(agentId: string): void {
+export function markWorkerReplayed(agentId: string, expectedRunId?: string): void {
     const slot = workers.get(agentId);
+    if (expectedRunId !== undefined && slot?.runId !== expectedRunId) return;
     if (!slot) return;
     slot.pendingReplay = false;
     slot.replayClaimed = false;
     if (slot.state !== 'running') workers.delete(agentId);
 }
 
-export function releaseWorkerReplay(agentId: string): void {
+export function releaseWorkerReplay(agentId: string, expectedRunId?: string): void {
     const slot = workers.get(agentId);
+    if (expectedRunId !== undefined && slot?.runId !== expectedRunId) return;
     if (!slot) return;
     slot.replayClaimed = false;
     slot.replayAttempts++;
