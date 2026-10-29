@@ -207,7 +207,7 @@ export function buildApprovedPlanPromptBlock(
 export async function drainPendingReplays(fallbackMeta: Record<string, any> = {}): Promise<void> {
     const pendingResults = listPendingWorkerResults();
     for (const pr of pendingResults) {
-        if (!claimWorkerReplay(pr.agentId)) continue;
+        if (!claimWorkerReplay(pr.agentId, pr.runId)) continue;
         // Prefer per-slot replayMeta captured at dispatch time so the result
         // routes back to the original channel (web/telegram/discord + chatId).
         // Fallback meta (caller-supplied) only fills in when slot meta is absent.
@@ -223,10 +223,10 @@ export async function drainPendingReplays(fallbackMeta: Record<string, any> = {}
         try {
             const replayText = buildWorkerReplayNotice(pr);
             await orchestrate(replayText, { ...meta, _workerResult: true, _skipInsert: true, _skipReplayDrain: true });
-            markWorkerReplayed(pr.agentId);
+            markWorkerReplayed(pr.agentId, pr.runId);
             processQueue();
         } catch {
-            releaseWorkerReplay(pr.agentId);
+            releaseWorkerReplay(pr.agentId, pr.runId);
             break;
         }
     }

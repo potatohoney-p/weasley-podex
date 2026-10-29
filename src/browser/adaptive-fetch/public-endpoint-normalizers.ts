@@ -2,6 +2,7 @@
 
 import { normalizeWhitespace } from './transforms.js';
 import { formatFeedEvidence, parsePublicFeed } from './feed-parser.js';
+import { githubRepositoryAccessFailure } from './github-repository.js';
 
 interface NormalizerContext {
     source?: string;
@@ -33,13 +34,34 @@ export function normalizePublicEndpointResult(
     const source = String(context.source || '');
     if (source !== 'public_endpoint' && !isKnownPublicEndpointLabel(label)) return null;
     const rawText = String(fetched['text'] || '');
-    if (!rawText.trim()) return null;
+    if (!rawText.trim() && label !== 'github-repo-api') return null;
     const contentType = String(fetched['contentType'] || '');
     const finalUrl = String(fetched['finalUrl'] || '');
     const status = Number(fetched['status'] || 0);
     const ok = fetched['ok'] !== false;
     const json = parseJson(rawText);
-    const built = buildByLabel(label, rawText, json);
+    let built = buildByLabel(label, rawText, json);
+    const invalidGithubResponse = label === 'github-repo-api' && ok && !built;
+    const accessFailure = label === 'github-repo-api'
+        ? githubRepositoryAccessFailure(status, asObject(fetched['headers']), asObject(json)['message'])
+        : null;
+    const githubFailureCode = accessFailure?.code || (invalidGithubResponse ? 'github-repo-invalid-response' : '');
+    if (accessFailure) {
+        built = {
+            kind: 'github-repo',
+            title: '',
+            text: accessFailure.text,
+            metadata: accessFailure.metadata,
+        };
+    }
+    if (invalidGithubResponse && !accessFailure) {
+        built = {
+            kind: 'github-repo',
+            title: '',
+            text: 'GitHub repository API returned an invalid response. Retry later or read the repository page.',
+            metadata: { error: 'github-repo-invalid-response' },
+        };
+    }
     if (!built) return null;
     return {
         source: 'public_endpoint',
@@ -49,7 +71,7 @@ export function normalizePublicEndpointResult(
         text: built.text,
         contentType,
         status,
-        ok,
+        ok: ok && !githubFailureCode,
         metadata: {
             endpointLabel: label,
             endpointKind: built.kind,
@@ -60,7 +82,10 @@ export function normalizePublicEndpointResult(
             built.kind,
             ...(Array.isArray(fetched['evidence']) ? fetched['evidence'] as string[] : []),
         ],
-        warnings: Array.isArray(fetched['warnings']) ? fetched['warnings'] as string[] : [],
+        warnings: [
+            ...(Array.isArray(fetched['warnings']) ? fetched['warnings'] as string[] : []),
+            ...(githubFailureCode ? [githubFailureCode] : []),
+        ],
         rawTextLength: rawText.length,
     };
 }
@@ -90,6 +115,7 @@ function buildByLabel(label: string, rawText: string, json: Json | null) {
 
 function githubRepo(json: Json | null) {
     const obj = asObject(json);
+    if (typeof obj['full_name'] !== 'string') return null;
     const title = str(obj['full_name']);
     if (!title) return null;
     return built('github-repo', title, [

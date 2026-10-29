@@ -1,8 +1,10 @@
 ﻿import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
+import type { TestContext } from 'node:test';
+import { spawnSync } from 'node:child_process';
+import { copyFileSync, mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { checkWebUiBuildOutput } from '../../scripts/check-web-ui-build-output.ts';
 
 function makeDist(indexHtml: string, appJs: string): string {
@@ -57,5 +59,38 @@ test('build output guard fails nested Vite publicDir artifacts', () => {
     const result = checkWebUiBuildOutput({ distDir: dist });
     assert.equal(result.ok, false);
     assert.match(result.errors.join('\n'), /Forbidden nested build output/);
+});
+
+function runBuildOutputCli(t: TestContext, appJs: string) {
+    const fixture = mkdtempSync(join(tmpdir(), 'podex build output #%-'));
+    t.after(() => rmSync(fixture, { recursive: true, force: true }));
+    const root = resolve(import.meta.dirname, '../..');
+    const script = join(fixture, 'check-web-ui-build-output.ts');
+    copyFileSync(join(root, 'scripts/check-web-ui-build-output.ts'), script);
+    writeFileSync(join(fixture, 'package.json'), '{"type":"module"}');
+    const dist = join(fixture, 'public', 'dist');
+    const assets = join(dist, 'assets');
+    mkdirSync(assets, { recursive: true });
+    writeFileSync(join(dist, 'index.html'), '<script type="module" src="/assets/app-test.js"></script>');
+    writeFileSync(join(assets, 'app-test.js'), appJs);
+    writeFileSync(join(assets, 'vendor-mermaid-test.js'), 'export const fixture = true;');
+    return spawnSync(process.execPath, [
+        join(root, 'node_modules/tsx/dist/cli.mjs'), script,
+    ], { cwd: fixture, encoding: 'utf8', timeout: 30_000 });
+}
+
+test('build output CLI rejects invalid output from a path needing URL encoding', t => {
+    const result = runBuildOutputCli(t, 'import "./vendor-mermaid-test.js";');
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, 1, `${result.stdout}\n${result.stderr}`);
+    assert.match(result.stderr, /references eager vendor-mermaid import/);
+});
+
+test('build output CLI reports valid output from a path needing URL encoding', t => {
+    const result = runBuildOutputCli(t, 'console.log("ok");');
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+    assert.match(result.stdout, /Web UI build output OK \(1 app entries, \d+ bytes\)/);
+    assert.equal(result.stderr, '');
 });
 

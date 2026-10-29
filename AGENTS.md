@@ -34,6 +34,16 @@ The public repository has no required submodules or private-repository dependenc
   Canonical: dev-pabcd §10, dev-testing §9.5; injected via orchestration template and goal continuation.
 - `structure/` reading map: start at `structure/INDEX.md`; depth — `telegram.md` (Hub), `prompt_flow.md` (attest/hooks/bounded search), `stream-events.md` (pause gate/SSE), `infra.md` (test scripts), `commands.md` + `server_api.md` (slash/API surfaces).
 
+Goal-run tracking lifecycle: commands recover the persisted run without a prior status read. Start refuses to overwrite an existing run; resume requires the original goal to be active and refined. Paused time is excluded from minute usage, and blocked API resumes return HTTP 400 with the persisted gate reasons. Budget enforcement remains a preview.
+
+Goal-run saved-state recovery: invalid JSON, malformed fields, or unreadable `goal/active-run.json` block status and explicit mutations with an actionable diagnostic (HTTP 409 with `goal_run_state_invalid` or `goal_run_state_unreadable`; CLI blocked result). Preflight reports a failed `persisted-run-state` gate. Preserve a backup and repair the file before retrying; the application never resets or rewrites a rejected record. Tracking callbacks warn and skip that record without interrupting worker completion; a counter already at the maximum safe integer also skips its increment without changing saved bytes. A repaired file is retried without restarting. This validates disk loads; an already loaded valid run remains the process-local authority, without cross-process locking or detection of later external edits.
+
+- GitHub repository URL reads validate repository JSON. Resolved repository API 403/429 stops all reader escalation with safe forbidden/rate-limit diagnostics and optional validated retry timing; 404/malformed responses retain page fallback. No automatic retry is scheduled. See `structure/commands.md`; this is scoped to the repository resolver, not direct API/raw-file URLs.
+
+GitHub `browser fetch` routing uses repository metadata only for repository-root URLs. Blob files retain raw-file reads; issue, PR, release, directory, and other subpages use the requested page's reader path.
+
+Worker result delivery and retry callbacks carry the captured `runId`, so a delayed callback cannot consume or fail a later run of the same employee.
+
 ### Optional Skill Routing
 
 Only the eight entries in `skills_ref/registry.json` are bundled. Imported skills are user-selected extensions from an installed Codex environment or an explicit trusted repository; never document them as bundled or required by the core runtime.

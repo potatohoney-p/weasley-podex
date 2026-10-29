@@ -42,7 +42,9 @@ function githubCandidates(url: URL): CandidateUrl[] {
             source: 'public_endpoint',
         }];
     }
-    if (parts.length >= 2) {
+    // Repository metadata is only evidence for a repository root. Subpages
+    // must retain their own content instead of competing with that summary.
+    if (parts.length === 2) {
         return [{
             label: 'github-repo-api',
             url: `https://api.github.com/repos/${parts[0]}/${parts[1]}`,

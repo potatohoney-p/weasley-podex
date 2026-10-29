@@ -5,6 +5,14 @@ import { isTextualContentType } from './transforms.js';
 
 import type { FetchTextCandidateOptions } from './types.js';
 
+/** Preserve received HTTP status when the response stream fails after headers. */
+export class FetchResponseBodyError extends Error {
+    constructor(error: unknown, readonly response: ReturnType<typeof blockedResult>) {
+        super(error instanceof Error ? error.message : 'fetch-candidate-error');
+        this.name = 'FetchResponseBodyError';
+    }
+}
+
 function resolveProxy(options: FetchTextCandidateOptions): string | undefined {
     return options.proxy || process.env['HTTPS_PROXY'] || process.env['HTTP_PROXY'] || undefined;
 }
@@ -52,7 +60,13 @@ export async function fetchTextCandidate(rawUrl: string, options: FetchTextCandi
         if (contentLength > maxBytes) {
             return blockedResult(current, response.status, contentType, headers, 'content-length-exceeds-max-bytes');
         }
-        const body = await readTextWithLimit(response, maxBytes);
+        let body: Awaited<ReturnType<typeof readTextWithLimit>>;
+        try {
+            body = await readTextWithLimit(response, maxBytes);
+        } catch (error: unknown) {
+            throw new FetchResponseBodyError(error,
+                blockedResult(current, response.status, contentType, headers, 'response-body-read-failed'));
+        }
         if (!body.ok) {
             return blockedResult(current, response.status, contentType, headers, 'body-exceeds-max-bytes');
         }

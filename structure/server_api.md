@@ -34,7 +34,7 @@ aliases: [Weasley Podex Server API, server.ts reference, server_api]
 | `src/routes/jaw-memory.ts` | 352L | 12 | Weasley Podex memory search/read/save/context/list/init/reflect/flush/soul/soul-activate/bootstrap (historical internal filename) |
 | `src/routes/orchestrate.ts` | 1085L | 18 | reset/state/workers/worker-progress/worker-runs/snapshot/queue cancel/hold/queue steer async accept/dispatch/batch dispatch/worker result/state PUT |
 | `src/routes/goal.ts` | 183L | 3 | durable goal state get/history/set-update-complete-cancel-pause-resume-clear-reset |
-| `src/routes/goal-run.ts` | 83L | 3 | bounded goal-run state/preflight/start-pause-resume-stop |
+| `src/routes/goal-run.ts` | 94L | 3 | bounded goal-run state/preflight/start-pause-resume-stop |
 | `src/routes/messaging.ts` | 259L | 6 | upload/file-open/voice/telegram/channel/discord send |
 | `src/routes/employees.ts` | 123L | 5 | employee CRUD + reset |
 | `src/routes/skills.ts` | 89L | 5 | skills list/read/enable/disable/reset |
@@ -58,6 +58,11 @@ aliases: [Weasley Podex Server API, server.ts reference, server_api]
 | --- | ---: | --- |
 | `src/manager/board/routes.ts` | 99L / 5 | board tasks CRUD + from-message |
 | `src/manager/schedule/routes.ts` | 112L / 5 | scheduled work CRUD + dispatch |
+
+The manager schedule ticker isolates cron-evaluation failures per stored row:
+malformed rows are logged without marking a run, and later rows continue. Fixing
+a malformed cron permits evaluation on the next tick, including the same minute.
+This does not change dispatch delivery, persistence, or cron matching semantics.
 
 ### 등록 순서 (`server.ts`)
 
@@ -323,3 +328,7 @@ static → employees → heartbeat → skills → jaw-memory → orchestrate
 | Memory embedding | `GET /api/dashboard/memory/embed-config` `POST /api/dashboard/memory/embed-config` `POST /api/dashboard/memory/reindex` `GET /api/dashboard/memory/embed-state` `GET /api/dashboard/memory/embed-estimate` `GET /api/dashboard/memory/reindex-stream` (SSE) |
 | Weasley Podex CEO (manager) | `/api/jaw-ceo/*` (same historical sub-router as core server) |
 
+
+Goal-run resume returns HTTP 400 with `ok: false` and the unchanged paused run when preflight, goal identity, or budget gates fail. Successful resume returns the running state and clears earlier gate errors. All lifecycle actions load persisted tracking state before mutating it.
+
+Goal-run saved-state recovery: invalid JSON, malformed fields, or unreadable `goal/active-run.json` block status and explicit mutations with an actionable diagnostic (HTTP 409 with `goal_run_state_invalid` or `goal_run_state_unreadable`; CLI blocked result). Preflight reports a failed `persisted-run-state` gate. Preserve a backup and repair the file before retrying; the application never resets or rewrites a rejected record. Tracking callbacks warn and skip that record without interrupting worker completion; a counter already at the maximum safe integer also skips its increment without changing saved bytes. A repaired file is retried without restarting. This validates disk loads; an already loaded valid run remains the process-local authority, without cross-process locking or detection of later external edits.

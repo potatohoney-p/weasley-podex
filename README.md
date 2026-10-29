@@ -385,6 +385,12 @@ P (Plan) → A (Audit) → B (Build) → C (Check) → D (Done) → IDLE
 
 State is database-persisted and survives restarts. Workers cannot modify files — only verify. Activate with `weasley-podex orchestrate`, `/orchestrate`, or `/pabcd`; resume an active worklog explicitly with `/continue`. Forward phase transitions require evidence attestation, e.g. `weasley-podex orchestrate B --attest '{"from":"A","to":"B","did":"<what you did>"}'` (C→D also needs pasted `checkOutput` and `exitCode`). Workflow helper slash commands include `/plan`, `/interview`, `/deliberate`, `/planaudit`, `/review`, `/search`, `/goal`, `/goalplan`, `/team`, `/task`, `/fork`, and `/gd`; `/plan` is a compatibility guide that explains "this is PABCD P" and points to the right next command instead of creating a second planning mode. `/search <query>` routes search intent through the active search skill: classify local vs external lookup, rewrite focused queries, discover candidate URLs, and only then use browser commands such as `browser fetch` for evidence verification. Bounded automation is expressed as `/goal run ...`, not a separate top-level `/autopilot`. Durable goals — `/goal <objective>` plus `update`/`done`/`cancel`/`pause`/`resume` — are functional and survive restarts, and a goal resume re-fires the work on every interface (Web/CLI included, not just messaging). AI-initiated `goal pause --agent --audit` arms a two-tap gate: one audit/finalizer continuation may run with `pause_gate_pending`, and if that turn exits with the gate still armed, `goal_pause_gate_pending` suppresses further auto-continuation until a productive checkpoint or a second audited pause. `/gd` is shorthand for `/goal done --force` (skips the completion evidence gate). `/goal run` (`preflight`/`start`/`stop`/`status`) is a tracking-only preview: it gates on preflight and tracks turn/dispatch budget, with enforcement still to come.
 
+Goal-run tracking lifecycle: commands recover the persisted run without a prior status read. Start refuses to overwrite an existing run; resume requires the original goal to be active and refined. Paused time is excluded from minute usage, and blocked API resumes return HTTP 400 with the persisted gate reasons. Budget enforcement remains a preview.
+
+Goal-run saved-state recovery: invalid JSON, malformed fields, or unreadable `goal/active-run.json` block status and explicit mutations with an actionable diagnostic (HTTP 409 with `goal_run_state_invalid` or `goal_run_state_unreadable`; CLI blocked result). Preflight reports a failed `persisted-run-state` gate. Preserve a backup and repair the file before retrying; the application never resets or rewrites a rejected record. Tracking callbacks warn and skip that record without interrupting worker completion; a counter already at the maximum safe integer also skips its increment without changing saved bytes. A repaired file is retried without restarting. This validates disk loads; an already loaded valid run remains the process-local authority, without cross-process locking or detection of later external edits.
+
+Worker result delivery and retry callbacks carry the captured `runId`, so a delayed callback cannot consume or fail a later run of the same employee.
+
 ---
 
 ## Memory
@@ -543,6 +549,19 @@ weasley-podex reminders add "Follow up tomorrow"
 # Maintenance
 weasley-podex reset                         # full reset
 ```
+
+`browser fetch` resolves GitHub repository URLs to the public repository REST
+endpoint and normalizes repository metadata. Invalid JSON or a missing repository
+name cannot be reported as successful API content; HTTP 404 and malformed responses
+may still fall back to the repository page. A resolved repository API HTTP 403 or
+429 stops that read before alternative transports or readers, including opted-in
+third-party readers. JSON output distinguishes `github-repo-forbidden` from
+`github-repo-rate-limited` and includes validated retry timing when available.
+The caller controls any later retry; no automatic wait or retry is scheduled.
+This policy applies to the repository resolver, not arbitrary direct API URLs or
+raw-file reads. The adaptive reader remains experimental.
+
+`browser fetch` uses GitHub repository metadata only for repository-root URLs. Blob files use raw-file reads; issue, PR, release, directory, and other subpages are read at the requested page.
 
 ---
 

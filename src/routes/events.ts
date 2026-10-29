@@ -58,36 +58,6 @@ export function registerEventsRoutes(app: Router, requireAuth: RequestHandler): 
         }
         activeConnections++;
 
-        res.writeHead(200, {
-            'Content-Type': 'text/event-stream',
-            'Cache-Control': 'no-cache, no-transform',
-            'X-Accel-Buffering': 'no',
-            'Connection': 'keep-alive',
-        });
-        // Flush headers immediately — without a first write the client's
-        // fetch/EventSource would hang until the 15s heartbeat.
-        res.write(': connected\n\n');
-
-        // Replay missed events (Last-Event-ID header or ?lastEventId= query).
-        // A cursor AHEAD of the current seq means the client kept a lastEventId
-        // from a previous server process (ids reset to 0 on restart) — without
-        // the explicit gap signal it would be treated as "caught up" and every
-        // event since the restart would be silently lost (devlog 260612
-        // manager_stream_hidden_state_audit 07 F-W2).
-        const lastId = parseLastEventId(req);
-        if (lastId > 0) {
-            if (lastId > currentSeq() || hasReplayGap(lastId)) {
-                replayGapCount++;
-                res.write(`data: ${JSON.stringify({ topic: 'system', event: 'replay_gap' })}\n\n`);
-            }
-            // Filter internal topics on replay too (defense in depth: the ring
-            // could hold a trace entry from a future/mistaken publisher).
-            for (const entry of replaySince(lastId)) {
-                if (!isPublicSseTopic(entry.topic)) { droppedInternalTopicEvents++; continue; }
-                res.write(formatSse(entry, true));
-            }
-        }
-
         // close fires on both req and res for the same teardown — guard so
         // activeConnections is decremented exactly once per connection. Declared
         // before subscribe() because the backpressure close path below calls it.
@@ -103,17 +73,64 @@ export function registerEventsRoutes(app: Router, requireAuth: RequestHandler): 
             if (!res.writableEnded) res.end();
         };
 
+        req.on('close', cleanup);
+        res.on('close', cleanup);
+        res.on('error', cleanup);
+
+        // Every write path uses the same policy, including synchronous replay
+        // before the live subscription and quiet-stream heartbeat delivery.
+        const send = (frame: string): boolean => {
+            if (closed || res.writableEnded) { cleanup(); return false; }
+            try {
+                res.write(frame);
+            } catch (error) {
+                cleanup();
+                throw error;
+            }
+            if (exceedsBackpressureLimit(res.writableLength)) {
+                slowClientClosed++;
+                cleanup();
+            }
+            return !closed;
+        };
+
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache, no-transform',
+            'X-Accel-Buffering': 'no',
+            'Connection': 'keep-alive',
+        });
+        // Flush headers immediately — without a first write the client's
+        // fetch/EventSource would hang until the 15s heartbeat.
+        if (!send(': connected\n\n')) return;
+
+        // Replay missed events (Last-Event-ID header or ?lastEventId= query).
+        // A cursor AHEAD of the current seq means the client kept a lastEventId
+        // from a previous server process (ids reset to 0 on restart) — without
+        // the explicit gap signal it would be treated as "caught up" and every
+        // event since the restart would be silently lost (devlog 260612
+        // manager_stream_hidden_state_audit 07 F-W2).
+        const lastId = parseLastEventId(req);
+        if (lastId > 0) {
+            if (lastId > currentSeq() || hasReplayGap(lastId)) {
+                replayGapCount++;
+                if (!send(`data: ${JSON.stringify({ topic: 'system', event: 'replay_gap' })}\n\n`)) return;
+            }
+            // Filter internal topics on replay too (defense in depth: the ring
+            // could hold a trace entry from a future/mistaken publisher).
+            for (const entry of replaySince(lastId)) {
+                if (!isPublicSseTopic(entry.topic)) { droppedInternalTopicEvents++; continue; }
+                if (!send(formatSse(entry, true))) return;
+            }
+        }
+
         // Live delivery — enforce the public-topic allowlist so internal topics
         // (e.g. `trace`) never serialize out, and apply bounded backpressure so a
         // stalled client cannot grow the send buffer without limit.
         unsub = subscribe((entry) => {
             if (res.writableEnded) return;
             if (!isPublicSseTopic(entry.topic)) { droppedInternalTopicEvents++; return; }
-            res.write(formatSse(entry));
-            if (exceedsBackpressureLimit(res.writableLength)) {
-                slowClientClosed++;
-                cleanup();
-            }
+            send(formatSse(entry));
         });
 
         // Keep-alive ping. A DATA event, not an SSE comment: comments are
@@ -122,12 +139,8 @@ export function registerEventsRoutes(app: Router, requireAuth: RequestHandler): 
         // channel. The client staleness watchdog keys off this event
         // (260613 doc 40). No id: pings must not advance lastEventId.
         hb = setInterval(() => {
-            if (!res.writableEnded) res.write(`data: ${JSON.stringify({ topic: 'system', event: 'ping' })}\n\n`);
+            send(`data: ${JSON.stringify({ topic: 'system', event: 'ping' })}\n\n`);
         }, HEARTBEAT_MS);
         hb.unref();
-
-        req.on('close', cleanup);
-        res.on('close', cleanup);
-        res.on('error', cleanup);
     });
 }

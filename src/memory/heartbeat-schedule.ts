@@ -329,7 +329,7 @@ function matchesCronSegment(segment: string, value: number, options: CronFieldOp
     }
 
     if (base === '*') {
-        return withinRange(value, options.min, options.max) && (value - options.min) % step === 0;
+        return matchesCronRange(value, options.min, options.max, step, options);
     }
 
     if (base.includes('-')) {
@@ -340,12 +340,21 @@ function matchesCronSegment(segment: string, value: number, options: CronFieldOp
         const start = parseFieldValue(startRaw, options);
         const end = parseFieldValue(endRaw, options);
         if (start > end) throw new Error(`invalid cron range "${base}"`);
-        return value >= start && value <= end && (value - start) % step === 0;
+        return matchesCronRange(value, start, end, step, options);
     }
 
     const start = parseFieldValue(base, options);
-    if (step === 1) return value === start;
-    return value >= start && value <= options.max && (value - start) % step === 0;
+    if (step === 1) return value === (options.normalize ? options.normalize(start) : start);
+    return matchesCronRange(value, start, options.max, step, options);
+}
+
+// Expand in the field's numeric domain before normalizing aliases such as
+// Sunday 7 -> 0. Normalizing range endpoints first collapses 0-7 and reverses 1-7.
+function matchesCronRange(value: number, start: number, end: number, step: number, options: CronFieldOptions): boolean {
+    for (let candidate = start; candidate <= end; candidate += step) {
+        if (value === (options.normalize ? options.normalize(candidate) : candidate)) return true;
+    }
+    return false;
 }
 
 function validateCronSegment(segment: string, options: CronFieldOptions): void {
@@ -384,11 +393,10 @@ function parseFieldValue(token: string, options: CronFieldOptions): number {
     if (!Number.isInteger(parsed)) {
         throw new Error(`invalid cron value "${token}"`);
     }
-    const normalized = options.normalize ? options.normalize(parsed) : parsed;
-    if (!withinRange(normalized, options.min, options.max)) {
+    if (!withinRange(parsed, options.min, options.max)) {
         throw new Error(`cron value "${token}" out of range ${options.min}-${options.max}`);
     }
-    return normalized;
+    return parsed;
 }
 
 function parsePositiveInteger(raw: string, message: string): number {

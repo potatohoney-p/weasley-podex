@@ -25,7 +25,7 @@ test('worker classification: replay contract only runs for done workers', () => 
     // The replay drain in orchestrate() calls claimWorkerReplay() and listPendingWorkerResults()
     // only returns done workers (checked in worker-registry).
     assert.ok(
-        pipelineSrc.includes('claimWorkerReplay(pr.agentId)'),
+        pipelineSrc.includes('claimWorkerReplay(pr.agentId, pr.runId)'),
         'replay should be gated behind claimWorkerReplay',
     );
     assert.ok(

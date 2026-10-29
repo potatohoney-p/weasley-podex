@@ -588,7 +588,7 @@ export function registerOrchestrateRoutes(app: Express, requireAuth: AuthMiddlew
             }
             // Only clear replay flag after response is actually flushed to client.
             if (reply) {
-                res.on('finish', () => markWorkerReplayed(slot.agentId));
+                res.on('finish', () => markWorkerReplayed(slot.agentId, slot.runId));
                 res.json({
                     ok: true,
                     result,
@@ -912,7 +912,7 @@ export function registerOrchestrateRoutes(app: Express, requireAuth: AuthMiddlew
         }
         // Consume pending replay — subsequent polls will return 404.
         if (slot.state === 'done' && slot.pendingReplay) {
-            markWorkerReplayed(slot.agentId);
+            markWorkerReplayed(slot.agentId, slot.runId);
         }
         res.json({
             ok: true,

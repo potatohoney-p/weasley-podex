@@ -43,6 +43,7 @@ implementation details, not public command examples.
 - `/api/channel/send` is the canonical outbound Telegram/Discord delivery endpoint.
 - Heartbeat schedules support `{ kind: "every", minutes }` and `{ kind: "cron", cron, timeZone? }`.
 - Tool logs are capped by `src/shared/tool-log-sanitize.ts` before SSE/WebSocket, `agent_done`, and orchestration snapshot delivery. Web UI delivery is SSE-first through `GET /api/events`, with WebSocket as the legacy fallback dispatcher.
+- Worker result delivery and retry callbacks carry the captured `runId`, so a delayed callback cannot consume or fail a later run of the same employee.
 - Employee worker progress is query-first via `weasley-podex worker status [agent]`, watchable via `weasley-podex worker watch [agent]` or `weasley-podex dispatch --watch`, memory-only for current plus previous completed run, and safe-summary only with thinking detail hidden.
 - `weasley-podex employee list [--json]` lists DB and static employees, including Control. `weasley-podex dispatch` reads response bodies defensively and reports stale/missing server routes when an old manager returns HTML instead of JSON.
 - `npm run build` is a pure backend build/link operation and must not signal, kill, or restart live manager processes.
@@ -51,6 +52,9 @@ implementation details, not public command examples.
 - Design workspace v1: `weasley-podex design <list|create|show|path|rescan|edit|export|files|snapshots|catalog>` is FILE-FIRST over `src/manager/design/store.ts`. The historical `~/.podex-dashboard/design/...` path is a legacy compatibility location; new core runtime state belongs under `WEASLEY_PODEX_HOME`. Manager routes live at `/api/dashboard/design` (mutators require the Electron desktop header; preview is CSP-locked, `script-src 'none'`). The Design module tab's Run button enqueues a pageDir-scoped generation prompt into the currently selected instance.
 - Embedded Browser agent surface (030, v1–v5): agent-visible Manager Browser pages are relayed into the SELECTED instance's runtime-context by default. Agent endpoints via a renderer-relayed command queue: `POST …/<targetId>/screenshot` (PNG temp-file path), `POST …/<targetId>/snapshot` (bounded accessibility tree), and `POST …/<targetId>/act` (click/type/scroll/key). `act` is available for agent-visible targets by default (`actionsEnabled` remains a compatibility flag) and still validates payload bounds + re-checks the current URL policy in main. Element inspect/actions use Electron CDP attachment with ONLY DOM/Overlay/Input/Accessibility domains (native element-box highlight via `Overlay.setInspectMode`); the Runtime domain / page-side script evaluation is never enabled. Page titles/urls are sanitized + JSON-delimited before entering agent context.
 - `weasley-podex browser fetch <url>` is the adaptive URL-reader mirror from agbrowse: use it for a known URL/search-result URL, not as generic search. For raw search intent, use `/search <query>` so the search skill can choose search, browser verification, and model-gated parallel research policy.
+- GitHub repository resolver responses require valid repository JSON. Its API 403/429 stops escalation with safe forbidden/rate-limit diagnostics and optional validated timing; 404/malformed responses allow page fallback. No automatic retry is scheduled. Direct API URLs and raw-file reads keep their existing behavior; see `structure/commands.md`.
+
+- GitHub repository metadata is used only for repository-root URLs. Blob files retain raw-file reads; issue, PR, release, directory, and other subpages use the requested page's reader path.
 
 ## Build
 
@@ -77,3 +81,6 @@ bash structure/audit-fin-status.sh
 
 Doc-only changes should not modify `.mjs`, `.js`, or `.ts` source files unless explicitly requested.
 
+Goal-run tracking lifecycle: commands recover the persisted run without a prior status read. Start refuses to overwrite an existing run; resume requires the original goal to be active and refined. Paused time is excluded from minute usage, and blocked API resumes return HTTP 400 with the persisted gate reasons. Budget enforcement remains a preview.
+
+Goal-run saved-state recovery: invalid JSON, malformed fields, or unreadable `goal/active-run.json` block status and explicit mutations with an actionable diagnostic (HTTP 409 with `goal_run_state_invalid` or `goal_run_state_unreadable`; CLI blocked result). Preflight reports a failed `persisted-run-state` gate. Preserve a backup and repair the file before retrying; the application never resets or rewrites a rejected record. Tracking callbacks warn and skip that record without interrupting worker completion; a counter already at the maximum safe integer also skips its increment without changing saved bytes. A repaired file is retried without restarting. This validates disk loads; an already loaded valid run remains the process-local authority, without cross-process locking or detection of later external edits.

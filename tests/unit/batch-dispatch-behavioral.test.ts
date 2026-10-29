@@ -36,7 +36,7 @@ const { registerOrchestrateRoutes } = await import('../../src/routes/orchestrate
 const { initBossToken } = await import('../../src/core/boss-auth.js');
 const { resolveOrcScope } = await import('../../src/orchestrator/scope.js');
 const { setState, getCtx, resetState } = await import('../../src/orchestrator/state-machine.js');
-const { getWorkerSlot, claimWorker, cancelWorker } = await import('../../src/orchestrator/worker-registry.js');
+const { getWorkerSlot, claimWorker, cancelWorker, finishWorker, markWorkerReplayed } = await import('../../src/orchestrator/worker-registry.js');
 
 const bossToken = initBossToken();
 const scope = resolveOrcScope({ origin: 'web', workingDir: null });
@@ -58,14 +58,15 @@ function fakeReq(body: Record<string, unknown>) {
 }
 function fakeRes() {
     const state: { status: number; body: Record<string, unknown> | null } = { status: 200, body: null };
+    const callbacks = new Map<string, () => void>();
     const res = {
         status(code: number) { state.status = code; return res; },
         json(payload: Record<string, unknown>) { state.body = payload; return res; },
-        on(_ev: string, _cb: () => void) { return res; },
+        on(ev: string, cb: () => void) { callbacks.set(ev, cb); return res; },
         writableFinished: true,
         writableEnded: false,
     };
-    return { res, state };
+    return { res, state, callbacks };
 }
 async function waitFor(cond: () => boolean, ms = 4000): Promise<void> {
     const deadline = Date.now() + ms;
@@ -76,6 +77,30 @@ async function waitFor(cond: () => boolean, ms = 4000): Promise<void> {
     assert.ok(cond(), 'condition not met within timeout');
 }
 type WorkerEntry = { agent: string; accepted: boolean; agentId?: string; runId?: string; error?: string };
+
+test('behavioral: delayed dispatch response finish preserves the next run result', async () => {
+    const singleHandler = routes.get('POST /api/orchestrate/dispatch');
+    assert.ok(singleHandler, 'single dispatch route registered');
+    runBehavior = async () => ({ text: 'first result', tools: [] });
+    const { res, state, callbacks } = fakeRes();
+    await singleHandler(fakeReq({ virtual: 'delayed-finish', task: 'first task' }), res);
+    assert.equal(state.status, 200);
+    const worker = state.body?.['progress'] as { agentId: string; runId: string };
+    assert.ok(worker?.agentId);
+    const first = getWorkerSlot(worker.agentId);
+    assert.ok(first?.pendingReplay);
+    const finishResponse = callbacks.get('finish');
+    assert.ok(finishResponse, 'acknowledgement waits for response finish');
+
+    const second = claimWorker({ id: worker.agentId, name: 'delayed-finish' }, 'second task');
+    finishWorker(second.agentId, 'second result');
+    finishResponse();
+
+    assert.equal(getWorkerSlot(second.agentId), second);
+    assert.equal(second.pendingReplay, true);
+    assert.equal(second.result, 'second result');
+    markWorkerReplayed(second.agentId, second.runId);
+});
 
 test('behavioral: batch wait:false answers 202 with pre-claimed runIds, completes detached, marks pendingReplay', async () => {
     assert.ok(batchHandler, 'batch route registered');
